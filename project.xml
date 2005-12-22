@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<project>
+	<name>Trails Framework</name>
+	<id>trails-framework</id>
+	<groupId>trailsframework.org</groupId>
+	
+	<shortDescription>Trails Framework</shortDescription>
+	<description>
+	Trails is a domain driven development framework in the spirit of Ruby on Rails or Naked Objects.
+
+	The trails project aims to make java enterprise application development radically simpler by allowing developers to focus on the domain model and having other portions dynamically generated. We will leverage existing technologies such as Spring, Tapestry, and Hibernate rather than reinventing.
+	</description>
+</project>
