@@ -1,0 +1,55 @@
+<!DOCTYPE component-specification PUBLIC "-//Apache Software Foundation//Tapestry Specification 4.0//EN" "http://jakarta.apache.org/tapestry/dtd/Tapestry_4_0.dtd">
+<component-specification class="org.trails.component.PropertyEditor" allow-body="yes" allow-informal-parameters="yes" deprecated="no">
+	<parameter name="model" required="yes" cache="yes" deprecated="no"/>
+	<parameter name="descriptor" default-value="container.property" required="no" cache="yes" deprecated="no"/>
+    <component id="insert" type="Insert" inherit-informal-parameters="no">
+        <binding name="value">descriptor.displayName</binding>
+    </component>
+    
+    <component id="isIdentifier" type="Conditional" inherit-informal-parameters="no">
+        <binding name="condition">descriptor.identifier</binding>
+    </component>
+    <component id="isDate" type="Conditional" inherit-informal-parameters="no">
+        <binding name="condition">descriptor.date and !descriptor.identifier</binding>
+    </component> 
+    <component id="stringBlock" type="Block" inherit-informal-parameters="no">
+        
+    </component>
+   <component id="isString" type="Conditional" inherit-informal-parameters="no">
+        <binding name="condition">!descriptor.large and descriptor.string</binding>
+    </component>      
+    <component id="isTextArea" type="Conditional" inherit-informal-parameters="no">
+        <binding name="condition">descriptor.large and descriptor.string</binding>
+    </component> 
+    <component id="isNumeric" type="Conditional" inherit-informal-parameters="no">
+        <binding name="condition">descriptor.numeric and !descriptor.identifier</binding>
+    </component> 
+    <component id="isBoolean" type="Conditional" inherit-informal-parameters="no">
+        <binding name="condition">descriptor.boolean and !descriptor.identifier</binding>
+    </component> 
+    <component id="isObject" type="Conditional" inherit-informal-parameters="no">
+        <binding name="condition">descriptor.objectReference</binding>
+    </component>   
+    <component id="idInsert" type="Insert" inherit-informal-parameters="no">
+        <binding name="value">model[descriptor.name]</binding>
+    </component>
+    <component id="isCollection" type="Conditional" inherit-informal-parameters="no">
+        <binding name="condition">descriptor.collection</binding>
+    </component>
+       
+    <component id="notReadOnly" type="Conditional" inherit-informal-parameters="no">
+        <binding name="condition">!descriptor.readOnly</binding>
+    </component>
+    <component id="isReadOnly" type="Conditional" inherit-informal-parameters="no">
+        <binding name="condition">descriptor.readOnly</binding>
+    </component>
+    <component id="notHidden" type="Conditional" inherit-informal-parameters="no">
+        <binding name="condition">!descriptor.hidden</binding>
+    </component>
+    <component id="displayValue" type="Insert" inherit-informal-parameters="no">
+        <binding name="value">model[descriptor.name]</binding>
+    </component>
+    <component id="renderBlock" type="RenderBlock">
+    	<binding name="block">ognl:block</binding>
+    </component>
+</component-specification>

@@ -1,0 +1,412 @@
+<project name="trails" default="all" basedir=".">
+	<property file="build.properties"></property>
+	<property name="src.dir" value="${basedir}/src"/>
+	<property name="src-15.dir" value="${basedir}/src-1.5"/>
+	<property name="src-test.dir" value="${basedir}/test"/>
+	<property name="lib.home" value="${basedir}/lib"/>
+	<property name="dist.file" value="${basedir}/../trails.zip" />
+	
+	<property environment="env" />
+	<property name="ant.home" value="${env.ANT_HOME}" />
+	<available file="${ant.home}/lib/ant-apt.jar" property="apt.installed" />
+	<property name="jdk.home" value="${env.JAVA_HOME}" />
+	<property name="example.name" value="simple" />
+	<property name="saxon.jar" value="c:/java/saxon/saxon8.jar" />
+	<property name="junit.report.dir" value="junit-reports" />
+	<property name="example.basedir" value="${basedir}/examples/" />
+	<property name="tomcat.home" value="${env.TOMCAT_HOME}"/>
+
+	<property name="generate.force" value="true"/>
+	
+	<property name="deploy.dir" value="${basedir}/deploy" />
+	<property name="lib.dir" value="${basedir}/lib" />
+	
+	<property name="jar.file" value="${deploy.dir}/${ant.project.name}.jar" />
+	<property name="jar-aspects.file" value="${deploy.dir}/${ant.project.name}-aspects.jar" />
+	<property name="base_app.dir" value="${basedir}/base_app/" />
+	
+	<property name="java5.tools.jar" value="${java.home}/../lib/tools.jar" />
+	<property name="test.src" value="${basedir}/test" />
+	<available file="${jar.file}" property="jar.exists"></available>
+	<property name="compile.dir" value="${basedir}/build" />
+	<path id="class.path">
+		<fileset dir="${lib.dir}"></fileset>
+		<fileset dir="${tomcat.home}/common/lib"></fileset>
+		<path location="${java5.tools.jar}"></path>
+	</path>
+	
+	<property environment="env" />
+	<path id="jaxrpc.classpath">
+		<path refid="class.path"/>
+		<fileset dir="${env.JAXRPC_HOME}/lib"></fileset>
+	</path>
+	
+	
+	
+	  <taskdef 
+	      resource="org/aspectj/tools/ant/taskdefs/aspectjTaskdefs.properties">
+	    <classpath refid="class.path"></classpath>
+	  </taskdef>
+    
+	<taskdef name="apt" classname="org.apache.tools.ant.taskdefs.Apt" classpathref="class.path"/>
+
+	<target name="all" depends="clean,junit,deploy-example,functional-tests" />
+	
+	<target name="dist" depends="clean">
+		<delete file="${dist.file}" />
+		<zip destfile="${dist.file}">
+			<fileset dir="${basedir}">
+				<exclude name="${compile.dir}/**/*"/>
+				<exclude name="www/**/*" />
+				<exclude name="bin/**/*" />
+				<exclude name="examples/**/*" />
+			</fileset>
+			
+		</zip>
+	</target>
+	
+	<target name="init">
+		<mkdir dir="${compile.dir}"/>
+		<mkdir dir="${deploy.dir}"/>
+		<mkdir dir="${junit.report.dir}"/>
+	</target>
+	
+	<target name="clean">
+		<delete dir="${compile.dir}" />
+		<delete dir="${deploy.dir}" />
+		<delete dir="${basedir}/work" />
+		<delete dir="${example.basedir}/${example.name}/deploy" />
+		<delete dir="${junit.report.dir}" />
+		<delete >
+			<fileset dir="${example.basedir}" includes="**/lib/*,**/WEB-INF/classes/**/*">
+			</fileset>
+		</delete>
+	</target>
+		
+	<target name="build-hibernate-config" depends="jar" description="builds the hibernate config for the unit tests">
+		
+		<!-- This is a hack, for some reason it doesn't pick up BlogEntry
+		if i don't touch the file.  Hopefully this will be fixed in a later version 
+		of apt or apt-ant -->
+		<touch>
+			<fileset dir="${src-test.dir}/org/trails/test" includes="*.java"></fileset>
+		</touch>
+        <touch>
+			<fileset dir="${src-test.dir}/org/trails/security/test" includes="*.java"></fileset>
+		</touch>
+        <apt
+			fork="true"
+			nocompile="true"
+			destdir="${compile.dir}"
+			
+			factory="org.trails.hibernate.HibernateAnnotationProcessorFactory"
+			srcdir="${test.src}"
+			preprocessdir="${compile.dir}">
+			<classpath>
+				<path refid="class.path" />
+				<pathelement location="${compile.dir}" />
+				
+			</classpath>
+				
+		</apt>	
+
+	</target>
+	
+	<target name="compile" depends="init">
+		<echo message="${java5.tools.jar}" />
+		<mkdir dir="${compile.dir}" />
+		<iajc source="1.5" srcdir="${src.dir}" destdir="${compile.dir}" classpathref="class.path" debug="on">
+		</iajc>	
+		<copy todir="${compile.dir}">
+			<fileset dir="${src.dir}" excludes="**/*.java" />
+		</copy> 
+
+	</target>
+	
+	<target name="jar" depends="compile">
+		<mkdir dir="${deploy.dir}"/>
+		<jar destfile="${jar.file}">
+			<fileset dir="${compile.dir}">
+				<exclude name="hibernate.properties"/>
+				<exclude name="**/*Aspect.class"/>
+				<include name="**/*"/>
+			</fileset>
+		</jar>
+		<jar destfile="${jar-aspects.file}">
+			<fileset dir="${compile.dir}">
+				<include name="**/*Aspect.class"/>
+			</fileset>
+		</jar>
+	</target>
+
+	<target name="compile-tests" depends="jar">
+		<iajc source="1.5" srcdir="${src-test.dir}" destdir="${compile.dir}" aspectpath="${jar-aspects.file}" debug="on">
+			<classpath>
+				<path refid="class.path"></path>
+				<pathelement location="${compile.dir}"/>
+			</classpath>
+		</iajc>
+		<copy todir="${compile.dir}">
+			<fileset dir="${src-test.dir}">
+				<exclude name="**/*.java" />
+				<exclude name="hibernate.cfg.xml"/>
+			</fileset>
+		</copy>
+	</target>
+	
+	<target name="generate-beaninfos">
+	    <taskdef name="doclet"
+	        classname="xdoclet.DocletTask"
+	    	classpathref="class.path">
+
+	    </taskdef>
+		<doclet destDir="${src-test.dir}">
+	        <fileset dir="${src-test.dir}">
+		        <include name="**/*.java"/>
+	        </fileset>
+			<beaninfo  />
+		</doclet>
+
+	</target>
+	
+	
+	<target name="compile-demo">
+		<mkdir dir="${demo.webinf}/classes" />
+		<javac srcdir="${demo.src}" destdir="${demo.webinf}/classes" >
+			<classpath>
+				<path refid="class.path"></path>
+				<pathelement location="${compile.dir}" />
+			</classpath>
+		</javac>
+		<copy todir="${demo.webinf}/classes" >
+			<fileset dir="${demo.src}" excludes="**/*.java"></fileset>
+			
+		</copy>
+	</target>
+	
+	<target name="build-example" depends="update-example">
+		<ant dir="${example.basedir}/${example.name}" inheritall="false"></ant>
+	</target>
+	
+	<target name="update-tutorial">
+		<antcall target="update-project">
+			<param name="project.dir" value="c:/chris/tmp/trails-tutorial" />
+			<param name="project.name" value="trails-tutorial" />
+		</antcall>
+	</target>
+				
+	<target name="update-example">
+		<antcall target="update-project">
+			<param name="project.dir" value="${example.basedir}/${example.name}" />
+			<param name="project.name" value="${example.name}" />
+		</antcall>
+	</target>
+	
+	<target name="install-apt" unless="apt.installed">
+		<copy todir="${ant.home}/lib" file="${lib.dir}/ant-apt.jar" />
+	</target>
+
+	<target name="check-for-apt" unless="apt.installed">
+		<fail message="You must run install-apt to install the apt jar ant.home/lib directory first."/>
+	</target>
+	
+	<target name="create-project" depends="check-for-apt" description="Create a new Trails project">
+		<input message="Base directory: " addproperty="newproject.basedir"></input>
+		<input message="Project name: " addproperty="newproject.name"></input>
+		<property name="newproject.dir" value="${newproject.basedir}/${newproject.name}"></property>
+		<antcall target="update-project" inheritrefs="true">
+			<param name="project.dir" value="${newproject.dir}" />
+			<param name="project.name" value="${newproject.name}" />
+		</antcall>
+	</target>
+	
+	<target name="jar-if-necessary" unless="jar.exists"  >
+		<antcall target="jar" inheritrefs="true"></antcall>
+	</target>
+	
+	<target name="upgrade-project" depends="check-for-apt" description="Upgrade a project to latest version of Trails">
+		<input message="Base directory: " addproperty="newproject.basedir"></input>
+		<input message="Project name: " addproperty="newproject.name"></input>
+		<property name="newproject.dir" value="${newproject.basedir}/${newproject.name}"></property>
+		<move  todir="${newproject.dir}.old">
+			<fileset dir="${newproject.dir}"></fileset>
+		</move>
+		<antcall target="update-project" inheritrefs="true">
+			<param name="project.dir" value="${newproject.dir}" />
+			<param name="project.name" value="${newproject.name}" />
+		</antcall>
+		<!-- copy source code -->
+		<copy todir="${newproject.dir}/src">
+			<fileset dir="${newproject.dir}.old/src"  >
+				<include name="**/*.java" />
+				<include name="build.properties" />
+			</fileset>
+		</copy>
+		<!-- copy custom pages -->
+		<copy todir="${newproject.dir}/context/WEB-INF">
+			<fileset dir="${newproject.dir}.old/context/WEB-INF"  >
+				<include name="**/*.html" />
+				<include name="**/*.page" />
+				<exclude name="**/Default*" />
+			</fileset>
+		</copy>		
+	</target>
+		
+	<target name="update-project"  depends="jar-if-necessary">
+		<mkdir dir="${project.dir}" />
+		<copy todir="${project.dir}" >
+			<fileset dir="${base_app.dir}">
+				<!-- <exclude name="src/**/*" /> -->
+				<exclude name="**/WEB-INF/web.xml" />
+				<exclude name="**/WEB-INF/hibernate.properties" />
+				<exclude name="build.xml" />
+				<exclude name="jetty-config.xml" />
+				<exclude name="**/WEB-INF/base_app.application" />
+				<exclude name="**/WEB-INF/base_app_*.properties" />
+			</fileset>
+		</copy>
+		<copy todir="${project.dir}">
+			<filterset>
+				<filter token="app.name" value="${project.name}" />
+			</filterset>
+			<fileset dir="${base_app.dir}">
+				<include name="**/WEB-INF/web.xml" />
+				<include name="**/WEB-INF/hibernate.properties" />
+				<include name="build.xml" />
+				<include name="jetty-config.xml" />
+				<include name="src/messages_*.properties" />
+			</fileset>
+		</copy>		
+		<copy tofile="${project.dir}/context/WEB-INF/${project.name}.application" 
+			file="${base_app.dir}/context/WEB-INF/base_app.application" >
+			<filterset>
+				<filter token="app.name" value="${project.name}" />
+			</filterset>
+		</copy>
+		<copy tofile="${project.dir}/context/WEB-INF/${project.name}_en.properties" 
+			file="${base_app.dir}/context/WEB-INF/base_app_en.properties"/>
+		<copy tofile="${project.dir}/context/WEB-INF/${project.name}_pt.properties" 
+			file="${base_app.dir}/context/WEB-INF/base_app_pt.properties"/>
+
+		
+		<mkdir dir="${project.dir}/lib" />
+		<copy todir="${project.dir}/lib">
+			<fileset dir="${lib.dir}">
+			</fileset>
+		</copy>
+		<copy todir="${project.dir}/lib" file="${jar.file}" />
+		<copy todir="${project.dir}/lib" file="${jar-aspects.file}" />
+		
+	</target>
+	       	
+	<target name="junit" depends="build-hibernate-config,compile-tests" description="Run unit tests">
+		<mkdir dir="${junit.report.dir}" />
+		<junit  fork="yes" 
+			filtertrace="off" 
+			showoutput="true"
+			haltonfailure="true" printsummary="true">
+			<classpath>
+				<path refid="class.path"></path>
+				<pathelement location="${compile.dir}"/>
+				<pathelement location="${src-test.dir}"/> <!-- this is the location for the i18n properties files -->
+			</classpath>
+			<batchtest filtertrace="off" todir="${junit.report.dir}">
+				<formatter type="plain" />
+				<formatter type="xml"/>
+				<fileset dir="${src-test.dir}">
+					<include name="**/*Test.java" />
+					<exclude name="**/functional/*"/>
+					<exclude name="**/ComponentTest.java" />
+					<exclude name="**/PageTest.java" />
+				</fileset>
+			</batchtest>
+		</junit>
+	</target>
+	
+	<target name="run-single-test" depends="compile-tests" >
+		<input message="Test case: " addproperty="test.name"></input>
+		<junit  fork="yes" 
+			filtertrace="off" 
+			showoutput="true"
+			haltonfailure="true" printsummary="true">
+			<classpath>
+				<path refid="class.path"></path>
+				<pathelement location="${compile.dir}"/>
+			</classpath>
+			<test name="${test.name}" todir="${junit.report.dir}">
+				<formatter type="plain"/>
+			</test>
+		</junit>
+	</target>
+	
+	<target name="deploy-example" depends="update-example" description="Redeploys the examples/simple application">
+		<ant dir="examples/simple" target="redeploy" inheritall="false"></ant>
+	</target>
+		
+	<target name="functional-tests" depends="compile-tests" description="Run the functional tests agains the examples/simple application" >
+		
+		<mkdir dir="${junit.report.dir}" />
+		<junit  fork="yes" 
+			filtertrace="off" 
+			showoutput="true"
+			haltonfailure="true" printsummary="true">
+			<classpath>
+				<path refid="class.path"></path>
+				<pathelement location="${compile.dir}"/>
+			</classpath>
+			<batchtest filtertrace="off" todir="${junit.report.dir}">
+				<formatter type="xml" />
+				<fileset dir="${src-test.dir}">
+					<include name="**/functional/*"/>
+					<exclude name="**/FunctionalTest.java" />
+				</fileset>
+			</batchtest>
+		</junit>
+	</target>
+	
+	<target name="build-component-docs" description="Produces component documentation">
+		
+		<delete file="${basedir}/www/component-reference/index.html" />
+		<style
+			in="${basedir}/www/component-reference/ComponentReference.xml" 
+			style="${basedir}/doc/ComponentReference.xsl"
+			out="${basedir}/www/component-reference/index.html">
+			<classpath>
+				<pathelement location="${saxon.jar}"/>
+			</classpath>
+		</style>
+	</target>
+	
+	<target name="javadoc">
+		<delete dir="${basedir}/www/apidocs"></delete>
+		<mkdir dir="${basedir}/www/apidocs" />
+		<javadoc windowtitle="Trails"
+			packagenames="org.trails.*"
+			destdir="${basedir}/www/apidocs">
+			
+			<sourcepath location="${src.dir}" />
+			<classpath refid="class.path"></classpath>
+		</javadoc>
+	</target>
+	
+	<target name="upgrade-tapestry-files">
+		<style basedir="${src.dir}" style="upgradeTapestry3to4.xsl" 
+			destdir="upgraded" extension=".jwc" force="true">
+			<include name="**/*.jwc"/>
+		</style>
+			<style basedir="${basedir}/examples" style="upgradeTapestry3to4.xsl" 
+				destdir="upgraded" extension=".page">
+				<include name="**/*.page"/>
+			</style>
+	</target>
+	<target name="junit-report" depends="junit">
+	     <mkdir dir="${junit.report.dir}/html"/>
+	     <junitreport>
+		<fileset dir="${junit.report.dir}">
+			<include name="TEST-*.xml"/>
+		</fileset>
+		<report todir="${junit.report.dir}/html"/>
+	     </junitreport>
+	</target>		
+</project>
+

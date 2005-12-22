@@ -1,0 +1,3 @@
+src.includes = src/,\
+               examples/simple/src/,\
+               test/

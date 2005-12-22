@@ -1,0 +1,68 @@
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+   <title>2.&nbsp;First things first</title><link rel="stylesheet" href="html.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.65.1"><link rel="home" href="index.html" title="Trails Tutorial"><link rel="up" href="index.html" title="Trails Tutorial"><link rel="previous" href="ar01s01.html" title="1.&nbsp;The beginning"><link rel="next" href="ar01s03.html" title="3.&nbsp;Relationships"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">2.&nbsp;First things first</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ar01s01.html">Prev</a>&nbsp;</td><th width="60%" align="center">&nbsp;</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ar01s03.html">Next</a></td></tr></table><hr></div><div class="section" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d0e35"></a>2.&nbsp;First things first</h2></div></div><div></div></div><p>Trails is a domain driven development framework. Domain driven development is really just a fancy word for object oriented programming. The goal of DDD is to enable you to focus on developing a rich domain model for your application. Trails will automagically expose a web UI for your domain model and take care of persisting your domain objects to an RDBMS.</p><p>So that said, hopefully it logically follows that the first thing you are going to do in a Trails application is develop an object. This should be a POJO with (at present) XDoclet comments which tell Hibernate how to persist your objects to an RDBMS. It would certainly be possible to develop this application by starting with a database and reverse engineering our objects from it, but this would be contrary to the spirit of DDD, which focuses on having a rich object layer that models your domain.</p><p>So let's start with a very simple object to represent a Blog.</p><pre class="programlisting">package org.trails.tutorial;
+
+/**
+ * @author fus8882
+ * @hibernate.class
+ *
+ * TODO To change the template for this generated type comment go to
+ * Window - Preferences - Java - Code Style - Code Templates
+ */
+public class Blog
+{
+    private Integer id;
+    
+    private String name;
+    
+    private String author;
+    
+    /**
+     * @hibernate.property 
+     * @return Returns the author.
+     */
+    public String getAuthor()
+    {
+        return author;
+    }
+    /**
+     * @param author The author to set.
+     */
+    public void setAuthor(String author)
+    {
+        this.author = author;
+    }
+    /**
+     * @return Returns the id.
+     * @hibernate.id
+     *   generator-class = "native"
+     */
+    public Integer getId()
+    {
+        return id;
+    }
+    /**
+     * @param id The id to set.
+     */
+    public void setId(Integer id)
+    {
+        this.id = id;
+    }
+    /**
+     * @hibernate.property
+     * @return Returns the name.
+     */
+    public String getName()
+    {
+        return name;
+    }
+    /**
+     * @param name The name to set.
+     */
+    public void setName(String name)
+    {
+        this.name = name;
+    }
+}
+
+</pre><p>So this is a what the simplest Trails application looks like: a POJO with some <a href="http://xdoclet.sourceforge.net/hibernate/" target="_top">Xdoclet comments</a>. The Xdoclet comments are optional, but since Trails uses Hibernate for persistence by default you will need to provide the Hibernate mapping files. By using Xdoclet comments, your project's build.xml file will invoke hibernatedoclet to produce these mappings automatically. We have our blog class with a couple of properties for <span class="property">name</span> and <span class="property">author</span>, and an Integer <span class="property">id</span> property. It's worth pointing out that we need this id property. In a Trails application, we need an identifier property for Hibernate to be happy. A totally synthetic property with no intrinsic meaning is usually best. Yes, purists will argue this is in an intrusion to our lovely pure OO domain model. I won't argue, but for now, in Trails this is just the price of RDBMS persistence.</p><p>Ok, enough talk, let's see what this looks like. Startup your Tomcat instance, if you don't already have it running. Then run <span><b class="command">ant deploy</b></span>. Go the url for your application, which if you named your application <tt class="literal">blogger</tt> and run tomcat on port 8080 would be <a href="???" target="_top">http://localhost:8080/blog</a>. On the first page of the application, you will see a link to the List Blogs page. From here, you can create a New Blog, etc.</p></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ar01s01.html">Prev</a>&nbsp;</td><td width="20%" align="center"><a accesskey="u" href="index.html">Up</a></td><td width="40%" align="right">&nbsp;<a accesskey="n" href="ar01s03.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">1.&nbsp;The beginning&nbsp;</td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top">&nbsp;3.&nbsp;Relationships</td></tr></table></div></body></html>

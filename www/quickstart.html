@@ -1,0 +1,55 @@
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+   <title>Trails QuickStart</title><link rel="stylesheet" href="html.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.65.1"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="article" lang="en"><div class="titlepage"><div><div><h2 class="title"><a name="d0e1"></a>Trails QuickStart</h2></div></div><div></div><hr></div><div class="toc"><dl><dt><span class="section"><a href="#d0e4">1. Prerequisites</a></span></dt><dt><span class="section"><a href="#d0e27">2. Installation</a></span></dt><dt><span class="section"><a href="#d0e32">3. Create your project</a></span></dt><dd><dl><dt><span class="section"><a href="#d0e35">3.1. Run ant</a></span></dt><dt><span class="section"><a href="#d0e88">3.2. Customize build.properties</a></span></dt></dl></dd><dt><span class="section"><a href="#d0e96">4. Create your domain objects</a></span></dt><dt><span class="section"><a href="#d0e106">5. Build your application</a></span></dt><dd><dl><dt><span class="section"><a href="#d0e109">5.1. Customize hibernate.properties</a></span></dt><dt><span class="section"><a href="#d0e130">5.2. Build the war file</a></span></dt></dl></dd><dt><span class="section"><a href="#d0e137">6. Deploy your application</a></span></dt></dl></div><div class="section" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d0e4"></a>1.&nbsp;Prerequisites</h2></div></div><div></div></div><p>To run Trails, you should be able to use any Java servlet container, but Trails has so far only been tested with Jakarta Tomcat.  We recommend Tomcat 5.0.  You will also need <a href="http://ant.apache.org/" target="_top">Ant</a>.</p><p>When working with Trails, I use <a href="http://www.eclipse.org/" target="_top">Eclipse 3.0</a> with the following excellent plugins:</p><div class="itemizedlist"><ul type="disc"><li><p>Spindle</p></li><li><p>Doclipse plugin</p></li><li><p>Aspectj AJDT plugin</p></li></ul></div></div><div class="section" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d0e27"></a>2.&nbsp;Installation</h2></div></div><div></div></div><p>You can either check out from CVS or downloaded the latest release.</p></div><div class="section" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d0e32"></a>3.&nbsp;Create your project</h2></div></div><div></div></div><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e35"></a>3.1.&nbsp;Run ant</h3></div></div><div></div></div><p>Go to either the directory you checked out into, or the directory you unzipped the distribution.  In this directory, do <span><b class="command">ant create-project</b></span>.  You will be prompted for the following:</p><div class="itemizedlist"><ul type="disc"><li><p>Base directory.</p></li><li><p>Name of project.</p></li></ul></div><p>This will build a project with the following directory structure:</p><div class="informaltable"><table border="1"><colgroup><col width="50%"><col width="50%"></colgroup><tbody><tr><td><span><b class="command">&lt;basedir&gt;/&lt;projectname&gt;/src</b></span></td><td>The directory to place your source code.  The <span><b class="command">compile</b></span> and <span><b class="command">hibernatedoclet</b></span> targets will start from here.</td></tr><tr><td><span><b class="command">&lt;basedir&gt;/&lt;projectname&gt;/context</b></span></td><td>This contains your web application.  The WEB-INF</td></tr><tr><td><span><b class="command">&lt;basedir&gt;/&lt;projectname&gt;/context/WEB-INF</b></span></td><td>This directory contains the web.xml and the Tapestry page definitions.  The <span><b class="command">hibernate.properties</b></span> file is also located in this directory.</td></tr><tr><td><span><b class="command">&lt;basedir&gt;/&lt;projectname&gt;/lib</b></span></td><td>This contains all the jars Trails depends on</td></tr></tbody></table></div></div><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e88"></a>3.2.&nbsp;Customize build.properties</h3></div></div><div></div></div><p>Change the <tt class="envar">tomcat.home</tt> property to point the appropriate directory.</p></div></div><div class="section" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d0e96"></a>4.&nbsp;Create your domain objects</h2></div></div><div></div></div><p>Your domain objects are simply POJOs with Hibernate Xdoclet comments.  The Xdoclet comments are optional, but since Trails uses Hibernate for persistence by default you will need to provide the Hibernate mapping files.  By using Xdoclet comments, your project's build.xml file will invoke hibernatedoclet to produce these mappings automatically. </p><p>Below is an example domain object:</p><pre class="programlisting">/*
+ * Created on Dec 1, 2004
+ *
+ * TODO To change the template for this generated file go to
+ * Window - Preferences - Java - Code Style - Code Templates
+ */
+package org.trails.testagain;
+
+/**
+ * @author fus8882
+ * @hibernate.class
+ * TODO To change the template for this generated type comment go to
+ * Window - Preferences - Java - Code Style - Code Templates
+ */
+public class Thing
+{
+    private Integer id;
+    
+    private String name;
+    
+    /**
+     * @return Returns the id.
+     * @hibernate.id
+ *   generator-class = "native"
+     */
+    public Integer getId()
+    {
+        return id;
+    }
+    /**
+     * @param id The id to set.
+     */
+    public void setId(Integer id)
+    {
+        this.id = id;
+    }
+    /**
+     * @return Returns the name.
+     * @hibernate.property
+     */
+    public String getName()
+    {
+        return name;
+    }
+    /**
+     * @param name The name to set.
+     */
+    public void setName(String name)
+    {
+        this.name = name;
+    }
+}
+</pre></div><div class="section" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d0e106"></a>5.&nbsp;Build your application</h2></div></div><div></div></div><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e109"></a>5.1.&nbsp;Customize hibernate.properties</h3></div></div><div></div></div><p>The default Trails configuration will connect to a local Hsql standalone database with the same name as your project.  This database will be created automatically the first time your application is deployed.  Tables for your domain object will also be created at this time by Hibernate.  To connect to a different database, you will need to change these settings.  These settings are fully documented in the Hibernate documentation, but here is a brief description of what you may want to change.</p><div class="segmentedlist"><p><b>hibernate.dialect: </b>This is set to a Hibernate class which will generate appropriate SQL for your chosen database.  It will need to be changed if using a different database than Hsql. </p></div><div class="segmentedlist"><p><b>hibernate.hbm2ddl.auto: </b>The default setting for this property, <span><b class="command">create-drop</b></span>, will cause the tables for your domain object to be recreated each time the application is started.  This property may be commented out to disable this behaviour.</p></div></div><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e130"></a>5.2.&nbsp;Build the war file</h3></div></div><div></div></div><p>The default target in the build.xml file for your project will build a war file in the deploy directory called <span><b class="command">&lt;projectname&gt;.war</b></span></p></div></div><div class="section" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d0e137"></a>6.&nbsp;Deploy your application</h2></div></div><div></div></div><p>In Tomcat, you can simply place the war file in the webapps directory, or use the manager application.  The home page of the application will give you screens to list, create, save, and remove your domain objects.</p></div></div></body></html>

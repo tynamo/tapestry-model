@@ -1,0 +1,12 @@
+<!-- Delegating build script, used by cruisecontrol to build MY_PROJECT_1.
+     Note that the basedir is set to the checked out project -->
+<project name="Trails cruise"
+        default="build"
+        basedir=".">
+    <target name="build">
+        <!-- Get the latest from CVS -->
+        <cvs command="up -d -P"/>
+        <!-- Call the target that does everything -->
+        <ant antfile="build.xml" target="all"/>
+    </target>
+</project>

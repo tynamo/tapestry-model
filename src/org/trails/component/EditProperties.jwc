@@ -1,0 +1,63 @@
+<!DOCTYPE component-specification PUBLIC "-//Apache Software Foundation//Tapestry Specification 4.0//EN" "http://jakarta.apache.org/tapestry/dtd/Tapestry_4_0.dtd">
+<component-specification class="org.trails.component.PropertyTable" allow-body="yes" allow-informal-parameters="yes" deprecated="no">
+	<description>This component loops over all the properties in the class descriptor and
+	displays a property for each one, deferring to a property override block if there is one.
+	</description>
+	
+	<parameter name="model" required="yes" cache="yes" deprecated="no"/>
+	<parameter name="propertyNames" required="no" default-value="null" cache="yes" deprecated="no"/>
+   	<parameter name="classDescriptor" required="no" default-value="page.classDescriptor" cache="yes" deprecated="no"/>
+    <!--
+    <parameter name="containerElement" required="no" default-value="'div'" />
+    <parameter name="containerClass" required="no" default-value="'container'" />
+    <parameter name="editRowElement" required="no" default-value="'div'" />
+    <parameter name="editRowClass" required="no" default-value="'editRow'" />
+    <parameter name="labelElement" required="no" default-value="'span'" />
+    <parameter name="labelClass" required="no" default-value="'label'" />
+    <parameter name="editorElement" required="no" default-value="'span'" />
+    <parameter name="editorClass" required="no" default-value="'edit'" />
+    
+    <component id="labelContainer" type="Any" >
+    	<binding name="element">ognl:labelElement</binding>
+    	<binding name="class">labelClass</binding>
+    </component>
+    <component id="editRow" type="Any" >
+    	<binding name="element">ognl:editRowElement</binding>
+    	<binding name="class">editRowClass</binding>
+    </component>
+    <component id="editorContainer" type="Any" >
+    	<binding name="element">ognl:editorElement</binding>
+    	<binding name="class">editorClass</binding>
+    </component>   
+    <component id="container" type="Any" >
+    	<binding name="element">ognl:containerElement</binding>
+    	<binding name="class">containerClass</binding>
+    </component>  -->
+    <component id="labelText" type="Insert">
+    	<binding name="value">property.displayName</binding>
+    </component>
+    <component id="foreach" type="Foreach" inherit-informal-parameters="no">
+        <binding name="source">propertyDescriptors</binding>
+        <binding name="value">property</binding>
+        <!-- <binding name="element">ognl:editRowElement</binding>
+        <binding name="class">editRowClass</binding> -->
+    </component>
+
+    <component id="hasBlock" type="Conditional" inherit-informal-parameters="no">
+        <binding name="condition">hasBlock(property.name)</binding>
+    </component>   
+    <component id="doesntHaveBlock" type="Conditional" inherit-informal-parameters="no">
+        <binding name="condition">not(hasBlock(property.name))</binding>
+    </component>      
+    <component id="renderBlock" type="RenderBlock" inherit-informal-parameters="no">
+        <binding name="block">ognl:getBlock(property.name)</binding>
+    </component>  
+    
+    <component id="propertyEditor" type="PropertyEditor" inherit-informal-parameters="no">
+        <binding name="descriptor">ognl:property</binding>
+        <binding name="model">model</binding>
+    </component>
+    
+    <property name="property" />
+    
+</component-specification>

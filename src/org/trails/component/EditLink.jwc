@@ -1,0 +1,11 @@
+<!DOCTYPE component-specification PUBLIC "-//Apache Software Foundation//Tapestry Specification 4.0//EN" "http://jakarta.apache.org/tapestry/dtd/Tapestry_4_0.dtd">
+<component-specification class="org.trails.component.EditLink" allow-body="yes" allow-informal-parameters="yes" deprecated="no">
+	<description>This component displays a link to the EditPage for an object</description>
+	<parameter name="model" required="yes" cache="yes" deprecated="no"/>
+	<parameter name="classDescriptor" required="no" default-value="page.classDescriptor" cache="yes" deprecated="no"/>
+    <parameter name="persistenceService" required="no" default-value="page.persistenceService" cache="yes" deprecated="no"/>
+    
+    <component id="link" type="ActionLink" inherit-informal-parameters="no">
+        <binding name="listener">listeners.click</binding>
+    </component>
+</component-specification>

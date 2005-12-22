@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN"
+"http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd">
+<article>
+  <title>Trails QuickStart</title>
+
+  <section>
+    <title>Prerequisites</title>
+
+    <para>To run Trails, you should be able to use any Java servlet container,
+    but Trails has so far only been tested with Jakarta Tomcat. We recommend
+    Tomcat 5.0. You will also need <ulink
+    url="http://ant.apache.org/">Ant</ulink>.</para>
+
+    <para>When working with Trails, I use <ulink
+    url="http://www.eclipse.org/">Eclipse 3.0</ulink> with the following
+    excellent plugins:</para>
+
+    <itemizedlist>
+      <listitem>
+        <para>Spindle</para>
+      </listitem>
+
+      <listitem>
+        <para>Doclipse plugin</para>
+      </listitem>
+
+      <listitem>
+        <para>Aspectj AJDT plugin</para>
+      </listitem>
+    </itemizedlist>
+  </section>
+
+  <section>
+    <title>Installation</title>
+
+    <para>You can either check out from CVS or downloaded the latest
+    release.</para>
+  </section>
+
+  <section>
+    <title>Create your project</title>
+
+    <section>
+      <title>Run ant</title>
+
+      <para>Go to either the directory you checked out into, or the directory
+      you unzipped the distribution. In this directory, do <command>ant
+      create-new-project</command>. You will be prompted for the
+      following:</para>
+
+      <itemizedlist>
+        <listitem>
+          <para>Base directory.</para>
+        </listitem>
+
+        <listitem>
+          <para>Name of project.</para>
+        </listitem>
+      </itemizedlist>
+
+      <para>This will build a project with the following directory
+      structure:</para>
+
+      <informaltable>
+        <tgroup cols="2">
+          <tbody>
+            <row>
+              <entry><command>&lt;basedir&gt;/&lt;projectname&gt;/src</command></entry>
+
+              <entry>The directory to place your source code. The
+              <command>compile</command> and
+              <command>hibernatedoclet</command> targets will start from
+              here.</entry>
+            </row>
+
+            <row>
+              <entry><command>&lt;basedir&gt;/&lt;projectname&gt;/context</command></entry>
+
+              <entry>This contains your web application. The WEB-INF</entry>
+            </row>
+
+            <row>
+              <entry><command>&lt;basedir&gt;/&lt;projectname&gt;/context/WEB-INF</command></entry>
+
+              <entry>This directory contains the web.xml and the Tapestry page
+              definitions. The <command>hibernate.properties</command> file is
+              also located in this directory.</entry>
+            </row>
+
+            <row>
+              <entry><command>&lt;basedir&gt;/&lt;projectname&gt;/lib</command></entry>
+
+              <entry>This contains all the jars Trails depends on</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </informaltable>
+    </section>
+
+    <section>
+      <title>Customize build.properties</title>
+
+      <para>Change the <envar>tomcat.home</envar> property to point the
+      appropriate directory.</para>
+    </section>
+  </section>
+
+  <section>
+    <title>Create your domain objects</title>
+
+    <para>Your domain objects are simply POJOs with Hibernate Xdoclet
+    comments. The Xdoclet comments are optional, but since Trails uses
+    Hibernate for persistence by default you will need to provide the
+    Hibernate mapping files. By using Xdoclet comments, your project's
+    build.xml file will invoke hibernatedoclet to produce these mappings
+    automatically. </para>
+
+    <para>Below is an example domain object:</para>
+
+    <para><programlisting>/*
+ * Created on Dec 1, 2004
+ *
+ * TODO To change the template for this generated file go to
+ * Window - Preferences - Java - Code Style - Code Templates
+ */
+package org.trails.testagain;
+
+/**
+ * @author fus8882
+ * @hibernate.class
+ * TODO To change the template for this generated type comment go to
+ * Window - Preferences - Java - Code Style - Code Templates
+ */
+public class Thing
+{
+    private Integer id;
+    
+    private String name;
+    
+    /**
+     * @return Returns the id.
+     * @hibernate.id
+ *   generator-class = "native"
+     */
+    public Integer getId()
+    {
+        return id;
+    }
+    /**
+     * @param id The id to set.
+     */
+    public void setId(Integer id)
+    {
+        this.id = id;
+    }
+    /**
+     * @return Returns the name.
+     * @hibernate.property
+     */
+    public String getName()
+    {
+        return name;
+    }
+    /**
+     * @param name The name to set.
+     */
+    public void setName(String name)
+    {
+        this.name = name;
+    }
+}
+</programlisting></para>
+  </section>
+
+  <section>
+    <title>Build your application</title>
+
+    <section>
+      <title>Customize hibernate.properties</title>
+
+      <para>The default Trails configuration will connect to a local Hsql
+      standalone database with the same name as your project. This database
+      will be created automatically the first time your application is
+      deployed. Tables for your domain object will also be created at this
+      time by Hibernate. To connect to a different database, you will need to
+      change these settings. These settings are fully documented in the
+      Hibernate documentation, but here is a brief description of what you may
+      want to change.</para>
+
+      <para><segmentedlist>
+          <segtitle>hibernate.dialect</segtitle>
+
+          <seglistitem>
+            <seg>This is set to a Hibernate class which will generate
+            appropriate SQL for your chosen database. It will need to be
+            changed if using a different database than Hsql. </seg>
+          </seglistitem>
+        </segmentedlist><segmentedlist>
+          <segtitle>hibernate.hbm2ddl.auto</segtitle>
+
+          <seglistitem>
+            <seg>The default setting for this property,
+            <command>create-drop</command>, will cause the tables for your
+            domain object to be recreated each time the application is
+            started. This property may be commented out to disable this
+            behaviour.</seg>
+          </seglistitem>
+        </segmentedlist></para>
+    </section>
+
+    <section>
+      <title>Build the war file</title>
+
+      <para>The default target in the build.xml file for your project will
+      build a war file in the deploy directory called
+      <command>&lt;projectname&gt;.war</command></para>
+    </section>
+  </section>
+
+  <section>
+    <title>Deploy your application</title>
+
+    <para>In Tomcat, you can simply place the war file in the webapps
+    directory, or use the manager application. The home page of the
+    application will give you screens to list, create, save, and remove your
+    domain objects.</para>
+  </section>
+</article>

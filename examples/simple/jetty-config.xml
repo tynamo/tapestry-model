@@ -1,0 +1,19 @@
+                             
+<Configure class="org.mortbay.jetty.Server">
+  <Call name="addListener">
+    <Arg>
+      <New class="org.mortbay.http.SocketListener">
+          <Set name="Port">
+            <SystemProperty name="jetty.port" 
+             default="8080"/>
+          </Set>
+      </New>
+    </Arg>
+  </Call>
+
+  <Call name="addWebApplication">
+    <Arg>/simple</Arg>
+    <Arg>./context
+    </Arg>
+  </Call>
+ </Configure>

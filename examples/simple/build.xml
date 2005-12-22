@@ -1,0 +1,212 @@
+<?xml version="1.0"?>
+<!-- ======================================================================
+     Nov 11, 2004 11:33:47 PM
+
+     Trails Demo
+     Trails Demo application
+                   
+     fus8882                                                                
+     ====================================================================== -->
+<project name="simple" default="all">
+	
+	<property file="build.properties"></property>
+
+	<property name="context" value="${basedir}/context" />
+	<property name="webinf" value="${context}/WEB-INF" />
+	<property name="webinf.lib" value="${webinf}/lib" />
+	<property name="src.dir" value="${basedir}/src" />
+	<property name="test.src" value="${basedir}/test" />
+	<property name="compile.dir" value="${webinf}/classes" />
+	<property name="deploy.dir" value="${basedir}/deploy" />
+	<property name="lib.dir" value="${basedir}/lib" />
+	<property name="war.file" value="${deploy.dir}/${ant.project.name}.war" />
+	
+	<path id="class.path">
+		<fileset dir="${lib.dir}"></fileset>
+		<fileset dir="${tomcat.home}/common/lib"></fileset>
+		<fileset dir="${tomcat.home}/server/lib" />
+		<fileset dir="${java.home}/../lib" includes="tools.jar"/>
+	</path>
+	
+	<taskdef name="apt" classname="org.apache.tools.ant.taskdefs.Apt" classpathref="class.path"/>
+	
+	<path id="jetty.class.path">
+		<fileset dir="${jetty.lib}">
+			<exclude name="start.jar"/>
+			<exclude name="stop.jar"/>
+		</fileset>
+	</path>
+	  <taskdef 
+	      resource="org/aspectj/tools/ant/taskdefs/aspectjTaskdefs.properties">
+	    <classpath refid="class.path"></classpath>
+	  </taskdef>
+	
+    <description>
+            Trails Demo application
+    </description>
+
+
+	<!--
+	<target name="hibernatedoclet" 
+	        description="Generates Hibernate class descriptor files."
+			>
+
+	    
+	    <taskdef name="hibernatedoclet"
+	        classname="xdoclet.modules.hibernate.HibernateDocletTask"
+	    	classpathref="class.path">
+
+	    </taskdef>
+		
+		
+
+		<delete>
+	        <fileset dir="${src.dir}">
+		        <include name="**/*.hbm.xml"/>
+	        </fileset>			
+		</delete>
+	    <hibernatedoclet
+	        destdir="${src.dir}"
+	        excludedtags="@version,@author,@todo"
+
+	        verbose="true">
+	    
+	        <fileset dir="${src.dir}">
+		        <include name="**/*.java"/>
+	        </fileset>
+	    
+			<hibernate version="3.0"/>        
+	    
+	    </hibernatedoclet>
+	</target>
+	
+	<target name="generate-beaninfos">
+	    <taskdef name="doclet"
+	        classname="xdoclet.DocletTask"
+	    	classpathref="class.path">
+
+	    </taskdef>
+		<doclet destDir="${src.dir}">
+	        <fileset dir="${src.dir}">
+		        <include name="**/*.java"/>
+	        </fileset>
+			<beaninfo  />
+		</doclet>
+	</target>	
+	-->
+
+	<target name="clean">
+		<delete dir="${compile.dir}" />
+	</target>
+
+	<target name="compile" >
+		<mkdir dir="${compile.dir}" />
+		<iajc source="1.5" srcdir="${src.dir}" destdir="${compile.dir}" classpathref="class.path" aspectpath="${lib.dir}/trails-aspects.jar" debug="on">
+		</iajc>		
+		<copy todir="${compile.dir}">
+			<fileset dir="${src.dir}" excludes="**/*.java" />
+		</copy>
+
+	</target>
+
+		<target name="war" depends="compile,build-hibernate-config">
+			<mkdir dir="${deploy.dir}"/>
+			<!--
+			<mkdir dir="${webinf.lib}"/>
+			<copy todir="${webinf.lib}">
+				<fileset dir="${lib.dir}" excludes="xdoclet*.jar">
+				</fileset>
+			</copy>-->
+			<!-- <copy todir="${webinf.lib}" file="${trails.jar}" /> -->
+
+			<war webxml="${webinf}/web.xml" file="${war.file}">
+				<lib dir="${lib.dir}"></lib>
+				<fileset dir="${context}"></fileset>
+			</war>
+		</target>
+	
+	<target name="create-edit-page">
+		<input message="Unqualified type: " addproperty="type.name" />
+		<copy file="${webinf}/DefaultEdit.html" tofile="${webinf}/${type.name}Edit.html"></copy>
+		<copy file="${webinf}/DefaultEdit.page" tofile="${webinf}/${type.name}Edit.page"></copy>
+	</target>
+
+	<target name="create-list-page">
+		<input message="Unqualified type: " addproperty="type.name" />
+		<copy file="${webinf}/DefaultList.html" tofile="${webinf}/${type.name}List.html"></copy>
+		<copy file="${webinf}/DefaultList.page" tofile="${webinf}/${type.name}List.page"></copy>
+	</target>
+		
+	<target name="deploy" depends="war">
+		<taskdef name="deploy" classname="org.apache.catalina.ant.DeployTask" classpathref="class.path">
+
+		</taskdef>
+		<!-- <taskdef name="list" classname="org.apache.catalina.ant.ListTask" classpathref="class.path"/>
+		<list url="${tomcat.url}/manager" username="${manager.username}" password="${manager.password}" /> -->
+		<deploy url="${tomcat.url}/manager" username="${manager.username}" password="${manager.password}" path="/${ant.project.name}" war="${war.file}" />
+	</target>
+	
+	<target name="undeploy" >
+		<taskdef name="undeploy" classname="org.apache.catalina.ant.UndeployTask" classpathref="class.path">
+
+		</taskdef>
+		<undeploy url="${tomcat.url}/manager" username="${manager.username}" password="${manager.password}" path="/${ant.project.name}" />
+	</target>
+	
+	<target name="reload" depends="war">
+		<taskdef name="reload" classname="org.apache.catalina.ant.ReloadTask" classpathref="class.path">
+
+		</taskdef>
+		<reload url="${tomcat.url}/manager" username="${manager.username}" password="${manager.password}" path="/${ant.project.name}" />
+	</target>
+	
+	<target name="redeploy" depends="war,undeploy,deploy" />
+
+	<target name="all" depends="clean,build-hibernate-config,war" ></target>
+
+	<target name="build-hibernate-config" >
+		<echo message="${java.home}" />
+		<apt
+			fork="true"
+			nocompile="true"
+			classpathref="class.path"
+			factory="org.trails.hibernate.HibernateAnnotationProcessorFactory"
+			srcdir="${src.dir}"
+			preprocessdir="${webinf}">
+			
+		</apt>	
+		
+	</target>
+
+    <taskdef name="hibernatetool" classname="org.hibernate.tool.ant.HibernateToolTask">
+        <classpath>
+            <fileset dir="${lib.dir}"></fileset>
+            <fileset dir="${java.home}/../lib" includes="tools.jar"/>
+            <path location="${compile.dir}"></path>
+        </classpath>
+    </taskdef>
+
+    <target name="exportDDL" depends="clean, build-hibernate-config, compile"
+            description="Export the schema DDL to SQL text file in build directory">
+        <mkdir dir="${deploy.dir}"/>
+        <echo>WARNING! See HBX-394: Currently only works with annotated classes, not XML mapping files!</echo>
+        <hibernatetool destdir="${deploy.dir}">
+            <annotationconfiguration configurationfile="${webinf}/hibernate.cfg.xml"
+                                     propertyFile="${webinf}/hibernate.properties"/>
+            <hbm2ddl export="true" console="false" drop="false" create="true" outputfilename="${ant.project.name}.ddl"
+                     delimiter=";"/>
+        </hibernatetool>
+    </target>
+
+    <!--
+	<target name="start-jetty" depends="hibernatedoclet,compile">
+		<java classpathref="jetty.class.path" classname="org.mortbay.jetty.Server" dir="${basedir}" fork="true" spawn="true">
+			<arg value="jetty-config.xml"/>
+		</java>
+	</target>
+
+	<target name="stop-jetty">
+		<java jar="${jetty.lib}/stop.jar" />
+	</target>
+	-->
+</project>
