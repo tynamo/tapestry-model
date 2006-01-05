@@ -4,8 +4,16 @@
         default="build"
         basedir=".">
     <target name="build">
-        <!-- Get the latest from CVS -->
-        <cvs command="up -d -P"/>
+    	<taskdef name="svn"
+    	 classname="org.tigris.subversion.svnant.SvnTask"/>        
+    	
+    	<target name="build">
+    	<!-- Get the latest from SVN -->
+    	<svn>
+    		<checkout url="http://trails.inspiring.nl/svn" destPath="/home/lvonk/trails" />
+    	</svn>
+    	</target>
+    	
         <!-- Call the target that does everything -->
         <ant antfile="build.xml" target="all"/>
     </target>
