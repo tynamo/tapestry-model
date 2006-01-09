@@ -10,7 +10,7 @@
     	<target name="build">
     	<!-- Get the latest from SVN -->
     	<svn>
-    		<checkout url="http://trails.inspiring.nl/svn" destPath="/home/lvonk/trails" />
+    		<checkout url="http://trails.inspiring.nl/svn/branches/trunk" destPath="/data/opensource/cruisecontrol/checkout/trails" />
     	</svn>
     	</target>
     	
