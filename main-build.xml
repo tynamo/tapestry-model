@@ -1,4 +1,4 @@
-<!-- Delegating build script, used by cruisecontrol to build MY_PROJECT_1.
+<!-- Delegating build script, used by cruisecontrol to build Trails Framework.
      Note that the basedir is set to the checked out project -->
 <project name="Trails cruise"
         default="build"
