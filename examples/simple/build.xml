@@ -136,32 +136,14 @@
 		<copy file="${webinf}/DefaultList.html" tofile="${webinf}/${type.name}List.html"></copy>
 		<copy file="${webinf}/DefaultList.page" tofile="${webinf}/${type.name}List.page"></copy>
 	</target>
-		
-	<target name="deploy" depends="war">
-		<taskdef name="deploy" classname="org.apache.catalina.ant.DeployTask" classpathref="class.path">
-
-		</taskdef>
-		<!-- <taskdef name="list" classname="org.apache.catalina.ant.ListTask" classpathref="class.path"/>
-		<list url="${tomcat.url}/manager" username="${manager.username}" password="${manager.password}" /> -->
-		<deploy url="${tomcat.url}/manager" username="${manager.username}" password="${manager.password}" path="/${ant.project.name}" war="${war.file}" />
-	</target>
 	
-	<target name="undeploy" >
-		<taskdef name="undeploy" classname="org.apache.catalina.ant.UndeployTask" classpathref="class.path">
-
-		</taskdef>
-		<undeploy url="${tomcat.url}/manager" username="${manager.username}" password="${manager.password}" path="/${ant.project.name}" />
-	</target>
-	
-	<target name="reload" depends="war">
-		<taskdef name="reload" classname="org.apache.catalina.ant.ReloadTask" classpathref="class.path">
-
-		</taskdef>
-		<reload url="${tomcat.url}/manager" username="${manager.username}" password="${manager.password}" path="/${ant.project.name}" />
-	</target>
+	<!--
 	
 	<target name="redeploy" depends="war,undeploy,deploy" />
-
+	-->
+	<!-- Only need to create a war, there is no need for undeploy and deploy. -->
+	<target name="redeploy" depends="war" />
+	
 	<target name="all" depends="clean,build-hibernate-config,war" ></target>
 
 	<target name="build-hibernate-config" >
