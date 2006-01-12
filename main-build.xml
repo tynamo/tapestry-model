@@ -5,9 +5,15 @@
         default="build"
         basedir=".">
     
+	<path id="antlibs">
+		<fileset dir="${ant.home}/lib">
+			<include name="**/*.jar"/>
+		</fileset>
+	</path>
+	
 	<target name="build">
     	<taskdef name="svn"
-    	 classname="org.tigris.subversion.svnant.SvnTask"/>        
+    	 classname="org.tigris.subversion.svnant.SvnTask" classpathref="antlibs"/>        
     	
       	<!-- Get the latest from SVN -->
     	<svn>
