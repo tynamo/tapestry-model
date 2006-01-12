@@ -11,7 +11,10 @@
     	<target name="build">
     	<!-- Get the latest from SVN -->
     	<svn>
+    		<!--
     		<checkout url="http://trails.inspiring.nl/svn/branches/trunk" destPath="/data/opensource/cruisecontrol/checkout/trails" />
+    		-->
+    		<update file="."/>
     	</svn>
     	</target>
     	
