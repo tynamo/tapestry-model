@@ -5,7 +5,7 @@
 	<property name="src-test.dir" value="${basedir}/test"/>
 	<property name="lib.home" value="${basedir}/lib"/>
 	<property name="dist.file" value="${basedir}/../trails.zip" />
-	
+	 
 	<property environment="env" />
 	<property name="ant.home" value="${env.ANT_HOME}" />
 	<available file="${ant.home}/lib/ant-apt.jar" property="apt.installed" />
@@ -15,7 +15,7 @@
 	<property name="junit.report.dir" value="junit-reports" />
 	<property name="example.basedir" value="${basedir}/examples/" />
 	<property name="tomcat.home" value="${env.TOMCAT_HOME}"/>
-
+ 
 	<property name="generate.force" value="true"/>
 	
 	<property name="deploy.dir" value="${basedir}/deploy" />
