@@ -6,47 +6,52 @@
 
 
 <web-app>
-    <display-name>simple</display-name>
-    
-<context-param>
-    <param-name>contextConfigLocation</param-name>
-    <param-value> /WEB-INF/applicationContext.xml</param-value>
-</context-param>
+	<display-name>simple</display-name>
 
-    <filter>
-        <filter-name>redirect</filter-name>
-        <filter-class>org.apache.tapestry.RedirectFilter</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>redirect</filter-name>
-        <url-pattern>/</url-pattern>
-    </filter-mapping>
-    
-  <!-- Spring Open Session In View Pattern filter -->
-  <filter>
-    <filter-name>hibernateFilter</filter-name>
-    <filter-class>
-      org.springframework.orm.hibernate3.support.OpenSessionInViewFilter
-    </filter-class>
-  </filter>
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>/WEB-INF/applicationContext.xml</param-value>
+	</context-param>
 
-  <!-- Spring/Hibernate filter mappings -->
-  <filter-mapping>
-    <filter-name>hibernateFilter</filter-name>
-    <url-pattern>/app/*</url-pattern>
-  </filter-mapping>
-  
+	<filter>
+		<filter-name>redirect</filter-name>
+		<filter-class>org.apache.tapestry.RedirectFilter</filter-class>
+	</filter>
+	<!-- Spring Open Session In View Pattern filter -->
+	<filter>
+		<filter-name>hibernateFilter</filter-name>
+		<filter-class>
+			org.springframework.orm.hibernate3.support.OpenSessionInViewFilter
+		</filter-class>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>redirect</filter-name>
+		<url-pattern>/</url-pattern>
+	</filter-mapping>
+
+
+	<!-- Spring/Hibernate filter mappings -->
+	<filter-mapping>
+		<filter-name>hibernateFilter</filter-name>
+		<url-pattern>/app/*</url-pattern>
+	</filter-mapping>
+
 	<listener>
-	    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+		<listener-class>
+			org.springframework.web.context.ContextLoaderListener
+		</listener-class>
 	</listener>
-    <servlet>
-        <servlet-name>simple</servlet-name>
-        <servlet-class>org.trails.servlet.TrailsApplicationServlet</servlet-class>
-        <load-on-startup>1</load-on-startup>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>simple</servlet-name>
-        <url-pattern>/app</url-pattern>
-    </servlet-mapping>
+	<servlet>
+		<servlet-name>simple</servlet-name>
+		<servlet-class>
+			org.trails.servlet.TrailsApplicationServlet
+		</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>simple</servlet-name>
+		<url-pattern>/app</url-pattern>
+	</servlet-mapping>
 
 </web-app>
