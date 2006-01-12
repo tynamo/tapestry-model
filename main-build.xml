@@ -4,19 +4,18 @@
 <project name="Trails cruise"
         default="build"
         basedir=".">
-    <target name="build">
+    
+	<target name="build">
     	<taskdef name="svn"
     	 classname="org.tigris.subversion.svnant.SvnTask"/>        
     	
-    	<target name="build">
-    	<!-- Get the latest from SVN -->
+      	<!-- Get the latest from SVN -->
     	<svn>
     		<!--
     		<checkout url="http://trails.inspiring.nl/svn/branches/trunk" destPath="/data/opensource/cruisecontrol/checkout/trails" />
     		-->
     		<update file="."/>
     	</svn>
-    	</target>
     	
         <!-- Call the target that does everything -->
         <ant antfile="build.xml" target="all"/>
