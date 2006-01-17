@@ -3,6 +3,8 @@ package org.trails;
 /**
  * Runtime exceptions for Trails
  * @author Chris Nelson
+ * 
+ * Here is a comment
  *
  */
 public class TrailsRuntimeException extends RuntimeException
