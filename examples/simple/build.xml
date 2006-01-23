@@ -24,8 +24,8 @@
 	
 	<path id="class.path">
 		<fileset dir="${lib.dir}"></fileset>
-		<fileset dir="${tomcat.home}/common/lib"></fileset>
-		<fileset dir="${tomcat.home}/server/lib" />
+		<fileset dir="/apps/tomcat/common/lib"></fileset>
+		<fileset dir="/apps/tomcat/server/lib" />
 		<fileset dir="${java.home}/../lib" includes="tools.jar"/>
 	</path>
 	
