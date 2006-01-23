@@ -9,7 +9,6 @@ import com.sun.tools.javac.tree.Tree.NewClass;
 
 public class TreeTest extends FunctionalTest
 {
-
     public TreeTest()
     {
         super();
