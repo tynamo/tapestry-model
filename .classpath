@@ -44,7 +44,6 @@
 	<classpathentry kind="lib" path="lib/spring.jar"/>
 	<classpathentry kind="lib" path="lib/antlr-2.7.4.jar"/>
 	<classpathentry kind="var" path="ASPECTJRT_LIB"/>
-	<classpathentry kind="var" path="JDK_TOOLS"/>
 	<classpathentry kind="lib" path="lib/hivemind-1.1-beta-2.jar"/>
 	<classpathentry kind="lib" path="lib/hivemind-lib-1.1-beta-2.jar"/>
 	<classpathentry kind="lib" path="lib/javassist-3.0.jar"/>
@@ -55,6 +54,6 @@
 	<classpathentry sourcepath="/tapestry4" kind="lib" path="lib/tapestry-4.0-beta-11.jar"/>
 	<classpathentry kind="lib" path="lib/tapestry-annotations-4.0-beta-11.jar"/>
 	<classpathentry kind="lib" path="lib/tapestry-contrib-4.0-beta-11.jar"/>
-	<classpathentry kind="lib" path="lib/acegi-security-0.9.0.jar"/>
+	<classpathentry kind="lib" path="lib/acegi-security-1.0.0-RC1.jar"/>
 	<classpathentry kind="output" path="build"/>
 </classpath>
