@@ -9,8 +9,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import org.trails.descriptor.IClassDescriptor;
 import org.trails.descriptor.TrailsClassDescriptor;
-import net.sf.acegisecurity.context.SecurityContext;
-import net.sf.acegisecurity.context.SecurityContextHolder;
+import org.acegisecurity.context.SecurityContext;
+import org.acegisecurity.context.SecurityContextHolder;
 
 public aspect DescriptorSecurity {
 	

@@ -14,6 +14,7 @@ package org.trails.component;
 import org.apache.tapestry.annotations.InjectObject;
 import org.apache.tapestry.services.ExpressionEvaluator;
 import org.apache.tapestry.util.ComponentAddress;
+import org.trails.descriptor.IPropertyDescriptor;
 import org.trails.descriptor.TrailsPropertyDescriptor;
 
 import java.util.ArrayList;
@@ -34,9 +35,16 @@ public abstract class ObjectTable extends ObjectComponent
 
     public abstract void setShowCollections(boolean ShowCollections);
 
-    public ComponentAddress getLinkBlockAddress()
+    public ComponentAddress getLinkBlockAddress(IPropertyDescriptor descriptor)
     {
-        return new ComponentAddress(getComponent(LINK_COLUMN));
+    	if (getBlockAddress(descriptor) != null)
+    	{
+    		return getBlockAddress(descriptor);
+    	}
+    	else
+    	{
+        	return new ComponentAddress(getComponent(LINK_COLUMN));
+    	}
     }
 
     @InjectObject("service:tapestry.ognl.ExpressionEvaluator")
@@ -51,20 +59,20 @@ public abstract class ObjectTable extends ObjectComponent
         ArrayList<TrailsTableColumn> columns = new ArrayList<TrailsTableColumn>();
         for (Iterator iter = getPropertyDescriptors().iterator(); iter.hasNext();)
         {
-            TrailsPropertyDescriptor descriptor = (TrailsPropertyDescriptor) iter.next();
+            IPropertyDescriptor descriptor = (IPropertyDescriptor) iter.next();
             if (displaying(descriptor))
             {
-                if (getLinkProperty().equals(descriptor.getName()))
+                if (getLinkProperty().equals(descriptor.getName()) && (getClassDescriptor().isAllowSave() || getClassDescriptor().isAllowRemove()))
                 {/*
                 	Add a link for the edit page following these rules:
                 	a) Use the identifier descriptor if is displayable ( summary=true ).
                 	b) Use the first displayable property if the identifier property is not displayable (summary=false)
                  */
-                    columns.add(new LinkTableColumn(descriptor, getLinkBlockAddress(), getEvaluator()));
+                    columns.add(new TrailsTableColumn(descriptor, getEvaluator(), getLinkBlockAddress(descriptor)));
                     
                 } else
                 {
-                    columns.add(new TrailsTableColumn(descriptor, getEvaluator()));
+                    columns.add(new TrailsTableColumn(descriptor,getEvaluator(), getBlockAddress(descriptor)));
                 }
 
             }
@@ -77,7 +85,7 @@ public abstract class ObjectTable extends ObjectComponent
      * @param descriptor
      * @return
      */
-    private boolean displaying(TrailsPropertyDescriptor descriptor)
+    private boolean displaying(IPropertyDescriptor descriptor)
     {
         if (descriptor.isHidden() || !descriptor.isSummary())
         {
@@ -146,4 +154,14 @@ public abstract class ObjectTable extends ObjectComponent
         return (TrailsPropertyDescriptor)getClassDescriptor().getIdentifierDescriptor();
 
     }
+
+	public ComponentAddress getBlockAddress(IPropertyDescriptor descriptor)
+	{
+		String blockName = descriptor.getName() + "ColumnValue";
+		if (getPage().getComponents().containsKey(blockName))
+		{
+			return new ComponentAddress(getPage().getPageName(), blockName);
+		}
+		else return null;
+	}
 }

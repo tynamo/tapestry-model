@@ -3,10 +3,28 @@
 	<div><a href="http://today.java.net/pub/a/today/2005/11/04/further-down-the-trail.html">Second java.net article</a></div>
 	<div><a href="http://trails.dev.java.net/apidocs/overview-summary.html">Javadocs</a></div>
 	<div><a href="http://trails.dev.java.net/component-reference/index.html">Component Reference</a></div>
-	<div><a href="http://wiki.java.net/bin/view/Projects/Trails">Trails Wiki</a></div>
+	<div><a href="http://trails.inspiring.nl/confluence">Confluence Wiki</a></div>
 </div>
 <div><a href="http://www.trailsframework.org/cruise-control">Continuous Integration</a></div>
 <div>Examples
 	<div><a href="http://www.trailsframework.org/recipe">Recipe</a></div>
 	<div><a href="http://www.trailsframework.org/ajaxlist">AJAX List</a></div>
 </div>
+<script type="text/javascript">
+
+function replaceLinks() {
+    try {
+        var tools = document.getElementById("projecttools");
+        var links = tools.getElementsByTagName("a");
+        for (i=0; i < links.length; i++) {
+            if (links[i].getAttribute("href").indexOf("ProjectIssues") > -1) {
+                links[i].setAttribute("href", "http://trails.inspiring.nl/jira");
+                links[i].innerHTML="JIRA Issue Tracker";
+            }
+
+        }
+    } catch (e) {}
+}
+
+window.onload=replaceLinks;
+</script>

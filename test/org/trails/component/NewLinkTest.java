@@ -18,13 +18,16 @@ import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.jmock.Mock;
 import org.springframework.context.support.ResourceBundleMessageSource;
+import org.trails.callback.DefaultCallback;
 import org.trails.callback.ListCallback;
 import org.trails.descriptor.DescriptorService;
 import org.trails.descriptor.IClassDescriptor;
 import org.trails.descriptor.TrailsClassDescriptor;
 import org.trails.i18n.DefaultTrailsResourceBundleMessageSource;
 import org.trails.page.EditPage;
+import org.trails.page.HomePage;
 import org.trails.page.ListPage;
+import org.trails.page.TrailsPage;
 import org.trails.test.BlogEntry;
 import org.trails.test.Foo;
 
@@ -38,33 +41,43 @@ import org.trails.test.Foo;
 public class NewLinkTest extends ComponentTest
 {
     NewLink newLink;
+    Mock cycleMock = new Mock(IRequestCycle.class);
+    Mock pageMock = new Mock(IPage.class);
+    EditPage editPage;
+    
     
     public void testClick()
     {
-        EditPage editPage = buildTrailsPage(EditPage.class);
-        ListPage listPage = buildTrailsPage(ListPage.class);
+    	ListPage listPage = buildTrailsPage(ListPage.class);
         listPage.setTypeName(Foo.class.getName());
         listPage.setPageName("list");
         
-        
-        Mock cycleMock = new Mock(IRequestCycle.class);
-        Mock pageMock = new Mock(IPage.class);
-
-        // Pretend Foo has a custom page
-        cycleMock.expects(once()).method("getPage").with(eq("FooEdit")).will(returnValue(
-                editPage));
-        cycleMock.expects(atLeastOnce()).method("activate").with(same(editPage));
-
-        NewLink newLink = (NewLink) creator.newInstance(NewLink.class);
-        newLink.setTypeName(Foo.class.getName());
-        newLink.setPage(listPage);
-        newLink.click((IRequestCycle) cycleMock.proxy());
+        buildNewLink(listPage);
         assertTrue("list callback on stack", listPage.getCallbackStack().pop() instanceof ListCallback);
         cycleMock.verify();
         assertTrue("model is a foo", editPage.getModel() instanceof Foo);
     }
 
+	private void buildNewLink(TrailsPage listPage)
+	{
+		// Pretend Foo has a custom page
+        cycleMock.expects(once()).method("getPage").with(eq("FooEdit")).will(returnValue(
+                editPage));
+        cycleMock.expects(atLeastOnce()).method("activate").with(same(editPage));
 
+        newLink = (NewLink) creator.newInstance(NewLink.class);
+        newLink.setTypeName(Foo.class.getName());
+        newLink.setPage(listPage);
+        newLink.click((IRequestCycle) cycleMock.proxy());
+	}
+
+    public void testFromHomePage() throws Exception
+    {
+    	HomePage homePage = (HomePage)buildTrailsPage(HomePage.class);
+    	buildNewLink(homePage);
+    	assertTrue("Default callback", homePage.getCallbackStack().pop() instanceof DefaultCallback);
+    }
+    
     @Override
     public void setUp() throws Exception
     {
@@ -79,6 +92,7 @@ public class NewLinkTest extends ComponentTest
                     "descriptorService", descriptorService,
                     "resourceBundleMessageSource", messageSource
                 });
+        editPage = buildTrailsPage(EditPage.class);
     }
 
 

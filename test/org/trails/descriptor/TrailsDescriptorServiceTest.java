@@ -24,7 +24,9 @@ public class TrailsDescriptorServiceTest extends MockObjectTestCase
         types.add(TestBean.class);
         types.add(ABean.class);
         descriptorService.setTypes(types);
+        descriptorService.setDescriptorFactory(new ReflectionDescriptorFactory());
         descriptorService.init();
+        
         descriptor = descriptorService.getClassDescriptor(TestBean.class);
     }
     
@@ -37,7 +39,7 @@ public class TrailsDescriptorServiceTest extends MockObjectTestCase
     public void testExcluding() throws Exception
     {
         
-        descriptorService.setPropertyExcludes(Arrays.asList(new String[] {"bork", "class"}));
+        descriptorService.getDescriptorFactory().setPropertyExcludes(Arrays.asList(new String[] {"bork", "class"}));
         descriptorService.init();
         descriptor = descriptorService.getClassDescriptor(TestBean.class);
 
@@ -48,6 +50,7 @@ public class TrailsDescriptorServiceTest extends MockObjectTestCase
     public void testDecorating() throws Exception
     {
         TrailsDescriptorService descriptorService = new TrailsDescriptorService();
+        descriptorService.setDescriptorFactory(new ReflectionDescriptorFactory());
         ArrayList types = new ArrayList();
         types.add(TestBean.class);
         descriptorService.setTypes(types);

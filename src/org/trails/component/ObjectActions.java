@@ -15,11 +15,11 @@ package org.trails.component;
 
 import java.beans.MethodDescriptor;
 
+import org.trails.page.ModelPage;
+
 /**
  * @author fus8882
  *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
  */
 public abstract class ObjectActions extends ObjectEditComponent
 {
@@ -27,5 +27,13 @@ public abstract class ObjectActions extends ObjectEditComponent
 
     public abstract void setMethodDescriptor(MethodDescriptor MethodDescriptor);
 
+    public boolean isShowRemoveButton() {
+    	ModelPage page = (ModelPage) getPage();
+    	if (page != null && page instanceof ModelPage) {
+        	return page.getClassDescriptor().isAllowRemove() && !page.isModelNew();    		
+    	} else {
+    		return false;
+    	}
+    }
 
 }

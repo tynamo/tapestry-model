@@ -5,17 +5,22 @@ import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.apache.tapestry.IRender;
+import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.components.Block;
+import org.apache.tapestry.components.BlockRenderer;
+import org.apache.tapestry.contrib.table.model.ITableModelSource;
 import org.apache.tapestry.contrib.table.model.ognl.ExpressionTableColumn;
 import org.apache.tapestry.contrib.table.model.ognl.OgnlTableColumnEvaluator;
 import org.apache.tapestry.services.ExpressionEvaluator;
+import org.apache.tapestry.util.ComponentAddress;
 import org.trails.descriptor.IPropertyDescriptor;
 
 public class TrailsTableColumn extends ExpressionTableColumn
 {
     
     protected IPropertyDescriptor propertyDescriptor;
-    
- 
+	protected ComponentAddress blockAddress;
     
     public TrailsTableColumn(IPropertyDescriptor propertyDescriptor, ExpressionEvaluator evaluator)
     {
@@ -24,6 +29,16 @@ public class TrailsTableColumn extends ExpressionTableColumn
         this.propertyDescriptor = propertyDescriptor;
     }
 
+    public TrailsTableColumn(IPropertyDescriptor propertyDescriptor, 
+    		ExpressionEvaluator evaluator, 
+    		ComponentAddress blockAddress)
+    {
+        super(propertyDescriptor.getName(), propertyDescriptor.getDisplayName(), 
+                propertyDescriptor.getName(), true, evaluator);
+        this.propertyDescriptor = propertyDescriptor;
+        this.blockAddress = blockAddress;
+    }
+    
     public IPropertyDescriptor getPropertyDescriptor()
     {
         return propertyDescriptor;
@@ -61,6 +76,23 @@ public class TrailsTableColumn extends ExpressionTableColumn
             return value;
         }
     }
+
+	public IRender getValueRenderer(IRequestCycle cycle, ITableModelSource tableModelSource, Object row)
+	{
+		if (blockAddress != null)
+		{
+			return new BlockRenderer((Block)blockAddress.findComponent(cycle));
+		}
+		else
+		{
+			return super.getValueRenderer(cycle, tableModelSource, row);
+		}
+	}
+
+	ComponentAddress getBlockAddress()
+	{
+		return blockAddress;
+	}
     
     
 }

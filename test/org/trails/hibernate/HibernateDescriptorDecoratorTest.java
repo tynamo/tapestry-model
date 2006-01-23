@@ -17,6 +17,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import junit.framework.TestCase;
+
 import ognl.Ognl;
 
 import org.hibernate.cfg.Configuration;
@@ -38,6 +40,8 @@ import org.trails.test.Bar;
 import org.trails.test.Baz;
 import org.trails.test.Bing;
 import org.trails.test.Descendant;
+import org.trails.test.Embeddee;
+import org.trails.test.Embeddor;
 import org.trails.test.Foo;
 import org.trails.test.IBar;
 
@@ -48,7 +52,7 @@ import org.trails.test.IBar;
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
-public class HibernateDescriptorDecoratorTest extends MockObjectTestCase
+public class HibernateDescriptorDecoratorTest extends TestCase
 {
     ApplicationContext appContext;
     DescriptorDecorator hibernateDescriptorDecorator;
@@ -179,5 +183,18 @@ public class HibernateDescriptorDecoratorTest extends MockObjectTestCase
         descendantDescriptor.getPropertyDescriptors().add(new TrailsPropertyDescriptor(Foo.class, "name", String.class));
         IClassDescriptor decorated = (IClassDescriptor)hibernateDescriptorDecorator.decorate(descendantDescriptor);
         assertEquals(4, decorated.getPropertyDescriptors().size());
+    }
+    
+    public void testEmbedded() throws Exception
+    {
+    	TrailsClassDescriptor embeddorDescriptor = new TrailsClassDescriptor(Embeddor.class);
+    	embeddorDescriptor.getPropertyDescriptors().add(new TrailsPropertyDescriptor(Embeddor.class, "embeddee", Embeddee.class));
+    	IClassDescriptor decorated = (IClassDescriptor)hibernateDescriptorDecorator.decorate(embeddorDescriptor);
+    	IPropertyDescriptor propertyDescriptor = (IPropertyDescriptor)decorated.getPropertyDescriptors().get(0);
+    	assertTrue(propertyDescriptor.isEmbedded());
+    	EmbeddedDescriptor embeddedDescriptor = (EmbeddedDescriptor)propertyDescriptor;
+    	assertEquals("embeddee", embeddedDescriptor.getName());
+    	assertEquals("right bean type", Embeddor.class, embeddedDescriptor.getBeanType());
+    	assertEquals("2 prop descriptors", 2, embeddedDescriptor.getPropertyDescriptors().size());
     }
 }

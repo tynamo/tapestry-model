@@ -273,4 +273,9 @@ public class TrailsPropertyDescriptor extends TrailsDescriptor implements IPrope
 		this.beanType = beanType;
 	}
 
+	public boolean isEmbedded()
+	{
+		return false;
+	}
+
 }

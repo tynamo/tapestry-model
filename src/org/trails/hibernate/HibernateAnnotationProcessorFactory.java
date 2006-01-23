@@ -81,7 +81,7 @@ public class HibernateAnnotationProcessorFactory implements AnnotationProcessorF
                 reader.setIncludeInternalDTDDeclarations(false);
                 Document doc = reader.read(configFileName);
                 sessionFactoryElement = (Element)doc.getRootElement().selectSingleNode("//session-factory");
-                for (Iterator iter = sessionFactoryElement.selectNodes("mapping[@class]").iterator(); iter.hasNext();)
+                for (Iterator iter = sessionFactoryElement.selectNodes("mapping[not(starts-with(@class, 'org.trails'))]").iterator(); iter.hasNext();)
                 {
                     Element element = (Element) iter.next();
                     sessionFactoryElement.remove(element);

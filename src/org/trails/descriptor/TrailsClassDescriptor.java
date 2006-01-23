@@ -42,17 +42,27 @@ public class TrailsClassDescriptor extends TrailsDescriptor implements IClassDes
     public TrailsClassDescriptor(IClassDescriptor descriptor)
     {
         super(descriptor);
-        for (Iterator iter = descriptor.getPropertyDescriptors().iterator(); iter.hasNext();)
+        copyPropertyDescriptorsFrom(descriptor);
+        copyMethodDescriptorsFrom(descriptor);       
+    }
+
+	private void copyMethodDescriptorsFrom(IClassDescriptor descriptor)
+	{
+		for (Iterator iter = descriptor.getMethodDescriptors().iterator(); iter.hasNext();)
+        {
+            IMethodDescriptor  methodDescriptor = (IMethodDescriptor) iter.next();
+            getMethodDescriptors().add(methodDescriptor.clone());
+        }
+	}
+
+	protected void copyPropertyDescriptorsFrom(IClassDescriptor descriptor)
+	{
+		for (Iterator iter = descriptor.getPropertyDescriptors().iterator(); iter.hasNext();)
         {
             IPropertyDescriptor propertyDescriptor = (IPropertyDescriptor) iter.next();
             getPropertyDescriptors().add(propertyDescriptor.clone());
         }
-        for (Iterator iter = descriptor.getMethodDescriptors().iterator(); iter.hasNext();)
-        {
-            IMethodDescriptor  methodDescriptor = (IMethodDescriptor) iter.next();
-            getMethodDescriptors().add(methodDescriptor.clone());
-        }       
-    }
+	}
     
     public TrailsClassDescriptor(Class type)
     {
@@ -196,5 +206,11 @@ public class TrailsClassDescriptor extends TrailsDescriptor implements IClassDes
         this.allowSave = allowSave;
     }
 
-    
+    /**
+     * Added toString method to help with unit testing debugging.
+     */
+    public String toString() {
+    	return "{TrailsClassDescriptor - Type: " + getType() + "}";
+    }
+
 }

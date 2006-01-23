@@ -72,6 +72,16 @@
 		<property name="types">
 			<bean id="persistenceService.allTypes" class="org.springframework.beans.factory.config.PropertyPathFactoryBean"/>
 		</property>
+		<property name="descriptorFactory"><ref local="descriptorFactory" /></property>
+		<property name="decorators">
+			<list>
+				<ref local="hibernateDescriptorDecorator" />
+				<bean name="annotationDecorator" class="org.trails.descriptor.annotation.AnnotationDecorator" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="descriptorFactory" class="org.trails.descriptor.ReflectionDescriptorFactory">
 		<property name="methodExcludes">
 			<list>
 				<value>shouldExclude</value>
@@ -84,20 +94,15 @@
 		</property>
 		<property name="propertyExcludes">
 			<list>
-				<value>saved</value>
+				<value>exclude.*</value>
 				<value>class</value>
 			</list>
 		</property>
-		<property name="decorators">
-			<list>
-				<ref local="hibernateDescriptorDecorator" />
-				<bean name="annotationDecorator" class="org.trails.descriptor.annotation.AnnotationDecorator" />
-			</list>
-		</property>
 	</bean>
-
+	
 	<bean id="hibernateDescriptorDecorator" class="org.trails.hibernate.HibernateDescriptorDecorator" singleton="true">
 		<property name="localSessionFactoryBean"> <ref bean="&amp;sessionFactory" /></property>
+		<property name="descriptorFactory"><ref local="descriptorFactory" /></property>
 	</bean>
 	
 	<bean id="persistenceService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
@@ -114,6 +119,9 @@
 		</property>
 	</bean>
 	
+	<!-- security service bean -->
+	<bean id="securityService" class="org.trails.security.TrailsSecurityService"/>
+	
 	<bean id="validateUniqueAspect" class="org.trails.validation.ValidateUniqueAspect" factory-method="aspectOf">
 		<property name="descriptorService"><ref local="descriptorService" /></property>
 		<property name="persistenceService"><ref local="persistenceService" /></property>
@@ -121,6 +129,10 @@
 	
 	<bean id="descriptorInternationalizationAspect" class="org.trails.i18n.DescriptorInternationalization" factory-method="aspectOf">
 		<property name="resourceBundleMessageSource"><ref local="trailsMessageSource"/></property>
+	</bean>
+	
+	<bean id="descriptorSecurity" class="org.trails.security.DescriptorSecurity" factory-method="aspectOf">
+		<property name="securityService"><ref bean="securityService"/></property>
 	</bean>
 	
 	<bean id="editorService" class="org.trails.descriptor.TrailsEditorService">
@@ -210,7 +222,13 @@
 					<constructor-arg index="1"><value>collectionEditor</value></constructor-arg>
 				</bean>
 				</entry>
-
+				<entry>
+				<key><value>embedded</value></key>
+				<bean class="org.apache.tapestry.util.ComponentAddress">
+					<constructor-arg index="0"><value>trails:Editors</value></constructor-arg>
+					<constructor-arg index="1"><value>embedded</value></constructor-arg>
+				</bean>
+				</entry>
 			</map>
 		</property>
 	</bean>

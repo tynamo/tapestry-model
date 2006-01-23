@@ -2,8 +2,8 @@ package org.trails.security;
 
 import java.util.List;
 
-import net.sf.acegisecurity.GrantedAuthority;
-import net.sf.acegisecurity.providers.dao.User;
+import org.acegisecurity.GrantedAuthority;
+import org.acegisecurity.userdetails.User;
 import ognl.Ognl;
 import ognl.OgnlException;
 

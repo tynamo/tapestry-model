@@ -16,6 +16,8 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
+import org.trails.hibernate.EmbeddedDescriptor;
+import org.trails.test.Bar;
 import org.trails.test.BlogEntry;
 import org.trails.test.Foo;
 
@@ -64,6 +66,12 @@ public class TrailsClassDescriptorTest extends TestCase
     {
         assertEquals("right id prop", idProp,
             classDescriptor.getIdentifierDescriptor());
+        
+        classDescriptor.getPropertyDescriptors().add(new EmbeddedDescriptor(Foo.class, "blork", Bar.class));
+        
+        assertEquals("right id prop", idProp,
+                classDescriptor.getIdentifierDescriptor());
+             
     }
 
     public void testGetDescriptor() throws Exception

@@ -13,5 +13,5 @@ public @interface ClassDescriptor
 {
     public static final String DEFAULT_displayName = "";
     String displayName() default "";
-    
+    String pluralDisplayName() default "";
 }

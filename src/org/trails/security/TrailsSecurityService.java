@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import net.sf.acegisecurity.context.SecurityContextHolder;
+import org.acegisecurity.context.SecurityContextHolder;
 import ognl.Ognl;
 
 import org.trails.descriptor.IClassDescriptor;

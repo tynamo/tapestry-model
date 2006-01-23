@@ -44,6 +44,9 @@ public aspect ValidateUniqueAspect
     {
         DetachedCriteria criteria = DetachedCriteria.forClass(savee.getClass());
         IClassDescriptor descriptor = getDescriptorService().getClassDescriptor(savee.getClass());
+		
+		if (descriptor == null)
+			throw new RuntimeException("Class " + savee.getClass() + " isn't mapped in Trails.");
  
         try
         {

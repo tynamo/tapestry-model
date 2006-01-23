@@ -3,12 +3,10 @@ package org.trails.security;
 import org.trails.security.annotation.Restriction;
 import org.trails.security.annotation.Security;
 
-@Security(restrictions = { @Restriction(restrictionType = RestrictionType.UPDATE, requiredRole = "admin") })
+@Security(restrictions = { @Restriction(restrictionType = RestrictionType.UPDATE, requiredRole = "admin")})
 public class SecurityAnnotated
 {
     private String requiresAdmin;
-
-    private String wideOpen;
 
     public SecurityAnnotated()
     {
@@ -26,5 +24,5 @@ public class SecurityAnnotated
     {
         this.requiresAdmin = requiresAdmin;
     }
-
+    
 }

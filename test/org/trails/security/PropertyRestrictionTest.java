@@ -31,15 +31,15 @@ public class PropertyRestrictionTest extends SecurityRestrictionTest
         restriction.setRestrictionType(RestrictionType.VIEW);
         restriction.setPropertyName("bar");
     
-        restriction.restrict(adminAuthority, classDescriptor);
+        restriction.restrict(autorities.adminAuthority, classDescriptor);
         assertFalse(propertyDescriptor.isHidden());
-        restriction.restrict(noAdminAuthority, classDescriptor);
+        restriction.restrict(autorities.noAdminAuthority, classDescriptor);
         assertTrue(propertyDescriptor.isHidden());
         
         restriction.setRestrictionType(RestrictionType.UPDATE);
-        restriction.restrict(adminAuthority, classDescriptor);
+        restriction.restrict(autorities.adminAuthority, classDescriptor);
         assertFalse(propertyDescriptor.isReadOnly());
-        restriction.restrict(noAdminAuthority, classDescriptor);
+        restriction.restrict(autorities.noAdminAuthority, classDescriptor);
         assertTrue(propertyDescriptor.isReadOnly());
        
     }

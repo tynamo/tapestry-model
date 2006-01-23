@@ -25,6 +25,7 @@
 	<property name="jar.file" value="${deploy.dir}/${ant.project.name}.jar" />
 	<property name="jar-aspects.file" value="${deploy.dir}/${ant.project.name}-aspects.jar" />
 	<property name="base_app.dir" value="${basedir}/base_app/" />
+	<property name="base_security.dir" value="${basedir}/base_security/" />
 	
 	<property name="java5.tools.jar" value="${java.home}/../lib/tools.jar" />
 	<property name="test.src" value="${basedir}/test" />
@@ -220,7 +221,21 @@
 			<param name="project.name" value="${newproject.name}" />
 		</antcall>
 	</target>
-	
+
+	<target name="create-secure-project" depends="check-for-apt" description="Create a new Trails project with security">
+		<input message="Base directory: " addproperty="newproject.basedir"></input>
+		<input message="Project name: " addproperty="newproject.name"></input>
+		<property name="newproject.dir" value="${newproject.basedir}/${newproject.name}"></property>
+		<antcall target="update-project" inheritrefs="true">
+			<param name="project.dir" value="${newproject.dir}" />
+			<param name="project.name" value="${newproject.name}" />
+		</antcall>
+		<antcall target="add-security-files" inheritrefs="true">
+			<param name="project.dir" value="${newproject.dir}" />
+			<param name="project.name" value="${newproject.name}" />
+		</antcall>
+	</target>
+		
 	<target name="jar-if-necessary" unless="jar.exists"  >
 		<antcall target="jar" inheritrefs="true"></antcall>
 	</target>
@@ -253,6 +268,16 @@
 		</copy>		
 	</target>
 		
+	<target name="add-security-files" depends="init">
+		<copy todir="${project.dir}">
+			<filterset>
+				<filter token="app.name" value="${project.name}" />
+			</filterset>
+			<fileset dir="${base_security.dir}">
+			</fileset>
+		</copy>		
+	</target>	
+	
 	<target name="update-project"  depends="jar-if-necessary">
 		<mkdir dir="${project.dir}" />
 		<copy todir="${project.dir}" >
@@ -286,11 +311,12 @@
 		</copy>
 		<copy tofile="${project.dir}/context/WEB-INF/${project.name}_en.properties" 
 			file="${base_app.dir}/context/WEB-INF/base_app_en.properties"/>
-		<copy tofile="${project.dir}/context/WEB-INF/${project.name}_pt.properties" 
+		<copy tofile="${project.dir}/context/WEB-INF/${project.name}_pt.properties"
 			file="${base_app.dir}/context/WEB-INF/base_app_pt.properties"/>
-
+        <copy tofile="${project.dir}/context/WEB-INF/${project.name}_es_AR.properties"
+            file="${base_app.dir}/context/WEB-INF/base_app_es_AR.properties"/>
 		
-		<mkdir dir="${project.dir}/lib" />
+        <mkdir dir="${project.dir}/lib" />
 		<copy todir="${project.dir}/lib">
 			<fileset dir="${lib.dir}">
 			</fileset>

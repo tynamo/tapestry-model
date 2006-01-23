@@ -109,10 +109,16 @@ public interface IPropertyDescriptor extends IDescriptor
     public void setSearchable(boolean searchable);
 
     public boolean isSummary();
+    
+    public boolean isCollection();
 
     public void setSummary(boolean summary);
-    
+ 
+    public boolean isEmbedded();
+
     public boolean isRichText();
+    
+    public boolean isIdentifier();
 
     public void setRichText(boolean richText);
     

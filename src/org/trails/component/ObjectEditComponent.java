@@ -34,13 +34,13 @@ public abstract class ObjectEditComponent extends ObjectComponent
         {
             return true;
         }
-        else {
-            IPage editPage = getEditPage();
-            if (editPage != null)
-            {
-                return editPage.getComponents().containsKey(propertyName);
-            }
-        }
+//        else {
+//            IPage editPage = getEditPage();
+//            if (editPage != null)
+//            {
+//                return editPage.getComponents().containsKey(propertyName);
+//            }
+//        }
         return false;
     }
 
@@ -58,16 +58,16 @@ public abstract class ObjectEditComponent extends ObjectComponent
         {
             return (Block)getPage().getComponent(propertyName);
         }
-        EditPage editPage = getEditPage();
-        if (editPage != null)
-        {
-            
-            if (editPage.getComponents().containsKey(propertyName))
-            {
-                editPage.setModel(getModel());
-                return (Block)editPage.getComponent(propertyName);
-            }
-        }
+//        EditPage editPage = getEditPage();
+//        if (editPage != null)
+//        {
+//            
+//            if (editPage.getComponents().containsKey(propertyName))
+//            {
+//                editPage.setModel(getModel());
+//                return (Block)editPage.getComponent(propertyName);
+//            }
+//        }
         return null;
     }
 

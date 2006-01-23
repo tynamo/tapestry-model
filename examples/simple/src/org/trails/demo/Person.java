@@ -5,11 +5,16 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratorType;
 import javax.persistence.Id;
 
+import org.trails.descriptor.annotation.ClassDescriptor;
+
 @Entity
 public class Person
 {
 
     private Integer id;
+    
+    private String name;
+    
     public Person()
     {
         super();
@@ -26,7 +31,7 @@ public class Person
         this.id = id;
     }
 
-    private Address address;
+    private Address address = new Address();
     
     @Embedded
     public Address getAddress()
@@ -38,4 +43,14 @@ public class Person
     {
         this.address = address;
     }
+
+	public String getName()
+	{
+		return name;
+	}
+
+	public void setName(String name)
+	{
+		this.name = name;
+	}
 }

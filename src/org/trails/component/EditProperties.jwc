@@ -7,32 +7,7 @@
 	<parameter name="model" required="yes" cache="yes" deprecated="no"/>
 	<parameter name="propertyNames" required="no" default-value="null" cache="yes" deprecated="no"/>
    	<parameter name="classDescriptor" required="no" default-value="page.classDescriptor" cache="yes" deprecated="no"/>
-    <!--
-    <parameter name="containerElement" required="no" default-value="'div'" />
-    <parameter name="containerClass" required="no" default-value="'container'" />
-    <parameter name="editRowElement" required="no" default-value="'div'" />
-    <parameter name="editRowClass" required="no" default-value="'editRow'" />
-    <parameter name="labelElement" required="no" default-value="'span'" />
-    <parameter name="labelClass" required="no" default-value="'label'" />
-    <parameter name="editorElement" required="no" default-value="'span'" />
-    <parameter name="editorClass" required="no" default-value="'edit'" />
-    
-    <component id="labelContainer" type="Any" >
-    	<binding name="element">ognl:labelElement</binding>
-    	<binding name="class">labelClass</binding>
-    </component>
-    <component id="editRow" type="Any" >
-    	<binding name="element">ognl:editRowElement</binding>
-    	<binding name="class">editRowClass</binding>
-    </component>
-    <component id="editorContainer" type="Any" >
-    	<binding name="element">ognl:editorElement</binding>
-    	<binding name="class">editorClass</binding>
-    </component>   
-    <component id="container" type="Any" >
-    	<binding name="element">ognl:containerElement</binding>
-    	<binding name="class">containerClass</binding>
-    </component>  -->
+
     <component id="labelText" type="Insert">
     	<binding name="value">property.displayName</binding>
     </component>

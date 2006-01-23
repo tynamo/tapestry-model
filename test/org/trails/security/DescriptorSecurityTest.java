@@ -7,9 +7,9 @@ package org.trails.security;
 import java.util.Iterator;
 import java.util.List;
 
-import net.sf.acegisecurity.context.SecurityContext;
-import net.sf.acegisecurity.context.SecurityContextHolder;
-import net.sf.acegisecurity.context.SecurityContextImpl;
+import org.acegisecurity.context.SecurityContext;
+import org.acegisecurity.context.SecurityContextHolder;
+import org.acegisecurity.context.SecurityContextImpl;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -40,34 +40,34 @@ public class DescriptorSecurityTest extends SecurityRestrictionTest {
 		IClassDescriptor classDescriptor = service.getClassDescriptor(Foo.class);
 		checkConstraintsWithoutAnotation(classDescriptor);
 	}
-	
+
 	public void testClassWithAnotation() {
 		IClassDescriptor classDescriptor;
 
 		SecurityContextImpl context = new SecurityContextImpl();
-		context.setAuthentication(adminAuthentication);
+		context.setAuthentication(autorities.adminAuthentication);
 		SecurityContextHolder.setContext(context);		
 		assertNotNull(context.getAuthentication());
-		
+
 		classDescriptor = service.getClassDescriptor(FooSecured.class);
 		assertTrue(classDescriptor.isAllowRemove());
 		assertTrue(classDescriptor.isAllowSave());
 		assertTrue(classDescriptor.isHidden());
-		
-		context.setAuthentication(rootAuthentication);
+
+		context.setAuthentication(autorities.rootAuthentication);
 		classDescriptor = service.getClassDescriptor(FooSecured.class);
 		assertTrue(classDescriptor.isAllowRemove());
 		assertTrue(!classDescriptor.isAllowSave());
 		assertTrue(!classDescriptor.isHidden());
 
-		context.setAuthentication(noAdminAuthentication);
+		context.setAuthentication(autorities.noAdminAuthentication);
 
 		classDescriptor = service.getClassDescriptor(FooSecured.class);
 		assertTrue(classDescriptor.isAllowRemove());
 		assertTrue(!classDescriptor.isAllowSave());
 		assertTrue(classDescriptor.isHidden());
 	}
-	
+
 	public void testGetAllDescriptors() {
 		IClassDescriptor classDescriptor;
 		List descriptors;
@@ -75,10 +75,10 @@ public class DescriptorSecurityTest extends SecurityRestrictionTest {
 		boolean passed = false;
 
 		SecurityContextImpl context = new SecurityContextImpl();
-		context.setAuthentication(adminAuthentication);
+		context.setAuthentication(autorities.adminAuthentication);
 		SecurityContextHolder.setContext(context);		
 		assertNotNull(context.getAuthentication());
-		
+
 		descriptors = service.getAllDescriptors();
 		i = descriptors.iterator();
 		while (i.hasNext()) {
@@ -92,10 +92,10 @@ public class DescriptorSecurityTest extends SecurityRestrictionTest {
 				checkConstraintsWithoutAnotation(classDescriptor);
 			}
 		}
-		
+
 		assertTrue(passed);
 		passed = false;
-		context.setAuthentication(rootAuthentication);
+		context.setAuthentication(autorities.rootAuthentication);
 		descriptors = service.getAllDescriptors();
 		i = descriptors.iterator();
 		while (i.hasNext()) {
@@ -112,7 +112,7 @@ public class DescriptorSecurityTest extends SecurityRestrictionTest {
 
 		assertTrue(passed);
 		passed = false;
-		context.setAuthentication(noAdminAuthentication);
+		context.setAuthentication(autorities.noAdminAuthentication);
 		descriptors = service.getAllDescriptors();
 		i = descriptors.iterator();
 		while (i.hasNext()) {
@@ -134,5 +134,4 @@ public class DescriptorSecurityTest extends SecurityRestrictionTest {
 		assertTrue(classDescriptor.isAllowSave());
 		assertTrue(!classDescriptor.isHidden());
 	}
-	
 }

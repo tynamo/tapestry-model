@@ -39,10 +39,17 @@
         <binding name="value">model[descriptor.name]</binding>
         <binding name="propertyDescriptor">descriptor</binding>
     </component>
+   	
     <component id="insertText" type="Insert">
     	<binding name="value">model[descriptor.name]</binding>
     </component>
     <component id="fckEditor" type="FCKEditor">
     	<binding name="value">model[descriptor.name]</binding>
     </component>
+    
+    <component id="embeddedEditor" type="EmbeddedEditor">
+    	<binding name="model">model[descriptor.name]</binding>
+    	<binding name="descriptor">descriptor</binding>
+    </component>
+    
 </page-specification>

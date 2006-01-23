@@ -27,20 +27,20 @@ public class ClassSecurityRestrictionTest extends SecurityRestrictionTest
         IClassDescriptor classDescriptor = new TrailsClassDescriptor(Foo.class);
         classRestriction.setRequiredRole("admin");
         classRestriction.setRestrictionType(RestrictionType.VIEW);
-        classRestriction.restrict(adminAuthority, classDescriptor);
+        classRestriction.restrict(autorities.adminAuthority, classDescriptor);
         assertFalse(classDescriptor.isHidden());
         classDescriptor = new TrailsClassDescriptor(Foo.class);
-        classRestriction.restrict(noAdminAuthority, classDescriptor);
+        classRestriction.restrict(autorities.noAdminAuthority, classDescriptor);
         assertTrue(classDescriptor.isHidden());
         
         classRestriction.setRestrictionType(RestrictionType.UPDATE);
         classDescriptor = new TrailsClassDescriptor(Foo.class);
-        classRestriction.restrict(noAdminAuthority, classDescriptor);
+        classRestriction.restrict(autorities.noAdminAuthority, classDescriptor);
         assertFalse(classDescriptor.isAllowSave());     
         
         classRestriction.setRestrictionType(RestrictionType.REMOVE);
         classDescriptor = new TrailsClassDescriptor(Foo.class);
-        classRestriction.restrict(noAdminAuthority, classDescriptor);
+        classRestriction.restrict(autorities.noAdminAuthority, classDescriptor);
         assertFalse(classDescriptor.isAllowRemove());     
     }
 }

@@ -19,6 +19,7 @@ import org.trails.descriptor.IPropertyDescriptor;
 import org.trails.descriptor.TrailsClassDescriptor;
 import org.trails.descriptor.TrailsDescriptor;
 import org.trails.descriptor.TrailsPropertyDescriptor;
+import org.trails.hibernate.EmbeddedDescriptor;
 
 /**
  * This class uses the annotations on a given class or property to modify its 
@@ -38,29 +39,11 @@ public class AnnotationDecorator implements DescriptorDecorator
         for (Iterator iter = descriptor.getPropertyDescriptors().iterator(); iter.hasNext();)
         {
             IPropertyDescriptor propertyDescriptor = (IPropertyDescriptor) iter.next();
-            IPropertyDescriptor clonedDescriptor = (IPropertyDescriptor)propertyDescriptor.clone();
-            try
+            IPropertyDescriptor clonedDescriptor = decoratePropertyDescriptor(propertyDescriptor);
+            // recursively decorate components
+            if (clonedDescriptor.isEmbedded())
             {
-                Field propertyField = descriptor.getType().getDeclaredField(
-                        propertyDescriptor.getName());
-                clonedDescriptor = (IPropertyDescriptor)decorateFromAnnotations(clonedDescriptor, propertyField.getAnnotations());
-                
-            } catch (Exception ex)
-            {
-                // don't care
-            }
-            try
-            {
-                PropertyDescriptor beanPropDescriptor = (PropertyDescriptor)Ognl.getValue("propertyDescriptors.{? name == '" + propertyDescriptor.getName() + "'}[0]",
-                    Introspector.getBeanInfo(descriptor.getType()));
-                
-                Method readMethod = beanPropDescriptor.getReadMethod();
-                clonedDescriptor = (IPropertyDescriptor)decorateFromAnnotations(clonedDescriptor, readMethod.getAnnotations());
-            }
-            catch (Exception ex)
-            {
-                ex.printStackTrace();
-                // don't care
+            	clonedDescriptor = (EmbeddedDescriptor)decorate((EmbeddedDescriptor)clonedDescriptor);
             }
             decoratedPropertyDescriptors.add(clonedDescriptor);
         }
@@ -68,6 +51,36 @@ public class AnnotationDecorator implements DescriptorDecorator
         sortDescriptors(decoratedDescriptor);
         return decoratedDescriptor;
     }
+
+	protected IPropertyDescriptor decoratePropertyDescriptor(IPropertyDescriptor propertyDescriptor)
+	{
+		IPropertyDescriptor clonedDescriptor = (IPropertyDescriptor)propertyDescriptor.clone();
+		try
+		{
+		    Field propertyField = clonedDescriptor.getBeanType().getDeclaredField(
+		            propertyDescriptor.getName());
+		    clonedDescriptor = (IPropertyDescriptor)decorateFromAnnotations(clonedDescriptor, propertyField.getAnnotations());
+		    
+		} catch (Exception ex)
+		{
+		    // don't care
+		}
+		try
+		{
+		    PropertyDescriptor beanPropDescriptor = (PropertyDescriptor)Ognl.getValue("propertyDescriptors.{? name == '" + propertyDescriptor.getName() + "'}[0]",
+		        Introspector.getBeanInfo(clonedDescriptor.getBeanType()));
+		    
+		    Method readMethod = beanPropDescriptor.getReadMethod();
+		    clonedDescriptor = (IPropertyDescriptor)decorateFromAnnotations(clonedDescriptor, readMethod.getAnnotations());
+		}
+		catch (Exception ex)
+		{
+			System.out.println(propertyDescriptor.getName());
+		    ex.printStackTrace();
+		    // don't care
+		}
+		return clonedDescriptor;
+	}
 
     /**
      * Rearrange the property descriptors by their index

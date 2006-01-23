@@ -4,14 +4,16 @@
 	<session-factory>
 		<!--  
 			<mapping class="org.trails.test.Bar" /> -->
-		<mapping class="org.trails.test.Bing" />
-		<mapping class="org.trails.test.Descendant" />
-		<mapping class="org.trails.test.BlogEntry" />
-		<mapping class="org.trails.test.Baz" />
+		<mapping class="org.trails.test.Embeddor" />
+		<mapping class="org.trails.security.test.FooSecured" />
 		<mapping class="org.trails.test.Ancestor" />
 		<mapping class="org.trails.test.Foo" />
-		<mapping class="org.trails.test.Bar" />
+		<mapping class="org.trails.test.Baz" />
+		<mapping class="org.trails.test.Descendant" />
+		<mapping class="org.trails.test.Bing" />
 		<mapping class="org.trails.test.Searchee" />
+		<mapping class="org.trails.test.BlogEntry" />
+		<mapping class="org.trails.test.Bar" />
 		<listener type="pre-update"
 			class="org.hibernate.validator.event.ValidatePreUpdateEventListener" />
 		<listener type="merge"

@@ -18,46 +18,54 @@ import java.util.Stack;
 import org.apache.tapestry.annotations.InjectObject;
 import org.apache.tapestry.annotations.InjectState;
 import org.apache.tapestry.html.BasePage;
+import org.trails.callback.DefaultCallback;
 import org.trails.descriptor.DescriptorService;
 import org.trails.i18n.ResourceBundleMessageSource;
 import org.trails.persistence.PersistenceService;
 
 /**
  * @author fus8882
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
+ * 
+ * TODO To change the template for this generated type comment go to Window -
+ * Preferences - Java - Code Style - Code Templates
  */
 public abstract class TrailsPage extends BasePage
 {
-    public abstract void pushCallback();
+	public void pushCallback()
+	{
+		getCallbackStack().push(new DefaultCallback(getPageName()));
+	}
 
-    /**
-     * This property is injected with the callbackStack ASO
-     * @return
-     */
-    @InjectState("callbackStack")
-    public abstract Stack getCallbackStack();
-    
-    /**
-     * This property is injected with the Spring persistenceService bean
-     * @return
-     */
-    @InjectObject("spring:persistenceService")
-    public abstract PersistenceService getPersistenceService();
+	/**
+	 * This property is injected with the callbackStack ASO
+	 * 
+	 * @return
+	 */
+	@InjectState("callbackStack")
+	public abstract Stack getCallbackStack();
 
-    /**
-     * This property is injected with the Spring descriptorService bean
-     * @return
-     */
-    @InjectObject("spring:descriptorService")
-    public abstract DescriptorService getDescriptorService();
-    
-    /**
-     * Message source to i18n pages
-     * @return
-     */
-    @InjectObject("spring:trailsMessageSource")
-    public abstract ResourceBundleMessageSource getResourceBundleMessageSource();
+	/**
+	 * This property is injected with the Spring persistenceService bean
+	 * 
+	 * @return
+	 */
+	@InjectObject("spring:persistenceService")
+	public abstract PersistenceService getPersistenceService();
+
+	/**
+	 * This property is injected with the Spring descriptorService bean
+	 * 
+	 * @return
+	 */
+	@InjectObject("spring:descriptorService")
+	public abstract DescriptorService getDescriptorService();
+
+	/**
+	 * Message source to i18n pages
+	 * 
+	 * @return
+	 */
+	@InjectObject("spring:trailsMessageSource")
+	public abstract ResourceBundleMessageSource getResourceBundleMessageSource();
 
 }

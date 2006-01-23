@@ -72,6 +72,16 @@
 		<property name="types">
 			<bean id="persistenceService.allTypes" class="org.springframework.beans.factory.config.PropertyPathFactoryBean"/>
 		</property>
+		<property name="descriptorFactory"><ref local="descriptorFactory" /></property>
+		<property name="decorators">
+			<list>
+				<ref local="hibernateDescriptorDecorator" />
+				<bean name="annotationDecorator" class="org.trails.descriptor.annotation.AnnotationDecorator" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="descriptorFactory" class="org.trails.descriptor.ReflectionDescriptorFactory">
 		<property name="methodExcludes">
 			<list>
 				<value>shouldExclude</value>
@@ -84,20 +94,15 @@
 		</property>
 		<property name="propertyExcludes">
 			<list>
-				<value>saved</value>
+				<value>exclude.*</value>
 				<value>class</value>
 			</list>
 		</property>
-		<property name="decorators">
-			<list>
-				<ref local="hibernateDescriptorDecorator" />
-				<bean name="annotationDecorator" class="org.trails.descriptor.annotation.AnnotationDecorator" />
-			</list>
-		</property>
 	</bean>
-
+	
 	<bean id="hibernateDescriptorDecorator" class="org.trails.hibernate.HibernateDescriptorDecorator" singleton="true">
 		<property name="localSessionFactoryBean"> <ref bean="&amp;sessionFactory" /></property>
+		<property name="descriptorFactory"><ref local="descriptorFactory" /></property>
 	</bean>
 	
 	<bean id="persistenceService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
@@ -116,6 +121,62 @@
 	
 	<!-- security service bean -->
 	<bean id="securityService" class="org.trails.security.TrailsSecurityService"/>
+	
+		<!-- security startup beans. lazy-init is true since this is used rarely. -->
+	<bean id="roleUser" class="org.trails.security.domain.Role" lazy-init="true">
+		<property name="name"><value>ROLE_USER</value></property>
+		<property name="description"><value>User role</value></property>
+	</bean>
+	
+	<bean id="roleManager" class="org.trails.security.domain.Role" lazy-init="true">
+		<property name="name"><value>ROLE_MANAGER</value></property>
+		<property name="description"><value>Manager role</value></property>
+	</bean>
+
+	<bean id="user" class="org.trails.security.domain.User" lazy-init="true">
+		<property name="username"><value>user</value></property>
+		<property name="password"><value>user</value></property> <!-- default password -->
+		<property name="confirmPassword"><value>user</value></property> <!-- default password -->
+		<property name="firstName"><value>Foo</value></property>
+		<property name="lastName"><value>Bar</value></property>
+		<property name="roles">
+			<list>
+				<ref bean="roleUser"/>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="admin" class="org.trails.security.domain.User" lazy-init="true">
+		<property name="username"><value>admin</value></property>
+		<property name="password"><value>admin</value></property> <!-- default password -->
+		<property name="confirmPassword"><value>admin</value></property> <!-- default password -->
+		<property name="firstName"><value>Admin</value></property>
+		<property name="lastName"><value>Admin</value></property>
+		<property name="roles">
+			<list>
+				<ref bean="roleUser"/>
+				<ref bean="roleManager"/>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="securityStartup" class="org.trails.security.SecurityStartup" lazy-init="true">
+		<property name="persistenceService"><ref local="persistenceService" /></property>		
+		<property name="defaultUsers">
+			<list>
+				<ref local="user"/>
+				<ref local="admin"/>
+			</list>
+		</property>
+		<property name="defaultRoles">
+			<list>
+				<ref local="roleManager"/>
+				<ref local="roleUser"/>
+			</list>
+		</property>
+	</bean>
+
+	<!-- end of security startup beans -->
 	
 	<bean id="validateUniqueAspect" class="org.trails.validation.ValidateUniqueAspect" factory-method="aspectOf">
 		<property name="descriptorService"><ref local="descriptorService" /></property>
@@ -217,7 +278,13 @@
 					<constructor-arg index="1"><value>collectionEditor</value></constructor-arg>
 				</bean>
 				</entry>
-
+				<entry>
+				<key><value>embedded</value></key>
+				<bean class="org.apache.tapestry.util.ComponentAddress">
+					<constructor-arg index="0"><value>trails:Editors</value></constructor-arg>
+					<constructor-arg index="1"><value>embedded</value></constructor-arg>
+				</bean>
+				</entry>
 			</map>
 		</property>
 	</bean>

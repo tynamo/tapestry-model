@@ -3,10 +3,8 @@
     <description>This produces the buttons on an EditPage</description>
 	<parameter name="model" required="yes" cache="yes" deprecated="no"/>
 	
-    <parameter name="showSaveButton" required="no" default-value="true" cache="yes" deprecated="no"/>
-    
-    <parameter name="showRemoveButton" required="no" default-value="!page.modelNew" cache="yes" deprecated="no"/>
-    
+    <parameter name="showSaveButton" required="no" default-value="page.classDescriptor.allowSave" cache="yes" deprecated="no"/>
+        
     <parameter name="propertyNames" required="no" cache="yes" deprecated="no"/>
     
    	<parameter name="classDescriptor" required="no" default-value="page.classDescriptor" cache="yes" deprecated="no"/> 
@@ -43,7 +41,7 @@
         <binding name="condition">showSaveButton</binding>
     </component>
     <component id="showRemoveButton" type="If" inherit-informal-parameters="no">
-        <binding name="condition">showRemoveButton</binding>
+        <binding name="condition">ognl:showRemoveButton</binding>
     </component>   
     <component id="methodsForeach" type="For" inherit-informal-parameters="no">
         <binding name="source">classDescriptor.methodDescriptors</binding>

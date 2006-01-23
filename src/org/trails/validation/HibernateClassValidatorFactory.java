@@ -4,6 +4,7 @@
  */
 package org.trails.validation;
 
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -18,6 +19,39 @@ import org.trails.servlet.TrailsApplicationServlet;
 public class HibernateClassValidatorFactory {
 
 	private static Map classValidator = new HashMap();
+
+	/**
+	 * This inner class doesn't return exceptions when some key is searched in
+	 * the bundle. This is nice so we don't have exceptions thrown in the screen
+	 * by hibernate ClassValidator. Instead, we will have a
+	 * [TRAILS][KEY-IN-UPPER] string returned.
+	 * 
+	 * @author Eduardo Fernandes Piva (eduardo@gwe.com.br)
+	 *
+	 */
+	private class MyBundle extends ResourceBundle {
+
+		private ResourceBundle parentBundle;
+		
+		public MyBundle(ResourceBundle bundle) {
+			this.parentBundle = bundle;
+		}
+		
+		@Override
+		protected Object handleGetObject(String key) {
+			try {
+				return parentBundle.getObject(key);				
+			} catch (Exception e) {
+				return "[TRAILS][" + key.toUpperCase() + "]";
+			}
+		}
+
+		@Override
+		public Enumeration<String> getKeys() {
+			return parentBundle.getKeys();
+		}
+		
+	}
 	
 	private static final HibernateClassValidatorFactory singleton = new HibernateClassValidatorFactory(); 
 	
@@ -51,7 +85,8 @@ public class HibernateClassValidatorFactory {
 			validator = new ClassValidator(entityClass);			
 		} else {
 			ResourceBundle bundle = ResourceBundle.getBundle("messages", locale);
-			validator = new ClassValidator(entityClass, bundle);
+			ResourceBundle myBundle = new MyBundle(bundle);
+			validator = new ClassValidator(entityClass, myBundle);
 		}
 		
 		classValidator.put(key, validator);
