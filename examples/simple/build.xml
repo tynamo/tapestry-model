@@ -24,9 +24,9 @@
 	
 	<path id="class.path">
 		<fileset dir="${lib.dir}"></fileset>
-		<fileset dir="/apps/tomcat/common/lib"></fileset>
-		<fileset dir="/apps/tomcat/server/lib" />
-		<fileset dir="${java.home}/../lib" includes="tools.jar"/>
+		<fileset dir="${env.TOMCAT_HOME}/common/lib"></fileset>
+		<fileset dir="${env.TOMCAT_HOME}/server/lib" />
+		<fileset dir="${env.JAVA_HOME}/../lib" includes="tools.jar"/>
 	</path>
 	
 	<taskdef name="apt" classname="org.apache.tools.ant.taskdefs.Apt" classpathref="class.path"/>
@@ -148,7 +148,7 @@
 	<target name="all" depends="clean,build-hibernate-config,war" ></target>
 
 	<target name="build-hibernate-config" >
-		<echo message="${java.home}" />
+		<echo message="${env.JAVA_HOME}" />
 		<apt
 			fork="true"
 			nocompile="true"
@@ -164,7 +164,7 @@
     <taskdef name="hibernatetool" classname="org.hibernate.tool.ant.HibernateToolTask">
         <classpath>
             <fileset dir="${lib.dir}"></fileset>
-            <fileset dir="${java.home}/../lib" includes="tools.jar"/>
+            <fileset dir="${env.JAVA_HOME}/../lib" includes="tools.jar"/>
             <path location="${compile.dir}"></path>
         </classpath>
     </taskdef>
