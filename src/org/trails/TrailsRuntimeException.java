@@ -2,6 +2,7 @@ package org.trails;
 
 /**
  * Runtime exceptions for Trails
+ * 
  * @author Chris Nelson
  *
  */
