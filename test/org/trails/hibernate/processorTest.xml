@@ -3,7 +3,7 @@
 <hibernate-configuration>
 	<session-factory>
 		<mapping class="com.foo.ShouldBeRemoved" />
-		<mapping class="org.trails.ShouldBePreserved" />
+		<mapping class="org.trails.security.domain.ShouldBePreserved" />
 		<listener type="pre-update"
 			class="org.hibernate.validator.event.ValidatePreUpdateEventListener" />
 		<listener type="merge"

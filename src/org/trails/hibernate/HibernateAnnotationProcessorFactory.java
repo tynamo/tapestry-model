@@ -28,7 +28,7 @@ import com.sun.org.apache.bcel.internal.generic.GETFIELD;
 
 public class HibernateAnnotationProcessorFactory implements AnnotationProcessorFactory
 {
-
+	public static final String SECURITY_PACKAGE = "org.trails.security";
     public HibernateAnnotationProcessorFactory()
     {
         super();
@@ -37,7 +37,6 @@ public class HibernateAnnotationProcessorFactory implements AnnotationProcessorF
 
     public Collection<String> supportedOptions()
     {
-        // TODO Auto-generated method stub
         return null;
     }
 
@@ -81,7 +80,7 @@ public class HibernateAnnotationProcessorFactory implements AnnotationProcessorF
                 reader.setIncludeInternalDTDDeclarations(false);
                 Document doc = reader.read(configFileName);
                 sessionFactoryElement = (Element)doc.getRootElement().selectSingleNode("//session-factory");
-                for (Iterator iter = sessionFactoryElement.selectNodes("mapping[not(starts-with(@class, 'org.trails'))]").iterator(); iter.hasNext();)
+                for (Iterator iter = sessionFactoryElement.selectNodes("mapping[not(starts-with(@class, '" + SECURITY_PACKAGE + "'))]").iterator(); iter.hasNext();)
                 {
                     Element element = (Element) iter.next();
                     sessionFactoryElement.remove(element);
@@ -106,7 +105,7 @@ public class HibernateAnnotationProcessorFactory implements AnnotationProcessorF
                     }
                     sessionFactoryElement.elements().addAll(listenerElements);
                 }
-                PrintWriter writer =env.getFiler().createTextFile(Filer.Location.SOURCE_TREE, "", new File("hibernate.cfg.xml"), null);
+                PrintWriter writer =env.getFiler().createTextFile(Filer.Location.CLASS_TREE, "", new File("hibernate.cfg.xml"), null);
                 doc.write(writer);
                 
             }

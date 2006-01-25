@@ -107,7 +107,7 @@ public class HibernateAnnotationProcessorFactoryTest extends MockObjectTestCase
 		
 		String xml = stringWriter.toString();
 		assertTrue("has foo mapping", xml.indexOf("mapping class=\"org.trails.Foo\"") > -1);
-		assertTrue("has existing trails mapping", xml.indexOf("mapping class=\"org.trails.ShouldBePreserved\"") > -1);
+		assertTrue("has existing trails mapping", xml.indexOf("mapping class=\"org.trails.security.domain.ShouldBePreserved\"") > -1);
 		assertTrue("existing app entries are removed", xml.indexOf("ShouldBeRemoved") == -1);
 		
 		configFile.delete();
