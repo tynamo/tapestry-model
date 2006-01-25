@@ -25,8 +25,8 @@
 	<bean id="daoAuthenticationProvider"
 		class="org.acegisecurity.providers.dao.DaoAuthenticationProvider">
 		<property name="userDetailsService">
-			<!--ref bean="trailsUserDAO" /-->
-            <ref bean="inMemoryUserDetailsService" />
+			<ref bean="trailsUserDAO" />
+            <!--  ref bean="inMemoryUserDetailsService" /-->
         </property>
 	</bean>
 
