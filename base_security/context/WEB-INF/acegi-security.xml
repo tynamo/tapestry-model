@@ -150,7 +150,7 @@
 			<value>
 				CONVERT_URL_TO_LOWERCASE_BEFORE_COMPARISON
 				PATTERN_TYPE_APACHE_ANT
-				/app?page?login&amp;service?page=ROLE_ANONYMOUS=ROLE_ANONYMOUS
+				/app?page?login&amp;service?page*=ROLE_ANONYMOUS
 				/**/*.gif=ROLE_ANONYMOUS,ROLE_USER
 				/**/*.css=ROLE_ANONYMOUS,ROLE_USER
                                 /**/*.ico=ROLE_ANONYMOUS,ROLE_USER
