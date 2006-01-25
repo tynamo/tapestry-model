@@ -239,7 +239,7 @@
 	</target>
 		
 	<target name="add-security-files" depends="init">
-		<copy todir="${project.dir}">
+		<copy todir="${project.dir}" overwrite="true">
 			<filterset>
 				<filter token="app.name" value="${project.name}" />
 			</filterset>
@@ -248,7 +248,7 @@
 		</copy>		
 	</target>	
 	
-	<target name="update-project"  depends="jar">
+	<target name="update-project"  depends="jar-if-necessary">
 		<mkdir dir="${project.dir}" />
 		<copy todir="${project.dir}" >
 			<fileset dir="${base_app.dir}">
