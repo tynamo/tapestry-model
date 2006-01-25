@@ -37,7 +37,7 @@ public class SecurityStartupTest extends TestCase {
 	private User user;
 	private User admin;	
 
-	/*
+	
 	@Override
 	protected void setUp() throws Exception {
         appContext = new ClassPathXmlApplicationContext(
@@ -87,17 +87,27 @@ public class SecurityStartupTest extends TestCase {
 
 			@Override
 			protected void doInTransactionWithoutResult(TransactionStatus status) {
-				bootStrap.startup();
 				List roles = persistenceService.getAllInstances(Role.class);
 				List users = persistenceService.getAllInstances(User.class);
+
+				assertEquals(roles.size(), 0);
+				assertEquals(users.size(), 0);
+
+				bootStrap.startup();
+				roles = persistenceService.getAllInstances(Role.class);
+				users = persistenceService.getAllInstances(User.class);
 				
 				assertEquals(roles.size(), 2);
 				assertEquals(users.size(), 2);
 				
-				assertTrue(roles.contains(roleUser));
-				assertTrue(roles.contains(roleAdmin));
-				assertTrue(users.contains(user));
-				assertTrue(users.contains(admin));
+				assertTrue(((Role)roles.get(0)).getName().equals(roleUser.getName())
+						|| ((Role)roles.get(1)).getName().equals(roleUser.getName()));
+				assertTrue(((Role)roles.get(0)).getName().equals(roleAdmin.getName())
+						|| ((Role)roles.get(1)).getName().equals(roleAdmin.getName()));
+				assertTrue(((User)users.get(0)).getUsername().equals(user.getUsername())
+						|| ((User)users.get(1)).getUsername().equals(user.getUsername()));
+				assertTrue(((User)users.get(0)).getUsername().equals(admin.getUsername())
+						|| ((User)users.get(1)).getUsername().equals(admin.getUsername()));
 				
 				status.setRollbackOnly(); // force rollback so we don't really change things in db.
 			}
@@ -105,9 +115,5 @@ public class SecurityStartupTest extends TestCase {
 		});		
 		
 	}
-	*/
 	
-	public void testDummy() {
-		/* make this testSuite pass so I don't break the build */
-	}
 }
