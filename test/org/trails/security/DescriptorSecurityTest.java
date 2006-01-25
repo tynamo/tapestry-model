@@ -130,8 +130,11 @@ public class DescriptorSecurityTest extends SecurityRestrictionTest {
 	}
 
 	private void checkConstraintsWithoutAnotation(IClassDescriptor classDescriptor) {
-		assertTrue(classDescriptor.isAllowRemove());
-		assertTrue(classDescriptor.isAllowSave());
-		assertTrue(!classDescriptor.isHidden());
+		if (!classDescriptor.getType().getPackage().getName().equals("org.trails.security.domain"))
+		{
+			assertTrue(classDescriptor.isAllowRemove());
+			assertTrue(classDescriptor.isAllowSave());
+			assertTrue(!classDescriptor.isHidden());
+		}
 	}
 }
