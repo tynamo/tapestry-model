@@ -102,8 +102,8 @@
 			destdir="${compile.dir}"
 			
 			factory="org.trails.hibernate.HibernateAnnotationProcessorFactory"
-			srcdir="${test.src}"
-			preprocessdir="${compile.dir}">
+			srcdir="${test.src}">
+        	<option name="src.file" value="blah.xml"/>
 			<classpath>
 				<path refid="class.path" />
 				<pathelement location="${compile.dir}" />
@@ -153,36 +153,6 @@
 				<exclude name="**/*.java" />
 				<exclude name="hibernate.cfg.xml"/>
 			</fileset>
-		</copy>
-	</target>
-	
-	<target name="generate-beaninfos">
-	    <taskdef name="doclet"
-	        classname="xdoclet.DocletTask"
-	    	classpathref="class.path">
-
-	    </taskdef>
-		<doclet destDir="${src-test.dir}">
-	        <fileset dir="${src-test.dir}">
-		        <include name="**/*.java"/>
-	        </fileset>
-			<beaninfo  />
-		</doclet>
-
-	</target>
-	
-	
-	<target name="compile-demo">
-		<mkdir dir="${demo.webinf}/classes" />
-		<javac srcdir="${demo.src}" destdir="${demo.webinf}/classes" >
-			<classpath>
-				<path refid="class.path"></path>
-				<pathelement location="${compile.dir}" />
-			</classpath>
-		</javac>
-		<copy todir="${demo.webinf}/classes" >
-			<fileset dir="${demo.src}" excludes="**/*.java"></fileset>
-			
 		</copy>
 	</target>
 	
@@ -278,7 +248,7 @@
 		</copy>		
 	</target>	
 	
-	<target name="update-project"  depends="jar-if-necessary">
+	<target name="update-project"  depends="jar">
 		<mkdir dir="${project.dir}" />
 		<copy todir="${project.dir}" >
 			<fileset dir="${base_app.dir}">
