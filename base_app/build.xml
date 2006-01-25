@@ -164,6 +164,18 @@
 
 	<target name="all" depends="clean,build-hibernate-config,war" ></target>
 
+	<target name="initialize-security" depends="compile">
+		<java dir="context/" fork="yes" classname="org.trails.security.SecurityStartup">
+			<arg value="${security.startup.context}"/>
+	        <classpath>
+				<fileset dir="${tomcat.home}/common/lib"></fileset>
+    	        <fileset dir="${lib.dir}"></fileset>
+        	    <fileset dir="${java.home}/../lib" includes="tools.jar"/>
+            	<path location="${compile.dir}"></path>
+	        </classpath>
+		</java>
+	</target>
+	
 	<target name="build-hibernate-config" >
 		<echo message="${java.home}" />
 		<apt
