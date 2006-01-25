@@ -9,6 +9,7 @@ import java.util.List;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.context.support.FileSystemXmlApplicationContext;
 import org.trails.persistence.PersistenceService;
 import org.trails.security.domain.Role;
 import org.trails.security.domain.User;
@@ -49,7 +50,10 @@ public class SecurityStartup {
 	 * @param args
 	 */
 	public static void main(String args[]) {
-		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+		if (args.length != 1)
+			throw new RuntimeException("location of applicationContext.xml must be specified");
+		
+		ApplicationContext context = new FileSystemXmlApplicationContext(args[0]);
 		SecurityStartup bootStrap = (SecurityStartup) context.getBean("securityStartup");
 		bootStrap.startup();
 	}
