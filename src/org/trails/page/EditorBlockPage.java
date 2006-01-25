@@ -64,18 +64,6 @@ public abstract class EditorBlockPage extends ModelPage
         return validator;
     }
 
-    public IPropertySelectionModel getSelectionModel(IPropertyDescriptor descriptor)
-    {
-        ArrayList instances = new ArrayList();
-        instances.addAll(getPersistenceService().getAllInstances(descriptor.getPropertyType()));
-        IdentifierSelectionModel selectionModel = new IdentifierSelectionModel(instances,
-                getDescriptorService().getClassDescriptor(descriptor.getPropertyType())
-                    .getIdentifierDescriptor().getName(), 
-                    !descriptor.isRequired());
-
-        return selectionModel;
-    }
-
     public Translator getTranslator(IPropertyDescriptor descriptor)
     {
         if (descriptor.isNumeric())

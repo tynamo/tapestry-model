@@ -248,7 +248,7 @@
 		</copy>		
 	</target>	
 	
-	<target name="update-project"  depends="jar-if-necessary">
+	<target name="update-project"  depends="jar">
 		<mkdir dir="${project.dir}" />
 		<copy todir="${project.dir}" >
 			<fileset dir="${base_app.dir}">

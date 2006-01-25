@@ -74,11 +74,11 @@ public class HomePageTest extends ComponentTest {
 		while (i.hasNext()) {
 			IClassDescriptor tmp = (IClassDescriptor) i.next();
 			if (tmp.getType().equals(FooSecured.class)) {
-				// LV disabled as it failes.
-				//assertTrue(!descriptorContains(homeDescriptors,tmp));
+				assertTrue(!descriptorContains(homeDescriptors,tmp));
+				assertTrue(tmp.isHidden());
 				hasSecurityAnnotated = true;
 			} else {
-				assertTrue(descriptorContains(homeDescriptors,tmp));
+				if (!tmp.isHidden()) assertTrue(descriptorContains(homeDescriptors,tmp));
 			}
 		}
 		
@@ -99,8 +99,9 @@ public class HomePageTest extends ComponentTest {
 			IClassDescriptor tmp = (IClassDescriptor) i.next();
 			if (tmp.getType().equals(FooSecured.class)) {
 				hasSecurityAnnotated = true;
+				assertFalse(tmp.isHidden());
 			}
-			assertTrue(descriptorContains(homeDescriptors,tmp));
+			if (!tmp.isHidden()) assertTrue(descriptorContains(homeDescriptors,tmp));
 		}
 		
 		assertTrue(hasSecurityAnnotated);

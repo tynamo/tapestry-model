@@ -26,10 +26,10 @@ public abstract class HomePage extends TrailsPage
 		while (i.hasNext())
 		{
 			IClassDescriptor descriptor = (IClassDescriptor) i.next();
-//			if (!descriptor.isChild() && !descriptor.isHidden())
-//			{
+			if ( !descriptor.isHidden())
+			{
 				result.add(descriptor);
-//			}
+			}
 		}
 
 		return result;

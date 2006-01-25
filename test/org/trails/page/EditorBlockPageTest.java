@@ -72,33 +72,6 @@ public class EditorBlockPageTest extends ComponentTest
         
     }
     
-    public void testGetSelectionModel() throws Exception
-    {
-        IClassDescriptor barDescriptor = new TrailsClassDescriptor(IBar.class);
-        IdentifierDescriptor idDescriptor = new IdentifierDescriptor(Foo.class, "id", Integer.class);
-        barDescriptor.getPropertyDescriptors().add(idDescriptor);
-        
-        IPropertyDescriptor barPropDescriptor = 
-            new TrailsPropertyDescriptor(Foo.class, "bar", IBar.class);
-        
-        List instances = new ArrayList();
-        instances.add(new Bar());
-        persistenceMock.expects(atLeastOnce()).method("getAllInstances")
-                       .with(same(IBar.class)).will(returnValue(instances));
-        descriptorServiceMock.expects(atLeastOnce()).method("getClassDescriptor")
-                    .with(same(IBar.class)).will(returnValue(barDescriptor));
-
-        barPropDescriptor.setRequired(false);
-        IPropertySelectionModel selectionModel = editorBlockPage.getSelectionModel(barPropDescriptor);
-        assertEquals("1 bar and none option", 2, selectionModel.getOptionCount());
-        
-        barPropDescriptor.setRequired(true);
-        selectionModel = editorBlockPage.getSelectionModel(barPropDescriptor);
-        assertEquals("now only 1", 1, selectionModel.getOptionCount());
-        persistenceMock.verify();
-        
-    }
-    
     public void testPushCallBack()
     {
         editorBlockPage.setEditPageName("FooEdit");
