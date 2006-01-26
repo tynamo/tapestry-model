@@ -256,6 +256,7 @@
 				<exclude name="**/WEB-INF/web.xml" />
 				<exclude name="**/WEB-INF/hibernate.properties" />
 				<exclude name="build.xml" />
+				<exclude name="build.properties" />
 				<exclude name="jetty-config.xml" />
 				<exclude name="**/WEB-INF/base_app.application" />
 				<exclude name="**/WEB-INF/base_app_*.properties" />

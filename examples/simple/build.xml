@@ -18,14 +18,14 @@
 	<property name="src.dir" value="${basedir}/src" />
 	<property name="test.src" value="${basedir}/test" />
 	<property name="compile.dir" value="${webinf}/classes" />
-	<property name="deploy.dir" value="/data/opensource/webapps/trails.inspiring.nl" />
+	<!--<property name="deploy.dir" value="/data/opensource/webapps/trails.inspiring.nl" />-->
 	<property name="lib.dir" value="${basedir}/lib" />
 	<property name="war.file" value="${deploy.dir}/${ant.project.name}.war" />
 	
 	<path id="class.path">
 		<fileset dir="${lib.dir}"></fileset>
-		<fileset dir="/apps/tomcat/common/lib"></fileset>
-		<fileset dir="/apps/tomcat/server/lib" />
+		<fileset dir="${tomcat.home}/common/lib"></fileset>
+		<fileset dir="${tomcat.home}/server/lib" />
 		<fileset dir="${env.JAVA_HOME}/../lib" includes="tools.jar"/>
 	</path>
 	
