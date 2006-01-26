@@ -104,7 +104,10 @@
 		<iajc source="1.5" srcdir="${src.dir}" destdir="${compile.dir}" classpathref="class.path" aspectpath="${lib.dir}/trails-aspects.jar" debug="on">
 		</iajc>		
 		<copy todir="${compile.dir}">
-			<fileset dir="${src.dir}" excludes="**/*.java" />
+			<fileset dir="${src.dir}" excludes="**/*.java">
+				<exclude name="**/*.java"/>
+				<exclude name="hibernate.cfg.xml"/>
+			</fileset>
 		</copy>
 
 	</target>
