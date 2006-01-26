@@ -18,7 +18,6 @@
 	<property name="src.dir" value="${basedir}/src" />
 	<property name="test.src" value="${basedir}/test" />
 	<property name="compile.dir" value="${webinf}/classes" />
-	<!-- <property name="deploy.dir" value="/data/opensource/webapps/trails.inspiring.nl" />-->
 	<property name="lib.dir" value="${basedir}/lib" />
 	<property name="war.file" value="${deploy.dir}/${ant.project.name}.war" />
 	
