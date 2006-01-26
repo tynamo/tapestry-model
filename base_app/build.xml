@@ -184,7 +184,8 @@
 			classpathref="class.path"
 			factory="org.trails.hibernate.HibernateAnnotationProcessorFactory"
 			srcdir="${src.dir}"
-			preprocessdir="${webinf}">
+			preprocessdir="${webinf}"
+			destdir="${webinf}">
 			
 		</apt>	
 		
