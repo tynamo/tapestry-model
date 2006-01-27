@@ -7,7 +7,6 @@ public class EmbeddedTest extends FunctionalTest
 	
 	public void testPerson() throws Exception
 	{
-		/*
 		HtmlPage listPersonsPage = clickLinkOnPage(startPage, "List Persons");
 		HtmlPage newPersonPage = clickLinkOnPage(listPersonsPage, "New Person");
 		getInputByName(newPersonPage, "Name").setValueAttribute("John Doe");
@@ -16,6 +15,5 @@ public class EmbeddedTest extends FunctionalTest
 		assertEquals("Sunnyville", getInputByName(newPersonPage, "City").getAttributeValue("value"));
 		listPersonsPage = clickButton(newPersonPage, "Ok");
 		assertXPathPresent(listPersonsPage, "//td['John doe']");
-		*/
 	}
 }
