@@ -26,8 +26,9 @@ public class SecurityStartup {
 	private List<Role> defaultRoles;
 
 	public void startup() {
+		printInfo();
+		
 		for (Role role : defaultRoles) {
-			System.out.println("Role = " + role + " id = " + role.getId());
 			persistenceService.save(role);
 		}
 		for (User user : defaultUsers) {
@@ -45,11 +46,20 @@ public class SecurityStartup {
 		}
 	}
 	
+	private void printInfo() {
+		System.out.println("Adding users:");
+		for (User user : defaultUsers) {
+			System.out.println(user + " with roles " + user.getRoles() + " size = " + user.getRoles().size());
+		}
+		
+	}
+
 	/**
 	 * This can be called from command line or directly from ant.
 	 * @param args
 	 */
 	public static void main(String args[]) {
+		
 		if (args.length != 1)
 			throw new RuntimeException("location of applicationContext.xml must be specified");
 		

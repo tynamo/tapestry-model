@@ -13,11 +13,13 @@ import org.trails.security.annotation.Security;
 import org.trails.validation.ValidateUniqueness;
 
 import javax.persistence.*;
+
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@Table(name="TRAILS_USER") 
 @ValidateUniqueness(property = "username")
 @Security(restrictions = {@Restriction(restrictionType = RestrictionType.VIEW, requiredRole = "ROLE_MANAGER")})
 public class User implements Serializable

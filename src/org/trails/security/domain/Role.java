@@ -19,6 +19,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@Table(name="TRAILS_ROLE") 
 @ValidateUniqueness(property = "name")
 @Security(restrictions = {@Restriction(restrictionType = RestrictionType.VIEW, requiredRole = "ROLE_MANAGER")})
 public class Role implements Serializable
