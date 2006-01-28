@@ -13,7 +13,7 @@ public class Address
     }
 
     private String street;
-    
+
     private String city;
 
     public String getCity()
@@ -34,5 +34,18 @@ public class Address
     public void setStreet(String street)
     {
         this.street = street;
+    }
+
+    public String toString()
+    {
+        if ((street != null) && (city != null)) {
+            return street + ", " + city;
+        } else if (street != null) {
+            return street;
+        } else if (city != null) {
+            return city;
+        } else {
+            return "";
+        }
     }
 }
