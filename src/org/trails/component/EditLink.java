@@ -40,10 +40,6 @@ public abstract class EditLink extends Link
 {
 
     public abstract PersistenceService getPersistenceService();
-   
-    public abstract IClassDescriptor getClassDescriptor();
-
-    public abstract void setClassDescriptor(IClassDescriptor ClassDescriptor);
     
     public static String SUFFIX = "Edit";
 

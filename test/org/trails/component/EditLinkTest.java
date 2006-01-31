@@ -73,20 +73,12 @@ public class EditLinkTest extends ComponentTest
     {
         listPage.setTypeName(Foo.class.getName());
         persistenceMock.expects(once()).method("reattach").with(eq(foo));
-        
-        TrailsClassDescriptor descriptor = new TrailsClassDescriptor(Foo.class, "foo");
-        IdentifierDescriptor idDescriptor = new IdentifierDescriptor(Foo.class, "id", Foo.class);
-        descriptor.getPropertyDescriptors().add(idDescriptor);
-        
-//        propDescMock.expects(once()).method("getClassDescriptor")
-//            .with(same(Foo.class)).will(returnValue(descriptor));
- 
+
         // Pretend Foo has a custom page
         cycleMock.expects(atLeastOnce()).method("getPage").with(eq("FooEdit")).will(returnValue(
                 editPage));
         cycleMock.expects(atLeastOnce()).method("activate").with(same(editPage));
 
-        editLink.setClassDescriptor(descriptor);
         editLink.setModel(foo);
 
         
@@ -105,17 +97,10 @@ public class EditLinkTest extends ComponentTest
         listPage.setTypeName(Foo.class.getName());
         Bar bar = new Bar();
         bar.setId(new Integer(2));
-        TrailsClassDescriptor barDescriptor = new TrailsClassDescriptor(Bar.class, "foo");
-        IdentifierDescriptor idDescriptor = new IdentifierDescriptor(Foo.class, "id", Foo.class);
-        barDescriptor.getPropertyDescriptors().add(idDescriptor);
-
-//        propDescMock.expects(once()).method("getClassDescriptor")
-//            .with(same(Bar.class)).will(returnValue(barDescriptor));
 
         persistenceMock.expects(once()).method("reattach").with(eq(bar));
 
         editLink.setModel(bar);
-        editLink.setClassDescriptor(barDescriptor);
         
         cycleMock.expects(atLeastOnce()).method("getPage").with(eq("BarEdit")).will(throwException(
                 new PageNotFoundException("Not found")));
