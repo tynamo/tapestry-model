@@ -18,10 +18,10 @@
         <binding name="class">editRowClass</binding> -->
     </component>
 
-    <component id="hasBlock" type="Conditional" inherit-informal-parameters="no">
+    <component id="hasBlock" type="If" inherit-informal-parameters="no">
         <binding name="condition">hasBlock(property.name)</binding>
     </component>   
-    <component id="doesntHaveBlock" type="Conditional" inherit-informal-parameters="no">
+    <component id="doesntHaveBlock" type="If" inherit-informal-parameters="no">
         <binding name="condition">not(hasBlock(property.name))</binding>
     </component>      
     <component id="renderBlock" type="RenderBlock" inherit-informal-parameters="no">

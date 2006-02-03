@@ -5,7 +5,7 @@
 &lt;span jwcid="$content$"&gt;
 &lt;body jwcid="@Body"&gt;
     &lt;div class="description" jwcid="@Insert" value="ognl:classDescriptor.shortDescription" /&gt;
-    &lt;div jwcid="@Conditional" class="error" condition="ognl:delegate.hasErrors" element="div"&gt;
+    &lt;div jwcid="@If" class="error" condition="ognl:delegate.hasErrors" element="div"&gt;
         Error: &lt;span jwcid="@Delegator" delegate="hognl:delegate.firstError" /&gt;
     &lt;/div&gt;
     &lt;form jwcid="@trails:ObjectForm" model="ognl:model" &gt;

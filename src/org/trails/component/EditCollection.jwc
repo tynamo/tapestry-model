@@ -33,10 +33,10 @@
     <component id="insert" type="Insert" inherit-informal-parameters="no">
         <binding name="value">currentObject</binding>
     </component>
-    <component id="canAddFromExisting" type="Conditional" inherit-informal-parameters="no">
+    <component id="canAddFromExisting" type="If" inherit-informal-parameters="no">
         <binding name="condition">addFromExisting</binding>
     </component>
-    <component id="cannotAddFromExisting" type="Conditional" inherit-informal-parameters="no">
+    <component id="cannotAddFromExisting" type="If" inherit-informal-parameters="no">
         <binding name="condition">!addFromExisting</binding>
     </component> 
     <component id="palette" type="contrib:Palette" inherit-informal-parameters="no">
@@ -44,7 +44,7 @@
         <binding name="selected">selectedList</binding>
         <binding name="sort">sortMode</binding>
     </component>
-    <component id="allowCreate" type="Conditional" inherit-informal-parameters="no">
+    <component id="allowCreate" type="If" inherit-informal-parameters="no">
         <binding name="condition">allowCreate</binding>
     </component>
     <component id="addbutton" type="Submit" inherit-informal-parameters="no">

@@ -5,7 +5,7 @@
         <a href="#" jwcid="@PageLink" page="Home">Home</a>
     </div>
 	<h1><span jwcid="@Insert" value="ognl:title" /></h1>
-    <div jwcid="@Conditional" class="error" condition="ognl:delegate.hasErrors" element="div">
+    <div jwcid="@If" class="error" condition="ognl:delegate.hasErrors" element="div">
         <span jwcid="@Insert" value="message:org.trails.i18n.error">Error: </span>&nbsp;<span jwcid="@Delegator" delegate="ognl:delegate.firstError" />
     </div>
     <form jwcid="@trails:ObjectForm" model="ognl:model" class="detail">

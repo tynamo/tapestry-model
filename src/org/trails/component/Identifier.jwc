@@ -11,16 +11,16 @@
     <component id="idInsert" type="Insert" inherit-informal-parameters="no">
         <binding name="value">model[descriptor.name]</binding>
     </component>
-    <component id="editable" type="Conditional" inherit-informal-parameters="no">
+    <component id="editable" type="If" inherit-informal-parameters="no">
         <binding name="condition">editable</binding>
     </component>
-   <component id="notEditable" type="Conditional" inherit-informal-parameters="no">
+   <component id="notEditable" type="If" inherit-informal-parameters="no">
         <binding name="condition">not(editable)</binding>
     </component>	
-    <component id="isNumeric" type="Conditional" inherit-informal-parameters="no">
+    <component id="isNumeric" type="If" inherit-informal-parameters="no">
         <binding name="condition">descriptor.numeric</binding>
     </component>
-   <component id="isString" type="Conditional" inherit-informal-parameters="no">
+   <component id="isString" type="If" inherit-informal-parameters="no">
         <binding name="condition">descriptor.string</binding>
     </component>	
     <component id="idStringField" type="TextField" inherit-informal-parameters="no">

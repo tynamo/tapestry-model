@@ -4,7 +4,7 @@
 
 <ul class="glassList">
 <div class="glassList" jwcid="@Foreach" source="ognl:descriptorService.allDescriptors" value="ognl:descriptor" >
-	<div jwcid="@Conditional" condition="ognl:!descriptor.child">
+	<div jwcid="@If" condition="ognl:!descriptor.child">
         <li>
         	<a href="#" jwcid="@trails:ListAllLink" typeName="ognl:descriptor.type.name" />
     	</li>

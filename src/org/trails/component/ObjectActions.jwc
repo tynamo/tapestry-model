@@ -17,10 +17,10 @@
     	<binding name="element">literal:div</binding>
     	<binding name="class">buttonBarClass</binding>
     </component>
-    <component id="hasMethodBlock" type="Conditional" inherit-informal-parameters="no">
+    <component id="hasMethodBlock" type="If" inherit-informal-parameters="no">
     	<binding name="condition">hasBlock(methodDescriptor.name)</binding>
     </component>   
-    <component id="doesntHaveMethodBlock" type="Conditional" inherit-informal-parameters="no">
+    <component id="doesntHaveMethodBlock" type="If" inherit-informal-parameters="no">
         <binding name="condition">not(hasBlock(methodDescriptor.name))</binding>
     </component>      
     <component id="renderMethodBlock" type="RenderBlock" inherit-informal-parameters="no">

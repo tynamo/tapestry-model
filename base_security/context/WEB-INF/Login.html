@@ -2,7 +2,7 @@
   <div id="header">
   </div>
 	<h1><span jwcid="@Insert" value="message:org.trails.login.title">Login</span></h1>
-    <div jwcid="@Conditional" class="error" condition="ognl:webRequest.getParameterValue('login_error')" element="div">
+    <div jwcid="@If" class="error" condition="ognl:webRequest.getParameterValue('login_error')" element="div">
       <img jwcid="@Any" src="img/iconWarning.gif" alt="message:icon.warning" class="icon"/>
       <span jwcid="@Insert" value="message:org.trails.login.error">Error: Wrong Username or Password</span>
     </div>

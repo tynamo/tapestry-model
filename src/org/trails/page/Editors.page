@@ -24,7 +24,7 @@
         <binding name="value">model[descriptor.name]</binding>
     </component>   
     <component id="checkbox" type="Checkbox" inherit-informal-parameters="no">
-        <binding name="selected">model[descriptor.name]</binding>
+        <binding name="value">model[descriptor.name]</binding>
     </component>   
     <component id="editCollection" type="EditCollection" inherit-informal-parameters="no">
         <binding name="collection">model[descriptor.name]</binding>

@@ -3,7 +3,7 @@
 <span jwcid="@Border">
 
     <div class="description" jwcid="@Insert" value="ognl:classDescriptor.shortDescription" />
-    <div jwcid="@Conditional" class="error" condition="ognl:delegate.hasErrors" element="div">
+    <div jwcid="@If" class="error" condition="ognl:delegate.hasErrors" element="div">
         Error: <span jwcid="@Delegator" delegate="ognl:delegate.firstError" />
     </div>
     <form jwcid="@trails:ObjectForm" model="ognl:model" editRowElement="tr" labelElement="th" editorElement="td">
