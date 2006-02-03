@@ -338,7 +338,7 @@
 	</target>
 	
 	<target name="deploy-example" depends="update-example" description="Redeploys the examples/simple application">
-		<ant dir="examples/simple" target="redeploy" inheritall="false"></ant>
+		<ant dir="examples/simple" target="war" inheritall="false"></ant>
 		<!-- Give tomcat the time to deploy... i know it's bad...-->
 		<sleep seconds="30"/>
 	</target>
