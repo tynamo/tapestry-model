@@ -8,3 +8,12 @@ manager.username=login
 manager.password=password
 # this directory (security.startup.context) is relative to the context directory.
 security.startup.context=WEB-INF/applicationContext.xml
+
+# Use these settings to customize your database connection
+hibernate.dialect=org.hibernate.dialect.HSQLDialect
+hibernate.show_sql=true
+hibernate.hbm2ddl.auto=update
+hibernate.connection.driver_class=org.hsqldb.jdbcDriver
+hibernate.connection.url=jdbc:hsqldb:mem:test
+hibernate.connection.username=sa
+hibernate.connection.password=
