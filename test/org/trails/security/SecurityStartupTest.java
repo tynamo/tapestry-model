@@ -10,6 +10,9 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
+import ognl.Ognl;
+import ognl.OgnlException;
+
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -80,7 +83,7 @@ public class SecurityStartupTest extends TestCase {
         admin.setRoles(adminRoles);
 	}
 	
-	public void testStartup() {
+	public void testStartup() throws Exception {
 		TransactionTemplate tt = new TransactionTemplate(txManager);
 		
 		tt.execute(new TransactionCallbackWithoutResult() {
@@ -100,6 +103,12 @@ public class SecurityStartupTest extends TestCase {
 				assertEquals(roles.size(), 2);
 				assertEquals(users.size(), 2);
 				
+				try
+				{
+					User adminUser = (User)Ognl.getValue("#root.{? username == 'admin'}[0]", users);
+					assertEquals(2, adminUser.getRoles().size());
+				}
+				catch (OgnlException oe) {oe.printStackTrace();}
 				assertTrue(((Role)roles.get(0)).getName().equals(roleUser.getName())
 						|| ((Role)roles.get(1)).getName().equals(roleUser.getName()));
 				assertTrue(((Role)roles.get(0)).getName().equals(roleAdmin.getName())
