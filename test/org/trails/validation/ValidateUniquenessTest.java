@@ -58,7 +58,7 @@ public class ValidateUniquenessTest extends TestCase
         catch (UniquenessException pe)
         {
             caught = pe;
-            pe.printStackTrace();
+            //pe.printStackTrace();
         }
         assertNotNull(caught);
         assertEquals("right message", "Description must be unique.",

@@ -1,16 +1,14 @@
 package org.trails.validation;
 
-import org.dom4j.datatype.InvalidSchemaException;
+import junit.framework.TestCase;
+
 import org.hibernate.validator.ClassValidator;
 import org.hibernate.validator.InvalidStateException;
 import org.hibernate.validator.InvalidValue;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.trails.persistence.PersistenceException;
 import org.trails.persistence.PersistenceService;
 import org.trails.test.Baz;
-
-import junit.framework.TestCase;
 
 
 public class HibernateValidationTest extends TestCase
@@ -44,7 +42,7 @@ public class HibernateValidationTest extends TestCase
         {
             ivex = ex;
         }
-        ivex.printStackTrace();
+        //ivex.printStackTrace();
         assertNotNull(ivex);
         InvalidValue invalidValue = ivex.getInvalidValues()[0];
         assertEquals("right message", "was too long.", invalidValue.getMessage());
@@ -59,9 +57,9 @@ public class HibernateValidationTest extends TestCase
         }
         catch (InvalidStateException ex)
         {
-            ex.printStackTrace();
+            //ex.printStackTrace();
         }
-        ClassValidator validator = new ClassValidator(Baz.class);
+        ClassValidator<Baz> validator = new ClassValidator<Baz>(Baz.class);
         InvalidValue[] invalidValues = validator.getInvalidValues(baz);
         assertEquals(1, invalidValues.length);
     }
