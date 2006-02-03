@@ -111,7 +111,7 @@ public class Role implements Serializable
 
     public int hashCode()
     {
-        return (id != null ? id.hashCode() : 0);
+        return (id != null ? id.hashCode() : super.hashCode());
     }
 
     public String toString()
