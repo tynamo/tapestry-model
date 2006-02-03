@@ -34,6 +34,7 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.dao.DataAccessException;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+import org.springframework.transaction.annotation.Transactional;
 import org.trails.component.Utils;
 import org.trails.descriptor.DescriptorService;
 import org.trails.descriptor.IClassDescriptor;
@@ -60,6 +61,7 @@ public class HibernatePersistenceService extends HibernateDaoSupport implements
      * @see org.blah.service.IPersistenceService#getInstance(java.lang.Class,
      *      java.io.Serializable)
      */
+    @Transactional
     public <T> T getInstance(Class<T> type, Serializable id)
     {
         return (T) getHibernateTemplate().load(Utils.checkForCGLIB(type), id);
@@ -70,6 +72,7 @@ public class HibernatePersistenceService extends HibernateDaoSupport implements
      * 
      * @see org.blah.service.IPersistenceService#getAllInstances(java.lang.Class)
      */
+    @Transactional
     public List getAllInstances(Class type)
     {
         // return getHibernateTemplate().find("from "+ type.getName());
@@ -81,6 +84,7 @@ public class HibernatePersistenceService extends HibernateDaoSupport implements
      * 
      * @see org.blah.service.IPersistenceService#save(java.lang.Object)
      */
+    @Transactional
     public <T> T save(T instance) throws ValidationException
     {
         try
@@ -93,6 +97,7 @@ public class HibernatePersistenceService extends HibernateDaoSupport implements
 
     }
 
+    @Transactional
     public void remove(Object instance)
     {
         // merge first to avoid NonUniqueObjectException
@@ -104,6 +109,7 @@ public class HibernatePersistenceService extends HibernateDaoSupport implements
      * 
      * @see org.trails.persistence.PersistenceService#getInstances(org.trails.persistence.Query)
      */
+    @Transactional
     public List getInstances(final DetachedCriteria criteria)
     {
         // TODO Auto-generated method stub
@@ -129,12 +135,14 @@ public class HibernatePersistenceService extends HibernateDaoSupport implements
         return allTypes;
     }
 
+    @Transactional
     public void reattach(Object model)
     {
         getSession().lock(model, LockMode.NONE);
 
     }
 
+    @Transactional
     public List getInstances(final Object example)
     {
         return (List) getHibernateTemplate().execute(new HibernateCallback()

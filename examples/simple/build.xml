@@ -4,20 +4,32 @@
 
      Trails Demo
      Trails Demo application
-     
                    
      fus8882                                                                
      ====================================================================== -->
 <project name="simple" default="all">
-
+	
 	<property file="build.properties"></property>
 
+	<!-- Default Hibernate Properties (override in build.properties) -->
+	<property name="hibernate.show_sql" value="true" />
+	<property name="hibernate.hbm2ddl.auto" value="update" />
+	<property name="hibernate.dialect" value="org.hibernate.dialect.HSQLDialect" />
+	<property name="hibernate.connection.driver_class" value="org.hsqldb.jdbcDriver" />
+	<property name="hibernate.connection.url" value="jdbc:hsqldb:mem:${ant.project.name}" />
+	<property name="hibernate.connection.username" value="sa" />
+    <property name="hibernate.connection.password" value="" />
+		
+	
 	<property name="context" value="${basedir}/context" />
 	<property name="webinf" value="${context}/WEB-INF" />
 	<property name="webinf.lib" value="${webinf}/lib" />
 	<property name="src.dir" value="${basedir}/src" />
 	<property name="test.src" value="${basedir}/test" />
-	<property name="compile.dir" value="${webinf}/classes" />
+	<property name="build.dir" value="${basedir}/build" />
+	<property name="compile.dir" value="${build.dir}/WEB-INF/classes" />
+	
+	<property name="deploy.dir" value="${basedir}/deploy" />
 	<property name="lib.dir" value="${basedir}/lib" />
 	<property name="war.file" value="${deploy.dir}/${ant.project.name}.war" />
 	
@@ -25,7 +37,7 @@
 		<fileset dir="${lib.dir}"></fileset>
 		<fileset dir="${tomcat.home}/common/lib"></fileset>
 		<fileset dir="${tomcat.home}/server/lib" />
-		<fileset dir="${env.JAVA_HOME}/../lib" includes="tools.jar"/>
+		<fileset dir="${java.home}/../lib" includes="tools.jar"/>
 	</path>
 	
 	<taskdef name="apt" classname="org.apache.tools.ant.taskdefs.Apt" classpathref="class.path"/>
@@ -104,25 +116,35 @@
 		<iajc source="1.5" srcdir="${src.dir}" destdir="${compile.dir}" classpathref="class.path" aspectpath="${lib.dir}/trails-aspects.jar" debug="on">
 		</iajc>		
 		<copy todir="${compile.dir}">
-			<fileset dir="${src.dir}" excludes="**/*.java" />
+			<fileset dir="${src.dir}" excludes="**/*.java">
+				<exclude name="**/*.java"/>
+				<exclude name="hibernate.cfg.xml"/>
+			</fileset>
 		</copy>
 
 	</target>
 
 		<target name="war" depends="compile,build-hibernate-config">
-			<mkdir dir="${deploy.dir}"/>
-			<!--
-			<mkdir dir="${webinf.lib}"/>
-			<copy todir="${webinf.lib}">
-				<fileset dir="${lib.dir}" excludes="xdoclet*.jar">
-				</fileset>
-			</copy>-->
-			<!-- <copy todir="${webinf.lib}" file="${trails.jar}" /> -->
-
-			<war webxml="${webinf}/web.xml" file="${war.file}">
-				<lib dir="${lib.dir}"></lib>
-				<fileset dir="${context}"></fileset>
-			</war>
+			<mkdir dir="${build.dir}" />
+		    <copy todir="${build.dir}">
+		    	<fileset dir="${context}"/>
+		    	<filterset>
+		    	  	<filtersfile file="${basedir}/build.properties"/>
+		    		<filter token="hibernate.connection.driver_class" value="${hibernate.connection.driver_class}"/>
+		    		<filter token="hibernate.connection.url" value="${hibernate.connection.url}"/>
+		    		<filter token="hibernate.connection.username" value="${hibernate.connection.username}"/>
+		    		<filter token="hibernate.connection.password" value="${hibernate.connection.password}"/>
+		    		<filter token="hibernate.show_sql" value="${hibernate.show_sql}"/>
+		    		<filter token="hibernate.hbm2ddl.auto" value="${hibernate.hbm2ddl.auto}"/>
+		    		<filter token="hibernate.dialect" value="${hibernate.dialect}"/>
+		    	</filterset>
+			</copy>
+			<mkdir dir="${build.dir}/WEB-INF/lib" />
+			<copy todir="${build.dir}/WEB-INF/lib" flatten="true">
+				<fileset dir="${lib.dir}" />
+			</copy>
+			<mkdir dir="${deploy.dir}" />
+			<jar basedir="${build.dir}" destfile="${war.file}"/>
 		</target>
 	
 	<target name="create-edit-page">
@@ -136,25 +158,56 @@
 		<copy file="${webinf}/DefaultList.html" tofile="${webinf}/${type.name}List.html"></copy>
 		<copy file="${webinf}/DefaultList.page" tofile="${webinf}/${type.name}List.page"></copy>
 	</target>
+		
+	<target name="deploy" depends="war">
+		<taskdef name="deploy" classname="org.apache.catalina.ant.DeployTask" classpathref="class.path">
+
+		</taskdef>
+		<!-- <taskdef name="list" classname="org.apache.catalina.ant.ListTask" classpathref="class.path"/>
+		<list url="${tomcat.url}/manager" username="${manager.username}" password="${manager.password}" /> -->
+		<deploy url="${tomcat.url}/manager" username="${manager.username}" password="${manager.password}" path="/${ant.project.name}" war="${war.file}" />
+	</target>
 	
-	<!--
+	<target name="undeploy" >
+		<taskdef name="undeploy" classname="org.apache.catalina.ant.UndeployTask" classpathref="class.path">
+
+		</taskdef>
+		<undeploy url="${tomcat.url}/manager" username="${manager.username}" password="${manager.password}" path="/${ant.project.name}" />
+	</target>
+	
+	<target name="reload" depends="war">
+		<taskdef name="reload" classname="org.apache.catalina.ant.ReloadTask" classpathref="class.path">
+
+		</taskdef>
+		<reload url="${tomcat.url}/manager" username="${manager.username}" password="${manager.password}" path="/${ant.project.name}" />
+	</target>
 	
 	<target name="redeploy" depends="war,undeploy,deploy" />
-	-->
-	<!-- Only need to create a war, there is no need for undeploy and deploy. -->
-	<target name="redeploy" depends="war" />
-	
+
 	<target name="all" depends="clean,build-hibernate-config,war" ></target>
 
+	<target name="initialize-security" depends="compile">
+		<java dir="context/" fork="yes" classname="org.trails.security.SecurityStartup">
+			<arg value="${security.startup.context}"/>
+	        <classpath>
+				<fileset dir="${tomcat.home}/common/lib"></fileset>
+    	        <fileset dir="${lib.dir}"></fileset>
+        	    <fileset dir="${java.home}/../lib" includes="tools.jar"/>
+            	<path location="${compile.dir}"></path>
+	        </classpath>
+		</java>
+	</target>
+	
 	<target name="build-hibernate-config" >
-		<echo message="${env.JAVA_HOME}" />
+		<echo message="${java.home}" />
 		<apt
 			fork="true"
 			nocompile="true"
 			classpathref="class.path"
 			factory="org.trails.hibernate.HibernateAnnotationProcessorFactory"
 			srcdir="${src.dir}"
-			preprocessdir="${webinf}">
+			preprocessdir="${webinf}"
+			destdir="${webinf}">
 			
 		</apt>	
 		
@@ -163,7 +216,7 @@
     <taskdef name="hibernatetool" classname="org.hibernate.tool.ant.HibernateToolTask">
         <classpath>
             <fileset dir="${lib.dir}"></fileset>
-            <fileset dir="${env.JAVA_HOME}/../lib" includes="tools.jar"/>
+            <fileset dir="${java.home}/../lib" includes="tools.jar"/>
             <path location="${compile.dir}"></path>
         </classpath>
     </taskdef>

@@ -11,12 +11,24 @@
 	
 	<property file="build.properties"></property>
 
+	<!-- Default Hibernate Properties (override in build.properties) -->
+	<property name="hibernate.show_sql" value="true" />
+	<property name="hibernate.hbm2ddl.auto" value="update" />
+	<property name="hibernate.dialect" value="org.hibernate.dialect.HSQLDialect" />
+	<property name="hibernate.connection.driver_class" value="org.hsqldb.jdbcDriver" />
+	<property name="hibernate.connection.url" value="jdbc:hsqldb:mem:${ant.project.name}" />
+	<property name="hibernate.connection.username" value="sa" />
+    <property name="hibernate.connection.password" value="" />
+		
+	
 	<property name="context" value="${basedir}/context" />
 	<property name="webinf" value="${context}/WEB-INF" />
 	<property name="webinf.lib" value="${webinf}/lib" />
 	<property name="src.dir" value="${basedir}/src" />
 	<property name="test.src" value="${basedir}/test" />
-	<property name="compile.dir" value="${webinf}/classes" />
+	<property name="build.dir" value="${basedir}/build" />
+	<property name="compile.dir" value="${build.dir}/WEB-INF/classes" />
+	
 	<property name="deploy.dir" value="${basedir}/deploy" />
 	<property name="lib.dir" value="${basedir}/lib" />
 	<property name="war.file" value="${deploy.dir}/${ant.project.name}.war" />
@@ -113,19 +125,26 @@
 	</target>
 
 		<target name="war" depends="compile,build-hibernate-config">
-			<mkdir dir="${deploy.dir}"/>
-			<!--
-			<mkdir dir="${webinf.lib}"/>
-			<copy todir="${webinf.lib}">
-				<fileset dir="${lib.dir}" excludes="xdoclet*.jar">
-				</fileset>
-			</copy>-->
-			<!-- <copy todir="${webinf.lib}" file="${trails.jar}" /> -->
-
-			<war webxml="${webinf}/web.xml" file="${war.file}">
-				<lib dir="${lib.dir}"></lib>
-				<fileset dir="${context}"></fileset>
-			</war>
+			<mkdir dir="${build.dir}" />
+		    <copy todir="${build.dir}">
+		    	<fileset dir="${context}"/>
+		    	<filterset>
+		    	  	<filtersfile file="${basedir}/build.properties"/>
+		    		<filter token="hibernate.connection.driver_class" value="${hibernate.connection.driver_class}"/>
+		    		<filter token="hibernate.connection.url" value="${hibernate.connection.url}"/>
+		    		<filter token="hibernate.connection.username" value="${hibernate.connection.username}"/>
+		    		<filter token="hibernate.connection.password" value="${hibernate.connection.password}"/>
+		    		<filter token="hibernate.show_sql" value="${hibernate.show_sql}"/>
+		    		<filter token="hibernate.hbm2ddl.auto" value="${hibernate.hbm2ddl.auto}"/>
+		    		<filter token="hibernate.dialect" value="${hibernate.dialect}"/>
+		    	</filterset>
+			</copy>
+			<mkdir dir="${build.dir}/WEB-INF/lib" />
+			<copy todir="${build.dir}/WEB-INF/lib" flatten="true">
+				<fileset dir="${lib.dir}" />
+			</copy>
+			<mkdir dir="${deploy.dir}" />
+			<jar basedir="${build.dir}" destfile="${war.file}"/>
 		</target>
 	
 	<target name="create-edit-page">

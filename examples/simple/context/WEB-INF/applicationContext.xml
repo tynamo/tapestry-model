@@ -22,8 +22,15 @@
 
 
 	<!-- ========================= RESOURCE DEFINITIONS ========================= -->
+	
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+        <property name="driverClassName" value="@hibernate.connection.driver_class@"/>
+        <property name="url" value="@hibernate.connection.url@"/>
+        <property name="username" value="@hibernate.connection.username@"/>
+        <property name="password" value="@hibernate.connection.password@"/>
+    </bean>
 <bean id="sessionFactory"
-       class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+       class="org.springframework.orm.hibernate3.LocalSessionFactoryBean" autowire="byName">
 <!--  
   <property name="mappingDirectoryLocations">
     <list>
@@ -35,11 +42,11 @@
   	<property name="configurationClass">
    		<value>org.hibernate.cfg.AnnotationConfiguration</value>
 	</property> 
-  <property name="entityInterceptor">
-  	<ref local="trailsInterceptor" />
-  </property>
-  <property name="hibernateProperties">
-  	<ref local="hibernateProperties"/>
+    <property name="entityInterceptor">
+  		<ref local="trailsInterceptor" />
+    </property>
+    <property name="hibernateProperties">
+  	  <ref local="hibernateProperties"/>
   <!-- 
     <props>
       <prop key="hibernate.dialect">
@@ -59,15 +66,21 @@
   </property>
 </bean>  
 
-	<!-- Transaction manager for a single Hibernate SessionFactory (alternative to JTA) -->
-	<bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
-		<property name="sessionFactory"><ref local="sessionFactory"/></property>
-	</bean>
+	<bean id="autoproxy" class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"
+          autowire="autodetect"/>
+    <bean id="transactionInterceptor" class="org.springframework.transaction.interceptor.TransactionInterceptor"
+          autowire="byName"/>
+    <bean id="transactionAdvisor" class="org.springframework.transaction.interceptor.TransactionAttributeSourceAdvisor"
+          autowire="autodetect"/>
+    <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager"
+          autowire="autodetect"/>
+    <bean id="transactionAttributeSource"
+          class="org.springframework.transaction.annotation.AnnotationTransactionAttributeSource"/>
 	
-	<bean id="persistenceServiceTarget" class="org.trails.hibernate.HibernatePersistenceService">
-		<property name="sessionFactory"><ref local="sessionFactory"/></property>
-	</bean>
-
+	<bean id="persistenceService" class="org.trails.hibernate.HibernatePersistenceService" autowire="autodetect"/>
+	
+	<bean id="squeezableSqueezer" class="org.trails.io.SqueezableSqueezeAdaptor" autowire="autodetect"/>
+	
 	<bean id="descriptorService" class="org.trails.descriptor.TrailsDescriptorService" init-method="init">
 		<property name="types">
 			<bean id="persistenceService.allTypes" class="org.springframework.beans.factory.config.PropertyPathFactoryBean"/>
@@ -105,22 +118,65 @@
 		<property name="descriptorFactory"><ref local="descriptorFactory" /></property>
 	</bean>
 	
-	<bean id="persistenceService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
-		<property name="transactionManager"><ref local="transactionManager"/></property>
-		<property name="target"><ref local="persistenceServiceTarget"/></property>
-		<property name="transactionAttributes">
-			<props>
-				<prop key="get*">PROPAGATION_REQUIRED,readOnly</prop>
-				<prop key="find*">PROPAGATION_REQUIRED,readOnly</prop>
-				<prop key="load*">PROPAGATION_REQUIRED,readOnly</prop>
-				<prop key="save*">PROPAGATION_REQUIRED</prop>
-				<prop key="remove*">PROPAGATION_REQUIRED</prop>
-			</props>
-		</property>
-	</bean>
 	
 	<!-- security service bean -->
 	<bean id="securityService" class="org.trails.security.TrailsSecurityService"/>
+	
+		<!-- security startup beans. lazy-init is true since this is used rarely. -->
+	<bean id="roleUser" class="org.trails.security.domain.Role" lazy-init="true">
+		<property name="name"><value>ROLE_USER</value></property>
+		<property name="description"><value>User role</value></property>
+	</bean>
+	
+	<bean id="roleManager" class="org.trails.security.domain.Role" lazy-init="true">
+		<property name="name"><value>ROLE_MANAGER</value></property>
+		<property name="description"><value>Manager role</value></property>
+	</bean>
+
+	<bean id="user" class="org.trails.security.domain.User" lazy-init="true">
+		<property name="username"><value>user</value></property>
+		<property name="password"><value>user</value></property> <!-- default password -->
+		<property name="confirmPassword"><value>user</value></property> <!-- default password -->
+		<property name="firstName"><value>Foo</value></property>
+		<property name="lastName"><value>Bar</value></property>
+		<property name="roles">
+			<list>
+				<ref bean="roleUser"/>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="admin" class="org.trails.security.domain.User" lazy-init="true">
+		<property name="username"><value>admin</value></property>
+		<property name="password"><value>admin</value></property> <!-- default password -->
+		<property name="confirmPassword"><value>admin</value></property> <!-- default password -->
+		<property name="firstName"><value>Admin</value></property>
+		<property name="lastName"><value>Admin</value></property>
+		<property name="roles">
+			<list>
+				<ref bean="roleUser"/>
+				<ref bean="roleManager"/>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="securityStartup" class="org.trails.security.SecurityStartup" lazy-init="true">
+		<property name="persistenceService"><ref local="persistenceService" /></property>		
+		<property name="defaultUsers">
+			<list>
+				<ref local="user"/>
+				<ref local="admin"/>
+			</list>
+		</property>
+		<property name="defaultRoles">
+			<list>
+				<ref local="roleManager"/>
+				<ref local="roleUser"/>
+			</list>
+		</property>
+	</bean>
+
+	<!-- end of security startup beans -->
 	
 	<bean id="validateUniqueAspect" class="org.trails.validation.ValidateUniqueAspect" factory-method="aspectOf">
 		<property name="descriptorService"><ref local="descriptorService" /></property>

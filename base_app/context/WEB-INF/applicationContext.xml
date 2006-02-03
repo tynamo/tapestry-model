@@ -22,8 +22,15 @@
 
 
 	<!-- ========================= RESOURCE DEFINITIONS ========================= -->
+	
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+        <property name="driverClassName" value="@hibernate.connection.driver_class@"/>
+        <property name="url" value="@hibernate.connection.url@"/>
+        <property name="username" value="@hibernate.connection.username@"/>
+        <property name="password" value="@hibernate.connection.password@"/>
+    </bean>
 <bean id="sessionFactory"
-       class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+       class="org.springframework.orm.hibernate3.LocalSessionFactoryBean" autowire="byName">
 <!--  
   <property name="mappingDirectoryLocations">
     <list>
@@ -35,11 +42,11 @@
   	<property name="configurationClass">
    		<value>org.hibernate.cfg.AnnotationConfiguration</value>
 	</property> 
-  <property name="entityInterceptor">
-  	<ref local="trailsInterceptor" />
-  </property>
-  <property name="hibernateProperties">
-  	<ref local="hibernateProperties"/>
+    <property name="entityInterceptor">
+  		<ref local="trailsInterceptor" />
+    </property>
+    <property name="hibernateProperties">
+  	  <ref local="hibernateProperties"/>
   <!-- 
     <props>
       <prop key="hibernate.dialect">
@@ -59,15 +66,21 @@
   </property>
 </bean>  
 
-	<!-- Transaction manager for a single Hibernate SessionFactory (alternative to JTA) -->
-	<bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
-		<property name="sessionFactory"><ref local="sessionFactory"/></property>
-	</bean>
+	<bean id="autoproxy" class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"
+          autowire="autodetect"/>
+    <bean id="transactionInterceptor" class="org.springframework.transaction.interceptor.TransactionInterceptor"
+          autowire="byName"/>
+    <bean id="transactionAdvisor" class="org.springframework.transaction.interceptor.TransactionAttributeSourceAdvisor"
+          autowire="autodetect"/>
+    <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager"
+          autowire="autodetect"/>
+    <bean id="transactionAttributeSource"
+          class="org.springframework.transaction.annotation.AnnotationTransactionAttributeSource"/>
 	
-	<bean id="persistenceServiceTarget" class="org.trails.hibernate.HibernatePersistenceService">
-		<property name="sessionFactory"><ref local="sessionFactory"/></property>
-	</bean>
-
+	<bean id="persistenceService" class="org.trails.hibernate.HibernatePersistenceService" autowire="autodetect"/>
+	
+	<bean id="squeezableSqueezer" class="org.trails.io.SqueezableSqueezeAdaptor" autowire="autodetect"/>
+	
 	<bean id="descriptorService" class="org.trails.descriptor.TrailsDescriptorService" init-method="init">
 		<property name="types">
 			<bean id="persistenceService.allTypes" class="org.springframework.beans.factory.config.PropertyPathFactoryBean"/>
@@ -105,19 +118,6 @@
 		<property name="descriptorFactory"><ref local="descriptorFactory" /></property>
 	</bean>
 	
-	<bean id="persistenceService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
-		<property name="transactionManager"><ref local="transactionManager"/></property>
-		<property name="target"><ref local="persistenceServiceTarget"/></property>
-		<property name="transactionAttributes">
-			<props>
-				<prop key="get*">PROPAGATION_REQUIRED,readOnly</prop>
-				<prop key="find*">PROPAGATION_REQUIRED,readOnly</prop>
-				<prop key="load*">PROPAGATION_REQUIRED,readOnly</prop>
-				<prop key="save*">PROPAGATION_REQUIRED</prop>
-				<prop key="remove*">PROPAGATION_REQUIRED</prop>
-			</props>
-		</property>
-	</bean>
 	
 	<!-- security service bean -->
 	<bean id="securityService" class="org.trails.security.TrailsSecurityService"/>
