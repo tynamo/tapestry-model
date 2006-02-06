@@ -63,6 +63,36 @@
         <url-pattern>/app/*</url-pattern>
     </filter-mapping>
 
+    <filter-mapping>
+        <filter-name>hibernateFilter</filter-name>
+        <url-pattern>/app</url-pattern>
+    </filter-mapping>
+
+    <filter-mapping>
+        <filter-name>hibernateFilter</filter-name>
+        <url-pattern>*.html</url-pattern>
+    </filter-mapping>
+
+    <filter-mapping>
+        <filter-name>hibernateFilter</filter-name>
+        <url-pattern>*.direct</url-pattern>
+    </filter-mapping>
+
+    <filter-mapping>
+        <filter-name>hibernateFilter</filter-name>
+        <url-pattern>*.sdirect</url-pattern>
+    </filter-mapping>
+
+    <filter-mapping>
+        <filter-name>hibernateFilter</filter-name>
+        <url-pattern>/assets/*</url-pattern>
+    </filter-mapping>
+
+    <filter-mapping>
+        <filter-name>hibernateFilter</filter-name>
+        <url-pattern>*.svc</url-pattern>
+    </filter-mapping>
+    
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
@@ -71,9 +101,39 @@
         <servlet-class>org.trails.servlet.TrailsApplicationServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
+    
     <servlet-mapping>
         <servlet-name>@app.name@</servlet-name>
         <url-pattern>/app</url-pattern>
+    </servlet-mapping>
+<servlet-mapping>
+        <servlet-name>@app.name@</servlet-name>
+        <url-pattern>/app</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>@app.name@</servlet-name>
+        <url-pattern>*.html</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>@app.name@</servlet-name>
+        <url-pattern>*.direct</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>@app.name@</servlet-name>
+        <url-pattern>*.sdirect</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>@app.name@</servlet-name>
+        <url-pattern>/assets/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>@app.name@</servlet-name>
+        <url-pattern>*.svc</url-pattern>
     </servlet-mapping>
 
 
