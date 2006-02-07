@@ -16,7 +16,7 @@ public class HibernatePersistenceValidationAdvice implements MethodBeforeAdvice
 
     public void before(Method arg0, Object[] arg1, Object arg2) throws Throwable
     {
-        System.out.println("in advice");
+        //System.out.println("in advice");
     }
 
 }

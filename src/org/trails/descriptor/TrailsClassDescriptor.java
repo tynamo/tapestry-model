@@ -127,7 +127,7 @@ public class TrailsClassDescriptor extends TrailsDescriptor implements IClassDes
             return (IPropertyDescriptor) Ognl.getValue(ognl, this);
         }catch (OgnlException oe)
         {
-            oe.printStackTrace();
+            //oe.printStackTrace();
 
             return null;
         }catch (IndexOutOfBoundsException ie)

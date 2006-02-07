@@ -75,8 +75,8 @@ public class AnnotationDecorator implements DescriptorDecorator
 		}
 		catch (Exception ex)
 		{
-			System.out.println(propertyDescriptor.getName());
-		    ex.printStackTrace();
+			//System.out.println(propertyDescriptor.getName());
+		    //ex.printStackTrace();
 		    // don't care
 		}
 		return clonedDescriptor;
@@ -95,13 +95,13 @@ public class AnnotationDecorator implements DescriptorDecorator
             IPropertyDescriptor propertyDescriptor = (IPropertyDescriptor) iter.next();
             if(propertyDescriptor.getIndex() != IPropertyDescriptor.UNDEFINED_INDEX)
             {
-                Collections.swap(sortedDescriptors, 
+                Collections.swap(sortedDescriptors,
                         propertyDescriptor.getIndex(),
                         sortedDescriptors.indexOf(propertyDescriptor));
             }
         }
         descriptor.setPropertyDescriptors(sortedDescriptors);
-        
+
     }
 
     private IDescriptor decorateFromAnnotations( IDescriptor descriptor, Annotation[] annotations)
@@ -121,7 +121,7 @@ public class AnnotationDecorator implements DescriptorDecorator
                 }
                 catch(Exception ex)
                 {
-                    ex.printStackTrace();
+                    //ex.printStackTrace();
                 }
             }            
         }

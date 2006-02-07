@@ -58,16 +58,16 @@ public class TrailsDescriptor implements IDescriptor
     {
         ArrayList words = new ArrayList();
         Perl5Util perl = new Perl5Util();
-    
+
         while (perl.match("/(\\w+?)([A-Z].*)/", name))
         {
             String word = perl.group(1);
             name = perl.group(2);
             words.add(StringUtils.capitalise(word));
         }
-    
+
         words.add(StringUtils.capitalise(name));
-    
+
         return StringUtils.join(words.iterator(), " ");
     }
 
@@ -99,7 +99,7 @@ public class TrailsDescriptor implements IDescriptor
         }
         catch (Exception ex)
         {
-            ex.printStackTrace();
+            //ex.printStackTrace();
         }
     }
 

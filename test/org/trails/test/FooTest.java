@@ -14,13 +14,13 @@ public class FooTest extends TestCase
         Foo foo = new Foo();
         for (Method fooMethod : Foo.class.getDeclaredMethods())
         {
-            System.out.println(fooMethod.getName());
+            //System.out.println(fooMethod.getName());
             
         }
         BeanInfo beanInfo = Introspector.getBeanInfo(Foo.class);
         for (PropertyDescriptor descriptor : beanInfo.getPropertyDescriptors())
         {
-            System.out.println(descriptor.getName());
+            //System.out.println(descriptor.getName());
         }
     }
 }

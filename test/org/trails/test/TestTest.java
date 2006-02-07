@@ -34,7 +34,7 @@ public class TestTest extends TestCase
         for (int i = 0; i < beanInfo.getPropertyDescriptors().length; i++)
         {
             PropertyDescriptor descriptor = beanInfo.getPropertyDescriptors()[i];
-            System.out.println(descriptor.getName());
+            //System.out.println(descriptor.getName());
         }
     }
 }

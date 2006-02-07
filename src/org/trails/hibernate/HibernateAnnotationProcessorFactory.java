@@ -109,7 +109,9 @@ public class HibernateAnnotationProcessorFactory implements AnnotationProcessorF
                 doc.write(writer);
                 
             }
-            catch (Exception ex) {ex.printStackTrace();}
+            catch (Exception ex) {
+                //ex.printStackTrace();
+                }
 
         }
         

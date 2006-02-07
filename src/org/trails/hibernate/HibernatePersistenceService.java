@@ -232,7 +232,7 @@ public class HibernatePersistenceService extends HibernateDaoSupport implements
                         }
                         catch( OgnlException e )
                         {
-                            e.printStackTrace();//TODO properly implent logging!!!
+                            //e.printStackTrace();//TODO properly implent logging!!!
                         }
                     }
                 }

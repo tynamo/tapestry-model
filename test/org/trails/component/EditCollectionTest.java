@@ -185,7 +185,7 @@ public class EditCollectionTest extends ComponentTest
         baz2 = (Baz)bazIterator.next();
         editCollection.setSelected(deletedList);
         editCollection.remove((IRequestCycle)cycleMock.proxy());
-        System.out.println("size of collection: " + foo.getBazzes().size());
+        //System.out.println("size of collection: " + foo.getBazzes().size());
         assertFalse("baz1 removed", foo.getBazzes().contains(baz1));
         assertTrue("baz2 not removed", foo.getBazzes().contains(baz2));
     }

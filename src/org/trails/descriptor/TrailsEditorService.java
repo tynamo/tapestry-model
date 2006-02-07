@@ -34,7 +34,7 @@ public class TrailsEditorService implements EditorService
      */
     public void setEditorMap(Map editorMap)
     {
-        System.out.println("map type: " + editorMap.getClass().getName());
+        //System.out.println("map type: " + editorMap.getClass().getName());
         this.editorMap = editorMap;
     }
 
@@ -60,7 +60,7 @@ public class TrailsEditorService implements EditorService
             } catch (OgnlException e)
             {
                 // TODO Auto-generated catch block
-                e.printStackTrace();
+                //e.printStackTrace();
             }
         }
         return getDefaultEditor();

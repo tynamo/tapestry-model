@@ -159,7 +159,7 @@ public class HibernatePersistenceServiceTest extends MockObjectTestCase
         }
         catch (PersistenceException pex)
         {
-            pex.printStackTrace();
+            //pex.printStackTrace();
             persistenceException = pex;
         }
         assertNotNull("caught exception", persistenceException);

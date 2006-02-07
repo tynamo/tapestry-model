@@ -162,7 +162,7 @@ public class HibernateDescriptorDecoratorTest extends TestCase
         Configuration cfg = lsfb.getConfiguration();
         PersistentClass fooMapping = cfg.getClassMapping(Foo.class.getName());
         Property idProp = fooMapping.getIdentifierProperty();
-        System.out.println(idProp.getMetaAttributes());
+        //System.out.println(idProp.getMetaAttributes());
     }
     
     public void testLengthLarge() throws Exception
