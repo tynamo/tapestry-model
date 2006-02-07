@@ -129,7 +129,7 @@
 
 	<target name="build" depends="compile,build-hibernate-config">
 		<mkdir dir="${build.dir}" />
-		<copy todir="${build.dir}">
+		<copy todir="${build.dir}" overwrite="true">
 			<fileset dir="${context}" />
 			<filterset>
 				<filtersfile file="${basedir}/build.properties" />
@@ -148,24 +148,6 @@
 		</copy>
 	</target>
 	<target name="war" depends="build">
-		<mkdir dir="${build.dir}" />
-		<copy todir="${build.dir}">
-			<fileset dir="${context}" />
-			<filterset>
-				<filtersfile file="${basedir}/build.properties" />
-				<filter token="hibernate.connection.driver_class" value="${hibernate.connection.driver_class}" />
-				<filter token="hibernate.connection.url" value="${hibernate.connection.url}" />
-				<filter token="hibernate.connection.username" value="${hibernate.connection.username}" />
-				<filter token="hibernate.connection.password" value="${hibernate.connection.password}" />
-				<filter token="hibernate.show_sql" value="${hibernate.show_sql}" />
-				<filter token="hibernate.hbm2ddl.auto" value="${hibernate.hbm2ddl.auto}" />
-				<filter token="hibernate.dialect" value="${hibernate.dialect}" />
-			</filterset>
-		</copy>
-		<mkdir dir="${build.dir}/WEB-INF/lib" />
-		<copy todir="${build.dir}/WEB-INF/lib" flatten="true">
-			<fileset dir="${lib.dir}" />
-		</copy>
 		<mkdir dir="${deploy.dir}" />
 		<jar basedir="${build.dir}" destfile="${war.file}" />
 	</target>
@@ -214,8 +196,8 @@
 	<target name="all" depends="clean,build-hibernate-config,war">
 	</target>
 
-	<target name="initialize-security" depends="compile">
-		<java dir="context/" fork="yes" classname="org.trails.security.SecurityStartup">
+	<target name="initialize-security" depends="build">
+		<java dir="${build.dir}" fork="yes" classname="org.trails.security.SecurityStartup">
 			<arg value="${security.startup.context}" />
 			<classpath>
 				<fileset dir="${tomcat.home}/common/lib">
