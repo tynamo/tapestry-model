@@ -2,7 +2,9 @@
 <page-specification class="org.trails.page.EditPage">
     <property name="model" persist="session"/>
     <property name="nextPage" />
-    
+
+    <property name="delegator"/>
+
     <bean name="numberValidator" class="org.apache.tapestry.valid.NumberValidator" lifecycle="page">
 		<set name="valueType">"int"</set>
     </bean>
