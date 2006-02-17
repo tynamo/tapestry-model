@@ -342,7 +342,7 @@
 	<target name="deploy-example" depends="update-example" description="Redeploys the examples/simple application">
 		<ant dir="examples/simple" target="war" inheritall="false"></ant>
 		<!-- Give tomcat the time to deploy... i know it's bad...-->
-		<sleep seconds="60"/>
+		<sleep seconds="120"/>
 	</target>
 		
 	<target name="functional-tests" depends="compile-tests" description="Run the functional tests agains the examples/simple application" >

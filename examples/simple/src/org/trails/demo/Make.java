@@ -53,8 +53,18 @@ public class Make
     @Override
     public boolean equals(Object obj)
     {
-        // TODO Auto-generated method stub
-        return EqualsBuilder.reflectionEquals(this, obj);
+        if (this == obj)
+            return true;
+        try
+        {
+            final Make make = (Make) obj;
+            if (!getId().equals(make.getId()))
+                return false;
+            return true;
+        } catch (Exception e)
+        {
+            return false;
+        }
     }
 
     @Override
