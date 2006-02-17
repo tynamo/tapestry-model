@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratorType;
 import javax.persistence.Id;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
 import org.trails.descriptor.annotation.ClassDescriptor;
 
 @Entity
@@ -53,4 +54,13 @@ public class Person
 	{
 		this.name = name;
 	}
+
+	@Override
+	public boolean equals(Object obj)
+	{
+		// TODO Auto-generated method stub
+		return EqualsBuilder.reflectionEquals(this, obj);
+	}
+	
+	
 }

@@ -1,12 +1,14 @@
 package org.trails.demo;
 
+import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratorType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 @Entity
-public class Car
+public class Car implements Serializable
 {
 
     public Car()

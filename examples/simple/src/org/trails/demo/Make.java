@@ -1,13 +1,20 @@
 package org.trails.demo;
 
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratorType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 
 @Entity
-public class Make
+public class Make implements Serializable
 {
 
     public Make()
@@ -17,6 +24,8 @@ public class Make
     }
     
     private Integer id;
+    
+    private Set<Car> cars = new HashSet<Car>();
 
     @Id(generate = GeneratorType.AUTO)
     public Integer getId()
@@ -54,6 +63,17 @@ public class Make
         // TODO Auto-generated method stub
         return getName();
     }
+    
+    @OneToMany(mappedBy="make")
+	public Set<Car> getCars()
+	{
+		return cars;
+	}
+
+	public void setCars(Set<Car> cars)
+	{
+		this.cars = cars;
+	}
 
     
 }

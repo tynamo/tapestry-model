@@ -118,4 +118,21 @@ public class Catalog
         this.categories = categories;
         
     }
+    
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (this == obj)
+            return true;
+        try
+        {
+            final Catalog catalog = (Catalog) obj;
+            if (!getId().equals(catalog.getId()))
+                return false;
+            return true;
+        } catch (Exception e)
+        {
+            return false;
+        }
+    }
 }

@@ -3,6 +3,8 @@ package org.trails.demo;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+
 @Entity
 @Inheritance
 public class Apple extends Fruit
@@ -25,4 +27,11 @@ public class Apple extends Fruit
     {
         this.color = color;
     }
+    
+	@Override
+	public boolean equals(Object obj)
+	{
+		// TODO Auto-generated method stub
+		return EqualsBuilder.reflectionEquals(this, obj);
+	}
 }
