@@ -14,7 +14,7 @@ import javax.persistence.OneToMany;
 import org.apache.commons.lang.builder.EqualsBuilder;
 
 @Entity
-public class Make implements Serializable
+public class Make
 {
 
     public Make()
