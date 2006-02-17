@@ -79,7 +79,10 @@
 	
 	<bean id="persistenceService" class="org.trails.hibernate.HibernatePersistenceService" autowire="autodetect"/>
 	
-	<bean id="squeezableSqueezer" class="org.trails.io.SqueezableSqueezeAdaptor" autowire="autodetect"/>
+	<bean id="squeezableSqueezer" class="org.trails.io.SqueezableSqueezeAdaptor" >
+		<property name="descriptorService"><ref local="descriptorService" /></property>
+		<property name="persistenceService"><ref local="persistenceService" /></property>
+	</bean>
 	
 	<bean id="descriptorService" class="org.trails.descriptor.TrailsDescriptorService" init-method="init">
 		<property name="types">
@@ -191,6 +194,8 @@
 		<property name="securityService"><ref bean="securityService"/></property>
 	</bean>
 	
+	<bean id="pageResolver" class="org.trails.page.DefaultPageResolver" />
+
 	<bean id="editorService" class="org.trails.descriptor.TrailsEditorService">
 		<property name="defaultEditor">
 				<bean class="org.apache.tapestry.util.ComponentAddress">
@@ -288,4 +293,6 @@
 			</map>
 		</property>
 	</bean>
+	
+	<bean id="validatorTranslatorService" class="org.trails.validation.ValidatorTranslatorService" />
 </beans>

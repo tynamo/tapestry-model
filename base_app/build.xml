@@ -34,13 +34,14 @@
 	<property name="lib.dir" value="${basedir}/lib" />
 	<property name="war.file" value="${deploy.dir}/${ant.project.name}.war" />
 
+	<property name="tools.jar" value="${java.home}/lib/tools.jar" />
 	<path id="class.path">
 		<fileset dir="${lib.dir}">
 		</fileset>
 		<fileset dir="${tomcat.home}/common/lib">
 		</fileset>
 		<fileset dir="${tomcat.home}/server/lib" />
-		<fileset dir="${java.home}/../lib" includes="tools.jar" />
+		<pathelement location="${tools.jar}" />
 	</path>
 
 	<taskdef name="apt" classname="org.apache.tools.ant.taskdefs.Apt" classpathref="class.path" />
@@ -147,6 +148,16 @@
 			<fileset dir="${lib.dir}" />
 		</copy>
 	</target>
+	
+	<target name="copy-tokenize-files-tocontext" depends="build" description="A convenience for users that wish to run webapp in place">
+		<copy todir="${context}/WEB-INF">
+			<fileset dir="${build.dir}/WEB-INF">
+				<include name="hibernate.properties"/>
+				<include name="applicationContext.xml"/>
+			</fileset>
+		</copy>
+	</target>
+			
 	<target name="war" depends="build">
 		<mkdir dir="${deploy.dir}" />
 		<jar basedir="${build.dir}" destfile="${war.file}" />

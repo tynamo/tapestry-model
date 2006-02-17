@@ -3,7 +3,7 @@
 	
 	<contribution configuration-id="tapestry.state.ApplicationObjects">
 		<state-object name="callbackStack" scope="session">
-			<create-instance class="java.util.Stack"/>
+			<create-instance class="org.trails.callback.CallbackStack"/>
 		</state-object>
 	</contribution>
 	
