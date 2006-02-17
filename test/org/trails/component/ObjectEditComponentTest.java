@@ -26,6 +26,7 @@ import org.apache.tapestry.components.Block;
 import org.apache.tapestry.valid.IValidationDelegate;
 import org.jmock.cglib.Mock;
 import org.jmock.cglib.MockObjectTestCase;
+import org.trails.callback.CallbackStack;
 import org.trails.descriptor.DescriptorService;
 import org.trails.i18n.ResourceBundleMessageSource;
 import org.trails.page.EditPage;
@@ -111,7 +112,7 @@ public class ObjectEditComponentTest extends ComponentTest
     {
         private Object model;
         
-        private Stack callbackStack = new Stack();
+        private CallbackStack callbackStack = new CallbackStack();
         
         private TrailsValidationDelegate delegate = new TrailsValidationDelegate();
         
@@ -223,11 +224,11 @@ public class ObjectEditComponentTest extends ComponentTest
         {
             this.delegate = delegate;
         }
-        public Stack getCallbackStack()
+        public CallbackStack getCallbackStack()
         {
             return callbackStack;
         }
-        public void setCallbackStack(Stack callbackStack)
+        public void setCallbackStack(CallbackStack callbackStack)
         {
             this.callbackStack = callbackStack;
         }

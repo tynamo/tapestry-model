@@ -22,43 +22,27 @@ import org.trails.page.ListPage;
  * 
  * Returns control to a ListPage
  */
-public class ListCallback implements ICallback
+public class ListCallback extends TrailsCallback
 {
-    private String pageName;
-    
     private String typeName;
     
     public ListCallback(String pageName, String typeName)
     {
-        this.pageName = pageName;
+        super(pageName);
         this.typeName = typeName;
     }
     
-    /* (non-Javadoc)
+    /* (non-Javadoc)T
      * @see org.apache.tapestry.callback.ICallback#performCallback(org.apache.tapestry.IRequestCycle)
      */
     public void performCallback(IRequestCycle cycle)
     {
-        ListPage listPage = (ListPage)cycle.getPage(pageName);
+        ListPage listPage = (ListPage)cycle.getPage(getPageName());
         listPage.setTypeName(typeName);
         listPage.loadInstances();
         cycle.activate(listPage);
     }
 
-    /**
-     * @return Returns the pageName.
-     */
-    public String getPageName()
-    {
-        return pageName;
-    }
-    /**
-     * @param pageName The pageName to set.
-     */
-    public void setPageName(String pageName)
-    {
-        this.pageName = pageName;
-    }
     /**
      * @return Returns the typeName.
      */
@@ -73,4 +57,6 @@ public class ListCallback implements ICallback
     {
         this.typeName = typeName;
     }
+    
+    
 }

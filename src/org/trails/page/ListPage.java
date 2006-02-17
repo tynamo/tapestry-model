@@ -36,7 +36,7 @@ public abstract class ListPage extends TrailsPage implements IExternalPage
     public void activateExternalPage(Object[] args, IRequestCycle cycle)
     {
         Class instanceClass = (Class) args[0];
-        
+        setTypeName(instanceClass.getName());
         loadInstances(instanceClass);
         cycle.activate(this);
     }

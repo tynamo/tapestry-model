@@ -13,6 +13,8 @@ package org.trails.component;
 
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.annotations.InjectObject;
+import org.trails.page.PageResolver;
 
 
 /**
@@ -23,7 +25,8 @@ import org.apache.tapestry.IRequestCycle;
  */
 public abstract class Link extends TrailsComponent
 {
-    public static String DEFAULT = "Default";
+	@InjectObject("spring:pageResolver")
+	public abstract PageResolver getPageResolver();
 
     public abstract String getTypeName();
 
@@ -34,14 +37,4 @@ public abstract class Link extends TrailsComponent
 
     //public abstract void setTypeName(String typeName);
 
-    /**
-     * @param cycle
-     * @return
-     */
-    protected IPage findPage(IRequestCycle cycle, String postfix)
-    {
-        String pageName = getUnqualifiedTypeName() + postfix;
-
-        return Utils.findPage(cycle, pageName, postfix);
-    }
 }

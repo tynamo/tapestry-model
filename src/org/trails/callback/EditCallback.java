@@ -13,6 +13,7 @@
  */
 package org.trails.callback;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.callback.ICallback;
 import org.trails.page.EditPage;
@@ -22,18 +23,25 @@ import org.trails.page.EditPage;
  *
  *  Returns control to an EditPage
  */
-public class EditCallback implements ICallback
+public class EditCallback extends TrailsCallback
 {
-    protected String pageName;
     protected Object model;
+    
+    private boolean modelNew;
     
     /**
      * 
      */
     public EditCallback(String pageName, Object model)
     {
-        this.pageName = pageName;
+        super(pageName);
         this.model = model;
+    }
+    
+    public EditCallback(String pageName, Object model, boolean modelNew)
+    {
+    	this(pageName, model);
+    	this.modelNew = modelNew;
     }
     
     /* (non-Javadoc)
@@ -41,14 +49,57 @@ public class EditCallback implements ICallback
      */
     public void performCallback(IRequestCycle cycle)
     {
-        EditPage editPage = (EditPage)cycle.getPage(pageName);
+        EditPage editPage = (EditPage)cycle.getPage(getPageName());
         editPage.setModel(model);
         cycle.activate(editPage);
     }
 
-    public String getPageName()
-    {
-        return pageName;
-    }
+	public Object getModel()
+	{
+		return model;
+	}
+
+	public void setModel(Object model)
+	{
+		this.model = model;
+	}
+
+	public boolean isModelNew()
+	{
+		return modelNew;
+	}
+
+	public void setModelNew(boolean modelNew)
+	{
+		this.modelNew = modelNew;
+	}
+
+	/**
+	 * We should always replace this callback if its model is new. 
+	 * This works to make sure that after a model is saved for the first
+	 * time its call back is replaced and we can go back to the right one.
+	 */
+	@Override
+	public boolean shouldReplace(ICallback callback)
+	{
+		if (callback instanceof EditCallback)
+		{
+			EditCallback editCallback = (EditCallback)callback;
+			if (editCallback.isModelNew())
+			{
+				return true;
+			}
+			else
+			{
+				return this.equals(editCallback);
+			}
+		}
+		else
+		{
+			return false;
+		}
+	}
+	
+	
 
 }

@@ -2,6 +2,7 @@ package org.trails.page;
 
 import java.util.ArrayList;
 
+import org.apache.tapestry.annotations.InjectObject;
 import org.apache.tapestry.form.IPropertySelectionModel;
 import org.apache.tapestry.form.translator.DateTranslator;
 import org.apache.tapestry.form.translator.NumberTranslator;
@@ -17,6 +18,7 @@ import org.trails.callback.EditCallback;
 import org.trails.component.IdentifierSelectionModel;
 import org.trails.descriptor.IClassDescriptor;
 import org.trails.descriptor.IPropertyDescriptor;
+import org.trails.validation.ValidatorTranslatorService;
 
 /**
  * 
@@ -44,44 +46,6 @@ public abstract class EditorBlockPage extends ModelPage
 
     public abstract void setEditPageName(String EditPageName);
 
-    /**
-     * @param class1
-     * @return
-     */
-    public IValidator getValidator(IPropertyDescriptor descriptor)
-    {
-        BaseValidator validator = null;
-
-        if (descriptor.isNumeric())
-        {
-            validator = new NumberValidator();
-            ((NumberValidator) validator).setValueTypeClass(descriptor.getPropertyType());
-        }else
-        {
-            validator = new StringValidator();
-        }
-        validator.setRequired(descriptor.isRequired());
-        return validator;
-    }
-
-    public Translator getTranslator(IPropertyDescriptor descriptor)
-    {
-        if (descriptor.isNumeric())
-        {
-            NumberTranslator numberTranslator = new NumberTranslator();
-            if (descriptor.getFormat() != null) numberTranslator.setPattern(descriptor.getFormat());
-            return numberTranslator;
-        }
-        else if(descriptor.isDate())
-        {
-            DateTranslator dateTranslator = new DateTranslator();
-            if (descriptor.getFormat() != null) dateTranslator.setPattern(descriptor.getFormat());
-            return dateTranslator;
-        }
-        else
-        {
-            return new StringTranslator();
-        }
-        
-    }
+    @InjectObject("spring:validatorTranslatorService")
+    public abstract ValidatorTranslatorService getValidatorTranslatorService();
 }

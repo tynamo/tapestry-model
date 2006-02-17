@@ -17,8 +17,6 @@ import java.io.IOException;
 
 import org.jaxen.JaxenException;
 
-
-
 import com.gargoylesoftware.htmlunit.html.HtmlDivision;
 import com.gargoylesoftware.htmlunit.html.HtmlForm;
 import com.gargoylesoftware.htmlunit.html.HtmlLabel;
@@ -37,81 +35,104 @@ import com.gargoylesoftware.htmlunit.html.xpath.HtmlUnitXPath;
  */
 public class EditCategoryTest extends FunctionalTest
 {
-    public void testRequiredValidation() throws Exception
-    {
-        HtmlPage newCategoryPage;
-        HtmlForm newCategoryForm = goToNewCategoryForm();
-        HtmlSubmitInput saveButton = (HtmlSubmitInput) newCategoryForm
-                .getInputByValue("Apply");
-        newCategoryPage = (HtmlPage) saveButton.click();
-        System.out.println(newCategoryPage.asXml());
-        HtmlDivision errorDiv = getErrorDiv(newCategoryPage);
-        assertNotNull("found the error div", errorDiv);
-        newCategoryForm = getFirstForm(newCategoryPage);
-        HtmlTextArea textArea = getTextAreaByName(newCategoryPage, "Description");
-        textArea.setText("a description");
-        newCategoryPage = clickButton(newCategoryForm, "Apply");
-        assertNull("error div", getErrorDiv(newCategoryPage));
-        assertTrue("got an id", getId("Id", newCategoryPage).length() > 0);
-    }
+	public void testRequiredValidation() throws Exception
+	{
+		HtmlPage newCategoryPage;
+		HtmlForm newCategoryForm = goToNewCategoryForm();
+		HtmlSubmitInput saveButton = (HtmlSubmitInput) newCategoryForm
+				.getInputByValue("Apply");
+		newCategoryPage = (HtmlPage) saveButton.click();
+		System.out.println(newCategoryPage.asXml());
+		HtmlDivision errorDiv = getErrorDiv(newCategoryPage);
+		assertNotNull("found the error div", errorDiv);
+		newCategoryForm = getFirstForm(newCategoryPage);
+		HtmlTextArea textArea = getTextAreaByName(newCategoryPage,
+				"Description");
+		textArea.setText("a description");
+		newCategoryPage = clickButton(newCategoryForm, "Apply");
+		assertNull("error div", getErrorDiv(newCategoryPage));
+		assertTrue("got an id", getId("Id", newCategoryPage).length() > 0);
+	}
 
-    private HtmlForm goToNewCategoryForm() throws Exception
-    {
-        HtmlPage newCategoryPage = goToNewCategoryPage();
+	public void testRegexValidation() throws Exception
+	{
+		HtmlPage catalogListPage = (HtmlPage) startPage.getFirstAnchorByText(
+				"List Catalogs").click();
+		HtmlPage newCatalogPage = (HtmlPage) catalogListPage
+				.getFirstAnchorByText("New Catalog").click();
+		getInputByName(newCatalogPage, "Name").setValueAttribute("new catalog");
+		newCatalogPage = clickButton(newCatalogPage, "Apply");
+		assertNotNull("error div", getErrorDiv(newCatalogPage));
+		getInputByName(newCatalogPage, "Name").setValueAttribute("newcatalog");
+		newCatalogPage = clickButton(newCatalogPage, "Apply");
+		assertNull("no error div", getErrorDiv(newCatalogPage));		
+	}
 
-        return (HtmlForm) newCategoryPage.getAllForms().get(0);
-    }
+	private HtmlForm goToNewCategoryForm() throws Exception
+	{
+		HtmlPage newCategoryPage = goToNewCategoryPage();
 
-    private HtmlPage goToNewCategoryPage() throws IOException, JaxenException
-    {
-        HtmlPage catalogListPage = (HtmlPage) startPage.getFirstAnchorByText(
-                "List Catalogs").click();
-        HtmlPage newCatalogPage = (HtmlPage) catalogListPage
-                .getFirstAnchorByText("New Catalog").click();
-        getInputByName(newCatalogPage, "Name").setValueAttribute("newcatalog");
-        newCatalogPage = clickButton(newCatalogPage, "Apply");
+		return (HtmlForm) newCategoryPage.getAllForms().get(0);
+	}
 
-        HtmlPage newCategoryPage = this.clickButton(newCatalogPage,
-                "Add New...");
-        return newCategoryPage;
-    }
+	private HtmlPage goToNewCategoryPage() throws IOException, JaxenException
+	{
+		HtmlPage catalogListPage = (HtmlPage) startPage.getFirstAnchorByText(
+				"List Catalogs").click();
+		HtmlPage newCatalogPage = (HtmlPage) catalogListPage
+				.getFirstAnchorByText("New Catalog").click();
+		getInputByName(newCatalogPage, "Name").setValueAttribute("newcatalog");
+		newCatalogPage = clickButton(newCatalogPage, "Apply");
 
-    public void testOverrideOnAddToCollectionPage() throws Exception
-    {
+		HtmlPage newCategoryPage = this.clickButton(newCatalogPage,
+				"Add New...");
+		return newCategoryPage;
+	}
 
+	public void testOverrideOnAddToCollectionPage() throws Exception
+	{
 
-        assertXPathPresent(goToNewCategoryPage(), "//label[text() = 'The Description']");
-    }
+		assertXPathPresent(goToNewCategoryPage(),
+				"//label[text() = 'The Description']");
+	}
 
-    public void testAddNewDisabled() throws Exception
-    {
-        HtmlPage listCatalogsPage = clickLinkOnPage(startPage, "List Catalogs");
-        HtmlPage newCatalogPage = clickLinkOnPage(listCatalogsPage, "New Catalog");
-        HtmlSubmitInput addButton = (HtmlSubmitInput)
-            new HtmlUnitXPath("//input[@type='submit' and @value='Add New...']").selectSingleNode(newCatalogPage);
-        assertTrue(addButton.isDisabled());
-        getInputByName(newCatalogPage, "Name").setValueAttribute("newercatalog");
-        newCatalogPage = clickButton(newCatalogPage, "Apply");
-        addButton = (HtmlSubmitInput)
-            new HtmlUnitXPath("//input[@type='submit' and @value='Add New...']").selectSingleNode(newCatalogPage);
-        assertFalse(addButton.isDisabled());
-        
-    }
-    
-    public void testAddProductToCategory() throws Exception
-    {
-        HtmlForm newCategoryForm = goToNewCategoryForm();
-        HtmlTextArea textArea = (HtmlTextArea) 
-            new HtmlUnitXPath("//span[contains(preceding-sibling::label, 'Description')]/textarea").selectSingleNode(newCategoryForm.getPage());
-        textArea.setText("howdya doo");
-        HtmlPage categoryPage = clickButton(newCategoryForm, "Apply");
-        HtmlPage newProductPage = this.clickButton((HtmlForm)categoryPage.getAllForms().get(0),
-                "Add New...");
-        HtmlTextInput input = getTextInputForField(newProductPage, "Name");
-        input.setValueAttribute("a new product");
-        categoryPage = clickButton(newProductPage, "Ok");
-        assertXPathPresent(categoryPage, "//td[@class='selected-cell']/select/option['a new product']");
-        HtmlPage catalogPage = clickButton(categoryPage, "Ok");
-        assertXPathPresent(catalogPage, "//td/a['howdya doo']");
-    }
+	public void testAddNewDisabled() throws Exception
+	{
+		HtmlPage listCatalogsPage = clickLinkOnPage(startPage, "List Catalogs");
+		HtmlPage newCatalogPage = clickLinkOnPage(listCatalogsPage,
+				"New Catalog");
+		HtmlSubmitInput addButton = (HtmlSubmitInput) new HtmlUnitXPath(
+				"//input[@type='submit' and @value='Add New...']")
+				.selectSingleNode(newCatalogPage);
+		assertTrue(addButton.isDisabled());
+		getInputByName(newCatalogPage, "Name")
+				.setValueAttribute("newercatalog");
+		newCatalogPage = clickButton(newCatalogPage, "Apply");
+		addButton = (HtmlSubmitInput) new HtmlUnitXPath(
+				"//input[@type='submit' and @value='Add New...']")
+				.selectSingleNode(newCatalogPage);
+		assertFalse(addButton.isDisabled());
+
+	}
+
+	public void testAddProductToCategory() throws Exception
+	{
+		HtmlForm newCategoryForm = goToNewCategoryForm();
+		HtmlTextArea textArea = (HtmlTextArea) new HtmlUnitXPath(
+				"//span[contains(preceding-sibling::label, 'Description')]/textarea")
+				.selectSingleNode(newCategoryForm.getPage());
+		textArea.setText("howdya doo");
+		HtmlPage categoryPage = clickButton(newCategoryForm, "Apply");
+		HtmlPage newProductPage = this.clickButton((HtmlForm) categoryPage
+				.getAllForms().get(0), "Add New...");
+		HtmlTextInput input = getTextInputForField(newProductPage, "Name");
+		input.setValueAttribute("a new product");
+		categoryPage = clickButton(newProductPage, "Ok");
+		assertXPathPresent(categoryPage,
+				"//td[@class='selected-cell']/select/option['a new product']");
+		HtmlPage catalogPage = clickButton(categoryPage, "Ok");
+		assertXPathPresent(catalogPage, "//td/a['howdya doo']");
+		HtmlPage listPage = clickButton(catalogPage, "Ok");
+		assertXPathPresent(listPage, "//td/a['newercatalog']");
+	}
 }

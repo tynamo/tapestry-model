@@ -14,6 +14,7 @@ package org.trails.test;
 import javax.persistence.Entity;
 import javax.persistence.GeneratorType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 import org.hibernate.validator.Length;
 import org.hibernate.validator.NotNull;
@@ -32,6 +33,8 @@ public class Baz
 {
     private Integer id;
     private String description;
+    
+    private Foo foo;
 
     /**
      * @hibernate.property
@@ -79,4 +82,15 @@ public class Baz
     }
     
     public String toString() { return getDescription(); }
+
+    @ManyToOne
+	public Foo getFoo()
+	{
+		return foo;
+	}
+
+	public void setFoo(Foo foo)
+	{
+		this.foo = foo;
+	}
 }

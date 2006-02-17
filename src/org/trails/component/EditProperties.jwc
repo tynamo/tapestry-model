@@ -11,7 +11,7 @@
     <component id="labelText" type="Insert">
     	<binding name="value">property.displayName</binding>
     </component>
-    <component id="foreach" type="Foreach" inherit-informal-parameters="no">
+    <component id="foreach" type="For" inherit-informal-parameters="no">
         <binding name="source">propertyDescriptors</binding>
         <binding name="value">property</binding>
         <!-- <binding name="element">ognl:editRowElement</binding>

@@ -95,5 +95,15 @@ public class CollectionCallback extends EditCallback
     {
         this.childRelationship = child;
     }
-    
+
+	public void setAddOgnlExpression(String addOgnlExpression)
+	{
+		this.addOgnlExpression = addOgnlExpression;
+	}
+
+	public void setRemoveOgnlExpression(String removeOgnlExpression)
+	{
+		this.removeOgnlExpression = removeOgnlExpression;
+	}
+	
 }

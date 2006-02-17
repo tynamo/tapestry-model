@@ -18,7 +18,7 @@ import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.jmock.Mock;
 import org.springframework.context.support.ResourceBundleMessageSource;
-import org.trails.callback.DefaultCallback;
+import org.trails.callback.TrailsCallback;
 import org.trails.callback.ListCallback;
 import org.trails.descriptor.DescriptorService;
 import org.trails.descriptor.IClassDescriptor;
@@ -27,6 +27,7 @@ import org.trails.i18n.DefaultTrailsResourceBundleMessageSource;
 import org.trails.page.EditPage;
 import org.trails.page.HomePage;
 import org.trails.page.ListPage;
+import org.trails.page.PageResolver;
 import org.trails.page.TrailsPage;
 import org.trails.test.BlogEntry;
 import org.trails.test.Foo;
@@ -53,7 +54,6 @@ public class NewLinkTest extends ComponentTest
         listPage.setPageName("list");
         
         buildNewLink(listPage);
-        assertTrue("list callback on stack", listPage.getCallbackStack().pop() instanceof ListCallback);
         cycleMock.verify();
         assertTrue("model is a foo", editPage.getModel() instanceof Foo);
     }
@@ -61,11 +61,13 @@ public class NewLinkTest extends ComponentTest
 	private void buildNewLink(TrailsPage listPage)
 	{
 		// Pretend Foo has a custom page
-        cycleMock.expects(once()).method("getPage").with(eq("FooEdit")).will(returnValue(
-                editPage));
+//        cycleMock.expects(once()).method("getPage").with(eq("FooEdit")).will(returnValue(
+//                editPage));
         cycleMock.expects(atLeastOnce()).method("activate").with(same(editPage));
-
-        newLink = (NewLink) creator.newInstance(NewLink.class);
+		pageResolverMock.expects(once()).method("resolvePage")
+			.with(isA(IRequestCycle.class), eq(Foo.class.getName()), eq(TrailsPage.PageType.EDIT))
+			.will(returnValue(editPage));    
+        //newLink = (NewLink) creator.newInstance(NewLink.class);
         newLink.setTypeName(Foo.class.getName());
         newLink.setPage(listPage);
         newLink.click((IRequestCycle) cycleMock.proxy());
@@ -75,8 +77,10 @@ public class NewLinkTest extends ComponentTest
     {
     	HomePage homePage = (HomePage)buildTrailsPage(HomePage.class);
     	buildNewLink(homePage);
-    	assertTrue("Default callback", homePage.getCallbackStack().pop() instanceof DefaultCallback);
+    	assertTrue("Default callback", homePage.getCallbackStack().getStack().pop() instanceof TrailsCallback);
     }
+    
+    Mock pageResolverMock;
     
     @Override
     public void setUp() throws Exception
@@ -87,12 +91,16 @@ public class NewLinkTest extends ComponentTest
         ResourceBundleMessageSource springMessageSource = new ResourceBundleMessageSource();
         springMessageSource.setBasename("messages");
         messageSource.setMessageSource(springMessageSource);
+        editPage = buildTrailsPage(EditPage.class);
+        pageResolverMock = new Mock(PageResolver.class);
+    
         newLink = (NewLink) creator.newInstance(NewLink.class, 
                 new Object[] {
                     "descriptorService", descriptorService,
-                    "resourceBundleMessageSource", messageSource
+                    "resourceBundleMessageSource", messageSource,
+                    "pageResolver", pageResolverMock.proxy()
                 });
-        editPage = buildTrailsPage(EditPage.class);
+        
     }
 
 

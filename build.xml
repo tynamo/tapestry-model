@@ -302,7 +302,9 @@
 		<junit  fork="yes" 
 			filtertrace="off" 
 			showoutput="true"
-			haltonfailure="true" printsummary="true">
+			haltonfailure="true" 
+			haltonerror="true"
+			printsummary="true">
 			<classpath>
 				<path refid="class.path"></path>
 				<pathelement location="${compile.dir}"/>
@@ -349,7 +351,9 @@
 		<junit  fork="yes" 
 			filtertrace="off" 
 			showoutput="true"
-			haltonfailure="true" printsummary="true">
+			haltonfailure="true" 
+			haltonerror="true"
+			printsummary="true">
 			<classpath>
 				<path refid="class.path"></path>
 				<pathelement location="${compile.dir}"/>

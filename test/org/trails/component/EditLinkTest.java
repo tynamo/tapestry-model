@@ -27,6 +27,8 @@ import org.trails.descriptor.TrailsClassDescriptor;
 import org.trails.hibernate.HasAssignedIdentifier;
 import org.trails.page.EditPage;
 import org.trails.page.ListPage;
+import org.trails.page.PageResolver;
+import org.trails.page.TrailsPage;
 import org.trails.persistence.PersistenceService;
 import org.trails.test.Bar;
 import org.trails.test.Foo;
@@ -40,74 +42,19 @@ import org.trails.test.Foo;
  */
 public class EditLinkTest extends ComponentTest
 {
-    EditPage editPage;
-    Mock cycleMock;
-    Foo foo;
-    EditLink editLink;
-    ListPage listPage;
-    
-    public void setUp() throws Exception
-    {
-        
-        editPage = (EditPage) creator.newInstance(EditPage.class);
-        cycleMock = new Mock(IRequestCycle.class);
-        Mock pageMock = new Mock(IPage.class);
-        foo = new Foo();
-        foo.setId(new Integer(2));
-        ((HasAssignedIdentifier)foo).onSave();
-        
- 
-        editLink = (EditLink) creator.newInstance(EditLink.class,
-            new Object[] {"persistenceService", persistenceMock.proxy()});
-        
-        
-        listPage = buildTrailsPage(ListPage.class);
-        listPage.setPageName("listPage");
-        editLink.setPage(listPage);
-        //editLink.setTypeName(Foo.class.getName());
-        editLink.setModel(foo);
-        
-    }
-    
-    public void testClick() throws Exception
-    {
-        listPage.setTypeName(Foo.class.getName());
-        persistenceMock.expects(once()).method("reattach").with(eq(foo));
-
-        // Pretend Foo has a custom page
-        cycleMock.expects(atLeastOnce()).method("getPage").with(eq("FooEdit")).will(returnValue(
-                editPage));
-        cycleMock.expects(atLeastOnce()).method("activate").with(same(editPage));
-
-        editLink.setModel(foo);
-
-        
-        editLink.click((IRequestCycle) cycleMock.proxy());
-
-        // check so see list page is on stack
-        assertTrue(listPage.getCallbackStack().pop() instanceof ListCallback);
-        cycleMock.verify();
-        persistenceMock.verify();
-
-    }
-    
-    public void testWithDefaultPage() throws Exception
-    {
-        // Now pretend Bar doesn't have a custom page
-        listPage.setTypeName(Foo.class.getName());
-        Bar bar = new Bar();
-        bar.setId(new Integer(2));
-
-        persistenceMock.expects(once()).method("reattach").with(eq(bar));
-
-        editLink.setModel(bar);
-        
-        cycleMock.expects(atLeastOnce()).method("getPage").with(eq("BarEdit")).will(throwException(
-                new PageNotFoundException("Not found")));
-        cycleMock.expects(atLeastOnce()).method("getPage").with(eq("DefaultEdit"))
-                 .will(returnValue(editPage));
-        cycleMock.expects(atLeastOnce()).method("activate").with(same(editPage));
-        
-        editLink.click((IRequestCycle) cycleMock.proxy());
-    }
+	public void testGetPageName()
+	{
+		Mock pageMock = new Mock(IPage.class);
+		Mock pageResolverMock = new Mock(PageResolver.class);
+		Mock cycleMock = new Mock(IRequestCycle.class);
+		pageResolverMock.expects(once()).method("resolvePage")
+			.with(isA(IRequestCycle.class), eq(Foo.class.getName()), eq(TrailsPage.PageType.EDIT))
+			.will(returnValue(pageMock.proxy()));
+		pageMock.expects(once()).method("getPageName").will(returnValue("FooEdit"));
+		pageMock.expects(once()).method("getRequestCycle").will(returnValue(cycleMock.proxy()));
+		EditLink editLink = (EditLink)creator.newInstance(EditLink.class, new Object[] {"pageResolver", pageResolverMock.proxy()});
+		editLink.setPage((IPage)pageMock.proxy());
+		editLink.setModel(new Foo());
+		assertEquals("FooEdit", editLink.getEditPageName());
+	}
 }

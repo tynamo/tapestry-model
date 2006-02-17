@@ -147,8 +147,7 @@ public class Foo
      *      
      */
     
-    @OneToMany(cascade=CascadeType.ALL)
-    @JoinColumn(name="BAZ_ID")
+    @OneToMany(cascade=CascadeType.ALL, mappedBy="foo")
     public Set<Baz> getBazzes()
     {
         return bazzes;
@@ -268,5 +267,12 @@ public class Foo
     public void setBar(Bar bar)
     {
         this.bar = bar;
+    }
+    
+    public Baz createBaz()
+    {
+    	Baz baz = new Baz();
+    	baz.setFoo(this);
+    	return baz;
     }
 }

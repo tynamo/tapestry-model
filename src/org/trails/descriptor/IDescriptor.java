@@ -17,4 +17,8 @@ public interface IDescriptor extends Cloneable
     public void setDisplayName(String displayName);
     
     public Object clone();
+    
+    public boolean supportsExtension(Class extensionType);
+    
+    public <T> T getExtension(Class<T> extenstionType);
 }

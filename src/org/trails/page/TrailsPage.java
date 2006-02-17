@@ -17,8 +17,11 @@ import java.util.Stack;
 
 import org.apache.tapestry.annotations.InjectObject;
 import org.apache.tapestry.annotations.InjectState;
+import org.apache.tapestry.event.PageBeginRenderListener;
+import org.apache.tapestry.event.PageEvent;
 import org.apache.tapestry.html.BasePage;
-import org.trails.callback.DefaultCallback;
+import org.trails.callback.CallbackStack;
+import org.trails.callback.TrailsCallback;
 import org.trails.descriptor.DescriptorService;
 import org.trails.i18n.ResourceBundleMessageSource;
 import org.trails.persistence.PersistenceService;
@@ -29,11 +32,14 @@ import org.trails.persistence.PersistenceService;
  * TODO To change the template for this generated type comment go to Window -
  * Preferences - Java - Code Style - Code Templates
  */
-public abstract class TrailsPage extends BasePage
+public abstract class TrailsPage extends BasePage implements PageBeginRenderListener
 {
+	
+	public enum PageType {SEARCH, EDIT, LIST, VIEW};
+	
 	public void pushCallback()
 	{
-		getCallbackStack().push(new DefaultCallback(getPageName()));
+		getCallbackStack().push(new TrailsCallback(getPageName()));
 	}
 
 	/**
@@ -42,7 +48,7 @@ public abstract class TrailsPage extends BasePage
 	 * @return
 	 */
 	@InjectState("callbackStack")
-	public abstract Stack getCallbackStack();
+	public abstract CallbackStack getCallbackStack();
 
 	/**
 	 * This property is injected with the Spring persistenceService bean
@@ -67,5 +73,10 @@ public abstract class TrailsPage extends BasePage
 	 */
 	@InjectObject("spring:trailsMessageSource")
 	public abstract ResourceBundleMessageSource getResourceBundleMessageSource();
+
+	public void pageBeginRender(PageEvent event)
+	{
+		pushCallback();
+	}
 
 }

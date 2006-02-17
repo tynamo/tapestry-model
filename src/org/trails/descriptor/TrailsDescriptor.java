@@ -13,6 +13,7 @@
  */
 package org.trails.descriptor;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import org.apache.commons.beanutils.BeanUtils;
@@ -25,7 +26,7 @@ import org.apache.oro.text.perl.Perl5Util;
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
-public class TrailsDescriptor implements IDescriptor
+public class TrailsDescriptor implements IDescriptor, Serializable
 {
 
     private String displayName;
@@ -122,5 +123,17 @@ public class TrailsDescriptor implements IDescriptor
     {
         this.type = type;
     }
+
+	public boolean supportsExtension(Class extensionType)
+	{
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public <T> T getExtension(Class<T> extenstionType)
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }

@@ -11,29 +11,25 @@ import org.trails.page.SearchPage;
  * Return Control to a search page.
  *
  */
-public class SearchCallback implements ICallback
+public class SearchCallback extends TrailsCallback
 {
-    private String pageName;
     
     private Object exampleModel;
     
     public SearchCallback(String name, Object model)
     {
-        super();
-        // TODO Auto-generated constructor stub
+        super(name);
         exampleModel = model;
-        pageName = name;
     }
 
-    public SearchCallback()
+    public SearchCallback(String name)
     {
-        super();
-        // TODO Auto-generated constructor stub
+        super(name);
     }
 
     public void performCallback(IRequestCycle cycle)
     {
-        SearchPage searchPage = (SearchPage)cycle.getPage(pageName);
+        SearchPage searchPage = (SearchPage)cycle.getPage(getPageName());
         searchPage.setExampleModel(exampleModel);
         cycle.activate(searchPage);
     }

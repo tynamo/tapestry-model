@@ -13,7 +13,6 @@
 	<classpathentry kind="lib" path="lib/commons-dbcp-20030415.jar"/>
 	<classpathentry kind="lib" path="lib/commons-digester-1.5.jar"/>
 	<classpathentry kind="lib" path="lib/commons-fileupload-1.0.jar"/>
-	<classpathentry kind="lib" path="lib/commons-lang-1.0.1.jar"/>
 	<classpathentry kind="lib" path="lib/commons-logging-1.0.3.jar"/>
 	<classpathentry kind="lib" path="lib/commons-pool-20030415.jar"/>
 	<classpathentry kind="lib" path="lib/dom4j.jar"/>
@@ -21,7 +20,6 @@
 	<classpathentry kind="lib" path="lib/gnu-regexp-1.1.4.jar"/>
 	<classpathentry kind="lib" path="lib/jakarta-oro-2.0.7.jar"/>
 	<classpathentry kind="lib" path="lib/log4j-1.2.8.jar"/>
-	<classpathentry kind="lib" path="lib/mysql-connector-java-3.0.11-stable-bin.jar"/>
 	<classpathentry kind="lib" path="lib/proxool-0.8.3.jar"/>
 	<classpathentry kind="lib" path="lib/junit-3.8.1.jar"/>
 	<classpathentry kind="lib" path="lib/jmock-1.0.1.jar"/>
@@ -51,9 +49,11 @@
 	<classpathentry kind="lib" path="lib/tapestry-spring.jar"/>
 	<classpathentry kind="lib" path="lib/ejb3-persistence.jar"/>
 	<classpathentry kind="lib" path="lib/cglib-2.1.2.jar"/>
-	<classpathentry sourcepath="/tapestry4" kind="lib" path="lib/tapestry-4.0-beta-11.jar"/>
+	<classpathentry sourcepath="/Tapestry 4.0/framework/src/java" kind="lib" path="lib/tapestry-4.0-beta-11.jar"/>
 	<classpathentry kind="lib" path="lib/tapestry-annotations-4.0-beta-11.jar"/>
 	<classpathentry kind="lib" path="lib/tapestry-contrib-4.0-beta-11.jar"/>
 	<classpathentry kind="lib" path="lib/acegi-security-1.0.0-RC1.jar"/>
+	<classpathentry kind="var" path="JDK_TOOLS"/>
+	<classpathentry kind="lib" path="lib/commons-lang-2.1.jar"/>
 	<classpathentry kind="output" path="build"/>
 </classpath>

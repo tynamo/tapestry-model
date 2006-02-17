@@ -10,6 +10,7 @@ import org.springframework.context.NoSuchMessageException;
 import org.trails.TrailsRuntimeException;
 import org.trails.descriptor.DescriptorService;
 import org.trails.page.SearchPage;
+import org.trails.page.TrailsPage;
 
 public abstract class SearchLink extends TypeNavigationLink
 {
@@ -28,7 +29,8 @@ public abstract class SearchLink extends TypeNavigationLink
      */
     public void click(IRequestCycle cycle)
     {
-        SearchPage searchPage = (SearchPage)findPage(cycle, POSTFIX);
+        SearchPage searchPage = (SearchPage)getPageResolver().resolvePage(
+        		cycle, getTypeName(), TrailsPage.PageType.SEARCH);
         try
         {
             searchPage.setExampleModel(getType().newInstance());

@@ -4,7 +4,8 @@
 	<parameter name="model" required="yes" cache="yes" deprecated="no"/>
     <parameter name="persistenceService" required="no" default-value="page.persistenceService" cache="yes" deprecated="no"/>
     
-    <component id="link" type="ActionLink" inherit-informal-parameters="no">
-        <binding name="listener">listeners.click</binding>
+    <component id="link" type="ExternalLink" inherit-informal-parameters="no">
+        <binding name="page">editPageName</binding>
+        <binding name="parameters">model</binding>
     </component>
 </component-specification>

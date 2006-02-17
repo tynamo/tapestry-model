@@ -21,6 +21,7 @@ import org.apache.tapestry.test.Creator;
 import org.jmock.MockObjectTestCase;
 import org.jmock.cglib.Mock;
 import org.springframework.context.support.ResourceBundleMessageSource;
+import org.trails.callback.CallbackStack;
 import org.trails.descriptor.DescriptorService;
 import org.trails.i18n.DefaultTrailsResourceBundleMessageSource;
 import org.trails.page.EditPage;
@@ -38,7 +39,7 @@ public class ComponentTest extends MockObjectTestCase
     protected Creator creator = new Creator();
     protected Mock descriptorServiceMock = new Mock(DescriptorService.class);
     protected DescriptorService descriptorService;
-    protected Stack callbackStack = new Stack();
+    protected CallbackStack callbackStack = new CallbackStack();
     protected Mock persistenceMock = new Mock(PersistenceService.class);
     protected TrailsValidationDelegate delegate = new TrailsValidationDelegate();
     

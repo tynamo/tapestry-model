@@ -46,4 +46,16 @@ public class ListCallbackTest extends ComponentTest
         callBack.performCallback((IRequestCycle)cycleMock.proxy());
         cycleMock.verify();
     }
+    
+    public void testShouldReplace()
+    {
+    	ListCallback callBack = new ListCallback("FooList", Foo.class.getName());
+    	ListCallback callBack2 = new ListCallback("FooList", Foo.class.getName());
+    	assertTrue(callBack2.shouldReplace(callBack));
+    	callBack2 = new ListCallback("Blork", Foo.class.getName());
+    	assertFalse(callBack2.shouldReplace(callBack));
+    	EditCallback editCallback = new EditCallback("FooEdit", new Foo());
+    	assertFalse(editCallback.shouldReplace(callBack2));
+    	
+    }
 }

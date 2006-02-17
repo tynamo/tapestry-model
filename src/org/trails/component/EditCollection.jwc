@@ -11,6 +11,9 @@
     <parameter name="model" default-value="page.model" required="no">
     	<description>The object which owns the collection being edited</description>
     </parameter>
+    <parameter name="createExpression" required="no">
+    	<description>Ognl expression to invoke on the model to create a new child instance</description>
+    </parameter>
     <parameter name="addFromExisting" default-value="not(collectionDescriptor.childRelationship)" required="no"/>
     <parameter name="allowCreate" default-value="true" required="no"/>
     

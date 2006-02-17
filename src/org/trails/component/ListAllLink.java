@@ -21,6 +21,7 @@ import org.apache.tapestry.services.RequestLocaleManager;
 import org.springframework.context.NoSuchMessageException;
 import org.trails.i18n.ResourceBundleMessageSource;
 import org.trails.page.ListPage;
+import org.trails.page.TrailsPage;
 import org.trails.servlet.TrailsApplicationServlet;
 
 import com.sun.corba.se.spi.legacy.connection.GetEndPointInfoAgainException;
@@ -37,12 +38,6 @@ import com.sun.corba.se.spi.legacy.connection.GetEndPointInfoAgainException;
  */
 public abstract class ListAllLink extends TypeNavigationLink
 {
-    public void click(IRequestCycle cycle) {
-        ListPage listPage = (ListPage) findPage(cycle, "List");
-        listPage.setTypeName(getTypeName());
-        //listPage.loadInstances(getType());
-        listPage.activateExternalPage(new Object[] {getType()}, cycle);
-    }
 
     /**
      * @return
@@ -65,4 +60,14 @@ public abstract class ListAllLink extends TypeNavigationLink
        													locale,
        													"[TRAILS][ORG.TRAILS.COMPONENT.LISTALLLINK]");
     }
+
+	public Object getListPageName()
+	{
+
+		return getPageResolver().resolvePage(
+				getPage().getRequestCycle(), 
+				getTypeName(),
+				TrailsPage.PageType.LIST).getPageName();
+		
+	}
 }

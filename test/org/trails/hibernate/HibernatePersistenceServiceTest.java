@@ -183,6 +183,7 @@ public class HibernatePersistenceServiceTest extends MockObjectTestCase
         foo.setName("boo");
         Baz baz = new Baz();
         baz.setDescription("one");
+        baz.setFoo(foo);
         foo.getBazzes().add(baz);
         persistenceService.save(foo);
         

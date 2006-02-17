@@ -3,7 +3,7 @@
 	<description>Displays an id property</description>
 	<parameter name="descriptor" required="yes" cache="yes" deprecated="no"/>
    	<parameter name="model" default-value="container.model" required="no" cache="yes" deprecated="no"/>
-    <parameter name="validator" default-value="page.getValidator(descriptor)" required="no" />
+    <parameter name="validator" default-value="page.validatorTranslatorService.getValidator(descriptor)" required="no" />
     
     <bean name="numberValidator" class="org.apache.tapestry.valid.NumberValidator" lifecycle="page">
 		<set name="valueType">"int"</set>
@@ -28,8 +28,8 @@
     </component> 
     <component id="idNumberField" type="TextField" inherit-informal-parameters="no">
         <binding name="displayName">descriptor.displayName</binding>
-        <binding name="validator">ognl:page.getValidator(descriptor)</binding>
-        <binding name="translator">ognl:page.getTranslator(descriptor)</binding>
+        <binding name="validator">ognl:page.validatorTranslatorService.getValidator(descriptor)</binding>
+        <binding name="translator">ognl:page.validatorTranslatorService.getTranslator(descriptor)</binding>
         <binding name="value">model[descriptor.name]</binding>
     </component>   
 </component-specification>

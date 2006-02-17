@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Stack;
 
 import org.apache.tapestry.IEngine;
+import org.apache.tapestry.IExternalPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.callback.ICallback;
 import org.apache.tapestry.event.PageEvent;
@@ -70,6 +71,7 @@ public class EditPageTest extends ComponentTest
     Mock validatorMock;
     ListCallback listCallBack = new ListCallback("FooList", Foo.class.getName());
     ListPage listPage;
+    EditCallback editCallback;
     
     public void setUp() throws Exception
     {
@@ -86,8 +88,10 @@ public class EditPageTest extends ComponentTest
         
         // attach the visit to the page
         
-        
+        // we came from a list page
         editPage.getCallbackStack().push(listCallBack);
+        PageEvent fakePageEvent = new PageEvent(editPage, (IRequestCycle)cycleMock.proxy());
+        editPage.pageBeginRender(fakePageEvent);
         
         bazEditPage = buildEditPage();
         bazEditPage.setModel(baz);      
@@ -102,6 +106,14 @@ public class EditPageTest extends ComponentTest
         callbackMock.verify();
     }
 
+    public void testActivateExternalPage() throws Exception
+    {
+    	editPage.setModel(null);
+    	IExternalPage externalEditPage = (IExternalPage)editPage;
+    	externalEditPage.activateExternalPage(new Object[] {foo}, (IRequestCycle)cycleMock.proxy());
+    	assertEquals(foo, editPage.getModel());
+    }
+    
     public void testGetPropertyDescriptors()
     {
         descriptorServiceMock.expects(once()).method("getClassDescriptor")
@@ -124,6 +136,9 @@ public class EditPageTest extends ComponentTest
         assertEquals("Edit Foo", editPage.getTitle());
         CollectionCallback bazCallback = new CollectionCallback("fooPage", foo, "bazzes.add", "bazzes.remove");
         bazEditPage.getCallbackStack().push(bazCallback);
+        EditCallback newCallback = new EditCallback("fooPage", foo);
+        bazEditPage.getCallbackStack().push(newCallback);
+        assertFalse(newCallback.equals(bazCallback));
         bazDescriptor.getPropertyDescriptors().add(new IdentifierDescriptor(Foo.class, "id", Baz.class));
         assertEquals("Add Baz", bazEditPage.getTitle());
     }
@@ -221,6 +236,7 @@ public class EditPageTest extends ComponentTest
         CollectionCallback bazCallback = new CollectionCallback("fooPage", foo, "bazzes.add", "bazzes.remove");
         bazCallback.setChildRelationship(isChild);
         editPage.getCallbackStack().push(bazCallback);
+        editPage.getCallbackStack().push(new EditCallback("fooPage", new Foo()));
         cycleMock.expects(once()).method("getPage").with(eq("fooPage")).will(returnValue(editPage));
         cycleMock.expects(once()).method("activate").with(eq(editPage));
         
@@ -268,10 +284,20 @@ public class EditPageTest extends ComponentTest
         
     }
     
-    public void testPushCallback() throws Exception
+    public void testPageBeginRender() throws Exception
     {
-        editPage.pushCallback();
-        assertTrue(editPage.getCallbackStack().pop() instanceof EditCallback);
+    	editPage.getCallbackStack().getStack().clear();
+        PageEvent pageEvent = new PageEvent(editPage, (IRequestCycle)cycleMock.proxy());
+        editPage.pageBeginRender(pageEvent);
+        assertEquals(1, editPage.getCallbackStack().getStack().size());
+        Foo foo2 = new Foo();
+        ((HasAssignedIdentifier)foo2).onSave();
+        foo2.setId(new Integer(3));
+        editPage.setModel(foo2);
+        editPage.pageBeginRender(pageEvent);
+        EditCallback poppedCallback = (EditCallback)editPage.getCallbackStack().getStack().pop();
+        assertEquals(foo2, poppedCallback.getModel());
+        assertTrue(editPage.getCallbackStack().getStack().isEmpty());
     }
     
 

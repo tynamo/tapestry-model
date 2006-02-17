@@ -29,9 +29,9 @@ public abstract class ModelPage extends TrailsPage
     /**
      * @return
      */
-    public boolean isModelNew()
+    protected boolean isModelNew(Object model)
     {
-        if (getModel() instanceof HasAssignedIdentifier)
+        if (model instanceof HasAssignedIdentifier)
         {
             return !((HasAssignedIdentifier)getModel()).isSaved();
         }
@@ -39,7 +39,7 @@ public abstract class ModelPage extends TrailsPage
         {
             try
             {
-                return Ognl.getValue("model[classDescriptor.identifierDescriptor.name]", this) == null;
+                return Ognl.getValue(getClassDescriptor().getIdentifierDescriptor().getName(), model) == null;
             } catch (OgnlException e)
             {
                 throw new TrailsRuntimeException(e);
@@ -47,6 +47,11 @@ public abstract class ModelPage extends TrailsPage
         }
     }
 
+    public boolean isModelNew()
+    {
+    	return isModelNew(getModel());
+    }
+    
     /**
      * @return
      */

@@ -42,7 +42,9 @@ public abstract class NewLink extends TypeNavigationLink
     public void click(IRequestCycle cycle)
     {
         ((TrailsPage)getPage()).pushCallback();
-        EditPage page = (EditPage) findPage(cycle, SUFFIX);
+        EditPage page = (EditPage) getPageResolver().resolvePage(cycle, 
+        		getTypeName(), 
+        		TrailsPage.PageType.EDIT);
         
         try
         {

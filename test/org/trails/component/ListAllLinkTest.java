@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 
 import org.jmock.cglib.Mock;
@@ -27,6 +28,8 @@ import org.trails.descriptor.TrailsClassDescriptor;
 import org.trails.descriptor.DescriptorService;
 import org.trails.i18n.DefaultTrailsResourceBundleMessageSource;
 import org.trails.page.ListPage;
+import org.trails.page.PageResolver;
+import org.trails.page.TrailsPage;
 import org.trails.persistence.PersistenceService;
 import org.trails.test.BlogEntry;
 import org.trails.test.Foo;
@@ -66,24 +69,19 @@ public class ListAllLinkTest extends ComponentTest
         
     }
 
-    public void testClick()
-    {
-        ListPage listPage = buildTrailsPage(ListPage.class);
-        Mock cycleMock = new Mock(IRequestCycle.class);       
-
-        List instances = new ArrayList();
-        persistenceMock.expects(once()).method("getAllInstances").withAnyArguments()
-                .will(returnValue(instances));
-
-        // Pretend Foo has a custom page
-        cycleMock.expects(once()).method("getPage").with(eq("FooList")).will(returnValue(
-                listPage));
-        cycleMock.expects(once()).method("activate").with(eq(listPage));
-        //cycleMock.expects(atLeastOnce()).method("activate").with(eq(Foo.class), isA(IRequestCycle.class));
-        listLink.click((IRequestCycle) cycleMock.proxy());
-        assertEquals("instances set", instances, listPage.getInstances());
-        assertEquals("got right type", listPage.getTypeName(),
-            listLink.getTypeName());
-        cycleMock.verify();
-    }
+	public void testGetPageName()
+	{
+		Mock pageMock = new Mock(IPage.class);
+		Mock pageResolverMock = new Mock(PageResolver.class);
+		Mock cycleMock = new Mock(IRequestCycle.class);
+		pageResolverMock.expects(once()).method("resolvePage")
+			.with(isA(IRequestCycle.class), eq(Foo.class.getName()), eq(TrailsPage.PageType.LIST))
+			.will(returnValue(pageMock.proxy()));
+		pageMock.expects(once()).method("getPageName").will(returnValue("FooList"));
+		pageMock.expects(once()).method("getRequestCycle").will(returnValue(cycleMock.proxy()));
+		ListAllLink listAllLink = (ListAllLink)creator.newInstance(ListAllLink.class, new Object[] {"pageResolver", pageResolverMock.proxy()});
+		listAllLink.setPage((IPage)pageMock.proxy());
+		listAllLink.setTypeName(Foo.class.getName());
+		assertEquals("FooList", listAllLink.getListPageName());
+	}
 }

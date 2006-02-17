@@ -3,8 +3,9 @@
 	<description>Shows a link to the ListPage for a given type</description>
 	<parameter name="typeName" required="yes" cache="yes" deprecated="no"/>
 	
-    <component id="link" type="ActionLink" inherit-informal-parameters="no">
-        <binding name="listener">listeners.click</binding>
+    <component id="link" type="ExternalLink" inherit-informal-parameters="no">
+        <binding name="page">listPageName</binding>
+        <binding name="parameters">type</binding>
     </component>
     <component id="insert" type="Insert" inherit-informal-parameters="no">
         <binding name="value">linkText</binding>

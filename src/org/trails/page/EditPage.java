@@ -11,6 +11,7 @@
  */
 package org.trails.page;
 
+import org.apache.tapestry.IExternalPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.annotations.Bean;
 import org.apache.tapestry.annotations.Lifecycle;
@@ -27,12 +28,19 @@ import org.trails.validation.TrailsValidationDelegate;
  *
  * This page will edit an instance contained in the model property
  */
-public abstract class EditPage extends ModelPage
+public abstract class EditPage extends ModelPage implements IExternalPage
 {
     @Bean(lifecycle=Lifecycle.REQUEST)
     public abstract TrailsValidationDelegate getDelegate();
 
-    /**
+    
+    public void activateExternalPage(Object[] parameters, IRequestCycle cycle)
+	{
+		setModel(parameters[0]);
+	}
+
+
+	/**
      * This property allows components to change the page during 
      * the middle of the rewind without causing a StaleLinkException
      * @return
@@ -48,12 +56,14 @@ public abstract class EditPage extends ModelPage
     }
 
     
-    /* (non-Javadoc)
+    /* To avoid duplicate callbacks on the stack, we need to replace the
+     * top callback if it has an unsaved model object.
+     * (non-Javadoc)
      * @see org.trails.page.TrailsPage#pushCallback()
      */
     public void pushCallback()
     {
-        getCallbackStack().push(new EditCallback(getPageName(), getModel()));
+    	getCallbackStack().push(new EditCallback(getPageName(), getModel(), isModelNew()));
     }
     
     protected boolean save()
@@ -90,7 +100,7 @@ public abstract class EditPage extends ModelPage
 //        {
             getPersistenceService().remove(getModel());
 //        }
-        ICallback callback = (ICallback)getCallbackStack().pop();
+        ICallback callback = getCallbackStack().popPreviousCallback();
         if (callback instanceof CollectionCallback)
         {
             ((CollectionCallback)callback).remove(getModel());
@@ -118,7 +128,7 @@ public abstract class EditPage extends ModelPage
         if (save())
         {
             
-            ICallback callback = (ICallback)getCallbackStack().pop();
+            ICallback callback = getCallbackStack().popPreviousCallback();
             if (callback instanceof CollectionCallback)
             {
                 ((CollectionCallback)callback).add(getModel());
@@ -146,15 +156,15 @@ public abstract class EditPage extends ModelPage
     public boolean cameFromCollection()
     {
         
-        return getCallbackStack().peek() instanceof CollectionCallback;
+        return getCallbackStack().getPreviousCallback() instanceof CollectionCallback;
     }
     
     public boolean cameFromChildCollection()
     {
         
-        if (getCallbackStack().peek() instanceof CollectionCallback)
+        if (getCallbackStack().getPreviousCallback() instanceof CollectionCallback)
         {
-            return ((CollectionCallback)getCallbackStack().peek()).isChildRelationship();
+            return ((CollectionCallback)getCallbackStack().getPreviousCallback()).isChildRelationship();
         }
         else return false;
     }

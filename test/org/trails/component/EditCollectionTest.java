@@ -19,11 +19,14 @@ import java.util.Stack;
 
 import ognl.Ognl;
 
+import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.contrib.palette.SortMode;
 import org.apache.tapestry.form.IPropertySelectionModel;
 import org.jmock.Mock;
+import org.trails.callback.CallbackStack;
 import org.trails.callback.CollectionCallback;
+import org.trails.callback.EditCallback;
 import org.trails.descriptor.CollectionDescriptor;
 import org.trails.descriptor.IClassDescriptor;
 import org.trails.descriptor.IdentifierDescriptor;
@@ -53,6 +56,8 @@ public class EditCollectionTest extends ComponentTest
    
     EditCollection editCollection;
     EditPage addPage;
+    Mock cycleMock = new Mock(IRequestCycle.class);
+    Mock pageMock = new Mock(IPage.class);
     
     public static final String EDIT_PAGE_NAME = "fooEditPage";
     
@@ -64,6 +69,7 @@ public class EditCollectionTest extends ComponentTest
                 "callbackStack", callbackStack
             });
         editPage = buildTrailsPage(EditPage.class);
+        
         foo = new Foo();
         
         baz1 = new Baz();
@@ -82,14 +88,15 @@ public class EditCollectionTest extends ComponentTest
         
         editPage.setModel(foo);
         editPage.setPageName("fooPage");
+        
 
         EditorBlockPage editorBlockPage = (EditorBlockPage)creator.newInstance(EditorBlockPage.class,
             new Object[] {"model", foo, "editPageName", EDIT_PAGE_NAME});
         addPage = (EditPage) creator.newInstance(EditPage.class);
 
  
-        editCollection.setCallbackStack(new Stack());
-        editCollection.setPage(editorBlockPage);
+        editCollection.setCallbackStack(new CallbackStack());
+        editCollection.setPage((IPage)pageMock.proxy());
         
         editCollection.setCollection(new ArrayList());
     }
@@ -102,18 +109,26 @@ public class EditCollectionTest extends ComponentTest
 
     public void testAdd() throws Exception
     {
-        buildCollectionDescriptor("bazzes", Baz.class);
+    	Mock cycleMock = buildCycleMock("Baz");
+    	cycleMock.expects(atLeastOnce()).method("getPage").will(returnValue(editPage));
+        pageMock.expects(atLeastOnce()).method("getRequestCycle").will(returnValue(cycleMock.proxy()));
+    	buildCollectionDescriptor("bazzes", Baz.class);
 
-        Mock cycleMock = buildCycleMock("Baz");
+        editCollection.setCreateExpression("createBaz()");
 
         editCollection.showAddPage((IRequestCycle) cycleMock.proxy());
-    
+        
         assertTrue("AddToCollectionCallback on stack", 
-            editCollection.getCallbackStack().peek() instanceof CollectionCallback);
-        CollectionCallback callback = (CollectionCallback)editCollection.getCallbackStack().pop();
+            editCollection.getCallbackStack().getStack().peek() instanceof CollectionCallback);
+        CollectionCallback callback = (CollectionCallback)editCollection.getCallbackStack().getStack().pop();
         assertEquals("right ognl", "bazzes.add", callback.getAddOgnlExpression());
+        
+        EditCallback nextPageCallback = (EditCallback)editPage.getNextPage();
+        assertTrue(nextPageCallback.getModel() instanceof Baz);
+        Baz createdBaz = (Baz)nextPageCallback.getModel();
+        assertEquals(foo, createdBaz.getFoo());
         assertTrue("is child", callback.isChildRelationship());
-        assertEquals("right page", callback.getPageName(), EDIT_PAGE_NAME);
+        assertEquals("right page", callback.getPageName(), "fooPage");
         //assertNotNull(editPage.getNextPage());
     }
 
@@ -152,6 +167,9 @@ public class EditCollectionTest extends ComponentTest
     public void testFindExpression() throws Exception
     {
         Mock cycleMock = buildCycleMock("Bing");
+    	cycleMock.expects(atLeastOnce()).method("getPage").will(returnValue(editPage));
+        pageMock.expects(atLeastOnce()).method("getRequestCycle").will(returnValue(cycleMock.proxy()));
+
         buildCollectionDescriptor("bings", Bing.class);
         editCollection.showAddPage((IRequestCycle) cycleMock.proxy());
         assertEquals("right ognl", "addBing", editCollection.findExpression("add"));

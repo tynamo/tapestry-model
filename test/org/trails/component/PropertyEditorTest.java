@@ -12,6 +12,7 @@
 package org.trails.component;
 
 
+import org.apache.hivemind.Messages;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.components.Block;
@@ -39,12 +40,15 @@ public class PropertyEditorTest extends ComponentTest
     PropertyEditor propertyEditor;
     IPropertyDescriptor descriptor;
     Mock editSvcMock;
+    Mock messagesMock;
     
     public void setUp() throws Exception
     {
+    	messagesMock = new Mock(Messages.class);
         editSvcMock = new Mock(EditorService.class);
         propertyEditor = (PropertyEditor) creator.newInstance(PropertyEditor.class, 
-                new Object[] {"editorService", editSvcMock.proxy()});
+                new Object[] {"editorService", editSvcMock.proxy(),
+        			"messages", messagesMock.proxy()});
         descriptor = new TrailsPropertyDescriptor(Foo.class, "number", Double.class);
         propertyEditor.setDescriptor(descriptor);
     }
@@ -82,5 +86,6 @@ public class PropertyEditorTest extends ComponentTest
         
         assertEquals(block, propertyEditor.getBlock());
     }
+    
    
 }

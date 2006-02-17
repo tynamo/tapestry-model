@@ -18,6 +18,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Stack;
 
+import ognl.Ognl;
+import ognl.OgnlException;
+
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.trails.TrailsRuntimeException;
@@ -25,6 +28,7 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.annotations.InjectState;
 import org.apache.tapestry.contrib.palette.SortMode;
 import org.apache.tapestry.form.IPropertySelectionModel;
+import org.trails.callback.CallbackStack;
 import org.trails.callback.CollectionCallback;
 import org.trails.callback.EditCallback;
 import org.trails.descriptor.CollectionDescriptor;
@@ -46,9 +50,9 @@ import org.trails.persistence.PersistenceService;
 public abstract class EditCollection extends TrailsComponent 
 {
     @InjectState("callbackStack")
-    public abstract Stack getCallbackStack();
+    public abstract CallbackStack getCallbackStack();
     
-    public abstract void setCallbackStack(Stack stack);
+    public abstract void setCallbackStack(CallbackStack stack);
     
     public abstract Collection getCollection();
 
@@ -57,6 +61,10 @@ public abstract class EditCollection extends TrailsComponent
     public abstract Object getModel();
     
     public abstract void setModel(Object Model);
+    
+    public abstract String getCreateExpression();
+
+	public abstract void setCreateExpression(String CreateExpression);
 
     public abstract IPropertyDescriptor getPropertyDescriptor();
 
@@ -113,8 +121,8 @@ public abstract class EditCollection extends TrailsComponent
         {
             // we need to do some indirection to avoid a StaleLink
             EditCallback nextPage = new EditCallback(editPage.getPageName(),
-                getCollectionDescriptor().getElementType().newInstance());
-            String currentEditPageName = ((EditorBlockPage)getPage()).getEditPageName();
+                buildNewMemberInstance());
+            String currentEditPageName = getPage().getRequestCycle().getPage().getPageName();
             ((EditPage)cycle.getPage(currentEditPageName)).setNextPage(nextPage);
             //editPage.setModel(getCollectionDescriptor().getElementType().newInstance());
             
@@ -124,10 +132,30 @@ public abstract class EditCollection extends TrailsComponent
         }
     }
 
+	protected Object buildNewMemberInstance() throws InstantiationException, IllegalAccessException
+	{
+		if (getCreateExpression() == null)
+		{
+			return getCollectionDescriptor().getElementType().newInstance();
+		}
+		else
+		{
+			try
+			{
+				return Ognl.getValue(getCreateExpression(), getModel());
+			}
+			catch (OgnlException oe)
+			{
+				oe.printStackTrace();
+				return null;
+			}
+		}
+	}
+
     CollectionCallback buildCallback()
     {
         CollectionCallback callback = new CollectionCallback(
-            ((EditorBlockPage)getPage()).getEditPageName(), getModel(), findExpression("add"), findExpression("remove"));
+            getPage().getRequestCycle().getPage().getPageName(), getModel(), findExpression("add"), findExpression("remove"));
         callback.setChildRelationship(getCollectionDescriptor().isChildRelationship());
         return callback;
     }

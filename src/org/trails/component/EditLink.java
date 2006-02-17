@@ -38,11 +38,7 @@ import org.trails.persistence.PersistenceService;
  */
 public abstract class EditLink extends Link
 {
-
-    public abstract PersistenceService getPersistenceService();
     
-    public static String SUFFIX = "Edit";
-
     public String getTypeName()
     {
         return getModel().getClass().getName();
@@ -55,24 +51,12 @@ public abstract class EditLink extends Link
 
     public abstract void setModel(Object model);
 
-    /**
-     * Looks for a page whose name is unqualified type name + SUFFIX.  
-     * If not found, goes to page "Default" + SUFFIX.  Attaches the model
-     * to the page and then activates it.
-     * @param cycle
-     */
-    public void click(IRequestCycle cycle)
-    {
-        EditPage page = (EditPage) findPage(cycle, SUFFIX);
-        reattachModel();
-        page.setModel(getModel());
-        ((TrailsPage)getPage()).pushCallback(); 
-        
-        cycle.activate(page);
-    }
+	public String getEditPageName()
+	{
+		return getPageResolver().resolvePage(
+				getPage().getRequestCycle(), 
+				getModel().getClass().getName(),
+				TrailsPage.PageType.EDIT).getPageName();
+	}
 
-    protected void reattachModel()
-    {
-        getPersistenceService().reattach(getModel());
-    }
 }

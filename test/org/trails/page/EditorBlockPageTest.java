@@ -19,6 +19,7 @@ import org.trails.descriptor.IPropertyDescriptor;
 import org.trails.descriptor.IdentifierDescriptor;
 import org.trails.descriptor.TrailsClassDescriptor;
 import org.trails.descriptor.TrailsPropertyDescriptor;
+import org.trails.hibernate.HasAssignedIdentifier;
 import org.trails.test.Bar;
 import org.trails.test.Foo;
 import org.trails.test.IBar;
@@ -38,47 +39,17 @@ public class EditorBlockPageTest extends ComponentTest
         // TODO Auto-generated constructor stub
     }
 
-    public void testGetValidator() throws Exception
-    {
-        IPropertyDescriptor numberDescriptor = new TrailsPropertyDescriptor(Foo.class, "number", Double.class);
-        NumberValidator validator = (NumberValidator) editorBlockPage.getValidator(numberDescriptor);
-        assertEquals("right value type", Double.class,
-            validator.getValueTypeClass());
-        IPropertyDescriptor descriptor = new TrailsPropertyDescriptor(Foo.class, "name", String.class); 
-        descriptor.setLength(55);
-        descriptor.setRequired(true);
-        
-        StringValidator stringValidator = 
-            (StringValidator)editorBlockPage.getValidator(descriptor);
-        assertTrue("is required", stringValidator.isRequired());
-        
-    }
 
-    public void testGetTranslator() throws Exception
-    {
-        IPropertyDescriptor numberDescriptor = new TrailsPropertyDescriptor(Foo.class, "number", Double.class);
-        Translator translator =  editorBlockPage.getTranslator(numberDescriptor); 
-        assertTrue(translator instanceof NumberTranslator);
-        assertNotNull(((FormatTranslator)translator).getPattern());
-        
-        IPropertyDescriptor dateDescriptor = new TrailsPropertyDescriptor(Foo.class, "date", Date.class);
-        translator = editorBlockPage.getTranslator(dateDescriptor);
-        assertNotNull(((FormatTranslator)translator).getPattern());
-        dateDescriptor.setFormat("MM/dd/yyyy");
-        translator = editorBlockPage.getTranslator(dateDescriptor);
-        assertTrue(translator instanceof DateTranslator);
-        assertEquals("MM/dd/yyyy", 
-                ((DateTranslator)translator).getPattern());
-        
-    }
     
     public void testPushCallBack()
     {
+    	Foo foo = new Foo();
         editorBlockPage.setEditPageName("FooEdit");
-        editorBlockPage.setModel(new Foo());
+        editorBlockPage.setModel(foo);
+        
         editorBlockPage.pushCallback();
-        assertEquals(EditCallback.class, callbackStack.get(0).getClass());
-        EditCallback callback = (EditCallback)callbackStack.pop();
+        assertEquals(EditCallback.class, callbackStack.getStack().get(0).getClass());
+        EditCallback callback = (EditCallback)callbackStack.getStack().pop();
         assertEquals("FooEdit", callback.getPageName());
     }
 }

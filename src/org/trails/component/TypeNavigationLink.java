@@ -30,7 +30,7 @@ public abstract class TypeNavigationLink extends Link
     @InjectObject("spring:descriptorService")
     public abstract DescriptorService getDescriptorService();
 
-    protected Class getType()
+    public Class getType()
     {
         try
         {
