@@ -15,6 +15,10 @@ public abstract class SearchForm extends BaseComponent
 
 	public abstract void setClassDescriptor(IClassDescriptor ClassDescriptor);
 	
+	/**
+	 * Asks each component to add its criterion
+	 * @return
+	 */
 	public DetachedCriteria buildCriteria()
 	{
 		DetachedCriteria criteria = DetachedCriteria.forClass(getClassDescriptor().getType());
