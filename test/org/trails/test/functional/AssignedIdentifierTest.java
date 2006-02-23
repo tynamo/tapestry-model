@@ -17,10 +17,8 @@ import com.gargoylesoftware.htmlunit.html.HtmlForm;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 
 /**
- * @author fus8882
+ * Chris Nelson
  *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
  */
 public class AssignedIdentifierTest extends FunctionalTest
 {
