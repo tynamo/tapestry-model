@@ -11,7 +11,6 @@ public class TreeTest extends FunctionalTest
     public TreeTest()
     {
         super();
-        // TODO Auto-generated constructor stub
     }
 
     public void testTree() throws Exception
