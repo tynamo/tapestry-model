@@ -11,8 +11,6 @@
  */
 package org.trails.component;
 
-import org.apache.tapestry.IPage;
-import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.annotations.InjectObject;
 import org.trails.page.PageResolver;
 

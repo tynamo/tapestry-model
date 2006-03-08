@@ -1,14 +1,10 @@
 package org.trails.component;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.tapestry.IRequestCycle;
 import org.jmock.cglib.Mock;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.trails.descriptor.DescriptorService;
 import org.trails.i18n.DefaultTrailsResourceBundleMessageSource;
-import org.trails.page.ListPage;
 import org.trails.page.PageResolver;
 import org.trails.page.SearchPage;
 import org.trails.page.TrailsPage;
@@ -49,7 +45,7 @@ public class SearchLinkTest extends ComponentTest
         		eq(TrailsPage.PageType.SEARCH)).will(returnValue(searchPage));
         cycleMock.expects(once()).method("activate").with(eq(searchPage));
         searchLink.click((IRequestCycle)cycleMock.proxy());
-        assertNotNull(searchPage.getExampleModel());
-        assertTrue(searchPage.getExampleModel() instanceof Foo);
+        assertNotNull(searchPage.getTypeName());
+        assertEquals(Foo.class.getName(), searchPage.getTypeName());
     }
 }

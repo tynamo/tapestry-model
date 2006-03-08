@@ -6,6 +6,8 @@
  */
 package org.trails.hibernate;
 
+import org.trails.test.Foo;
+
 /**
  * @author fus8882
  * 

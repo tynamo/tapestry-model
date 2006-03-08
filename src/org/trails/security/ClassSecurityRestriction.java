@@ -4,7 +4,6 @@ package org.trails.security;
 
 
 import org.trails.descriptor.IClassDescriptor;
-import org.trails.descriptor.IDescriptor;
 
 public class ClassSecurityRestriction extends SecurityRestriction
 {

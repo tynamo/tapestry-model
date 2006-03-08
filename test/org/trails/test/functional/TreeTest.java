@@ -5,7 +5,6 @@ import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.gargoylesoftware.htmlunit.html.HtmlSelect;
 import com.gargoylesoftware.htmlunit.html.HtmlTextInput;
 import com.gargoylesoftware.htmlunit.html.xpath.HtmlUnitXPath;
-import com.sun.tools.javac.tree.Tree.NewClass;
 
 public class TreeTest extends FunctionalTest
 {

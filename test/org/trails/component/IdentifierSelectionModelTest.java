@@ -34,16 +34,22 @@ public class IdentifierSelectionModelTest extends TestCase
     public void testGetValue() throws Exception
     {
         assertEquals("right value", "2", selectionModel.getValue(1));
-        assertEquals("none value", IdentifierSelectionModel.NONE_VALUE, 
+        assertEquals("none value", IdentifierSelectionModel.DEFAULT_NONE_VALUE, 
             nullableSelectionModel.getValue(0));
         assertEquals("1 value", "1", 
             nullableSelectionModel.getValue(1));       
+    }
+    
+    public void testNoneLabelValue() throws Exception
+    {
+    	nullableSelectionModel.setNoneLabel("Any");
+    	assertEquals("Any", nullableSelectionModel.getLabel(0));
     }
 
     public void testGetLabel() throws Exception
     {
         assertEquals("right label", "mom", selectionModel.getLabel(1));
-        assertEquals("none value", IdentifierSelectionModel.NONE_LABEL, 
+        assertEquals("none value", IdentifierSelectionModel.DEFAULT_NONE_LABEL, 
             nullableSelectionModel.getLabel(0));     
         assertEquals("none value", "howdy", 
             nullableSelectionModel.getLabel(1));
@@ -54,7 +60,7 @@ public class IdentifierSelectionModelTest extends TestCase
         Foo foo = (Foo) selectionModel.translateValue("2");
         assertEquals("got right foo", foo, foos.get(1));
         assertEquals("should be null", null, nullableSelectionModel.translateValue(
-            IdentifierSelectionModel.NONE_VALUE));
+            IdentifierSelectionModel.DEFAULT_NONE_VALUE));
         assertEquals("correct foo", foo, nullableSelectionModel.translateValue("2"));
     }
 

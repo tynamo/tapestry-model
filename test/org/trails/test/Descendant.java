@@ -1,9 +1,10 @@
 package org.trails.test;
 
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 
-@Inheritance(discriminatorValue="descendant")
+@DiscriminatorValue("descendant")
 @Entity
 public class Descendant extends Ancestor
 {

@@ -16,29 +16,25 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Stack;
 
 import ognl.Ognl;
 import ognl.OgnlException;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.trails.TrailsRuntimeException;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.annotations.InjectState;
 import org.apache.tapestry.contrib.palette.SortMode;
 import org.apache.tapestry.form.IPropertySelectionModel;
+import org.trails.TrailsRuntimeException;
 import org.trails.callback.CallbackStack;
 import org.trails.callback.CollectionCallback;
 import org.trails.callback.EditCallback;
 import org.trails.descriptor.CollectionDescriptor;
+import org.trails.descriptor.DescriptorService;
 import org.trails.descriptor.IClassDescriptor;
 import org.trails.descriptor.IPropertyDescriptor;
-import org.trails.descriptor.TrailsClassDescriptor;
-import org.trails.descriptor.DescriptorService;
-import org.trails.descriptor.TrailsPropertyDescriptor;
 import org.trails.page.EditPage;
-import org.trails.page.EditorBlockPage;
 import org.trails.persistence.PersistenceService;
 
 

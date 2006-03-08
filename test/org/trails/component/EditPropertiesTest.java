@@ -27,12 +27,12 @@ import org.trails.test.Foo;
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
-public class PropertyTableTest extends ComponentTest
+public class EditPropertiesTest extends ComponentTest
 {
 
     public void testGetPropertyDescriptors() throws Exception
     {
-        PropertyTable propertyTable = (PropertyTable)creator.newInstance(PropertyTable.class);
+        EditProperties propertyTable = (EditProperties)creator.newInstance(EditProperties.class);
         
         IClassDescriptor classDescriptor = new TrailsClassDescriptor(Foo.class);
         IPropertyDescriptor nameDescriptor = new TrailsPropertyDescriptor(Foo.class, 

@@ -9,10 +9,6 @@ import java.util.Locale;
 import org.apache.tapestry.BaseComponent;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.PageRedirectException;
-import org.apache.tapestry.RedirectException;
-import org.trails.i18n.ResourceBundleMessageSource;
-import org.trails.page.EditPage;
-import org.trails.page.TrailsPage;
 import org.trails.servlet.TrailsApplicationServlet;
 
 public abstract class LocaleLink extends BaseComponent {

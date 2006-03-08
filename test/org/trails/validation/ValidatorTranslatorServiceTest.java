@@ -2,6 +2,8 @@ package org.trails.validation;
 
 import java.util.Date;
 
+import junit.framework.TestCase;
+
 import org.apache.tapestry.form.translator.DateTranslator;
 import org.apache.tapestry.form.translator.FormatTranslator;
 import org.apache.tapestry.form.translator.NumberTranslator;
@@ -11,8 +13,6 @@ import org.apache.tapestry.valid.StringValidator;
 import org.trails.descriptor.IPropertyDescriptor;
 import org.trails.descriptor.TrailsPropertyDescriptor;
 import org.trails.test.Foo;
-
-import junit.framework.TestCase;
 
 public class ValidatorTranslatorServiceTest extends TestCase
 {

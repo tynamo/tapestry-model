@@ -13,11 +13,6 @@
  */
 package org.trails.component;
 
-import org.apache.tapestry.BaseComponent;
-import org.apache.tapestry.IPage;
-import org.apache.tapestry.components.Block;
-import org.trails.descriptor.TrailsClassDescriptor;
-import org.trails.page.EditPage;
 
 /**
  * @author fus8882
@@ -25,51 +20,8 @@ import org.trails.page.EditPage;
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
-public abstract class ObjectEditComponent extends ObjectComponent
+public abstract class ObjectEditComponent extends ClassDescriptorComponent
 {
-
-    public boolean hasBlock(String propertyName)
-    {
-        if (getPage().getComponents().containsKey(propertyName))
-        {
-            return true;
-        }
-//        else {
-//            IPage editPage = getEditPage();
-//            if (editPage != null)
-//            {
-//                return editPage.getComponents().containsKey(propertyName);
-//            }
-//        }
-        return false;
-    }
-
-    protected EditPage getEditPage()
-    {
-        EditPage editPage = (EditPage)Utils.findPage(getPage().getRequestCycle(), 
-            Utils.unqualify(getModel().getClass().getName()) + "Edit",
-            "Edit");
-        return editPage;
-    }
-
-    public Block getBlock(String propertyName)
-    {
-        if (getPage().getComponents().containsKey(propertyName))
-        {
-            return (Block)getPage().getComponent(propertyName);
-        }
-//        EditPage editPage = getEditPage();
-//        if (editPage != null)
-//        {
-//            
-//            if (editPage.getComponents().containsKey(propertyName))
-//            {
-//                editPage.setModel(getModel());
-//                return (Block)editPage.getComponent(propertyName);
-//            }
-//        }
-        return null;
-    }
 
     public abstract Object getModel();
 

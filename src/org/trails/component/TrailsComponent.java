@@ -11,10 +11,8 @@
  */
 package org.trails.component;
 
-import org.apache.hivemind.Messages;
 import org.apache.tapestry.BaseComponent;
 import org.apache.tapestry.annotations.InjectObject;
-import org.apache.tapestry.services.RequestLocaleManager;
 import org.trails.i18n.ResourceBundleMessageSource;
 
 

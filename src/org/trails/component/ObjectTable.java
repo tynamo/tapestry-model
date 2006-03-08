@@ -11,15 +11,15 @@
  */
 package org.trails.component;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import org.apache.tapestry.annotations.InjectObject;
 import org.apache.tapestry.services.ExpressionEvaluator;
 import org.apache.tapestry.util.ComponentAddress;
 import org.trails.descriptor.IPropertyDescriptor;
 import org.trails.descriptor.TrailsPropertyDescriptor;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
 
 /**
@@ -28,7 +28,7 @@ import java.util.List;
  *         TODO To change the template for this generated type comment go to
  *         Window - Preferences - Java - Code Style - Code Templates
  */
-public abstract class ObjectTable extends ObjectComponent
+public abstract class ObjectTable extends ClassDescriptorComponent
 {
 	public static final String LINK_COLUMN="linkColumnValue";
     public abstract boolean isShowCollections();

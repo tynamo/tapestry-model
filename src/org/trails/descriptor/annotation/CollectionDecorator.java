@@ -1,9 +1,6 @@
 package org.trails.descriptor.annotation;
 
-import java.lang.annotation.Annotation;
-
 import org.trails.descriptor.CollectionDescriptor;
-import org.trails.descriptor.IDescriptor;
 
 public class CollectionDecorator implements DescriptorAnnotationHandler<Collection,CollectionDescriptor>
 {

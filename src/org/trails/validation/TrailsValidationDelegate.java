@@ -1,12 +1,7 @@
 package org.trails.validation;
 
-import java.text.MessageFormat;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
-
-import ognl.Ognl;
-import ognl.OgnlException;
 
 import org.apache.tapestry.valid.FieldTracking;
 import org.apache.tapestry.valid.IFieldTracking;

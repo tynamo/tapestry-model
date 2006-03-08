@@ -11,26 +11,16 @@
  */
 package org.trails.component;
 
-import java.beans.Introspector;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
-
 import org.jmock.cglib.Mock;
-import org.jmock.cglib.MockObjectTestCase;
-
 import org.springframework.context.support.ResourceBundleMessageSource;
+import org.trails.descriptor.DescriptorService;
 import org.trails.descriptor.IClassDescriptor;
 import org.trails.descriptor.TrailsClassDescriptor;
-import org.trails.descriptor.DescriptorService;
 import org.trails.i18n.DefaultTrailsResourceBundleMessageSource;
-import org.trails.page.ListPage;
 import org.trails.page.PageResolver;
 import org.trails.page.TrailsPage;
-import org.trails.persistence.PersistenceService;
 import org.trails.test.BlogEntry;
 import org.trails.test.Foo;
 

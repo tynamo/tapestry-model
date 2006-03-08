@@ -11,45 +11,30 @@
  */
 package org.trails.page;
 
-import java.beans.Introspector;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Stack;
 
-import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IExternalPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.callback.ICallback;
 import org.apache.tapestry.event.PageEvent;
-import org.apache.tapestry.form.IPropertySelectionModel;
-
 import org.apache.tapestry.valid.IValidationDelegate;
-import org.apache.tapestry.valid.NumberValidator;
-import org.apache.tapestry.valid.StringValidator;
+import org.hibernate.Criteria;
+import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.validator.InvalidStateException;
 import org.hibernate.validator.InvalidValue;
 import org.jmock.Mock;
-import org.springframework.context.support.ResourceBundleMessageSource;
 import org.trails.callback.CollectionCallback;
 import org.trails.callback.EditCallback;
 import org.trails.callback.ListCallback;
 import org.trails.component.ComponentTest;
 import org.trails.descriptor.IClassDescriptor;
-import org.trails.descriptor.IPropertyDescriptor;
 import org.trails.descriptor.IdentifierDescriptor;
 import org.trails.descriptor.TrailsClassDescriptor;
-import org.trails.descriptor.DescriptorService;
 import org.trails.descriptor.TrailsPropertyDescriptor;
 import org.trails.hibernate.HasAssignedIdentifier;
-import org.trails.i18n.DefaultTrailsResourceBundleMessageSource;
-import org.trails.page.EditPage;
-import org.trails.page.ListPage;
-import org.trails.persistence.PersistenceException;
-import org.trails.persistence.PersistenceService;
 import org.trails.test.Bar;
 import org.trails.test.Baz;
 import org.trails.test.Foo;
-import org.trails.test.IBar;
 import org.trails.validation.ValidationException;
 
 
@@ -69,7 +54,7 @@ public class EditPageTest extends ComponentTest
     Foo foo = new Foo();
     IdentifierDescriptor idDescriptor;
     Mock validatorMock;
-    ListCallback listCallBack = new ListCallback("FooList", Foo.class.getName());
+    ListCallback listCallBack = new ListCallback("FooList", Foo.class.getName(), DetachedCriteria.forClass(Foo.class));
     ListPage listPage;
     EditCallback editCallback;
     
@@ -207,7 +192,6 @@ public class EditPageTest extends ComponentTest
             listPage));
         cycleMock.expects(once()).method("activate").with(eq(listPage));
         persistenceMock.expects(once()).method("save").with(same(foo));
-        persistenceMock.expects(once()).method("getAllInstances").with(eq(Foo.class)).will(returnValue(new ArrayList()));
         editPage.saveAndReturn((IRequestCycle)cycleMock.proxy());
         cycleMock.verify();
         persistenceMock.verify();
@@ -270,13 +254,10 @@ public class EditPageTest extends ComponentTest
         ArrayList instances = new ArrayList();
         cycleMock.expects(once()).method("getPage").with(eq("FooList")).will(returnValue(
                 listPage));
-        persistenceMock.expects(once()).method("getAllInstances")
-                       .with(same(Foo.class)).will(returnValue(instances));
         persistenceMock.expects(once()).method("remove").with(same(foo));
         cycleMock.expects(atLeastOnce()).method("activate").with(same(listPage));
 
         editPage.remove((IRequestCycle) cycleMock.proxy());
-        assertEquals("instances set", instances, listPage.getInstances());
 
         cycleMock.verify();
         persistenceMock.verify();

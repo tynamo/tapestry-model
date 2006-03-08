@@ -11,26 +11,11 @@
  */
 package org.trails.component;
 
-import java.util.Stack;
-
-import org.trails.TrailsRuntimeException;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.PageNotFoundException;
-import org.apache.tapestry.event.PageEvent;
-
 import org.jmock.Mock;
-import org.trails.callback.ListCallback;
-import org.trails.descriptor.DescriptorService;
-import org.trails.descriptor.IdentifierDescriptor;
-import org.trails.descriptor.TrailsClassDescriptor;
-import org.trails.hibernate.HasAssignedIdentifier;
-import org.trails.page.EditPage;
-import org.trails.page.ListPage;
 import org.trails.page.PageResolver;
 import org.trails.page.TrailsPage;
-import org.trails.persistence.PersistenceService;
-import org.trails.test.Bar;
 import org.trails.test.Foo;
 
 

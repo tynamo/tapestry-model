@@ -1,21 +1,29 @@
 package org.trails.component.search;
 
-import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Restrictions;
+import org.apache.tapestry.IRequestCycle;
+import org.jmock.cglib.Mock;
 import org.trails.component.ComponentTest;
 import org.trails.descriptor.IClassDescriptor;
 import org.trails.descriptor.IPropertyDescriptor;
 import org.trails.descriptor.TrailsClassDescriptor;
 import org.trails.descriptor.TrailsPropertyDescriptor;
+import org.trails.page.ListPage;
+import org.trails.page.PageResolver;
+import org.trails.page.TrailsPage.PageType;
 import org.trails.test.Foo;
 
 public class SearchFormTest extends ComponentTest
 {
-	public void testBuildCriteria() throws Exception
+	SearchForm searchForm;
+	Mock pageResolverMock;
+	
+	public void setUp() throws Exception
 	{
-		SearchForm searchForm = (SearchForm)creator.newInstance(SearchForm.class);
+		pageResolverMock = new Mock(PageResolver.class);
+		searchForm = (SearchForm)creator.newInstance(SearchForm.class, 
+				new Object[] {"pageResolver", pageResolverMock.proxy()});
 		IClassDescriptor fooDescriptor = new TrailsClassDescriptor(Foo.class, "Foo");
-		searchForm.setClassDescriptor(fooDescriptor);
+		searchForm.setClassDescriptor(fooDescriptor);		
 		IPropertyDescriptor namePropDescriptor = new TrailsPropertyDescriptor(Foo.class, "name", String.class);
 		SimpleSearchField nameSearchField = (SimpleSearchField)creator.newInstance(SimpleSearchField.class);
 		nameSearchField.setPropertyDescriptor(namePropDescriptor);
@@ -28,8 +36,27 @@ public class SearchFormTest extends ComponentTest
 		numberSearchField.setPropertyDescriptor(numberPropDescriptor);
 		searchForm.addComponent(nameSearchField);
 		searchForm.addComponent(numberSearchField);
+	}
+	
+	public void testBuildCriteria() throws Exception
+	{
+
 		assertTrue(searchForm.buildCriteria().toString().indexOf("name=aname") > -1);
 		assertTrue(searchForm.buildCriteria().toString().indexOf("number=3.2") > -1);
 		
+	}
+	
+	public void testSearch() throws Exception
+	{
+		ListPage listPage = (ListPage)creator.newInstance(ListPage.class);
+		
+		Mock cycleMock = new Mock(IRequestCycle.class);
+		pageResolverMock.expects(once()).method("resolvePage").with(
+				isA(IRequestCycle.class), 
+				eq(Foo.class.getName()),
+				eq(PageType.LIST)).will(returnValue(listPage));
+		cycleMock.expects(once()).method("activate").with(eq(listPage));
+		searchForm.search((IRequestCycle)cycleMock.proxy());
+		assertNotNull(listPage.getCriteria());
 	}
 }

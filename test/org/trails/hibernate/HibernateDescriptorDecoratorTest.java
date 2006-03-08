@@ -11,20 +11,16 @@
  */
 package org.trails.hibernate;
 
-import java.beans.MethodDescriptor;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
 import junit.framework.TestCase;
-
 import ognl.Ognl;
 
 import org.hibernate.cfg.Configuration;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
-import org.jmock.MockObjectTestCase;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.orm.hibernate3.LocalSessionFactoryBean;
@@ -34,11 +30,9 @@ import org.trails.descriptor.IClassDescriptor;
 import org.trails.descriptor.IPropertyDescriptor;
 import org.trails.descriptor.IdentifierDescriptor;
 import org.trails.descriptor.TrailsClassDescriptor;
-import org.trails.descriptor.DescriptorService;
 import org.trails.descriptor.TrailsPropertyDescriptor;
 import org.trails.test.Bar;
 import org.trails.test.Baz;
-import org.trails.test.Bing;
 import org.trails.test.Descendant;
 import org.trails.test.Embeddee;
 import org.trails.test.Embeddor;

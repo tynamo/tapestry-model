@@ -5,18 +5,27 @@
 
 package org.trails.security.domain;
 
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
+import javax.persistence.Version;
+
 import org.hibernate.validator.NotNull;
 import org.trails.descriptor.annotation.PropertyDescriptor;
 import org.trails.security.RestrictionType;
 import org.trails.security.annotation.Restriction;
 import org.trails.security.annotation.Security;
 import org.trails.validation.ValidateUniqueness;
-
-import javax.persistence.*;
-
-import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Table(name="TRAILS_USER") 
@@ -38,7 +47,7 @@ public class User implements Serializable
     private boolean accountLocked = false;
     private boolean credentialsExpired = false;
 
-    @Id(generate = GeneratorType.AUTO)
+    @Id @GeneratedValue(strategy = GenerationType.AUTO)
     @PropertyDescriptor(index = 0)
     public Integer getId()
     {
@@ -95,7 +104,7 @@ public class User implements Serializable
 
     @ManyToMany(fetch = javax.persistence.FetchType.EAGER)
     @JoinTable(
-            table = @Table(name = "user_role"),
+            name = "user_role",
             joinColumns = {@JoinColumn(name = "user_ID")},
             inverseJoinColumns = {@JoinColumn(name = "role_ID")})
     public Set<Role> getRoles()

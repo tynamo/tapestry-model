@@ -1,12 +1,6 @@
 package org.trails.security;
 
-import java.util.List;
-
 import org.acegisecurity.GrantedAuthority;
-import org.acegisecurity.userdetails.User;
-import ognl.Ognl;
-import ognl.OgnlException;
-
 import org.trails.descriptor.IClassDescriptor;
 
 public abstract class SecurityRestriction

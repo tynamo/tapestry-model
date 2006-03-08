@@ -2,11 +2,11 @@ package org.trails.security;
 
 import java.util.List;
 
+import junit.framework.TestCase;
+
 import org.trails.descriptor.IClassDescriptor;
 import org.trails.descriptor.TrailsClassDescriptor;
 import org.trails.descriptor.TrailsPropertyDescriptor;
-
-import junit.framework.TestCase;
 
 public class SecurityServiceTest extends TestCase
 {

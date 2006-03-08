@@ -1,11 +1,11 @@
 package org.trails.security;
 
+import junit.framework.TestCase;
+
 import org.trails.descriptor.IPropertyDescriptor;
 import org.trails.descriptor.TrailsPropertyDescriptor;
 import org.trails.test.Foo;
 import org.trails.test.IBar;
-
-import junit.framework.TestCase;
 
 public class SecurityRestrictionTest extends TestCase
 {

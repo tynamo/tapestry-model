@@ -7,10 +7,8 @@ package org.trails.security;
 import java.util.Iterator;
 import java.util.List;
 
-import org.acegisecurity.context.SecurityContext;
 import org.acegisecurity.context.SecurityContextHolder;
 import org.acegisecurity.context.SecurityContextImpl;
-
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.trails.descriptor.DescriptorService;
@@ -18,8 +16,6 @@ import org.trails.descriptor.IClassDescriptor;
 import org.trails.security.test.FooSecured;
 import org.trails.servlet.TrailsApplicationServlet;
 import org.trails.test.Foo;
-
-import junit.framework.TestCase;
 
 public class DescriptorSecurityTest extends SecurityRestrictionTest {
 

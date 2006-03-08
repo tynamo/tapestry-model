@@ -1,14 +1,9 @@
 package org.trails.hibernate;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.commons.beanutils.BeanUtils;
 import org.trails.descriptor.IClassDescriptor;
 import org.trails.descriptor.IDescriptor;
 import org.trails.descriptor.IPropertyDescriptor;
 import org.trails.descriptor.TrailsClassDescriptor;
-import org.trails.descriptor.TrailsPropertyDescriptor;
 
 public class EmbeddedDescriptor extends TrailsClassDescriptor implements IPropertyDescriptor
 {

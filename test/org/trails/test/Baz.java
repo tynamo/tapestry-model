@@ -12,7 +12,8 @@
 package org.trails.test;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratorType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
@@ -57,7 +58,7 @@ public class Baz
     /**
      * @hibernate.id generator-class="native"
      */
-    @Id(generate=GeneratorType.AUTO)
+    @Id @GeneratedValue(strategy=GenerationType.AUTO)
     public Integer getId()
     {
         return id;

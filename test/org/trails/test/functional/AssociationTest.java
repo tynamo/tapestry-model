@@ -1,6 +1,5 @@
 package org.trails.test.functional;
 
-import com.gargoylesoftware.htmlunit.html.HtmlForm;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 
 public class AssociationTest extends FunctionalTest

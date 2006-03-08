@@ -11,14 +11,10 @@ import java.util.Iterator;
 
 import ognl.Ognl;
 
-import org.apache.commons.lang.StringUtils;
 import org.trails.descriptor.DescriptorDecorator;
 import org.trails.descriptor.IClassDescriptor;
 import org.trails.descriptor.IDescriptor;
 import org.trails.descriptor.IPropertyDescriptor;
-import org.trails.descriptor.TrailsClassDescriptor;
-import org.trails.descriptor.TrailsDescriptor;
-import org.trails.descriptor.TrailsPropertyDescriptor;
 import org.trails.hibernate.EmbeddedDescriptor;
 
 /**

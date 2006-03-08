@@ -1,11 +1,9 @@
 package org.trails.component;
 
 import org.apache.tapestry.BaseComponent;
-import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.annotations.InjectObject;
 import org.apache.tapestry.form.IPropertySelectionModel;
-import org.hibernate.Criteria;
 import org.hibernate.criterion.DetachedCriteria;
 import org.trails.descriptor.IClassDescriptor;
 import org.trails.descriptor.IPropertyDescriptor;
@@ -41,6 +39,14 @@ public abstract class AssociationSelect extends BaseComponent
 
     public abstract void setPropertyDescriptor(IPropertyDescriptor PropertyDescriptor);
  
+    public abstract boolean isAllowNone();
+
+	public abstract void setAllowNone(boolean AllowNone);
+	
+	public abstract String getNoneLabel();
+
+	public abstract void setNoneLabel(String NoneLabel);
+	
     public AssociationSelect()
     {
         super();
@@ -67,9 +73,10 @@ public abstract class AssociationSelect extends BaseComponent
                 getCriteria() : 
                 DetachedCriteria.forClass(getClassDescriptor().getType());
         IdentifierSelectionModel selectionModel = new IdentifierSelectionModel(
-                getPersistenceService().getInstances(criteria),
-                getClassDescriptor().getIdentifierDescriptor().getName(),
-                !getPropertyDescriptor().isRequired());
+        		getPersistenceService().getInstances(criteria),
+        		getClassDescriptor().getIdentifierDescriptor().getName(),
+        		isAllowNone());
+        selectionModel.setNoneLabel(getNoneLabel());
         setPropertySelectionModel(selectionModel);
     }
     

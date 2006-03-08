@@ -1,8 +1,8 @@
 package org.trails.io;
 
-import org.trails.test.Foo;
-
 import junit.framework.TestCase;
+
+import org.trails.test.Foo;
 
 public class SqueezableAspectTest extends TestCase
 {

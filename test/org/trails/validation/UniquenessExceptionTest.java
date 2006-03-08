@@ -1,9 +1,9 @@
 package org.trails.validation;
 
+import junit.framework.TestCase;
+
 import org.trails.descriptor.TrailsPropertyDescriptor;
 import org.trails.test.Foo;
-
-import junit.framework.TestCase;
 
 public class UniquenessExceptionTest extends TestCase
 {

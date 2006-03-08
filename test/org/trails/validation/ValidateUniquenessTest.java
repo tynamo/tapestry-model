@@ -1,20 +1,15 @@
 package org.trails.validation;
 
+import junit.framework.TestCase;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.orm.hibernate3.SessionFactoryUtils;
-
-import org.trails.descriptor.annotation.Annotated;
-
-import org.trails.persistence.PersistenceException;
 import org.trails.persistence.PersistenceService;
 import org.trails.test.Baz;
 import org.trails.test.Bing;
-import org.trails.test.Foo;
-
-import junit.framework.TestCase;
 
 public class ValidateUniquenessTest extends TestCase
 {

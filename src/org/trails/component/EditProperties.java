@@ -11,14 +11,10 @@
  */
 package org.trails.component;
 
-import ognl.Ognl;
-
-
-import org.trails.descriptor.IClassDescriptor;
+import org.apache.tapestry.annotations.InjectObject;
+import org.apache.tapestry.components.Block;
+import org.trails.descriptor.BlockFinder;
 import org.trails.descriptor.IPropertyDescriptor;
-
-
-import java.util.ArrayList;
 
 /*
  * Created on Sep 30, 2004
@@ -33,11 +29,18 @@ import java.util.ArrayList;
  * TODO To change the template for this generated type comment go to Window -
  * Preferences - Java - Code Style - Code Templates
  */
-public abstract class PropertyTable extends ObjectEditComponent
+public abstract class EditProperties extends ObjectEditComponent
 {
+    @InjectObject("spring:editorService")
+    public abstract BlockFinder getBlockFinder();
+    
     /**
      * @return Returns the current property.
      */
     public abstract IPropertyDescriptor getProperty();
 
+    public Block getBlock() 
+    {
+    	return getBlockFinder().findBlock(getPage().getRequestCycle(), getProperty());
+    }
 }

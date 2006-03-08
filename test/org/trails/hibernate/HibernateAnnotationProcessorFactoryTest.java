@@ -2,7 +2,6 @@ package org.trails.hibernate;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -11,13 +10,10 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.dom4j.Document;
-import org.dom4j.io.SAXReader;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 import org.jmock.core.Invocation;
 import org.jmock.core.Stub;
-import org.trails.hibernate.HibernateAnnotationProcessorFactory.HibernateAnnotationProcessor;
 
 import com.sun.mirror.apt.AnnotationProcessor;
 import com.sun.mirror.apt.AnnotationProcessorEnvironment;

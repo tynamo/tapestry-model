@@ -8,12 +8,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.acegisecurity.context.SecurityContextHolder;
 import ognl.Ognl;
 
 import org.trails.descriptor.IClassDescriptor;
 import org.trails.descriptor.IPropertyDescriptor;
-import org.trails.descriptor.annotation.AbstractAnnotationHandler;
 import org.trails.security.annotation.Security;
 import org.trails.security.annotation.SecurityAnnotationHandler;
 

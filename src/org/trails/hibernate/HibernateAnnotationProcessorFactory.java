@@ -1,9 +1,7 @@
 package org.trails.hibernate;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
@@ -22,9 +20,7 @@ import com.sun.mirror.apt.Filer;
 import com.sun.mirror.declaration.AnnotationTypeDeclaration;
 import com.sun.mirror.declaration.ClassDeclaration;
 import com.sun.mirror.declaration.Declaration;
-import com.sun.mirror.declaration.TypeDeclaration;
 import com.sun.mirror.util.SimpleDeclarationVisitor;
-import com.sun.org.apache.bcel.internal.generic.GETFIELD;
 
 public class HibernateAnnotationProcessorFactory implements AnnotationProcessorFactory
 {

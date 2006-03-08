@@ -9,9 +9,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.tapestry.annotations.InjectObject;
-import org.apache.tapestry.html.BasePage;
-import org.trails.descriptor.DescriptorService;
 import org.trails.descriptor.IClassDescriptor;
 
 public abstract class HomePage extends TrailsPage

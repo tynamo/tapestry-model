@@ -33,13 +33,20 @@ public class AssociationSelectTest extends ComponentTest
         IPropertyDescriptor associationDescriptor = new TrailsPropertyDescriptor(Foo.class, "foo", Foo.class);
         associationSelect.setClassDescriptor(classDescriptor);
         associationSelect.setPropertyDescriptor(associationDescriptor);
+        associationSelect.setAllowNone(true);
         associationSelect.buildSelectionModel();
         IdentifierSelectionModel selectionModel = (IdentifierSelectionModel)associationSelect.getPropertySelectionModel();
         assertEquals(1, selectionModel.getOptionCount());
-        associationDescriptor.setRequired(true);
         
+        associationSelect.setAllowNone(false);
         associationSelect.buildSelectionModel();
         selectionModel = (IdentifierSelectionModel)associationSelect.getPropertySelectionModel();
         assertEquals(0, selectionModel.getOptionCount());
+        
+        associationSelect.setNoneLabel("Any");
+        associationSelect.buildSelectionModel();
+        selectionModel = (IdentifierSelectionModel)associationSelect.getPropertySelectionModel();
+        assertEquals("Any", selectionModel.getNoneLabel());
+        
     }
 }

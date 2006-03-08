@@ -2,7 +2,6 @@ package org.trails.test.functional;
 
 import com.gargoylesoftware.htmlunit.html.HtmlForm;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
-import com.gargoylesoftware.htmlunit.html.xpath.HtmlUnitXPath;
 
 public class TextAreaTest extends FunctionalTest
 {

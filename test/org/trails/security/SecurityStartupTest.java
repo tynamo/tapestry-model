@@ -9,7 +9,6 @@ import java.util.LinkedHashSet;
 import java.util.List;
 
 import junit.framework.TestCase;
-
 import ognl.Ognl;
 import ognl.OgnlException;
 

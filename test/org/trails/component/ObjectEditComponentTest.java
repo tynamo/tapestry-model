@@ -15,17 +15,14 @@ package org.trails.component;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Stack;
 
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.callback.ICallback;
 import org.apache.tapestry.components.Block;
-
 import org.apache.tapestry.valid.IValidationDelegate;
 import org.jmock.cglib.Mock;
-import org.jmock.cglib.MockObjectTestCase;
 import org.trails.callback.CallbackStack;
 import org.trails.descriptor.DescriptorService;
 import org.trails.i18n.ResourceBundleMessageSource;

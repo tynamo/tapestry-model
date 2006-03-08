@@ -11,16 +11,7 @@
  */
 package org.trails.component;
 
-import java.io.Serializable;
-
-import org.apache.commons.beanutils.PropertyUtils;
-import org.trails.TrailsRuntimeException;
-import org.apache.tapestry.IRequestCycle;
-import org.trails.descriptor.DescriptorService;
-import org.trails.descriptor.IClassDescriptor;
-import org.trails.page.EditPage;
 import org.trails.page.TrailsPage;
-import org.trails.persistence.PersistenceService;
 
 
 /*

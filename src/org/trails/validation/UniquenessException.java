@@ -1,7 +1,5 @@
 package org.trails.validation;
 
-import java.text.MessageFormat;
-
 import org.trails.descriptor.IPropertyDescriptor;
 
 public class UniquenessException extends ValidationException

@@ -1,10 +1,9 @@
 package org.trails.descriptor.annotation;
 
-import org.trails.descriptor.CollectionDescriptor;
-import org.trails.descriptor.IDescriptor;
-import org.trails.test.Foo;
-
 import junit.framework.TestCase;
+
+import org.trails.descriptor.CollectionDescriptor;
+import org.trails.test.Foo;
 
 public class CollectionDecoratorTest extends TestCase
 {

@@ -11,11 +11,10 @@
  */
 package org.trails.component;
 
-import org.trails.TrailsRuntimeException;
-
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.PageNotFoundException;
+import org.trails.TrailsRuntimeException;
 
 
 /**

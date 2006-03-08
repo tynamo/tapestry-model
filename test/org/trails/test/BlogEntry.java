@@ -14,7 +14,8 @@
 package org.trails.test;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratorType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 /**
@@ -30,7 +31,8 @@ public class BlogEntry
     
     private String text;
 
-    @Id(generate=GeneratorType.AUTO)
+    @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
     public Integer getId()
     {
         return id;

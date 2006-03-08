@@ -14,9 +14,6 @@
 package org.trails.component;
 
 
-import java.util.HashMap;
-import java.util.Stack;
-
 import org.apache.tapestry.test.Creator;
 import org.jmock.MockObjectTestCase;
 import org.jmock.cglib.Mock;

@@ -4,13 +4,15 @@
  */
 package org.trails.security;
 
-import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
-import org.trails.descriptor.IClassDescriptor;
-import org.trails.descriptor.TrailsClassDescriptor;
+import java.util.List;
+
 import org.acegisecurity.context.SecurityContext;
 import org.acegisecurity.context.SecurityContextHolder;
+import org.trails.descriptor.DescriptorService;
+import org.trails.descriptor.IClassDescriptor;
+import org.trails.descriptor.TrailsClassDescriptor;
 
 public aspect DescriptorSecurity {
 	

@@ -1,16 +1,14 @@
 package org.trails.security.annotation;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.util.Iterator;
 import java.util.List;
+
+import junit.framework.TestCase;
 
 import org.trails.security.ClassSecurityRestriction;
 import org.trails.security.PropertySecurityRestriction;
 import org.trails.security.RestrictionType;
 import org.trails.security.SecurityAnnotated;
-
-import junit.framework.TestCase;
 
 public class SecurityAnnotationHandlerTest extends TestCase
 {

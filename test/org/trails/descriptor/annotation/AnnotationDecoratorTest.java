@@ -1,6 +1,8 @@
 package org.trails.descriptor.annotation;
 
 
+import junit.framework.TestCase;
+
 import org.trails.descriptor.IClassDescriptor;
 import org.trails.descriptor.IPropertyDescriptor;
 import org.trails.descriptor.IdentifierDescriptor;
@@ -10,8 +12,6 @@ import org.trails.hibernate.EmbeddedDescriptor;
 import org.trails.test.Embeddee;
 import org.trails.test.Embeddor;
 import org.trails.test.Foo;
-
-import junit.framework.TestCase;
 
 public class AnnotationDecoratorTest extends TestCase
 {

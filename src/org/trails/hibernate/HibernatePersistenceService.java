@@ -11,8 +11,17 @@
  */
 package org.trails.hibernate;
 
+import java.io.Serializable;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+
 import ognl.Ognl;
 import ognl.OgnlException;
+
 import org.hibernate.Criteria;
 import org.hibernate.EntityMode;
 import org.hibernate.HibernateException;
@@ -37,14 +46,6 @@ import org.trails.persistence.PersistenceException;
 import org.trails.persistence.PersistenceService;
 import org.trails.validation.ValidationException;
 
-import java.io.Serializable;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-
 /**
  * @author fus8882
  *         <p/>
@@ -65,7 +66,7 @@ public class HibernatePersistenceService extends HibernateDaoSupport implements
     @Transactional
     public <T> T getInstance( Class<T> type, Serializable id )
     {
-        return ( T ) getHibernateTemplate().load( Utils.checkForCGLIB( type ), id );
+        return ( T ) getHibernateTemplate().get( Utils.checkForCGLIB( type ), id );
     }
 
     /*

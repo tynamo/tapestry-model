@@ -4,12 +4,10 @@
 package org.trails.i18n;
 
 import java.util.Locale;
-import org.trails.descriptor.IDescriptor;
+
 import org.trails.descriptor.IClassDescriptor;
-import org.trails.i18n.ResourceBundleMessageSource;
+import org.trails.descriptor.IDescriptor;
 import org.trails.servlet.TrailsApplicationServlet;
-import org.apache.hivemind.Registry;
-import org.apache.tapestry.services.RequestLocaleManager;
 
 /**
   * This class doesn't have a Aspect name (Ex.: DescriptorInternationalizationAspect) because we

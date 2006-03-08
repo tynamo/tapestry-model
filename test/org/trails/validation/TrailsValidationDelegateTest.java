@@ -1,28 +1,18 @@
 package org.trails.validation;
 
-import java.lang.reflect.Field;
-
-import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IForm;
-import org.apache.tapestry.form.Form;
 import org.apache.tapestry.form.IFormComponent;
-import org.apache.tapestry.form.TextField;
-
 import org.apache.tapestry.valid.IFieldTracking;
 import org.apache.tapestry.valid.RenderString;
 import org.hibernate.validator.InvalidStateException;
 import org.hibernate.validator.InvalidValue;
 import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
-import org.jmock.core.Stub;
 import org.trails.component.ComponentTest;
 import org.trails.descriptor.TrailsClassDescriptor;
 import org.trails.descriptor.TrailsPropertyDescriptor;
 import org.trails.persistence.PersistenceException;
 import org.trails.test.Baz;
 import org.trails.test.Foo;
-
-import junit.framework.TestCase;
 
 public class TrailsValidationDelegateTest extends ComponentTest
 {

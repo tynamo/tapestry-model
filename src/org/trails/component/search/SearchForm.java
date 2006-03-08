@@ -1,19 +1,20 @@
 package org.trails.component.search;
 
 import java.util.Iterator;
-import java.util.Map;
 
-import org.apache.tapestry.BaseComponent;
 import org.apache.tapestry.IComponent;
+import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.annotations.InjectObject;
 import org.hibernate.criterion.DetachedCriteria;
-import org.trails.descriptor.IClassDescriptor;
+import org.trails.component.ClassDescriptorComponent;
+import org.trails.page.ListPage;
+import org.trails.page.PageResolver;
+import org.trails.page.TrailsPage.PageType;
 
-public abstract class SearchForm extends BaseComponent
+public abstract class SearchForm extends ClassDescriptorComponent
 {
-
-	public abstract IClassDescriptor getClassDescriptor();
-
-	public abstract void setClassDescriptor(IClassDescriptor ClassDescriptor);
+	@InjectObject("spring:pageResolver")
+	public abstract PageResolver getPageResolver();
 	
 	/**
 	 * Asks each component to add its criterion
@@ -31,6 +32,15 @@ public abstract class SearchForm extends BaseComponent
 			}
 		}
 		return criteria;
+	}
+
+	public void search(IRequestCycle cycle)
+	{
+		ListPage listPage = (ListPage)getPageResolver().resolvePage(cycle, 
+				getClassDescriptor().getType().getName(),
+				PageType.LIST);
+		listPage.setCriteria(buildCriteria());
+		cycle.activate(listPage);
 	}
 	
 }

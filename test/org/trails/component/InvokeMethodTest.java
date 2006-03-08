@@ -19,9 +19,7 @@ import ognl.Ognl;
 
 import org.apache.tapestry.IActionListener;
 import org.apache.tapestry.IRequestCycle;
-
 import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
 import org.trails.test.Baz;
 
 

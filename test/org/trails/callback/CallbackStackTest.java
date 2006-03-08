@@ -1,11 +1,8 @@
 package org.trails.callback;
 
-import org.apache.tapestry.callback.ICallback;
-import org.jmock.Mock;
+import org.hibernate.criterion.DetachedCriteria;
 import org.jmock.MockObjectTestCase;
 import org.trails.test.Foo;
-
-import junit.framework.TestCase;
 
 public class CallbackStackTest extends MockObjectTestCase
 {
@@ -36,7 +33,7 @@ public class CallbackStackTest extends MockObjectTestCase
 	{
 		CallbackStack callbackStack = new CallbackStack();
 		EditCallback callback = new EditCallback("FooEdit", new Foo());
-		ListCallback listCallback = new ListCallback("ListEdit", Foo.class.getName());
+		ListCallback listCallback = new ListCallback("ListEdit", Foo.class.getName(), DetachedCriteria.forClass(Foo.class));
 		callbackStack.push(callback);
 		callbackStack.push(listCallback);
 		assertEquals(callback, callbackStack.getPreviousCallback());

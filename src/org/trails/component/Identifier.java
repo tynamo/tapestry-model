@@ -13,7 +13,6 @@ package org.trails.component;
 
 import org.trails.descriptor.IPropertyDescriptor;
 import org.trails.descriptor.IdentifierDescriptor;
-import org.trails.descriptor.TrailsPropertyDescriptor;
 import org.trails.hibernate.HasAssignedIdentifier;
 
 

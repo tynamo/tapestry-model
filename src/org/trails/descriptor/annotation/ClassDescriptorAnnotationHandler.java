@@ -1,7 +1,5 @@
 package org.trails.descriptor.annotation;
 
-import java.lang.annotation.Annotation;
-
 import org.trails.descriptor.IClassDescriptor;
 
 public class ClassDescriptorAnnotationHandler extends AbstractAnnotationHandler implements DescriptorAnnotationHandler<ClassDescriptor,IClassDescriptor>

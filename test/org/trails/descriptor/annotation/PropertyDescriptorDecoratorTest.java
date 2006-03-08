@@ -1,15 +1,14 @@
 package org.trails.descriptor.annotation;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import junit.framework.TestCase;
 
 import org.trails.descriptor.IDescriptor;
 import org.trails.descriptor.IPropertyDescriptor;
 import org.trails.descriptor.TrailsClassDescriptor;
 import org.trails.descriptor.TrailsPropertyDescriptor;
 import org.trails.test.Foo;
-
-import junit.framework.TestCase;
 
 public class PropertyDescriptorDecoratorTest extends TestCase
 {

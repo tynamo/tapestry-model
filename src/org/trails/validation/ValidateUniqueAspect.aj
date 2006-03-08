@@ -8,8 +8,9 @@ import java.lang.reflect.InvocationTargetException;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
-import org.trails.persistence.*;
-import org.trails.descriptor.*;
+import org.trails.descriptor.DescriptorService;
+import org.trails.descriptor.IClassDescriptor;
+import org.trails.persistence.PersistenceService;
 
 public aspect ValidateUniqueAspect
 {

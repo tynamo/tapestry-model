@@ -1,11 +1,5 @@
 package org.trails.descriptor;
 
-import java.beans.BeanDescriptor;
-import java.beans.BeanInfo;
-import java.beans.FeatureDescriptor;
-import java.beans.Introspector;
-import java.beans.MethodDescriptor;
-import java.beans.PropertyDescriptor;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -13,14 +7,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 import ognl.Ognl;
 import ognl.OgnlException;
-
-import org.apache.commons.beanutils.BeanUtils;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.trails.persistence.PersistenceService;
 
 
 public class TrailsDescriptorService implements DescriptorService

@@ -13,8 +13,6 @@
  */
 package org.trails.page;
 
-import java.util.Stack;
-
 import org.apache.tapestry.annotations.InjectObject;
 import org.apache.tapestry.annotations.InjectState;
 import org.apache.tapestry.event.PageBeginRenderListener;

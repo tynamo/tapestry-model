@@ -5,6 +5,10 @@
 
 package org.trails.security;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
 import org.acegisecurity.GrantedAuthority;
 import org.acegisecurity.GrantedAuthorityImpl;
 import org.acegisecurity.userdetails.UserDetails;
@@ -13,10 +17,6 @@ import org.acegisecurity.userdetails.UsernameNotFoundException;
 import org.springframework.dao.DataAccessException;
 import org.trails.persistence.PersistenceService;
 import org.trails.security.domain.Role;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
 
 
 public class TrailsUserDAO implements UserDetailsService

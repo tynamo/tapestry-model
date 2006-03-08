@@ -17,8 +17,8 @@ import java.util.List;
 import ognl.Ognl;
 
 import org.apache.commons.beanutils.BeanUtils;
-import org.trails.TrailsRuntimeException;
 import org.apache.tapestry.form.IPropertySelectionModel;
+import org.trails.TrailsRuntimeException;
 
 
 /**
@@ -32,8 +32,12 @@ public class IdentifierSelectionModel implements IPropertySelectionModel
     private List instances;
     private String idPropery = "id";
     private boolean allowNone;
-    public static String NONE_LABEL = "None";
-    public static String NONE_VALUE = "none";
+    public static String DEFAULT_NONE_LABEL = "None";
+    public static String DEFAULT_NONE_VALUE = "none";
+    
+    private String noneLabel = DEFAULT_NONE_LABEL;
+    
+    public IdentifierSelectionModel() {}
     
     public IdentifierSelectionModel(List instances, String idProperty)
     {
@@ -78,7 +82,7 @@ public class IdentifierSelectionModel implements IPropertySelectionModel
     {
         if (allowNone && index == 0)
         {
-            return NONE_LABEL;
+            return getNoneLabel();
         }
         return instances.get(index).toString();
     }
@@ -92,7 +96,7 @@ public class IdentifierSelectionModel implements IPropertySelectionModel
         {
             if (allowNone && index == 0)
             {
-                return NONE_VALUE;
+                return DEFAULT_NONE_VALUE;
             }
             else
             {
@@ -114,7 +118,7 @@ public class IdentifierSelectionModel implements IPropertySelectionModel
         {
             if (allowNone)
             {
-                if (value.equals(NONE_VALUE)) return null;
+                if (value.equals(DEFAULT_NONE_VALUE)) return null;
             }
             return Ognl.getValue("#root.{? #this." + idPropery +
                 ".toString() == \"" + value + "\" }[0]", realInstances);
@@ -124,19 +128,13 @@ public class IdentifierSelectionModel implements IPropertySelectionModel
         }
     }
 
-    /**
-     * @return Returns the instances.
-     */
-    public List getInstances()
-    {
-        return instances;
-    }
+	public String getNoneLabel()
+	{
+		return noneLabel;
+	}
 
-    /**
-     * @param instances The instances to set.
-     */
-    public void setInstances(List instances)
-    {
-        this.instances = instances;
-    }
+	public void setNoneLabel(String noneLabel)
+	{
+		this.noneLabel = noneLabel;
+	}
 }

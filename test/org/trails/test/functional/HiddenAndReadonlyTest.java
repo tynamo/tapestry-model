@@ -14,7 +14,6 @@
 package org.trails.test.functional;
 
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
-import com.gargoylesoftware.htmlunit.html.HtmlTableRow;
 import com.gargoylesoftware.htmlunit.html.xpath.HtmlUnitXPath;
 
 /**

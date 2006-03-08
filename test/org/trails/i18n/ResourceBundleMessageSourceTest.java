@@ -6,8 +6,9 @@ package org.trails.i18n;
 
 import java.util.Locale;
 
+import junit.framework.TestCase;
+
 import org.springframework.context.support.ResourceBundleMessageSource;
-import org.trails.descriptor.DescriptorService;
 import org.trails.descriptor.IClassDescriptor;
 import org.trails.descriptor.IPropertyDescriptor;
 import org.trails.descriptor.TrailsClassDescriptor;
@@ -15,8 +16,6 @@ import org.trails.descriptor.TrailsPropertyDescriptor;
 import org.trails.test.Bar;
 import org.trails.test.Foo;
 import org.trails.test.TestTest;
-
-import junit.framework.TestCase;
 
 public class ResourceBundleMessageSourceTest extends TestCase {
 

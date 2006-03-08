@@ -2,8 +2,6 @@ package org.trails.callback;
 
 import java.util.Stack;
 
-import org.apache.tapestry.callback.ICallback;
-
 public class CallbackStack
 {
 	

@@ -4,18 +4,13 @@
  */
 package org.trails.component;
 
-import junit.framework.TestCase;
-
-import org.apache.tapestry.IPage;
 import org.apache.tapestry.test.Creator;
 import org.jmock.cglib.Mock;
-import org.jmock.cglib.MockObjectTestCase;
 import org.trails.descriptor.IClassDescriptor;
 import org.trails.descriptor.TrailsClassDescriptor;
 import org.trails.hibernate.HasAssignedIdentifier;
 import org.trails.hibernate.Interceptable;
 import org.trails.page.EditPage;
-import org.trails.page.ModelPage;
 import org.trails.test.Foo;
 
 public class ObjectActionsTest extends ComponentTest {

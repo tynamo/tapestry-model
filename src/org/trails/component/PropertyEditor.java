@@ -14,15 +14,8 @@ package org.trails.component;
 import org.apache.tapestry.annotations.InjectObject;
 import org.apache.tapestry.components.Block;
 import org.apache.tapestry.util.ComponentAddress;
-import org.apache.tapestry.valid.BaseValidator;
-import org.apache.tapestry.valid.IValidator;
-import org.apache.tapestry.valid.NumberValidator;
-import org.apache.tapestry.valid.StringValidator;
-
-import org.trails.descriptor.EditorService;
+import org.trails.descriptor.BlockFinder;
 import org.trails.descriptor.IPropertyDescriptor;
-
-import sun.reflect.ReflectionFactory.GetReflectionFactoryAction;
 
 /**
  * @author fus8882
@@ -39,7 +32,7 @@ public abstract class PropertyEditor extends TrailsComponent
     public abstract Object getModel();
     
     @InjectObject("spring:editorService")
-    public abstract EditorService getEditorService();
+    public abstract BlockFinder getBlockFinder();
     
     public Block getBlock()
     {
@@ -55,6 +48,6 @@ public abstract class PropertyEditor extends TrailsComponent
     public ComponentAddress getEditorAddress()
     {
         
-        return getEditorService().findEditor(getDescriptor());
+        return getBlockFinder().findBlockAddress(getDescriptor());
     }
 }

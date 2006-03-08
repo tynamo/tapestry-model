@@ -11,47 +11,6 @@
  */
 package org.trails.hibernate;
 
-import org.hibernate.HibernateException;
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
-import org.hibernate.mapping.PersistentClass;
-import org.hibernate.mapping.Property;
-import org.hibernate.metadata.ClassMetadata;
-import org.hibernate.metadata.CollectionMetadata;
-import org.hibernate.type.AssociationType;
-import org.hibernate.type.ComponentType;
-import org.hibernate.type.Type;
-
-import ognl.Ognl;
-import ognl.OgnlException;
-
-import org.apache.bsf.util.MethodUtils;
-
-import org.apache.commons.beanutils.PropertyUtils;
-import org.apache.commons.collections.ListUtils;
-import org.apache.commons.lang.StringUtils;
-
-import org.trails.TrailsRuntimeException;
-
-import org.trails.component.Utils;
-
-import org.trails.descriptor.CollectionDescriptor;
-import org.trails.descriptor.DescriptorDecorator;
-import org.trails.descriptor.IClassDescriptor;
-
-import org.trails.descriptor.DescriptorFactory;
-import org.trails.descriptor.IPropertyDescriptor;
-import org.trails.descriptor.IdentifierDescriptor;
-import org.trails.descriptor.ObjectReferenceDescriptor;
-import org.trails.descriptor.TrailsPropertyDescriptor;
-import org.trails.descriptor.DescriptorService;
-import org.trails.descriptor.TrailsClassDescriptor;
-
-import java.beans.BeanInfo;
-import java.beans.FeatureDescriptor;
-import java.beans.IntrospectionException;
-import java.beans.Introspector;
-import java.beans.MethodDescriptor;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -62,8 +21,6 @@ import java.util.Map;
 import ognl.Ognl;
 import ognl.OgnlException;
 
-import org.trails.TrailsRuntimeException;
-import org.hibernate.EntityMode;
 import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -75,17 +32,18 @@ import org.hibernate.mapping.SimpleValue;
 import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.metadata.CollectionMetadata;
 import org.hibernate.type.AssociationType;
+import org.hibernate.type.ComponentType;
 import org.hibernate.type.Type;
-import org.springframework.beans.BeansException;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 import org.springframework.orm.hibernate3.LocalSessionFactoryBean;
+import org.trails.TrailsRuntimeException;
 import org.trails.descriptor.CollectionDescriptor;
+import org.trails.descriptor.DescriptorDecorator;
+import org.trails.descriptor.DescriptorFactory;
+import org.trails.descriptor.DescriptorService;
+import org.trails.descriptor.IClassDescriptor;
+import org.trails.descriptor.IPropertyDescriptor;
 import org.trails.descriptor.IdentifierDescriptor;
 import org.trails.descriptor.ObjectReferenceDescriptor;
-import org.trails.descriptor.TrailsClassDescriptor;
-import org.trails.descriptor.DescriptorService;
-import org.trails.descriptor.TrailsPropertyDescriptor;
 
 
 /**

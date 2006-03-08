@@ -1,6 +1,5 @@
 package org.trails.component;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -15,8 +14,6 @@ import org.apache.tapestry.valid.RenderString;
 import org.jmock.Mock;
 import org.trails.descriptor.TrailsPropertyDescriptor;
 import org.trails.test.Foo;
-
-import junit.framework.TestCase;
 
 public class TrailsTableColumnTest extends ComponentTest
 {

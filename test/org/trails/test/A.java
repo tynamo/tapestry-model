@@ -15,7 +15,6 @@ package org.trails.test;
 
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.*;
 
 /**
  * @author fus8882

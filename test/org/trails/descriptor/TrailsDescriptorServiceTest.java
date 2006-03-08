@@ -8,10 +8,7 @@ import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.trails.persistence.PersistenceService;
-import org.trails.test.Bing;
 import org.trails.test.Foo;
-
-import junit.framework.TestCase;
 
 public class TrailsDescriptorServiceTest extends MockObjectTestCase
 {

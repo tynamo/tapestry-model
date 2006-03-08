@@ -3,7 +3,6 @@ package org.trails.component;
 import java.text.DecimalFormat;
 import java.text.Format;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
@@ -11,7 +10,6 @@ import org.apache.tapestry.components.Block;
 import org.apache.tapestry.components.BlockRenderer;
 import org.apache.tapestry.contrib.table.model.ITableModelSource;
 import org.apache.tapestry.contrib.table.model.ognl.ExpressionTableColumn;
-import org.apache.tapestry.contrib.table.model.ognl.OgnlTableColumnEvaluator;
 import org.apache.tapestry.services.ExpressionEvaluator;
 import org.apache.tapestry.util.ComponentAddress;
 import org.trails.descriptor.IPropertyDescriptor;

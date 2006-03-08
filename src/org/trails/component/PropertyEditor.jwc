@@ -2,9 +2,7 @@
 <component-specification class="org.trails.component.PropertyEditor" allow-body="yes" allow-informal-parameters="yes" deprecated="no">
 	<parameter name="model" required="yes" cache="yes" deprecated="no"/>
 	<parameter name="descriptor" default-value="container.property" required="no" cache="yes" deprecated="no"/>
-    <component id="insert" type="Insert" inherit-informal-parameters="no">
-        <binding name="value">descriptor.displayName</binding>
-    </component>
+
     
     <component id="renderBlock" type="RenderBlock">
     	<binding name="block">ognl:block</binding>

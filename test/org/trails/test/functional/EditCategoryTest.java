@@ -19,10 +19,8 @@ import org.jaxen.JaxenException;
 
 import com.gargoylesoftware.htmlunit.html.HtmlDivision;
 import com.gargoylesoftware.htmlunit.html.HtmlForm;
-import com.gargoylesoftware.htmlunit.html.HtmlLabel;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.gargoylesoftware.htmlunit.html.HtmlSubmitInput;
-import com.gargoylesoftware.htmlunit.html.HtmlTableRow;
 import com.gargoylesoftware.htmlunit.html.HtmlTextArea;
 import com.gargoylesoftware.htmlunit.html.HtmlTextInput;
 import com.gargoylesoftware.htmlunit.html.xpath.HtmlUnitXPath;
@@ -127,6 +125,7 @@ public class EditCategoryTest extends FunctionalTest
 				.getAllForms().get(0), "Add New...");
 		HtmlTextInput input = getTextInputForField(newProductPage, "Name");
 		input.setValueAttribute("a new product");
+		
 		categoryPage = clickButton(newProductPage, "Ok");
 		assertXPathPresent(categoryPage,
 				"//td[@class='selected-cell']/select/option['a new product']");

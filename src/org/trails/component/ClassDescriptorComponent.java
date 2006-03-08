@@ -8,14 +8,15 @@ import ognl.OgnlException;
 
 import org.apache.tapestry.BaseComponent;
 import org.apache.tapestry.annotations.InjectObject;
+import org.apache.tapestry.components.Block;
 import org.trails.TrailsRuntimeException;
 import org.trails.descriptor.IClassDescriptor;
 import org.trails.i18n.ResourceBundleMessageSource;
 
-public abstract class ObjectComponent extends BaseComponent
+public abstract class ClassDescriptorComponent extends BaseComponent
 {
 
-    public ObjectComponent()
+    public ClassDescriptorComponent()
     {
         super();
         // TODO Auto-generated constructor stub
@@ -67,4 +68,22 @@ public abstract class ObjectComponent extends BaseComponent
     	Locale locale = getContainer().getPage().getEngine().getLocale();
        	return getResourceBundleMessageSource().getMessageWithDefaultValue(key, locale, "[TRAILS][" + key.toUpperCase() + "]");
     }
+
+	public boolean hasBlock(String propertyName)
+	{
+	    if (getPage().getComponents().containsKey(propertyName))
+	    {
+	        return true;
+	    }
+	    return false;
+	}
+
+	public Block getBlock(String propertyName)
+	{
+	    if (getPage().getComponents().containsKey(propertyName))
+	    {
+	        return (Block)getPage().getComponent(propertyName);
+	    }
+	    return null;
+	}
 }

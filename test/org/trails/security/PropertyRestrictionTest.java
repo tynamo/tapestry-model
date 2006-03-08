@@ -6,8 +6,6 @@ import org.trails.descriptor.IClassDescriptor;
 import org.trails.descriptor.TrailsClassDescriptor;
 import org.trails.test.Foo;
 
-import junit.framework.TestCase;
-
 public class PropertyRestrictionTest extends SecurityRestrictionTest
 {
     public PropertyRestrictionTest()

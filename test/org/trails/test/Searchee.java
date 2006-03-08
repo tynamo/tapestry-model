@@ -4,7 +4,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratorType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 import org.trails.descriptor.annotation.PropertyDescriptor;
@@ -27,7 +28,7 @@ public class Searchee
         // TODO Auto-generated constructor stub
     }
     
-    @Id(generate=GeneratorType.AUTO)
+    @Id @GeneratedValue(strategy=GenerationType.AUTO)
     public Integer getId()
     {
         return id;

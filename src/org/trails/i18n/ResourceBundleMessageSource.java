@@ -6,10 +6,8 @@ package org.trails.i18n;
 
 import java.util.Locale;
 
-import org.trails.component.Utils;
 import org.trails.descriptor.IClassDescriptor;
 import org.trails.descriptor.IDescriptor;
-import org.trails.descriptor.IPropertyDescriptor;
 
 /**
  * Interface used to imlement i18n in Trails pages and components.

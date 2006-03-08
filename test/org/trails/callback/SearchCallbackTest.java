@@ -6,8 +6,6 @@ import org.trails.component.ComponentTest;
 import org.trails.page.SearchPage;
 import org.trails.test.Foo;
 
-import junit.framework.TestCase;
-
 public class SearchCallbackTest extends ComponentTest
 {
 
@@ -22,14 +20,14 @@ public class SearchCallbackTest extends ComponentTest
     public void testPerformCallback()
     {
         SearchPage searchPage = buildTrailsPage(SearchPage.class);
-        Object model = new Object();
+
         Mock cycleMock = new Mock(IRequestCycle.class);
         cycleMock.expects(once()).method("getPage").with(eq(pageName)).will(returnValue(searchPage));
         cycleMock.expects(once()).method("activate").with(same(searchPage));
         
-        SearchCallback callBack = new SearchCallback(pageName, model);
+        SearchCallback callBack = new SearchCallback(pageName, Foo.class.getName());
         callBack.performCallback((IRequestCycle)cycleMock.proxy());
-        assertEquals(model, searchPage.getExampleModel());
+        assertEquals(Foo.class.getName(), searchPage.getTypeName());
         cycleMock.verify();        
     }
 

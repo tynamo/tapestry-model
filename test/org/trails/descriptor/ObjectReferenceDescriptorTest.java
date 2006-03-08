@@ -1,8 +1,8 @@
 package org.trails.descriptor;
 
-import org.trails.test.Foo;
-
 import junit.framework.TestCase;
+
+import org.trails.test.Foo;
 
 public class ObjectReferenceDescriptorTest extends TestCase
 {

@@ -1,21 +1,22 @@
 package org.trails.descriptor;
 
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
 import ognl.Ognl;
 import ognl.OgnlException;
 
+import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.components.Block;
 import org.apache.tapestry.util.ComponentAddress;
 
-public class TrailsEditorService implements EditorService
+public class TrailsBlockFinder implements BlockFinder
 {
     private Map editorMap;
     
     private ComponentAddress defaultEditor;
 
-    public TrailsEditorService()
+    public TrailsBlockFinder()
     {
         super();
         // TODO Auto-generated constructor stub
@@ -43,9 +44,9 @@ public class TrailsEditorService implements EditorService
      * @return The first component address in the editorMap whose key evaluates
      *         to true for descriptor. This will be used to load an editor for
      *         the descriptor. Returns default editor if no match is found.
-     * @see org.trails.descriptor.EditorService#findEditor(org.trails.descriptor.IPropertyDescriptor)
+     * @see org.trails.descriptor.BlockFinder#findBlockAdress(org.trails.descriptor.IPropertyDescriptor)
      */
-    public ComponentAddress findEditor(IPropertyDescriptor descriptor)
+    public ComponentAddress findBlockAddress(IPropertyDescriptor descriptor)
     {
         for (Iterator iter = editorMap.entrySet().iterator(); iter.hasNext();)
         {
@@ -63,15 +64,35 @@ public class TrailsEditorService implements EditorService
                 //e.printStackTrace();
             }
         }
-        return getDefaultEditor();
+        return getDefaultBlockAddress();
     }
 
-    public ComponentAddress getDefaultEditor()
+    public Block findBlock(IRequestCycle cycle, IPropertyDescriptor descriptor)
+    {
+    	if (cycle.getPage().getComponents().containsKey(descriptor.getName()))
+    	{
+    		Block block =  (Block)cycle.getPage().getComponent(descriptor.getName());
+    		return block;
+    	}
+    	else
+    	{
+    		// since it came from a block container page, we need to set
+    		// the model and descriptor on the container page so its visible to the
+    		// block
+    		ComponentAddress blockAddress = findBlockAddress(descriptor);
+    		Block block = (Block)blockAddress.findComponent(cycle);
+            block.getPage().setProperty("model", cycle.getPage().getProperty("model"));
+            block.getPage().setProperty("descriptor", descriptor);
+            return block;
+    	}
+    }
+    
+    public ComponentAddress getDefaultBlockAddress()
     {
         return defaultEditor;
     }
 
-    public void setDefaultEditor(ComponentAddress defaultEditor)
+    public void setDefaultBlockAddress(ComponentAddress defaultEditor)
     {
         this.defaultEditor = defaultEditor;
     }

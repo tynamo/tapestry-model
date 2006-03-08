@@ -15,8 +15,6 @@ import java.util.Date;
 
 import junit.framework.TestCase;
 
-import org.apache.tapestry.valid.NumberValidator;
-import org.apache.tapestry.valid.StringValidator;
 import org.trails.test.Foo;
 
 

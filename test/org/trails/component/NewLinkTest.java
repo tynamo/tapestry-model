@@ -11,15 +11,11 @@
  */
 package org.trails.component;
 
-import java.beans.Introspector;
-import java.util.Stack;
-
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.jmock.Mock;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.trails.callback.TrailsCallback;
-import org.trails.callback.ListCallback;
 import org.trails.descriptor.DescriptorService;
 import org.trails.descriptor.IClassDescriptor;
 import org.trails.descriptor.TrailsClassDescriptor;

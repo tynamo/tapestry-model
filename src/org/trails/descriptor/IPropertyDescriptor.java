@@ -13,7 +13,6 @@
  */
 package org.trails.descriptor;
 
-import java.text.Format;
 
 /**
  * @author fus8882

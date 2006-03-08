@@ -6,9 +6,7 @@ import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
-import org.springframework.context.NoSuchMessageException;
 import org.trails.TrailsRuntimeException;
-import org.trails.descriptor.DescriptorService;
 import org.trails.page.SearchPage;
 import org.trails.page.TrailsPage;
 
@@ -31,14 +29,7 @@ public abstract class SearchLink extends TypeNavigationLink
     {
         SearchPage searchPage = (SearchPage)getPageResolver().resolvePage(
         		cycle, getTypeName(), TrailsPage.PageType.SEARCH);
-        try
-        {
-            searchPage.setExampleModel(getType().newInstance());
-        }
-        catch (Exception ex)
-        {
-            throw new TrailsRuntimeException(ex);
-        }
+        searchPage.setTypeName(getTypeName());
         cycle.activate(searchPage);
     }
     

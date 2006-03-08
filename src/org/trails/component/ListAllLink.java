@@ -16,15 +16,7 @@ import java.util.Locale;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IPage;
-import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.services.RequestLocaleManager;
-import org.springframework.context.NoSuchMessageException;
-import org.trails.i18n.ResourceBundleMessageSource;
-import org.trails.page.ListPage;
 import org.trails.page.TrailsPage;
-import org.trails.servlet.TrailsApplicationServlet;
-
-import com.sun.corba.se.spi.legacy.connection.GetEndPointInfoAgainException;
 
 
 /*

@@ -14,7 +14,6 @@
 package org.trails.component;
 
 
-import org.jmock.MockObjectTestCase;
 import org.trails.descriptor.IdentifierDescriptor;
 import org.trails.hibernate.HasAssignedIdentifier;
 import org.trails.test.Bar;

@@ -16,10 +16,10 @@ package org.trails.callback;
 import java.util.ArrayList;
 
 import org.apache.tapestry.IRequestCycle;
+import org.hibernate.criterion.DetachedCriteria;
 import org.jmock.Mock;
 import org.trails.component.ComponentTest;
 import org.trails.page.ListPage;
-import org.trails.persistence.PersistenceService;
 import org.trails.test.Foo;
 
 /**
@@ -31,10 +31,10 @@ import org.trails.test.Foo;
 public class ListCallbackTest extends ComponentTest
 {
 
+	DetachedCriteria criteria = DetachedCriteria.forClass(Foo.class);
     public void testCallBack()
     {
         
-        persistenceMock.expects(once()).method("getAllInstances").with(same(Foo.class)).will(returnValue(new ArrayList()));                
         ListPage listPage = buildTrailsPage(ListPage.class);
         String pageName = "fooList";
         Object model = new Object();
@@ -42,17 +42,20 @@ public class ListCallbackTest extends ComponentTest
         cycleMock.expects(once()).method("getPage").with(eq(pageName)).will(returnValue(listPage));
         cycleMock.expects(once()).method("activate").with(same(listPage));
         
-        ListCallback callBack = new ListCallback(pageName, Foo.class.getName());
+        ListCallback callBack = new ListCallback(pageName, Foo.class.getName(), criteria);
+        DetachedCriteria criteria = DetachedCriteria.forClass(Foo.class);
+        callBack.setCriteria(criteria);
         callBack.performCallback((IRequestCycle)cycleMock.proxy());
+        assertEquals(criteria, listPage.getCriteria());
         cycleMock.verify();
     }
     
     public void testShouldReplace()
     {
-    	ListCallback callBack = new ListCallback("FooList", Foo.class.getName());
-    	ListCallback callBack2 = new ListCallback("FooList", Foo.class.getName());
+    	ListCallback callBack = new ListCallback("FooList", Foo.class.getName(), criteria);
+    	ListCallback callBack2 = new ListCallback("FooList", Foo.class.getName(), criteria);
     	assertTrue(callBack2.shouldReplace(callBack));
-    	callBack2 = new ListCallback("Blork", Foo.class.getName());
+    	callBack2 = new ListCallback("Blork", Foo.class.getName(), criteria);
     	assertFalse(callBack2.shouldReplace(callBack));
     	EditCallback editCallback = new EditCallback("FooEdit", new Foo());
     	assertFalse(editCallback.shouldReplace(callBack2));

@@ -1,9 +1,9 @@
 package org.trails.descriptor.annotation;
 
+import junit.framework.TestCase;
+
 import org.trails.descriptor.IClassDescriptor;
 import org.trails.descriptor.TrailsClassDescriptor;
-
-import junit.framework.TestCase;
 
 public class ClassDescriptorDecoratorTest extends TestCase
 {

@@ -20,16 +20,12 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratorType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.*;
-
-import org.trails.validation.ValidateUniqueness;
+import org.hibernate.annotations.IndexColumn;
 
 
 /**
@@ -61,7 +57,7 @@ public class Foo
      * @javabean.property
      * @hibernate.id generator-class="assigned"
      */
-    @Id(generate=GeneratorType.NONE)
+    @Id
     public Integer getId()
     {
         return id;

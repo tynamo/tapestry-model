@@ -11,7 +11,6 @@
  */
 package org.trails.descriptor;
 
-import java.beans.Introspector;
 import java.util.List;
 
 import junit.framework.TestCase;

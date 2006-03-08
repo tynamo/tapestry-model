@@ -6,6 +6,8 @@ package org.trails.i18n;
 
 import java.util.Locale;
 
+import junit.framework.TestCase;
+
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.trails.descriptor.IClassDescriptor;
@@ -15,9 +17,6 @@ import org.trails.descriptor.TrailsPropertyDescriptor;
 import org.trails.servlet.TrailsApplicationServlet;
 import org.trails.test.Bar;
 import org.trails.test.Foo;
-import org.trails.test.TestTest;
-
-import junit.framework.TestCase;
 
 public class DescriptorInternationalizationTest extends TestCase {
 

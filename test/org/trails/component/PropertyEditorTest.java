@@ -17,12 +17,8 @@ import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.components.Block;
 import org.apache.tapestry.util.ComponentAddress;
-import org.apache.tapestry.valid.NumberValidator;
-import org.apache.tapestry.valid.StringValidator;
 import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
-
-import org.trails.descriptor.EditorService;
+import org.trails.descriptor.BlockFinder;
 import org.trails.descriptor.IPropertyDescriptor;
 import org.trails.descriptor.TrailsPropertyDescriptor;
 import org.trails.test.Foo;
@@ -45,9 +41,9 @@ public class PropertyEditorTest extends ComponentTest
     public void setUp() throws Exception
     {
     	messagesMock = new Mock(Messages.class);
-        editSvcMock = new Mock(EditorService.class);
+        editSvcMock = new Mock(BlockFinder.class);
         propertyEditor = (PropertyEditor) creator.newInstance(PropertyEditor.class, 
-                new Object[] {"editorService", editSvcMock.proxy(),
+                new Object[] {"blockFinder", editSvcMock.proxy(),
         			"messages", messagesMock.proxy()});
         descriptor = new TrailsPropertyDescriptor(Foo.class, "number", Double.class);
         propertyEditor.setDescriptor(descriptor);
@@ -57,9 +53,9 @@ public class PropertyEditorTest extends ComponentTest
     {
         ComponentAddress componentAddress = new ComponentAddress("page", "block");
         IPropertyDescriptor descriptor2 = new TrailsPropertyDescriptor(Foo.class, "stuff", String.class);
-        editSvcMock.expects(atLeastOnce()).method("findEditor")
+        editSvcMock.expects(atLeastOnce()).method("findBlockAddress")
             .with(eq(descriptor)).will(returnValue(componentAddress));
-        editSvcMock.expects(atLeastOnce()).method("findEditor")
+        editSvcMock.expects(atLeastOnce()).method("findBlockAddress")
             .with(eq(descriptor2)).will(returnValue(null));
         assertEquals(componentAddress, propertyEditor.getEditorAddress());
         
@@ -81,7 +77,7 @@ public class PropertyEditorTest extends ComponentTest
         propertyEditor.setPage((IPage)pageMock.proxy());
         
         ComponentAddress componentAddress = new ComponentAddress("page", "block");
-        editSvcMock.expects(atLeastOnce()).method("findEditor")
+        editSvcMock.expects(atLeastOnce()).method("findBlockAddress")
             .with(eq(descriptor)).will(returnValue(componentAddress));
         
         assertEquals(block, propertyEditor.getBlock());

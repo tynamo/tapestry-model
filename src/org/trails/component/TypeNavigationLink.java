@@ -15,9 +15,8 @@ package org.trails.component;
 
 import org.apache.tapestry.annotations.InjectObject;
 import org.trails.TrailsRuntimeException;
-import org.trails.descriptor.IClassDescriptor;
-import org.trails.descriptor.TrailsClassDescriptor;
 import org.trails.descriptor.DescriptorService;
+import org.trails.descriptor.IClassDescriptor;
 
 /**
  * @author fus8882

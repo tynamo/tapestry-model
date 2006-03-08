@@ -11,7 +11,6 @@
  */
 package org.trails.descriptor;
 
-import java.beans.BeanDescriptor;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;

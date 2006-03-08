@@ -3,13 +3,9 @@ package org.trails.io;
 import java.io.Serializable;
 
 import ognl.Ognl;
-import ognl.OgnlException;
 
-import org.apache.commons.logging.Log;
 import org.apache.tapestry.services.DataSqueezer;
 import org.apache.tapestry.util.io.SqueezeAdaptor;
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
-import org.springframework.transaction.annotation.Transactional;
 import org.trails.descriptor.DescriptorService;
 import org.trails.descriptor.IClassDescriptor;
 import org.trails.persistence.PersistenceService;

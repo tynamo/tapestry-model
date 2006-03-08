@@ -14,12 +14,11 @@ package org.trails.component;
 import java.lang.reflect.Constructor;
 import java.util.Locale;
 
-import org.springframework.context.NoSuchMessageException;
-import org.trails.TrailsRuntimeException;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
+import org.trails.TrailsRuntimeException;
 import org.trails.page.EditPage;
 import org.trails.page.TrailsPage;
 

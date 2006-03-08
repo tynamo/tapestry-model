@@ -13,9 +13,9 @@ package org.trails.component;
 
 import java.beans.MethodDescriptor;
 
-import org.trails.TrailsRuntimeException;
 import org.apache.tapestry.IActionListener;
 import org.apache.tapestry.IRequestCycle;
+import org.trails.TrailsRuntimeException;
 
 
 /**

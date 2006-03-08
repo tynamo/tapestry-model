@@ -12,8 +12,6 @@
 package org.trails.hibernate;
 
 import java.lang.reflect.Field;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -24,10 +22,6 @@ import org.jmock.MockObjectTestCase;
 import org.jmock.cglib.Mock;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.dao.DataAccessException;
-import org.springframework.jdbc.UncategorizedSQLException;
-import org.springframework.orm.hibernate3.HibernateJdbcException;
-import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.orm.hibernate3.SessionFactoryUtils;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
@@ -174,6 +168,15 @@ public class HibernatePersistenceServiceTest extends MockObjectTestCase
         baz = persistenceService.save(baz);
         persistenceService.remove(baz);
         
+    }
+    
+    public void testGetInstance() throws Exception
+    {
+    	Foo foo = new Foo();
+    	foo.setId(new Integer(1));
+    	persistenceService.save(foo);
+    	assertNotNull(persistenceService.getInstance(Foo.class, new Integer(1)));
+    	assertNull(persistenceService.getInstance(Foo.class, new Integer(-999)));
     }
     
     public void testBazzes() throws Exception

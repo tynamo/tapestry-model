@@ -21,29 +21,26 @@ public abstract class SearchPage extends TrailsPage
         super();
     }
     
-    @Persist
-    public abstract Object getExampleModel();
+    public abstract String getTypeName();
 
-    public abstract void setExampleModel(Object ExampleModel);
-
-    public void search(IRequestCycle cycle)
-    {
-        ListPage listPage = (ListPage) Utils.findPage(cycle, 
-                Utils.unqualify(getExampleModel().getClass().getName()) + "List", "List");
-        listPage.setInstances(getPersistenceService().getInstances(getExampleModel()));
-        pushCallback();
-        cycle.activate(listPage);
-    }
+	public abstract void setTypeName(String TypeName);
 
     @Override
     public void pushCallback()
     {
-        getCallbackStack().push(new SearchCallback(getPageName(), getExampleModel()));
+        getCallbackStack().push(new SearchCallback(getPageName(), getTypeName()));
     }
     
     public IClassDescriptor getClassDescriptor()
     {
-        return getDescriptorService().getClassDescriptor(getExampleModel().getClass());
+    	try
+    	{
+    		return getDescriptorService().getClassDescriptor(Class.forName(getTypeName()));
+    	}
+    	catch (ClassNotFoundException e) 
+    	{
+			throw new TrailsRuntimeException(e);
+		}
     }
 
     public String[] getSearchableProperties()

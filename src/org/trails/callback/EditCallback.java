@@ -13,7 +13,6 @@
  */
 package org.trails.callback;
 
-import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.callback.ICallback;
 import org.trails.page.EditPage;

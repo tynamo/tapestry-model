@@ -8,7 +8,6 @@ import java.util.LinkedHashSet;
 import java.util.List;
 
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 import org.trails.persistence.PersistenceService;
 import org.trails.security.domain.Role;

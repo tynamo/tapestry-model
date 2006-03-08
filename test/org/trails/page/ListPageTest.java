@@ -13,14 +13,13 @@ package org.trails.page;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Stack;
 
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.event.PageEvent;
+import org.hibernate.criterion.DetachedCriteria;
 import org.jmock.Mock;
 import org.trails.callback.ListCallback;
 import org.trails.component.ComponentTest;
-import org.trails.page.ListPage;
-import org.trails.persistence.PersistenceService;
 import org.trails.test.Foo;
 
 
@@ -45,39 +44,41 @@ public class ListPageTest extends ComponentTest
         listPage.setPageName(PAGE_NAME);
 
         cycleMock = new Mock(IRequestCycle.class);
+        listPage.attach(null, (IRequestCycle)cycleMock.proxy());
         
-        
+    }
+    
+    public void testPageBeginRender() throws Exception
+    {
+    	
+        persistenceMock.expects(once()).method("getInstances")
+    		.with(isA(DetachedCriteria.class)).will(returnValue(stuff));    
+        PageEvent pageEvent = new PageEvent(listPage, (IRequestCycle)cycleMock.proxy());
+        cycleMock.expects(once()).method("isRewinding").will(returnValue(false));
+        listPage.setCriteria(DetachedCriteria.forClass(Foo.class));
+    	listPage.pageBeginRender(pageEvent);
+        assertEquals(stuff, listPage.getInstances());
+        assertEquals(1, listPage.getCallbackStack().getStack().size());
     }
     
     public void testExternalPage()
     {
-        persistenceMock.expects(once()).method("getAllInstances")
-        	.with(same(Foo.class)).will(returnValue(stuff));        
-        cycleMock.expects(once()).method("activate").with(eq(listPage));
         listPage.activateExternalPage(new Object[] { Foo.class },
             (IRequestCycle) cycleMock.proxy());
-        persistenceMock.verify();
-        assertEquals("got instances", stuff, listPage.getInstances());
-        cycleMock.verify();
+        assertNotNull(listPage.getCriteria());
     }
     
-    public void testLoadInstances()
-    {
-        persistenceMock.expects(once()).method("getAllInstances")
-        	.with(same(Foo.class)).will(returnValue(stuff));        
-        listPage.setTypeName(Foo.class.getName());
-        listPage.loadInstances();
-        persistenceMock.verify();
-    }
     
     public void testPushCallback()
     {
+    	DetachedCriteria criteria = DetachedCriteria.forClass(Foo.class);
         listPage.setTypeName(Foo.class.getName());
-        
+        listPage.setCriteria(criteria);
         listPage.pushCallback();
         ListCallback listCallback = (ListCallback)listPage.getCallbackStack().getStack().pop();
         
         assertEquals(PAGE_NAME, listCallback.getPageName());
         assertEquals(Foo.class.getName(), listCallback.getTypeName());
+        assertEquals(criteria, listCallback.getCriteria());
     }
 }

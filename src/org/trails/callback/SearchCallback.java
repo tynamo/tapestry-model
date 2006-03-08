@@ -1,7 +1,6 @@
 package org.trails.callback;
 
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.callback.ICallback;
 import org.trails.page.SearchPage;
 
 /**
@@ -14,12 +13,12 @@ import org.trails.page.SearchPage;
 public class SearchCallback extends TrailsCallback
 {
     
-    private Object exampleModel;
+    private String typeName;
     
-    public SearchCallback(String name, Object model)
+    public SearchCallback(String name, String typeName)
     {
         super(name);
-        exampleModel = model;
+        this.typeName = typeName;
     }
 
     public SearchCallback(String name)
@@ -30,7 +29,7 @@ public class SearchCallback extends TrailsCallback
     public void performCallback(IRequestCycle cycle)
     {
         SearchPage searchPage = (SearchPage)cycle.getPage(getPageName());
-        searchPage.setExampleModel(exampleModel);
+        searchPage.setTypeName(typeName);
         cycle.activate(searchPage);
     }
 

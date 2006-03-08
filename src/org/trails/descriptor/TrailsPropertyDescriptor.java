@@ -11,8 +11,6 @@
  */
 package org.trails.descriptor;
 
-import java.beans.PropertyDescriptor;
-
 import org.apache.commons.lang.builder.EqualsBuilder;
 
 

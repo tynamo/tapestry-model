@@ -7,8 +7,6 @@ import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 import org.trails.test.Foo;
 
-import junit.framework.TestCase;
-
 public class PageResolverTest extends MockObjectTestCase
 {
 	public void testResolve() throws Exception

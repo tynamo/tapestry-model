@@ -1,11 +1,11 @@
 package org.trails.descriptor;
 
+import junit.framework.TestCase;
+
 import org.trails.hibernate.EmbeddedDescriptor;
 import org.trails.test.Embeddee;
 import org.trails.test.Embeddor;
 import org.trails.test.Foo;
-
-import junit.framework.TestCase;
 
 public class EmbeddedDescriptorTest extends TestCase
 {
