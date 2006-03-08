@@ -129,7 +129,9 @@
 		<mkdir dir="${deploy.dir}"/>
 		<jar destfile="${jar.file}">
 			<fileset dir="${compile.dir}">
-				<exclude name="hibernate.properties"/>
+				<exclude name="**/hibernate.*"/>
+				<exclude name="**/applicationContext*"/>
+				<exclude name="**/log4j.*"/>
 				<exclude name="**/*Aspect.class"/>
 				<include name="**/*"/>
 			</fileset>
