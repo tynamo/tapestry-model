@@ -22,7 +22,7 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratorType;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -51,7 +51,7 @@ public class Recipe
     private Date date;
 
     @PropertyDescriptor(index=0)
-    @Id(generate=GeneratorType.AUTO)
+    @Id @GeneratedValue(strategy=GenerationType.AUTO)
     public Integer getId()
     {
         return id;

@@ -1,7 +1,8 @@
 package org.trails.demo;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratorType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -18,7 +19,7 @@ public class Model
 
     private Integer id;
 
-    @Id(generate = GeneratorType.AUTO)
+    @Id @GeneratedValue(strategy = GenerationType.AUTO)
     public Integer getId()
     {
         return id;

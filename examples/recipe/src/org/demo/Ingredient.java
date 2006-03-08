@@ -1,7 +1,7 @@
 package org.demo;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratorType;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -28,7 +28,7 @@ public class Ingredient
     }
 
     @PropertyDescriptor(index=0)
-    @Id(generate=GeneratorType.AUTO)
+    @Id @GeneratedValue(strategy=GenerationType.AUTO)
     public Integer getId()
     {
         return id;

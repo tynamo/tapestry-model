@@ -11,11 +11,7 @@
  */
 package org.trails.demo;
 
-import org.trails.descriptor.DescriptorService;
-
 import org.trails.page.EditPage;
-
-import org.trails.persistence.PersistenceService;
 
 
 /**

@@ -1,7 +1,7 @@
 package org.trails.demo;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratorType;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
@@ -9,7 +9,7 @@ public class Note
 {
     private Integer id;
 
-    @Id(generate = GeneratorType.AUTO)
+    @Id @GeneratedValue(strategy = GenerationType.AUTO)
     public Integer getId()
     {
         return id;

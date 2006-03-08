@@ -1,7 +1,8 @@
 package org.trails.demo;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratorType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Version;
 
@@ -18,7 +19,7 @@ public class VersionedThing
         // TODO Auto-generated constructor stub
     }
 
-    @Id(generate=GeneratorType.AUTO)
+    @Id @GeneratedValue(strategy=GenerationType.AUTO)
     public Integer getId()
     {
         return id;

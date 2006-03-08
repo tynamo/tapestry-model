@@ -1,17 +1,13 @@
 package org.trails.demo;
 
-import java.io.Serializable;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratorType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-
-import org.apache.commons.lang.builder.EqualsBuilder;
 
 @Entity
 public class Make
@@ -27,7 +23,7 @@ public class Make
     
     private Set<Car> cars = new HashSet<Car>();
 
-    @Id(generate = GeneratorType.AUTO)
+    @Id @GeneratedValue(strategy = GenerationType.AUTO)
     public Integer getId()
     {
         return id;

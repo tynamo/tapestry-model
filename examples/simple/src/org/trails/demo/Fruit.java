@@ -1,7 +1,8 @@
 package org.trails.demo;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratorType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
@@ -20,7 +21,7 @@ public class Fruit
         // TODO Auto-generated constructor stub
     }
 
-    @Id(generate=GeneratorType.AUTO)
+    @Id @GeneratedValue(strategy=GenerationType.AUTO)
     @PropertyDescriptor(index=0)
     public Integer getId()
     {

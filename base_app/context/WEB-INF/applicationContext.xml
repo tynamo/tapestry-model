@@ -196,8 +196,8 @@
 	
 	<bean id="pageResolver" class="org.trails.page.DefaultPageResolver" />
 
-	<bean id="editorService" class="org.trails.descriptor.TrailsEditorService">
-		<property name="defaultEditor">
+	<bean id="editorService" class="org.trails.descriptor.TrailsBlockFinder">
+		<property name="defaultBlockAddress">
 				<bean class="org.apache.tapestry.util.ComponentAddress">
 					<constructor-arg index="0"><value>trails:Editors</value></constructor-arg>
 					<constructor-arg index="1"><value>stringEditor</value></constructor-arg>

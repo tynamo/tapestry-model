@@ -11,7 +11,7 @@
  */
 package org.trails.demo;
 
-import org.trails.hibernate.*;
+import org.trails.hibernate.HasAssignedIdentifier;
 
 /**
  * @author fus8882

@@ -13,13 +13,9 @@ package org.trails.demo;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratorType;
 import javax.persistence.Id;
 
-import org.hibernate.validator.NotNull;
-import org.hibernate.validator.Pattern;
 import org.trails.descriptor.annotation.PropertyDescriptor;
-import org.trails.hibernate.HasAssignedIdentifier;
 import org.trails.validation.ValidateUniqueness;
 
 @Entity

@@ -2,11 +2,11 @@ package org.trails.demo;
 
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
-import javax.persistence.GeneratorType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
-import org.trails.descriptor.annotation.ClassDescriptor;
 
 @Entity
 public class Person
@@ -22,7 +22,7 @@ public class Person
         // TODO Auto-generated constructor stub
     }
     
-    @Id(generate=GeneratorType.AUTO)
+    @Id @GeneratedValue(strategy=GenerationType.AUTO)
     public Integer getId()
     {
         return id;

@@ -12,26 +12,21 @@
 package org.trails.demo;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratorType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
-import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.IndexColumn;
 import org.hibernate.validator.Length;
-import org.hibernate.validator.Max;
 import org.hibernate.validator.NotNull;
-import org.hibernate.validator.Pattern;
 
 
 /**
@@ -69,7 +64,7 @@ public class Category
     /**
      * @hibernate.id generator-class="native"
      */
-    @Id(generate=GeneratorType.AUTO)
+    @Id @GeneratedValue(strategy=GenerationType.AUTO)
     public Integer getId()
     {
         return id;
@@ -147,7 +142,6 @@ public class Category
     @OneToMany
     @JoinColumn(name="CATEGORY_ID")
     @IndexColumn(name="PRODUCT_INDEX")
-    @Cascade(CascadeType.DELETE_ORPHAN)
     public List<Product> getProducts()
     {
         return products;
