@@ -3,12 +3,10 @@
 <h1><span key="org.trails.welcome">Welcome to Trails</span></h1>
 
 <ul class="glassList">
-<div class="glassList" jwcid="@Foreach" source="ognl:descriptorService.allDescriptors" value="ognl:descriptor" >
-	<div jwcid="@If" condition="ognl:!descriptor.child">
-        <li>
-        	<a href="#" jwcid="@trails:ListAllLink" typeName="ognl:descriptor.type.name" />
-    	</li>
-    </div>
+<div class="glassList" jwcid="@Foreach" source="ognl:allDescriptors" value="ognl:descriptor" >
+	<li>
+    	<a href="#" jwcid="@trails:ListAllLink" typeName="ognl:descriptor.type.name" />
+    </li>
 </div>
 </ul>
 </span>
