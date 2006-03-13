@@ -28,7 +28,8 @@ public class Utils
 	public static final String APPLY_MESSAGE = "org.trails.i18n.apply";
 	public static final String APPLY_AND_RETURN_MESSAGE = "org.trails.i18n.applyAndReturn";
 	public static final String REMOVE_MESSAGE = "org.trails.i18n.remove";
-	public static final String ADD_NEW_MESSAGE = "org.trails.i18n.addNew";
+    public static final String CANCEL_MESSAGE = "org.trails.i18n.cancel";
+    public static final String ADD_NEW_MESSAGE = "org.trails.i18n.addNew";
 	public static String DEFAULT = "Default";
 
     public static Class getClassForName(String className)

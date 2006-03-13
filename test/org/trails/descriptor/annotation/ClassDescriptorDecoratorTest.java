@@ -27,8 +27,7 @@ public class ClassDescriptorDecoratorTest extends TestCase
         ClassDescriptor classDescriptorAnno = Annotated.class.getAnnotation(ClassDescriptor.class);
         IClassDescriptor decoratedDescriptor =  decorator.decorateFromAnnotation(classDescriptorAnno, descriptor);
         assertEquals("This is annotated", decoratedDescriptor.getDisplayName());
-        
-        
+        assertTrue(decoratedDescriptor.isHidden());
     }
 
 }

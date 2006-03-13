@@ -10,7 +10,8 @@
     <description><![CDATA[   add a description   ]]></description>
     <property name="org.apache.tapestry.disable-caching">true</property>
     <property name="org.apache.tapestry.visit-class" value="org.trails.Visit"/>
-	<library id="trails" specification-path="/org/trails/component/trails.library"/>
+    <property name="org.apache.tapestry.accepted-locales" value="en,pt"/>
+    <library id="trails" specification-path="/org/trails/component/trails.library"/>
 	<library id="contrib" specification-path="/org/apache/tapestry/contrib/Contrib.library"/>
 	<library id="tacos" specification-path="/net/sf/tacos/Tacos.library"/>
 

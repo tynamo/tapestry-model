@@ -41,7 +41,7 @@ public abstract class EditPage extends ModelPage implements IExternalPage
 
 
 	/**
-     * This property allows components to change the page during 
+     * This property allows components to change the page during
      * the middle of the rewind without causing a StaleLinkException
      * @return
      */
@@ -52,10 +52,10 @@ public abstract class EditPage extends ModelPage implements IExternalPage
     public void save(IRequestCycle cycle)
     {
         save();
-        
+
     }
 
-    
+
     /* To avoid duplicate callbacks on the stack, we need to replace the
      * top callback if it has an unsaved model object.
      * (non-Javadoc)
@@ -65,7 +65,7 @@ public abstract class EditPage extends ModelPage implements IExternalPage
     {
     	getCallbackStack().push(new EditCallback(getPageName(), getModel(), isModelNew()));
     }
-    
+
     protected boolean save()
     {
         if (!getDelegate().getHasErrors())
@@ -108,8 +108,15 @@ public abstract class EditPage extends ModelPage implements IExternalPage
         callback.performCallback(cycle);
     }
 
+
+    public void cancel(IRequestCycle cycle)
+    {
+        ICallback callback = (ICallback) getCallbackStack().popPreviousCallback();
+        callback.performCallback(cycle);
+    }
+
     /*
-     * This is here so that if a component needs to go to a new page it 
+     * This is here so that if a component needs to go to a new page it
      * won't do so in the middle of a rewind and generate a StaleLink
      */
     public void onFormSubmit(IRequestCycle cycle)
@@ -119,7 +126,7 @@ public abstract class EditPage extends ModelPage implements IExternalPage
             getNextPage().performCallback(cycle);
         }
     }
-    
+
     /**
      * @param cycle
      */
@@ -127,7 +134,7 @@ public abstract class EditPage extends ModelPage implements IExternalPage
     {
         if (save())
         {
-            
+
             ICallback callback = getCallbackStack().popPreviousCallback();
             if (callback instanceof CollectionCallback)
             {
@@ -155,13 +162,13 @@ public abstract class EditPage extends ModelPage implements IExternalPage
 
     public boolean cameFromCollection()
     {
-        
+
         return getCallbackStack().getPreviousCallback() instanceof CollectionCallback;
     }
-    
+
     public boolean cameFromChildCollection()
     {
-        
+
         if (getCallbackStack().getPreviousCallback() instanceof CollectionCallback)
         {
             return ((CollectionCallback)getCallbackStack().getPreviousCallback()).isChildRelationship();

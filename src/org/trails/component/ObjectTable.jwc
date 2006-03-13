@@ -5,11 +5,19 @@
 	<parameter name="showCollections" default-value="false" required="no" cache="yes" deprecated="no"/>
     <parameter name="instances" required="yes" cache="yes" deprecated="no"/>
     <parameter name="propertyNames" required="no" default-value="null" cache="yes" deprecated="no"/>
+
+    <parameter name="object" cache="no"/>
+    <parameter name="rowsClass" cache="no"/>
+    <parameter name="pageSize"/>
+
     <component id="table" inherit-informal-parameters="yes" type="contrib:Table">
-        <binding name="row">object</binding>
+        <inherited-binding name="row" parameter-name="object"/>
         <binding name="source">instances</binding>
         <binding name="columns">columns</binding>
-    </component>	
+        <inherited-binding name="rowsClass" parameter-name="rowsClass"/>
+        <binding name="pageSize">pageSize</binding>
+    </component>
+
     <component id="editLink" type="EditLink" inherit-informal-parameters="no">
         <binding name="model">object</binding>
     </component>
@@ -17,5 +25,5 @@
         <binding name="value">object[linkProperty]</binding>
     </component>
     <component id="linkColumnValue" type="Block" inherit-informal-parameters="no"/>
-   	<property name="object"/>
+
 </component-specification>

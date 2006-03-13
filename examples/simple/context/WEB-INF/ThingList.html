@@ -11,9 +11,9 @@
 	    <a href="#" jwcid="@PageLink" page="Home"><span jwcid="@Insert" value="message:org.trails.i18n.home">Home</span></a>
     </div>
     <h1><span jwcid="@Insert" value="message:org.trails.i18n.list">List</span>&nbsp;<span jwcid="@Insert" value="ognl:classDescriptor.pluralDisplayName" /></h1>
-	<table class="list" jwcid="@trails:ObjectTable" instances="ognl:instances" >
+	<table class="list" jwcid="@trails:ObjectTable" instances="ognl:instances" object="ognl:object" rowsClass="ognl:beans.evenOdd.next">
 		<div jwcid="nameColumnValue@Block">
-			<td>This is where the name should go.</td>
+			<td>This is where the name should go.<span jwcid="@Insert" value="ognl:object.name"/></td>
 		</div>
 	</table>
 

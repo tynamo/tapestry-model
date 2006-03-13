@@ -47,6 +47,10 @@
         <binding name="source">classDescriptor.methodDescriptors</binding>
         <binding name="value">methodDescriptor</binding>
     </component>
+
+    <component id="cancelButton" type="Submit" inherit-informal-parameters="no">
+        <binding name="listener">ognl:page.listeners.cancel</binding>
+    </component>
     
     <property name="methodDescriptor"/>
 	

@@ -7,7 +7,7 @@ import java.util.Date;
 import java.util.Set;
 
 
-@ClassDescriptor(displayName="This is annotated")
+@ClassDescriptor(displayName="This is annotated", hidden = true)
 public class Annotated
 {
     public static final String CLASS_LABEL = "This is annotated";
