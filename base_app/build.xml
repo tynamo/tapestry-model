@@ -144,7 +144,7 @@
 			</filterset>
 		</copy>
 		<mkdir dir="${build.dir}/WEB-INF/lib" />
-		<copy todir="${build.dir}/WEB-INF/lib" flatten="true">
+		<copy todir="${build.dir}/WEB-INF/lib" flatten="true" overwrite="true">
 			<fileset dir="${lib.dir}" />
 		</copy>
 	</target>
