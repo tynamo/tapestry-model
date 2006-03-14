@@ -110,6 +110,7 @@ public abstract class EditCollection extends TrailsComponent
     {
         getCallbackStack().push(buildCallback());
 
+        //TODO: refactor to use page resolver
         EditPage editPage = (EditPage) Utils.findPage(cycle,
                 Utils.unqualify(getCollectionDescriptor().getElementType()
                                     .getName() + "Edit"), "Edit");
