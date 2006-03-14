@@ -21,6 +21,7 @@ public abstract class SearchPage extends TrailsPage
         super();
     }
     
+    @Persist
     public abstract String getTypeName();
 
 	public abstract void setTypeName(String TypeName);
