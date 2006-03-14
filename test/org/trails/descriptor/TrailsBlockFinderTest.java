@@ -29,7 +29,7 @@ public class TrailsBlockFinderTest extends MockObjectTestCase
     ComponentAddress readOnlyEditor;
     ComponentAddress numericEditor;
     ComponentAddress stringEditor;
-    TrailsBlockFinder editorService = new TrailsBlockFinder();
+    EditorBlockFinder editorService = new EditorBlockFinder();
     
     public void setUp() throws Exception
     {

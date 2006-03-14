@@ -1,20 +1,25 @@
 package org.trails.validation;
 
 import java.util.Date;
+import java.util.Locale;
 
 import junit.framework.TestCase;
 
+import org.apache.tapestry.form.IFormComponent;
+import org.apache.tapestry.form.ValidationMessages;
 import org.apache.tapestry.form.translator.DateTranslator;
 import org.apache.tapestry.form.translator.FormatTranslator;
 import org.apache.tapestry.form.translator.NumberTranslator;
 import org.apache.tapestry.form.translator.Translator;
 import org.apache.tapestry.valid.NumberValidator;
 import org.apache.tapestry.valid.StringValidator;
+import org.jmock.Mock;
+import org.jmock.MockObjectTestCase;
 import org.trails.descriptor.IPropertyDescriptor;
 import org.trails.descriptor.TrailsPropertyDescriptor;
 import org.trails.test.Foo;
 
-public class ValidatorTranslatorServiceTest extends TestCase
+public class ValidatorTranslatorServiceTest extends MockObjectTestCase
 {
 
 	ValidatorTranslatorService valTransService = new ValidatorTranslatorService();
@@ -52,4 +57,5 @@ public class ValidatorTranslatorServiceTest extends TestCase
                 ((DateTranslator)translator).getPattern());
         
     }
+    
 }
