@@ -196,7 +196,48 @@
 	
 	<bean id="pageResolver" class="org.trails.page.DefaultPageResolver" />
 
-	<bean id="editorService" class="org.trails.descriptor.TrailsBlockFinder">
+	<bean id="searchBlockFinder" class="org.trails.descriptor.BaseBlockFinder">
+		<property name="defaultBlockAddress">
+				<bean class="org.apache.tapestry.util.ComponentAddress">
+					<constructor-arg index="0"><value>trails:SearchBlocks</value></constructor-arg>
+					<constructor-arg index="1"><value>simpleSearch</value></constructor-arg>
+				</bean>
+		</property>			
+		<property name="editorMap">
+			<map>
+				<entry>
+				<key><value>objectReference</value></key>
+				<bean class="org.apache.tapestry.util.ComponentAddress">
+					<constructor-arg index="0"><value>trails:SearchBlocks</value></constructor-arg>
+					<constructor-arg index="1"><value>associationSearch</value></constructor-arg>
+				</bean>
+				</entry>	
+				<entry>
+				<key><value>objectReference</value></key>
+				<bean class="org.apache.tapestry.util.ComponentAddress">
+					<constructor-arg index="0"><value>trails:SearchBlocks</value></constructor-arg>
+					<constructor-arg index="1"><value>associationSearch</value></constructor-arg>
+				</bean>
+				</entry>	
+				<entry>
+				<key><value>numeric</value></key>
+				<bean class="org.apache.tapestry.util.ComponentAddress">
+					<constructor-arg index="0"><value>trails:SearchBlocks</value></constructor-arg>
+					<constructor-arg index="1"><value>numberSearch</value></constructor-arg>
+				</bean>
+				</entry>	
+				<entry>
+				<key><value>date</value></key>
+				<bean class="org.apache.tapestry.util.ComponentAddress">
+					<constructor-arg index="0"><value>trails:SearchBlocks</value></constructor-arg>
+					<constructor-arg index="1"><value>dateSearch</value></constructor-arg>
+				</bean>
+				</entry>	
+			</map>
+		</property>
+	</bean>
+	
+	<bean id="editorService" class="org.trails.descriptor.EditorBlockFinder">
 		<property name="defaultBlockAddress">
 				<bean class="org.apache.tapestry.util.ComponentAddress">
 					<constructor-arg index="0"><value>trails:Editors</value></constructor-arg>
