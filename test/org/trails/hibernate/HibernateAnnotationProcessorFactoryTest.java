@@ -46,7 +46,7 @@ public class HibernateAnnotationProcessorFactoryTest extends MockObjectTestCase
 		inStream.close();
 		outStream.close();
 		
-		options.put("-sourcepath", tempDir);
+		options.put("-AconfigFile=" + configFile.getAbsolutePath(), null);
 		
 		
 		Mock apEnvMock = new Mock(AnnotationProcessorEnvironment.class);

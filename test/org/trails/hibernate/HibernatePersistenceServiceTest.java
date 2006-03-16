@@ -27,6 +27,8 @@ import org.springframework.orm.hibernate3.SessionFactoryUtils;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import org.trails.persistence.PersistenceException;
 import org.trails.persistence.PersistenceService;
+import org.trails.security.domain.Role;
+import org.trails.security.domain.User;
 import org.trails.test.Ancestor;
 import org.trails.test.Bar;
 import org.trails.test.Baz;
@@ -177,6 +179,29 @@ public class HibernatePersistenceServiceTest extends MockObjectTestCase
     	persistenceService.save(foo);
     	assertNotNull(persistenceService.getInstance(Foo.class, new Integer(1)));
     	assertNull(persistenceService.getInstance(Foo.class, new Integer(-999)));
+    }
+    
+    public void testGetInstances() throws Exception
+    {
+    	User user = new User();
+    	Role role = new Role();
+    	role.setName("one");
+    	role.setDescription("one");
+    	Role role2 = new Role();
+    	role2.setName("two");
+    	role2.setDescription("two");
+    	role = persistenceService.save(role);
+    	role2 = persistenceService.save(role2);
+    	user.setUsername("user");
+    	user.setFirstName("what");
+    	user.setLastName("blah");
+    	user.setPassword("user");
+    	user.setConfirmPassword("user");
+    	user.getRoles().add(role);
+    	user.getRoles().add(role2);
+    	persistenceService.save(user);
+    	assertEquals(1, persistenceService.getInstances(DetachedCriteria.forClass(User.class)).size());
+    	
     }
     
     public void testBazzes() throws Exception
