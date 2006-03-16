@@ -7,7 +7,7 @@ tomcat.url=http://yourip:8080
 manager.username=login
 manager.password=password
 # this directory (security.startup.context) is relative to the context directory.
-security.startup.context=WEB-INF/applicationContext.xml
+security.startup.context=applicationContext.xml
 
 # Use these settings to customize your database connection
 hibernate.dialect=org.hibernate.dialect.HSQLDialect

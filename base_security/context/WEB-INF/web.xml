@@ -11,8 +11,8 @@
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>
-            /WEB-INF/applicationContext.xml
-            /WEB-INF/acegi-security.xml
+            classpath:applicationContext.xml
+            classpath:acegi-security.xml
         </param-value>
     </context-param>
 

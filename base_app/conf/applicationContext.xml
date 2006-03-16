@@ -7,7 +7,7 @@
 	<bean id="trailsInterceptor" class="org.trails.hibernate.TrailsInterceptor" />
 
 	<bean id="hibernateProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
-		<property name="location"><value>/WEB-INF/hibernate.properties</value></property>
+		<property name="location"><value>classpath:hibernate.properties</value></property>
 	</bean>
 	
 	<!-- <bean id="productService" class="org.blah.service.ProductService" /> -->
@@ -38,7 +38,7 @@
     </list>
   </property>-->
 
-  <property name="configLocation"><value>/WEB-INF/hibernate.cfg.xml</value></property> 
+  <property name="configLocation"><value>classpath:hibernate.cfg.xml</value></property> 
   	<property name="configurationClass">
    		<value>org.hibernate.cfg.AnnotationConfiguration</value>
 	</property> 
