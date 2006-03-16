@@ -7,7 +7,7 @@
 	<bean id="trailsInterceptor" class="org.trails.hibernate.TrailsInterceptor" />
 
 	<bean id="hibernateProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
-		<property name="location"><value>/WEB-INF/hibernate.properties</value></property>
+		<property name="location"><value>classpath:hibernate.properties</value></property>
 	</bean>
 	
 	<!-- <bean id="productService" class="org.blah.service.ProductService" /> -->
@@ -24,10 +24,10 @@
 	<!-- ========================= RESOURCE DEFINITIONS ========================= -->
 	
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
-        <property name="driverClassName" value="org.hsqldb.jdbcDriver"/>
-        <property name="url" value="jdbc:hsqldb:mem:simple"/>
-        <property name="username" value="sa"/>
-        <property name="password" value=""/>
+        <property name="driverClassName" value="@hibernate.connection.driver_class@"/>
+        <property name="url" value="@hibernate.connection.url@"/>
+        <property name="username" value="@hibernate.connection.username@"/>
+        <property name="password" value="@hibernate.connection.password@"/>
     </bean>
 <bean id="sessionFactory"
        class="org.springframework.orm.hibernate3.LocalSessionFactoryBean" autowire="byName">
@@ -38,7 +38,7 @@
     </list>
   </property>-->
 
-  <property name="configLocation"><value>/WEB-INF/hibernate.cfg.xml</value></property> 
+  <property name="configLocation"><value>classpath:hibernate.cfg.xml</value></property> 
   	<property name="configurationClass">
    		<value>org.hibernate.cfg.AnnotationConfiguration</value>
 	</property> 
@@ -236,7 +236,7 @@
 			</map>
 		</property>
 	</bean>
-			
+	
 	<bean id="editorService" class="org.trails.descriptor.EditorBlockFinder">
 		<property name="defaultBlockAddress">
 				<bean class="org.apache.tapestry.util.ComponentAddress">
