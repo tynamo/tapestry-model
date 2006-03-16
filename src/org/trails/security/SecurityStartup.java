@@ -8,6 +8,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 import org.trails.persistence.PersistenceService;
 import org.trails.security.domain.Role;
@@ -62,7 +63,7 @@ public class SecurityStartup {
 		if (args.length != 1)
 			throw new RuntimeException("location of applicationContext.xml must be specified");
 		
-		ApplicationContext context = new FileSystemXmlApplicationContext(args[0]);
+		ApplicationContext context = new ClassPathXmlApplicationContext(args[0]);
 		SecurityStartup bootStrap = (SecurityStartup) context.getBean("securityStartup");
 		bootStrap.startup();
 	}

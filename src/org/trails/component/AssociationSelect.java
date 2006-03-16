@@ -5,6 +5,7 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.annotations.InjectObject;
 import org.apache.tapestry.form.IPropertySelectionModel;
 import org.hibernate.criterion.DetachedCriteria;
+import org.trails.descriptor.DescriptorService;
 import org.trails.descriptor.IClassDescriptor;
 import org.trails.descriptor.IPropertyDescriptor;
 import org.trails.persistence.PersistenceService;
@@ -23,6 +24,9 @@ public abstract class AssociationSelect extends BaseComponent
     @InjectObject("spring:persistenceService")
     public abstract PersistenceService getPersistenceService();
     
+    @InjectObject("spring:descriptorService")
+    public abstract DescriptorService getDescriptorService();
+    
     public abstract IPropertySelectionModel getPropertySelectionModel();
 
     public abstract void setPropertySelectionModel(IPropertySelectionModel PropertySelectionModel);
@@ -30,11 +34,7 @@ public abstract class AssociationSelect extends BaseComponent
     public abstract DetachedCriteria getCriteria();
 
     public abstract void setCriteria(DetachedCriteria Criteria);
-    
-    public abstract IClassDescriptor getClassDescriptor();
-
-    public abstract void setClassDescriptor(IClassDescriptor ClassDescriptor);
-    
+        
     public abstract IPropertyDescriptor getPropertyDescriptor();
 
     public abstract void setPropertyDescriptor(IPropertyDescriptor PropertyDescriptor);
@@ -53,7 +53,10 @@ public abstract class AssociationSelect extends BaseComponent
         // TODO Auto-generated constructor stub
     }
 
-    
+    public IClassDescriptor getClassDescriptor()
+    {
+    	return getDescriptorService().getClassDescriptor(getPropertyDescriptor().getPropertyType());
+    }
 
     @Override
     protected void prepareForRender(IRequestCycle arg0)

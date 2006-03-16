@@ -121,6 +121,7 @@ public class HibernatePersistenceService extends HibernateDaoSupport implements
             public Object doInHibernate( Session session )
                     throws HibernateException, SQLException
             {
+            	criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
                 return criteria.getExecutableCriteria( session ).list();
             }
         }, true );

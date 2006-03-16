@@ -2,7 +2,6 @@
 <component-specification class="org.trails.component.AssociationSelect" allow-body="yes" allow-informal-parameters="yes">
 	<description>produces a select list for an association property</description>
 
-    <parameter name="classDescriptor" required="yes"/>
     <parameter name="criteria" required="no"/>
     <parameter name="value" required="no" />
     <parameter name="model" default-value="page.model" required="no"/>

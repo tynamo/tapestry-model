@@ -35,8 +35,7 @@
    </component>
        
     <component id="associationSelect" type="AssociationSelect" inherit-informal-parameters="no">
-        <binding name="classDescriptor">descriptorService.getClassDescriptor(descriptor.type)</binding>
-        <binding name="value">model[descriptor.name]</binding>
+         <binding name="value">model[descriptor.name]</binding>
         <binding name="propertyDescriptor">descriptor</binding>
     </component>
    	

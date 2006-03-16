@@ -13,6 +13,7 @@ import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 import org.hibernate.util.DTDEntityResolver;
 
+import com.sun.corba.se.spi.legacy.connection.GetEndPointInfoAgainException;
 import com.sun.mirror.apt.AnnotationProcessor;
 import com.sun.mirror.apt.AnnotationProcessorEnvironment;
 import com.sun.mirror.apt.AnnotationProcessorFactory;
@@ -25,6 +26,8 @@ import com.sun.mirror.util.SimpleDeclarationVisitor;
 public class HibernateAnnotationProcessorFactory implements AnnotationProcessorFactory
 {
 	public static final String SECURITY_PACKAGE = "org.trails.security";
+	
+	public static final String configFileOption = "configFile";
     public HibernateAnnotationProcessorFactory()
     {
         super();
@@ -63,10 +66,17 @@ public class HibernateAnnotationProcessorFactory implements AnnotationProcessorF
         
         public void process()
         {
-            System.out.println(env.getOptions());
-            String sourcePath = env.getOptions().get("-sourcepath");
-            String configFileName =sourcePath + File.separator + "hibernate.cfg.xml";
-            System.out.println(configFileName);
+        	String configTemplateFile = null;
+        	// This is a hack due to a bug in apt
+            for (String key : env.getOptions().keySet())
+			{
+				if (key.startsWith("-A" + configFileOption))
+				{
+					configTemplateFile = key.split("=")[1];
+				}
+			}
+            
+            System.out.println(configTemplateFile);
             try
             {
                 SAXReader reader = new SAXReader();
@@ -74,7 +84,7 @@ public class HibernateAnnotationProcessorFactory implements AnnotationProcessorF
                 reader.setEntityResolver(new DTDEntityResolver());
                 reader.setIncludeExternalDTDDeclarations(false);
                 reader.setIncludeInternalDTDDeclarations(false);
-                Document doc = reader.read(configFileName);
+                Document doc = reader.read(configTemplateFile);
                 sessionFactoryElement = (Element)doc.getRootElement().selectSingleNode("//session-factory");
                 for (Iterator iter = sessionFactoryElement.selectNodes("mapping[not(starts-with(@class, '" + SECURITY_PACKAGE + "'))]").iterator(); iter.hasNext();)
                 {
