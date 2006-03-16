@@ -26,9 +26,10 @@
 	<property name="webinf" value="${context}/WEB-INF" />
 	<property name="webinf.lib" value="${webinf}/lib" />
 	<property name="src.dir" value="${basedir}/src" />
+	<property name="conf.dir" value="${basedir}/conf" />
 	<property name="test.src" value="${basedir}/test" />
 	<property name="build.dir" value="${basedir}/build" />
-	<property name="compile.dir" value="${build.dir}/WEB-INF/classes" />
+	<property name="compile.dir" value="${context}/WEB-INF/classes" />
 
 	<property name="deploy.dir" value="${basedir}/deploy" />
 	<property name="lib.dir" value="${basedir}/lib" />
@@ -125,13 +126,11 @@
 				<exclude name="hibernate.cfg.xml" />
 			</fileset>
 		</copy>
-
 	</target>
-
-	<target name="build" depends="compile,build-hibernate-config">
-		<mkdir dir="${build.dir}" />
-		<copy todir="${build.dir}" overwrite="true">
-			<fileset dir="${context}" />
+			
+	<target name="copy-config-files">
+		<copy todir="${compile.dir}" overwrite="true">
+			<fileset dir="${conf.dir}" excludes="hibernate.cfg.xml" />
 			<filterset>
 				<filtersfile file="${basedir}/build.properties" />
 				<filter token="hibernate.connection.driver_class" value="${hibernate.connection.driver_class}" />
@@ -143,24 +142,11 @@
 				<filter token="hibernate.dialect" value="${hibernate.dialect}" />
 			</filterset>
 		</copy>
-		<mkdir dir="${build.dir}/WEB-INF/lib" />
-		<copy todir="${build.dir}/WEB-INF/lib" flatten="true">
-			<fileset dir="${lib.dir}" />
-		</copy>
 	</target>
-	
-	<target name="copy-tokenize-files-tocontext" depends="build" description="A convenience for users that wish to run webapp in place">
-		<copy todir="${context}/WEB-INF">
-			<fileset dir="${build.dir}/WEB-INF">
-				<include name="hibernate.properties"/>
-				<include name="applicationContext.xml"/>
-			</fileset>
-		</copy>
-	</target>
-			
-	<target name="war" depends="build">
+		
+	<target name="war" depends="compile,build-hibernate-config">
 		<mkdir dir="${deploy.dir}" />
-		<jar basedir="${build.dir}" destfile="${war.file}" />
+		<jar basedir="${context}" destfile="${war.file}" />
 	</target>
 
 	<target name="create-edit-page">
@@ -207,7 +193,7 @@
 	<target name="all" depends="clean,build-hibernate-config,war">
 	</target>
 
-	<target name="initialize-security" depends="build">
+	<target name="initialize-security" depends="build-hibernate-config">
 		<java dir="${build.dir}" fork="yes" classname="org.trails.security.SecurityStartup">
 			<arg value="${security.startup.context}" />
 			<classpath>
@@ -222,10 +208,11 @@
 		</java>
 	</target>
 
-	<target name="build-hibernate-config">
+	<target name="build-hibernate-config" depends="copy-config-files">
+		<mkdir dir="${compile.dir}" />
 		<echo message="${java.home}" />
-		<apt fork="true" nocompile="true" classpathref="class.path" factory="org.trails.hibernate.HibernateAnnotationProcessorFactory" srcdir="${src.dir}" preprocessdir="${webinf}" destdir="${webinf}">
-
+		<apt fork="true" nocompile="true" classpathref="class.path" factory="org.trails.hibernate.HibernateAnnotationProcessorFactory" srcdir="${src.dir}" preprocessdir="${compile.dir}" destdir="${compile.dir}">
+			<option name="configFile" value="${conf.dir}/hibernate.cfg.xml" />
 		</apt>
 
 	</target>
@@ -240,7 +227,7 @@
 		</classpath>
 	</taskdef>
 
-	<target name="exportDDL" depends="clean, build" description="Export the schema DDL to SQL text file in build directory">
+	<target name="exportDDL" depends="clean, build-hibernate-config" description="Export the schema DDL to SQL text file in build directory">
 		<mkdir dir="${deploy.dir}" />
 		<echo>WARNING! See HBX-394: Currently only works with annotated classes, not XML mapping files!</echo>
 		<hibernatetool destdir="${deploy.dir}">
