@@ -196,6 +196,17 @@ public class EditPageTest extends ComponentTest
         cycleMock.verify();
         persistenceMock.verify();
     }
+
+    public void testCancel()
+    {
+        cycleMock.expects(once()).method("getPage").with(eq("FooList")).will(returnValue(listPage));
+        cycleMock.expects(once()).method("activate").with(eq(listPage));
+        persistenceMock.expects(never());
+        editPage.cancel((IRequestCycle)cycleMock.proxy());
+        cycleMock.verify();
+        persistenceMock.verify();
+    }
+
     
 //    public void testAddToChildCollection()
 //    {
