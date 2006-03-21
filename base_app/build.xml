@@ -9,7 +9,7 @@
      ====================================================================== -->
 <project name="@app.name@" default="all">
 
-	<property file="build.properties">
+	<property file="build.properties" >
 	</property>
 
 	<!-- Default Hibernate Properties (override in build.properties) -->
@@ -24,12 +24,11 @@
 
 	<property name="context" value="${basedir}/context" />
 	<property name="webinf" value="${context}/WEB-INF" />
-	<property name="webinf.lib" value="${webinf}/lib" />
 	<property name="src.dir" value="${basedir}/src" />
 	<property name="conf.dir" value="${basedir}/conf" />
 	<property name="test.src" value="${basedir}/test" />
 	<property name="build.dir" value="${basedir}/build" />
-	<property name="compile.dir" value="${context}/WEB-INF/classes" />
+	<property name="compile.dir" value="${build.dir}/classes" />
 
 	<property name="security.startup.context" value="applicationContext.xml" />
 	<property name="deploy.dir" value="${basedir}/deploy" />
@@ -40,20 +39,10 @@
 	<path id="class.path">
 		<fileset dir="${lib.dir}">
 		</fileset>
-		<fileset dir="${tomcat.home}/common/lib">
-		</fileset>
-		<fileset dir="${tomcat.home}/server/lib" />
-		<pathelement location="${tools.jar}" />
 	</path>
 
 	<taskdef name="apt" classname="org.apache.tools.ant.taskdefs.Apt" classpathref="class.path" />
 
-	<path id="jetty.class.path">
-		<fileset dir="${jetty.lib}">
-			<exclude name="start.jar" />
-			<exclude name="stop.jar" />
-		</fileset>
-	</path>
 	<taskdef resource="org/aspectj/tools/ant/taskdefs/aspectjTaskdefs.properties">
 		<classpath refid="class.path">
 		</classpath>
@@ -63,55 +52,6 @@
             Trails Demo application
     </description>
 
-
-	<!--
-	<target name="hibernatedoclet" 
-	        description="Generates Hibernate class descriptor files."
-			>
-
-	    
-	    <taskdef name="hibernatedoclet"
-	        classname="xdoclet.modules.hibernate.HibernateDocletTask"
-	    	classpathref="class.path">
-
-	    </taskdef>
-		
-		
-
-		<delete>
-	        <fileset dir="${src.dir}">
-		        <include name="**/*.hbm.xml"/>
-	        </fileset>			
-		</delete>
-	    <hibernatedoclet
-	        destdir="${src.dir}"
-	        excludedtags="@version,@author,@todo"
-
-	        verbose="true">
-	    
-	        <fileset dir="${src.dir}">
-		        <include name="**/*.java"/>
-	        </fileset>
-	    
-			<hibernate version="3.0"/>        
-	    
-	    </hibernatedoclet>
-	</target>
-	
-	<target name="generate-beaninfos">
-	    <taskdef name="doclet"
-	        classname="xdoclet.DocletTask"
-	    	classpathref="class.path">
-
-	    </taskdef>
-		<doclet destDir="${src.dir}">
-	        <fileset dir="${src.dir}">
-		        <include name="**/*.java"/>
-	        </fileset>
-			<beaninfo  />
-		</doclet>
-	</target>	
-	-->
 
 	<target name="clean">
 		<delete dir="${compile.dir}" />
@@ -147,7 +87,12 @@
 		
 	<target name="war" depends="compile,build-hibernate-config">
 		<mkdir dir="${deploy.dir}" />
-		<jar basedir="${context}" destfile="${war.file}" />
+		<war basedir="${context}" destfile="${war.file}" webxml="${webinf}/web.xml">
+			<lib dir="${lib.dir}">
+			</lib>
+			<classes dir="${compile.dir}">
+			</classes>
+		</war>
 	</target>
 
 	<target name="create-edit-page">
@@ -167,8 +112,13 @@
 	</target>
 
 	<target name="deploy" depends="war">
-		<taskdef name="deploy" classname="org.apache.catalina.ant.DeployTask" classpathref="class.path">
-
+		<taskdef name="deploy" classname="org.apache.catalina.ant.DeployTask" >
+			<classpath>
+				<path refid="class.path"></path>
+				<fileset dir="${tomcat.home}/common/lib">
+				</fileset>
+				<fileset dir="${tomcat.home}/server/lib" />
+			</classpath>
 		</taskdef>
 		<!-- <taskdef name="list" classname="org.apache.catalina.ant.ListTask" classpathref="class.path"/>
 		<list url="${tomcat.url}/manager" username="${manager.username}" password="${manager.password}" /> -->
@@ -194,15 +144,12 @@
 	<target name="all" depends="clean,build-hibernate-config,war">
 	</target>
 
-	<target name="initialize-security" depends="build-hibernate-config">
+	<target name="initialize-security" depends="compile,build-hibernate-config">
 		<java dir="${basedir}" fork="yes" classname="org.trails.security.SecurityStartup">
 			<arg value="${security.startup.context}" />
 			<classpath>
-				<fileset dir="${tomcat.home}/common/lib">
-				</fileset>
 				<fileset dir="${lib.dir}">
 				</fileset>
-				<fileset dir="${java.home}/../lib" includes="tools.jar" />
 				<path location="${compile.dir}">
 				</path>
 			</classpath>
@@ -212,8 +159,12 @@
 	<target name="build-hibernate-config" depends="copy-config-files">
 		<mkdir dir="${compile.dir}" />
 		<echo message="${java.home}" />
-		<apt fork="true" nocompile="true" classpathref="class.path" factory="org.trails.hibernate.HibernateAnnotationProcessorFactory" srcdir="${src.dir}" preprocessdir="${compile.dir}" destdir="${compile.dir}">
+		<apt fork="true" nocompile="true" classpathref="class.path" 
+			factory="org.trails.hibernate.HibernateAnnotationProcessorFactory"
+			srcdir="${src.dir}" 
+			preprocessdir="${compile.dir}">
 			<option name="configFile" value="${conf.dir}/hibernate.cfg.xml" />
+			<option name="destFile" value="${compile.dir}/hibernate.cfg.xml" />
 		</apt>
 
 	</target>
@@ -232,20 +183,10 @@
 		<mkdir dir="${deploy.dir}" />
 		<echo>WARNING! See HBX-394: Currently only works with annotated classes, not XML mapping files!</echo>
 		<hibernatetool destdir="${deploy.dir}">
-			<annotationconfiguration configurationfile="${build.dir}/WEB-INF/hibernate.cfg.xml" propertyFile="${build.dir}/WEB-INF/hibernate.properties" />
+			<annotationconfiguration configurationfile="${compile.dir}/hibernate.cfg.xml" propertyFile="${compile.dir}/hibernate.properties" />
 			<hbm2ddl export="true" console="false" drop="false" create="true" outputfilename="${ant.project.name}.ddl" delimiter=";" />
 		</hibernatetool>
 	</target>
 
-	<!--
-	<target name="start-jetty" depends="hibernatedoclet,compile">
-		<java classpathref="jetty.class.path" classname="org.mortbay.jetty.Server" dir="${basedir}" fork="true" spawn="true">
-			<arg value="jetty-config.xml"/>
-		</java>
-	</target>
 
-	<target name="stop-jetty">
-		<java jar="${jetty.lib}/stop.jar" />
-	</target>
-	-->
 </project>
