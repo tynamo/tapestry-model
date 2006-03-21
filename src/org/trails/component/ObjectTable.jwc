@@ -6,7 +6,8 @@
     <parameter name="instances" required="yes" cache="yes" deprecated="no"/>
     <parameter name="propertyNames" required="no" default-value="null" cache="yes" deprecated="no"/>
 
-    <parameter name="object" cache="no"/>
+	
+    <parameter name="object" cache="no" default-value="currentObject"/>
     <parameter name="rowsClass" cache="no"/>
     <parameter name="pageSize"/>
 
@@ -25,5 +26,5 @@
         <binding name="value">object[linkProperty]</binding>
     </component>
     <component id="linkColumnValue" type="Block" inherit-informal-parameters="no"/>
-
+	<property name="currentObject" />
 </component-specification>

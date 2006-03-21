@@ -13,7 +13,7 @@ public class TableBlockOverrideTest extends FunctionalTest
         HtmlForm newThingForm = getFirstForm(newThingPage);
         getInputByName(newThingPage, "Name").setValueAttribute("blah");
         getInputByName(newThingPage, "Id").setValueAttribute("1");
-        listThingsPage = clickButton(newThingForm, "Save");
+        listThingsPage = clickButton(newThingForm, "Ok");
         assertXPathPresent(listThingsPage, "//td[text()='This is where the name should go.blah']");
 		
 	}

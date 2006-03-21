@@ -28,6 +28,9 @@ public class HibernateAnnotationProcessorFactory implements AnnotationProcessorF
 	public static final String SECURITY_PACKAGE = "org.trails.security";
 	
 	public static final String configFileOption = "configFile";
+	
+	public static final String destFileOption = "destFile";
+	
     public HibernateAnnotationProcessorFactory()
     {
         super();
@@ -66,15 +69,7 @@ public class HibernateAnnotationProcessorFactory implements AnnotationProcessorF
         
         public void process()
         {
-        	String configTemplateFile = null;
-        	// This is a hack due to a bug in apt
-            for (String key : env.getOptions().keySet())
-			{
-				if (key.startsWith("-A" + configFileOption))
-				{
-					configTemplateFile = key.split("=")[1];
-				}
-			}
+        	String configTemplateFile = getOptionValue(configFileOption);
             
             System.out.println(configTemplateFile);
             try
@@ -111,8 +106,10 @@ public class HibernateAnnotationProcessorFactory implements AnnotationProcessorF
                     }
                     sessionFactoryElement.elements().addAll(listenerElements);
                 }
-                PrintWriter writer =env.getFiler().createTextFile(Filer.Location.CLASS_TREE, "", new File("hibernate.cfg.xml"), null);
+                System.out.println("Creating destFile: " + getOptionValue(destFileOption));
+                PrintWriter writer = new PrintWriter(getOptionValue(destFileOption));
                 doc.write(writer);
+                writer.close();
                 
             }
             catch (Exception ex) {
@@ -120,6 +117,19 @@ public class HibernateAnnotationProcessorFactory implements AnnotationProcessorF
                 }
 
         }
+
+		private String getOptionValue(String option)
+		{
+			// This is a hack due to a bug in apt
+            for (String key : env.getOptions().keySet())
+			{
+				if (key.startsWith("-A" + option))
+				{
+					return key.split("=")[1];
+				}
+			}
+			return null;
+		}
         
     }
 }

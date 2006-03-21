@@ -30,7 +30,8 @@
 	<property name="java5.tools.jar" value="${java.home}/../lib/tools.jar" />
 	<property name="test.src" value="${basedir}/test" />
 	<available file="${jar.file}" property="jar.exists"></available>
-	<property name="compile.dir" value="${basedir}/build" />
+	<property name="compile.dir" value="${basedir}/build/classes" />
+	
 	<path id="class.path">
 		<fileset dir="${lib.dir}"></fileset>
 		<fileset dir="${tomcat.home}/common/lib"></fileset>
@@ -170,9 +171,12 @@
 	</target>
 				
 	<target name="update-example">
+		<property name="example.project.dir" value="${example.basedir}/${example.name}" />
 		<antcall target="update-project">
-			<param name="project.dir" value="${example.basedir}/${example.name}" />
+			<param name="project.dir" value="${example.project.dir}" />
 			<param name="project.name" value="${example.name}" />
+			<param name="project.lib" value="${example.project.dir}/lib" />
+			<param name="project.context.dir" value="${example.project.dir}/context" />
 		</antcall>
 	</target>
 	
@@ -184,30 +188,34 @@
 		<fail message="You must run install-apt to install the apt jar ant.home/lib directory first."/>
 	</target>
 	
-	<target name="create-project" depends="check-for-apt" description="Create a new Trails project">
+	<target name="create-wst-project">
 		<input message="Base directory: " addproperty="newproject.basedir"></input>
 		<input message="Project name: " addproperty="newproject.name"></input>
+		<input message="Context dir: " addproperty="newproject.context.subdir"></input>
 		<property name="newproject.dir" value="${newproject.basedir}/${newproject.name}"></property>
 		<antcall target="update-project" inheritrefs="true">
 			<param name="project.dir" value="${newproject.dir}" />
 			<param name="project.name" value="${newproject.name}" />
-		</antcall>
-	</target>
-
-	<target name="create-secure-project" depends="check-for-apt" description="Create a new Trails project with security">
-		<input message="Base directory: " addproperty="newproject.basedir"></input>
-		<input message="Project name: " addproperty="newproject.name"></input>
-		<property name="newproject.dir" value="${newproject.basedir}/${newproject.name}"></property>
-		<antcall target="update-project" inheritrefs="true">
-			<param name="project.dir" value="${newproject.dir}" />
-			<param name="project.name" value="${newproject.name}" />
-		</antcall>
-		<antcall target="add-security-files" inheritrefs="true">
-			<param name="project.dir" value="${newproject.dir}" />
-			<param name="project.name" value="${newproject.name}" />
+			<param name="project.lib" value="${newproject.dir}/${newproject.context.subdir}/WEB-INF/lib" />
+			<param name="project.context.dir" value="${newproject.dir}/${newproject.context.subdir}" />
+			<param name="wst.project" value="true" />
 		</antcall>
 	</target>
 		
+	<target name="create-project" depends="check-for-apt" description="Create a new Trails project">
+		<input message="Base directory: " addproperty="newproject.basedir"></input>
+		<input message="Project name: " addproperty="newproject.name"></input>
+		<input message="Context dir: " addproperty="newproject.context.subdir"></input>
+		<property name="newproject.dir" value="${newproject.basedir}/${newproject.name}"></property>
+		<mkdir dir="${newproject.dir}"/>
+		<antcall target="update-project" inheritrefs="true">
+			<param name="project.dir" value="${newproject.dir}" />
+			<param name="project.name" value="${newproject.name}" />
+			<param name="project.lib" value="${newproject.dir}/lib" />
+			<param name="project.context.dir" value="${newproject.dir}/context" />
+		</antcall>
+	</target>
+	
 	<target name="jar-if-necessary" unless="jar.exists"  >
 		<antcall target="jar" inheritrefs="true"></antcall>
 	</target>
@@ -240,62 +248,91 @@
 		</copy>		
 	</target>
 		
-	<target name="add-security-files" depends="init">
-		<copy todir="${project.dir}" overwrite="true">
+	<target name="add-security" depends="init" description="Add security to a project" >
+		<input message="Base directory:" addproperty="project.basedir" />
+		<input message="Project name:" addproperty="project.name" />
+		<input message="Context dir:" addproperty="context.dir" />
+		<property name="project.dir" value="${project.basedir}/${project.name}" />
+		<copy todir="${project.dir}/conf" overwrite="true">
 			<filterset>
 				<filter token="app.name" value="${project.name}" />
 			</filterset>
-			<fileset dir="${base_security.dir}">
+			<fileset dir="${base_security.dir}/conf">
+			</fileset>
+		</copy>		
+		<copy todir="${project.dir}/${context.dir}" overwrite="true">
+			<filterset>
+				<filter token="app.name" value="${project.name}" />
+			</filterset>
+			<fileset dir="${base_security.dir}/context">
 			</fileset>
 		</copy>		
 	</target>	
 	
-	<target name="update-project"  depends="jar">
-		<mkdir dir="${project.dir}" />
-		<copy todir="${project.dir}" >
-			<fileset dir="${base_app.dir}">
-				<!-- <exclude name="src/**/*" /> -->
+	<target name="copy-webapp">
+		<mkdir dir="${project.context.dir}" />
+		<copy todir="${project.context.dir}">
+			<fileset dir="${base_app.dir}/context">
 				<exclude name="**/WEB-INF/web.xml" />
-				<exclude name="**/WEB-INF/hibernate.properties" />
-				<exclude name="build.xml" />
-				<exclude name="build.properties" />
-				<exclude name="jetty-config.xml" />
-				<exclude name="**/WEB-INF/base_app.application" />
-				<exclude name="**/WEB-INF/base_app_*.properties" />
+				<exclude name="**/WEB-INF/base_app*" />
+				<exclude name="**/META-INF/**/*" if="wst.project" />
 			</fileset>
 		</copy>
-		<copy todir="${project.dir}">
+		<copy tofile="${project.context.dir}/WEB-INF/web.xml"
+			file="${base_app.dir}/context/WEB-INF/web.xml">
 			<filterset>
 				<filter token="app.name" value="${project.name}" />
 			</filterset>
-			<fileset dir="${base_app.dir}">
-				<include name="**/WEB-INF/web.xml" />
-				<include name="**/WEB-INF/hibernate.properties" />
-				<include name="build.xml" />
-				<include name="jetty-config.xml" />
-				<include name="src/messages_*.properties" />
-			</fileset>
+			
 		</copy>		
-		<copy tofile="${project.dir}/context/WEB-INF/${project.name}.application" 
+		<copy tofile="${project.context.dir}/WEB-INF/${project.name}.application" 
 			file="${base_app.dir}/context/WEB-INF/base_app.application" >
 			<filterset>
 				<filter token="app.name" value="${project.name}" />
 			</filterset>
 		</copy>
-		<copy tofile="${project.dir}/context/WEB-INF/${project.name}_en.properties" 
-			file="${base_app.dir}/context/WEB-INF/base_app_en.properties"/>
-		<copy tofile="${project.dir}/context/WEB-INF/${project.name}_pt.properties"
-			file="${base_app.dir}/context/WEB-INF/base_app_pt.properties"/>
-        <copy tofile="${project.dir}/context/WEB-INF/${project.name}_es_AR.properties"
-            file="${base_app.dir}/context/WEB-INF/base_app_es_AR.properties"/>
-		
-        <mkdir dir="${project.dir}/lib" />
-		<copy todir="${project.dir}/lib">
+        <mkdir dir="${project.lib}" />
+		<copy todir="${project.lib}">
 			<fileset dir="${lib.dir}">
+				<exclude name="log4j*" if="wst.project"/>
 			</fileset>
 		</copy>
-		<copy todir="${project.dir}/lib" file="${jar.file}" />
-		<copy todir="${project.dir}/lib" file="${jar-aspects.file}" />
+		<copy todir="${project.lib}" file="${jar.file}" />
+		<copy todir="${project.lib}" file="${jar-aspects.file}" />
+		<copy tofile="${project.context.dir}/WEB-INF/${project.name}_en.properties" 
+			file="${base_app.dir}/context/WEB-INF/base_app_en.properties"/>
+		<copy tofile="${project.context.dir}/WEB-INF/${project.name}_pt.properties"
+			file="${base_app.dir}/context/WEB-INF/base_app_pt.properties"/>
+        <copy tofile="${project.context.dir}/WEB-INF/${project.name}_es_AR.properties"
+            file="${base_app.dir}/context/WEB-INF/base_app_es_AR.properties"/>
+	</target>
+	
+	<target name="copy-base">
+		<mkdir dir="${project.dir}" />
+		<copy todir="${project.dir}">
+			<fileset dir="${base_app.dir}" >
+				<exclude name="conf/**/*" />
+				<exclude name="build.xml" />
+				<exclude name="context/**/*" />
+			</fileset>
+		</copy>		
+		<copy tofile="${project.dir}/build.xml" 
+			file="${base_app.dir}/build.xml" >
+			<filterset>
+				<filter token="app.name" value="${project.name}" />
+			</filterset>
+		</copy>
+	</target>
+	
+	<target name="copy-conf">
+		<mkdir dir="${project.dir}/conf" />
+		<copy todir="${project.dir}/conf">
+			<fileset dir="${base_app.dir}/conf" />
+		</copy>		
+	</target>	
+	
+	<target name="update-project"  depends="jar,copy-base,copy-conf,copy-webapp">
+		<mkdir dir="${project.dir}" />
 		
 	</target>
 	       	

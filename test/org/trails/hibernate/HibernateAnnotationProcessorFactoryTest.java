@@ -10,6 +10,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import org.dom4j.Document;
+import org.dom4j.io.SAXReader;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 import org.jmock.core.Invocation;
@@ -46,19 +48,14 @@ public class HibernateAnnotationProcessorFactoryTest extends MockObjectTestCase
 		inStream.close();
 		outStream.close();
 		
+		// put the output file in temp as well
+		File destFile = new File(tempDir + File.separator + "destConfig.xml");
 		options.put("-AconfigFile=" + configFile.getAbsolutePath(), null);
-		
+		options.put("-AdestFile=" + destFile.getAbsolutePath(), null);
 		
 		Mock apEnvMock = new Mock(AnnotationProcessorEnvironment.class);
 		apEnvMock.expects(atLeastOnce()).method("getOptions").will(returnValue(options));
 		
-		// create the filer so we can get back the new config xml file 
-		// the processor will produce
-		Mock filerMock = new Mock(Filer.class);
-		StringWriter stringWriter = new StringWriter();
-		filerMock.expects(once()).method("createTextFile").withAnyArguments()
-			.will(returnValue(new PrintWriter(stringWriter)));
-		apEnvMock.expects(atLeastOnce()).method("getFiler").will(returnValue((Filer)filerMock.proxy()));
 		// This stuff is way overcomplicated (apt has a crappy API!)
 		// The bottom line here is that the 
 		// class declaration representing the annotated class will be received by a 
@@ -101,12 +98,15 @@ public class HibernateAnnotationProcessorFactoryTest extends MockObjectTestCase
 			
 		processor.process();
 		
-		String xml = stringWriter.toString();
-		assertTrue("has foo mapping", xml.indexOf("mapping class=\"org.trails.Foo\"") > -1);
-		assertTrue("has existing trails mapping", xml.indexOf("mapping class=\"org.trails.security.domain.ShouldBePreserved\"") > -1);
-		assertTrue("existing app entries are removed", xml.indexOf("ShouldBeRemoved") == -1);
+		
+		SAXReader reader = new SAXReader();
+		Document doc = reader.read(destFile);
+		assertNotNull(doc.selectSingleNode("//mapping[@class='org.trails.Foo']"));
+		assertNotNull(doc.selectSingleNode("//mapping[@class='org.trails.security.domain.ShouldBePreserved']"));
+		assertNull(doc.selectSingleNode("//mapping[contains(@class, 'ShouldBeRemoved')]"));
 		
 		configFile.delete();
+		destFile.delete();
 	}
 
 }

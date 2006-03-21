@@ -62,11 +62,11 @@
     </component>  
     
     <component id="upLink" type="LinkSubmit" inherit-informal-parameters="no">
-        <binding name="listener">moveUp</binding>
+        <binding name="listener">listener:moveUp</binding>
         <binding name="defer">false</binding>
     </component>
    <component id="downLink" type="LinkSubmit" inherit-informal-parameters="no">
-        <binding name="listener">moveDown</binding>
+        <binding name="listener">listener:moveDown</binding>
         <binding name="defer">false</binding>
     </component>
        
