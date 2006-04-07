@@ -101,6 +101,9 @@ public class TrailsBlockFinderTest extends MockObjectTestCase
         stringDescriptor.setReadOnly(true);
         ComponentAddress editorAddress = editorService.findBlockAddress(stringDescriptor);
         assertEquals("readOnly", editorAddress.getIdPath());
+        IPropertyDescriptor passwordDescriptor = new TrailsPropertyDescriptor(Foo.class, "password", String.class);
+        editorAddress = editorService.findBlockAddress(passwordDescriptor);
+        assertEquals("password", editorAddress.getIdPath());
     }
 
 }

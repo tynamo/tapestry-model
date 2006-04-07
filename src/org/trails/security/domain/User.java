@@ -69,7 +69,7 @@ public class User implements Serializable
 
     @Column(name = "password", nullable = false)
     @NotNull
-    @PropertyDescriptor(index = 2)
+    @PropertyDescriptor(index = 2, summary=false)
     public String getPassword()
     {
         return password;
@@ -79,7 +79,7 @@ public class User implements Serializable
 
     @NotNull
 //para la validación // for validation porpuoses
-    @PropertyDescriptor(index = 3)
+    @PropertyDescriptor(index = 3, summary=false)
     public String getConfirmPassword()
     {
         return confirmPassword;

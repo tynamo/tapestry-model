@@ -279,7 +279,7 @@
 			</fileset>
 		</copy>
 		<copy tofile="${project.context.dir}/WEB-INF/web.xml"
-			file="${base_app.dir}/context/WEB-INF/web.xml">
+			file="${base_app.dir}/context/WEB-INF/web.xml" overwrite="true">
 			<filterset>
 				<filter token="app.name" value="${project.name}" />
 			</filterset>
@@ -312,7 +312,7 @@
 		<copy todir="${project.dir}">
 			<fileset dir="${base_app.dir}" >
 				<exclude name="conf/**/*" />
-				<exclude name="build.xml" />
+				<exclude name="build.*" />
 				<exclude name="context/**/*" />
 			</fileset>
 		</copy>		
@@ -320,6 +320,12 @@
 			file="${base_app.dir}/build.xml" >
 			<filterset>
 				<filter token="app.name" value="${project.name}" />
+			</filterset>
+		</copy>
+		<copy tofile="${project.dir}/build.properties" 
+			file="${base_app.dir}/build.properties" >
+			<filterset>
+				<filter token="lib.dir" value="${project.lib}" />
 			</filterset>
 		</copy>
 	</target>
@@ -379,7 +385,7 @@
 	</target>
 	
 	<target name="deploy-example" depends="update-example" description="Redeploys the examples/simple application">
-		<ant dir="examples/simple" target="war" inheritall="false"></ant>
+		<ant dir="${basedir}/examples/simple" target="war" inheritall="false"></ant>
 		<!-- Give tomcat the time to deploy... i know it's bad...-->
 		<sleep seconds="120"/>
 	</target>

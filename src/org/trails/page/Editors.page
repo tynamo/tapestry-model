@@ -13,6 +13,13 @@
         <binding name="value">model[descriptor.name]</binding>
         <binding name="maxlength">descriptor.length</binding>
     </component> 
+    <component id="passwordField" type="TextField" inherit-informal-parameters="no">
+        <binding name="displayName">descriptor.displayName</binding>
+        <binding name="validator">ognl:validatorTranslatorService.getValidator(descriptor)</binding>
+        <binding name="value">model[descriptor.name]</binding>
+        <binding name="maxlength">descriptor.length</binding>
+        <binding name="hidden">true</binding>
+    </component> 
    <component id="textArea" type="TextArea" inherit-informal-parameters="no">
         <binding name="displayName">descriptor.displayName</binding>
         <binding name="value">model[descriptor.name]</binding>

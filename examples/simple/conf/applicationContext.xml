@@ -269,6 +269,13 @@
 				</bean>
 				</entry>
 				<entry>
+				<key><value>name.toLowerCase().endsWith('password')</value></key>
+				<bean class="org.apache.tapestry.util.ComponentAddress">
+					<constructor-arg index="0"><value>trails:Editors</value></constructor-arg>
+					<constructor-arg index="1"><value>passwordEditor</value></constructor-arg>
+				</bean>
+				</entry>
+				<entry>
 				<key><value>string and !large and !identifier</value></key>
 				<bean class="org.apache.tapestry.util.ComponentAddress">
 					<constructor-arg index="0"><value>trails:Editors</value></constructor-arg>
