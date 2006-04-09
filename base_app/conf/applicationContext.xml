@@ -206,10 +206,10 @@
 		<property name="editorMap">
 			<map>
 				<entry>
-				<key><value>objectReference</value></key>
+				<key><value>string</value></key>
 				<bean class="org.apache.tapestry.util.ComponentAddress">
 					<constructor-arg index="0"><value>trails:SearchBlocks</value></constructor-arg>
-					<constructor-arg index="1"><value>associationSearch</value></constructor-arg>
+					<constructor-arg index="1"><value>stringSearch</value></constructor-arg>
 				</bean>
 				</entry>	
 				<entry>
