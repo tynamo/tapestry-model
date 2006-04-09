@@ -14,5 +14,9 @@ public class SearchTest extends FunctionalTest
 		getInputByName(searchApplesPage, "Color").setValueAttribute("Blue");
 		listApplesPage = clickButton(searchApplesPage, "Search");
 		assertXPathPresent(listApplesPage, "//td[text() = 'Blue']");
+		searchApplesPage = clickLinkOnPage(listApplesPage, "Search Apple");
+		getInputByName(searchApplesPage, "Color").setValueAttribute("lu");
+		listApplesPage = clickButton(searchApplesPage, "Search");
+		assertXPathPresent(listApplesPage, "//td[text() = 'Blue']");
 	}
 }

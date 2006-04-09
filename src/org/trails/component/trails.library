@@ -23,6 +23,7 @@
     <component-type type="NumberSearchField" specification-path="search/NumberSearchField.jwc"/>
     <component-type type="DateSearchField" specification-path="search/DateSearchField.jwc"/>
     <component-type type="AssociationSearchField" specification-path="search/AssociationSearchField.jwc"/>
+    <component-type type="StringSearchField" specification-path="search/StringSearchField.jwc"/>
 
     <component-type type="SearchForm" specification-path="search/SearchForm.jwc"/>
     <page name="Editors" specification-path="/org/trails/page/Editors.page" />
