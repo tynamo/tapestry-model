@@ -81,7 +81,10 @@
 		<delete dir="${example.basedir}/${example.name}/deploy" />
 		<delete dir="${junit.report.dir}" />
 		<delete >
-			<fileset dir="${example.basedir}" includes="**/lib/*,**/WEB-INF/classes/**/*">
+			<fileset dir="${example.basedir}">
+				<include name="**/lib/*" />
+				<include name="**/WEB-INF/classes/**/*" />
+				<include name="build/**/*" />
 			</fileset>
 		</delete>
 	</target>
