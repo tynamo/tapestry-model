@@ -37,7 +37,7 @@ public class TreeTest extends FunctionalTest
         assertTrue("2 is selected", option.isSelected());
         
         // now delete one
-        listTreeNodesPage = clickButton(editTreeNodePage, "Remove");
+        listTreeNodesPage = clickButton(editTreeNodePage, "Delete");
         assertNull(new HtmlUnitXPath("//td[text() = 'one']").selectSingleNode(listTreeNodesPage));
     }
 }
