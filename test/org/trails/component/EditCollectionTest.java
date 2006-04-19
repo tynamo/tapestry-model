@@ -32,6 +32,8 @@ import org.trails.descriptor.IdentifierDescriptor;
 import org.trails.descriptor.TrailsClassDescriptor;
 import org.trails.page.EditPage;
 import org.trails.page.EditorBlockPage;
+import org.trails.page.PageResolver;
+import org.trails.page.TrailsPage.PageType;
 import org.trails.test.Baz;
 import org.trails.test.Bing;
 import org.trails.test.Foo;
@@ -57,6 +59,7 @@ public class EditCollectionTest extends ComponentTest
     EditPage addPage;
     Mock cycleMock = new Mock(IRequestCycle.class);
     Mock pageMock = new Mock(IPage.class);
+    Mock pageResolverMock = new Mock(PageResolver.class);
     
     public static final String EDIT_PAGE_NAME = "fooEditPage";
     
@@ -65,7 +68,8 @@ public class EditCollectionTest extends ComponentTest
         editCollection = (EditCollection)creator.newInstance(EditCollection.class,
             new Object[] {
                 "descriptorService", descriptorServiceMock.proxy(), 
-                "callbackStack", callbackStack
+                "callbackStack", callbackStack,
+                "pageResolver", pageResolverMock.proxy()
             });
         editPage = buildTrailsPage(EditPage.class);
         
@@ -109,6 +113,9 @@ public class EditCollectionTest extends ComponentTest
     public void testAdd() throws Exception
     {
     	Mock cycleMock = buildCycleMock("Baz");
+    	pageResolverMock.expects(atLeastOnce()).method("resolvePage").with(
+    		isA(IRequestCycle.class), eq(Baz.class.getName()), eq(PageType.EDIT))
+    		.will(returnValue(editPage));
     	cycleMock.expects(atLeastOnce()).method("getPage").will(returnValue(editPage));
         pageMock.expects(atLeastOnce()).method("getRequestCycle").will(returnValue(cycleMock.proxy()));
     	buildCollectionDescriptor("bazzes", Baz.class);
@@ -169,6 +176,10 @@ public class EditCollectionTest extends ComponentTest
     	cycleMock.expects(atLeastOnce()).method("getPage").will(returnValue(editPage));
         pageMock.expects(atLeastOnce()).method("getRequestCycle").will(returnValue(cycleMock.proxy()));
 
+    	pageResolverMock.expects(atLeastOnce()).method("resolvePage").with(
+        		isA(IRequestCycle.class), eq(Bing.class.getName()), eq(PageType.EDIT))
+        		.will(returnValue(editPage));
+ 
         buildCollectionDescriptor("bings", Bing.class);
         editCollection.showAddPage((IRequestCycle) cycleMock.proxy());
         assertEquals("right ognl", "addBing", editCollection.findExpression("add"));

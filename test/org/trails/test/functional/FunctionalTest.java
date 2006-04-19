@@ -96,6 +96,11 @@ public class FunctionalTest extends TestCase
         
     }
 
+    protected void assertXPathNotPresent(HtmlPage page, String xpath) throws Exception
+    {
+        assertNull(new HtmlUnitXPath(xpath).selectSingleNode(page));
+    }
+    
     protected HtmlTextArea getTextAreaByName(HtmlPage page, String name) throws JaxenException
     {
         HtmlTextArea textArea = (HtmlTextArea) 

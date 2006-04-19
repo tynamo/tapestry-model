@@ -23,6 +23,7 @@ import ognl.OgnlException;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.annotations.InjectObject;
 import org.apache.tapestry.annotations.InjectState;
 import org.apache.tapestry.contrib.palette.SortMode;
 import org.apache.tapestry.form.IPropertySelectionModel;
@@ -35,6 +36,8 @@ import org.trails.descriptor.DescriptorService;
 import org.trails.descriptor.IClassDescriptor;
 import org.trails.descriptor.IPropertyDescriptor;
 import org.trails.page.EditPage;
+import org.trails.page.PageResolver;
+import org.trails.page.TrailsPage.PageType;
 import org.trails.persistence.PersistenceService;
 
 
@@ -106,14 +109,17 @@ public abstract class EditCollection extends TrailsComponent
         return (CollectionDescriptor) getPropertyDescriptor();
     }
 
+	@InjectObject("spring:pageResolver")
+	public abstract PageResolver getPageResolver();
+	
     public void showAddPage(IRequestCycle cycle)
     {
         getCallbackStack().push(buildCallback());
 
         //TODO: refactor to use page resolver
-        EditPage editPage = (EditPage) Utils.findPage(cycle,
-                Utils.unqualify(getCollectionDescriptor().getElementType()
-                                    .getName() + "Edit"), "Edit");
+        EditPage editPage = (EditPage)getPageResolver().resolvePage(cycle,
+        		getCollectionDescriptor().getElementType().getName(),
+        		PageType.EDIT);
         try
         {
             // we need to do some indirection to avoid a StaleLink

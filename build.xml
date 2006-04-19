@@ -12,6 +12,7 @@
 	<available file="${ant.home}/lib/ant-apt.jar" property="apt.installed" />
 	<property name="jdk.home" value="${env.JAVA_HOME}" />
 	<property name="example.name" value="simple" />
+	<property name="security-example.name" value="security" />
 	<property name="saxon.jar" value="c:/java/saxon/saxon8.jar" />
 	<property name="junit.report.dir" value="junit-reports" />
 	<property name="example.basedir" value="${basedir}/examples/" />
@@ -55,11 +56,11 @@
 
 	<target name="all" depends="clean,junit,deploy-example,functional-tests" />
 	
-	<target name="dist" depends="clean">
+	<target name="dist" depends="clean,jar">
 		<delete file="${dist.file}" />
 		<zip destfile="${dist.file}">
 			<fileset dir="${basedir}">
-				<exclude name="${compile.dir}/**/*"/>
+				<exclude name="build/**/*"/>
 				<exclude name="www/**/*" />
 				<exclude name="bin/**/*" />
 				<exclude name="examples/**/*" />
@@ -84,7 +85,7 @@
 			<fileset dir="${example.basedir}">
 				<include name="**/lib/*" />
 				<include name="**/WEB-INF/classes/**/*" />
-				<include name="build/**/*" />
+				<include name="**/build/**/*" />
 			</fileset>
 		</delete>
 	</target>
@@ -182,7 +183,23 @@
 			<param name="project.context.dir" value="${example.project.dir}/context" />
 		</antcall>
 	</target>
-	
+
+	<target name="update-security-example">
+		<property name="security-example.project.dir" value="${example.basedir}/${security-example.name}" />
+		<antcall target="update-project">
+			<param name="project.dir" value="${security-example.project.dir}" />
+			<param name="project.name" value="${security-example.name}" />
+			<param name="project.lib" value="lib" />
+			<param name="project.context.dir" value="${security-example.project.dir}/context" />
+		</antcall>
+		<antcall target="add-security">
+			<param name="project.dir" value="${security-example.project.dir}" />
+			<param name="project.name" value="${security-example.name}" />
+			<param name="project.lib" value="lib" />
+			<param name="project.context.dir" value="${security-example.project.dir}/context" />
+		</antcall>		
+	</target>
+		
 	<target name="install-apt" unless="apt.installed">
 		<copy todir="${ant.home}/lib" file="${lib.dir}/ant-apt.jar" />
 	</target>
@@ -279,6 +296,7 @@
 				<exclude name="**/WEB-INF/web.xml" />
 				<exclude name="**/WEB-INF/base_app*" />
 				<exclude name="**/META-INF/**/*" if="wst.project" />
+				<exclude name="fckeditor/**/*" unless="include.fckeditor" />
 			</fileset>
 		</copy>
 		<copy tofile="${project.context.dir}/WEB-INF/web.xml"
