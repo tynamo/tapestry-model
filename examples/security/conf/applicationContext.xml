@@ -1,0 +1,346 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+	<!-- ========================= GENERAL DEFINITIONS ========================= -->
+	<bean id="trailsInterceptor" class="org.trails.hibernate.TrailsInterceptor" />
+
+	<bean id="hibernateProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+		<property name="location"><value>classpath:hibernate.properties</value></property>
+	</bean>
+	
+	<!-- <bean id="productService" class="org.blah.service.ProductService" /> -->
+	<!-- Message source for this context, loaded from localized "messages_xx" files -->
+	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basename"><value>messages</value></property>										
+	</bean>
+
+	<bean id="trailsMessageSource" class="org.trails.i18n.DefaultTrailsResourceBundleMessageSource">
+		<property name="messageSource"><ref local="messageSource"/></property>
+	</bean>
+
+
+	<!-- ========================= RESOURCE DEFINITIONS ========================= -->
+	
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+        <property name="driverClassName" value="@hibernate.connection.driver_class@"/>
+        <property name="url" value="@hibernate.connection.url@"/>
+        <property name="username" value="@hibernate.connection.username@"/>
+        <property name="password" value="@hibernate.connection.password@"/>
+    </bean>
+<bean id="sessionFactory"
+       class="org.springframework.orm.hibernate3.LocalSessionFactoryBean" autowire="byName">
+<!--  
+  <property name="mappingDirectoryLocations">
+    <list>
+      <value>classpath:</value>
+    </list>
+  </property>-->
+
+  <property name="configLocation"><value>classpath:hibernate.cfg.xml</value></property> 
+  	<property name="configurationClass">
+   		<value>org.hibernate.cfg.AnnotationConfiguration</value>
+	</property> 
+    <property name="entityInterceptor">
+  		<ref local="trailsInterceptor" />
+    </property>
+    <property name="hibernateProperties">
+  	  <ref local="hibernateProperties"/>
+  <!-- 
+    <props>
+      <prop key="hibernate.dialect">
+        ${hibernate.dialect}
+      </prop>
+      <prop key="hibernate.show_sql">
+        true
+      </prop>
+      <prop key="hibernate.hbm2ddl.auto">create-drop</prop>
+      <prop key="hibernate.connection.driver_class">${jdbc.driver}</prop>
+      <prop key="hibernate.connection.url">${jdbc.url}</prop>
+      <prop key="hibernate.connection.username">${jdbc.userid}</prop>
+      <prop key="hibernate.connection.password">${jdbc.password}</prop>
+      
+    </props>
+    -->
+  </property>
+</bean>  
+
+	<bean id="autoproxy" class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"
+          autowire="autodetect"/>
+    <bean id="transactionInterceptor" class="org.springframework.transaction.interceptor.TransactionInterceptor"
+          autowire="byName"/>
+    <bean id="transactionAdvisor" class="org.springframework.transaction.interceptor.TransactionAttributeSourceAdvisor"
+          autowire="autodetect"/>
+    <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager"
+          autowire="autodetect"/>
+    <bean id="transactionAttributeSource"
+          class="org.springframework.transaction.annotation.AnnotationTransactionAttributeSource"/>
+	
+	<bean id="persistenceService" class="org.trails.hibernate.HibernatePersistenceService" autowire="autodetect"/>
+	
+	<bean id="squeezableSqueezer" class="org.trails.io.SqueezableSqueezeAdaptor" >
+		<property name="descriptorService"><ref local="descriptorService" /></property>
+		<property name="persistenceService"><ref local="persistenceService" /></property>
+	</bean>
+	
+	<bean id="descriptorService" class="org.trails.descriptor.TrailsDescriptorService" init-method="init">
+		<property name="types">
+			<bean id="persistenceService.allTypes" class="org.springframework.beans.factory.config.PropertyPathFactoryBean"/>
+		</property>
+		<property name="descriptorFactory"><ref local="descriptorFactory" /></property>
+		<property name="decorators">
+			<list>
+				<ref local="hibernateDescriptorDecorator" />
+				<bean name="annotationDecorator" class="org.trails.descriptor.annotation.AnnotationDecorator" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="descriptorFactory" class="org.trails.descriptor.ReflectionDescriptorFactory">
+		<property name="methodExcludes">
+			<list>
+				<value>shouldExclude</value>
+				<value>set.*</value>
+				<value>get.*</value>
+				<value>is.*</value>
+				<value>equals</value>
+				<value>toString</value>
+			</list>
+		</property>
+		<property name="propertyExcludes">
+			<list>
+				<value>exclude.*</value>
+				<value>class</value>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="hibernateDescriptorDecorator" class="org.trails.hibernate.HibernateDescriptorDecorator" singleton="true">
+		<property name="localSessionFactoryBean"> <ref bean="&amp;sessionFactory" /></property>
+		<property name="descriptorFactory"><ref local="descriptorFactory" /></property>
+	</bean>
+	
+	
+	<!-- security service bean -->
+	<bean id="securityService" class="org.trails.security.TrailsSecurityService"/>
+	
+		<!-- security startup beans. lazy-init is true since this is used rarely. -->
+	<bean id="roleUser" class="org.trails.security.domain.Role" lazy-init="true">
+		<property name="name"><value>ROLE_USER</value></property>
+		<property name="description"><value>User role</value></property>
+	</bean>
+	
+	<bean id="roleManager" class="org.trails.security.domain.Role" lazy-init="true">
+		<property name="name"><value>ROLE_MANAGER</value></property>
+		<property name="description"><value>Manager role</value></property>
+	</bean>
+
+	<bean id="user" class="org.trails.security.domain.User" lazy-init="true">
+		<property name="username"><value>user</value></property>
+		<property name="password"><value>user</value></property> <!-- default password -->
+		<property name="confirmPassword"><value>user</value></property> <!-- default password -->
+		<property name="firstName"><value>Foo</value></property>
+		<property name="lastName"><value>Bar</value></property>
+		<property name="roles">
+			<list>
+				<ref bean="roleUser"/>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="admin" class="org.trails.security.domain.User" lazy-init="true">
+		<property name="username"><value>admin</value></property>
+		<property name="password"><value>admin</value></property> <!-- default password -->
+		<property name="confirmPassword"><value>admin</value></property> <!-- default password -->
+		<property name="firstName"><value>Admin</value></property>
+		<property name="lastName"><value>Admin</value></property>
+		<property name="roles">
+			<list>
+				<ref bean="roleUser"/>
+				<ref bean="roleManager"/>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="securityStartup" class="org.trails.security.SecurityStartup" lazy-init="true">
+		<property name="persistenceService"><ref local="persistenceService" /></property>		
+		<property name="defaultUsers">
+			<list>
+				<ref local="user"/>
+				<ref local="admin"/>
+			</list>
+		</property>
+		<property name="defaultRoles">
+			<list>
+				<ref local="roleManager"/>
+				<ref local="roleUser"/>
+			</list>
+		</property>
+	</bean>
+
+	<!-- end of security startup beans -->
+	
+	<bean id="validateUniqueAspect" class="org.trails.validation.ValidateUniqueAspect" factory-method="aspectOf">
+		<property name="descriptorService"><ref local="descriptorService" /></property>
+		<property name="persistenceService"><ref local="persistenceService" /></property>
+	</bean>
+	
+	<bean id="descriptorInternationalizationAspect" class="org.trails.i18n.DescriptorInternationalization" factory-method="aspectOf">
+		<property name="resourceBundleMessageSource"><ref local="trailsMessageSource"/></property>
+	</bean>
+	
+	<bean id="descriptorSecurity" class="org.trails.security.DescriptorSecurity" factory-method="aspectOf">
+		<property name="securityService"><ref bean="securityService"/></property>
+	</bean>
+	
+	<bean id="pageResolver" class="org.trails.page.DefaultPageResolver" />
+
+	<bean id="searchBlockFinder" class="org.trails.descriptor.BaseBlockFinder">
+		<property name="defaultBlockAddress">
+				<bean class="org.apache.tapestry.util.ComponentAddress">
+					<constructor-arg index="0"><value>trails:SearchBlocks</value></constructor-arg>
+					<constructor-arg index="1"><value>simpleSearch</value></constructor-arg>
+				</bean>
+		</property>			
+		<property name="editorMap">
+			<map>
+				<entry>
+				<key><value>string</value></key>
+				<bean class="org.apache.tapestry.util.ComponentAddress">
+					<constructor-arg index="0"><value>trails:SearchBlocks</value></constructor-arg>
+					<constructor-arg index="1"><value>stringSearch</value></constructor-arg>
+				</bean>
+				</entry>	
+				<entry>
+				<key><value>objectReference</value></key>
+				<bean class="org.apache.tapestry.util.ComponentAddress">
+					<constructor-arg index="0"><value>trails:SearchBlocks</value></constructor-arg>
+					<constructor-arg index="1"><value>associationSearch</value></constructor-arg>
+				</bean>
+				</entry>	
+				<entry>
+				<key><value>numeric</value></key>
+				<bean class="org.apache.tapestry.util.ComponentAddress">
+					<constructor-arg index="0"><value>trails:SearchBlocks</value></constructor-arg>
+					<constructor-arg index="1"><value>numberSearch</value></constructor-arg>
+				</bean>
+				</entry>	
+				<entry>
+				<key><value>date</value></key>
+				<bean class="org.apache.tapestry.util.ComponentAddress">
+					<constructor-arg index="0"><value>trails:SearchBlocks</value></constructor-arg>
+					<constructor-arg index="1"><value>dateSearch</value></constructor-arg>
+				</bean>
+				</entry>	
+			</map>
+		</property>
+	</bean>
+	
+	<bean id="editorService" class="org.trails.descriptor.EditorBlockFinder">
+		<property name="defaultBlockAddress">
+				<bean class="org.apache.tapestry.util.ComponentAddress">
+					<constructor-arg index="0"><value>trails:Editors</value></constructor-arg>
+					<constructor-arg index="1"><value>stringEditor</value></constructor-arg>
+				</bean>
+		</property>			
+		<property name="editorMap">
+			
+			<map>
+				<entry>
+				<key><value>hidden</value></key>
+				<bean class="org.apache.tapestry.util.ComponentAddress">
+					<constructor-arg index="0"><value>trails:Editors</value></constructor-arg>
+					<constructor-arg index="1"><value>hidden</value></constructor-arg>
+				</bean>
+				</entry>
+				<entry>
+				<key><value>readOnly</value></key>
+				<bean class="org.apache.tapestry.util.ComponentAddress">
+					<constructor-arg index="0"><value>trails:Editors</value></constructor-arg>
+					<constructor-arg index="1"><value>readOnly</value></constructor-arg>
+				</bean>
+				</entry>
+				<entry>
+				<key><value>richText</value></key>
+				<bean class="org.apache.tapestry.util.ComponentAddress">
+					<constructor-arg index="0"><value>trails:Editors</value></constructor-arg>
+					<constructor-arg index="1"><value>FCKEditor</value></constructor-arg>
+				</bean>
+				</entry>
+				<entry>
+				<key><value>name.toLowerCase().endsWith('password')</value></key>
+				<bean class="org.apache.tapestry.util.ComponentAddress">
+					<constructor-arg index="0"><value>trails:Editors</value></constructor-arg>
+					<constructor-arg index="1"><value>passwordEditor</value></constructor-arg>
+				</bean>
+				</entry>
+				<entry>
+				<key><value>string and !large and !identifier</value></key>
+				<bean class="org.apache.tapestry.util.ComponentAddress">
+					<constructor-arg index="0"><value>trails:Editors</value></constructor-arg>
+					<constructor-arg index="1"><value>stringEditor</value></constructor-arg>
+				</bean>
+				</entry>
+				<entry>
+				<key><value>string and large and !identifier</value></key>
+				<bean class="org.apache.tapestry.util.ComponentAddress">
+					<constructor-arg index="0"><value>trails:Editors</value></constructor-arg>
+					<constructor-arg index="1"><value>textAreaEditor</value></constructor-arg>
+				</bean>
+				</entry>
+				<entry>
+				<key><value>date</value></key>
+				<bean class="org.apache.tapestry.util.ComponentAddress">
+					<constructor-arg index="0"><value>trails:Editors</value></constructor-arg>
+					<constructor-arg index="1"><value>dateEditor</value></constructor-arg>
+				</bean>
+				</entry>
+				<entry>
+				<key><value>numeric and !identifier</value></key>
+				<bean class="org.apache.tapestry.util.ComponentAddress">
+					<constructor-arg index="0"><value>trails:Editors</value></constructor-arg>
+					<constructor-arg index="1"><value>numberEditor</value></constructor-arg>
+				</bean>
+				</entry>
+				<entry>
+				<key><value>identifier</value></key>
+				<bean class="org.apache.tapestry.util.ComponentAddress">
+					<constructor-arg index="0"><value>trails:Editors</value></constructor-arg>
+					<constructor-arg index="1"><value>identifierEditor</value></constructor-arg>
+				</bean>
+				</entry>
+				<entry>
+				<key><value>boolean</value></key>
+				<bean class="org.apache.tapestry.util.ComponentAddress">
+					<constructor-arg index="0"><value>trails:Editors</value></constructor-arg>
+					<constructor-arg index="1"><value>booleanEditor</value></constructor-arg>
+				</bean>
+				</entry>
+				<entry>
+				<key><value>objectReference</value></key>
+				<bean class="org.apache.tapestry.util.ComponentAddress">
+					<constructor-arg index="0"><value>trails:Editors</value></constructor-arg>
+					<constructor-arg index="1"><value>referenceEditor</value></constructor-arg>
+				</bean>
+				</entry>
+				<entry>
+				<key><value>collection</value></key>
+				<bean class="org.apache.tapestry.util.ComponentAddress">
+					<constructor-arg index="0"><value>trails:Editors</value></constructor-arg>
+					<constructor-arg index="1"><value>collectionEditor</value></constructor-arg>
+				</bean>
+				</entry>
+				<entry>
+				<key><value>embedded</value></key>
+				<bean class="org.apache.tapestry.util.ComponentAddress">
+					<constructor-arg index="0"><value>trails:Editors</value></constructor-arg>
+					<constructor-arg index="1"><value>embedded</value></constructor-arg>
+				</bean>
+				</entry>
+			</map>
+		</property>
+	</bean>
+	
+	<bean id="validatorTranslatorService" class="org.trails.validation.ValidatorTranslatorService" />
+</beans>
