@@ -2,12 +2,6 @@ package org.trails.test.functional;
 
 import java.io.IOException;
 
-import junit.framework.JUnit4TestAdapter;
-import junit.framework.Test;
-
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-
 import com.gargoylesoftware.htmlunit.html.HtmlForm;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 

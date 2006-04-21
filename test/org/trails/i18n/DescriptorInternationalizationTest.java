@@ -90,5 +90,13 @@ public class DescriptorInternationalizationTest extends TestCase {
 		displayName = classDescriptor.getPluralDisplayName();
 		assertEquals(displayName, "i18n ptFoo Plural");
 	}
+
+	@Override
+	protected void tearDown() throws Exception
+	{
+		TrailsApplicationServlet.setCurrentLocale(null);
+	}
+	
+	
 	
 }

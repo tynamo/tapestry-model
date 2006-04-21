@@ -55,16 +55,9 @@ public class HibernatePersistenceServiceTest extends MockObjectTestCase
     public void setUp() throws Exception
     {
         appContext = new ClassPathXmlApplicationContext(
-                "applicationContext-test.xml");
+        		"applicationContext-test.xml");
         persistenceService = (PersistenceService) appContext.getBean(
                 "persistenceService");
-        psvcWithMockTemplate = new HibernatePersistenceService();
-
-        template = (HibernateTemplate) templateMock.proxy();
-        Field templateField = HibernateDaoSupport.class.getDeclaredField(
-                "hibernateTemplate");
-        templateField.setAccessible(true);
-        templateField.set(psvcWithMockTemplate, template);
     }
 
     public void testGetAllTypes()

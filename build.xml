@@ -63,7 +63,7 @@
 				<exclude name="build/**/*"/>
 				<exclude name="www/**/*" />
 				<exclude name="bin/**/*" />
-				<exclude name="examples/**/*" />
+				<!-- <exclude name="examples/**/*" /> -->
 			</fileset>
 			
 		</zip>
@@ -86,6 +86,7 @@
 				<include name="**/lib/*" />
 				<include name="**/WEB-INF/classes/**/*" />
 				<include name="**/build/**/*" />
+				<include name="**/deploy/*" />
 			</fileset>
 		</delete>
 	</target>
@@ -152,6 +153,7 @@
 		<iajc source="1.5" srcdir="${src-test.dir}" destdir="${compile.dir}" aspectpath="${jar-aspects.file}" debug="on">
 			<classpath>
 				<path refid="class.path"></path>
+				<fileset dir="${basedir}/support"></fileset>
 				<pathelement location="${compile.dir}"/>
 			</classpath>
 		</iajc>
@@ -419,20 +421,26 @@
 			showoutput="true"
 			haltonfailure="true" 
 			haltonerror="true"
-			printsummary="true">
+			printsummary="true" 
+			dir="${basedir}">
 			<classpath>
 				<path refid="class.path"></path>
 				<pathelement location="${compile.dir}"/>
+				<fileset dir="${basedir}/support"></fileset>
+
 			</classpath>
 			<batchtest filtertrace="off" todir="${junit.report.dir}">
 				<formatter type="xml" />
 				<fileset dir="${src-test.dir}">
-					<include name="**/functional/*"/>
+					<include name="**/functional/*Test.java"/>
 					<exclude name="**/FunctionalTest.java" />
+					<exclude name="**/SecurityTest.java" />
 				</fileset>
 			</batchtest>
 		</junit>
 	</target>
+	
+	
 	
 	<target name="build-component-docs" description="Produces component documentation">
 		
