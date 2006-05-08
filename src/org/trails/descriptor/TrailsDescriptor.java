@@ -15,6 +15,8 @@ package org.trails.descriptor;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.Hashtable;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang.StringUtils;
@@ -38,13 +40,13 @@ public class TrailsDescriptor implements IDescriptor, Serializable
     {
         copyFrom(descriptor);
     }
-    
+
     public TrailsDescriptor(Class type)
     {
         this.type = type;
     }
-    
-    
+
+
     @Override
     public Object clone()
     {
@@ -124,16 +126,52 @@ public class TrailsDescriptor implements IDescriptor, Serializable
         this.type = type;
     }
 
-	public boolean supportsExtension(Class extensionType)
-	{
-		// TODO Auto-generated method stub
-		return false;
-	}
+    Map<String, IDescriptorExtension> extensions = new Hashtable<String, IDescriptorExtension>();
 
-	public <T> T getExtension(Class<T> extenstionType)
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
+    public boolean supportsExtension(String extensionType)
+    {
+        return getExtension(extensionType) != null;
+    }
 
+    public IDescriptorExtension getExtension(String extentionType)
+    {
+        return extensions.get(extentionType);
+    }
+
+    public void addExtension(String extenstionType, IDescriptorExtension extension)
+    {
+        extensions.put(extenstionType, extension);
+    }
+
+    public void removeExtension(String extensionType)
+    {
+        extensions.remove(extensionType);
+    }
+
+
+    public <E extends IDescriptorExtension> E getExtension(Class<E> extensionType)
+    {
+        return (E) extensions.get(extensionType.getName());
+    }
+
+
+    /**
+     * This getter method is here just to allow clone(), copyFrom() and
+     * BeanUtils.copyProperties(this, descriptor);
+     * to work correctly
+     */
+    public Map<String, IDescriptorExtension> getExtensions()
+    {
+        return extensions;
+    }
+
+    /**
+     * This setter method is here just to allow clone(), copyFrom() and
+     * BeanUtils.copyProperties(this, descriptor);
+     * to work correctly
+     */
+    public void setExtensions(Map<String, IDescriptorExtension> extensions)
+    {
+        this.extensions = extensions;
+    }
 }

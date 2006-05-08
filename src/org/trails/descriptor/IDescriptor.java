@@ -1,6 +1,6 @@
 package org.trails.descriptor;
 
-public interface IDescriptor extends Cloneable
+public interface IDescriptor extends Cloneable, IExtensible
 {
     /**
      * @return
@@ -18,7 +18,4 @@ public interface IDescriptor extends Cloneable
     
     public Object clone();
     
-    public boolean supportsExtension(Class extensionType);
-    
-    public <T> T getExtension(Class<T> extenstionType);
 }
