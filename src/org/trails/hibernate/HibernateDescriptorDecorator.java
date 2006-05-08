@@ -44,6 +44,7 @@ import org.trails.descriptor.IClassDescriptor;
 import org.trails.descriptor.IPropertyDescriptor;
 import org.trails.descriptor.IdentifierDescriptor;
 import org.trails.descriptor.ObjectReferenceDescriptor;
+import org.trails.descriptor.EnumReferenceDescriptor;
 
 
 /**
@@ -56,13 +57,13 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 {
     private LocalSessionFactoryBean localSessionFactoryBean;
     private List types;
-    
+
     private DescriptorFactory descriptorFactory;
-    
+
     private HashMap descriptors = new HashMap();
-    
+
     private int largeColumnLength = 100;
-    
+
     private DescriptorService descriptorService;
 
     /**
@@ -75,7 +76,7 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
     protected List sortPropertyDescriptors(Class type, List propertyDescriptors)
     {
         ArrayList sortedPropertyDescriptors = new ArrayList();
-        
+
         try
         {
             sortedPropertyDescriptors.add(Ognl.getValue("#this.{? identifier == true}[0]", propertyDescriptors));
@@ -109,7 +110,7 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
         }
         else throw new MetadataNotFoundException("Failed to find metadata.");
     }
-    
+
     protected IPropertyDescriptor decoratePropertyDescriptor(Class type, Property mappingProperty, IPropertyDescriptor descriptor)
     {
         descriptor.setLength(findColumnLength(mappingProperty));
@@ -118,7 +119,7 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
         {
             descriptor.setRequired(true);
         }
-        
+
         if (!mappingProperty.isInsertable() &&
             !mappingProperty.isUpdateable())
         {
@@ -126,7 +127,7 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
         }
         if (mappingProperty.getType() instanceof ComponentType)
         {
-        	return buildEmbeddedDescriptor(type, mappingProperty, descriptor);
+            return buildEmbeddedDescriptor(type, mappingProperty, descriptor);
         }
         Type hibernateType = mappingProperty.getType();
         if (Collection.class.isAssignableFrom(descriptor.getPropertyType()))
@@ -136,34 +137,37 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
         {
             return buildReferenceDescriptor(type, descriptor,
                 (AssociationType) hibernateType);
-        }    	
-        
+        } else if (hibernateType.getReturnedClass().isEnum())
+        {
+            descriptor.addExtension(EnumReferenceDescriptor.class.getName(), new EnumReferenceDescriptor(hibernateType.getReturnedClass()));
+        }
+
         return descriptor;
     }
-    
-    private EmbeddedDescriptor buildEmbeddedDescriptor(Class type, Property mappingProperty, IPropertyDescriptor descriptor)
-	{
-		Component componentMapping = (Component)mappingProperty.getValue();
-		IClassDescriptor baseDescriptor = getDescriptorFactory().buildClassDescriptor(descriptor.getPropertyType());
-		// build from base descriptor
-		EmbeddedDescriptor embeddedDescriptor = new EmbeddedDescriptor(type, baseDescriptor);
-		// and copy from property descriptor
-		embeddedDescriptor.copyFrom(descriptor);
-		ArrayList decoratedProperties = new ArrayList();
-		// go thru each property and decorate it with Hibernate info
-		for (Iterator iter = embeddedDescriptor.getPropertyDescriptors().iterator(); iter.hasNext();)
-		{
-			IPropertyDescriptor propertyDescriptor = (IPropertyDescriptor)iter.next();
-			decoratedProperties.add(decoratePropertyDescriptor(
-					embeddedDescriptor.getBeanType(),
-					componentMapping.getProperty(propertyDescriptor.getName()),
-					propertyDescriptor));
-		}
-		embeddedDescriptor.setPropertyDescriptors(decoratedProperties);
-		return embeddedDescriptor;
-	}
 
-	/**
+    private EmbeddedDescriptor buildEmbeddedDescriptor(Class type, Property mappingProperty, IPropertyDescriptor descriptor)
+    {
+        Component componentMapping = (Component)mappingProperty.getValue();
+        IClassDescriptor baseDescriptor = getDescriptorFactory().buildClassDescriptor(descriptor.getPropertyType());
+        // build from base descriptor
+        EmbeddedDescriptor embeddedDescriptor = new EmbeddedDescriptor(type, baseDescriptor);
+        // and copy from property descriptor
+        embeddedDescriptor.copyFrom(descriptor);
+        ArrayList decoratedProperties = new ArrayList();
+        // go thru each property and decorate it with Hibernate info
+        for (Iterator iter = embeddedDescriptor.getPropertyDescriptors().iterator(); iter.hasNext();)
+        {
+            IPropertyDescriptor propertyDescriptor = (IPropertyDescriptor)iter.next();
+            decoratedProperties.add(decoratePropertyDescriptor(
+                    embeddedDescriptor.getBeanType(),
+                    componentMapping.getProperty(propertyDescriptor.getName()),
+                    propertyDescriptor));
+        }
+        embeddedDescriptor.setPropertyDescriptors(decoratedProperties);
+        return embeddedDescriptor;
+    }
+
+    /**
      * @param type The class of the descriptor containing this property
      * @param descriptor the descriptor to decorate
      */
@@ -184,7 +188,7 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
             }
             Property mappingProperty = getMapping(type).getProperty(descriptor.getName());
             return decoratePropertyDescriptor(type, mappingProperty, descriptor);
-            
+
         }catch (HibernateException e)
         {
             throw new TrailsRuntimeException(e);
@@ -286,7 +290,7 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
             collectionDescriptor.setChildRelationship(collectionMapping.hasOrphanDelete());
             CollectionMetadata collectionMetaData = getSessionFactory()
                                                         .getCollectionMetadata(collectionMapping.getRole());
-                
+
             collectionDescriptor.setElementType(collectionMetaData.getElementType()
                                                                   .getReturnedClass());
 
@@ -296,11 +300,11 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
             throw new TrailsRuntimeException(e);
         }
     }
-    
+
     protected org.hibernate.mapping.Collection findCollectionMapping(Class type, String name)
     {
         String roleName = type.getName() + "." + name;
-        org.hibernate.mapping.Collection collectionMapping = 
+        org.hibernate.mapping.Collection collectionMapping =
             getLocalSessionFactoryBean().getConfiguration().getCollectionMapping(roleName);
         if (collectionMapping != null)
         {
@@ -310,7 +314,7 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
         {
             return findCollectionMapping(type.getSuperclass(), name);
         }
-        else 
+        else
         {
             throw new MetadataNotFoundException("Metadata not found.");
         }
@@ -346,7 +350,7 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
     {
         return (IClassDescriptor)descriptors.get(type);
     }
-    
+
     /**
      * @return Returns the localSessionFactoryBean.
      */
@@ -376,7 +380,7 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
     {
         return types;
     }
-    
+
 
     public void setTypes(List types)
     {
@@ -388,7 +392,7 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
         ArrayList decoratedPropertyDescriptors = new ArrayList();
         for (Iterator iter = descriptor.getPropertyDescriptors().iterator(); iter.hasNext();)
         {
-            IPropertyDescriptor propertyDescriptor = 
+            IPropertyDescriptor propertyDescriptor =
                 (IPropertyDescriptor) iter.next();
             decoratedPropertyDescriptors.add(decoratePropertyDescriptor(
                     descriptor.getType(), propertyDescriptor));
@@ -401,25 +405,25 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
     {
         return largeColumnLength;
     }
-    
+
     /**
      * Columns longer than this will have their large property set
      * to true.
-     * @param largeColumnLength 
+     * @param largeColumnLength
      */
     public void setLargeColumnLength(int largeColumnLength)
     {
         this.largeColumnLength = largeColumnLength;
     }
 
-	public DescriptorFactory getDescriptorFactory()
-	{
-		return descriptorFactory;
-	}
+    public DescriptorFactory getDescriptorFactory()
+    {
+        return descriptorFactory;
+    }
 
-	public void setDescriptorFactory(DescriptorFactory descriptorFactory)
-	{
-		this.descriptorFactory = descriptorFactory;
-	}
-    
+    public void setDescriptorFactory(DescriptorFactory descriptorFactory)
+    {
+        this.descriptorFactory = descriptorFactory;
+    }
+
 }

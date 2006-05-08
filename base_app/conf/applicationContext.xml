@@ -338,7 +338,14 @@
 					<constructor-arg index="1"><value>embedded</value></constructor-arg>
 				</bean>
 				</entry>
-			</map>
+                <entry>
+                <key><value>supportsExtension('org.trails.descriptor.EnumReferenceDescriptor')</value></key>
+                <bean class="org.apache.tapestry.util.ComponentAddress">
+                    <constructor-arg index="0"><value>trails:Editors</value></constructor-arg>
+                    <constructor-arg index="1"><value>enumEditor</value></constructor-arg>
+                </bean>
+                </entry>
+            </map>
 		</property>
 	</bean>
 	

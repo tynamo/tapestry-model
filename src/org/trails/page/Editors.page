@@ -6,33 +6,33 @@
     <component id="dateField" type="DatePicker" inherit-informal-parameters="no">
         <binding name="value">model[descriptor.name]</binding>
         <binding name="translator">ognl:validatorTranslatorService.getTranslator(descriptor)</binding>
-    </component> 
+    </component>
     <component id="stringField" type="TextField" inherit-informal-parameters="no">
         <binding name="displayName">descriptor.displayName</binding>
         <binding name="validator">ognl:validatorTranslatorService.getValidator(descriptor)</binding>
         <binding name="value">model[descriptor.name]</binding>
         <binding name="maxlength">descriptor.length</binding>
-    </component> 
+    </component>
     <component id="passwordField" type="TextField" inherit-informal-parameters="no">
         <binding name="displayName">descriptor.displayName</binding>
         <binding name="validator">ognl:validatorTranslatorService.getValidator(descriptor)</binding>
         <binding name="value">model[descriptor.name]</binding>
         <binding name="maxlength">descriptor.length</binding>
         <binding name="hidden">true</binding>
-    </component> 
+    </component>
    <component id="textArea" type="TextArea" inherit-informal-parameters="no">
         <binding name="displayName">descriptor.displayName</binding>
         <binding name="value">model[descriptor.name]</binding>
-    </component> 
+    </component>
     <component id="numberField" type="TextField" inherit-informal-parameters="no">
         <binding name="displayName">descriptor.displayName</binding>
         <binding name="translator">ognl:validatorTranslatorService.getTranslator(descriptor)</binding>
         <binding name="validator">ognl:validatorTranslatorService.getValidator(descriptor)</binding>
         <binding name="value">model[descriptor.name]</binding>
-    </component>   
+    </component>
     <component id="checkbox" type="Checkbox" inherit-informal-parameters="no">
         <binding name="value">model[descriptor.name]</binding>
-    </component>   
+    </component>
     <component id="editCollection" type="EditCollection" inherit-informal-parameters="no">
         <binding name="collection">model[descriptor.name]</binding>
         <binding name="propertyDescriptor">descriptor</binding>
@@ -40,22 +40,27 @@
    <component id="identifier" type="Identifier" inherit-informal-parameters="no">
        <binding name="descriptor">descriptor</binding>
    </component>
-       
+
     <component id="associationSelect" type="AssociationSelect" inherit-informal-parameters="no">
          <binding name="value">model[descriptor.name]</binding>
         <binding name="propertyDescriptor">descriptor</binding>
     </component>
-   	
+
     <component id="insertText" type="Insert">
     	<binding name="value">model[descriptor.name]</binding>
     </component>
     <component id="fckEditor" type="FCKEditor">
     	<binding name="value">model[descriptor.name]</binding>
     </component>
-    
+
     <component id="embeddedEditor" type="EmbeddedEditor">
     	<binding name="model">model[descriptor.name]</binding>
     	<binding name="descriptor">descriptor</binding>
     </component>
-    
+
+    <component id="enumSelect" type="EnumSelect">
+        <binding name="value">model[descriptor.name]</binding>
+        <binding name="propertyDescriptor">descriptor</binding>
+    </component>
+
 </page-specification>

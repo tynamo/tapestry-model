@@ -63,5 +63,20 @@ public class PropertyDescriptorTest extends TestCase
         assertEquals("foo", descriptor2.getName());
     }
 
+    public void testCloneWitdhExtensions() throws Exception
+    {
+        String testExtension = "testExtension";
+        IDescriptorExtension descriptorExtension = new IDescriptorExtension()
+        {
+        };
+
+        TrailsPropertyDescriptor descriptor1 = new TrailsPropertyDescriptor(Foo.class, "foo", String.class);
+        descriptor1.addExtension(testExtension, descriptorExtension);
+
+        TrailsPropertyDescriptor descriptor2 = (TrailsPropertyDescriptor) descriptor1.clone();
+
+        assertTrue(descriptor2.supportsExtension(testExtension));
+        assertEquals(descriptorExtension, descriptor2.getExtension(testExtension));
+    }
     
 }
