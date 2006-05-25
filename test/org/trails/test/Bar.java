@@ -26,7 +26,7 @@ import org.trails.validation.AssertNoOrphans;
  * Window - Preferences - Java - Code Style - Code Templates
  */
 @Entity
-@AssertNoOrphans(Gazonk.class)
+@AssertNoOrphans(Wibble.class)
 public class Bar implements IBar
 {
     

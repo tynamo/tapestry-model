@@ -9,7 +9,7 @@ import org.trails.persistence.PersistenceService;
 import org.trails.test.Bar;
 import org.trails.test.Baz;
 import org.trails.test.Foo;
-import org.trails.test.Gazonk;
+import org.trails.test.Wibble;
 
 public class AssertNoOrphansTest extends
 		AbstractTransactionalSpringContextTests
@@ -41,13 +41,13 @@ public class AssertNoOrphansTest extends
 		this.persistenceService = persistenceService;
 	}
 
-	Gazonk gazonk;
+	Wibble gazonk;
 	Bar bar;
 	
     @Override
 	protected void onSetUpInTransaction() throws Exception
 	{
-		gazonk = new Gazonk();
+		gazonk = new Wibble();
 		
 		bar = new Bar();
 		
@@ -59,14 +59,14 @@ public class AssertNoOrphansTest extends
 	public void testGetIntancesWithManyToOne() throws Exception
     {
        
-		Gazonk gazonk = new Gazonk();
+		Wibble gazonk = new Wibble();
 		gazonk.setId(new Integer(9874));
 		Bar bar = new Bar();
 		
 		bar = persistenceService.save(bar);
 		gazonk.setBar(bar);
 		gazonk = persistenceService.save(gazonk);
-		DetachedCriteria criteria = DetachedCriteria.forClass(Gazonk.class);
+		DetachedCriteria criteria = DetachedCriteria.forClass(Wibble.class);
 		criteria.add(Restrictions.eq("bar", bar));
 		List list = persistenceService.getInstances(criteria);
 		assertEquals(1, list.size());
