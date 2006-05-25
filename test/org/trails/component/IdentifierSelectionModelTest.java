@@ -28,6 +28,7 @@ public class IdentifierSelectionModelTest extends TestCase
 {
     IdentifierSelectionModel selectionModel;
     IdentifierSelectionModel nullableSelectionModel;
+    IdentifierSelectionModel labelSelectionModel;
     
     ArrayList foos = new ArrayList();
 
@@ -53,6 +54,7 @@ public class IdentifierSelectionModelTest extends TestCase
             nullableSelectionModel.getLabel(0));     
         assertEquals("none value", "howdy", 
             nullableSelectionModel.getLabel(1));
+        assertEquals("property label 2", "mother", labelSelectionModel.getLabel(2));
     }
     
     public void testTranslateValue() throws Exception
@@ -62,6 +64,7 @@ public class IdentifierSelectionModelTest extends TestCase
         assertEquals("should be null", null, nullableSelectionModel.translateValue(
             IdentifierSelectionModel.DEFAULT_NONE_VALUE));
         assertEquals("correct foo", foo, nullableSelectionModel.translateValue("2"));
+        assertEquals("translate foo by label property", foo, labelSelectionModel.translateValue( "2" ) );
     }
 
     public void testGetOptionCount() throws Exception
@@ -78,14 +81,18 @@ public class IdentifierSelectionModelTest extends TestCase
         Foo foo = new Foo();
         foo.setId(new Integer(1));
         foo.setName("howdy");
+        foo.setHidden("hello");
 
         Foo foo2 = new Foo();
         foo2.setId(new Integer(2));
         foo2.setName("mom");
+        foo2.setHidden("mother");
         foos.add(foo);
         foos.add(foo2);
         
         selectionModel = new IdentifierSelectionModel(foos, "id");
         nullableSelectionModel = new IdentifierSelectionModel(foos, "id", true);
+        labelSelectionModel = new IdentifierSelectionModel(foos, "id", true );
+        labelSelectionModel.setLabelProperty("hidden");
     }
 }

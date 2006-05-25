@@ -16,6 +16,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import org.trails.validation.AssertNoOrphans;
+
 
 /**
  * @author fus8882
@@ -24,6 +26,7 @@ import javax.persistence.Id;
  * Window - Preferences - Java - Code Style - Code Templates
  */
 @Entity
+@AssertNoOrphans(Gazonk.class)
 public class Bar implements IBar
 {
     

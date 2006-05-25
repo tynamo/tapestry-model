@@ -35,6 +35,7 @@ import org.trails.hibernate.HasAssignedIdentifier;
 import org.trails.test.Bar;
 import org.trails.test.Baz;
 import org.trails.test.Foo;
+import org.trails.validation.OrphanException;
 import org.trails.validation.ValidationException;
 
 
@@ -274,6 +275,14 @@ public class EditPageTest extends ComponentTest
         persistenceMock.verify();
         
         
+    }
+    
+    public void testRemoveWithException() throws Exception
+    {
+    	persistenceMock.expects(once()).method("remove").with(same(foo)).will(
+    			throwException(new OrphanException()));
+    	editPage.remove((IRequestCycle)cycleMock.proxy());
+    	assertTrue(editPage.getDelegate().getHasErrors());
     }
     
     public void testPageBeginRender() throws Exception

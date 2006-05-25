@@ -229,7 +229,12 @@
 		<property name="descriptorService"><ref local="descriptorService" /></property>
 		<property name="persistenceService"><ref local="persistenceService" /></property>
 	</bean>
-	
+
+	<bean id="checkForOrphansAspect" class="org.trails.validation.CheckForOrphansAspect" factory-method="aspectOf">
+		<property name="descriptorService"><ref local="descriptorService" /></property>
+		<property name="persistenceService"><ref local="persistenceService" /></property>
+	</bean>
+		
 	<bean id="descriptorInternationalizationAspect" class="org.trails.i18n.DescriptorInternationalization" factory-method="aspectOf">
 		<property name="resourceBundleMessageSource"><ref local="trailsMessageSource"/></property>
 	</bean>

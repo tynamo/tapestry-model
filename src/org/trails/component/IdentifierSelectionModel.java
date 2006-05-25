@@ -32,6 +32,9 @@ public class IdentifierSelectionModel implements IPropertySelectionModel
     private List instances;
     private String idPropery = "id";
     private boolean allowNone;
+    
+    private String labelProperty = "toString()"; 
+    
     public static String DEFAULT_NONE_LABEL = "None";
     public static String DEFAULT_NONE_VALUE = "none";
     
@@ -84,7 +87,13 @@ public class IdentifierSelectionModel implements IPropertySelectionModel
         {
             return getNoneLabel();
         }
-        return instances.get(index).toString();
+        try
+        {
+            return Ognl.getValue( labelProperty, instances.get(index) ).toString();
+        } catch (Exception e)
+        {
+            throw new TrailsRuntimeException(e);
+        }
     }
 
     /* (non-Javadoc)
@@ -136,5 +145,15 @@ public class IdentifierSelectionModel implements IPropertySelectionModel
 	public void setNoneLabel(String noneLabel)
 	{
 		this.noneLabel = noneLabel;
+	}
+
+	public String getLabelProperty()
+	{
+		return labelProperty;
+	}
+
+	public void setLabelProperty(String labelProperty)
+	{
+		this.labelProperty = labelProperty;
 	}
 }

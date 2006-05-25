@@ -58,7 +58,7 @@ public class TrailsValidationDelegateTest extends ComponentTest
     public void testRecordException() throws Exception
     {
        
-        PersistenceException exception = new PersistenceException("error occurred.");
+        Exception exception = new Exception("error occurred.");
         assertFalse(delegate.getHasErrors());
         delegate.record(exception);
         assertTrue(delegate.getHasErrors());

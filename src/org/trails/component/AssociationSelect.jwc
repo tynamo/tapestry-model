@@ -9,7 +9,7 @@
     <parameter name="allowNone" required="no" default-value="not(propertyDescriptor.required)" />
     
     <property name="propertySelectionModel"/>
-    <component id="select" type="PropertySelection" inherit-informal-parameters="no">
+    <component id="select" type="PropertySelection" inherit-informal-parameters="yes">
         <binding name="model">propertySelectionModel</binding>
         <binding name="value">value</binding>
     </component>

@@ -16,7 +16,7 @@ import org.trails.persistence.PersistenceException;
 public class TrailsValidationDelegate extends ValidationDelegate
 {
     
-    public void record(PersistenceException ex)
+    public void record(Exception ex)
     {
         FieldTracking tracking = findCurrentTracking();
         tracking.setErrorRenderer(new RenderString(ex.getMessage()));

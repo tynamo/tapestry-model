@@ -191,15 +191,10 @@
 		<antcall target="update-project">
 			<param name="project.dir" value="${security-example.project.dir}" />
 			<param name="project.name" value="${security-example.name}" />
-			<param name="project.lib" value="lib" />
+			<param name="project.lib" value="${security-example.project.dir}/lib" />
 			<param name="project.context.dir" value="${security-example.project.dir}/context" />
 		</antcall>
-		<antcall target="add-security">
-			<param name="project.dir" value="${security-example.project.dir}" />
-			<param name="project.name" value="${security-example.name}" />
-			<param name="project.lib" value="lib" />
-			<param name="project.context.dir" value="${security-example.project.dir}/context" />
-		</antcall>		
+	
 	</target>
 		
 	<target name="install-apt" unless="apt.installed">

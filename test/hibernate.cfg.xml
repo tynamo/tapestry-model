@@ -14,6 +14,7 @@
 		<mapping class="org.trails.test.Searchee" />
 		<mapping class="org.trails.test.BlogEntry" />
 		<mapping class="org.trails.test.Bar" />
+		<mapping class="org.trails.test.Gazonk" />
 		<listener type="pre-update"
 			class="org.hibernate.validator.event.ValidatePreUpdateEventListener" />
 		<listener type="merge"

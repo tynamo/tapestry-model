@@ -1,6 +1,7 @@
 package org.trails.test;
 
 import javax.persistence.Embeddable;
+import javax.persistence.Transient;
 
 import org.trails.descriptor.annotation.PropertyDescriptor;
 
@@ -30,5 +31,12 @@ public class Embeddee
 	public void setTitle(String title)
 	{
 		this.title = title;
+	}
+	
+	// Added to expose a bug
+	@Transient
+	public boolean isTrue()
+	{
+		return true;
 	}
 }

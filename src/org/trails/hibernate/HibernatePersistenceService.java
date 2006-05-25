@@ -115,16 +115,8 @@ public class HibernatePersistenceService extends HibernateDaoSupport implements
     @Transactional
     public List getInstances( final DetachedCriteria criteria )
     {
-        // TODO Auto-generated method stub
-        return ( List ) getHibernateTemplate().execute( new HibernateCallback()
-        {
-            public Object doInHibernate( Session session )
-                    throws HibernateException, SQLException
-            {
-            	criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-                return criteria.getExecutableCriteria( session ).list();
-            }
-        }, true );
+        criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+        return getHibernateTemplate().findByCriteria(criteria);
     }
 
     public List getAllTypes()

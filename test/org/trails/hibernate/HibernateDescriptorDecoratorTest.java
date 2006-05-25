@@ -69,7 +69,8 @@ public class HibernateDescriptorDecoratorTest extends TestCase
         fooDescriptor.getPropertyDescriptors().add(new TrailsPropertyDescriptor(Foo.class, "multiWordProperty", String.class));
         fooDescriptor.getPropertyDescriptors().add(new TrailsPropertyDescriptor(Foo.class, "primitive", boolean.class));
         fooDescriptor.getPropertyDescriptors().add(new TrailsPropertyDescriptor(Foo.class, "bar", IBar.class));
-        
+        fooDescriptor.getPropertyDescriptors().add(new TrailsPropertyDescriptor(Foo.class, "fromFormula", String.class));
+       
         classDescriptor = hibernateDescriptorDecorator.decorate(fooDescriptor);
         
     }
@@ -87,6 +88,12 @@ public class HibernateDescriptorDecoratorTest extends TestCase
         IdentifierDescriptor idDescriptor = (IdentifierDescriptor) classDescriptor.getIdentifierDescriptor();
         assertTrue("is id", idDescriptor.isIdentifier());
         assertFalse("not generated", idDescriptor.isGenerated());
+    }
+
+    public void testFormulaDescriptor() throws Exception
+    {
+        IPropertyDescriptor formulaDescriptor =  classDescriptor.getPropertyDescriptor("fromFormula");
+        assertTrue(formulaDescriptor.isReadOnly());
     }
     
     public void testCollectionDescriptor() throws Exception
@@ -106,7 +113,7 @@ public class HibernateDescriptorDecoratorTest extends TestCase
 
         assertFalse("not a child", classDescriptor.isChild());
         List propertyDescriptors = classDescriptor.getPropertyDescriptors();
-        assertEquals("got 10", 10, propertyDescriptors.size());
+        assertEquals("got 11", 11, propertyDescriptors.size());
         
 //        TrailsPropertyDescriptor barDescriptor = (TrailsPropertyDescriptor) Ognl.getValue("#root.{? #this.name == 'bar'}[0]",
 //            propertyDescriptors);
@@ -189,6 +196,6 @@ public class HibernateDescriptorDecoratorTest extends TestCase
     	EmbeddedDescriptor embeddedDescriptor = (EmbeddedDescriptor)propertyDescriptor;
     	assertEquals("embeddee", embeddedDescriptor.getName());
     	assertEquals("right bean type", Embeddor.class, embeddedDescriptor.getBeanType());
-    	assertEquals("2 prop descriptors", 2, embeddedDescriptor.getPropertyDescriptors().size());
+    	assertEquals("3 prop descriptors", 3, embeddedDescriptor.getPropertyDescriptors().size());
     }
 }

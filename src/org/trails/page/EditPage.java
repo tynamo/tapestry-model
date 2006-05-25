@@ -96,10 +96,16 @@ public abstract class EditPage extends ModelPage implements IExternalPage
 
     public void remove(IRequestCycle cycle)
     {
-//        if (!cameFromChildCollection())
-//        {
-            getPersistenceService().remove(getModel());
-//        }
+
+        try
+		{
+			getPersistenceService().remove(getModel());
+		} catch (PersistenceException pe)
+		{
+			getDelegate().record(pe);
+			return;
+		}
+
         ICallback callback = getCallbackStack().popPreviousCallback();
         if (callback instanceof CollectionCallback)
         {

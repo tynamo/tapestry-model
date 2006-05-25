@@ -8,6 +8,7 @@ import java.util.Locale;
 
 import javax.servlet.ServletConfig;
 
+import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Registry;
 import org.apache.tapestry.ApplicationServlet;
 import org.apache.tapestry.services.RequestLocaleManager;
@@ -59,7 +60,15 @@ public class TrailsApplicationServlet extends ApplicationServlet {
 			RequestLocaleManager localeManager =
 				(RequestLocaleManager) tapestryRegistry.getService("tapestry.request.RequestLocaleManager", RequestLocaleManager.class);
 			if (localeManager != null) {
-				locale = localeManager.extractLocaleForCurrentRequest();
+				try
+				{
+					locale = localeManager.extractLocaleForCurrentRequest();
+				}
+				catch (Exception ex)
+				{
+					// This can happen if we use Hibernate validation without Tapestry
+					return null;
+				}
 			}
 		}
 		

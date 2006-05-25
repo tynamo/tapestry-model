@@ -31,7 +31,8 @@ import org.trails.validation.ValidateUniqueness;
 @Entity
 @Table(name="TRAILS_USER") 
 @ValidateUniqueness(property = "username")
-@Security(restrictions = {@Restriction(restrictionType = RestrictionType.VIEW, requiredRole = "ROLE_MANAGER")})
+@Security(restrictions = {@Restriction(restrictionType = RestrictionType.VIEW, 
+		requiredRole = "ROLE_MANAGER")})
 public class User implements Serializable
 {
 

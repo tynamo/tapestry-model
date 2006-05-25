@@ -25,7 +25,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import org.hibernate.annotations.Formula;
 import org.hibernate.annotations.IndexColumn;
+import org.trails.validation.AssertNoOrphans;
 
 
 /**
@@ -36,6 +38,7 @@ import org.hibernate.annotations.IndexColumn;
  * Window - Preferences - Java - Code Style - Code Templates
  */
 @Entity
+@AssertNoOrphans(childrenProperty="bazzes", message="This is a message")
 public class Foo
 {
     
@@ -47,6 +50,8 @@ public class Foo
     private Double number;
     private String readOnly;
     private String hidden;
+    
+    private String fromFormula;
     
     private Date date;
     private Bar bar;
@@ -271,4 +276,15 @@ public class Foo
     	baz.setFoo(this);
     	return baz;
     }
+
+    @Formula("lower('ABC')")
+	public String getFromFormula()
+	{
+		return fromFormula;
+	}
+
+	public void setFromFormula(String fromFormula)
+	{
+		this.fromFormula = fromFormula;
+	}
 }
