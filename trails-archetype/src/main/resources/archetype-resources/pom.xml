@@ -1,0 +1,148 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>${groupId}</groupId>
+	<artifactId>${artifactId}</artifactId>
+	<packaging>war</packaging>
+	<version>${version}</version>
+	<name>A simple trails project</name>
+	<url>https://trails.dev.java.net/</url>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>aspectj-maven-plugin</artifactId>
+				<configuration>
+					<source>1.5</source>
+					<target>1.5</target>
+					<aspectLibraries>
+						<aspectLibrary>
+							<groupId>org.trails</groupId>
+							<artifactId>trails-core</artifactId>
+						</aspectLibrary>
+					</aspectLibraries>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>compile</goal><!-- use this goal to weave all your main classes -->
+							<goal>test-compile</goal><!-- use this goal to weave all your test classes -->
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.5</source>
+					<target>1.5</target>
+				</configuration>
+
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.myfaces.tobago</groupId>
+				<artifactId>maven-apt-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>execute</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<factory>
+						org.trails.hibernate.HibernateAnnotationProcessorFactory
+					</factory>
+					<force>true</force>
+					<nocompile>true</nocompile>
+					<generated>src/generated</generated>
+					<A>
+						configFile=\${basedir}/src/main/resources/hibernate.cfg.xml,
+						destFile=${project.build.outputDirectory}/hibernate.cfg.xml
+					</A>
+					<target>1.5</target>
+					<!--
+						<excludes>
+						<exclude 
+						implementation="java.lang.String">**/*Point*.java</exclude>
+						</excludes>
+					-->
+				</configuration>
+			</plugin>
+
+
+			<plugin>
+				<groupId>org.mortbay.jetty</groupId>
+				<artifactId>maven-jetty6-plugin</artifactId>
+				<configuration>
+					<scanIntervalSeconds>10</scanIntervalSeconds>
+				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>org.apache.geronimo.specs</groupId>
+						<artifactId>geronimo-j2ee_1.4_spec</artifactId>
+						<version>1.0</version>
+						<scope>provided</scope>
+					</dependency>
+				</dependencies>
+			</plugin>
+
+		</plugins>
+	</build>
+	<dependencies>
+		<dependency>
+			<groupId>org.trails</groupId>
+			<artifactId>trails-core</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>jaxen</groupId>
+			<artifactId>jaxen</artifactId>
+			<version>1.1-beta-6</version>
+		</dependency>
+		<dependency>
+			<groupId>com.javaforge.tapestry</groupId>
+			<artifactId>tapernate</artifactId>
+			<version>0.1-SNAPSHOT</version>
+		</dependency>
+	</dependencies>
+	<repositories>
+		<repository>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+			<id>apache.snapshots</id>
+			<url>http://cvs.apache.org/maven-snapshot-repository</url>
+		</repository>
+
+		<repository>
+			<id>com.javaforge.tapestry</id>
+			<name>
+				Howard Lewis Ship Repository for Tapestry extra modules
+			</name>
+			<url>http://howardlewisship.com/repository/</url>
+		</repository>
+		<repository>
+			<id>com.carmanconsulting</id>
+			<name>James Carman's Repository for Tapernate, etc</name>
+			<url>http://www.carmanconsulting.com/mvn/</url>
+		</repository>
+
+	</repositories>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>codehaus</id>
+			<name>CodeHaus Repository</name>
+			<url>http://repository.codehaus.org/</url>
+		</pluginRepository>
+	</pluginRepositories>
+</project>

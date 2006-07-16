@@ -1,0 +1,75 @@
+<!DOCTYPE component-specification PUBLIC "-//Apache Software Foundation//Tapestry Specification 4.0//EN" "http://jakarta.apache.org/tapestry/dtd/Tapestry_4_0.dtd">
+<component-specification class="org.trails.component.EditCollection" allow-body="yes" allow-informal-parameters="yes">
+	<description>Allows a user to edit a collection property</description>
+    <parameter name="collection" required="yes"/>
+
+    <parameter name="descriptorService" required="no" default-value="page.descriptorService"/>
+	<parameter name="persistenceService" required="no" default-value="page.persistenceService"/>
+    <parameter name="propertyDescriptor" required="yes">
+    	<description>The CollectionDescriptor for the collection being edited</description>
+    </parameter>
+    <parameter name="model" default-value="page.model" required="no">
+    	<description>The object which owns the collection being edited</description>
+    </parameter>
+    <parameter name="createExpression" required="no">
+    	<description>Ognl expression to invoke on the model to create a new child instance</description>
+    </parameter>
+    <parameter name="addFromExisting" default-value="not(collectionDescriptor.childRelationship)" required="no"/>
+    <parameter name="allowCreate" default-value="true" required="no"/>
+    
+    <property name="currentObject"/>
+    <property name="index"/>
+    <component id="foreach" type="Foreach" inherit-informal-parameters="no">
+    	<binding name="source">collection</binding>       
+        <binding name="value">currentObject</binding> 
+        <binding name="index">index</binding>
+        <binding name="element">
+		literal:tr</binding>
+    </component>
+    <component id="any" type="Any" inherit-informal-parameters="yes"/>
+    <component id="removeCheckbox" type="Checkbox" inherit-informal-parameters="no">
+        <binding name="selected">selected[index]</binding>
+    </component>
+    <component id="editLink" type="EditLink" inherit-informal-parameters="no">
+        <binding name="model">currentObject</binding>
+    </component>
+    <component id="insert" type="Insert" inherit-informal-parameters="no">
+        <binding name="value">currentObject</binding>
+    </component>
+    <component id="canAddFromExisting" type="If" inherit-informal-parameters="no">
+        <binding name="condition">addFromExisting</binding>
+    </component>
+    <component id="cannotAddFromExisting" type="If" inherit-informal-parameters="no">
+        <binding name="condition">!addFromExisting</binding>
+    </component> 
+    <component id="palette" type="contrib:Palette" inherit-informal-parameters="no">
+        <binding name="model">selectionModel</binding>
+        <binding name="selected">selectedList</binding>
+        <binding name="sort">sortMode</binding>
+    </component>
+    <component id="allowCreate" type="If" inherit-informal-parameters="no">
+        <binding name="condition">allowCreate</binding>
+    </component>
+    <component id="addbutton" type="Submit" inherit-informal-parameters="no">
+        <binding name="listener">listener:showAddPage</binding>
+        <binding name="defer">true</binding>
+        <binding name="disabled">page.isModelNew()</binding>
+    </component>
+    <component id="removeButton" type="Submit" inherit-informal-parameters="no">
+        <binding name="listener">listener:remove</binding>
+	    <binding name="defer">false</binding>
+	    <binding name="disabled">page.isModelNew()</binding>
+    </component>  
+    
+    <component id="upLink" type="LinkSubmit" inherit-informal-parameters="no">
+        <binding name="listener">listener:moveUp</binding>
+        <binding name="defer">false</binding>
+    </component>
+   <component id="downLink" type="LinkSubmit" inherit-informal-parameters="no">
+        <binding name="listener">listener:moveDown</binding>
+        <binding name="defer">false</binding>
+    </component>
+       
+    <asset name="upImage" path="classpath:move_up.gif"/>
+    <asset name="downImage" path="classpath:move_down.gif"/>
+</component-specification>

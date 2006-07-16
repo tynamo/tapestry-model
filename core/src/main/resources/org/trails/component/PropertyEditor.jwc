@@ -1,0 +1,10 @@
+<!DOCTYPE component-specification PUBLIC "-//Apache Software Foundation//Tapestry Specification 4.0//EN" "http://jakarta.apache.org/tapestry/dtd/Tapestry_4_0.dtd">
+<component-specification class="org.trails.component.PropertyEditor" allow-body="yes" allow-informal-parameters="yes" deprecated="no">
+	<parameter name="model" required="yes" cache="yes" deprecated="no"/>
+	<parameter name="descriptor" default-value="container.property" required="no" cache="yes" deprecated="no"/>
+
+    
+    <component id="renderBlock" type="RenderBlock">
+    	<binding name="block">ognl:block</binding>
+    </component>
+</component-specification>

@@ -1,0 +1,38 @@
+<span jwcid="@Border">
+  <div id="header">
+  </div>
+	<h1><span jwcid="@Insert" value="message:org.trails.login.title">Login</span></h1>
+    <div jwcid="@If" class="error" condition="ognl:webRequest.getParameterValue('login_error')" element="div">
+      <img jwcid="@Any" src="img/iconWarning.gif" alt="message:icon.warning" class="icon"/>
+      <span jwcid="@Insert" value="message:org.trails.login.error">Error: Wrong Username or Password</span>
+    </div>
+
+  <form class="detail" action="j_acegi_security_check">
+
+    <div class="editRow">
+      <label for="searchWord">
+        <span jwcid="@Insert" value="message:org.trails.login.name">Name: </span>
+      </label>
+      <span class="editor">
+         <td>
+           <input type='text' name='j_username'/>
+         </td>
+      </span>
+    </div>
+    <br/>
+    <div class="editRow">
+      <label for="searchWord">
+        <span jwcid="@Insert" value="message:org.trails.login.pwd">Password: </span>
+      </label>
+      <span class="editor">
+        <td>
+          <input type='password' name='j_password'/>
+        </td>
+      </span>
+    </div>
+    <br/>
+    <br/>
+    <input jwcid="@Any" name="submit" type="submit" value="message:org.trails.login.submit"/>
+
+  </form>
+</span>
