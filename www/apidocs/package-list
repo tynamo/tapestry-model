@@ -1,9 +1,0 @@
-org.trails
-org.trails.callback
-org.trails.component
-org.trails.descriptor
-org.trails.descriptor.annotation
-org.trails.hibernate
-org.trails.page
-org.trails.persistence
-org.trails.validation
