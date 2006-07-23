@@ -8,6 +8,12 @@ import java.util.Locale;
 
 import junit.framework.TestCase;
 
+import org.apache.hivemind.service.ThreadLocale;
+import org.jmock.Mock;
+import org.jmock.core.Stub;
+import org.jmock.core.matcher.InvokeAtLeastOnceMatcher;
+import org.jmock.core.stub.ReturnStub;
+import org.jmock.core.stub.StubSequence;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.trails.descriptor.IClassDescriptor;
@@ -38,9 +44,22 @@ public class DescriptorInternationalizationTest extends TestCase {
         propertyDescriptor.setName("number");
         propertyDescriptor.setDisplayName("number");
 		TrailsApplicationServlet.setCurrentLocale(null);
+        localeHolderMock = new Mock(LocaleHolder.class);
+        DescriptorInternationalization.aspectOf().setLocaleHolder(
+                (LocaleHolder)localeHolderMock.proxy());
+        localeHolderMock.expects(new InvokeAtLeastOnceMatcher()).method("getLocale")
+        .will(new StubSequence(new Stub[] {
+                new ReturnStub(null),
+                new ReturnStub(en),
+                new ReturnStub(pt),
+                new ReturnStub(ptBR)
+        }));        
 	}
 	
+    Mock localeHolderMock;
+    
 	public void testGetMethodDisplayName() {
+
 		String displayName = propertyDescriptor.getDisplayName();
 		assertEquals(displayName, "Number");
 		

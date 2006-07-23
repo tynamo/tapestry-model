@@ -239,8 +239,11 @@
 		
 	<bean id="descriptorInternationalizationAspect" class="org.trails.i18n.DescriptorInternationalization" factory-method="aspectOf">
 		<property name="resourceBundleMessageSource"><ref local="trailsMessageSource"/></property>
+		<property name="localeHolder"><ref local="localeHolder"/></property>
 	</bean>
 
+	<bean id="localeHolder" class="org.trails.i18n.TestLocaleHolder" />
+	
 	<bean id="descriptorSecurity" class="org.trails.security.DescriptorSecurity" factory-method="aspectOf">
 		<property name="securityService"><ref bean="securityService"/></property>
 	</bean>

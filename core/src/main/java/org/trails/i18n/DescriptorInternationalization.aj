@@ -17,6 +17,8 @@ import org.trails.servlet.TrailsApplicationServlet;
 public aspect DescriptorInternationalization {
 
 	private ResourceBundleMessageSource messageSource;
+    
+    private LocaleHolder localeHolder;
 		
 	pointcut internationalizeDisplayName(IDescriptor descriptor) : execution(* IDescriptor.getDisplayName())
 									&& this(descriptor)
@@ -26,21 +28,22 @@ public aspect DescriptorInternationalization {
 									&& this(descriptor)
 									&& !cflowbelow(execution(* IClassDescriptor+.*(..)));
 
+    private Locale getLocale()
+    {
+        return getLocaleHolder() == null ? null : getLocaleHolder().getLocale();
+    }
+    
 	Object around(IDescriptor descriptor) : internationalizeDisplayName(descriptor) {
-		Locale locale = TrailsApplicationServlet.getCurrentLocale();
-
 		String displayName = (String) proceed(descriptor);
 		return (messageSource != null)
-					? messageSource.getDisplayName(descriptor, locale, displayName)
+					? messageSource.getDisplayName(descriptor, getLocale(), displayName)
 					: displayName;
 	}
 
 	Object around(IClassDescriptor classDescriptor) : internationalizePluralDisplayName(classDescriptor) {
-		Locale locale = TrailsApplicationServlet.getCurrentLocale();
-		
 		String displayName = (String) proceed(classDescriptor);
 		return (messageSource != null)
-					? messageSource.getPluralDislayName(classDescriptor, locale, displayName)
+					? messageSource.getPluralDislayName(classDescriptor, getLocale(), displayName)
 					: displayName;
 	
 	}
@@ -50,5 +53,13 @@ public aspect DescriptorInternationalization {
 		this.messageSource = source;
 	}
 	
+    public void setLocaleHolder(LocaleHolder localeHolder)
+    {
+        this.localeHolder = localeHolder;
+    }
 
+    public LocaleHolder getLocaleHolder()
+    {
+        return this.localeHolder;
+    }
 }

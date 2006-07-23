@@ -65,6 +65,8 @@ public class IdentifierSelectionModelTest extends TestCase
             IdentifierSelectionModel.DEFAULT_NONE_VALUE));
         assertEquals("correct foo", foo, nullableSelectionModel.translateValue("2"));
         assertEquals("translate foo by label property", foo, labelSelectionModel.translateValue( "2" ) );
+        assertNull("dont blow an exception", selectionModel.translateValue(null));
+        assertNull("dont blow an exception", selectionModel.translateValue("a value that doesn't exist"));
     }
 
     public void testGetOptionCount() throws Exception

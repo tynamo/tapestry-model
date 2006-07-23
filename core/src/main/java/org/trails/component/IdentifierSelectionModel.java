@@ -17,6 +17,7 @@ import java.util.List;
 import ognl.Ognl;
 
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry.form.IPropertySelectionModel;
 import org.trails.TrailsRuntimeException;
 
@@ -122,6 +123,7 @@ public class IdentifierSelectionModel implements IPropertySelectionModel
      */
     public Object translateValue(String value)
     {
+        if (StringUtils.isEmpty(value)) return null;
         List realInstances = allowNone ? instances.subList(1, instances.size()) : instances;
         try
         {
@@ -129,8 +131,11 @@ public class IdentifierSelectionModel implements IPropertySelectionModel
             {
                 if (value.equals(DEFAULT_NONE_VALUE)) return null;
             }
-            return Ognl.getValue("#root.{? #this." + idPropery +
-                ".toString() == \"" + value + "\" }[0]", realInstances);
+            List matches = (List)Ognl.getValue(
+                "#root.{? #this." + idPropery + ".toString() == \"" + value + "\" }", 
+                realInstances);
+            if (matches.size() > 0) return matches.get(0);
+            return null;
         }catch (Exception e)
         {
             throw new TrailsRuntimeException(e);
