@@ -12,7 +12,16 @@
 	   <lookup-bean name="sessionFactory" />
 	 </invoke-factory>
 	</implementation>
-		
+	
+    <service-point id="LocaleHolder" interface="org.apache.tapestry.services.WebRequestServicerFilter">
+        <invoke-factory>
+            <construct class="org.trails.i18n.LocaleFilter">
+                <set-object property="threadLocale" value="service:hivemind.ThreadLocale"/>
+                <set-object property="localeHolder" value="spring:localeHolder"/>
+            </construct>
+        </invoke-factory>
+    </service-point> 
+    		
 	<contribution configuration-id="tapestry.url.ServiceEncoders">
         <page-service-encoder id="page" extension="html" service="page"/>
     </contribution>
