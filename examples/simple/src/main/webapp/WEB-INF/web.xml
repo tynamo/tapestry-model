@@ -72,7 +72,7 @@
     </listener>
     <servlet>
         <servlet-name>simple</servlet-name>
-        <servlet-class>org.trails.servlet.TrailsApplicationServlet</servlet-class>
+        <servlet-class>org.apache.tapestry.ApplicationServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
     <servlet-mapping>
