@@ -17,7 +17,18 @@ public class Gazonk
 
     private Origin origin = Origin.ASIA;
 
-
+    public enum Animal
+    {
+        CAT 
+        {
+            public String toString() { return "Cat"; }
+        },
+        DOG
+        {
+            public String toString() { return "Dog"; }
+        }
+    }
+    
     private Integer id;
 
     private String name;

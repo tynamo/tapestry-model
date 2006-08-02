@@ -7,11 +7,12 @@ import org.hibernate.SessionFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.orm.hibernate3.SessionFactoryUtils;
+import org.springframework.test.AbstractTransactionalSpringContextTests;
 import org.trails.persistence.PersistenceService;
 import org.trails.test.Baz;
 import org.trails.test.Bing;
 
-public class ValidateUniquenessTest extends TestCase
+public class ValidateUniquenessTest extends AbstractTransactionalSpringContextTests
 {
     
     public ValidateUniquenessTest()
@@ -19,20 +20,17 @@ public class ValidateUniquenessTest extends TestCase
         super();
         // TODO Auto-generated constructor stub
     }
-
-    public ValidateUniquenessTest(String arg0)
+        
+    @Override
+    protected String[] getConfigLocations()
     {
- 
-        super(arg0);
+        return new String[] {"applicationContext-test.xml"};
     }
     
-    ApplicationContext appContext;
-    
-    public void setUp() throws Exception
+    public void onSetUpInTransaction() throws Exception
     {
-        appContext = new ClassPathXmlApplicationContext(
-        "applicationContext-test.xml");
-        persistenceService = (PersistenceService) appContext.getBean("persistenceService");        
+        persistenceService = (PersistenceService) applicationContext.getBean(
+                "persistenceService");
     }
     
     PersistenceService persistenceService;
@@ -62,15 +60,11 @@ public class ValidateUniquenessTest extends TestCase
 
     public void testUniquenessWithNonString() throws Exception
     {
-        SessionFactory sessionFactory = (SessionFactory)appContext.getBean("sessionFactory");
-        
-        Session session = SessionFactoryUtils.getSession(sessionFactory, true);
         Bing bing = new Bing();
         bing.setNumber(5);
         // should not blow up
         bing = persistenceService.save(bing);
         // should also still work
         bing = persistenceService.save(bing);
-        SessionFactoryUtils.closeSessionIfNecessary(session, sessionFactory);
     }
 }

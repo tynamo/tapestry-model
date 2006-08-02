@@ -71,19 +71,6 @@ public class TrailsDescriptorServiceTest extends MockObjectTestCase
         assertEquals("A is first", ABean.class, aDescriptor.getType());
     }
 
-    public void testIgnoreCGLIBEnhancements()
-    {
-        ClassPathXmlApplicationContext appContext = new ClassPathXmlApplicationContext("applicationContext-test.xml");
-        PersistenceService psvc = (PersistenceService)appContext.getBean("persistenceService");
-        DescriptorService descSvc = (DescriptorService)appContext.getBean("descriptorService");
-        Foo foo = new Foo();
-        foo.setId(new Integer(1));
-        foo.setName("boo");
-        psvc.save(foo);
-        foo = (Foo)psvc.getInstance(Foo.class, new Integer(1));
-        assertNotNull(descSvc.getClassDescriptor(foo.getClass()));
-    }
-
 //    public void testMethodDescriptors() throws Exception
 //    {
 //        factory.setMethodExcludes(Arrays.asList(new String[] {"equals", "toString", "hashCode"}));

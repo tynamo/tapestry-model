@@ -16,10 +16,13 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.tapestry.annotations.InjectObject;
+import org.apache.tapestry.annotations.Parameter;
 import org.apache.tapestry.services.ExpressionEvaluator;
 import org.apache.tapestry.util.ComponentAddress;
+import org.hibernate.criterion.DetachedCriteria;
 import org.trails.descriptor.IPropertyDescriptor;
 import org.trails.descriptor.TrailsPropertyDescriptor;
+import org.trails.persistence.PersistenceService;
 
 
 /**
@@ -33,6 +36,19 @@ public abstract class ObjectTable extends ClassDescriptorComponent
 	public static final String LINK_COLUMN="linkColumnValue";
     public abstract boolean isShowCollections();
 
+    @InjectObject("spring:persistenceService")
+    public abstract PersistenceService getPersistenceService();
+    
+    @Parameter
+    public abstract DetachedCriteria getCriteria();
+    
+    public abstract void setCriteria(DetachedCriteria criteria);
+    
+    @Parameter
+    public abstract List getInstances();
+    
+    public abstract void setInstances(List instances);
+    
     public abstract void setShowCollections(boolean ShowCollections);
 
     public ComponentAddress getLinkBlockAddress(IPropertyDescriptor descriptor)
@@ -55,14 +71,17 @@ public abstract class ObjectTable extends ClassDescriptorComponent
      * @return
      */
     public List<TrailsTableColumn> getColumns()
-    {	
+    {
         ArrayList<TrailsTableColumn> columns = new ArrayList<TrailsTableColumn>();
-        for (Iterator iter = getPropertyDescriptors().iterator(); iter.hasNext();)
+        for (Iterator iter = getPropertyDescriptors().iterator(); iter
+                .hasNext();)
         {
             IPropertyDescriptor descriptor = (IPropertyDescriptor) iter.next();
             if (displaying(descriptor))
             {
-                if (getLinkProperty().equals(descriptor.getName()) && (getClassDescriptor().isAllowSave() || getClassDescriptor().isAllowRemove()))
+                if (getLinkProperty().equals(descriptor.getName())
+                        && (getClassDescriptor().isAllowSave() || getClassDescriptor()
+                                .isAllowRemove()))
                 {/*
                 	Add a link for the edit page following these rules:
                 	a) Use the identifier descriptor if is displayable ( summary=true ).
@@ -164,4 +183,13 @@ public abstract class ObjectTable extends ClassDescriptorComponent
 		}
 		else return null;
 	}
+
+    public Object getSource()
+    {
+        if (getInstances() == null)
+        {
+            return new TrailsTableModel(getPersistenceService(), getCriteria());
+        }
+        return getInstances();
+    }
 }

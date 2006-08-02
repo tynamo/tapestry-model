@@ -26,6 +26,7 @@ import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.orm.hibernate3.SessionFactoryUtils;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import org.springframework.test.AbstractTransactionalSpringContextTests;
+import org.trails.descriptor.DescriptorService;
 import org.trails.persistence.PersistenceException;
 import org.trails.persistence.PersistenceService;
 import org.trails.security.domain.Role;
@@ -61,6 +62,18 @@ public class HibernatePersistenceServiceTest extends AbstractTransactionalSpring
                 "persistenceService");
     }
 
+    public void testIgnoreCGLIBEnhancements()
+    {
+        PersistenceService psvc = (PersistenceService)applicationContext.getBean("persistenceService");
+        DescriptorService descSvc = (DescriptorService)applicationContext.getBean("descriptorService");
+        Foo foo = new Foo();
+        foo.setId(new Integer(1));
+        foo.setName("boo");
+        psvc.save(foo);
+        foo = (Foo)psvc.getInstance(Foo.class, new Integer(1));
+        assertNotNull(descSvc.getClassDescriptor(foo.getClass()));
+    }
+    
     public void testGetAllTypes()
     {
         List types = persistenceService.getAllTypes();
@@ -180,6 +193,30 @@ public class HibernatePersistenceServiceTest extends AbstractTransactionalSpring
         baz = persistenceService.save(baz);
         persistenceService.remove(baz);
         
+    }
+    
+    public void testCount() throws Exception
+    {
+        Baz baz = new Baz();
+        baz.setDescription("stuff");
+        Baz baz2 = new Baz();
+        baz2.setDescription("stuff2");
+        persistenceService.save(baz);
+        persistenceService.save(baz2);
+        DetachedCriteria criteria = DetachedCriteria.forClass(Baz.class);
+        assertEquals(2, persistenceService.count(criteria));
+    }
+    
+    public void testGetInstancesWithLimit() throws Exception
+    {
+        Baz baz = new Baz();
+        baz.setDescription("stuff");
+        Baz baz2 = new Baz();
+        baz2.setDescription("stuff2");
+        persistenceService.save(baz);
+        persistenceService.save(baz2);
+        DetachedCriteria criteria = DetachedCriteria.forClass(Baz.class);
+        assertEquals(1, persistenceService.getInstances(criteria, 0, 1).size());        
     }
     
     public void testInheritance() throws Exception

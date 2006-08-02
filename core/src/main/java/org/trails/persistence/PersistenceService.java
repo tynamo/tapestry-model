@@ -42,6 +42,10 @@ public interface PersistenceService
 
     public List getInstances(DetachedCriteria criteria);
     
+    public List getInstances(DetachedCriteria criteria, int startIndex, int maxResults);
+    
+    public int count(DetachedCriteria criteria);
+    
     /**
      * 
      * @param model to attach to the current persistence session

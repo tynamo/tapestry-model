@@ -41,6 +41,13 @@ public class EnumSelectionModelTest extends TestCase
         assertEquals("should be null", null, nullableSelectionModel.translateValue(EnumSelectionModel.DEFAULT_NONE_VALUE));
         assertEquals("correct origin", Gazonk.Origin.AFRICA, nullableSelectionModel.translateValue("AFRICA"));
     }
+    
+    public void testTranslateValueWithToString() throws Exception
+    {
+        EnumSelectionModel animalSelectionModel = new EnumSelectionModel(Gazonk.Animal.class, false);
+        Gazonk.Animal kitty = (Gazonk.Animal) animalSelectionModel.translateValue("Cat");
+        assertEquals(Gazonk.Animal.CAT, kitty);
+    }
 
     public void testGetOptionCount() throws Exception
     {

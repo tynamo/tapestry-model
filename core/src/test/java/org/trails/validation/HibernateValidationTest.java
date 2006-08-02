@@ -7,11 +7,12 @@ import org.hibernate.validator.InvalidStateException;
 import org.hibernate.validator.InvalidValue;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.test.AbstractTransactionalSpringContextTests;
 import org.trails.persistence.PersistenceService;
 import org.trails.test.Baz;
 
 
-public class HibernateValidationTest extends TestCase
+public class HibernateValidationTest extends AbstractTransactionalSpringContextTests
 {
 
     public HibernateValidationTest()
@@ -22,11 +23,11 @@ public class HibernateValidationTest extends TestCase
     
     PersistenceService persistenceService;
     
-    public void setUp() throws Exception
+    @Override
+    protected void onSetUpInTransaction() throws Exception
     {
-        ApplicationContext appContext = new ClassPathXmlApplicationContext(
-        "applicationContext-test.xml");
-        persistenceService = (PersistenceService) appContext.getBean("persistenceService");        
+        super.onSetUpInTransaction();
+        persistenceService = (PersistenceService) applicationContext.getBean("persistenceService"); 
     }
     
     public void testValidation()
@@ -62,6 +63,12 @@ public class HibernateValidationTest extends TestCase
         ClassValidator<Baz> validator = new ClassValidator<Baz>(Baz.class);
         InvalidValue[] invalidValues = validator.getInvalidValues(baz);
         assertEquals(1, invalidValues.length);
+    }
+
+    @Override
+    protected String[] getConfigLocations()
+    {
+        return new String[] {"applicationContext-test.xml"};
     }
 
 }

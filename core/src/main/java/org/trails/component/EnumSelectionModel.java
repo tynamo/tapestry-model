@@ -4,14 +4,19 @@ import org.apache.tapestry.form.IPropertySelectionModel;
 import org.trails.TrailsRuntimeException;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class EnumSelectionModel implements IPropertySelectionModel
 {
     private List instances;
+
     private boolean allowNone;
+
     private Class type;
+
     public static String DEFAULT_NONE_LABEL = "None";
+
     public static String DEFAULT_NONE_VALUE = "none";
 
     private String noneLabel = EnumSelectionModel.DEFAULT_NONE_LABEL;
@@ -42,15 +47,19 @@ public class EnumSelectionModel implements IPropertySelectionModel
         }
     }
 
-    /* (non-Javadoc)
-    * @see org.apache.tapestry.form.IPropertySelectionModel#getOptionCount()
-    */
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.apache.tapestry.form.IPropertySelectionModel#getOptionCount()
+     */
     public int getOptionCount()
     {
         return instances.size();
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.apache.tapestry.form.IPropertySelectionModel#getOption(int)
      */
     public Object getOption(int index)
@@ -58,7 +67,9 @@ public class EnumSelectionModel implements IPropertySelectionModel
         return instances.get(index);
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.apache.tapestry.form.IPropertySelectionModel#getLabel(int)
      */
     public String getLabel(int index)
@@ -70,7 +81,9 @@ public class EnumSelectionModel implements IPropertySelectionModel
         return instances.get(index).toString();
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.apache.tapestry.form.IPropertySelectionModel#getValue(int)
      */
     public String getValue(int index)
@@ -90,22 +103,27 @@ public class EnumSelectionModel implements IPropertySelectionModel
         }
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.apache.tapestry.form.IPropertySelectionModel#translateValue(java.lang.String)
      */
     public Object translateValue(String value)
     {
-        try
+        if (allowNone)
         {
-            if (allowNone)
-            {
-                if (value.equals(EnumSelectionModel.DEFAULT_NONE_VALUE)) return null;
-            }
-            return Enum.valueOf(type, value);
-        } catch (Exception e)
-        {
-            throw new TrailsRuntimeException(e);
+            if (value.equals(EnumSelectionModel.DEFAULT_NONE_VALUE))
+                return null;
         }
+        for (Iterator iter = instances.iterator(); iter.hasNext();)
+        {
+            Object enumElement = iter.next();
+            if (enumElement != null && enumElement.toString().equals(value))
+            {
+                return enumElement;
+            }
+        }
+        return null;
     }
 
     public String getNoneLabel()
@@ -118,6 +136,3 @@ public class EnumSelectionModel implements IPropertySelectionModel
         this.noneLabel = noneLabel;
     }
 }
-
-
-

@@ -20,6 +20,7 @@ import java.util.Set;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.components.Block;
 import org.apache.tapestry.util.ComponentAddress;
+import org.hibernate.criterion.DetachedCriteria;
 import org.jmock.Mock;
 import org.trails.descriptor.CollectionDescriptor;
 import org.trails.descriptor.IClassDescriptor;
@@ -27,6 +28,7 @@ import org.trails.descriptor.IPropertyDescriptor;
 import org.trails.descriptor.IdentifierDescriptor;
 import org.trails.descriptor.TrailsClassDescriptor;
 import org.trails.descriptor.TrailsPropertyDescriptor;
+import org.trails.persistence.PersistenceService;
 import org.trails.security.SecurityAuthorities;
 import org.trails.security.test.FooSecured;
 import org.trails.test.Foo;
@@ -41,7 +43,7 @@ import org.trails.test.Foo;
 public class ObjectTableTest extends ComponentTest
 {
     ObjectTable objectTable;
-    Mock psvcMock;
+    Mock psvcMock = new Mock(PersistenceService.class);
     Mock pageMock = new Mock(IPage.class);
     IPage page;
     SecurityAuthorities autorities;
@@ -57,7 +59,9 @@ public class ObjectTableTest extends ComponentTest
     	autorities = new SecurityAuthorities();
         
         page = (IPage)pageMock.proxy();
-        objectTable = (ObjectTable) creator.newInstance(ObjectTable.class);
+        objectTable = (ObjectTable) creator.newInstance(ObjectTable.class, new Object[] {
+            "persistenceService", psvcMock.proxy()
+        });
         objectTable.setShowCollections(false);
         Block idColumnValue = (Block)creator.newInstance(Block.class);
         idColumnValue.setId("linkColumnValue");
@@ -222,6 +226,21 @@ public class ObjectTableTest extends ComponentTest
     	
     	/* Id must be a link */
     	assertNotNull(idColumn.getBlockAddress());	
+    }
+    
+    public void testGetTableSource() throws Exception
+    {
+        DetachedCriteria criteria = DetachedCriteria.forClass(Foo.class);
+        objectTable.setCriteria(criteria);
+        TrailsTableModel tableModel = (TrailsTableModel)objectTable.getSource();
+        
+        assertNotNull(tableModel.getPersistenceService());
+        assertEquals(criteria, tableModel.getCriteria());
+        
+        objectTable.setCriteria(null);
+        List instances = new ArrayList();
+        objectTable.setInstances(instances);
+        assertEquals(instances, objectTable.getSource());
     }
     
     public void testGetIdentifierProperty() throws Exception

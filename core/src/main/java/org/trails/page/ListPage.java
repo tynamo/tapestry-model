@@ -38,10 +38,10 @@ public abstract class ListPage extends TrailsPage implements IExternalPage, Page
 	public void pageBeginRender(PageEvent event)
 	{
     	super.pageBeginRender(event);
-    	if (!getRequestCycle().isRewinding())
-    	{
-    		setInstances(getPersistenceService().getInstances(getCriteria()));
-    	}
+//    	if (!getRequestCycle().isRewinding())
+//    	{
+//    		setInstances(getPersistenceService().getInstances(getCriteria()));
+//    	}
 	}
 
 	/* (non-Javadoc)

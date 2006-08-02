@@ -30,6 +30,8 @@ import org.hibernate.Session;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Projection;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.metadata.ClassMetadata;
 import org.springframework.beans.BeansException;
@@ -240,5 +242,16 @@ public class HibernatePersistenceService extends HibernateDaoSupport implements
     {
         this.appContext = arg0;
 
+    }
+
+    public int count(DetachedCriteria criteria)
+    {
+        criteria.setProjection(Projections.rowCount());
+        return (Integer)getHibernateTemplate().findByCriteria(criteria).get(0);
+    }
+
+    public List getInstances(DetachedCriteria criteria, int startIndex, int maxResults)
+    {
+        return getHibernateTemplate().findByCriteria(criteria, startIndex, maxResults);
     }
 }
