@@ -1,0 +1,1 @@
+mvn archetype:create -DarchetypeGroupId=org.trails -DarchetypeArtifactId=trails-secure-archetype -DarchetypeVersion=1.0-SNAPSHOT -DgroupId=%1 -DartifactId=%2
