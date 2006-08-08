@@ -61,10 +61,10 @@
 					</factory>
 					<force>true</force>
 					<nocompile>true</nocompile>
-					<generated>src/generated</generated>
+					<generated>\${basedir}/target/generated-sources/java</generated>
 					<A>
 						configFile=\${basedir}/src/main/resources/hibernate.cfg.xml,
-						destFile=${project.build.outputDirectory}/hibernate.cfg.xml
+						destFile=\${basedir}/target/generated-sources/resources/hibernate.cfg.xml
 					</A>
 					<target>1.5</target>
 					<!--
@@ -94,7 +94,15 @@
 			</plugin>
 
 		</plugins>
-	</build>
+        <resources>
+            <resource>
+                <directory>\${basedir}/src/main/resources</directory>
+            </resource>
+            <resource>
+                <directory>\${basedir}/target/generated-sources/resources</directory>
+            </resource>
+        </resources>
+    </build>
 	<dependencies>
 		<dependency>
 			<groupId>org.trails</groupId>

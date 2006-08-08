@@ -7,6 +7,7 @@
   	<resource>src/main/webapp/style/default.css</resource>
   	<resource>src/main/webapp/style/displaytag.css</resource>
   	<resource>src/main/webapp/style/messages.css</resource>
+  	<resource filtered="false">src/main/webapp/images/iconWarning.gif</resource>
   	<resource>src/main/webapp/WEB-INF/trails.application</resource>
 	<resource>src/main/webapp/WEB-INF/Border.html</resource>
 	<resource>src/main/webapp/WEB-INF/Border.jwc</resource>
