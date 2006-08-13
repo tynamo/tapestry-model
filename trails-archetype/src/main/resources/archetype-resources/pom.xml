@@ -61,7 +61,7 @@
 					</factory>
 					<force>true</force>
 					<nocompile>true</nocompile>
-					<generated>\${basedir}/target/generated-sources/java</generated>
+					<generated>target/generated-sources/java</generated>
 					<A>
 						configFile=\${basedir}/src/main/resources/hibernate.cfg.xml,
 						destFile=\${basedir}/target/generated-sources/resources/hibernate.cfg.xml
