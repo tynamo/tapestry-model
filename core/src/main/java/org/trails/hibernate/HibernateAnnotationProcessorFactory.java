@@ -1,27 +1,26 @@
 package org.trails.hibernate;
 
-import java.io.File;
+import com.sun.mirror.apt.AnnotationProcessor;
+import com.sun.mirror.apt.AnnotationProcessorEnvironment;
+import com.sun.mirror.apt.AnnotationProcessorFactory;
+import com.sun.mirror.declaration.AnnotationTypeDeclaration;
+import com.sun.mirror.declaration.ClassDeclaration;
+import com.sun.mirror.declaration.Declaration;
+import com.sun.mirror.util.SimpleDeclarationVisitor;
+import org.dom4j.Document;
+import org.dom4j.Element;
+import org.dom4j.io.SAXReader;
+import org.dom4j.io.OutputFormat;
+import org.dom4j.io.XMLWriter;
+import org.hibernate.util.DTDEntityResolver;
+
 import java.io.PrintWriter;
+import java.io.File;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-
-import org.dom4j.Document;
-import org.dom4j.Element;
-import org.dom4j.io.SAXReader;
-import org.hibernate.util.DTDEntityResolver;
-
-import com.sun.corba.se.spi.legacy.connection.GetEndPointInfoAgainException;
-import com.sun.mirror.apt.AnnotationProcessor;
-import com.sun.mirror.apt.AnnotationProcessorEnvironment;
-import com.sun.mirror.apt.AnnotationProcessorFactory;
-import com.sun.mirror.apt.Filer;
-import com.sun.mirror.declaration.AnnotationTypeDeclaration;
-import com.sun.mirror.declaration.ClassDeclaration;
-import com.sun.mirror.declaration.Declaration;
-import com.sun.mirror.util.SimpleDeclarationVisitor;
 
 public class HibernateAnnotationProcessorFactory implements AnnotationProcessorFactory
 {
@@ -106,9 +105,14 @@ public class HibernateAnnotationProcessorFactory implements AnnotationProcessorF
                     }
                     sessionFactoryElement.elements().addAll(listenerElements);
                 }
-                System.out.println("Creating destFile: " + getOptionValue(destFileOption));
-                PrintWriter writer = new PrintWriter(getOptionValue(destFileOption));
-                doc.write(writer);
+                String filename = getOptionValue(destFileOption);
+                System.out.println("Creating destFile: " + filename);
+                File f = new File(filename);
+                f.getParentFile().mkdirs();
+
+                OutputFormat format = OutputFormat.createPrettyPrint();
+                XMLWriter writer = new XMLWriter(new PrintWriter(f), format);
+                writer.write(doc);
                 writer.close();
                 
             }
