@@ -14,6 +14,8 @@ package org.trails.persistence;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.persistence.NonUniqueResultException;
+
 import org.hibernate.criterion.DetachedCriteria;
 
 
@@ -26,7 +28,7 @@ import org.hibernate.criterion.DetachedCriteria;
 public interface PersistenceService
 {
     public <T> T getInstance(Class<T> type, Serializable id);
-
+    
     public List getAllInstances(Class type);
     
     /**
@@ -39,6 +41,8 @@ public interface PersistenceService
     public <T> T save(T instance);
 
     public void remove(Object instance);
+
+    public Object getInstance(DetachedCriteria criteria) throws NonUniqueResultException;
 
     public List getInstances(DetachedCriteria criteria);
     

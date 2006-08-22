@@ -14,6 +14,8 @@ package org.trails.hibernate;
 import java.lang.reflect.Field;
 import java.util.List;
 
+import javax.persistence.NonUniqueResultException;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.DetachedCriteria;
@@ -104,6 +106,35 @@ public class HibernatePersistenceServiceTest extends AbstractTransactionalSpring
 
     }
 
+    /**
+     * @throws Exception
+     */
+    public void testSingleResultQuery() throws Exception
+    {
+       
+        Foo foo = new Foo();
+        foo.setId(1);
+        foo.setName("the foo");
+        persistenceService.save(foo);
+        
+        DetachedCriteria criteria = DetachedCriteria.forClass(Foo.class);
+        criteria.add(Restrictions.eq("name", "the foo"));
+        assertNotNull(persistenceService.getInstance(criteria));
+        
+        Foo foo2 = new Foo();
+        foo2.setId(2);
+        foo2.setName("the foo");
+        foo2.setId(2);
+        persistenceService.save(foo2);
+        try {
+        	persistenceService.getInstance(criteria);
+        }
+        catch (NonUniqueResultException e) {
+        	return;
+        }
+        fail("NonUniqueResultException not thrown, but two results should have been found");
+    }
+    
     public void testGetIntancesWithManyToOne() throws Exception
     {
 		Bar bar = new Bar();

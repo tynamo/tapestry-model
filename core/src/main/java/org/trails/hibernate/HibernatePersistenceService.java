@@ -19,6 +19,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.persistence.NonUniqueResultException;
+
 import ognl.Ognl;
 import ognl.OgnlException;
 
@@ -123,6 +125,13 @@ public class HibernatePersistenceService extends HibernateDaoSupport implements
         return getHibernateTemplate().findByCriteria(criteria);
     }
 
+		public Object getInstance(final DetachedCriteria criteria) throws NonUniqueResultException {
+			List list = getInstances(criteria);
+			if (list.size() < 1) return null;
+			if (list.size() > 1) throw new NonUniqueResultException("More than a single result fulfilled the criteria");
+			return list.get(0);
+		}
+    
     public List getAllTypes()
     {
         ArrayList allTypes = new ArrayList();
