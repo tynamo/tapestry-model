@@ -13,10 +13,15 @@
  */
 package org.trails.callback;
 
+import java.util.Set;
+
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.tapestry.IRequestCycle;
 import org.jmock.Mock;
 import org.trails.component.ComponentTest;
+import org.trails.descriptor.CollectionDescriptor;
 import org.trails.page.EditPage;
+import org.trails.persistence.PersistenceService;
 import org.trails.test.Baz;
 import org.trails.test.Foo;
 
@@ -32,17 +37,18 @@ public class CollectionCallbackTest extends ComponentTest
     String pageName = "fooAdd";
     Foo foo = new Foo();
     Baz baz = new Baz();
+    CollectionDescriptor collectionDescriptor = new CollectionDescriptor(Foo.class, "bazzes", Set.class);
     
     public void setUp() throws Exception
     {
-        callBack = new CollectionCallback(pageName, foo, "bazzes.add", "bazzes.remove");
+        collectionDescriptor.setElementType(Baz.class);
+        callBack = new CollectionCallback(pageName, foo, collectionDescriptor);
     }
     
     public void testCallback()
     {
         EditPage addPage = (EditPage)creator.newInstance(EditPage.class);
         
-
         Mock cycleMock = new Mock(IRequestCycle.class);
         cycleMock.expects(once()).method("getPage").with(eq(pageName)).will(returnValue(addPage));
         cycleMock.expects(once()).method("activate").with(same(addPage));
@@ -51,17 +57,28 @@ public class CollectionCallbackTest extends ComponentTest
         
     }
     
-    public void testAdd() throws Exception
+    public void testEditCollectionMemberCallback()
     {
-        callBack.add(baz);
+        persistenceMock.expects(once()).method("reload").with(eq(foo)).will(returnValue(foo));   
+        EditCollectionMemberCallback editColectionMemberCallback = new EditCollectionMemberCallback(pageName, foo, collectionDescriptor);
+        editColectionMemberCallback.save((PersistenceService)persistenceMock.proxy(), baz);
+        assertEquals(0, foo.getBazzes().size());
+    }
+    
+    public void testSave() throws Exception
+    {
+        persistenceMock.expects(once()).method("save").with(eq(foo));
+        //persistenceMock.expects(once()).method("reload").with(eq(foo)).will(returnValue(foo));
+        callBack.save((PersistenceService)persistenceMock.proxy(), baz);
         assertEquals("1 baz", 1, foo.getBazzes().size());
         assertEquals(baz, foo.getBazzes().iterator().next());
     }
     
     public void testRemove() throws Exception
     {
+        persistenceMock.expects(once()).method("save").with(eq(foo));
         foo.getBazzes().add(baz);
-        callBack.remove(baz);
+        callBack.remove((PersistenceService)persistenceMock.proxy(), baz);
         assertEquals("0 bazzes", 0, foo.getBazzes().size());
     }
 }

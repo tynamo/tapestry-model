@@ -55,11 +55,13 @@ public class HibernatePersistenceServiceTest extends AbstractTransactionalSpring
     
     HibernateTemplate template;
 
+    private SessionFactory sessionFactory;
     
     public void onSetUpInTransaction() throws Exception
     {
         persistenceService = (PersistenceService) applicationContext.getBean(
                 "persistenceService");
+        sessionFactory = (SessionFactory)applicationContext.getBean("sessionFactory");
     }
 
     public void testIgnoreCGLIBEnhancements()
@@ -104,14 +106,15 @@ public class HibernatePersistenceServiceTest extends AbstractTransactionalSpring
 
     public void testGetIntancesWithManyToOne() throws Exception
     {
-       
-		Wibble gazonk = new Wibble();
-		gazonk.setId(new Integer(9874));
 		Bar bar = new Bar();
 		
-		bar = persistenceService.save(bar);
-		gazonk.setBar(bar);
-		gazonk = persistenceService.save(gazonk);
+		persistenceService.save(bar);
+        Wibble wibble = new Wibble();
+        persistenceService.save(wibble);
+        Session session =SessionFactoryUtils.getSession(getSessionFactory(), true);
+        session.flush();
+        assertNotNull(wibble.getId());
+		wibble.setBar(bar);
 		DetachedCriteria criteria = DetachedCriteria.forClass(Wibble.class);
 		criteria.add(Restrictions.eq("bar", bar));
 		List list = persistenceService.getInstances(criteria);
@@ -193,6 +196,19 @@ public class HibernatePersistenceServiceTest extends AbstractTransactionalSpring
         baz = persistenceService.save(baz);
         persistenceService.remove(baz);
         
+    }
+    
+    public void testReload() throws Exception
+    {
+        Foo foo = new Foo();
+        foo.setId(1);
+        foo.setName("foo");
+        persistenceService.save(foo);
+        Foo foo2 = new Foo();
+        foo2.setId(1);
+        foo2.setName("otherfoo");
+        Foo loadedFoo = persistenceService.reload(foo2);
+        assertEquals("foo", loadedFoo.getName());
     }
     
     public void testCount() throws Exception
@@ -281,4 +297,14 @@ public class HibernatePersistenceServiceTest extends AbstractTransactionalSpring
 	{
 		return new String[] {"applicationContext-test.xml"};
 	}
+
+    public SessionFactory getSessionFactory()
+    {
+        return sessionFactory;
+    }
+
+    public void setSessionFactory(SessionFactory sessionFactory)
+    {
+        this.sessionFactory = sessionFactory;
+    }
 }

@@ -12,6 +12,7 @@
 package org.trails.page;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 import org.apache.tapestry.IExternalPage;
 import org.apache.tapestry.IRequestCycle;
@@ -27,6 +28,7 @@ import org.trails.callback.CollectionCallback;
 import org.trails.callback.EditCallback;
 import org.trails.callback.ListCallback;
 import org.trails.component.ComponentTest;
+import org.trails.descriptor.CollectionDescriptor;
 import org.trails.descriptor.IClassDescriptor;
 import org.trails.descriptor.IdentifierDescriptor;
 import org.trails.descriptor.TrailsClassDescriptor;
@@ -58,6 +60,8 @@ public class EditPageTest extends ComponentTest
     ListCallback listCallBack = new ListCallback("FooList", Foo.class.getName(), DetachedCriteria.forClass(Foo.class));
     ListPage listPage;
     EditCallback editCallback;
+    CollectionDescriptor bazzesDescriptor = new CollectionDescriptor(Foo.class, "bazzes", Set.class);
+    
     
     public void setUp() throws Exception
     {
@@ -71,6 +75,7 @@ public class EditPageTest extends ComponentTest
         idDescriptor = new IdentifierDescriptor(Foo.class, "id", Foo.class);
         descriptor.getPropertyDescriptors().add(idDescriptor);
        
+        bazzesDescriptor.setElementType(Baz.class);
         
         // attach the visit to the page
         
@@ -120,7 +125,7 @@ public class EditPageTest extends ComponentTest
         descriptorServiceMock.expects(atLeastOnce()).method("getClassDescriptor").with(eq(Baz.class))
     		.will(returnValue(bazDescriptor));       
         assertEquals("Edit Foo", editPage.getTitle());
-        CollectionCallback bazCallback = new CollectionCallback("fooPage", foo, "bazzes.add", "bazzes.remove");
+        CollectionCallback bazCallback = new CollectionCallback("fooPage", foo, bazzesDescriptor);
         bazEditPage.getCallbackStack().push(bazCallback);
         EditCallback newCallback = new EditCallback("fooPage", foo);
         bazEditPage.getCallbackStack().push(newCallback);
@@ -222,6 +227,7 @@ public class EditPageTest extends ComponentTest
     {
         
         persistenceMock.expects(once()).method("save").with(eq(baz));
+        persistenceMock.expects(once()).method("save").with(eq(foo));
         makeBazCallback(bazEditPage, false);
         bazEditPage.saveAndReturn((IRequestCycle)cycleMock.proxy());
         assertEquals("1 baz", 1, foo.getBazzes().size());
@@ -229,7 +235,8 @@ public class EditPageTest extends ComponentTest
     
     private void makeBazCallback(EditPage editPage, boolean isChild)
     {
-        CollectionCallback bazCallback = new CollectionCallback("fooPage", foo, "bazzes.add", "bazzes.remove");
+
+        CollectionCallback bazCallback = new CollectionCallback("fooPage", foo, bazzesDescriptor);
         bazCallback.setChildRelationship(isChild);
         editPage.getCallbackStack().push(bazCallback);
         editPage.getCallbackStack().push(new EditCallback("fooPage", new Foo()));
@@ -238,24 +245,16 @@ public class EditPageTest extends ComponentTest
         
     }
 
-    public void testRemoveFromNonChildCollection()
+    public void testRemoveFrom()
     {
         foo.getBazzes().add(baz);
         
         persistenceMock.expects(once()).method("remove").with(eq(baz));
-        makeBazCallback(bazEditPage, false);
+        persistenceMock.expects(once()).method("save").with(eq(foo));
+        makeBazCallback(bazEditPage, true);
         bazEditPage.remove((IRequestCycle)cycleMock.proxy());
         assertEquals("no bazzes", 0, foo.getBazzes().size());
     }
- 
-//    public void testRemoveFromChildCollection()
-//    {
-//        foo.getBazzes().add(baz);
-//       
-//        makeBazCallback(true);
-//        bazEditPage.remove((IRequestCycle)cycleMock.proxy());
-//        assertEquals("no bazzes", 0, foo.getBazzes().size());
-//    }
     
     public void testRemove()
     {

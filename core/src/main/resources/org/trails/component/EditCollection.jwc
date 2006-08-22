@@ -30,8 +30,9 @@
     <component id="removeCheckbox" type="Checkbox" inherit-informal-parameters="no">
         <binding name="selected">selected[index]</binding>
     </component>
-    <component id="editLink" type="EditLink" inherit-informal-parameters="no">
-        <binding name="model">currentObject</binding>
+    <component id="editLink" type="LinkSubmit" inherit-informal-parameters="no">
+    	<binding name="listener">listener:edit</binding>
+        <binding name="parameters">currentObject</binding>
     </component>
     <component id="insert" type="Insert" inherit-informal-parameters="no">
         <binding name="value">currentObject</binding>

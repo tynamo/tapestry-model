@@ -58,5 +58,7 @@ public interface PersistenceService
      * @return
      */
 	public List getInstances(Object example);
+
+    public <T> T reload(T instance);
     
 }

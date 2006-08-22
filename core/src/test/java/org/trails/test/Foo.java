@@ -190,7 +190,11 @@ public class Foo
     {
         getBings().add(bing);
     }
-
+    
+    public void removeBing(Bing bing)
+    {
+        getBings().remove(bing);
+    }
     /**
      * @return
      */

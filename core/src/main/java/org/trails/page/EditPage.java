@@ -109,7 +109,7 @@ public abstract class EditPage extends ModelPage implements IExternalPage
         ICallback callback = getCallbackStack().popPreviousCallback();
         if (callback instanceof CollectionCallback)
         {
-            ((CollectionCallback)callback).remove(getModel());
+            ((CollectionCallback)callback).remove(getPersistenceService(), getModel());
         }
         callback.performCallback(cycle);
     }
@@ -144,7 +144,7 @@ public abstract class EditPage extends ModelPage implements IExternalPage
             ICallback callback = getCallbackStack().popPreviousCallback();
             if (callback instanceof CollectionCallback)
             {
-                ((CollectionCallback)callback).add(getModel());
+                ((CollectionCallback)callback).save(getPersistenceService(), getModel());
             }
             callback.performCallback(cycle);
         }

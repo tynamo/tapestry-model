@@ -56,22 +56,6 @@ public class AssertNoOrphansTest extends
 		wibble = persistenceService.save(wibble);
 	}
 
-	public void testGetIntancesWithManyToOne() throws Exception
-    {
-       
-		Wibble gazonk = new Wibble();
-		gazonk.setId(new Integer(9874));
-		Bar bar = new Bar();
-		
-		bar = persistenceService.save(bar);
-		gazonk.setBar(bar);
-		gazonk = persistenceService.save(gazonk);
-		DetachedCriteria criteria = DetachedCriteria.forClass(Wibble.class);
-		criteria.add(Restrictions.eq("bar", bar));
-		List list = persistenceService.getInstances(criteria);
-		assertEquals(1, list.size());
-    }
-    
 	public void testAssertNoOrphans() throws Exception
 	{
 

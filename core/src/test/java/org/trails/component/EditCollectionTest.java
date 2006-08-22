@@ -26,6 +26,7 @@ import org.jmock.Mock;
 import org.trails.callback.CallbackStack;
 import org.trails.callback.CollectionCallback;
 import org.trails.callback.EditCallback;
+import org.trails.callback.EditCollectionMemberCallback;
 import org.trails.descriptor.CollectionDescriptor;
 import org.trails.descriptor.IClassDescriptor;
 import org.trails.descriptor.IdentifierDescriptor;
@@ -127,7 +128,7 @@ public class EditCollectionTest extends ComponentTest
         assertTrue("AddToCollectionCallback on stack", 
             editCollection.getCallbackStack().getStack().peek() instanceof CollectionCallback);
         CollectionCallback callback = (CollectionCallback)editCollection.getCallbackStack().getStack().pop();
-        assertEquals("right ognl", "bazzes.add", callback.getAddOgnlExpression());
+        //assertEquals("right ognl", "bazzes.add", callback.getAddOgnlExpression());
         
         EditCallback nextPageCallback = (EditCallback)editPage.getNextPage();
         assertTrue(nextPageCallback.getModel() instanceof Baz);
@@ -136,6 +137,23 @@ public class EditCollectionTest extends ComponentTest
         assertTrue("is child", callback.isChildRelationship());
         assertEquals("right page", callback.getPageName(), "fooPage");
         //assertNotNull(editPage.getNextPage());
+    }
+
+    public void testEdit() throws Exception
+    {
+        Mock cycleMock = new Mock(IRequestCycle.class);
+        pageResolverMock.expects(atLeastOnce()).method("resolvePage").with(
+            isA(IRequestCycle.class), eq(Baz.class.getName()), eq(PageType.EDIT))
+            .will(returnValue(editPage));
+        buildCollectionDescriptor("bazzes", Baz.class);
+        cycleMock.expects(atLeastOnce()).method("getPage").will(returnValue(editPage));
+        pageMock.expects(atLeastOnce()).method("getRequestCycle").will(returnValue(cycleMock.proxy()));
+        Baz baz = new Baz();
+        EditPage page = (EditPage)editCollection.edit(baz);
+        assertEquals(baz, page.getModel());
+        EditCollectionMemberCallback callback = (EditCollectionMemberCallback)
+            editCollection.getCallbackStack().getStack().pop();
+        assertNotNull(callback);
     }
 
     /**
@@ -168,21 +186,6 @@ public class EditCollectionTest extends ComponentTest
                 returnValue(editPage));
         
         return cycleMock;
-    }
-
-    public void testFindExpression() throws Exception
-    {
-        Mock cycleMock = buildCycleMock("Bing");
-    	cycleMock.expects(atLeastOnce()).method("getPage").will(returnValue(editPage));
-        pageMock.expects(atLeastOnce()).method("getRequestCycle").will(returnValue(cycleMock.proxy()));
-
-    	pageResolverMock.expects(atLeastOnce()).method("resolvePage").with(
-        		isA(IRequestCycle.class), eq(Bing.class.getName()), eq(PageType.EDIT))
-        		.will(returnValue(editPage));
- 
-        buildCollectionDescriptor("bings", Bing.class);
-        editCollection.showAddPage((IRequestCycle) cycleMock.proxy());
-        assertEquals("right ognl", "addBing", editCollection.findExpression("add"));
     }
     
     public void testBuildSelectedList() throws Exception

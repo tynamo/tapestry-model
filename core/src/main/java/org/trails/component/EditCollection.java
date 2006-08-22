@@ -22,6 +22,7 @@ import ognl.OgnlException;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.annotations.InjectObject;
 import org.apache.tapestry.annotations.InjectState;
@@ -31,6 +32,7 @@ import org.trails.TrailsRuntimeException;
 import org.trails.callback.CallbackStack;
 import org.trails.callback.CollectionCallback;
 import org.trails.callback.EditCallback;
+import org.trails.callback.EditCollectionMemberCallback;
 import org.trails.descriptor.CollectionDescriptor;
 import org.trails.descriptor.DescriptorService;
 import org.trails.descriptor.IClassDescriptor;
@@ -112,11 +114,26 @@ public abstract class EditCollection extends TrailsComponent
 	@InjectObject("spring:pageResolver")
 	public abstract PageResolver getPageResolver();
 	
+    public IPage edit(Object member)
+    {
+        EditCollectionMemberCallback callback = new EditCollectionMemberCallback(
+            getPage().getRequestCycle().getPage().getPageName(),
+            getModel(),
+            getCollectionDescriptor());
+        getCallbackStack().push(callback);
+        EditPage editPage = (EditPage)getPageResolver().resolvePage(
+                getPage().getRequestCycle(),
+                Utils.checkForCGLIB(member.getClass()).getName(),
+                PageType.EDIT);
+        editPage.setModel(member);
+        return editPage;
+    }
+    
+    
     public void showAddPage(IRequestCycle cycle)
     {
         getCallbackStack().push(buildCallback());
 
-        //TODO: refactor to use page resolver
         EditPage editPage = (EditPage)getPageResolver().resolvePage(cycle,
         		getCollectionDescriptor().getElementType().getName(),
         		PageType.EDIT);
@@ -158,38 +175,9 @@ public abstract class EditCollection extends TrailsComponent
     CollectionCallback buildCallback()
     {
         CollectionCallback callback = new CollectionCallback(
-            getPage().getRequestCycle().getPage().getPageName(), getModel(), findExpression("add"), findExpression("remove"));
+            getPage().getRequestCycle().getPage().getPageName(), getModel(), getCollectionDescriptor());
         callback.setChildRelationship(getCollectionDescriptor().isChildRelationship());
         return callback;
-    }
-
-    /**
-     * @param method the method to look for, usually add or remove
-     * @return the ogln expression to use to add or remove a member to the
-     * collection.  Will look for a addName method where Name is
-     * the unqualified element class name, if there isn't one it will use
-     * the collection's add method.
-     */
-    String findExpression(String method)
-    {
-        Method addMethod = null;
-
-        try
-        {
-            addMethod = getModel().getClass().getMethod("add" +
-                    Utils.unqualify(getCollectionDescriptor().getElementType()
-                                        .getName()),
-                    new Class[] { getCollectionDescriptor().getElementType() });
-        }catch (NoSuchMethodException ex)
-        {
-            // if we don't have one...
-            return getCollectionDescriptor().getName() + ".add";
-        }catch (Exception e)
-        {
-            throw new TrailsRuntimeException(e);
-        }
-
-        return addMethod.getName();
     }
 
     /**

@@ -100,6 +100,7 @@ public class HibernateAnnotationProcessorFactoryTest extends MockObjectTestCase
 		
 		
 		SAXReader reader = new SAXReader();
+        //reader.setIncludeExternalDTDDeclarations(false);
 		Document doc = reader.read(destFile);
 		assertNotNull(doc.selectSingleNode("//mapping[@class='org.trails.Foo']"));
 		assertNotNull(doc.selectSingleNode("//mapping[@class='org.trails.security.domain.ShouldBePreserved']"));

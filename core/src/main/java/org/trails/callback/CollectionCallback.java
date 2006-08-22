@@ -19,6 +19,8 @@ import ognl.Ognl;
 import ognl.OgnlException;
 
 import org.trails.TrailsRuntimeException;
+import org.trails.descriptor.CollectionDescriptor;
+import org.trails.persistence.PersistenceService;
 
 /**
  * This guy is responsible for returning from an add or remove on a
@@ -26,9 +28,7 @@ import org.trails.TrailsRuntimeException;
  */
 public class CollectionCallback extends EditCallback
 {
-    private String addOgnlExpression;
-    
-    private String removeOgnlExpression;
+    private CollectionDescriptor collectionDescriptor;
 	
 	private boolean childRelationship;
     
@@ -36,21 +36,22 @@ public class CollectionCallback extends EditCallback
      * @param pageName
      * @param model
      */
-    public CollectionCallback(String pageName, Object model, String addOgnl, String removeOgnl)
+    public CollectionCallback(String pageName, Object model, CollectionDescriptor collectionDescriptor)
     {
         super(pageName, model);
-        this.addOgnlExpression = addOgnl;
-        this.removeOgnlExpression = removeOgnl;
+        this.collectionDescriptor = collectionDescriptor;
     }
 
-    public void add(Object newObject)
+    public void save(PersistenceService persistenceService, Object newObject)
     {
-        executeOgnlExpression(addOgnlExpression, newObject);
+        executeOgnlExpression(collectionDescriptor.findAddExpression(), newObject);
+        persistenceService.save(getModel());
     }
     
-    public void remove(Object object)
+    public void remove(PersistenceService persistenceService, Object object)
     {
-        executeOgnlExpression(removeOgnlExpression, object);
+        executeOgnlExpression(collectionDescriptor.findRemoveExpression(), object);
+        persistenceService.save(getModel());
     }
     
     /**
@@ -70,21 +71,6 @@ public class CollectionCallback extends EditCallback
         }
     }
     
-    /**
-     * @return Returns the addOgnlExpression.
-     */
-    public String getAddOgnlExpression()
-    {
-        return addOgnlExpression;
-    }
-    /**
-     * @return Returns the removeOgnlExpression.
-     */
-    public String getRemoveOgnlExpression()
-    {
-        return removeOgnlExpression;
-    }
-
     public boolean isChildRelationship()
     {
         return childRelationship;
@@ -95,15 +81,5 @@ public class CollectionCallback extends EditCallback
     {
         this.childRelationship = child;
     }
-
-	public void setAddOgnlExpression(String addOgnlExpression)
-	{
-		this.addOgnlExpression = addOgnlExpression;
-	}
-
-	public void setRemoveOgnlExpression(String removeOgnlExpression)
-	{
-		this.removeOgnlExpression = removeOgnlExpression;
-	}
 	
 }

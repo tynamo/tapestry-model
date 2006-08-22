@@ -52,14 +52,6 @@ public class HibernateValidationTest extends AbstractTransactionalSpringContextT
     public void testValidator() throws Exception
     {
         Baz baz = new Baz();
-        try
-        {
-            baz = persistenceService.save(baz);
-        }
-        catch (InvalidStateException ex)
-        {
-            //ex.printStackTrace();
-        }
         ClassValidator<Baz> validator = new ClassValidator<Baz>(Baz.class);
         InvalidValue[] invalidValues = validator.getInvalidValues(baz);
         assertEquals(1, invalidValues.length);

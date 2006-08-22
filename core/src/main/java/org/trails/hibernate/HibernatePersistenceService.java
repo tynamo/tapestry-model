@@ -43,6 +43,7 @@ import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import org.springframework.transaction.annotation.Transactional;
 import org.trails.component.Utils;
 import org.trails.descriptor.DescriptorService;
+import org.trails.descriptor.IClassDescriptor;
 import org.trails.descriptor.IPropertyDescriptor;
 import org.trails.persistence.PersistenceException;
 import org.trails.persistence.PersistenceService;
@@ -93,7 +94,8 @@ public class HibernatePersistenceService extends HibernateDaoSupport implements
     {
         try
         {
-            return ( T ) getHibernateTemplate().merge( instance );
+            getHibernateTemplate().saveOrUpdate(instance);
+            return instance;
         }
         catch( DataAccessException dex )
         {
@@ -253,5 +255,22 @@ public class HibernatePersistenceService extends HibernateDaoSupport implements
     public List getInstances(DetachedCriteria criteria, int startIndex, int maxResults)
     {
         return getHibernateTemplate().findByCriteria(criteria, startIndex, maxResults);
+    }
+
+    public <T> T reload(T instance)
+    {
+        final DescriptorService descriptorService = (DescriptorService)appContext.getBean("descriptorService");
+        IClassDescriptor classDescriptor = descriptorService.getClassDescriptor(instance.getClass());
+        try
+        {
+            Serializable id = (Serializable)
+                Ognl.getValue(classDescriptor.getIdentifierDescriptor().getName(), instance);
+            return (T)getHibernateTemplate().load(instance.getClass(), id);
+        }
+        catch(OgnlException oe)
+        {
+            throw new PersistenceException(oe);
+        }
+        
     }
 }

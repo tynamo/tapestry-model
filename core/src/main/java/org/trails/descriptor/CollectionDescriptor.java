@@ -11,6 +11,11 @@
  */
 package org.trails.descriptor;
 
+import java.lang.reflect.Method;
+
+import org.trails.TrailsRuntimeException;
+import org.trails.component.Utils;
+
 
 /**
  * @author fus8882
@@ -89,6 +94,44 @@ public class CollectionDescriptor extends TrailsPropertyDescriptor
     public Object clone()
     {
         return new CollectionDescriptor(getBeanType(), this);
+    }
+
+    public String findAddExpression() 
+    {
+        return findExpression("add");
+    }
+    
+    public String findRemoveExpression()
+    {
+        return findExpression("remove");
+    }
+    
+    /**
+     * @param method the method to look for, usually add or remove
+     * @return the ogln expression to use to add or remove a member to the
+     * collection.  Will look for a addName method where Name is
+     * the unqualified element class name, if there isn't one it will use
+     * the collection's add method.
+     */
+    String findExpression(String method)
+    {
+        Method addMethod = null;
+
+        try
+        {
+            addMethod = getBeanType().getMethod(method +
+                    Utils.unqualify(getElementType().getName()),
+                    new Class[] { getElementType() });
+        }catch (NoSuchMethodException ex)
+        {
+            // if we don't have one...
+            return getName() + "." + method;
+        }catch (Exception e)
+        {
+            throw new TrailsRuntimeException(e);
+        }
+
+        return addMethod.getName();
     }
     
     
