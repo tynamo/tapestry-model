@@ -231,6 +231,19 @@
 				<artifactId>tapernate</artifactId>
 				<version>0.1-SNAPSHOT</version>
 			</dependency>
+			<dependency>
+				<groupId>htmlunit</groupId>
+				<artifactId>htmlunit</artifactId>
+				<version>1.8</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.testng</groupId>
+				<artifactId>testng</artifactId>
+				<version>4.7</version>
+				<scope>test</scope>
+				<classifier>jdk15</classifier>
+			</dependency>
 		</dependencies>
 
 </project>
