@@ -63,7 +63,7 @@ public class PropertyDescriptorTest extends TestCase
         assertEquals("foo", descriptor2.getName());
     }
 
-    public void testCloneWitdhExtensions() throws Exception
+    public void testCloneWidthExtensions() throws Exception
     {
         String testExtension = "testExtension";
         IDescriptorExtension descriptorExtension = new IDescriptorExtension()
