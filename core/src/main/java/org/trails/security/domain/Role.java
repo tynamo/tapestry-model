@@ -18,8 +18,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.persistence.Version;
 
+import org.acegisecurity.GrantedAuthority;
 import org.hibernate.validator.Length;
 import org.hibernate.validator.NotNull;
 import org.trails.descriptor.annotation.PropertyDescriptor;
@@ -32,7 +34,7 @@ import org.trails.validation.ValidateUniqueness;
 @Table(name="TRAILS_ROLE") 
 @ValidateUniqueness(property = "name")
 @Security(restrictions = {@Restriction(restrictionType = RestrictionType.VIEW, requiredRole = "ROLE_MANAGER")})
-public class Role implements Serializable
+public class Role implements GrantedAuthority, Serializable
 {
 
     private Integer id;
@@ -128,5 +130,10 @@ public class Role implements Serializable
     {
         return name;
     }
+
+  	@Transient
+		public String getAuthority() {
+  		return getName();
+		}
 
 }

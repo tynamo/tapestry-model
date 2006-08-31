@@ -5,12 +5,6 @@
 
 package org.trails.security;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-
-import org.acegisecurity.GrantedAuthority;
-import org.acegisecurity.GrantedAuthorityImpl;
 import org.acegisecurity.userdetails.UserDetails;
 import org.acegisecurity.userdetails.UserDetailsService;
 import org.acegisecurity.userdetails.UsernameNotFoundException;
@@ -18,19 +12,12 @@ import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.dao.DataAccessException;
 import org.trails.persistence.PersistenceService;
-import org.trails.security.domain.Role;
-import org.trails.security.domain.User;
 
 
 public class TrailsUserDAO implements UserDetailsService
 {
 
     PersistenceService persistenceService;
-
-    public PersistenceService getPersistenceService()
-    {
-        return persistenceService;
-    }
 
     public void setPersistenceService(PersistenceService persistenceService)
     {
@@ -39,35 +26,8 @@ public class TrailsUserDAO implements UserDetailsService
 
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException, DataAccessException
     {
-        DetachedCriteria criteria = DetachedCriteria.forClass(User.class);
+        DetachedCriteria criteria = DetachedCriteria.forClass(UserDetails.class);
         criteria.add(Restrictions.eq("username", username));
-
-        List users = getPersistenceService().getInstances(criteria);
-
-        if (users.size() == 0)
-        {
-            throw new UsernameNotFoundException("User not found");
-        }
-
-        org.trails.security.domain.User user = (org.trails.security.domain.User) users.get(0);
-
-        Set<Role> roles = user.getRoles();
-
-        if (roles.size() == 0)
-        {
-            throw new UsernameNotFoundException("User has no GrantedAuthority");
-        }
-
-        List<GrantedAuthority> listAuth = new ArrayList<GrantedAuthority>();
-
-        for (Role role : roles)
-        {
-            listAuth.add(new GrantedAuthorityImpl(role.getName()));
-        }
-
-        GrantedAuthority[] arrayAuths = new GrantedAuthority[listAuth.size()];
-        arrayAuths = listAuth.toArray(arrayAuths);
-
-        return new org.acegisecurity.userdetails.User(user.getUsername(), user.getPassword(), user.getEnabled(), !user.getAccountExpired(), !user.getCredentialsExpired(), !user.getAccountLocked(), arrayAuths);
+        return (UserDetails)persistenceService.getInstance(criteria);
     }
 }

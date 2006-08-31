@@ -169,64 +169,19 @@
 		</property>
 	</bean>
 	
+	<bean id="SeedDataInitializer" class="org.trails.seeddata.SpringSeedEntityInitializer" lazy-init="true">
+		<property name="persistenceService"><ref bean="persistenceService" /></property>
+		<property name="descriptorService"><ref bean="descriptorService" /></property>
+	</bean>	
+
 	<!-- security service bean -->
 	<bean id="securityService" class="org.trails.security.TrailsSecurityService"/>
-
-	<!-- security startup beans. lazy-init is true since this is used rarely. -->
-	<bean id="roleUser" class="org.trails.security.domain.Role" lazy-init="true">
-		<property name="name"><value>ROLE_USER</value></property>
-		<property name="description"><value>User role</value></property>
-	</bean>
-	
-	<bean id="roleManager" class="org.trails.security.domain.Role" lazy-init="true">
-		<property name="name"><value>ROLE_MANAGER</value></property>
-		<property name="description"><value>Manager role</value></property>
-	</bean>
-
-	<bean id="user" class="org.trails.security.domain.User" lazy-init="true">
-		<property name="username"><value>user</value></property>
-		<property name="password"><value>user</value></property> <!-- default password -->
-		<property name="confirmPassword"><value>user</value></property> <!-- default password -->
-		<property name="firstName"><value>Foo</value></property>
-		<property name="lastName"><value>Bar</value></property>
-		<property name="roles">
-			<list>
-				<ref bean="roleUser"/>
-			</list>
-		</property>
-	</bean>
-
-	<bean id="admin" class="org.trails.security.domain.User" lazy-init="true">
-		<property name="username"><value>admin</value></property>
-		<property name="password"><value>admin</value></property> <!-- default password -->
-		<property name="confirmPassword"><value>admin</value></property> <!-- default password -->
-		<property name="firstName"><value>Admin</value></property>
-		<property name="lastName"><value>Admin</value></property>
-		<property name="roles">
-			<list>
-				<ref bean="roleUser"/>
-				<ref bean="roleManager"/>
-			</list>
-		</property>
-	</bean>
 	
 	<bean id="securityStartup" class="org.trails.security.SecurityStartup" lazy-init="true">
 		<property name="persistenceService"><ref local="persistenceService" /></property>		
-		<property name="defaultUsers">
-			<list>
-				<ref local="user"/>
-				<ref local="admin"/>
-			</list>
-		</property>
-		<property name="defaultRoles">
-			<list>
-				<ref local="roleManager"/>
-				<ref local="roleUser"/>
-			</list>
-		</property>
+		<property name="seedDataInitializer"><ref local="SeedDataInitializer" /></property>		
 	</bean>
 
-	<!-- end of security startup beans -->
 	<bean id="validateUniqueAspect" class="org.trails.validation.ValidateUniqueAspect" factory-method="aspectOf">
 		<property name="descriptorService"><ref local="descriptorService" /></property>
 		<property name="persistenceService"><ref local="persistenceService" /></property>

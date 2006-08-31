@@ -19,8 +19,15 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.persistence.Version;
 
+import org.acegisecurity.GrantedAuthority;
+import org.acegisecurity.GrantedAuthorityImpl;
+import org.acegisecurity.userdetails.UserDetails;
+import org.acegisecurity.userdetails.UsernameNotFoundException;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hibernate.validator.NotNull;
 import org.trails.descriptor.annotation.PropertyDescriptor;
 import org.trails.security.RestrictionType;
@@ -33,8 +40,9 @@ import org.trails.validation.ValidateUniqueness;
 @ValidateUniqueness(property = "username")
 @Security(restrictions = {@Restriction(restrictionType = RestrictionType.VIEW, 
 		requiredRole = "ROLE_MANAGER")})
-public class User implements Serializable
+public class User implements UserDetails, Serializable
 {
+	private static final Log log = LogFactory.getLog(User.class);
 
     private Integer id;
     private String username;
@@ -45,9 +53,9 @@ public class User implements Serializable
     private Integer version;
     private Set<Role> roles = new HashSet<Role>();
     private boolean enabled = true;
-    private boolean accountExpired = false;
-    private boolean accountLocked = false;
-    private boolean credentialsExpired = false;
+		private boolean accountNonExpired = true;
+		private boolean accountNonLocked = true;
+		private boolean credentialsNonExpired = true;
 
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     @PropertyDescriptor(index = 0)
@@ -80,7 +88,7 @@ public class User implements Serializable
 //    @Transient
 
     @NotNull
-//para la validación // for validation porpuoses
+//para la validaciï¿½n // for validation porpuoses
     @PropertyDescriptor(index = 3, summary=false)
     public String getConfirmPassword()
     {
@@ -144,46 +152,6 @@ public class User implements Serializable
         this.roles = roles;
     }
 
-    public boolean getEnabled()
-    {
-        return enabled;
-    }
-
-    public void setEnabled(boolean enabled)
-    {
-        this.enabled = enabled;
-    }
-
-    public boolean getAccountExpired()
-    {
-        return accountExpired;
-    }
-
-    public void setAccountExpired(boolean accountExpired)
-    {
-        this.accountExpired = accountExpired;
-    }
-
-    public boolean getAccountLocked()
-    {
-        return accountLocked;
-    }
-
-    public void setAccountLocked(boolean accountLocked)
-    {
-        this.accountLocked = accountLocked;
-    }
-
-    public boolean getCredentialsExpired()
-    {
-        return credentialsExpired;
-    }
-
-    public void setCredentialsExpired(boolean credentialsExpired)
-    {
-        this.credentialsExpired = credentialsExpired;
-    }
-
     @Version
     @PropertyDescriptor(hidden = true)
     public Integer getVersion()
@@ -218,4 +186,49 @@ public class User implements Serializable
     {
         return getFirstName() + " " + getLastName() + "(" + getUsername() + ")";
     }
+
+		public boolean isAccountNonExpired() {
+			return accountNonExpired;
+		}
+		public void setAccountNonExpired(boolean accountNonExpired) {
+			this.accountNonExpired = accountNonExpired;
+		}
+
+		public boolean isAccountNonLocked() {
+			return accountNonLocked;
+		}
+		public void setAccountNonLocked(boolean accountNonLocked) {
+			this.accountNonLocked = accountNonLocked;
+		}
+
+		@Transient
+		@PropertyDescriptor(hidden=true)
+		public GrantedAuthority[] getAuthorities() {
+		  log.debug("User " + getUsername() + " has roles " + roles);
+		  if (roles == null || roles.size() == 0) throw new UsernameNotFoundException("User has no GrantedAuthority");
+		  // Note that this should work, but something requires GrantedAuthorityImpl or it does things somehow differently
+		  //return roles.toArray(new GrantedAuthority[roles.size()]);
+		  // TODO Try later with newer version of acegi-security lib, at the time I was using 1.0.0-RC1 
+	    GrantedAuthority[] authorities = new GrantedAuthority[roles.size()];
+	    int i = 0;
+	    for (Role role : roles) authorities[i++] = new GrantedAuthorityImpl(role.getName());
+	    return authorities;
+		}
+
+		public boolean isCredentialsNonExpired() {
+			return credentialsNonExpired;
+		}
+		public void setCredentialsNonExpired(boolean credentialsNonExpired) {
+			this.credentialsNonExpired = credentialsNonExpired;
+		}
+
+		public boolean isEnabled() {
+			return enabled;
+		}
+		public void setEnabled(boolean enabled) {
+			this.enabled = enabled;
+		}
+
+
+
 }

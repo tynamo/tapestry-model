@@ -13,47 +13,26 @@ import org.springframework.context.support.FileSystemXmlApplicationContext;
 import org.trails.persistence.PersistenceService;
 import org.trails.security.domain.Role;
 import org.trails.security.domain.User;
+import org.trails.seeddata.SeedDataInitializer;
 
 /**
  * This class startup the db for security.
  * @author Eduardo Fernandes Piva (eduardo@gwe.com.br)
  *
  */
+@Deprecated
 public class SecurityStartup {
 
 	private PersistenceService persistenceService;
 	private List<User> defaultUsers;
 	private List<Role> defaultRoles;
+	private SeedDataInitializer seedDataInitializer;
 
+	@Deprecated
 	public void startup() {
-		printInfo();
-		
-		for (Role role : defaultRoles) {
-			persistenceService.save(role);
-		}
-		for (User user : defaultUsers) {
-			LinkedHashSet<Role> set = new LinkedHashSet<Role>();
-			if (user.getRoles() != null) {
-				for (Role role : user.getRoles()) {
-					List roles = (List) persistenceService.getInstances(role);
-					if (roles != null && roles.size() > 0) {
-						set.add((Role) roles.get(0));						
-					}
-				}				
-			}
-			user.setRoles(set);
-			persistenceService.save(user);
-		}
+		seedDataInitializer.init();
 	}
 	
-	private void printInfo() {
-		System.out.println("Adding users:");
-		for (User user : defaultUsers) {
-			System.out.println(user + " with roles " + user.getRoles() + " size = " + user.getRoles().size());
-		}
-		
-	}
-
 	/**
 	 * This can be called from command line or directly from ant.
 	 * @param args
@@ -71,18 +50,24 @@ public class SecurityStartup {
 	}
 
 
+	@Deprecated
 	public void setPersistenceService(PersistenceService persistenceService) {
 		this.persistenceService = persistenceService;
 	}
 	
 	
+	@Deprecated
 	public void setDefaultRoles(List<Role> defaultRoles) {
 		this.defaultRoles = defaultRoles;
 	}
 
-
+	@Deprecated
 	public void setDefaultUsers(List<User> defaultUsers) {
 		this.defaultUsers = defaultUsers;
+	}
+	
+	public void setSeedDataInitializer(SeedDataInitializer seedDataInitializer) {
+		this.seedDataInitializer = seedDataInitializer;
 	}
 
 }

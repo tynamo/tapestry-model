@@ -42,8 +42,8 @@ public class SecurityStartupTest extends TestCase {
 	
 	@Override
 	protected void setUp() throws Exception {
-        appContext = new ClassPathXmlApplicationContext(
-        "applicationContext-test.xml");
+        appContext = new ClassPathXmlApplicationContext(new String[]{
+        "applicationContext-test.xml", "seed-data-test.xml"} );
         bootStrap = (SecurityStartup) appContext.getBean("securityStartup");
         persistenceService = (PersistenceService) appContext.getBean("persistenceService");
         txManager = (PlatformTransactionManager) appContext.getBean("transactionManager");
