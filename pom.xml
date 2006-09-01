@@ -66,8 +66,8 @@
 		</mailingList>
 	</mailingLists>
 	<scm>
-		<connection>scm:svn:http://svn.codehaus.org/trails/</connection>
-		<url>http://svn.codehaus.org/trails/</url>
+		<connection>scm:svn:http://svn.codehaus.org/trails/trunk/trails</connection>
+		<url>http://svn.codehaus.org/trails/trunk/trails</url>
 	</scm>
 
 
