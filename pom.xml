@@ -66,25 +66,9 @@
 		</mailingList>
 	</mailingLists>
 	<scm>
-		<connection>scm:svn:http://trails.inspiring.nl/svn/</connection>
-		<url>http://trails.inspiring.nl/svn/</url>
+		<connection>scm:svn:http://svn.codehaus.org/trails/</connection>
+		<url>http://svn.codehaus.org/trails/</url>
 	</scm>
-	<ciManagement>
-		<system>Cruise Control</system>
-		<url>
-			http://os.inspiring.nl/cruisecontrol/buildresults/trails
-		</url>
-		<notifiers>
-			<notifier>
-				<type>rss</type>
-				<configuration>
-					<url>
-						http://os.inspiring.nl/cruisecontrol/rss/trails
-					</url>
-				</configuration>
-			</notifier>
-		</notifiers>
-	</ciManagement>
 
 
 	<repositories>
