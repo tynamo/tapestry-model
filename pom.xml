@@ -1,150 +1,132 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
 
-	<name>Trails</name>
-	<url>https://trails.dev.java.net/</url>
+    <name>Trails</name>
+    <url>http://trails.codehaus.org/</url>
 
-	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.trails</groupId>
-	<artifactId>trails</artifactId>
-	<packaging>pom</packaging>
-	<version>1.0-SNAPSHOT</version>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.trails</groupId>
+    <artifactId>trails</artifactId>
+    <packaging>pom</packaging>
+    <version>1.0-SNAPSHOT</version>
 
-	<modules>
-		<module>trails-core</module>
+    <modules>
+        <module>trails-core</module>
 
-		<module>trails-archetype</module>
-		<module>trails-secure-archetype</module>
-	</modules>
+        <module>trails-archetype</module>
+        <module>trails-secure-archetype</module>
+    </modules>
 
-	<description> A domain driven development framework for Java. </description>
-	<inceptionYear>2004</inceptionYear>
-	<developers>
-		<developer>
-			<id>ccnelson</id>
-			<name>Chris Nelson</name>
-			<email>ccnelson@dev.java.net</email>
-			<url>http://jroller.com/page/ccnelson</url>
-		</developer>
-	</developers>
-	<licenses>
-		<license>
-			<name>Apache License, Version 2.0</name>
-			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-			<distribution>repo</distribution>
-		</license>
-	</licenses>
-	<issueManagement>
-		<system>jira</system>
-		<url>http://trails.inspiring.nl/jira</url>
-	</issueManagement>
-	<mailingLists>
-		<mailingList>
-			<name>Trails User List</name>
-			<subscribe>users-subscribe@trails.dev.java.net</subscribe>
-			<unsubscribe> users-unsubscribe@trails.dev.java.net </unsubscribe>
-			<post>users@trails.dev.java.net</post>
-			<archive> https://trails.dev.java.net/servlets/SummarizeList?listName=users </archive>
-		</mailingList>
-		<mailingList>
-			<name>Trails Developer List</name>
-			<subscribe>dev-subscribe@trails.dev.java.net</subscribe>
-			<unsubscribe> dev-unsubscribe@trails.dev.java.net </unsubscribe>
-			<post>dev@trails.dev.java.net</post>
-			<archive> https://trails.dev.java.net/servlets/SummarizeList?listName=dev </archive>
-		</mailingList>
-	</mailingLists>
-	<scm>
-		<connection>scm:svn:http://svn.codehaus.org/trails/trunk/trails</connection>
-		<url>http://svn.codehaus.org/trails/trunk/trails</url>
-	</scm>
-
-
-	<repositories>
-		<repository>
-			<id>trails.codehaus.org</id>
-			<name> Trails Repository </name>
-			<url>http://trails.codehaus.org/repository/</url>
-		</repository>
-	</repositories>
-	<ciManagement>
-		<notifiers>
-			<notifier>
-				<type>mail</type>
-				<configuration>
-					<address>dev@trails.dev.java.net</address>
-				</configuration>
-			</notifier>
-			<notifier>
-				<type>irc</type>
-				<configuration>
-					<host>irc.codehaus.org</host>
-					<port>6667</port>
-					<channel>#trails</channel>
-				</configuration>
-			</notifier>
-		</notifiers>
-	</ciManagement>
-	<distributionManagement>
-		<repository>
-			<id>trails-release</id>
-			<name>Trails' release repository</name>
-			<url>dav:https://dav.codehaus.org/repository/trails/</url>
-		</repository>
-		<snapshotRepository>
-			<id>trails-snapshot</id>
-			<name>Trails' snapshot repository</name>
-			<url> dav:https://dav.codehaus.org/snapshots.repository/trails/</url>
-		</snapshotRepository>
-	</distributionManagement>
+    <description>A domain driven development framework for Java.</description>
+    <inceptionYear>2004</inceptionYear>
+    <developers>
+        <developer>
+            <id>ccnelson</id>
+            <name>Chris Nelson</name>
+            <email>ccnelson@dev.java.net</email>
+            <url>http://jroller.com/page/ccnelson</url>
+        </developer>
+    </developers>
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+    <issueManagement>
+        <system>jira</system>
+        <url>http://jira.codehaus.org/browse/TRAILS</url>
+    </issueManagement>
+    <mailingLists>
+        <mailingList>
+            <name>Trails User List</name>
+            <subscribe>users-subscribe@trails.dev.java.net</subscribe>
+            <unsubscribe>users-unsubscribe@trails.dev.java.net</unsubscribe>
+            <post>users@trails.dev.java.net</post>
+            <archive>https://trails.dev.java.net/servlets/SummarizeList?listName=users</archive>
+        </mailingList>
+        <mailingList>
+            <name>Trails Developer List</name>
+            <subscribe>dev-subscribe@trails.dev.java.net</subscribe>
+            <unsubscribe>dev-unsubscribe@trails.dev.java.net</unsubscribe>
+            <post>dev@trails.dev.java.net</post>
+            <archive>https://trails.dev.java.net/servlets/SummarizeList?listName=dev</archive>
+        </mailingList>
+    </mailingLists>
+    <scm>
+        <connection>scm:svn:http://svn.codehaus.org/trails/trunk/trails</connection>
+        <url>http://svn.codehaus.org/trails/trunk/trails</url>
+    </scm>
 
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<source>1.5</source>
-					<target>1.5</target>
-				</configuration>
-			</plugin>
-			<!--plugin>
-				<artifactId>maven-antrun-plugin</artifactId>
-				<executions>
-				<execution>
-				<phase>generate-sources</phase>
-				<configuration>            
-				<tasks>
-				Ant tasks go here 
-				</tasks>
-				</configuration>
-				<goals>
-				<goal>run</goal>
-				</goals>
-				</execution>
-				</executions>
-				</plugin-->
-			<plugin>
-				<artifactId>maven-assembly-plugin</artifactId>
-				<configuration>
-					<descriptor>src/main/assembly/dep.xml</descriptor>
-				</configuration>
-			</plugin>
-			<plugin>
-				<artifactId>maven-site-plugin</artifactId>
-				<version>2.0-beta-5</version>
-			</plugin>
-		</plugins>
-		<extensions>
-			<extension>
-				<groupId>org.apache.maven.wagon</groupId>
-				<artifactId>wagon-webdav</artifactId>
-				<version>1.0-beta-1</version>
-			</extension>
-		</extensions>
-	</build>
+    <repositories>
+        <repository>
+            <id>trails.codehaus.org</id>
+            <name>Trails Repository</name>
+            <url>http://trails.codehaus.org/repository/</url>
+        </repository>
+    </repositories>
+    <ciManagement>
+        <notifiers>
+            <notifier>
+                <type>mail</type>
+                <configuration>
+                    <address>dev@trails.dev.java.net</address>
+                </configuration>
+            </notifier>
+            <notifier>
+                <type>irc</type>
+                <configuration>
+                    <host>irc.codehaus.org</host>
+                    <port>6667</port>
+                    <channel>#trails</channel>
+                </configuration>
+            </notifier>
+        </notifiers>
+    </ciManagement>
+    <distributionManagement>
+        <repository>
+            <id>trails-release</id>
+            <name>Trails' release repository</name>
+            <url>dav:https://dav.codehaus.org/repository/trails/</url>
+        </repository>
+        <snapshotRepository>
+            <id>trails-snapshot</id>
+            <name>Trails' snapshot repository</name>
+            <url>dav:https://dav.codehaus.org/snapshots.repository/trails/</url>
+        </snapshotRepository>
+    </distributionManagement>
+
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.5</source>
+                    <target>1.5</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <descriptor>src/main/assembly/dep.xml</descriptor>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-site-plugin</artifactId>
+                <version>2.0-beta-5</version>
+            </plugin>
+        </plugins>
+        <extensions>
+            <extension>
+                <groupId>org.apache.maven.wagon</groupId>
+                <artifactId>wagon-webdav</artifactId>
+                <version>1.0-beta-1</version>
+            </extension>
+        </extensions>
+    </build>
 </project>

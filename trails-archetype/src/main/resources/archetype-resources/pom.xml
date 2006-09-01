@@ -120,32 +120,13 @@
 			<version>0.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
-	<repositories>
-		<repository>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-			<id>apache.snapshots</id>
-			<url>http://cvs.apache.org/maven-snapshot-repository</url>
-		</repository>
-
-		<repository>
-			<id>com.javaforge.tapestry</id>
-			<name>
-				Howard Lewis Ship Repository for Tapestry extra modules
-			</name>
-			<url>http://howardlewisship.com/repository/</url>
-		</repository>
-		<repository>
-			<id>com.carmanconsulting</id>
-			<name>James Carman's Repository for Tapernate, etc</name>
-			<url>http://www.carmanconsulting.com/mvn/</url>
-		</repository>
-
-	</repositories>
+    <repositories>
+        <repository>
+            <id>trails.codehaus.org</id>
+            <name>Trails Repository</name>
+            <url>http://trails.codehaus.org/repository/</url>
+        </repository>
+    </repositories>
 	<pluginRepositories>
 		<pluginRepository>
 			<id>codehaus</id>
