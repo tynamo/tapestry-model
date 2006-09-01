@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
 
 	<name>Trails</name>
@@ -13,14 +15,12 @@
 
 	<modules>
 		<module>trails-core</module>
-			
-	    <module>trails-archetype</module>
-	    <module>trails-secure-archetype</module>
-	  </modules>
 
-	<description>
-		A domain driven development framework for Java.
-	</description>
+		<module>trails-archetype</module>
+		<module>trails-secure-archetype</module>
+	</modules>
+
+	<description> A domain driven development framework for Java. </description>
 	<inceptionYear>2004</inceptionYear>
 	<developers>
 		<developer>
@@ -45,24 +45,16 @@
 		<mailingList>
 			<name>Trails User List</name>
 			<subscribe>users-subscribe@trails.dev.java.net</subscribe>
-			<unsubscribe>
-				users-unsubscribe@trails.dev.java.net
-			</unsubscribe>
+			<unsubscribe> users-unsubscribe@trails.dev.java.net </unsubscribe>
 			<post>users@trails.dev.java.net</post>
-			<archive>
-				https://trails.dev.java.net/servlets/SummarizeList?listName=users
-			</archive>
+			<archive> https://trails.dev.java.net/servlets/SummarizeList?listName=users </archive>
 		</mailingList>
 		<mailingList>
 			<name>Trails Developer List</name>
 			<subscribe>dev-subscribe@trails.dev.java.net</subscribe>
-			<unsubscribe>
-				dev-unsubscribe@trails.dev.java.net
-			</unsubscribe>
+			<unsubscribe> dev-unsubscribe@trails.dev.java.net </unsubscribe>
 			<post>dev@trails.dev.java.net</post>
-			<archive>
-				https://trails.dev.java.net/servlets/SummarizeList?listName=dev
-			</archive>
+			<archive> https://trails.dev.java.net/servlets/SummarizeList?listName=dev </archive>
 		</mailingList>
 	</mailingLists>
 	<scm>
@@ -74,12 +66,40 @@
 	<repositories>
 		<repository>
 			<id>trails.codehaus.org</id>
-			<name>
-				Trails Repository
-			</name>
+			<name> Trails Repository </name>
 			<url>http://trails.codehaus.org/repository/</url>
 		</repository>
 	</repositories>
+	<ciManagement>
+		<notifiers>
+			<notifier>
+				<type>mail</type>
+				<configuration>
+					<address>dev@trails.dev.java.net</address>
+				</configuration>
+			</notifier>
+			<notifier>
+				<type>irc</type>
+				<configuration>
+					<host>irc.codehaus.org</host>
+					<port>6667</port>
+					<channel>#trails</channel>
+				</configuration>
+			</notifier>
+		</notifiers>
+	</ciManagement>
+	<distributionManagement>
+		<repository>
+			<id>trails-release</id>
+			<name>Trails' release repository</name>
+			<url>dav:https://dav.codehaus.org/repository/trails/</url>
+		</repository>
+		<snapshotRepository>
+			<id>trails-snapshot</id>
+			<name>Trails' snapshot repository</name>
+			<url> dav:https://dav.codehaus.org/snapshots.repository/trails/</url>
+		</snapshotRepository>
+	</distributionManagement>
 
 
 	<build>
@@ -119,5 +139,12 @@
 				<version>2.0-beta-5</version>
 			</plugin>
 		</plugins>
+		<extensions>
+			<extension>
+				<groupId>org.apache.maven.wagon</groupId>
+				<artifactId>wagon-webdav</artifactId>
+				<version>1.0-beta-1</version>
+			</extension>
+		</extensions>
 	</build>
 </project>
