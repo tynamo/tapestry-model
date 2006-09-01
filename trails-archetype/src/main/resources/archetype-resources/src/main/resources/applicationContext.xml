@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
 
-<beans>
+    <aop:aspectj-autoproxy/>
 
 	<!-- ========================= GENERAL DEFINITIONS ========================= -->
 	<bean id="trailsInterceptor" class="org.trails.hibernate.TrailsInterceptor" />
@@ -190,9 +194,9 @@
 		<property name="resourceBundleMessageSource"><ref local="trailsMessageSource"/></property>
 	</bean>
 	
-	<bean id="descriptorSecurity" class="org.trails.security.DescriptorSecurity" factory-method="aspectOf">
-		<property name="securityService"><ref bean="securityService"/></property>
-	</bean>
+    <bean id="descriptorSecurity" class="org.trails.security.DescriptorSecurity">
+        <property name="securityService"><ref bean="securityService"/></property>
+    </bean>
 	
 	<bean id="pageResolver" class="org.trails.page.DefaultPageResolver" />
 

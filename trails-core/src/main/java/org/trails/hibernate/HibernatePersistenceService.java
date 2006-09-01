@@ -151,6 +151,18 @@ public class HibernatePersistenceService extends HibernateDaoSupport implements
 
     }
 
+//    @Transactional
+//    public <T> T getInstance(final DetachedCriteria criteria)
+//    {
+//        Object result = getHibernateTemplate().execute(new HibernateCallback() {
+//            public Object doInHibernate(Session session) throws HibernateException, SQLException {
+//                Criteria executableCriteria = criteria.getExecutableCriteria(session);
+//                return executableCriteria.uniqueResult();
+//            }
+//        });
+//        return (T) result;
+//    }
+    
     @Transactional
     public List getInstances( final Object example )
     {
