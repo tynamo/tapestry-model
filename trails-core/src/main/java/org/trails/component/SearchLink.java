@@ -1,17 +1,11 @@
 package org.trails.component;
 
-import java.util.Locale;
-
-import org.apache.tapestry.IComponent;
-import org.apache.tapestry.IEngine;
-import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
-import org.trails.TrailsRuntimeException;
 import org.trails.page.SearchPage;
 import org.trails.page.TrailsPage;
+import org.trails.page.PageResolver;
 
-public abstract class SearchLink extends TypeNavigationLink
-{
+public abstract class SearchLink extends AbstractTypeNavigationLink {
     public static final String POSTFIX = "Search";
     public SearchLink()
     {
@@ -27,28 +21,14 @@ public abstract class SearchLink extends TypeNavigationLink
      */
     public void click(IRequestCycle cycle)
     {
-        SearchPage searchPage = (SearchPage)getPageResolver().resolvePage(
-        		cycle, getTypeName(), TrailsPage.PageType.SEARCH);
+        PageResolver pageResolver = getPageResolver();
+        SearchPage searchPage = (SearchPage) pageResolver.resolvePage(cycle, getTypeName(), TrailsPage.PageType.SEARCH);
         searchPage.setTypeName(getTypeName());
         cycle.activate(searchPage);
     }
-    
+
     public String getLinkText() {
-    	Locale locale = null;
-    	IComponent container = getContainer();
-    	if (container != null) {
-    		IPage page = container.getPage();
-    		if (page != null) {
-    			IEngine engine = page.getEngine();
-    			if (engine != null) {
-    				locale = engine.getLocale();
-    			}
-    		}
-    	}
-    	Object[] params = new Object[]{getClassDescriptor().getDisplayName()};
-       	return getResourceBundleMessageSource().getMessageWithDefaultValue("org.trails.component.searchlink",
-       													params,
-       													locale,
-       													"[TRAILS][ORG.TRAILS.COMPONENT.SEARCHLINK]");
+        String name = getClassDescriptor().getDisplayName();
+        return generateLinkText(name, "org.trails.component.searchlink", "[TRAILS][ORG.TRAILS.COMPONENT.SEARCHLINK]");
     }
 }

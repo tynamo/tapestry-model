@@ -12,68 +12,45 @@
 package org.trails.component;
 
 import java.lang.reflect.Constructor;
-import java.util.Locale;
 
-import org.apache.tapestry.IComponent;
-import org.apache.tapestry.IEngine;
-import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.trails.TrailsRuntimeException;
 import org.trails.page.EditPage;
 import org.trails.page.TrailsPage;
-
-
-/*
- * Created on Sep 29, 2004
- *
- */
+import org.trails.page.PageResolver;
 
 /**
+ * Render a link allowing a new entity of the parameterized type to be created.
  * @author fus8882
- *
+ * @date Sep 29, 2004
  */
-public abstract class NewLink extends TypeNavigationLink
-{
+public abstract class NewLink extends AbstractTypeNavigationLink {
     public static String SUFFIX = "Edit";
 
     public abstract String getTypeName();
 
-    public void click(IRequestCycle cycle)
-    {
+    public void click(IRequestCycle cycle) {
         ((TrailsPage)getPage()).pushCallback();
-        EditPage page = (EditPage) getPageResolver().resolvePage(cycle, 
-        		getTypeName(), 
-        		TrailsPage.PageType.EDIT);
+        PageResolver pageResolver = getPageResolver();
+        EditPage page = (EditPage) pageResolver.resolvePage(cycle, getTypeName(), TrailsPage.PageType.EDIT);
         
-        try
-        {
+        try {
             Class clazz = Class.forName(getTypeName());
-            Constructor constructor = clazz.getDeclaredConstructor(new Class[] {  });
+            Constructor constructor = clazz.getDeclaredConstructor();
             constructor.setAccessible(true);
-            page.setModel(constructor.newInstance(new Object[] {  }));
+            page.setModel(constructor.newInstance());
             cycle.activate(page);
-        }catch (Exception ex)
-        {
+        } catch (Exception ex) {
             throw new TrailsRuntimeException(ex);
         }
     }
     
+    /**
+     * Get the text for the rendered link
+     * @return Full i18n text in the form "List Foobars"
+     */
     public String getLinkText() {
-    	Locale locale = null;
-    	IComponent container = getContainer();
-    	if (container != null) {
-    		IPage page = container.getPage();
-    		if (page != null) {
-    			IEngine engine = page.getEngine();
-    			if (engine != null) {
-    				locale = engine.getLocale();
-    			}
-    		}
-    	}
-    	Object[] params = new Object[]{getClassDescriptor().getDisplayName()};
-       	return getResourceBundleMessageSource().getMessageWithDefaultValue("org.trails.component.newlink",
-       											params,
-       											locale,
-       											"[TRAILS][ORG.TRAILS.COMPONENT.NEWLINK]");    		
+        String name = getClassDescriptor().getDisplayName();
+        return generateLinkText(name, "org.trails.component.newlink", "[TRAILS][ORG.TRAILS.COMPONENT.NEWLINK]");
     }
 }
