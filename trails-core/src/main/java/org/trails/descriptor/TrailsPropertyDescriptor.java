@@ -45,17 +45,10 @@ public class TrailsPropertyDescriptor extends TrailsDescriptor implements IPrope
     
     private Class beanType;
     
-    public int getIndex()
-    {
-        return index;
-    }
-
-    public void setIndex(int index)
-    {
-        this.index = index;
-    }
-
-    /** 
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // constructors
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /**
      * It's kinda like an old-skool C++ copy constructor
      *
      */
@@ -64,7 +57,7 @@ public class TrailsPropertyDescriptor extends TrailsDescriptor implements IPrope
         this(beanType, descriptor.getPropertyType());
         copyFrom(descriptor);
     }
-    
+
     public TrailsPropertyDescriptor(Class beanType, Class type)
     {
         super(type);
@@ -77,7 +70,12 @@ public class TrailsPropertyDescriptor extends TrailsDescriptor implements IPrope
         this.name = name;
         setDisplayName(name);
     }
-    
+
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // methods
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     /**
      * @return
      */
@@ -121,6 +119,25 @@ public class TrailsPropertyDescriptor extends TrailsDescriptor implements IPrope
     {
         // TODO Auto-generated method stub
         return getPropertyType().getName().endsWith("String");
+    }
+
+    public IClassDescriptor getParent() {
+        return null;//To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // bean setters / getters
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+    public int getIndex()
+    {
+        return index;
+    }
+
+    public void setIndex(int index)
+    {
+        this.index = index;
     }
 
     /**

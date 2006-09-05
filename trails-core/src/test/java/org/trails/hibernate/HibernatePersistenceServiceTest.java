@@ -11,22 +11,14 @@
  */
 package org.trails.hibernate;
 
-import java.lang.reflect.Field;
-import java.util.List;
-
-import javax.persistence.NonUniqueResultException;
-
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
-import org.jmock.MockObjectTestCase;
 import org.jmock.cglib.Mock;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.orm.hibernate3.SessionFactoryUtils;
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import org.springframework.test.AbstractTransactionalSpringContextTests;
 import org.trails.descriptor.DescriptorService;
 import org.trails.persistence.PersistenceException;
@@ -40,6 +32,8 @@ import org.trails.test.BlogEntry;
 import org.trails.test.Descendant;
 import org.trails.test.Foo;
 import org.trails.test.Wibble;
+
+import java.util.List;
 
 
 /**
@@ -129,7 +123,7 @@ public class HibernatePersistenceServiceTest extends AbstractTransactionalSpring
         try {
         	persistenceService.getInstance(criteria);
         }
-        catch (NonUniqueResultException e) {
+        catch (IncorrectResultSizeDataAccessException e) {
         	return;
         }
         fail("NonUniqueResultException not thrown, but two results should have been found");

@@ -11,19 +11,8 @@
  */
 package org.trails.hibernate;
 
-import java.io.Serializable;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-
-import javax.persistence.NonUniqueResultException;
-
 import ognl.Ognl;
 import ognl.OgnlException;
-
 import org.hibernate.Criteria;
 import org.hibernate.EntityMode;
 import org.hibernate.HibernateException;
@@ -31,8 +20,8 @@ import org.hibernate.LockMode;
 import org.hibernate.Session;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.MatchMode;
-import org.hibernate.criterion.Projection;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.metadata.ClassMetadata;
@@ -50,6 +39,13 @@ import org.trails.descriptor.IPropertyDescriptor;
 import org.trails.persistence.PersistenceException;
 import org.trails.persistence.PersistenceService;
 import org.trails.validation.ValidationException;
+
+import java.io.Serializable;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * @author fus8882
@@ -69,9 +65,14 @@ public class HibernatePersistenceService extends HibernateDaoSupport implements
     *      java.io.Serializable)
     */
     @Transactional
-    public <T> T getInstance( Class<T> type, Serializable id )
+    public <T> T getInstance( final Class<T> type, final Serializable id )
     {
-        return ( T ) getHibernateTemplate().get( Utils.checkForCGLIB( type ), id );
+        return (T) getHibernateTemplate().execute(new HibernateCallback() {
+            public Object doInHibernate(Session session) throws HibernateException, SQLException {
+                Criteria criteria = session.createCriteria(Utils.checkForCGLIB(type)).add(Expression.idEq(id));
+                return alterCriteria(criteria).uniqueResult();
+            }
+        });
     }
 
     /*
@@ -80,10 +81,14 @@ public class HibernatePersistenceService extends HibernateDaoSupport implements
      * @see org.blah.service.IPersistenceService#getAllInstances(java.lang.Class)
      */
     @Transactional
-    public List getAllInstances( Class type )
+    public <T> List<T> getAllInstances(final Class<T> type)
     {
-        // return getHibernateTemplate().find("from "+ type.getName());
-        return new ArrayList( new HashSet( getHibernateTemplate().loadAll( Utils.checkForCGLIB( type ) ) ) );
+        return (List<T>)getHibernateTemplate().execute(new HibernateCallback() {
+            public Object doInHibernate(Session session) throws HibernateException, SQLException {
+                Criteria criteria = session.createCriteria(Utils.checkForCGLIB(type));
+                return alterCriteria(criteria).list();
+            }
+        });
     }
 
     /*
@@ -125,13 +130,6 @@ public class HibernatePersistenceService extends HibernateDaoSupport implements
         return getHibernateTemplate().findByCriteria(criteria);
     }
 
-		public Object getInstance(final DetachedCriteria criteria) throws NonUniqueResultException {
-			List list = getInstances(criteria);
-			if (list.size() < 1) return null;
-			if (list.size() > 1) throw new NonUniqueResultException("More than a single result fulfilled the criteria");
-			return list.get(0);
-		}
-    
     public List getAllTypes()
     {
         ArrayList allTypes = new ArrayList();
@@ -151,17 +149,21 @@ public class HibernatePersistenceService extends HibernateDaoSupport implements
 
     }
 
-//    @Transactional
-//    public <T> T getInstance(final DetachedCriteria criteria)
-//    {
-//        Object result = getHibernateTemplate().execute(new HibernateCallback() {
-//            public Object doInHibernate(Session session) throws HibernateException, SQLException {
-//                Criteria executableCriteria = criteria.getExecutableCriteria(session);
-//                return executableCriteria.uniqueResult();
-//            }
-//        });
-//        return (T) result;
-//    }
+    @Transactional
+    public <T> T getInstance(final DetachedCriteria criteria)
+    {
+        // todo hacking useNative is a result of SPR-2499 and will be removed soon
+        boolean useNative = getHibernateTemplate().isExposeNativeSession();
+        getHibernateTemplate().setExposeNativeSession(true);
+        Object result = getHibernateTemplate().execute(new HibernateCallback() {
+            public Object doInHibernate(Session session) throws HibernateException, SQLException {
+                Criteria executableCriteria = criteria.getExecutableCriteria(session);
+                return executableCriteria.uniqueResult();
+            }
+        });
+        getHibernateTemplate().setExposeNativeSession(useNative);
+        return (T) result;
+    }
     
     @Transactional
     public List getInstances( final Object example )
@@ -256,7 +258,7 @@ public class HibernatePersistenceService extends HibernateDaoSupport implements
                     }
                 }
                 searchCriteria.setResultTransformer( CriteriaSpecification.DISTINCT_ROOT_ENTITY );
-                return searchCriteria.list();
+                return alterCriteria(searchCriteria).list();
             }
         }, true );
     }
@@ -267,15 +269,40 @@ public class HibernatePersistenceService extends HibernateDaoSupport implements
 
     }
 
-    public int count(DetachedCriteria criteria)
+    public int count(final DetachedCriteria criteria)
     {
-        criteria.setProjection(Projections.rowCount());
-        return (Integer)getHibernateTemplate().findByCriteria(criteria).get(0);
+        // todo hacking useNative is a result of SPR-2499 and will be removed soon
+        boolean useNative = getHibernateTemplate().isExposeNativeSession();
+        getHibernateTemplate().setExposeNativeSession(true);
+        Integer result = (Integer) getHibernateTemplate().execute(new HibernateCallback() {
+            public Object doInHibernate(Session session) throws HibernateException, SQLException {
+                Criteria executableCriteria = criteria.getExecutableCriteria(session).setProjection(Projections.rowCount());
+                return alterCriteria(executableCriteria).uniqueResult();
+            }
+        });
+        getHibernateTemplate().setExposeNativeSession(useNative);
+        return result;
     }
 
-    public List getInstances(DetachedCriteria criteria, int startIndex, int maxResults)
+    public List getInstances(final DetachedCriteria criteria, final int startIndex, final int maxResults)
     {
-        return getHibernateTemplate().findByCriteria(criteria, startIndex, maxResults);
+        // todo hacking useNative is a result of SPR-2499 and will be removed soon
+        boolean useNative = getHibernateTemplate().isExposeNativeSession();
+        getHibernateTemplate().setExposeNativeSession(true);
+        List result = (List) getHibernateTemplate().execute(new HibernateCallback() {
+            public Object doInHibernate(Session session) throws HibernateException, SQLException {
+                Criteria executableCriteria = criteria.getExecutableCriteria(session);
+                if (startIndex >= 0) {
+                    executableCriteria.setFirstResult(startIndex);
+                }
+                if (maxResults > 0) {
+                    executableCriteria.setMaxResults(maxResults);
+                }
+                return alterCriteria(executableCriteria).list();
+            }
+        });
+        getHibernateTemplate().setExposeNativeSession(useNative);
+        return result;
     }
 
     public <T> T reload(T instance)
@@ -292,6 +319,14 @@ public class HibernatePersistenceService extends HibernateDaoSupport implements
         {
             throw new PersistenceException(oe);
         }
-        
+    }
+
+    /**
+     * This hook allows subclasses to modify the query criteria, such as for security
+     * @param source The original Criteria query
+     * @return The modified Criteria query for execution
+     */
+    protected Criteria alterCriteria(Criteria source) {
+        return source;
     }
 }

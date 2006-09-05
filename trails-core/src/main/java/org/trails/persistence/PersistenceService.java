@@ -29,7 +29,7 @@ public interface PersistenceService
 {
     public <T> T getInstance(Class<T> type, Serializable id);
     
-    public List getAllInstances(Class type);
+    public <T> List<T> getAllInstances(Class<T> type);
     
     /**
      * 
@@ -42,7 +42,7 @@ public interface PersistenceService
 
     public void remove(Object instance);
 
-    public Object getInstance(DetachedCriteria criteria) throws NonUniqueResultException;
+    public <T> T getInstance(DetachedCriteria criteria);
 
     public List getInstances(DetachedCriteria criteria);
     

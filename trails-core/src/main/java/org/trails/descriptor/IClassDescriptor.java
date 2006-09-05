@@ -28,24 +28,24 @@ public interface IClassDescriptor extends IDescriptor
     /**
      * @return Returns the methodDescriptors.
      */
-    public List getMethodDescriptors();
+    public List<IMethodDescriptor> getMethodDescriptors();
 
     /**
      * @param methodDescriptors
      *            The methodDescriptors to set.
      */
-    public void setMethodDescriptors(List methodDescriptors);
+    public void setMethodDescriptors(List<IMethodDescriptor> methodDescriptors);
 
     /**
      * @return Returns the propertyDescriptors.
      */
-    public List getPropertyDescriptors();
+    public List<IPropertyDescriptor> getPropertyDescriptors();
 
     /**
      * @param propertyDescriptors
      *            The propertyDescriptors to set.
      */
-    public void setPropertyDescriptors(List propertyDescriptors);
+    public void setPropertyDescriptors(List<IPropertyDescriptor> propertyDescriptors);
 
     public IPropertyDescriptor getIdentifierDescriptor();
 
@@ -93,5 +93,11 @@ public interface IClassDescriptor extends IDescriptor
     public boolean isAllowRemove();
     
     public void setAllowRemove(boolean allowRemove);
-  
+
+    /**
+     * Get a list of intermediate PropertyDescriptors that can be used in a query.
+     * @param type The class of the destination to traverse to
+     * @return a List of PropertyDescriptors
+     */
+    public List<IPropertyDescriptor> findTraversalPath(Class type);
 }

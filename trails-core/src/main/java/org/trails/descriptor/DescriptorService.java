@@ -26,6 +26,6 @@ public interface DescriptorService
     
     public List getAllDescriptors();
     
-    public void setDecorators(List decorators);
-    
+    public void setDecorators(List<DescriptorDecorator> decorators);
+
 }

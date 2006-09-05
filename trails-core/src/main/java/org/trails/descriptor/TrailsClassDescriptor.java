@@ -29,15 +29,18 @@ import org.trails.component.Utils;
  */
 public class TrailsClassDescriptor extends TrailsDescriptor implements IClassDescriptor
 {
-    private List propertyDescriptors = new ArrayList();
-    private List methodDescriptors = new ArrayList();
+    private List<IPropertyDescriptor> propertyDescriptors = new ArrayList<IPropertyDescriptor>();
+    private List<IMethodDescriptor> methodDescriptors = new ArrayList<IMethodDescriptor>();
     //private BeanDescriptor beanDescriptor;
     private boolean child;
     
     boolean allowRemove = true;
     
     boolean allowSave = true;
-    
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Constructors
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////
     public TrailsClassDescriptor(IClassDescriptor descriptor)
     {
         super(descriptor);
@@ -45,24 +48,6 @@ public class TrailsClassDescriptor extends TrailsDescriptor implements IClassDes
         copyMethodDescriptorsFrom(descriptor);       
     }
 
-	private void copyMethodDescriptorsFrom(IClassDescriptor descriptor)
-	{
-		for (Iterator iter = descriptor.getMethodDescriptors().iterator(); iter.hasNext();)
-        {
-            IMethodDescriptor  methodDescriptor = (IMethodDescriptor) iter.next();
-            getMethodDescriptors().add(methodDescriptor.clone());
-        }
-	}
-
-	protected void copyPropertyDescriptorsFrom(IClassDescriptor descriptor)
-	{
-		for (Iterator iter = descriptor.getPropertyDescriptors().iterator(); iter.hasNext();)
-        {
-            IPropertyDescriptor propertyDescriptor = (IPropertyDescriptor) iter.next();
-            getPropertyDescriptors().add(propertyDescriptor.clone());
-        }
-	}
-    
     public TrailsClassDescriptor(Class type)
     {
         super(type);
@@ -73,46 +58,20 @@ public class TrailsClassDescriptor extends TrailsDescriptor implements IClassDes
         super(type);
         this.setDisplayName(displayName);
     }
-    
-    /**
-     * @return Returns the methodDescriptors.
-     */
-    public List getMethodDescriptors()
-    {
-        return methodDescriptors;
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Methods
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////
+    private void copyMethodDescriptorsFrom(IClassDescriptor descriptor) {
+        for (IMethodDescriptor methodDescriptor : descriptor.getMethodDescriptors()) {
+            getMethodDescriptors().add(IMethodDescriptor.class.cast(methodDescriptor.clone()));
+        }
     }
 
-    /**
-     * @param methodDescriptors
-     *            The methodDescriptors to set.
-     */
-    public void setMethodDescriptors(List methodDescriptors)
-    {
-        this.methodDescriptors = methodDescriptors;
-    }
-
-    /**
-     * @return Returns the propertyDescriptors.
-     */
-    public List getPropertyDescriptors()
-    {
-        return propertyDescriptors;
-    }
-
-    /**
-     * @param propertyDescriptors
-     *            The propertyDescriptors to set.
-     */
-    public void setPropertyDescriptors(List propertyDescriptors)
-    {
-        this.propertyDescriptors = propertyDescriptors;
-    }
-
-    public IPropertyDescriptor getIdentifierDescriptor()
-    {
-        String ognl = "propertyDescriptors.{? identifier}[0]";
-
-        return findDescriptor(ognl);
+    protected void copyPropertyDescriptorsFrom(IClassDescriptor descriptor) {
+        for (IPropertyDescriptor iPropertyDescriptor : descriptor.getPropertyDescriptors()) {
+            getPropertyDescriptors().add(IPropertyDescriptor.class.cast(iPropertyDescriptor.clone()));
+        }
     }
 
     /**
@@ -152,7 +111,66 @@ public class TrailsClassDescriptor extends TrailsDescriptor implements IClassDes
     {
         return Utils.pluralize(Utils.unCamelCase(getDisplayName()));
     }
-    
+
+    public List getPropertyDescriptors(String[] properties)
+    {
+        ArrayList<IPropertyDescriptor> descriptors = new ArrayList<IPropertyDescriptor>();
+        for (int i = 0; i < properties.length; i++)
+        {
+            descriptors.add(getPropertyDescriptor(properties[i]));
+        }
+        return descriptors;
+    }
+
+
+    public List<IPropertyDescriptor> findTraversalPath(Class type) {
+        return null;//To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // bean getters / setters
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /**
+     * @return Returns the methodDescriptors.
+     */
+    public List<IMethodDescriptor> getMethodDescriptors()
+    {
+        return methodDescriptors;
+    }
+
+    /**
+     * @param methodDescriptors
+     *            The methodDescriptors to set.
+     */
+    public void setMethodDescriptors(List<IMethodDescriptor> methodDescriptors)
+    {
+        this.methodDescriptors = methodDescriptors;
+    }
+
+    /**
+     * @return Returns the propertyDescriptors.
+     */
+    public List<IPropertyDescriptor> getPropertyDescriptors()
+    {
+        return propertyDescriptors;
+    }
+
+    /**
+     * @param propertyDescriptors
+     *            The propertyDescriptors to set.
+     */
+    public void setPropertyDescriptors(List<IPropertyDescriptor> propertyDescriptors)
+    {
+        this.propertyDescriptors = propertyDescriptors;
+    }
+
+    public IPropertyDescriptor getIdentifierDescriptor()
+    {
+        String ognl = "propertyDescriptors.{? identifier}[0]";
+
+        return findDescriptor(ognl);
+    }
+
     /**
      * @return Returns the child.
      */
@@ -173,16 +191,6 @@ public class TrailsClassDescriptor extends TrailsDescriptor implements IClassDes
     public Object clone()
     {
         return new TrailsClassDescriptor(this);
-    }
-
-    public List getPropertyDescriptors(String[] properties)
-    {
-        ArrayList descriptors = new ArrayList();
-        for (int i = 0; i < properties.length; i++)
-        {
-            descriptors.add(getPropertyDescriptor(properties[i]));
-        }
-        return descriptors;
     }
 
     public boolean isAllowRemove()

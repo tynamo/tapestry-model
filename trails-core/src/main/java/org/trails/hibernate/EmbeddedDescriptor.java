@@ -14,7 +14,31 @@ public class EmbeddedDescriptor extends TrailsClassDescriptor implements IProper
 	
 	private String name;
 
-	public boolean isNumeric()
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // constructors
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public EmbeddedDescriptor(Class beanType, String displayName, Class type)
+    {
+        super(type, displayName);
+        this.beanType = beanType;
+    }
+
+    public EmbeddedDescriptor(Class beanType, IClassDescriptor descriptor)
+    {
+        super(descriptor);
+        this.beanType = beanType;
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // methods
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // bean setters/getters
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////    
+    public boolean isNumeric()
 	{
 		// TODO Auto-generated method stub
 		return false;
@@ -107,19 +131,11 @@ public class EmbeddedDescriptor extends TrailsClassDescriptor implements IProper
 
 	public boolean isCollection() { return false; }
 	
-	public EmbeddedDescriptor(Class beanType, String displayName, Class type)
-	{
-		super(type, displayName);
-		this.beanType = beanType;
-	}
+    public IClassDescriptor getParent() {
+        return null;//To change body of implemented methods use File | Settings | File Templates.
+    }
 
-	public EmbeddedDescriptor(Class beanType, IClassDescriptor descriptor)
-	{
-		super(descriptor);
-		this.beanType = beanType;
-	}
-
-	@Override
+    @Override
 	public Object clone()
 	{
 		return new EmbeddedDescriptor(getBeanType(), this);
@@ -185,7 +201,7 @@ public class EmbeddedDescriptor extends TrailsClassDescriptor implements IProper
 		this.beanType = beanType;
 	}
 
-	public boolean isRichText()
+    public boolean isRichText()
 	{
 		return richText;
 	}

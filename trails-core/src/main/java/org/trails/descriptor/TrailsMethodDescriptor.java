@@ -5,7 +5,10 @@ public class TrailsMethodDescriptor extends TrailsDescriptor implements IMethodD
     private String name;
     
     private Class[] argumentTypes;
-    
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // constructors
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////
     public TrailsMethodDescriptor(IMethodDescriptor methodDescriptor)
     {
         super(methodDescriptor);
@@ -17,6 +20,10 @@ public class TrailsMethodDescriptor extends TrailsDescriptor implements IMethodD
         this.name = name;
         this.argumentTypes = argumentTypes;
     }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // bean setters/getters
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////
     
     /* (non-Javadoc)
      * @see org.trails.descriptor.IMethodDescriptor#getArgumentTypes()
