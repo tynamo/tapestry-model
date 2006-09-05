@@ -1,5 +1,4 @@
-<?xml version="1.0"?>
-<project>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <parent>
         <artifactId>trails</artifactId>
         <groupId>org.trails</groupId>
@@ -376,6 +375,42 @@
             <version>0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <reportSets>
+                    <reportSet>
+                        <id>uml</id>
+                        <configuration>
+                            <doclet>gr.spinellis.umlgraph.doclet.UmlGraph</doclet>
+                            <docletArtifact>
+                                <groupId>umlgraph</groupId>
+                                <artifactId>UMLGraph</artifactId>
+                                <version>4.2-SNAPSHOT</version>
+                            </docletArtifact>
+                            <additionalparam>-views</additionalparam>
+                            <destDir>target/uml</destDir>
+                            <show>private</show>
+                        </configuration>
+                        <reports>
+                            <report>javadoc</report>
+                        </reports>
+                    </reportSet>
+                    <reportSet>
+                        <id>html</id>
+                        <configuration>
+                            <show>private</show>
+                        </configuration>
+                        <reports>
+                            <report>javadoc</report>
+                        </reports>
+                    </reportSet>
+                </reportSets>
+            </plugin>
+        </plugins>
+    </reporting>
     <profiles>
         <profile>
             <!-- NOTE: This will not be activated on OS X, since classes.jar already has the tools in it. -->

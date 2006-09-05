@@ -130,14 +130,11 @@ public class HibernatePersistenceService extends HibernateDaoSupport implements
         return getHibernateTemplate().findByCriteria(criteria);
     }
 
-    public List getAllTypes()
+    public List<Class> getAllTypes()
     {
-        ArrayList allTypes = new ArrayList();
-        for( Iterator iter = getSessionFactory().getAllClassMetadata().values()
-                .iterator(); iter.hasNext(); )
-        {
-            ClassMetadata classMeta = ( ClassMetadata ) iter.next();
-            allTypes.add( classMeta.getMappedClass( EntityMode.POJO ) );
+        ArrayList<Class> allTypes = new ArrayList<Class>();
+        for (Object classMetadata : getSessionFactory().getAllClassMetadata().values()) {
+            allTypes.add(((ClassMetadata) classMetadata).getMappedClass(EntityMode.POJO));
         }
         return allTypes;
     }
