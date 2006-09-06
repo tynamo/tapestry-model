@@ -388,34 +388,22 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <reportSets>
-                    <reportSet>
-                        <id>uml</id>
-                        <configuration>
-                            <doclet>gr.spinellis.umlgraph.doclet.UmlGraph</doclet>
-                            <docletArtifact>
-                                <groupId>umlgraph</groupId>
-                                <artifactId>UMLGraph</artifactId>
-                                <version>4.2-SNAPSHOT</version>
-                            </docletArtifact>
-                            <additionalparam>-views</additionalparam>
-                            <destDir>target/uml</destDir>
-                            <show>private</show>
-                        </configuration>
-                        <reports>
-                            <report>javadoc</report>
-                        </reports>
-                    </reportSet>
-                    <reportSet>
-                        <id>html</id>
-                        <configuration>
-                            <show>private</show>
-                        </configuration>
-                        <reports>
-                            <report>javadoc</report>
-                        </reports>
-                    </reportSet>
-                </reportSets>
+                <configuration>
+                    <author>true</author>
+                    <bottom>true</bottom>
+                    <header><![CDATA[<a href="/" target="_top">Trails Framework</a>]]></header>
+                    <minmemory>128m</minmemory>
+                    <maxmemory>512</maxmemory>
+                    <packagenames>org.trails.*</packagenames>
+                    <use>true</use>
+                    <version>true</version>
+                    <windowtitle>${project.name} ${project.version} API</windowtitle>
+                    <doclet>ydoc.doclets.YStandard</doclet>
+                    <docletPath>
+                        ${basedir}/../tools/ydoc-2.2_02-jdk1.5/lib/ydoc.jar:${basedir}/../tools/ydoc-2.2_02-jdk1.5/lib/class2svg.jar:${basedir}/../tools/ydoc-2.2_02-jdk1.5/resources:${build.classes.dir}
+                    </docletPath>
+                    <additionalparam>-umlautogen</additionalparam>
+                </configuration>
             </plugin>
         </plugins>
     </reporting>
