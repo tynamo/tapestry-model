@@ -2,11 +2,11 @@
 <project>
 	<parent>
 		<artifactId>examples</artifactId>
-		<groupId>org.trails</groupId>
+		<groupId>org.trailsframework</groupId>
 		<version>1.0-SNAPSHOT</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.trails.examples</groupId>
+	<groupId>org.trailsframework.examples</groupId>
 	<artifactId>simple</artifactId>
 	<packaging>war</packaging>
 	<name>Trails Example - Simple</name>
@@ -34,7 +34,7 @@
 				</executions>
 				<configuration>
 					<factory>
-						org.trails.hibernate.HibernateAnnotationProcessorFactory
+						org.trailsframework.hibernate.HibernateAnnotationProcessorFactory
 					</factory>
 					<nocompile>true</nocompile>
 					<force>true</force>
@@ -113,7 +113,7 @@
 						<pingURL>http://localhost:9080/${project.artifactId}/</pingURL>
 						</deployable>
 						<deployable>
-						<groupId>org.trails.examples</groupId>
+						<groupId>org.trailsframework.examples</groupId>
 						<artifactId>simple</artifactId>
 						<type>war</type>
 						<pingURL>http://localhost:9080/simple/index.html</pingURL>
@@ -168,7 +168,7 @@
 					</execution>
 				</executions>
 				<configuration>
-					<mainClass>org.trails.security.SecurityStartup</mainClass>
+					<mainClass>org.trailsframework.security.SecurityStartup</mainClass>
 					<arguments>
 						<argument>applicationContext.xml</argument>
 
@@ -197,7 +197,7 @@
 		</repositories>
 		<dependencies>
 			<dependency>
-				<groupId>org.trails</groupId>
+				<groupId>org.trailsframework</groupId>
 				<artifactId>trails-core</artifactId>
 				<version>1.0-SNAPSHOT</version>
 			</dependency>

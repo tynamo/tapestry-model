@@ -6,7 +6,7 @@
     <url>http://trails.codehaus.org/</url>
 
     <modelVersion>4.0.0</modelVersion>
-    <groupId>org.trails</groupId>
+    <groupId>org.trailsframework</groupId>
     <artifactId>trails</artifactId>
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
@@ -56,8 +56,8 @@
         </mailingList>
     </mailingLists>
     <scm>
-        <connection>scm:svn:http://svn.codehaus.org/trails/trunk/trails</connection>
-        <url>http://svn.codehaus.org/trails/trunk/trails</url>
+        <connection>scm:svn:http://svn.codehaus.org.trailsframework/trunk/trails</connection>
+        <url>http://svn.codehaus.org.trailsframework/trunk/trails</url>
     </scm>
 
 
