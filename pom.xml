@@ -27,6 +27,12 @@
             <email>ccnelson@dev.java.net</email>
             <url>http://jroller.com/page/ccnelson</url>
         </developer>
+        <developer>
+            <id>topping</id>
+            <name>Brian Topping</name>
+            <email>topping@N05PAMcodehaus.org</email>
+            <url>http://blogs.codehaus.org/people/topping/</url>
+        </developer>
     </developers>
     <licenses>
         <license>
@@ -56,8 +62,8 @@
         </mailingList>
     </mailingLists>
     <scm>
-        <connection>scm:svn:http://svn.codehaus.org.trailsframework/trunk/trails</connection>
-        <url>http://svn.codehaus.org.trailsframework/trunk/trails</url>
+        <connection>scm:svn:http://svn.codehaus.org/trails/trunk/trails</connection>
+        <url>http://svn.trails.codehaus.org/</url>
     </scm>
 
 
