@@ -51,8 +51,14 @@ public class SpringSeedEntityInitializer implements ApplicationContextAware, See
 				// If persistenceService uses save or update, Hibernate manipulates the object directly,
 				// but if it uses merge, it's safer to use the returned object
 				// It's much faster to just save() but if it's not our implementation, better be safe than sorry
+				//FIXME Some descriptor changes caused descriptorService.getClassDescriptor() to return nulls for
+				// valid entities. The check doesn't work either way, because you get back a proxy of the persistenceService
+				// For now, assume that underlying implementation calls save and figure out a better way meanwhile
+				persistenceService.save(object);
+				/*
 				if (persistenceService instanceof HibernatePersistenceService) persistenceService.save(object);
 				else saveAndSetId(object);
+				*/
 			}
 		}
 	}
