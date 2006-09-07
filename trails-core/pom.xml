@@ -83,22 +83,22 @@
         <dependency>
             <groupId>aspectj</groupId>
             <artifactId>aspectjlib</artifactId>
-            <version>1.5.0</version>
+            <version>1.5.2a</version>
         </dependency>
         <dependency>
             <groupId>aspectj</groupId>
             <artifactId>aspectjrt</artifactId>
-            <version>1.5.0</version>
+            <version>1.5.2a</version>
         </dependency>
         <dependency>
             <groupId>aspectj</groupId>
             <artifactId>aspectjtools</artifactId>
-            <version>1.5.0</version>
+            <version>1.5.2a</version>
         </dependency>
         <dependency>
             <groupId>aspectj</groupId>
             <artifactId>aspectjweaver</artifactId>
-            <version>1.5.0</version>
+            <version>1.5.2a</version>
         </dependency>
         <dependency>
             <groupId>bsf</groupId>
