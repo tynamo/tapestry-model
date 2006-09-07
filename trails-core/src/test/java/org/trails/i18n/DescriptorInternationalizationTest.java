@@ -33,11 +33,15 @@ public class DescriptorInternationalizationTest extends TestCase {
 	private Locale en = Locale.ENGLISH;	
 	private ApplicationContext appContext;
 
+    private LocaleHolder oldLocaleHolder;
+    
 	@Override
 	protected void setUp() throws Exception {
 		// appContext will initialize the aspect
         appContext = new ClassPathXmlApplicationContext(
         "applicationContext-test.xml");
+        oldLocaleHolder = (LocaleHolder)appContext.getBean("localeHolder");
+        
         classDescriptor = new TrailsClassDescriptor(Foo.class);
         propertyDescriptor = new TrailsPropertyDescriptor(Foo.class, Bar.class);
         classDescriptor.setDisplayName("Foo");
@@ -114,6 +118,7 @@ public class DescriptorInternationalizationTest extends TestCase {
 	protected void tearDown() throws Exception
 	{
 		TrailsApplicationServlet.setCurrentLocale(null);
+        DescriptorInternationalization.aspectOf().setLocaleHolder(oldLocaleHolder);
 	}
 	
 	
