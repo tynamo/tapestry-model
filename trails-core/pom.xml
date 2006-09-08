@@ -389,6 +389,9 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <configuration>
+                    <doclet>ydoc.doclets.YStandard</doclet>
+                    <docletPath>${ydoc.home}/lib/ydoc.jar:${ydoc.home}/lib/class2svg.jar:${ydoc.home}/resources</docletPath>
+                    <additionalparam>-license ${ydoc.license} -filter ydoc.filters.ExcludeFilter -filterpath ${ydoc.home}/lib/ydoc.jar -umlautogen</additionalparam>
                     <author>true</author>
                     <bottom>true</bottom>
                     <header><![CDATA[<a href="/" target="_top">Trails Framework</a>]]></header>
@@ -398,11 +401,6 @@
                     <use>true</use>
                     <version>true</version>
                     <windowtitle>${project.name} ${project.version} API</windowtitle>
-                    <doclet>ydoc.doclets.YStandard</doclet>
-                    <docletPath>
-                        ${basedir}/../tools/ydoc-2.2_02-jdk1.5/lib/ydoc.jar:${basedir}/../tools/ydoc-2.2_02-jdk1.5/lib/class2svg.jar:${basedir}/../tools/ydoc-2.2_02-jdk1.5/resources:${build.classes.dir}
-                    </docletPath>
-                    <additionalparam>-umlautogen</additionalparam>
                 </configuration>
             </plugin>
         </plugins>
