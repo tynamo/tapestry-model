@@ -44,6 +44,8 @@ public class TrailsPropertyDescriptor extends TrailsDescriptor implements IPrope
     private boolean richText;
     
     private Class beanType;
+
+    private IClassDescriptor parentClassDescriptor;
     
     /////////////////////////////////////////////////////////////////////////////////////////////////////////
     // constructors
@@ -121,8 +123,21 @@ public class TrailsPropertyDescriptor extends TrailsDescriptor implements IPrope
         return getPropertyType().getName().endsWith("String");
     }
 
-    public IClassDescriptor getParent() {
-        return null;//To change body of implemented methods use File | Settings | File Templates.
+
+    /**
+     * @see org.trails.descriptor.IPropertyDescriptor#getParentClassDescriptor
+     */
+    public IClassDescriptor getParentClassDescriptor()
+    {
+        return parentClassDescriptor;
+    }
+
+    /**
+     * @see org.trails.descriptor.IPropertyDescriptor#setParentClassDescriptor
+     */
+    public void setParentClassDescriptor(IClassDescriptor parentClassDescriptor)
+    {
+        this.parentClassDescriptor = parentClassDescriptor;
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////

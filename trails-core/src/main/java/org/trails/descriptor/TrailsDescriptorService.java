@@ -4,12 +4,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import ognl.Ognl;
 import ognl.OgnlException;
+import org.trails.descriptor.graph.BFSCache;
 
 
 public class TrailsDescriptorService implements DescriptorService {
@@ -25,36 +24,18 @@ public class TrailsDescriptorService implements DescriptorService {
             descriptor = applyDecorators(descriptor);
             descriptors.put(type, descriptor);
         }
-        // second pass to find children
-        markChildClasses();
-    }
-
-    /**
-     * Have the decorators decorate this descriptor  todo what are decorators for and/or why would I want to call this
-     * menthod?
-     *
-     * @param descriptor
-     * @return The resulting descriptor after all decorators are applied
-     */
-    protected IClassDescriptor applyDecorators(IClassDescriptor descriptor) {
-        IClassDescriptor currDescriptor = descriptor;
-        for (DescriptorDecorator decorator : getDecorators()) {
-            currDescriptor = decorator.decorate(currDescriptor);
-        }
-        return currDescriptor;
-    }
-
-    //todo once Ognl is taken out of this method, it can be cleaned up
-    protected void markChildClasses() throws OgnlException {
-        List childRelationships = (List) Ognl.getValue("#root.{ propertyDescriptors }", descriptors);
-        for (Iterator iter = childRelationships.iterator(); iter.hasNext();) {
-            List list = (List) iter.next();
-            for (Iterator iterator = list.iterator(); iterator.hasNext();) {
-                IPropertyDescriptor propertyDescriptor = (IPropertyDescriptor) iterator.next();
-                if (propertyDescriptor.isCollection() && ((CollectionDescriptor) propertyDescriptor).isChildRelationship()) {
-                    getClassDescriptor(((CollectionDescriptor) propertyDescriptor).getElementType()).setChild(true);
-                }
+        // second pass to find children and set up descriptor parents
+        for (IClassDescriptor iClassDescriptor : descriptors.values())
+        {
+            findChildren(iClassDescriptor);
+        // set up the property parents, could be avoided if there was a proper symbol table
+            for (IPropertyDescriptor iPropertyDescriptor : iClassDescriptor.getPropertyDescriptors()) {
+                iPropertyDescriptor.setParentClassDescriptor(descriptors.get(iPropertyDescriptor.getPropertyType()));
             }
+        }
+        // need third pass to set up spanning trees, after parents are determined
+        for (IClassDescriptor descriptor : descriptors.values()) {
+            descriptor.setBfsCache(new BFSCache<IClassDescriptor>(descriptor));            
         }
     }
 
@@ -77,6 +58,31 @@ public class TrailsDescriptorService implements DescriptorService {
         } else {
             return descriptors.get(type);
         }
+    }
+
+    protected void findChildren(IClassDescriptor iClassDescriptor)
+    {
+        for (IPropertyDescriptor propertyDescriptor : iClassDescriptor.getPropertyDescriptors())
+        {
+            if (propertyDescriptor.isCollection() && ((CollectionDescriptor) propertyDescriptor).isChildRelationship()) {
+                getClassDescriptor(((CollectionDescriptor) propertyDescriptor).getElementType()).setChild(true);
+            }
+        }
+    }
+
+    /**
+     * Have the decorators decorate this descriptor  todo what are decorators for and/or why would I want to call this
+     * menthod?
+     *
+     * @param descriptor
+     * @return The resulting descriptor after all decorators are applied
+     */
+    protected IClassDescriptor applyDecorators(IClassDescriptor descriptor) {
+        IClassDescriptor currDescriptor = descriptor;
+        for (DescriptorDecorator decorator : getDecorators()) {
+            currDescriptor = decorator.decorate(currDescriptor);
+        }
+        return currDescriptor;
     }
 
     public List getTypes() {

@@ -84,7 +84,7 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
                 else
                 {
                     Property mappingProperty = getMapping(type).getProperty(propertyDescriptor.getName());
-                    result = decoratePropertyDescriptor(type, mappingProperty, propertyDescriptor);
+                    result = decoratePropertyDescriptor(type, mappingProperty, propertyDescriptor, descriptor);
                 }
 
             }
@@ -92,14 +92,13 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
             {
                 throw new TrailsRuntimeException(e);
             }
-            IPropertyDescriptor iPropertyDescriptor = result;
-            decoratedPropertyDescriptors.add(iPropertyDescriptor);
+            decoratedPropertyDescriptors.add(result);
         }
         descriptor.setPropertyDescriptors(decoratedPropertyDescriptors);
         return descriptor;
     }
 
-    protected IPropertyDescriptor decoratePropertyDescriptor(Class type, Property mappingProperty, IPropertyDescriptor descriptor)
+    protected IPropertyDescriptor decoratePropertyDescriptor(Class type, Property mappingProperty, IPropertyDescriptor descriptor, IClassDescriptor parentClassDescriptor)
     {
         if (isFormula(mappingProperty))
         {
@@ -139,7 +138,7 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
                 else
                 {
                     Property property = componentMapping.getProperty(propertyDescriptor.getName());
-                    IPropertyDescriptor iPropertyDescriptor = decoratePropertyDescriptor(embeddedDescriptor.getBeanType(), property, propertyDescriptor);
+                    IPropertyDescriptor iPropertyDescriptor = decoratePropertyDescriptor(embeddedDescriptor.getBeanType(), property, propertyDescriptor, parentClassDescriptor);
                     decoratedProperties.add(iPropertyDescriptor);
                 }
             }
@@ -148,7 +147,7 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
         }
         else if (Collection.class.isAssignableFrom(descriptor.getPropertyType()))
         {
-            result = buildCollectionDescriptor(type, descriptor);
+            result = buildCollectionDescriptor(type, descriptor, parentClassDescriptor);
         }
         else if (hibernateType.isAssociationType())
         {
@@ -284,6 +283,7 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
     /**
      * @param descriptor
      * @param type
+     * @param parentClassDescriptor
      * @return
      */
     private IPropertyDescriptor buildReferenceDescriptor(Class beanType, IPropertyDescriptor descriptor, AssociationType type)
@@ -294,6 +294,7 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
     /**
      * @param type
      * @param descriptor
+     * @param parentClassDescriptor
      * @return
      */
     private IdentifierDescriptor buildIdentifierDescriptor(Class type, IPropertyDescriptor descriptor)
@@ -324,7 +325,7 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
      * @param type
      * @param newDescriptor
      */
-    private CollectionDescriptor buildCollectionDescriptor(Class type, IPropertyDescriptor descriptor)
+    private CollectionDescriptor buildCollectionDescriptor(Class type, IPropertyDescriptor descriptor, IClassDescriptor parentClassDescriptor)
     {
         try
         {

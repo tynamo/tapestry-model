@@ -4,17 +4,25 @@ import java.beans.BeanInfo;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.beanutils.BeanUtils;
 
+/**
+ * Generate descriptors using reflection on the underlying class.  ReflectionDescriptorFactory.buildClassDescriptor()
+ * is the only public method here.
+ */
 public class ReflectionDescriptorFactory implements DescriptorFactory
 {
 	private List propertyExcludes = new ArrayList();
 	
 	private List methodExcludes = new ArrayList();
-	
+
+    /**
+     * Given a type, build a property descriptor
+     * @param type The type to build for
+     * @return a completed property descriptor
+     */
     public IClassDescriptor buildClassDescriptor(Class type)
     {
         try
@@ -22,8 +30,7 @@ public class ReflectionDescriptorFactory implements DescriptorFactory
             IClassDescriptor descriptor = new TrailsClassDescriptor(type);
             BeanInfo beanInfo = Introspector.getBeanInfo(type);
             BeanUtils.copyProperties(descriptor, beanInfo.getBeanDescriptor());
-            descriptor.setPropertyDescriptors(buildPropertyDescriptors(type, beanInfo));
-            //descriptor.setMethodDescriptors(buildMethodDescriptors(beanInfo));
+            descriptor.setPropertyDescriptors(buildPropertyDescriptors(type, beanInfo, descriptor));
             return descriptor;
         } catch (Exception ex)
         {
@@ -32,32 +39,53 @@ public class ReflectionDescriptorFactory implements DescriptorFactory
         return null;
     }
 
-//    protected List buildMethodDescriptors(BeanInfo beanInfo)
-//    {
-//        ArrayList methodDescriptors = new ArrayList();
-//        for (int i = 0; i < beanInfo.getMethodDescriptors().length; i++)
-//        {
-//            MethodDescriptor methodDescriptor = beanInfo.getMethodDescriptors()[i];
-//            methodDescriptors.add(new TrailsMethodDescriptor(
-//                methodDescriptor.getName(), methodDescriptor.getMethod().getParameterTypes()));
-//        }
-//        return methodDescriptors;
-//    }
-
-    protected List buildPropertyDescriptors(Class beanType, BeanInfo beanInfo) throws Exception
+    /**
+     * Build the set of property descriptors for this type
+     * @param type the aggregating class
+     * @param beanInfo the BeanInfo, already gathered
+     * @param parentClassDescriptor reference to the aggregating class, used for recovery with graph traversal
+     * @return ObjectReferenceDescriptor if this property is an association, otherwise a TrailsPropertyDescriptor
+     * @throws Exception
+     */
+    protected ArrayList<IPropertyDescriptor> buildPropertyDescriptors(Class type, BeanInfo beanInfo, IClassDescriptor parentClassDescriptor) throws Exception
     {
-        ArrayList propertyDescriptors = new ArrayList();
-        for (int i = 0; i < beanInfo.getPropertyDescriptors().length; i++)
+        ArrayList<IPropertyDescriptor> result = new ArrayList<IPropertyDescriptor>();
+        for (PropertyDescriptor beanPropDescriptor : beanInfo.getPropertyDescriptors())
         {
-            PropertyDescriptor beanPropDescriptor = beanInfo.getPropertyDescriptors()[i];
             if (!isExcluded(beanPropDescriptor.getName(), getPropertyExcludes()))
             {
-                TrailsPropertyDescriptor propDescriptor = new TrailsPropertyDescriptor(beanType, beanPropDescriptor.getPropertyType());
+                TrailsPropertyDescriptor propDescriptor;
+                Class<?> propertyType = beanPropDescriptor.getPropertyType();
+                if (propertyType.isEnum() || propertyType.isPrimitive() || propertyType.isArray() || propertyType.getPackage().getName().startsWith("java"))
+                {
+                    propDescriptor = new TrailsPropertyDescriptor(type, beanPropDescriptor.getPropertyType());
+                }
+                else
+                {
+                    propDescriptor = new ObjectReferenceDescriptor(type, beanPropDescriptor.getPropertyType(), beanPropDescriptor.getPropertyType());
+
+                }
                 BeanUtils.copyProperties(propDescriptor, beanPropDescriptor);
-                propertyDescriptors.add(propDescriptor);
+                TrailsPropertyDescriptor newPropertyDescriptor = propDescriptor;
+                result.add(newPropertyDescriptor);
             }
         }
-        return propertyDescriptors;
+        return result;
+    }
+
+    protected boolean isExcluded(String name, List excludes)
+    {
+        for (Object exclude1 : excludes)
+        {
+            String exclude = (String) exclude1;
+
+            if (name.matches(exclude))
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
 	public List getMethodExcludes()
@@ -79,24 +107,4 @@ public class ReflectionDescriptorFactory implements DescriptorFactory
 	{
 		this.propertyExcludes = propertyExcludes;
 	}
-
-    /**
-     * @param methodDescriptor
-     * @param excludes
-     * @return
-     */
-    protected boolean isExcluded(String name, List excludes)
-    {
-        for (Iterator iter = excludes.iterator(); iter.hasNext();)
-        {
-            String exclude = (String) iter.next();
-
-            if (name.matches(exclude))
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }    
 }

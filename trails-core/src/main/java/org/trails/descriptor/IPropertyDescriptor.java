@@ -130,5 +130,6 @@ public interface IPropertyDescriptor extends IDescriptor
      * list of IPropertyDescriptors to traverse between the classes, this provides a way to find the containing class.
      * @return ClassDescriptor for parent of this property
      */
-    public IClassDescriptor getParent();
+    IClassDescriptor getParentClassDescriptor();
+    void setParentClassDescriptor(IClassDescriptor parent);
 }

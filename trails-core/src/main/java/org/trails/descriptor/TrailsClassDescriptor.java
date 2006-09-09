@@ -11,14 +11,16 @@
  */
 package org.trails.descriptor;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 import ognl.Ognl;
 import ognl.OgnlException;
-
 import org.trails.component.Utils;
+import org.trails.descriptor.graph.BFSCache;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Collection;
+import java.util.Set;
+import java.util.HashSet;
 
 
 /**
@@ -31,6 +33,8 @@ public class TrailsClassDescriptor extends TrailsDescriptor implements IClassDes
 {
     private List<IPropertyDescriptor> propertyDescriptors = new ArrayList<IPropertyDescriptor>();
     private List<IMethodDescriptor> methodDescriptors = new ArrayList<IMethodDescriptor>();
+    private BFSCache<IClassDescriptor> bfsCache;
+    
     //private BeanDescriptor beanDescriptor;
     private boolean child;
     
@@ -100,8 +104,7 @@ public class TrailsClassDescriptor extends TrailsDescriptor implements IClassDes
      */
     public IPropertyDescriptor getPropertyDescriptor(String name)
     {
-        return findDescriptor("propertyDescriptors.{? name == '" + name +
-            "'}[0]");
+        return findDescriptor("propertyDescriptors.{? name == '" + name + "'}[0]");
     }
 
     /**
@@ -109,22 +112,63 @@ public class TrailsClassDescriptor extends TrailsDescriptor implements IClassDes
      */
     public String getPluralDisplayName()
     {
+        
         return Utils.pluralize(Utils.unCamelCase(getDisplayName()));
     }
 
     public List getPropertyDescriptors(String[] properties)
     {
         ArrayList<IPropertyDescriptor> descriptors = new ArrayList<IPropertyDescriptor>();
-        for (int i = 0; i < properties.length; i++)
+        for (String property : properties)
         {
-            descriptors.add(getPropertyDescriptor(properties[i]));
+            descriptors.add(getPropertyDescriptor(property));
         }
         return descriptors;
     }
 
 
-    public List<IPropertyDescriptor> findTraversalPath(Class type) {
-        return null;//To change body of implemented methods use File | Settings | File Templates.
+    public Collection<BFSCache.Adjacency<IClassDescriptor>> getAdjacent()
+    {
+        Set<BFSCache.Adjacency<IClassDescriptor>> list = new HashSet<BFSCache.Adjacency<IClassDescriptor>>();
+        for (IPropertyDescriptor propertyDescriptor : propertyDescriptors)
+        {
+            if (propertyDescriptor.isObjectReference()) {
+                IClassDescriptor descriptor = propertyDescriptor.getParentClassDescriptor();
+                AdjacencyImpl adjacency = new AdjacencyImpl(descriptor, propertyDescriptor.getName());
+                list.add(adjacency);
+            }
+        }
+        return list;
+    }
+
+    protected class AdjacencyImpl implements BFSCache.Adjacency<IClassDescriptor> {
+        private IClassDescriptor vertex;
+        private String edge;
+
+        public AdjacencyImpl(IClassDescriptor vertex, String edge) {
+            this.vertex = vertex;
+            this.edge = edge;
+        }
+
+        public IClassDescriptor getVertex() {
+            return vertex;
+        }
+
+        public void setVertex(IClassDescriptor vertex) {
+            this.vertex = vertex;
+        }
+
+        public String getEdge() {
+            return edge;
+        }
+
+        public void setEdge(String edge) {
+            this.edge = edge;
+        }
+    }
+
+    public List<BFSCache.Adjacency<IClassDescriptor>> findVertexTraversalPath(IClassDescriptor descriptor) {
+        return bfsCache.vertexPath(descriptor);
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -211,6 +255,15 @@ public class TrailsClassDescriptor extends TrailsDescriptor implements IClassDes
     public void setAllowSave(boolean allowSave)
     {
         this.allowSave = allowSave;
+    }
+
+    /**
+     * Store an instantiation of BFSCache for reachability information from this node
+     * @param bfsCache cache to store
+     */    
+    public void setBfsCache(BFSCache<IClassDescriptor> bfsCache)
+    {
+        this.bfsCache = bfsCache;
     }
 
     /**

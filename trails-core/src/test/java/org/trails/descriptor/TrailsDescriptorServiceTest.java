@@ -6,9 +6,7 @@ import java.util.List;
 
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.trails.persistence.PersistenceService;
-import org.trails.test.Foo;
+import org.trails.descriptor.graph.BFSCache;
 
 public class TrailsDescriptorServiceTest extends MockObjectTestCase
 {
@@ -17,9 +15,15 @@ public class TrailsDescriptorServiceTest extends MockObjectTestCase
 
     public void setUp() throws Exception
     {
-        ArrayList types = new ArrayList();
+        ArrayList<Class> types = new ArrayList<Class>();
         types.add(TestBean.class);
         types.add(ABean.class);
+        types.add(A.class);
+        types.add(B.class);
+        types.add(C.class);
+        types.add(D.class);
+        types.add(E.class);
+
         descriptorService.setTypes(types);
         descriptorService.setDescriptorFactory(new ReflectionDescriptorFactory());
         descriptorService.init();
@@ -62,6 +66,20 @@ public class TrailsDescriptorServiceTest extends MockObjectTestCase
         assertEquals("was decorated", "Decorated",
                 descriptorService.getClassDescriptor(TestBean.class).getDisplayName());
         decoratorMock.verify();
+    }
+
+    public void testGraphing() throws Exception {
+        IClassDescriptor descriptor = descriptorService.getClassDescriptor(A.class);
+
+        IClassDescriptor targetClassDescriptor = descriptorService.getClassDescriptor(E.class);
+        List<BFSCache.Adjacency<IClassDescriptor>> path = descriptor.findVertexTraversalPath(targetClassDescriptor);
+        assertEquals("Traversal path length", 3, path.size());
+        assertEquals("Traversal path length", A.class, path.get(0).getVertex().getType());
+        assertEquals("Traversal path length second node", B.class, path.get(1).getVertex().getType());
+        assertEquals("Traversal path method", "b", path.get(1).getEdge());
+        assertEquals("Traversal path length third node", E.class, path.get(2).getVertex().getType());
+        assertEquals("Traversal path method", "e", path.get(2).getEdge());
+
     }
 
     public void testGetAllDescriptors() throws Exception
@@ -130,4 +148,112 @@ public class TrailsDescriptorServiceTest extends MockObjectTestCase
             //System.out.println("foo"); 
         }
     }
+
+    public class A
+    {
+        private B b;
+        private C c;
+
+
+        public B getB()
+        {
+            return b;
+        }
+
+        public void setB(B b)
+        {
+            this.b = b;
+        }
+
+        public C getC()
+        {
+            return c;
+        }
+
+        public void setC(C c)
+        {
+            this.c = c;
+        }
+    }
+
+    /**
+     * @(#) B.java
+     */
+
+    public class B
+    {
+        private C c;
+        private E e;
+
+
+        public C getC()
+        {
+            return c;
+        }
+
+        public void setC(C c)
+        {
+            this.c = c;
+        }
+
+        public E getE()
+        {
+            return e;
+        }
+
+        public void setE(E e)
+        {
+            this.e = e;
+        }
+    }
+
+    /**
+     * @(#) C.java
+     */
+
+    public class C
+    {
+        private D d;
+
+
+        public D getD()
+        {
+            return d;
+        }
+
+        public void setD(D d)
+        {
+            this.d = d;
+        }
+    }
+
+    /**
+     * @(#) D.java
+     */
+
+    public class D
+    {
+        private E e;
+
+
+        public E getE()
+        {
+            return e;
+        }
+
+        public void setE(E e)
+        {
+            this.e = e;
+        }
+    }
+
+    /**
+     * @(#) E.java
+     */
+
+    public class E
+    {
+
+    }
+
 }

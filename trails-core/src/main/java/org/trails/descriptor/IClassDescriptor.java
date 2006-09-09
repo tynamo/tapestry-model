@@ -13,6 +13,9 @@
  */
 package org.trails.descriptor;
 
+import org.trails.descriptor.graph.BFSCache;
+import org.trails.descriptor.graph.BFSCache.Graphable;
+
 import java.util.List;
 
 /**
@@ -21,7 +24,7 @@ import java.util.List;
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
-public interface IClassDescriptor extends IDescriptor
+public interface IClassDescriptor extends IDescriptor, Graphable<IClassDescriptor>
 {
     public Class getType();
 
@@ -95,9 +98,14 @@ public interface IClassDescriptor extends IDescriptor
     public void setAllowRemove(boolean allowRemove);
 
     /**
+     * Store an instantiation of BFSCache for reachability information from this node
+     * @param bfsCache cache to store
+     */
+    public void setBfsCache(BFSCache<IClassDescriptor> bfsCache);
+    
+    /**
      * Get a list of intermediate PropertyDescriptors that can be used in a query.
-     * @param type The class of the destination to traverse to
      * @return a List of PropertyDescriptors
      */
-    public List<IPropertyDescriptor> findTraversalPath(Class type);
+    public List<BFSCache.Adjacency<IClassDescriptor>> findVertexTraversalPath(IClassDescriptor descriptor);
 }
