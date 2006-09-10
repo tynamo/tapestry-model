@@ -7,26 +7,23 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class EnumSelectionModel implements IPropertySelectionModel
+public class EnumSelectionModel extends IdentifierSelectionModel
 {
-    private List instances;
-
-    private boolean allowNone;
-
     private Class type;
 
-    public static String DEFAULT_NONE_LABEL = "None";
-
-    public static String DEFAULT_NONE_VALUE = "none";
-
-    private String noneLabel = EnumSelectionModel.DEFAULT_NONE_LABEL;
+    private String noneLabel = DEFAULT_NONE_LABEL;
 
     public EnumSelectionModel(Class type)
     {
         this(type, false);
 
     }
-
+    
+    public EnumSelectionModel(List instances, boolean allowNone)
+    {
+        setAllowNone(instances, allowNone);
+    }
+    
     public EnumSelectionModel(Class type, boolean allowNone)
     {
         Object[] enums = type.getEnumConstants();
@@ -37,50 +34,15 @@ public class EnumSelectionModel implements IPropertySelectionModel
         }
 
         this.type = type;
-        this.allowNone = allowNone;
-        this.instances = auxInstances;
-        if (this.allowNone)
-        {
-            this.instances = new ArrayList();
-            this.instances.addAll(auxInstances);
-            this.instances.add(0, null);
-        }
+        setAllowNone(auxInstances, allowNone);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.tapestry.form.IPropertySelectionModel#getOptionCount()
-     */
-    public int getOptionCount()
+    public EnumSelectionModel(Class type, String labelProperty, boolean allowNone)
     {
-        return instances.size();
+        this(type, allowNone);
+        setLabelProperty(labelProperty);
     }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.tapestry.form.IPropertySelectionModel#getOption(int)
-     */
-    public Object getOption(int index)
-    {
-        return instances.get(index);
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.tapestry.form.IPropertySelectionModel#getLabel(int)
-     */
-    public String getLabel(int index)
-    {
-        if (allowNone && index == 0)
-        {
-            return getNoneLabel();
-        }
-        return instances.get(index).toString();
-    }
-
+    
     /*
      * (non-Javadoc)
      * 
@@ -92,7 +54,7 @@ public class EnumSelectionModel implements IPropertySelectionModel
         {
             if (allowNone && index == 0)
             {
-                return EnumSelectionModel.DEFAULT_NONE_VALUE;
+                return DEFAULT_NONE_VALUE;
             } else
             {
                 return instances.get(index).toString();
@@ -112,7 +74,7 @@ public class EnumSelectionModel implements IPropertySelectionModel
     {
         if (allowNone)
         {
-            if (value.equals(EnumSelectionModel.DEFAULT_NONE_VALUE))
+            if (value.equals(DEFAULT_NONE_VALUE))
                 return null;
         }
         for (Iterator iter = instances.iterator(); iter.hasNext();)

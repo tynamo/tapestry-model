@@ -11,10 +11,13 @@
  */
 package org.trails.hibernate;
 
+import java.util.List;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.validator.InvalidStateException;
 import org.jmock.cglib.Mock;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.orm.hibernate3.HibernateTemplate;
@@ -32,8 +35,6 @@ import org.trails.test.BlogEntry;
 import org.trails.test.Descendant;
 import org.trails.test.Foo;
 import org.trails.test.Wibble;
-
-import java.util.List;
 
 
 /**
@@ -213,6 +214,21 @@ public class HibernatePersistenceServiceTest extends AbstractTransactionalSpring
         assertNotNull("wrapped  exception", persistenceException.getCause());
     }
 
+    public void testValidation() throws Exception
+    {
+        Baz baz = new Baz();
+        InvalidStateException invalidStateException = null;
+        try
+        {
+            persistenceService.save(baz);
+        }
+        catch (InvalidStateException ie)
+        {
+            invalidStateException = ie;
+        }
+        assertNotNull(invalidStateException);
+    }
+    
     public void testSaveAndRemove() throws Exception
     {
         

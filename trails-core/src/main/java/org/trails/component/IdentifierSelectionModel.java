@@ -30,36 +30,46 @@ import org.trails.TrailsRuntimeException;
  */
 public class IdentifierSelectionModel implements IPropertySelectionModel
 {
-    private List instances;
-    private String idPropery = "id";
-    private boolean allowNone;
+    protected List instances;
+    private String idProperty = "id";
+    protected boolean allowNone;
     
-    private String labelProperty = "toString()"; 
+    protected String labelProperty = "toString()"; 
     
     public static String DEFAULT_NONE_LABEL = "None";
     public static String DEFAULT_NONE_VALUE = "none";
     
-    private String noneLabel = DEFAULT_NONE_LABEL;
+    protected String noneLabel = DEFAULT_NONE_LABEL;
     
     public IdentifierSelectionModel() {}
     
     public IdentifierSelectionModel(List instances, String idProperty)
     {
-        this.idPropery = idProperty;
+        this.idProperty = idProperty;
 
         this.instances = instances;
+    }
+    
+    public IdentifierSelectionModel(List instances, boolean allowNone)
+    {
+        setAllowNone(instances, allowNone);        
+    }
+
+    protected void setAllowNone(List instances, boolean allowNone)
+    {
+        this.allowNone = allowNone;
+        this.instances = new ArrayList();
+        this.instances.addAll(instances);
+        if (this.allowNone)
+        {
+            this.instances.add(0, null);
+        }
     }
 
     public IdentifierSelectionModel(List instances, String idProperty, boolean allowNone)
     {
-        this(instances, idProperty);
-        this.allowNone = allowNone;
-        if (this.allowNone)
-        {
-            this.instances = new ArrayList();
-            this.instances.addAll(instances);
-            this.instances.add(0, null);
-        }
+        this(instances, allowNone);
+        this.idProperty = idProperty;
     }
     
     /* (non-Javadoc)
@@ -110,7 +120,7 @@ public class IdentifierSelectionModel implements IPropertySelectionModel
             }
             else
             {
-                return BeanUtils.getProperty(instances.get(index), idPropery);
+                return BeanUtils.getProperty(instances.get(index), idProperty);
             }
         }catch (Exception e)
         {
@@ -132,7 +142,7 @@ public class IdentifierSelectionModel implements IPropertySelectionModel
                 if (value.equals(DEFAULT_NONE_VALUE)) return null;
             }
             List matches = (List)Ognl.getValue(
-                "#root.{? #this." + idPropery + ".toString() == \"" + value + "\" }", 
+                "#root.{? #this." + idProperty + ".toString() == \"" + value + "\" }", 
                 realInstances);
             if (matches.size() > 0) return matches.get(0);
             return null;

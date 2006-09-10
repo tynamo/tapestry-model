@@ -41,6 +41,14 @@ public class IdentifierSelectionModelTest extends TestCase
             nullableSelectionModel.getValue(1));       
     }
     
+    public void testSetAllowNone() throws Exception
+    {
+        nullableSelectionModel.setAllowNone(foos, true);
+        assertEquals(3, nullableSelectionModel.getOptionCount());
+        nullableSelectionModel.setAllowNone(foos, true);
+        assertEquals(3, nullableSelectionModel.getOptionCount());
+    }
+    
     public void testNoneLabelValue() throws Exception
     {
     	nullableSelectionModel.setNoneLabel("Any");

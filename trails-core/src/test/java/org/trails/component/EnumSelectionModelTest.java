@@ -1,5 +1,9 @@
 package org.trails.component;
 
+import java.util.ArrayList;
+import java.util.EnumSet;
+import java.util.List;
+
 import junit.framework.TestCase;
 import org.trails.test.Gazonk;
 
@@ -27,11 +31,27 @@ public class EnumSelectionModelTest extends TestCase
         assertEquals("Any", nullableSelectionModel.getLabel(0));
     }
 
+    public void testWithList() throws Exception
+    {
+        List<Gazonk.Origin> instances = new ArrayList<Gazonk.Origin>();
+        instances.addAll(EnumSet.of(Gazonk.Origin.AFRICA, Gazonk.Origin.AMERICA));
+        selectionModel = new EnumSelectionModel(instances, false);
+        assertEquals(2, selectionModel.getOptionCount());
+    }
+    
     public void testGetLabel() throws Exception
     {
         assertEquals("right label", "AMERICA", selectionModel.getLabel(1));
         assertEquals("none value", EnumSelectionModel.DEFAULT_NONE_LABEL, nullableSelectionModel.getLabel(0));
         assertEquals("right label", "AFRICA", nullableSelectionModel.getLabel(1));
+    }
+
+    public void testGetAnimalLabel() throws Exception
+    {
+        selectionModel = new EnumSelectionModel(Gazonk.Animal.class, false);
+        selectionModel.setLabelProperty("sound");
+        assertEquals("Meow", selectionModel.getLabel(0));
+        assertEquals("Ruff!", selectionModel.getLabel(1));
     }
 
     public void testTranslateValue() throws Exception

@@ -22,11 +22,15 @@ public class Gazonk
         CAT 
         {
             public String toString() { return "Cat"; }
+            public String getSound() { return "Meow"; }
         },
         DOG
         {
             public String toString() { return "Dog"; }
-        }
+            public String getSound() { return "Ruff!"; }
+        };
+        
+        public abstract String getSound();
     }
     
     private Integer id;
