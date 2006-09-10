@@ -57,7 +57,7 @@
 				</executions>
 				<configuration>
 					<factory>
-						org.trailsframework.hibernate.HibernateAnnotationProcessorFactory
+						org.trails.hibernate.HibernateAnnotationProcessorFactory
 					</factory>
 					<force>true</force>
 					<nocompile>true</nocompile>
