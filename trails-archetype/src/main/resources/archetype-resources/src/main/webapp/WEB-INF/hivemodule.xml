@@ -7,6 +7,10 @@
 		</state-object>
 	</contribution>
 
+	<contribution configuration-id="hivemind.hibernate3.Configuration">
+		<property name="hibernate.show_sql" value="true" />
+	</contribution>
+	
 	<implementation service-id="hivemind.hibernate3.SessionFactory">
 	 <invoke-factory service-id="hivemind.lib.SpringLookupFactory">
 	   <lookup-bean name="sessionFactory" />
