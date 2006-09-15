@@ -49,7 +49,11 @@ public class TrailsClassDescriptor extends TrailsDescriptor implements IClassDes
     {
         super(descriptor);
         copyPropertyDescriptorsFrom(descriptor);
-        copyMethodDescriptorsFrom(descriptor);       
+        copyMethodDescriptorsFrom(descriptor);    
+        if (descriptor instanceof TrailsClassDescriptor)
+        {
+            setBfsCache(((TrailsClassDescriptor)descriptor).getBfsCache());
+        }
     }
 
     public TrailsClassDescriptor(Class type)
@@ -271,6 +275,11 @@ public class TrailsClassDescriptor extends TrailsDescriptor implements IClassDes
      */
     public String toString() {
     	return "{TrailsClassDescriptor - Type: " + getType() + "}";
+    }
+
+    protected BFSCache<IClassDescriptor> getBfsCache()
+    {
+        return bfsCache;
     }
 
 }
