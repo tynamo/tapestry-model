@@ -130,6 +130,12 @@
             <url>http://trails.codehaus.org/repository/</url>
         </repository>
         <repository>
+            <id>snapshots.codehaus.org</id>
+            <name>Codehaus Snapshots</name>
+            <url>http://snapshots.repository.codehaus.org/</url>
+            <snapshots><enabled>true</enabled></snapshots>
+        </repository>        
+        <repository>
             <id>www.carmanconsulting.com</id>
             <name>Tapernate</name>
             <url>http://www.carmanconsulting.com/mvn/</url>
