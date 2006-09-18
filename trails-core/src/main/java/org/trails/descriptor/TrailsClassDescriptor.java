@@ -49,11 +49,15 @@ public class TrailsClassDescriptor extends TrailsDescriptor implements IClassDes
     {
         super(descriptor);
         copyPropertyDescriptorsFrom(descriptor);
-        copyMethodDescriptorsFrom(descriptor);    
-        if (descriptor instanceof TrailsClassDescriptor)
-        {
-            setBfsCache(((TrailsClassDescriptor)descriptor).getBfsCache());
-        }
+        copyMethodDescriptorsFrom(descriptor);
+//        try
+//        {
+//            bfsCache = (BFSCache<IClassDescriptor>)descriptor.getBfsCache().clone();
+//        }
+//        catch (CloneNotSupportedException e)
+//        {
+//            throw new RuntimeException(e);
+//        }
     }
 
     public TrailsClassDescriptor(Class type)
@@ -116,7 +120,6 @@ public class TrailsClassDescriptor extends TrailsDescriptor implements IClassDes
      */
     public String getPluralDisplayName()
     {
-        
         return Utils.pluralize(Utils.unCamelCase(getDisplayName()));
     }
 
@@ -226,7 +229,7 @@ public class TrailsClassDescriptor extends TrailsDescriptor implements IClassDes
     {
         return child;
     }
-    
+
     /**
      * @param child The child to set.
      */
@@ -264,10 +267,15 @@ public class TrailsClassDescriptor extends TrailsDescriptor implements IClassDes
     /**
      * Store an instantiation of BFSCache for reachability information from this node
      * @param bfsCache cache to store
-     */    
+     */
     public void setBfsCache(BFSCache<IClassDescriptor> bfsCache)
     {
         this.bfsCache = bfsCache;
+    }
+
+    public BFSCache<IClassDescriptor> getBfsCache()
+    {
+        return bfsCache;
     }
 
     /**
@@ -275,11 +283,6 @@ public class TrailsClassDescriptor extends TrailsDescriptor implements IClassDes
      */
     public String toString() {
     	return "{TrailsClassDescriptor - Type: " + getType() + "}";
-    }
-
-    protected BFSCache<IClassDescriptor> getBfsCache()
-    {
-        return bfsCache;
     }
 
 }

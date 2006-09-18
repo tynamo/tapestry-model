@@ -15,7 +15,7 @@ import java.util.Collection;
  * @author topping
  * @date Sep 5, 2006 12:14:14 AM
  */
-public class BFSCache<Vertex extends BFSCache.Graphable<Vertex>>
+public class BFSCache<Vertex extends BFSCache.Graphable<Vertex>> implements Cloneable
 {
     private Map<Vertex, Integer> dist = new HashMap<Vertex, Integer>();
     private Map<Vertex, Adjacency<Vertex>> prev = new HashMap<Vertex, Adjacency<Vertex>>();
@@ -121,5 +121,14 @@ public class BFSCache<Vertex extends BFSCache.Graphable<Vertex>>
          * @return The name of the method that can reach this vertex.
          */
         String getEdge();
+    }
+
+    public Object clone() throws CloneNotSupportedException
+    {
+        BFSCache clone = (BFSCache)super.clone();
+        clone.dist = new HashMap<Vertex, Integer>(dist);
+        clone.prev = new HashMap<Vertex, Adjacency<Vertex>>(prev);
+        clone.graph = new HashMap<Vertex, Set<Adjacency<Vertex>>>(graph);
+        return clone;
     }
 }

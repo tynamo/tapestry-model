@@ -117,8 +117,8 @@ public class HibernateAnnotationProcessorFactory implements AnnotationProcessorF
                 
             }
             catch (Exception ex) {
-                //ex.printStackTrace();
-                }
+                ex.printStackTrace();
+            }
 
         }
 

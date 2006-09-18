@@ -102,7 +102,8 @@ public interface IClassDescriptor extends IDescriptor, Graphable<IClassDescripto
      * @param bfsCache cache to store
      */
     public void setBfsCache(BFSCache<IClassDescriptor> bfsCache);
-    
+//    public BFSCache<IClassDescriptor> getBfsCache();
+
     /**
      * Get a list of intermediate PropertyDescriptors that can be used in a query.
      * @return a List of PropertyDescriptors
