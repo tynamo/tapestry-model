@@ -12,4 +12,6 @@
 	<library id="contrib" specification-path="/org/apache/tapestry/contrib/Contrib.library"/>
 	<library id="tacos" specification-path="/net/sf/tacos/Tacos.library"/>
 
+    <meta key="org.apache.tapestry.accepted-locales" value="en,es_AR,pt"/>
+
 </application>
