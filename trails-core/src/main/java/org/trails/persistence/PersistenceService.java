@@ -14,8 +14,6 @@ package org.trails.persistence;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.persistence.NonUniqueResultException;
-
 import org.hibernate.criterion.DetachedCriteria;
 
 
@@ -64,5 +62,7 @@ public interface PersistenceService
 	public List getInstances(Object example);
 
     public <T> T reload(T instance);
+
+    public <T> T merge(T instance);
     
 }

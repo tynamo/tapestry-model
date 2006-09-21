@@ -13,6 +13,8 @@ package org.trails.hibernate;
 
 import java.util.List;
 
+import org.hibernate.NonUniqueObjectException;
+import org.hibernate.NonUniqueResultException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.DetachedCriteria;
@@ -127,7 +129,7 @@ public class HibernatePersistenceServiceTest extends AbstractTransactionalSpring
         catch (IncorrectResultSizeDataAccessException e) {
         	return;
         }
-        fail("NonUniqueResultException not thrown, but two results should have been found");
+        fail("IncorrectResultSizeDataAccessExcpetion not thrown, but two results should have been found");
     }
     
     public void testGetIntancesWithManyToOne() throws Exception
@@ -237,6 +239,15 @@ public class HibernatePersistenceServiceTest extends AbstractTransactionalSpring
         baz = persistenceService.save(baz);
         persistenceService.remove(baz);
         
+    }
+    
+    public void testMerge() throws Exception
+    {
+        Baz baz = new Baz();
+        baz.setDescription("whatever");
+        Baz merged = persistenceService.merge(baz);
+        assertNotNull(merged.getId());
+        assertFalse(baz == merged);
     }
     
     public void testReload() throws Exception

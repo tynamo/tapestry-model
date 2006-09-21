@@ -11,8 +11,16 @@
  */
 package org.trails.hibernate;
 
+import java.io.Serializable;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+
 import ognl.Ognl;
 import ognl.OgnlException;
+
 import org.hibernate.Criteria;
 import org.hibernate.EntityMode;
 import org.hibernate.HibernateException;
@@ -39,13 +47,6 @@ import org.trails.descriptor.IPropertyDescriptor;
 import org.trails.persistence.PersistenceException;
 import org.trails.persistence.PersistenceService;
 import org.trails.validation.ValidationException;
-
-import java.io.Serializable;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
 
 /**
  * @author fus8882
@@ -325,5 +326,10 @@ public class HibernatePersistenceService extends HibernateDaoSupport implements
      */
     protected Criteria alterCriteria(Criteria source) {
         return source;
+    }
+
+    public <T> T merge(T instance)
+    {
+        return (T)getHibernateTemplate().merge(instance);
     }
 }

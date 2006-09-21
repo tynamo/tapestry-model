@@ -24,10 +24,7 @@ import java.util.HashSet;
 
 
 /**
- * @author fus8882
- *
- * TODO To change the template for this generated type comment go to Window -
- * Preferences - Java - Code Style - Code Templates
+ * This represents all the Trails metadata for a single class.  
  */
 public class TrailsClassDescriptor extends TrailsDescriptor implements IClassDescriptor
 {
@@ -45,6 +42,10 @@ public class TrailsClassDescriptor extends TrailsDescriptor implements IClassDes
     /////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Constructors
     /////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /**
+     * This is a copy constructor.  These need to be clonable for the security aspect to be able
+     * to copy them, so if new properties are added they should be added here too.
+    */
     public TrailsClassDescriptor(IClassDescriptor descriptor)
     {
         super(descriptor);
