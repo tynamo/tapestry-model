@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 
 import ognl.OgnlException;
-import org.trails.descriptor.graph.BFSCache;
 
 
 public class TrailsDescriptorService implements DescriptorService {
@@ -32,10 +31,6 @@ public class TrailsDescriptorService implements DescriptorService {
             for (IPropertyDescriptor iPropertyDescriptor : iClassDescriptor.getPropertyDescriptors()) {
                 iPropertyDescriptor.setParentClassDescriptor(descriptors.get(iPropertyDescriptor.getPropertyType()));
             }
-        }
-        // need third pass to set up spanning trees, after parents are determined
-        for (IClassDescriptor descriptor : descriptors.values()) {
-            descriptor.setBfsCache(new BFSCache<IClassDescriptor>(descriptor));            
         }
     }
 

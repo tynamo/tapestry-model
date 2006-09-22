@@ -14,13 +14,9 @@ package org.trails.descriptor;
 import ognl.Ognl;
 import ognl.OgnlException;
 import org.trails.component.Utils;
-import org.trails.descriptor.graph.BFSCache;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Collection;
-import java.util.Set;
-import java.util.HashSet;
 
 
 /**
@@ -30,8 +26,7 @@ public class TrailsClassDescriptor extends TrailsDescriptor implements IClassDes
 {
     private List<IPropertyDescriptor> propertyDescriptors = new ArrayList<IPropertyDescriptor>();
     private List<IMethodDescriptor> methodDescriptors = new ArrayList<IMethodDescriptor>();
-    private BFSCache<IClassDescriptor> bfsCache;
-    
+
     //private BeanDescriptor beanDescriptor;
     private boolean child;
     
@@ -134,51 +129,6 @@ public class TrailsClassDescriptor extends TrailsDescriptor implements IClassDes
         return descriptors;
     }
 
-
-    public Collection<BFSCache.Adjacency<IClassDescriptor>> getAdjacent()
-    {
-        Set<BFSCache.Adjacency<IClassDescriptor>> list = new HashSet<BFSCache.Adjacency<IClassDescriptor>>();
-        for (IPropertyDescriptor propertyDescriptor : propertyDescriptors)
-        {
-            if (propertyDescriptor.isObjectReference()) {
-                IClassDescriptor descriptor = propertyDescriptor.getParentClassDescriptor();
-                AdjacencyImpl adjacency = new AdjacencyImpl(descriptor, propertyDescriptor.getName());
-                list.add(adjacency);
-            }
-        }
-        return list;
-    }
-
-    protected class AdjacencyImpl implements BFSCache.Adjacency<IClassDescriptor> {
-        private IClassDescriptor vertex;
-        private String edge;
-
-        public AdjacencyImpl(IClassDescriptor vertex, String edge) {
-            this.vertex = vertex;
-            this.edge = edge;
-        }
-
-        public IClassDescriptor getVertex() {
-            return vertex;
-        }
-
-        public void setVertex(IClassDescriptor vertex) {
-            this.vertex = vertex;
-        }
-
-        public String getEdge() {
-            return edge;
-        }
-
-        public void setEdge(String edge) {
-            this.edge = edge;
-        }
-    }
-
-    public List<BFSCache.Adjacency<IClassDescriptor>> findVertexTraversalPath(IClassDescriptor descriptor) {
-        return bfsCache.vertexPath(descriptor);
-    }
-
     /////////////////////////////////////////////////////////////////////////////////////////////////////////
     // bean getters / setters
     /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -263,20 +213,6 @@ public class TrailsClassDescriptor extends TrailsDescriptor implements IClassDes
     public void setAllowSave(boolean allowSave)
     {
         this.allowSave = allowSave;
-    }
-
-    /**
-     * Store an instantiation of BFSCache for reachability information from this node
-     * @param bfsCache cache to store
-     */
-    public void setBfsCache(BFSCache<IClassDescriptor> bfsCache)
-    {
-        this.bfsCache = bfsCache;
-    }
-
-    public BFSCache<IClassDescriptor> getBfsCache()
-    {
-        return bfsCache;
     }
 
     /**
