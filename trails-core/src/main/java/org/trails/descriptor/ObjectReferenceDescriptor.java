@@ -11,12 +11,15 @@
  */
 package org.trails.descriptor;
 
+import org.trails.hibernate.HibernateDescriptorDecorator;
+
 
 /**
- * @author fus8882
+ * @author Chris Nelson
  *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
+ * This class represents a to-one association and is created by HibernateDescriptorDecorator
+ * 
+ * @see HibernateDescriptorDecorator
  */
 public class ObjectReferenceDescriptor extends TrailsPropertyDescriptor
 {

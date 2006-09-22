@@ -37,6 +37,7 @@ import org.trails.descriptor.IClassDescriptor;
 import org.trails.descriptor.IPropertyDescriptor;
 import org.trails.descriptor.IdentifierDescriptor;
 import org.trails.descriptor.ObjectReferenceDescriptor;
+import org.trails.descriptor.TrailsPropertyDescriptor;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -46,10 +47,13 @@ import java.util.List;
 
 
 /**
- * @author fus8882
- *         <p/>
- *         TODO To change the template for this generated type comment go to Window - Preferences - Java - Code Style -
- *         Code Templates
+ * This decorator will add metadata information.  It will replace simple reflection based 
+ * TrailsPropertyIPropertyDescriptors with appropriate Hibernate descriptors
+ * 
+ * @see TrailsPropertyDescriptor
+ * @see ObjectReferenceDescriptor
+ * @see CollectionDescriptor
+ * @see EmbeddedDescriptor
  */
 public class HibernateDescriptorDecorator implements DescriptorDecorator
 {
@@ -121,28 +125,7 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
         Type hibernateType = mappingProperty.getType();
         if (mappingProperty.getType() instanceof ComponentType)
         {
-            Component componentMapping = (Component) mappingProperty.getValue();
-            IClassDescriptor baseDescriptor = getDescriptorFactory().buildClassDescriptor(descriptor.getPropertyType());
-            // build from base descriptor
-            EmbeddedDescriptor embeddedDescriptor = new EmbeddedDescriptor(type, baseDescriptor);
-            // and copy from property descriptor
-            embeddedDescriptor.copyFrom(descriptor);
-            ArrayList<IPropertyDescriptor> decoratedProperties = new ArrayList<IPropertyDescriptor>();
-            // go thru each property and decorate it with Hibernate info
-            for (IPropertyDescriptor propertyDescriptor : embeddedDescriptor.getPropertyDescriptors())
-            {
-                if (notAHibernateProperty(componentMapping, propertyDescriptor))
-                {
-                    decoratedProperties.add(propertyDescriptor);
-                }
-                else
-                {
-                    Property property = componentMapping.getProperty(propertyDescriptor.getName());
-                    IPropertyDescriptor iPropertyDescriptor = decoratePropertyDescriptor(embeddedDescriptor.getBeanType(), property, propertyDescriptor, parentClassDescriptor);
-                    decoratedProperties.add(iPropertyDescriptor);
-                }
-            }
-            embeddedDescriptor.setPropertyDescriptors(decoratedProperties);
+            EmbeddedDescriptor embeddedDescriptor = buildEmbeddedDescriptor(type, mappingProperty, descriptor, parentClassDescriptor);
             result = embeddedDescriptor;
         }
         else if (Collection.class.isAssignableFrom(descriptor.getPropertyType()))
@@ -159,6 +142,33 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
         }
 
         return result;
+    }
+
+    private EmbeddedDescriptor buildEmbeddedDescriptor(Class type, Property mappingProperty, IPropertyDescriptor descriptor, IClassDescriptor parentClassDescriptor)
+    {
+        Component componentMapping = (Component) mappingProperty.getValue();
+        IClassDescriptor baseDescriptor = getDescriptorFactory().buildClassDescriptor(descriptor.getPropertyType());
+        // build from base descriptor
+        EmbeddedDescriptor embeddedDescriptor = new EmbeddedDescriptor(type, baseDescriptor);
+        // and copy from property descriptor
+        embeddedDescriptor.copyFrom(descriptor);
+        ArrayList<IPropertyDescriptor> decoratedProperties = new ArrayList<IPropertyDescriptor>();
+        // go thru each property and decorate it with Hibernate info
+        for (IPropertyDescriptor propertyDescriptor : embeddedDescriptor.getPropertyDescriptors())
+        {
+            if (notAHibernateProperty(componentMapping, propertyDescriptor))
+            {
+                decoratedProperties.add(propertyDescriptor);
+            }
+            else
+            {
+                Property property = componentMapping.getProperty(propertyDescriptor.getName());
+                IPropertyDescriptor iPropertyDescriptor = decoratePropertyDescriptor(embeddedDescriptor.getBeanType(), property, propertyDescriptor, parentClassDescriptor);
+                decoratedProperties.add(iPropertyDescriptor);
+            }
+        }
+        embeddedDescriptor.setPropertyDescriptors(decoratedProperties);
+        return embeddedDescriptor;
     }
 
     /**

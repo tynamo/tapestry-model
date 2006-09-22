@@ -20,7 +20,7 @@ import org.trails.hibernate.EmbeddedDescriptor;
 /**
  * This class uses the annotations on a given class or property to modify its 
  * descriptor
- * @author fus8882
+ * @author Chris Nelson
  *
  */
 public class AnnotationDecorator implements DescriptorDecorator

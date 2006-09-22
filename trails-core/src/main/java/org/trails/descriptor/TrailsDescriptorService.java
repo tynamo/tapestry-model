@@ -9,13 +9,26 @@ import java.util.Map;
 
 import ognl.OgnlException;
 
-
+/**
+ * This class builds and caches IClassDescriptors.  Descriptors are build during the init
+ * method which is called by Spring during application startup
+ * @author cnelson
+ * @see IClassDescriptor
+ *
+ */
 public class TrailsDescriptorService implements DescriptorService {
     protected List<Class> types;
     protected Map<Class, IClassDescriptor> descriptors = new HashMap<Class, IClassDescriptor>();
     private List<DescriptorDecorator> decorators = new ArrayList<DescriptorDecorator>();
     private DescriptorFactory descriptorFactory;
 
+    /**
+     * For each class in types, a descriptor is built by the DescriptorFactory.  Next it is decorated
+     * by each DescriptorDecorator in turn.  Finally it is cached.
+     * @throws OgnlException
+     * @see DescriptorFactory
+     * @see DescriptorDecorator
+     */
     public void init() throws OgnlException {
         descriptors.clear();
         for (Class type : types) {
@@ -80,6 +93,11 @@ public class TrailsDescriptorService implements DescriptorService {
         return currDescriptor;
     }
 
+    /**
+     * In the Trails default configuration this will be set 
+     * to all classes in the Hibernate config
+     * @return
+     */
     public List getTypes() {
         return types;
     }
@@ -91,6 +109,13 @@ public class TrailsDescriptorService implements DescriptorService {
         this.types = types;
     }
 
+    /**
+     * In the default Trails configuration this will contain a HibernateDescriptorDecorator 
+     * and an AnnotationDecorator
+     * @see org.trails.hibernate.HibernateDescriptorDecorator
+     * @see org.trails.descriptor.annotation.AnnotationDecorator
+     * @return
+     */
     public List<DescriptorDecorator> getDecorators() {
         return decorators;
     }
@@ -99,6 +124,11 @@ public class TrailsDescriptorService implements DescriptorService {
         this.decorators = decorators;
     }
 
+    /**
+     * In default Trails this will be a ReflectionDescriptorFactory
+     * @return
+     * @see ReflectionDescriptorFactory
+     */
     public DescriptorFactory getDescriptorFactory() {
         return descriptorFactory;
     }

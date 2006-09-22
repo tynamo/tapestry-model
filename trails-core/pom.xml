@@ -394,7 +394,7 @@
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <configuration>
                     <doclet>ydoc.doclets.YStandard</doclet>
-                    <docletPath>${ydoc.home}/lib/ydoc.jar:${ydoc.home}/lib/class2svg.jar:${ydoc.home}/resources</docletPath>
+                    <docletPath>${ydoc.home}/lib/ydoc.jar${path.separator}${ydoc.home}/lib/class2svg.jar${path.separator}${ydoc.home}/resources</docletPath>
                     <additionalparam>-license ${ydoc.license} -filter ydoc.filters.ExcludeFilter -filterpath ${ydoc.home}/lib/ydoc.jar -umlautogen</additionalparam>
                     <author>true</author>
                     <bottom>true</bottom>
