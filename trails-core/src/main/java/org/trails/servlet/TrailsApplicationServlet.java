@@ -8,7 +8,6 @@ import java.util.Locale;
 
 import javax.servlet.ServletConfig;
 
-import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Registry;
 import org.apache.tapestry.ApplicationServlet;
 import org.apache.tapestry.services.RequestLocaleManager;

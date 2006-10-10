@@ -121,7 +121,7 @@
 		</property>
 	</bean>
 	
-	<bean id="hibernateDescriptorDecorator" class="org.trails.hibernate.HibernateDescriptorDecorator" singleton="true">
+	<bean id="hibernateDescriptorDecorator" class="org.trails.hibernate.HibernateDescriptorDecorator">
 		<property name="localSessionFactoryBean"> <ref bean="&amp;sessionFactory" /></property>
 		<property name="descriptorFactory"><ref local="descriptorFactory" /></property>
 	</bean>
