@@ -71,9 +71,16 @@
         <repository>
             <id>trails.codehaus.org</id>
             <name>Trails Repository</name>
-            <url>http://trails.codehaus.org/repository/</url>
+            <url>http://trails.codehaus.org/repository</url>
         </repository>
     </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>people.apache.org</id>
+            <name>Apache's Maven2 Snapshot Repository</name>
+            <url>http://people.apache.org/maven-snapshot-repository</url>
+        </pluginRepository>
+    </pluginRepositories>
     <ciManagement>
         <notifiers>
             <notifier>
