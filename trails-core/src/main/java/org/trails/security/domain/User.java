@@ -206,15 +206,7 @@ public class User implements UserDetails, Serializable
 		public GrantedAuthority[] getAuthorities() {
 		  log.debug("User " + getUsername() + " has roles " + roles);
 		  if (roles == null || roles.size() == 0) throw new UsernameNotFoundException("User has no GrantedAuthority");
-		  // Note that this should work, but something requires GrantedAuthorityImpl or it does things somehow differently
 		  return roles.toArray(new GrantedAuthority[roles.size()]);
-		  // TODO Try later with newer version of acegi-security lib, at the time I was using 1.0.0-RC1
-		  /*
-	    GrantedAuthority[] authorities = new GrantedAuthority[roles.size()];
-	    int i = 0;
-	    for (Role role : roles) authorities[i++] = new GrantedAuthorityImpl(role.getName());
-	    return authorities;
-	    */
 		}
 
 		public boolean isCredentialsNonExpired() {
