@@ -16,6 +16,8 @@ import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 import org.jmock.core.Invocation;
 import org.jmock.core.Stub;
+import org.xml.sax.EntityResolver;
+import org.xml.sax.InputSource;
 
 import com.sun.mirror.apt.AnnotationProcessor;
 import com.sun.mirror.apt.AnnotationProcessorEnvironment;
@@ -98,8 +100,24 @@ public class HibernateAnnotationProcessorFactoryTest extends MockObjectTestCase
 			
 		processor.process();
 		
-		
+		// Since the move to www.hibernate.org was completed, the DTD is not anymore available on hibernate.sourceforg.net
+		// FIXME is there really no better way to provide a DTD from the filesystem if you don't want to/can't change the id???
+		// From http://tersesystems.com/post/6000058.jhtml		
+		EntityResolver resolver = new EntityResolver() {
+			public InputSource resolveEntity(String publicId, String systemId) {
+				if ( publicId.equals( "-//Hibernate/Hibernate Configuration DTD 3.0//EN" ) ) {
+					InputStream in = getClass().getClassLoader().getResourceAsStream("hibernate-configuration-3.0.dtd");
+					return new InputSource( in );
+				}
+				return null;
+			}
+		};
+
 		SAXReader reader = new SAXReader();
+		reader.setEntityResolver( resolver );		
+		
+		
+		//SAXReader reader = new SAXReader();
         //reader.setIncludeExternalDTDDeclarations(false);
 		Document doc = reader.read(destFile);
 		assertNotNull(doc.selectSingleNode("//mapping[@class='org.trails.Foo']"));
