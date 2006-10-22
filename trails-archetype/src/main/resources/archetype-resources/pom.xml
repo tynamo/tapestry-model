@@ -11,7 +11,14 @@
 	<url>https://trails.dev.java.net/</url>
 
 	<build>
-		<plugins>
+        <extensions>
+            <extension>
+                <groupId>hsqldb</groupId>
+                <artifactId>hsqldb</artifactId>
+                <version>1.8.0.1</version>
+            </extension>
+        </extensions>
+        <plugins>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>aspectj-maven-plugin</artifactId>
@@ -93,7 +100,22 @@
 				</dependencies>
 			</plugin>
 
-		</plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>hibernate3-maven-plugin</artifactId>
+                <version>1.0-SNAPSHOT</version>
+                <configuration>
+                    <hibernate>
+                        <configurationFile>target/generated-sources/resources/hibernate.cfg.xml</configurationFile>
+                        <propertyFile>src/main/resources/hibernate.properties</propertyFile>
+                    </hibernate>
+                    <jdk5>true</jdk5>
+                    <drop>true</drop>
+                    <outputFile>export.ddl</outputFile>
+                </configuration>
+            </plugin>
+
+        </plugins>
         <resources>
             <resource>
                 <directory>\${basedir}/src/main/resources</directory>
@@ -113,15 +135,23 @@
 			<version>1.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
-			<groupId>jaxen</groupId>
-			<artifactId>jaxen</artifactId>
+            <!-- kaosko 2006-09-06: Apt plugin may silently fail if Jaxen isn't declared. The reason's a bit unclear, but my best guess
+it's because of different versions of apt plugin posted as the same version (which is wrong for non-snapshots) -->
+            <groupId>jaxen</groupId>
+            <artifactId>jaxen</artifactId>
 			<version>1.1-beta-6</version>
 		</dependency>
 		<dependency>
 			<groupId>com.javaforge.tapestry</groupId>
 			<artifactId>tapernate</artifactId>
 			<version>0.1-SNAPSHOT</version>
-		</dependency>
+            <exclusions>
+                <exclusion>
+                    <groupId>easymock</groupId>
+                    <artifactId>easymock</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
 	</dependencies>
     <repositories>
         <repository>
@@ -147,5 +177,15 @@
 			<name>CodeHaus Repository</name>
 			<url>http://repository.codehaus.org/</url>
 		</pluginRepository>
-	</pluginRepositories>
+        <pluginRepository>
+            <id>snapshots.codehaus.org</id>
+            <url>http://snapshots.repository.codehaus.org/</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+        </pluginRepository>
+    </pluginRepositories>
 </project>

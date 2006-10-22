@@ -79,11 +79,6 @@
             <artifactId>asm</artifactId>
             <version>1.5.3</version>
         </dependency>
-        <!--dependency> DEPENDENCIA TRANSITIVA ELIMINADA HSQLDB
-              <groupId>antlr</groupId>
-              <artifactId>antlr</artifactId>
-              <version>2.7.2</version>
-              </dependency-->
         <dependency>
             <groupId>aspectj</groupId>
             <artifactId>aspectjlib</artifactId>
@@ -92,11 +87,6 @@
         <dependency>
             <groupId>aspectj</groupId>
             <artifactId>aspectjrt</artifactId>
-            <version>1.5.2a</version>
-        </dependency>
-        <dependency>
-            <groupId>aspectj</groupId>
-            <artifactId>aspectjtools</artifactId>
             <version>1.5.2a</version>
         </dependency>
         <dependency>
@@ -114,11 +104,6 @@
             <artifactId>c3p0</artifactId>
             <version>0.9.0.2</version>
         </dependency>
-        <!--dependency>
-              <groupId>cglib</groupId>
-              <artifactId>cglib</artifactId>
-              <version>2.1_3</version>
-              </dependency-->
         <dependency>
             <groupId>commons-beanutils</groupId>
             <artifactId>commons-beanutils</artifactId>
@@ -176,11 +161,6 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>dom4j</groupId>
-            <artifactId>dom4j</artifactId>
-            <version>1.6.1</version>
-        </dependency>
-        <dependency>
             <groupId>ehcache</groupId>
             <artifactId>ehcache</artifactId>
             <version>1.1</version>
@@ -211,19 +191,6 @@
             <version>1.8</version>
             <scope>test</scope>
         </dependency>
-        <!--dependency>
-              <groupId>hsqldb</groupId>
-              <artifactId>hsqldb</artifactId>
-              <version>1.7.3.0</version>
-              </dependency-->
-        <!-- kaosko 2006-09-06: Apt plugin may silently fail if Jaxen isn't declared. The reason's a bit unclear, but my best guess
-        it's because of different versions of apt plugin posted as the same version (which is wrong for non-snapshots) -->
-        <dependency>
-          <groupId>jaxen</groupId>
-          <artifactId>jaxen</artifactId>
-          <version>1.1-beta-6</version>
-          <scope>compile</scope>
-	      </dependency>
         <dependency>
             <groupId>jboss</groupId>
             <artifactId>javassist</artifactId>
@@ -267,17 +234,12 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>3.8.2</version>
-            <!--scope>test</scope-->
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
             <version>1.2.9</version>
-        </dependency>
-        <dependency>
-            <groupId>lucene</groupId>
-            <artifactId>lucene</artifactId>
-            <version>1.4.3</version>
         </dependency>
         <dependency>
             <groupId>mysql</groupId>
@@ -310,11 +272,6 @@
             <version>3.1beta8</version>
         </dependency>
         <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-tools</artifactId>
-            <version>3.1.0.beta4</version>
-        </dependency>
-        <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring</artifactId>
             <version>2.0</version>
@@ -323,6 +280,7 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-mock</artifactId>
             <version>2.0</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
@@ -385,6 +343,12 @@
             <groupId>com.javaforge.tapestry</groupId>
             <artifactId>tapernate</artifactId>
             <version>0.1-SNAPSHOT</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>easymock</groupId>
+                    <artifactId>easymock</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
     <reporting>
