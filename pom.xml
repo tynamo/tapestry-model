@@ -79,6 +79,12 @@
             <id>people.apache.org</id>
             <name>Apache's Maven2 Snapshot Repository</name>
             <url>http://people.apache.org/maven-snapshot-repository</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
         </pluginRepository>
     </pluginRepositories>
     <ciManagement>
