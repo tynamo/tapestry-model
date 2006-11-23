@@ -21,7 +21,6 @@ import org.apache.tapestry.services.ExpressionEvaluator;
 import org.apache.tapestry.util.ComponentAddress;
 import org.hibernate.criterion.DetachedCriteria;
 import org.trails.descriptor.IPropertyDescriptor;
-import org.trails.descriptor.TrailsPropertyDescriptor;
 import org.trails.persistence.PersistenceService;
 
 
@@ -137,7 +136,7 @@ public abstract class ObjectTable extends ClassDescriptorComponent
      */
     public String getLinkProperty()
     {
-    	TrailsPropertyDescriptor propertyDescriptor = this.getIdentifierPropertyDescriptor();
+    	IPropertyDescriptor propertyDescriptor = this.getIdentifierPropertyDescriptor();
         if(!this.displaying(propertyDescriptor))
         	propertyDescriptor = this.getFirstDisplayableProperty();
         
@@ -148,11 +147,11 @@ public abstract class ObjectTable extends ClassDescriptorComponent
      * Returns the first displayable property.
      * @return
      */
-    protected TrailsPropertyDescriptor getFirstDisplayableProperty()
+    protected IPropertyDescriptor getFirstDisplayableProperty()
     {
         for (Iterator iter = getPropertyDescriptors().iterator(); iter.hasNext();)
         {
-            TrailsPropertyDescriptor descriptor = (TrailsPropertyDescriptor) iter.next();
+            IPropertyDescriptor descriptor = (IPropertyDescriptor) iter.next();
             if (displaying(descriptor))
             {
                 return descriptor;
@@ -168,9 +167,9 @@ public abstract class ObjectTable extends ClassDescriptorComponent
     /**
      * @return
      */
-    protected TrailsPropertyDescriptor getIdentifierPropertyDescriptor()
+    protected IPropertyDescriptor getIdentifierPropertyDescriptor()
     {
-        return (TrailsPropertyDescriptor)getClassDescriptor().getIdentifierDescriptor();
+        return (IPropertyDescriptor) getClassDescriptor().getIdentifierDescriptor();
 
     }
 

@@ -12,7 +12,7 @@
 package org.trails.component;
 
 import org.trails.descriptor.IPropertyDescriptor;
-import org.trails.descriptor.IdentifierDescriptor;
+import org.trails.descriptor.IIdentifierDescriptor;
 import org.trails.hibernate.HasAssignedIdentifier;
 
 
@@ -37,7 +37,7 @@ public abstract class Identifier extends PropertyEditor
      */
     public boolean isEditable()
     {
-        if (!((IdentifierDescriptor)getDescriptor()).isGenerated())
+        if (!((IIdentifierDescriptor)getDescriptor()).isGenerated())
         {
             return !((HasAssignedIdentifier)getModel()).isSaved();
         }

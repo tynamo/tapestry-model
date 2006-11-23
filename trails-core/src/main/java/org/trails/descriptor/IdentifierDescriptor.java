@@ -19,7 +19,7 @@ package org.trails.descriptor;
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
-public class IdentifierDescriptor extends TrailsPropertyDescriptor
+public class IdentifierDescriptor extends TrailsPropertyDescriptor implements IIdentifierDescriptor
 {
     private boolean generated = true;
 
