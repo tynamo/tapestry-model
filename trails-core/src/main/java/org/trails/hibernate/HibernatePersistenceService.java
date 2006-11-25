@@ -311,7 +311,7 @@ public class HibernatePersistenceService extends HibernateDaoSupport implements
         {
             Serializable id = (Serializable)
                 Ognl.getValue(classDescriptor.getIdentifierDescriptor().getName(), instance);
-            return (T)getHibernateTemplate().load(instance.getClass(), id);
+            return (T)getHibernateTemplate().load(Utils.checkForCGLIB(instance.getClass()), id);
         }
         catch(OgnlException oe)
         {

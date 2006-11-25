@@ -12,6 +12,7 @@
 package org.trails.hibernate;
 
 import java.util.List;
+import java.lang.reflect.Method;
 
 import org.hibernate.NonUniqueObjectException;
 import org.hibernate.NonUniqueResultException;
@@ -37,6 +38,9 @@ import org.trails.test.BlogEntry;
 import org.trails.test.Descendant;
 import org.trails.test.Foo;
 import org.trails.test.Wibble;
+import net.sf.cglib.proxy.Enhancer;
+import net.sf.cglib.proxy.MethodInterceptor;
+import net.sf.cglib.proxy.MethodProxy;
 
 
 /**
@@ -262,7 +266,7 @@ public class HibernatePersistenceServiceTest extends AbstractTransactionalSpring
         Foo loadedFoo = persistenceService.reload(foo2);
         assertEquals("foo", loadedFoo.getName());
     }
-    
+
     public void testCount() throws Exception
     {
         Baz baz = new Baz();
@@ -344,7 +348,34 @@ public class HibernatePersistenceServiceTest extends AbstractTransactionalSpring
         assertEquals("1 baz", 1, foo.getBazzes().size());
     }
 
-	@Override
+    public void testCGLIBDoesntPukeOnReload() throws Exception
+    {
+        Enhancer enhancer = new Enhancer();
+        enhancer.setUseCache(false);
+        enhancer.setInterceptDuringConstruction(false);
+        enhancer.setCallbackType(MethodInterceptor.class);
+        enhancer.setSuperclass(BlogEntry.class);
+        enhancer.setCallback(new MethodInterceptor() {
+            public Object intercept(Object obj, Method method, Object[] args, MethodProxy proxy) throws Throwable
+            {
+                return proxy.invokeSuper(obj, args);
+            }
+        });
+
+        BlogEntry entry = new BlogEntry();
+        entry.setText("howdy doody");
+        entry = persistenceService.save(entry);
+        entry = persistenceService.getInstance(BlogEntry.class, entry.getId());
+
+        BlogEntry loadedBlogEntry = (BlogEntry) enhancer.create();
+        loadedBlogEntry.setId(entry.getId());
+        loadedBlogEntry.setText("otherdifferenttext");
+        loadedBlogEntry = persistenceService.reload(loadedBlogEntry);
+
+        assertEquals("howdy doody", loadedBlogEntry.getText());
+    }
+
+    @Override
 	protected String[] getConfigLocations()
 	{
 		return new String[] {"applicationContext-test.xml"};

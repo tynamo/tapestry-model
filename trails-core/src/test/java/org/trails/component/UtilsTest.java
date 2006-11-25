@@ -12,8 +12,12 @@
 package org.trails.component;
 
 import junit.framework.TestCase;
-
+import net.sf.cglib.proxy.Enhancer;
+import net.sf.cglib.proxy.MethodInterceptor;
+import net.sf.cglib.proxy.MethodProxy;
 import org.trails.test.Foo;
+
+import java.lang.reflect.Method;
 
 
 /**
@@ -28,7 +32,7 @@ public class UtilsTest extends TestCase
     {
         assertEquals("Foo", Utils.unqualify(Foo.class.getName()));
     }
-    
+
     public void testPluralize()
     {
         assertEquals("keys", Utils.pluralize("key"));
@@ -36,5 +40,32 @@ public class UtilsTest extends TestCase
         assertEquals("words", Utils.pluralize("word"));
         assertEquals("properties", Utils.pluralize("property"));
         assertEquals("bosses", Utils.pluralize("boss"));
+    }
+
+    public void testCheckForCGLIB()
+    {
+        Enhancer enb = new Enhancer();
+        enb.setUseCache(false);
+        enb.setInterceptDuringConstruction(false);
+        enb.setCallbackType(MethodInterceptor.class);
+        enb.setSuperclass(Foo.class);
+
+        Enhancer enbCB = new Enhancer();
+        enbCB.setUseCache(false);
+        enbCB.setInterceptDuringConstruction(false);
+        enbCB.setCallbackType(MethodInterceptor.class);
+        enbCB.setSuperclass(Foo.class);
+        enbCB.setCallback(new MethodInterceptor()
+        {
+            public Object intercept(Object obj, Method method, Object[] args, MethodProxy proxy) throws Throwable
+            {
+                return proxy.invokeSuper(obj, args);
+            }
+        });
+
+
+        assertEquals(Foo.class, Utils.checkForCGLIB(Foo.class));
+        assertEquals(Foo.class, Utils.checkForCGLIB(enb.createClass()));
+        assertEquals(Foo.class, Utils.checkForCGLIB(enbCB.create().getClass()));
     }
 }
