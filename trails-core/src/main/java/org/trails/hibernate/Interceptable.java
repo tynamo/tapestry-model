@@ -41,5 +41,7 @@ public interface Interceptable
 
     public void onLoad();
 
-    public void onSave();
+    public void onInsert();
+    
+    public void onUpdate();
 }

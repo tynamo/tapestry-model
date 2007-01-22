@@ -72,9 +72,13 @@ public class TrailsInterceptor implements Interceptor, Serializable
     /* (non-Javadoc)
      * @see org.hibernate.Interceptor#onFlushDirty(java.lang.Object, java.io.Serializable, java.lang.Object[], java.lang.Object[], java.lang.String[], org.hibernate.type.Type[])
      */
-    public boolean onFlushDirty(Object arg0, Serializable arg1, Object[] arg2,
-        Object[] arg3, String[] arg4, Type[] arg5) throws CallbackException
+    public boolean onFlushDirty(Object entity, Serializable id, Object[] currentState,
+        Object[] previousState, String[] propertyNames, Type[] types) throws CallbackException
     {
+        if (entity instanceof Interceptable)
+        {
+            ((Interceptable) entity).onUpdate();
+        }
         return false;
     }
 
@@ -86,7 +90,7 @@ public class TrailsInterceptor implements Interceptor, Serializable
     {
         if (entity instanceof Interceptable)
         {
-            ((Interceptable) entity).onSave();
+            ((Interceptable) entity).onInsert();
         }
 
         return false;

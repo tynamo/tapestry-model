@@ -150,7 +150,7 @@ public class EditPageTest extends ComponentTest
 //            .with(same(Foo.class)).will(returnValue(barDescriptor));
         
         assertTrue("is new", editPage.isModelNew());
-        ((HasAssignedIdentifier)foo).onSave();
+        ((HasAssignedIdentifier)foo).onInsert();
         assertFalse("not new", editPage.isModelNew());
         Bar bar = new Bar();
         editPage.setModel(bar);
@@ -291,7 +291,7 @@ public class EditPageTest extends ComponentTest
         editPage.pageBeginRender(pageEvent);
         assertEquals(1, editPage.getCallbackStack().getStack().size());
         Foo foo2 = new Foo();
-        ((HasAssignedIdentifier)foo2).onSave();
+        ((HasAssignedIdentifier)foo2).onInsert();
         foo2.setId(new Integer(3));
         editPage.setModel(foo2);
         editPage.pageBeginRender(pageEvent);

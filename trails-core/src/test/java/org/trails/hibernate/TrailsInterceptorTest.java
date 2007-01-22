@@ -28,7 +28,7 @@ public class TrailsInterceptorTest extends MockObjectTestCase
         Foo foo = new Foo();
         Interceptable interceptable = (Interceptable) foo;
         assertFalse("not saved", interceptable.isSaved());
-        interceptable.onSave();
+        interceptable.onInsert();
         assertTrue("saved", interceptable.isSaved());
     }
 

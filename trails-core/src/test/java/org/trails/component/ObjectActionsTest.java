@@ -36,7 +36,8 @@ public class ObjectActionsTest extends ComponentTest {
 				return true;
 			}
 			public void onLoad() {}
-			public void onSave() {}};
+			public void onInsert() {}
+			public void onUpdate() {}};
 			
 		editPage.setModel(interceptable);
 
@@ -46,12 +47,13 @@ public class ObjectActionsTest extends ComponentTest {
 		descriptor.setAllowRemove(false);
 		assertTrue(!objectActions.isShowRemoveButton());
 
-		interceptable = interceptable = new HasAssignedIdentifier() {
+		interceptable = new HasAssignedIdentifier() {
 			public boolean isSaved() {
 				return false;
 			}
 			public void onLoad() {}
-			public void onSave() {}};
+			public void onInsert() {}
+			public void onUpdate() {}};
 		editPage.setModel(interceptable);
 
 		descriptor.setAllowRemove(true);

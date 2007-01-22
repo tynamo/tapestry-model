@@ -39,7 +39,7 @@ public class SpringSeedEntityInitializer implements ApplicationContextAware, See
 	}
 	
 	/* (non-Javadoc)
-	 * @see com.movlet.domain.SeedDataInitializer#init()
+	 * @see org.trails.seeddata.SeedDataInitializer#init()
 	 */
 	public void init() {
 		String[] beanNames = applicationContext.getBeanDefinitionNames();

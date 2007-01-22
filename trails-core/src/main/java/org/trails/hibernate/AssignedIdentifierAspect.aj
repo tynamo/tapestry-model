@@ -24,7 +24,12 @@ public aspect AssignedIdentifierAspect
 {
     private boolean HasAssignedIdentifier.saved;
 
-    public void HasAssignedIdentifier.onSave()
+    public void HasAssignedIdentifier.onInsert()
+    {
+        saved = true;
+    }
+
+    public void HasAssignedIdentifier.onUpdate()
     {
         saved = true;
     }

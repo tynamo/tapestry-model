@@ -37,7 +37,7 @@ public class IdentifierTest extends ComponentTest
         descriptor.setGenerated(false);
         identifier.setDescriptor(descriptor);
         assertTrue("is editable", identifier.isEditable());
-        ((HasAssignedIdentifier)foo).onSave();
+        ((HasAssignedIdentifier)foo).onInsert();
         assertFalse("not editable", identifier.isEditable());
         descriptor.setGenerated(true);
         identifier.setModel(new Bar());
