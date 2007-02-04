@@ -220,6 +220,25 @@ public class HibernatePersistenceServiceTest extends AbstractTransactionalSpring
         assertNotNull("wrapped  exception", persistenceException.getCause());
     }
 
+    public void _testMergeWithException() throws Exception
+    {
+        
+        Foo foo = new Foo();
+        
+        PersistenceException persistenceException = null;
+        try
+        {
+            foo = persistenceService.merge(foo);
+        }
+        catch (PersistenceException pex)
+        {
+            //pex.printStackTrace();
+            persistenceException = pex;
+        }
+        assertNotNull("caught exception", persistenceException);
+        assertNotNull("wrapped  exception", persistenceException.getCause());
+    }    
+    
     public void testValidation() throws Exception
     {
         Baz baz = new Baz();

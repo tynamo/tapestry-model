@@ -4,14 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.criterion.DetachedCriteria;
-import org.jmock.cglib.Mock;
-import org.odmg.DSet;
-import org.trails.descriptor.DescriptorService;
 import org.trails.descriptor.IPropertyDescriptor;
 import org.trails.descriptor.IdentifierDescriptor;
 import org.trails.descriptor.TrailsClassDescriptor;
 import org.trails.descriptor.TrailsPropertyDescriptor;
-import org.trails.persistence.PersistenceService;
 import org.trails.test.Foo;
 
 public class AssociationSelectTest extends ComponentTest
