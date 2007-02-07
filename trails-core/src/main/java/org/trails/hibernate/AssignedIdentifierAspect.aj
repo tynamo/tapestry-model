@@ -12,6 +12,7 @@
 package org.trails.hibernate;
 
 import javax.persistence.Transient;
+import org.hibernate.type.Type;
 
 
 /**
@@ -24,19 +25,22 @@ public aspect AssignedIdentifierAspect
 {
     private boolean HasAssignedIdentifier.saved;
 
-    public void HasAssignedIdentifier.onInsert()
+    public boolean HasAssignedIdentifier.onInsert(Object[] state, String[] propertyNames, Type[] types)
     {
         saved = true;
+        return false;
     }
 
-    public void HasAssignedIdentifier.onUpdate()
+    public boolean HasAssignedIdentifier.onUpdate(Object[] currentState, Object[] previousState, String[] propertyNames, Type[] types)
     {
         saved = true;
+        return false;
     }
 
-    public void HasAssignedIdentifier.onLoad()
+    public boolean HasAssignedIdentifier.onLoad(Object[] state, String[] propertyNames, Type[] types)
     {
         saved = true;
+        return false;
     }
 
     @Transient

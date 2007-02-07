@@ -63,7 +63,7 @@ public class TrailsInterceptor implements Interceptor, Serializable
     {
         if (entity instanceof Interceptable)
         {
-            ((Interceptable) entity).onLoad();
+            return ((Interceptable) entity).onLoad(state, propertyNames, types);
         }
 
         return false;
@@ -76,8 +76,8 @@ public class TrailsInterceptor implements Interceptor, Serializable
         Object[] previousState, String[] propertyNames, Type[] types) throws CallbackException
     {
         if (entity instanceof Interceptable)
-        {
-            ((Interceptable) entity).onUpdate();
+        {        	
+            return ((Interceptable) entity).onUpdate(currentState, previousState, propertyNames, types);
         }
         return false;
     }
@@ -90,7 +90,7 @@ public class TrailsInterceptor implements Interceptor, Serializable
     {
         if (entity instanceof Interceptable)
         {
-            ((Interceptable) entity).onInsert();
+            return ((Interceptable) entity).onInsert(state, propertyNames, types);
         }
 
         return false;

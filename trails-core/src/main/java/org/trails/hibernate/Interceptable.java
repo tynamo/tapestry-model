@@ -17,6 +17,10 @@
  */
 package org.trails.hibernate;
 
+import java.io.Serializable;
+
+import org.hibernate.type.Type;
+
 
 
 /**
@@ -39,9 +43,9 @@ public interface Interceptable
 {
     public boolean isSaved();
 
-    public void onLoad();
+    public boolean onLoad(Object[] state, String[] propertyNames, Type[] types);
 
-    public void onInsert();
-    
-    public void onUpdate();
+    public boolean onInsert(Object[] state, String[] propertyNames, Type[] types);
+
+    public boolean onUpdate(Object[] currentState, Object[] previousState, String[] propertyNames, Type[] types);
 }

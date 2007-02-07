@@ -5,6 +5,7 @@
 package org.trails.component;
 
 import org.apache.tapestry.test.Creator;
+import org.hibernate.type.Type;
 import org.jmock.cglib.Mock;
 import org.trails.descriptor.IClassDescriptor;
 import org.trails.descriptor.TrailsClassDescriptor;
@@ -35,9 +36,9 @@ public class ObjectActionsTest extends ComponentTest {
 			public boolean isSaved() {
 				return true;
 			}
-			public void onLoad() {}
-			public void onInsert() {}
-			public void onUpdate() {}};
+			public boolean onLoad(Object[] state, String[] propertyNames, Type[] types) {return false;}
+			public boolean onInsert(Object[] state, String[] propertyNames, Type[] types) {return false;}
+			public boolean onUpdate(Object[] currentState, Object[] previousState, String[] propertyNames, Type[] types) {return false;}};
 			
 		editPage.setModel(interceptable);
 
@@ -51,9 +52,9 @@ public class ObjectActionsTest extends ComponentTest {
 			public boolean isSaved() {
 				return false;
 			}
-			public void onLoad() {}
-			public void onInsert() {}
-			public void onUpdate() {}};
+			public boolean onLoad(Object[] state, String[] propertyNames, Type[] types) {return false;}
+			public boolean onInsert(Object[] state, String[] propertyNames, Type[] types) {return false;}
+			public boolean onUpdate(Object[] currentState, Object[] previousState, String[] propertyNames, Type[] types) {return false;}};
 		editPage.setModel(interceptable);
 
 		descriptor.setAllowRemove(true);
