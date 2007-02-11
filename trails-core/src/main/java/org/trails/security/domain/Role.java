@@ -1,25 +1,10 @@
-/**
- * $Author: alejandroscandroli $
- * $Id: Role.java,v 1.1 2006/01/16 11:43:37 alejandroscandroli Exp $
- */
-
 package org.trails.security.domain;
 
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-import javax.persistence.Version;
+import javax.persistence.*;
 
 import org.acegisecurity.GrantedAuthority;
 import org.hibernate.validator.Length;
@@ -45,6 +30,7 @@ public class Role implements GrantedAuthority, Serializable
 
 
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    @PropertyDescriptor(index = 0)    
     public Integer getId()
     {
         return id;
@@ -131,9 +117,9 @@ public class Role implements GrantedAuthority, Serializable
         return name;
     }
 
-  	@Transient
-		public String getAuthority() {
-  		return getName();
-		}
-
+    @Transient
+    @PropertyDescriptor(hidden = true)
+    public String getAuthority() {
+        return getName();
+    }
 }

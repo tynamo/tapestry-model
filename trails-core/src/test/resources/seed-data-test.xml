@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+
 <!--  Seed data beans have to be declared from the smallest part to the largest composite object
 	Every bean is expected to have a @Entity and @Id
  -->
- <beans>
 
 	<bean id="roleUser" class="org.trails.security.domain.Role" lazy-init="true">
 		<property name="name"><value>ROLE_USER</value></property>
@@ -27,10 +29,10 @@
 		<property name="accountNonExpired"><value>true</value></property>
 		<property name="credentialsNonExpired"><value>true</value></property>
 		<property name="roles">
-			<list>
+			<set>
 				<ref bean="roleUser"/>
 				<ref bean="roleAdmin"/>
-			</list>
+			</set>
 		</property>
 	</bean>
 
@@ -45,9 +47,9 @@
 		<property name="accountNonExpired"><value>true</value></property>
 		<property name="credentialsNonExpired"><value>true</value></property>
 		<property name="roles">
-			<list>
+			<set>
 				<ref bean="roleUser"/>
-			</list>
+			</set>
 		</property>
 	</bean>
 	

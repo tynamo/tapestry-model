@@ -2,9 +2,13 @@ package org.trails.security;
 
 import org.acegisecurity.GrantedAuthority;
 import org.trails.descriptor.IClassDescriptor;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 public abstract class SecurityRestriction
 {
+
+  	private static final Log LOG = LogFactory.getLog(SecurityRestriction.class);
 
     public SecurityRestriction()
     {
@@ -38,11 +42,15 @@ public abstract class SecurityRestriction
 
     protected boolean hasRequiredRole(GrantedAuthority[] autorities)
     {
-       	for (int i=0; i < autorities.length ; i++) {
-       		if (autorities[i].equals(getRequiredRole()))
-       			return true;
-       	}
-       	return false;
+        for (int i = 0; i < autorities.length; i++) {
+            LOG.debug("RequiredRole: " + getRequiredRole() + " - GrantedAuthority: " + autorities[i]);
+            if (autorities[i].getAuthority().equals(getRequiredRole())) {
+                LOG.debug("does have required role");
+                return true;
+            }
+        }
+        LOG.debug("does NOT have required role");
+        return false;
         	/*
         	In SecurityContextHolder we don't have references to User, just to GrantedAuthorities.
         	We don't need any information stored under User, also...

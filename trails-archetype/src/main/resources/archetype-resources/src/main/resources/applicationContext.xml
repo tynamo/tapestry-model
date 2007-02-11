@@ -2,8 +2,8 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:aop="http://www.springframework.org/schema/aop"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-                           http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+                           http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
 
     <aop:aspectj-autoproxy/>
 
@@ -11,21 +11,21 @@
 	<bean id="trailsInterceptor" class="org.trails.hibernate.TrailsInterceptor" />
 
 	<bean id="hibernateProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
-		<property name="location"><value>classpath:hibernate.properties</value></property>
+		<property name="location" value="classpath:hibernate.properties"/>
 	</bean>
 	
 	<bean id="hibernate" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-		<property name="properties"><ref local="hibernateProperties"/></property>
+		<property name="properties" ref="hibernateProperties"/>
 	</bean>
 	
 	<!-- <bean id="productService" class="org.blah.service.ProductService" /> -->
 	<!-- Message source for this context, loaded from localized "messages_xx" files -->
 	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
-		<property name="basename"><value>messages</value></property>										
+		<property name="basename" value="messages"/>										
 	</bean>
 
 	<bean id="trailsMessageSource" class="org.trails.i18n.DefaultTrailsResourceBundleMessageSource">
-		<property name="messageSource"><ref local="messageSource"/></property>
+		<property name="messageSource" ref="messageSource"/>
 	</bean>
 
 
@@ -37,44 +37,16 @@
         <property name="username" value="${hibernate.connection.username}"/>
         <property name="password" value="${hibernate.connection.password}"/>
     </bean>
-<bean id="sessionFactory"
-       class="org.springframework.orm.hibernate3.LocalSessionFactoryBean" autowire="byName">
-<!--  
-  <property name="mappingDirectoryLocations">
-    <list>
-      <value>classpath:</value>
-    </list>
-  </property>-->
 
-  <property name="configLocation"><value>classpath:hibernate.cfg.xml</value></property> 
-  	<property name="configurationClass">
-   		<value>org.hibernate.cfg.AnnotationConfiguration</value>
-	</property> 
-    <property name="entityInterceptor">
-  		<ref local="trailsInterceptor" />
-    </property>
-    <property name="hibernateProperties">
-  	  <ref local="hibernateProperties"/>
-  <!-- 
-    <props>
-      <prop key="hibernate.dialect">
-        ${hibernate.dialect}
-      </prop>
-      <prop key="hibernate.show_sql">
-        true
-      </prop>
-      <prop key="hibernate.hbm2ddl.auto">create-drop</prop>
-      <prop key="hibernate.connection.driver_class">${jdbc.driver}</prop>
-      <prop key="hibernate.connection.url">${jdbc.url}</prop>
-      <prop key="hibernate.connection.username">${jdbc.userid}</prop>
-      <prop key="hibernate.connection.password">${jdbc.password}</prop>
-      
-    </props>
-    -->
-  </property>
-</bean>  
+    <bean id="sessionFactory"
+          class="org.springframework.orm.hibernate3.LocalSessionFactoryBean" autowire="byName">
+        <property name="configLocation" value="classpath:hibernate.cfg.xml"/>
+        <property name="configurationClass" value="org.hibernate.cfg.AnnotationConfiguration"/>
+        <property name="entityInterceptor" ref="trailsInterceptor"/>
+        <property name="hibernateProperties" ref="hibernateProperties"/>
+    </bean>
 
-	<bean id="autoproxy" class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"
+    <bean id="autoproxy" class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"
           autowire="autodetect"/>
     <bean id="transactionInterceptor" class="org.springframework.transaction.interceptor.TransactionInterceptor"
           autowire="byName"/>
@@ -92,7 +64,7 @@
 		<property name="types">
 			<bean id="persistenceService.allTypes" class="org.springframework.beans.factory.config.PropertyPathFactoryBean"/>
 		</property>
-		<property name="descriptorFactory"><ref local="descriptorFactory" /></property>
+		<property name="descriptorFactory" ref="descriptorFactory" />
 		<property name="decorators">
 			<list>
 				<ref local="hibernateDescriptorDecorator" />
@@ -121,8 +93,8 @@
 	</bean>
 	
 	<bean id="hibernateDescriptorDecorator" class="org.trails.hibernate.HibernateDescriptorDecorator">
-		<property name="localSessionFactoryBean"> <ref bean="&amp;sessionFactory" /></property>
-		<property name="descriptorFactory"><ref local="descriptorFactory" /></property>
+		<property name="localSessionFactoryBean" ref="&amp;sessionFactory" />
+		<property name="descriptorFactory" ref="descriptorFactory" />
 	</bean>
 	
 	
@@ -131,21 +103,21 @@
 	
 		<!-- security startup beans. lazy-init is true since this is used rarely. -->
 	<bean id="roleUser" class="org.trails.security.domain.Role" lazy-init="true">
-		<property name="name"><value>ROLE_USER</value></property>
-		<property name="description"><value>User role</value></property>
+		<property name="name" value="ROLE_USER" />
+		<property name="description" value="User role" />
 	</bean>
 	
 	<bean id="roleManager" class="org.trails.security.domain.Role" lazy-init="true">
-		<property name="name"><value>ROLE_MANAGER</value></property>
-		<property name="description"><value>Manager role</value></property>
+		<property name="name" value="ROLE_MANAGER" />
+		<property name="description" value="Manager role" />
 	</bean>
 
 	<bean id="user" class="org.trails.security.domain.User" lazy-init="true">
-		<property name="username"><value>user</value></property>
-		<property name="password"><value>user</value></property> <!-- default password -->
-		<property name="confirmPassword"><value>user</value></property> <!-- default password -->
-		<property name="firstName"><value>Foo</value></property>
-		<property name="lastName"><value>Bar</value></property>
+		<property name="username" value="user" />
+		<property name="password" value="user" /> <!-- default password -->
+		<property name="confirmPassword" value="user" /> <!-- default password -->
+		<property name="firstName" value="Foo" />
+		<property name="lastName" value="Bar" />
 		<property name="roles">
 			<list>
 				<ref bean="roleUser"/>
@@ -154,11 +126,11 @@
 	</bean>
 
 	<bean id="admin" class="org.trails.security.domain.User" lazy-init="true">
-		<property name="username"><value>admin</value></property>
-		<property name="password"><value>admin</value></property> <!-- default password -->
-		<property name="confirmPassword"><value>admin</value></property> <!-- default password -->
-		<property name="firstName"><value>Admin</value></property>
-		<property name="lastName"><value>Admin</value></property>
+		<property name="username" value="admin" />
+		<property name="password" value="admin" /> <!-- default password -->
+		<property name="confirmPassword" value="admin" /> <!-- default password -->
+		<property name="firstName" value="Admin" />
+		<property name="lastName" value="Admin" />
 		<property name="roles">
 			<list>
 				<ref bean="roleUser"/>
@@ -167,9 +139,15 @@
 		</property>
 	</bean>
 	
-	<bean id="securityStartup" class="org.trails.security.SecurityStartup" lazy-init="true">
-		<property name="persistenceService"><ref local="persistenceService" /></property>		
-		<property name="defaultUsers">
+    <bean id="seedDataInitializer" class="org.trails.seeddata.SpringSeedEntityInitializer" lazy-init="true">
+        <property name="persistenceService" ref="persistenceService" />
+        <property name="descriptorService" ref="descriptorService" />
+    </bean>
+
+    <bean id="securityStartup" class="org.trails.security.SecurityStartup" lazy-init="true">
+		<property name="persistenceService" ref="persistenceService" />
+        <property name="seedDataInitializer" ref="seedDataInitializer"/>
+        <property name="defaultUsers">
 			<list>
 				<ref local="user"/>
 				<ref local="admin"/>
@@ -186,16 +164,16 @@
 	<!-- end of security startup beans -->
 	
 	<bean id="validateUniqueAspect" class="org.trails.validation.ValidateUniqueAspect" factory-method="aspectOf">
-		<property name="descriptorService"><ref local="descriptorService" /></property>
-		<property name="persistenceService"><ref local="persistenceService" /></property>
+		<property name="descriptorService" ref="descriptorService" />
+		<property name="persistenceService" ref="persistenceService" />
 	</bean>
 	
 	<bean id="descriptorInternationalizationAspect" class="org.trails.i18n.DescriptorInternationalization" factory-method="aspectOf">
-		<property name="resourceBundleMessageSource"><ref local="trailsMessageSource"/></property>
+		<property name="resourceBundleMessageSource" ref="trailsMessageSource"/>
 	</bean>
-	
-    <bean id="descriptorSecurity" class="org.trails.security.DescriptorSecurity">
-        <property name="securityService"><ref bean="securityService"/></property>
+
+    <bean id="descriptorSecurity" class="org.trails.security.DescriptorSecurity" factory-method="aspectOf">
+        <property name="securityService" ref="securityService"/>
     </bean>
 	
 	<bean id="pageResolver" class="org.trails.page.DefaultPageResolver" />

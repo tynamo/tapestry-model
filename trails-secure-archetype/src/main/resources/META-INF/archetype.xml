@@ -1,18 +1,18 @@
 <archetype>
-  <id>trails-archetype</id>
+  <id>trails-secure-archetype</id>
   <!--sources>
     <source>src/main/java/MyDomainObject.java</source>
   </sources -->
   <allowPartial>true</allowPartial>
   <resources>
-  	<resource>src/main/resources/acegi-security.xml</resource>
+  	<resource>pom.xml</resource>      
+    <resource>src/main/resources/acegi-security.xml</resource>
 	<resource>src/main/resources/hibernate.cfg.xml</resource>
 	<resource>src/main/webapp/WEB-INF/web.xml</resource>
 	<resource>src/main/webapp/WEB-INF/Border.html</resource>
 	<resource>src/main/webapp/WEB-INF/Border.jwc</resource>
 	<resource>src/main/webapp/WEB-INF/Login.html</resource>
 	<resource>src/main/webapp/WEB-INF/Login.page</resource>
-
   </resources>
   <!--
   <testSources>
