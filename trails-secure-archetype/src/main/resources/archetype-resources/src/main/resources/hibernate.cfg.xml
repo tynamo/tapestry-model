@@ -5,6 +5,7 @@
 
         <mapping class="org.trails.security.domain.User"/>
         <mapping class="org.trails.security.domain.Role"/>
+        <mapping class="org.trails.component.blob.UploadableMedia"/>
 
     </session-factory>
 </hibernate-configuration>

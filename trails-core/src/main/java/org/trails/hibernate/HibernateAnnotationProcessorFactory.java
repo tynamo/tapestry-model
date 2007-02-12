@@ -24,12 +24,12 @@ import java.util.Set;
 
 public class HibernateAnnotationProcessorFactory implements AnnotationProcessorFactory
 {
-	public static final String SECURITY_PACKAGE = "org.trails.security";
-	
-	public static final String configFileOption = "configFile";
-	
-	public static final String destFileOption = "destFile";
-	
+    public static final String SECURITY_PACKAGE = "org.trails.security";
+
+    public static final String configFileOption = "configFile";
+
+    public static final String destFileOption = "destFile";
+
     public HibernateAnnotationProcessorFactory()
     {
         super();
@@ -50,26 +50,26 @@ public class HibernateAnnotationProcessorFactory implements AnnotationProcessorF
     {
         return new HibernateAnnotationProcessor(env, decls);
     }
-    
+
     public class HibernateAnnotationProcessor implements AnnotationProcessor
     {
         private AnnotationProcessorEnvironment env;
         private Set<AnnotationTypeDeclaration> annotationTypeDeclarations;
-        
+
         public HibernateAnnotationProcessor(
-                AnnotationProcessorEnvironment env, 
+                AnnotationProcessorEnvironment env,
                 Set<AnnotationTypeDeclaration> annTypeDecls)
         {
             this.env = env;
             this.annotationTypeDeclarations = annTypeDecls;
         }
-        
+
         Element sessionFactoryElement;
-        
+
         public void process()
         {
-        	String configTemplateFile = getOptionValue(configFileOption);
-            
+            String configTemplateFile = getOptionValue(configFileOption);
+
             System.out.println(configTemplateFile);
             try
             {
@@ -83,24 +83,24 @@ public class HibernateAnnotationProcessorFactory implements AnnotationProcessorF
                 for (Iterator iter = sessionFactoryElement.selectNodes("mapping[not(starts-with(@class, '" + SECURITY_PACKAGE + "'))]").iterator(); iter.hasNext();)
                 {
                     Element element = (Element) iter.next();
-                    sessionFactoryElement.remove(element);
+                    //sessionFactoryElement.remove(element);
                 }
                 List listenerElements = sessionFactoryElement.elements("listener");
                 sessionFactoryElement.elements().removeAll(listenerElements);
-                
+
                 for (AnnotationTypeDeclaration annotationTypeDecl : annotationTypeDeclarations)
                 {
                     System.out.println(annotationTypeDecl);
                     for (Declaration declaration : env.getDeclarationsAnnotatedWith(annotationTypeDecl))
                     {
-                        declaration.accept(new SimpleDeclarationVisitor() 
+                        declaration.accept(new SimpleDeclarationVisitor()
                         {
                             public void visitClassDeclaration(ClassDeclaration classDeclaration)
                             {
                                 System.out.println(classDeclaration.getQualifiedName());
-                                sessionFactoryElement.addElement("mapping").setAttributeValue("class", 
+                                sessionFactoryElement.addElement("mapping").setAttributeValue("class",
                                         classDeclaration.getQualifiedName());
-                            }                       
+                            }
                         });
                     }
                     sessionFactoryElement.elements().addAll(listenerElements);
@@ -114,7 +114,7 @@ public class HibernateAnnotationProcessorFactory implements AnnotationProcessorF
                 XMLWriter writer = new XMLWriter(new PrintWriter(f), format);
                 writer.write(doc);
                 writer.close();
-                
+
             }
             catch (Exception ex) {
                 ex.printStackTrace();
@@ -122,18 +122,18 @@ public class HibernateAnnotationProcessorFactory implements AnnotationProcessorF
 
         }
 
-		private String getOptionValue(String option)
-		{
-			// This is a hack due to a bug in apt
+        private String getOptionValue(String option)
+        {
+            // This is a hack due to a bug in apt
             for (String key : env.getOptions().keySet())
-			{
-				if (key.startsWith("-A" + option))
-				{
-					return key.split("=")[1];
-				}
-			}
-			return null;
-		}
-        
+            {
+                if (key.startsWith("-A" + option))
+                {
+                    return key.split("=")[1];
+                }
+            }
+            return null;
+        }
+
     }
 }

@@ -63,4 +63,9 @@
         <binding name="propertyDescriptor">descriptor</binding>
     </component>
 
+    <component id="blobFields" type="BlobComponent">
+        <binding name="model">model</binding>
+        <binding name="descriptor">descriptor</binding>
+    </component>    
+
 </page-specification>
