@@ -8,7 +8,8 @@
 <library-specification>
 
     <description>The trails library</description>
-	<library id="contrib" specification-path="/org/apache/tapestry/contrib/Contrib.library"/>
+    <library id="contrib" specification-path="/org/apache/tapestry/contrib/Contrib.library"/>
+
     <component-type type="ObjectForm" specification-path="ObjectForm.jwc"/>
     <component-type type="ObjectTable" specification-path="ObjectTable.jwc"/>
     <component-type type="EditCollection" specification-path="EditCollection.jwc"/>
@@ -29,6 +30,8 @@
     <component-type type="BlobComponent" specification-path="blob/BlobComponent.jwc"/>
     <component-type type="TrailsUpload" specification-path="blob/TrailsUpload.jwc"/>
     <component-type type="TrailsDownload" specification-path="blob/TrailsDownload.jwc"/>
+
+    <component-type type="MimedImage" specification-path="image/MimedImage.jwc"/>
 
     <page name="Editors" specification-path="/org/trails/page/Editors.page" />
     <page name="SearchBlocks" specification-path="/org/trails/page/SearchBlocks.page" />

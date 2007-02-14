@@ -15,7 +15,7 @@ import org.trails.descriptor.IPropertyDescriptor;
 public abstract class TrailsDownload extends BaseComponent
 {
     @InjectObject("service:trails.BlobService")
-    public abstract BlobDownloadService getBinOutService();
+    public abstract BlobDownloadService getBlobService();
 
     @Parameter(required = false, defaultValue = "page.model", cache = true)
 	public abstract Object getModel();
@@ -50,7 +50,7 @@ public abstract class TrailsDownload extends BaseComponent
             id = "";
         }
 
-        return new TrailsBlobAsset(getBinOutService(), getClassDescriptor().getType().getName(), id, getPropertyDescriptor().getName(), getContentType(), getFileName());
+        return new TrailsBlobAsset(getBlobService(), getClassDescriptor().getType().getName(), id, getPropertyDescriptor().getName(), getContentType(), getFileName());
     }
 
 	@Persist
