@@ -2,8 +2,10 @@
     <span jwcid="@If" condition="ognl:blobDescriptorExtension.renderType.image">
         <a jwcid="@ServiceLink" service="BlobService" parameters="ognl:byteArrayAsset">
             <img jwcid="@MimedImage"
+                descriptor="ognl:descriptor"
+                model="ognl:model"
                 image="ognl:byteArrayAsset"
-                contentType="ognl:model.contentType" />
+                bytes="ognl:model[descriptor.name]"/>
         </a>
 
     </span>

@@ -15,9 +15,9 @@ import org.trails.persistence.PersistenceService;
 
 public abstract class TrailsUpload extends BaseComponent {
 	@Parameter(required = true)
-	public abstract IPropertyDescriptor getPropertyDescriptor();
-	public abstract void setPropertyDescriptor(
-			IPropertyDescriptor propertyDescriptor);
+	public abstract IPropertyDescriptor getDescriptor();
+	public abstract void setDescriptor(
+			IPropertyDescriptor descriptor);
 
 	@Parameter(required = true)
 	public abstract Object getBytes();
@@ -31,7 +31,7 @@ public abstract class TrailsUpload extends BaseComponent {
 	public abstract PersistenceService getPersistenceService();
 
 	public BlobDescriptorExtension getBlobDescriptorExtension() {
-		return getPropertyDescriptor().getExtension(
+		return getDescriptor().getExtension(
 				BlobDescriptorExtension.class);
 	}
 

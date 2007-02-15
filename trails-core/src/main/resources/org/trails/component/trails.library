@@ -31,7 +31,7 @@
     <component-type type="TrailsUpload" specification-path="blob/TrailsUpload.jwc"/>
     <component-type type="TrailsDownload" specification-path="blob/TrailsDownload.jwc"/>
 
-    <component-type type="MimedImage" specification-path="image/MimedImage.jwc"/>
+    <component-type type="MimedImage" specification-path="blob/image/MimedImage.jwc"/>
 
     <page name="Editors" specification-path="/org/trails/page/Editors.page" />
     <page name="SearchBlocks" specification-path="/org/trails/page/SearchBlocks.page" />

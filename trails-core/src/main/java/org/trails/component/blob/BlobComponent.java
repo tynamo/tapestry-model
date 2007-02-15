@@ -15,9 +15,9 @@ public abstract class BlobComponent extends BaseComponent {
 	public abstract void setModel(Object model);
 
 	@Parameter(required = true)
-	public abstract IPropertyDescriptor getPropertyDescriptor();
-	public abstract void setPropertyDescriptor(
-			IPropertyDescriptor propertyDescriptor);
+	public abstract IPropertyDescriptor getDescriptor();
+	public abstract void setDescriptor(
+			IPropertyDescriptor descriptor);
 
 	@Parameter(required = false)
 	public abstract byte[] getBytes();
