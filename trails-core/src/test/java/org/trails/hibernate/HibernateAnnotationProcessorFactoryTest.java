@@ -99,6 +99,9 @@ public class HibernateAnnotationProcessorFactoryTest extends MockObjectTestCase
 		AnnotationProcessor processor = factory.getProcessorFor(annTypeDecls, apEnv);
 			
 		processor.process();
+		// Apt processor might not flush the file immediately - deal with it
+		processor = null;
+		System.gc();
 		
 		// Since the move to www.hibernate.org was completed, the DTD is not anymore available on hibernate.sourceforg.net
 		// FIXME is there really no better way to provide a DTD from the filesystem if you don't want to/can't change the id???
