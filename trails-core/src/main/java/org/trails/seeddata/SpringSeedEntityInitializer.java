@@ -6,14 +6,16 @@ import ognl.OgnlException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.trails.descriptor.DescriptorService;
 import org.trails.descriptor.IClassDescriptor;
 import org.trails.descriptor.IPropertyDescriptor;
-import org.trails.hibernate.HibernatePersistenceService;
 import org.trails.persistence.PersistenceService;
+import org.trails.validation.ValidateUniqueness;
 
 import javax.persistence.Entity;
 
@@ -48,30 +50,54 @@ public class SpringSeedEntityInitializer implements ApplicationContextAware, See
 		for (String beanName : beanNames) {
 			Object object = applicationContext.getBean(beanName);
 			if (object.getClass().getAnnotation(Entity.class) != null && object != this) {
-				// If persistenceService uses save or update, Hibernate manipulates the object directly,
-				// but if it uses merge, it's safer to use the returned object
-				// It's much faster to just save() but if it's not our implementation, better be safe than sorry
-				//FIXME Some descriptor changes caused descriptorService.getClassDescriptor() to return nulls for
-				// valid entities. The check doesn't work either way, because you get back a proxy of the persistenceService
-				// For now, assume that underlying implementation calls save and figure out a better way meanwhile
-				persistenceService.save(object);
-				/*
-				if (persistenceService instanceof HibernatePersistenceService) persistenceService.save(object);
-				else saveAndSetId(object);
-				*/
-			}
-		}
-	}
+				IClassDescriptor classDescriptor = descriptorService.getClassDescriptor(object.getClass());
+				IPropertyDescriptor identifierDescriptor = classDescriptor.getIdentifierDescriptor();
+				Object id = null;
+				String propertyName = identifierDescriptor.getName();
+				try {
+					id = Ognl.getValue(propertyName, object);
+				} catch (OgnlException e) {
+					log.warn("Couldn't get the id of a seed bean " + object + " because of: ", e);
+				}
+				
+				// Try to find if a persistent entity already exists based on unique property or manually set id
+				ValidateUniqueness validateUniqueness = object.getClass().getAnnotation(ValidateUniqueness.class);
+				if (validateUniqueness == null && id == null) {
+		    	log.info("Entity of type " + object.getClass() + " doesn't have uniquely identifying property. Can't check if entity already exist. Will seed new entity: " + object);
+				}
+				else {
+			    DetachedCriteria criteria = DetachedCriteria.forClass(object.getClass());
+					if (validateUniqueness != null) {
+						propertyName = validateUniqueness.property();
+				    try {
+							criteria.add(Restrictions.eq(propertyName, Ognl.getValue(propertyName, object) ));
+						} catch (OgnlException e) {
+							log.error("Couldn't find if an entity already exists because of: ", e);
+						}
+					}
+					else criteria.add(Restrictions.eq(propertyName, id) );
 
-	private void saveAndSetId(Object object) {
-		IClassDescriptor classDescriptor = descriptorService.getClassDescriptor(object.getClass());
-		IPropertyDescriptor identifierDescriptor = classDescriptor.getIdentifierDescriptor();
-		Object savedObject = persistenceService.save(object);
-		try {
-			Object id = Ognl.getValue(identifierDescriptor.getName(), savedObject);
-			Ognl.setValue(identifierDescriptor.getName(), object, id);
-		} catch (OgnlException e) {
-			log.fatal("Couldn't set the entity id because of: ", e); 
+					Object savedObject = persistenceService.getInstance(criteria);
+				    
+			    if (savedObject != null) {
+		    		try {
+							log.info("Entity of type " + object.getClass() + " identified by unique property " + propertyName + " " + Ognl.getValue(propertyName, savedObject) + " already exists");
+						} catch (OgnlException e) {
+							log.warn("Entity of type " + object.getClass() + " identified by unique property " + propertyName + " exists, but couldn't display value of identifying property because of: ", e);
+						}
+						
+						// Need to set the ids to seed beans so a new seed entity with a relationship to existing seed entities can be saved  
+						try {
+							id = Ognl.getValue(identifierDescriptor.getName(), savedObject);
+							Ognl.setValue(identifierDescriptor.getName(), object, id);						
+						} catch (OgnlException e) {
+							log.warn("Couldn't set the id of an already existing entity because of: ", e);
+						}
+		    		continue;
+			    }
+				}
+	    	persistenceService.save(object);
+			}
 		}
 	}
 }

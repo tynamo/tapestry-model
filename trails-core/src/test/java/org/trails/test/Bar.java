@@ -34,7 +34,15 @@ public class Bar implements IBar
     
     private String name;
 
-    /**
+    public String getName() {
+			return name;
+		}
+
+		public void setName(String name) {
+			this.name = name;
+		}
+
+		/**
      * @return Returns the id.
      * @hibernate.id
          *   generator-class = "native"

@@ -57,4 +57,7 @@
 		<property name="id"><value>1</value></property>
 		<property name="name"><value>seed foo</value></property>
 	</bean>
+	<bean id="bar" class="org.trails.test.Bar" lazy-init="true">
+		<property name="name"><value>non-unique</value></property>
+	</bean>
 </beans>
