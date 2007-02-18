@@ -40,6 +40,14 @@ public interface PersistenceService
 
     public void remove(Object instance);
 
+    /**
+     * A convenience method for getting a singleton instance of specific type
+     * @param <T> Specific type of the entity
+     * @param type Type of singleton entity you want return 
+     * @return Returns the singleton entity of requested type
+     */
+    public <T> T getInstance( final Class<T> type);
+
     public <T> T getInstance(DetachedCriteria criteria);
 
     public List getInstances(DetachedCriteria criteria);

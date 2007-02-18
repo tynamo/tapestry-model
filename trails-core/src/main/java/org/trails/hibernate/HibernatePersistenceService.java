@@ -75,7 +75,7 @@ public class HibernatePersistenceService extends HibernateDaoSupport implements
             }
         });
     }
-
+    
     /*
      * (non-Javadoc)
      * 
@@ -147,6 +147,18 @@ public class HibernatePersistenceService extends HibernateDaoSupport implements
 
     }
 
+    
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.trails.persistence.PersistenceService#getInstance(final Class<T> type)
+     */
+    @Transactional
+    public <T> T getInstance( final Class<T> type)
+    {
+    	return getInstance(DetachedCriteria.forClass(type) );
+    }
+    
     @Transactional
     public <T> T getInstance(final DetachedCriteria criteria)
     {
