@@ -126,19 +126,20 @@ public class Utils
      */
     public static String unCamelCase(String name)
     {
-        ArrayList words = new ArrayList();
-        Perl5Util perl = new Perl5Util();
-
-        while (perl.match("/(\\w+?)([A-Z].*)/", name))
+        if (name != null)
         {
-            String word = perl.group(1);
-            name = perl.group(2);
-            words.add(StringUtils.capitalise(word));
+            ArrayList words = new ArrayList();
+            Perl5Util perl = new Perl5Util();
+            while (perl.match("/(\\w+?)([A-Z].*)/", name))
+            {
+                String word = perl.group(1);
+                name = perl.group(2);
+                words.add(StringUtils.capitalise(word));
+            }
+            words.add(StringUtils.capitalise(name));
+            return StringUtils.join(words.iterator(), " ");
         }
-
-        words.add(StringUtils.capitalise(name));
-
-        return StringUtils.join(words.iterator(), " ");
+        return null;
     }
     
     /**

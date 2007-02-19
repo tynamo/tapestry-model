@@ -14,6 +14,10 @@ public class CollectionDecorator implements DescriptorAnnotationHandler<Collecti
     public CollectionDescriptor decorateFromAnnotation(Collection annotation, CollectionDescriptor descriptor)
     {
         descriptor.setChildRelationship(annotation.child());
+        if (!annotation.DEFAULT_inverse.equals(annotation.inverse()))
+        {
+        	descriptor.setInverseProperty(annotation.inverse());
+        }
         return descriptor;
     }
 

@@ -57,7 +57,21 @@ import org.trails.validation.ValidationException;
 public class HibernatePersistenceService extends HibernateDaoSupport implements
                                                                      PersistenceService, ApplicationContextAware
 {
-    private ApplicationContext appContext;
+	ApplicationContext appContext  = null;
+	private DescriptorService _descriptorService = null;
+	
+	/**
+	 * We need this because cylcic reference between HibernatePersistenceService and TrailsDescriptorService 
+	 */
+    public DescriptorService getDescriptorService()
+    {
+        if (_descriptorService == null)
+        {
+            _descriptorService = (DescriptorService) appContext.getBean("descriptorService");
+        }
+        return _descriptorService;
+    }
+
 
     /*
     * (non-Javadoc)
@@ -102,14 +116,19 @@ public class HibernatePersistenceService extends HibernateDaoSupport implements
     {
         try
         {
-            getHibernateTemplate().saveOrUpdate(instance);
+            if (!getDescriptorService().getClassDescriptor(instance.getClass()).getHasCyclicRelationships())
+            {
+                getHibernateTemplate().saveOrUpdate(instance);
+            } else
+            {
+                instance = (T) getHibernateTemplate().merge(instance);
+            }
             return instance;
         }
         catch( DataAccessException dex )
         {
             throw new PersistenceException( dex );
         }
-
     }
 
     @Transactional
@@ -162,16 +181,12 @@ public class HibernatePersistenceService extends HibernateDaoSupport implements
     @Transactional
     public <T> T getInstance(final DetachedCriteria criteria)
     {
-        // todo hacking useNative is a result of SPR-2499 and will be removed soon
-        boolean useNative = getHibernateTemplate().isExposeNativeSession();
-        getHibernateTemplate().setExposeNativeSession(true);
         Object result = getHibernateTemplate().execute(new HibernateCallback() {
             public Object doInHibernate(Session session) throws HibernateException, SQLException {
                 Criteria executableCriteria = criteria.getExecutableCriteria(session);
                 return executableCriteria.uniqueResult();
             }
         });
-        getHibernateTemplate().setExposeNativeSession(useNative);
         return (T) result;
     }
     
@@ -186,7 +201,7 @@ public class HibernatePersistenceService extends HibernateDaoSupport implements
                 Criteria searchCriteria = session.createCriteria( example.getClass() );
 
                 //loop over the example object's PropertyDescriptors
-                DescriptorService descriptorService = ( DescriptorService ) appContext.getBean( "descriptorService" );
+                DescriptorService descriptorService = getDescriptorService(); //( DescriptorService ) appContext.getBean( "descriptorService" );
                 Iterator propertyDescriptorIterator =
                         descriptorService.getClassDescriptor( example.getClass() ).getPropertyDescriptors().iterator();
                 while( propertyDescriptorIterator.hasNext() )
@@ -273,11 +288,13 @@ public class HibernatePersistenceService extends HibernateDaoSupport implements
         }, true );
     }
 
+
     public void setApplicationContext( ApplicationContext arg0 ) throws BeansException
     {
         this.appContext = arg0;
 
     }
+
 
     public int count(final DetachedCriteria criteria)
     {
@@ -317,7 +334,7 @@ public class HibernatePersistenceService extends HibernateDaoSupport implements
 
     public <T> T reload(T instance)
     {
-        final DescriptorService descriptorService = (DescriptorService)appContext.getBean("descriptorService");
+        final DescriptorService descriptorService = getDescriptorService();// (DescriptorService)appContext.getBean("descriptorService");
         IClassDescriptor classDescriptor = descriptorService.getClassDescriptor(instance.getClass());
         try
         {
@@ -340,8 +357,20 @@ public class HibernatePersistenceService extends HibernateDaoSupport implements
         return source;
     }
 
+    /**
+     *
+     * @see org.trails.persistence.PersistenceService#merge(java.lang.Object)
+     */
+    @Transactional
     public <T> T merge(T instance)
     {
-        return (T)getHibernateTemplate().merge(instance);
+        try
+        {
+            return (T) getHibernateTemplate().merge(instance);
+        }
+        catch( DataAccessException dex )
+        {
+            throw new PersistenceException( dex );
+        }
     }
 }

@@ -11,8 +11,22 @@
  */
 package org.trails.hibernate;
 
+import java.beans.IntrospectionException;
+import java.beans.Introspector;
+import java.beans.PropertyDescriptor;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+
 import ognl.Ognl;
 import ognl.OgnlException;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -39,12 +53,6 @@ import org.trails.descriptor.IdentifierDescriptor;
 import org.trails.descriptor.ObjectReferenceDescriptor;
 import org.trails.descriptor.TrailsPropertyDescriptor;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-
 
 /**
  * This decorator will add metadata information.  It will replace simple reflection based 
@@ -57,6 +65,8 @@ import java.util.List;
  */
 public class HibernateDescriptorDecorator implements DescriptorDecorator
 {
+	protected static final Log LOG = LogFactory.getLog(HibernateDescriptorDecorator.class);
+	
     private LocalSessionFactoryBean localSessionFactoryBean;
     private List types;
 
@@ -349,6 +359,10 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
             collectionDescriptor.setElementType(collectionMetaData.getElementType()
                     .getReturnedClass());
 
+            collectionDescriptor.setOneToMany(collectionMapping.isOneToMany());
+            
+            decorateOneToManyCollection(parentClassDescriptor, collectionDescriptor, collectionMapping);
+            
             return collectionDescriptor;
         }
         catch (HibernateException e)
@@ -356,6 +370,42 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
             throw new TrailsRuntimeException(e);
         }
     }
+
+    /**
+     * I couldn't find a way to get the "mappedBy" value from the collection metadata, so I'm getting it from the OneToMany annotation.  
+     */
+    private void decorateOneToManyCollection(IClassDescriptor parentClassDescriptor , CollectionDescriptor collectionDescriptor, org.hibernate.mapping.Collection collectionMapping) {
+    	Class type = parentClassDescriptor.getType();
+		if (collectionDescriptor.isOneToMany() && collectionMapping.isInverse()) {
+			try {
+
+				Field propertyField = type.getDeclaredField(collectionDescriptor.getName());
+			    PropertyDescriptor beanPropDescriptor =  (PropertyDescriptor)Ognl.getValue("propertyDescriptors.{? name == '" + collectionDescriptor.getName() + "'}[0]", Introspector.getBeanInfo(type));
+			    Method readMethod = beanPropDescriptor.getReadMethod();
+			    String mappedBy = "";
+			    if (readMethod.isAnnotationPresent(javax.persistence.OneToMany.class)) {
+			    	mappedBy = readMethod.getAnnotation(javax.persistence.OneToMany.class).mappedBy();
+			    } else if (propertyField.isAnnotationPresent(javax.persistence.OneToMany.class)) {
+			    	mappedBy = propertyField.getAnnotation(javax.persistence.OneToMany.class).mappedBy();
+			    }
+			    
+			    if (!"".equals(mappedBy)) {
+			    	collectionDescriptor.setInverseProperty(mappedBy);
+			    }
+			    
+            	parentClassDescriptor.setHasCyclicRelationships(true);
+            	
+			} catch (SecurityException e) {
+				LOG.error(e.getMessage());
+			} catch (NoSuchFieldException e) {
+				LOG.error(e.getMessage());
+			} catch (OgnlException e) {
+				LOG.error(e.getMessage());
+			} catch (IntrospectionException e) {
+				LOG.error(e.getMessage());
+			}
+		}
+	}
 
     protected org.hibernate.mapping.Collection findCollectionMapping(Class type, String name)
     {

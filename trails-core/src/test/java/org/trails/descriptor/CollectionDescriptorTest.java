@@ -20,4 +20,20 @@ public class CollectionDescriptorTest extends TestCase
         bazzesDescriptor.setElementType(Baz.class);
         assertEquals("bazzes.add", bazzesDescriptor.findAddExpression());
     }
+    
+    public void testClone() {
+        CollectionDescriptor bazzesDescriptor = new CollectionDescriptor(Foo.class, "bazzes", Set.class);
+        bazzesDescriptor.setElementType(Baz.class);
+    	bazzesDescriptor.setOneToMany(true);
+    	bazzesDescriptor.setChildRelationship(true);
+    	bazzesDescriptor.setInverseProperty("inverse");
+    	bazzesDescriptor.setDisplayName(null);
+    	
+    	CollectionDescriptor clonedDescriptor = (CollectionDescriptor) bazzesDescriptor.clone();
+
+    	assertTrue(clonedDescriptor.isChildRelationship());
+    	assertEquals("inverse", clonedDescriptor.getInverseProperty());
+    	assertTrue(clonedDescriptor.isOneToMany());
+    	assertNull(clonedDescriptor.getDisplayName());
+    }
 }

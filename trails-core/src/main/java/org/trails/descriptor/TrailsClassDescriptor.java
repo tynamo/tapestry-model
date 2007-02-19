@@ -29,6 +29,8 @@ public class TrailsClassDescriptor extends TrailsDescriptor implements IClassDes
 
     //private BeanDescriptor beanDescriptor;
     private boolean child;
+
+    boolean hasCyclicRelationships = false;
     
     boolean allowRemove = true;
     
@@ -213,6 +215,17 @@ public class TrailsClassDescriptor extends TrailsDescriptor implements IClassDes
     public void setAllowSave(boolean allowSave)
     {
         this.allowSave = allowSave;
+    }
+
+
+    public boolean getHasCyclicRelationships()
+    {
+        return hasCyclicRelationships;
+    }
+
+    public void setHasCyclicRelationships(boolean hasBidirectionalRelationship)
+    {
+        this.hasCyclicRelationships = hasBidirectionalRelationship;
     }
 
     /**

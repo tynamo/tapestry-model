@@ -24,8 +24,11 @@ public class CollectionDecoratorTest extends TestCase
     {
         CollectionDecorator decorator = new CollectionDecorator();
         CollectionDescriptor collectionDescriptor = new CollectionDescriptor(Foo.class, "stuff", Annotated.class);
+        collectionDescriptor.setOneToMany(true);
         Collection collectionAnnotation = Annotated.class.getDeclaredMethod("getStuff").getAnnotation(Collection.class);
-        assertTrue("is child", decorator.decorateFromAnnotation(
-                collectionAnnotation, collectionDescriptor).isChildRelationship());
-    }   
+        collectionDescriptor = decorator.decorateFromAnnotation(collectionAnnotation, collectionDescriptor);
+        assertTrue("is child", collectionDescriptor.isChildRelationship());
+        assertEquals("Stuff is inversed by 'annotated'", "annotated", collectionDescriptor.getInverseProperty());
+        assertTrue(collectionDescriptor.isOneToMany());
+    }
 }

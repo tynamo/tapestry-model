@@ -72,9 +72,18 @@ public class TrailsDescriptorService implements DescriptorService {
     {
         for (IPropertyDescriptor propertyDescriptor : iClassDescriptor.getPropertyDescriptors())
         {
-            if (propertyDescriptor.isCollection() && ((CollectionDescriptor) propertyDescriptor).isChildRelationship()) {
-                getClassDescriptor(((CollectionDescriptor) propertyDescriptor).getElementType()).setChild(true);
-            }
+        	if (propertyDescriptor.isCollection()) 
+        	{
+        		IClassDescriptor classDescriptor = getClassDescriptor(((CollectionDescriptor) propertyDescriptor).getElementType()); 
+        		if (((CollectionDescriptor) propertyDescriptor).isChildRelationship()) 
+        		{
+        			classDescriptor.setChild(true);
+        		}
+        		if (((CollectionDescriptor) propertyDescriptor).getInverseProperty() != null) 
+        		{
+        			classDescriptor.setHasCyclicRelationships(true);
+        		}
+        	}
         }
     }
 

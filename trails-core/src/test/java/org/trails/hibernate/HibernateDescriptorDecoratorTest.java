@@ -105,7 +105,9 @@ public class HibernateDescriptorDecoratorTest extends TestCase
             bazzesDescriptor.getElementType());
         //TODO Fix when hibernate annotations add support for this..
         //assertTrue("bazzes are children", bazzesDescriptor.isChildRelationship());
-        
+        assertTrue(bazzesDescriptor.isOneToMany());
+        assertEquals("bazzes are mapped by 'foo' property in Baz", "foo", bazzesDescriptor.getInverseProperty());
+        assertTrue("Foo has a cyclic relationship", classDescriptor.getHasCyclicRelationships());
     }
     
     public void testGetClassDescriptors() throws Exception

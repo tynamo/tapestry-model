@@ -11,8 +11,12 @@
  */
 package org.trails.descriptor;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.trails.TrailsRuntimeException;
 import org.trails.component.Utils;
 
@@ -25,15 +29,27 @@ import org.trails.component.Utils;
  */
 public class CollectionDescriptor extends TrailsPropertyDescriptor
 {
+    protected static final Log LOG = LogFactory.getLog(CollectionDescriptor.class);
+	
     private Class elementType;
-    
-    private boolean childRelationship;
+
+    private boolean childRelationship = false;
+
+    private String inverseProperty = null;
+
+    private boolean oneToMany = false;
 
     public CollectionDescriptor(Class beanType, IPropertyDescriptor descriptor)
     {
         super(beanType, descriptor);
     }
     
+    public CollectionDescriptor(Class beanType, CollectionDescriptor collectionDescriptor)
+    {
+        super(beanType, collectionDescriptor.getBeanType());
+        this.copyFrom(collectionDescriptor);
+    }
+
     /**
      * @param realDescriptor
      */
@@ -48,7 +64,7 @@ public class CollectionDescriptor extends TrailsPropertyDescriptor
         this(beanType, type);
         this.setName(name);
     }
-    
+
     /* (non-Javadoc)
      * @see org.trails.descriptor.PropertyDescriptor#isCollection()
      */
@@ -72,6 +88,32 @@ public class CollectionDescriptor extends TrailsPropertyDescriptor
     {
         this.elementType = elementType;
     }
+
+    public String getInverseProperty()
+    {
+        return inverseProperty;
+    }
+
+    public void setInverseProperty(String inverseProperty)
+    {
+        this.inverseProperty = inverseProperty;
+    }
+
+    /**
+     * Is this a OneToMany collection? or a ManyToMany collection?
+     *
+     */
+    public boolean isOneToMany()
+    {
+        return oneToMany;
+    }
+
+    public void setOneToMany(boolean oneToMany)
+    {
+        this.oneToMany = oneToMany;
+    }
+    
+
     /**
      * @return Returns the childRelationship.
      */
@@ -96,16 +138,16 @@ public class CollectionDescriptor extends TrailsPropertyDescriptor
         return new CollectionDescriptor(getBeanType(), this);
     }
 
-    public String findAddExpression() 
+    public String findAddExpression()
     {
         return findExpression("add");
     }
-    
+
     public String findRemoveExpression()
     {
         return findExpression("remove");
     }
-    
+
     /**
      * @param method the method to look for, usually add or remove
      * @return the ogln expression to use to add or remove a member to the
@@ -133,6 +175,19 @@ public class CollectionDescriptor extends TrailsPropertyDescriptor
 
         return addMethod.getName();
     }
-    
-    
+
+    private void copyFrom(CollectionDescriptor collectionDescriptor)
+    {
+        LOG.debug("Clonning CollectionDescriptor");
+        try
+        {
+            BeanUtils.copyProperties(this, collectionDescriptor);
+        } catch (IllegalAccessException e)
+        {
+            LOG.error(e.getMessage());
+        } catch (InvocationTargetException e)
+        {
+            LOG.error(e.getMessage());
+        }
+    }
 }

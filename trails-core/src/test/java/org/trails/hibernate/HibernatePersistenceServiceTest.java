@@ -14,8 +14,6 @@ package org.trails.hibernate;
 import java.util.List;
 import java.lang.reflect.Method;
 
-import org.hibernate.NonUniqueObjectException;
-import org.hibernate.NonUniqueResultException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.DetachedCriteria;
@@ -220,7 +218,7 @@ public class HibernatePersistenceServiceTest extends AbstractTransactionalSpring
         assertNotNull("wrapped  exception", persistenceException.getCause());
     }
 
-    public void _testMergeWithException() throws Exception
+    public void testMergeWithException() throws Exception
     {
         
         Foo foo = new Foo();
@@ -237,8 +235,8 @@ public class HibernatePersistenceServiceTest extends AbstractTransactionalSpring
         }
         assertNotNull("caught exception", persistenceException);
         assertNotNull("wrapped  exception", persistenceException.getCause());
-    }    
-    
+    }
+
     public void testValidation() throws Exception
     {
         Baz baz = new Baz();

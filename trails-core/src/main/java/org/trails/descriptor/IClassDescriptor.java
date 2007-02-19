@@ -94,4 +94,8 @@ public interface IClassDescriptor extends IDescriptor
     
     public void setAllowRemove(boolean allowRemove);
 
+	public boolean getHasCyclicRelationships();
+
+	public void setHasCyclicRelationships(boolean hasBidirectionalRelationship);
+
 }

@@ -17,4 +17,6 @@ public @interface ClassDescriptor
     String displayName() default "";
     String pluralDisplayName() default "";
     boolean hidden() default false;
+    boolean hasCyclicRelationships() default false;
+    
 }

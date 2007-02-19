@@ -28,6 +28,6 @@ public class ClassDescriptorDecoratorTest extends TestCase
         IClassDescriptor decoratedDescriptor =  decorator.decorateFromAnnotation(classDescriptorAnno, descriptor);
         assertEquals("This is annotated", decoratedDescriptor.getDisplayName());
         assertTrue(decoratedDescriptor.isHidden());
+        assertTrue(decoratedDescriptor.getHasCyclicRelationships());
     }
-
 }

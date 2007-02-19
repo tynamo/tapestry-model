@@ -11,7 +11,6 @@
  */
 package org.trails.component;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -22,12 +21,16 @@ import ognl.OgnlException;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.annotations.InjectObject;
 import org.apache.tapestry.annotations.InjectState;
 import org.apache.tapestry.contrib.palette.SortMode;
 import org.apache.tapestry.form.IPropertySelectionModel;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Restrictions;
 import org.trails.TrailsRuntimeException;
 import org.trails.callback.CallbackStack;
 import org.trails.callback.CollectionCallback;
@@ -50,6 +53,9 @@ import org.trails.persistence.PersistenceService;
  */
 public abstract class EditCollection extends TrailsComponent 
 {
+
+    protected static final Log LOG = LogFactory.getLog(EditCollection.class);
+	
     @InjectState("callbackStack")
     public abstract CallbackStack getCallbackStack();
     
@@ -154,15 +160,16 @@ public abstract class EditCollection extends TrailsComponent
 
 	protected Object buildNewMemberInstance() throws InstantiationException, IllegalAccessException
 	{
+		Object object;
 		if (getCreateExpression() == null)
 		{
-			return getCollectionDescriptor().getElementType().newInstance();
+			object =  getCollectionDescriptor().getElementType().newInstance();
 		}
 		else
 		{
 			try
 			{
-				return Ognl.getValue(getCreateExpression(), getModel());
+				object = Ognl.getValue(getCreateExpression(), getModel());
 			}
 			catch (OgnlException oe)
 			{
@@ -170,8 +177,20 @@ public abstract class EditCollection extends TrailsComponent
 				return null;
 			}
 		}
+        
+        if (getCollectionDescriptor().getInverseProperty() != null && getCollectionDescriptor().isOneToMany())
+		{
+			try 
+			{
+				Ognl.setValue(getCollectionDescriptor().getInverseProperty(), object, getModel());
+			} catch (OgnlException e) {
+				LOG.error(e.getMessage());
+			}
+		}
+        
+        return object;
 	}
-
+	
     CollectionCallback buildCallback()
     {
         CollectionCallback callback = new CollectionCallback(
@@ -179,9 +198,9 @@ public abstract class EditCollection extends TrailsComponent
         callback.setChildRelationship(getCollectionDescriptor().isChildRelationship());
         return callback;
     }
-
+    
     /**
-     * @param cycleMock
+     * @param cycle
      */
     public void remove(IRequestCycle cycle)
     {
@@ -271,19 +290,40 @@ public abstract class EditCollection extends TrailsComponent
      */
     public IPropertySelectionModel getSelectionModel()
     {
-        IdentifierSelectionModel selectionModel = null;
         IClassDescriptor elementDescriptor = getDescriptorService().getClassDescriptor(getCollectionDescriptor().getElementType());
+
         // don't allow use to select from all here
         if (getCollectionDescriptor().isChildRelationship())
         {
-            return new IdentifierSelectionModel(getSelectedList(), 
-                elementDescriptor.getIdentifierDescriptor().getName());
+            return new IdentifierSelectionModel(getSelectedList(), elementDescriptor.getIdentifierDescriptor().getName());
         }
         // but do here
-        else
+        else if (getCollectionDescriptor().getInverseProperty() != null && getCollectionDescriptor().isOneToMany())
         {
-            return new IdentifierSelectionModel(getPersistenceService().getAllInstances(getCollectionDescriptor().getElementType()), 
-                elementDescriptor.getIdentifierDescriptor().getName());
+            DetachedCriteria criteria = DetachedCriteria.forClass(getCollectionDescriptor().getElementType());
+            String identifier = elementDescriptor.getIdentifierDescriptor().getName();
+            if (getModel() != null)
+            {
+                try
+                {
+                    criteria.add(
+                            Restrictions.disjunction()
+                                    .add(Restrictions.isNull(getCollectionDescriptor().getInverseProperty()))
+                                    .add(Restrictions.eq(getCollectionDescriptor().getInverseProperty() + "." + identifier, Ognl.getValue(elementDescriptor.getIdentifierDescriptor().getName(), getModel()))));
+                } catch (OgnlException e)
+                {
+                    LOG.error(e.getMessage());
+                }
+            } else
+            {
+                criteria.add(Restrictions.isNull(getCollectionDescriptor().getInverseProperty()));
+            }
+
+            return new IdentifierSelectionModel(getPersistenceService().getInstances(criteria), elementDescriptor.getIdentifierDescriptor().getName());
+        } else
+        {
+            return new IdentifierSelectionModel(getPersistenceService().getAllInstances(getCollectionDescriptor().getElementType()),
+                    elementDescriptor.getIdentifierDescriptor().getName());
         }
     }
 

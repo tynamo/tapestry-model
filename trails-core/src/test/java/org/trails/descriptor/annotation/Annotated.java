@@ -7,7 +7,7 @@ import java.util.Date;
 import java.util.Set;
 
 
-@ClassDescriptor(displayName="This is annotated", hidden = true)
+@ClassDescriptor(displayName="This is annotated", hidden = true, hasCyclicRelationships = true)
 public class Annotated
 {
     public static final String CLASS_LABEL = "This is annotated";
@@ -27,7 +27,7 @@ public class Annotated
     
     private boolean booleanProperty;
 
-    @Collection(child=true)
+    @Collection(child=true, inverse = "annotated")
     public Set getStuff()
     {
         return stuff;

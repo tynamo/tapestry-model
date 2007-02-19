@@ -38,8 +38,9 @@ public aspect ValidateUniqueAspect
         this.persistenceService = persistenceService;
     }
 
-    pointcut saveWithUnique(ValidateUniqueness validateUniqueness, Object savee) : execution(* PersistenceService.save(..))
-        && @args(validateUniqueness) && args(savee);
+    pointcut saveWithUnique(ValidateUniqueness validateUniqueness, Object savee) : 
+    	(execution(* PersistenceService.save(..)) && @args(validateUniqueness) && args(savee))
+    	|| (execution(* PersistenceService.merge(..)) && @args(validateUniqueness) && args(savee));
     
     before(ValidateUniqueness validateUniqueness, Object savee) : saveWithUnique(validateUniqueness, savee)
     {
