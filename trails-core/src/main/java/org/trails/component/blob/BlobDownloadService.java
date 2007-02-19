@@ -72,7 +72,7 @@ public class BlobDownloadService implements IEngineService {
 
         TrailsBlobAsset asset = (TrailsBlobAsset) ((Object[]) parameter)[0];
 
-        Map<String,String> parameters = new HashMap<String,String>();
+        Map<String, String> parameters = new HashMap<String, String>();
 
         parameters.put(BLOBID, String.valueOf(asset.getIdProperty()));
         parameters.put(ENTITY_NAME, asset.getEntityName());
@@ -155,6 +155,10 @@ public class BlobDownloadService implements IEngineService {
                         OutputStream output = _response
                                 .getOutputStream(new ContentType(contentType));
                         output.write(bytes);
+                    } else {
+                        String errorText = "Entity has no ID or does not exist yet";
+                        LOG.info(errorText);
+                        throw new TrailsRuntimeException(errorText);
                     }
                 }
 
