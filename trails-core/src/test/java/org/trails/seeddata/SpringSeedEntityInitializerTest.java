@@ -48,18 +48,18 @@ public class SpringSeedEntityInitializerTest extends TestCase {
     assertNotNull(foo);
 	}
 	
-	public void testSeedingMultipleNonUniqueEntities() {
+	public void testSeedingEntityWithoutUniquelyIdentifyingProperty() {
 		seedDataInitializer.init();
 		seedDataInitializer.init();
     DetachedCriteria criteria = DetachedCriteria.forClass(Bar.class);
-    criteria.add(Restrictions.eq("name", "non-unique"));
+    criteria.add(Restrictions.eq("name", "based on example"));
     try {
-    	persistenceService.getInstance(criteria);
+    	Object object = persistenceService.getInstance(criteria);
+    	if (object == null) fail("Seed entity not found");
     }
     catch (IncorrectResultSizeDataAccessException e) {
-    	return;
+    	fail("More than one entity returned");
     }
-    fail("Multiple seeded entities of the same type should exist");
 	}
 
 	public void testEntityAlreadySeeded() {

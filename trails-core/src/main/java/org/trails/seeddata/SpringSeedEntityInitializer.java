@@ -1,6 +1,8 @@
 package org.trails.seeddata;
 
 
+import java.util.List;
+
 import ognl.Ognl;
 import ognl.OgnlException;
 
@@ -52,7 +54,7 @@ public class SpringSeedEntityInitializer implements ApplicationContextAware, See
 			if (object.getClass().getAnnotation(Entity.class) != null && object != this) {
 				IClassDescriptor classDescriptor = descriptorService.getClassDescriptor(object.getClass());
 				IPropertyDescriptor identifierDescriptor = classDescriptor.getIdentifierDescriptor();
-				Object id = null;
+				Object id = null, savedObject = null;
 				String propertyName = identifierDescriptor.getName();
 				try {
 					id = Ognl.getValue(propertyName, object);
@@ -63,7 +65,17 @@ public class SpringSeedEntityInitializer implements ApplicationContextAware, See
 				// Try to find if a persistent entity already exists based on unique property or manually set id
 				ValidateUniqueness validateUniqueness = object.getClass().getAnnotation(ValidateUniqueness.class);
 				if (validateUniqueness == null && id == null) {
-		    	log.info("Entity of type " + object.getClass() + " doesn't have uniquely identifying property. Can't check if entity already exist. Will seed new entity: " + object);
+		    	log.info("Entity of type " + object.getClass() + " doesn't have uniquely identifying property. Searching using the whole entity as an example " + object);
+		    	List objects = persistenceService.getInstances(object);
+		    	if (objects.size() == 0) log.info("Couldn't find an existing seed entity");
+		    	else if (objects.size() == 1) {
+		    		log.info("Found exactly one existing matching entity, assuming it is an earlier seeded entity");
+		    		savedObject = objects.get(0);
+		    	}
+		    	else {
+		    		log.warn("Found more than one existing entity based on the seed entity example, won't add a new one. You should make sure seed entities can be uniquely identified.");
+		    		continue;
+		    	}
 				}
 				else {
 			    DetachedCriteria criteria = DetachedCriteria.forClass(object.getClass());
@@ -77,25 +89,25 @@ public class SpringSeedEntityInitializer implements ApplicationContextAware, See
 					}
 					else criteria.add(Restrictions.eq(propertyName, id) );
 
-					Object savedObject = persistenceService.getInstance(criteria);
-				    
-			    if (savedObject != null) {
-		    		try {
-							log.info("Entity of type " + object.getClass() + " identified by unique property " + propertyName + " " + Ognl.getValue(propertyName, savedObject) + " already exists");
-						} catch (OgnlException e) {
-							log.warn("Entity of type " + object.getClass() + " identified by unique property " + propertyName + " exists, but couldn't display value of identifying property because of: ", e);
-						}
-						
-						// Need to set the ids to seed beans so a new seed entity with a relationship to existing seed entities can be saved  
-						try {
-							id = Ognl.getValue(identifierDescriptor.getName(), savedObject);
-							Ognl.setValue(identifierDescriptor.getName(), object, id);						
-						} catch (OgnlException e) {
-							log.warn("Couldn't set the id of an already existing entity because of: ", e);
-						}
-		    		continue;
-			    }
+					savedObject = persistenceService.getInstance(criteria);
 				}
+				
+		    if (savedObject != null) {
+	    		try {
+						log.info("Entity of type " + object.getClass() + " identified by unique property " + propertyName + " " + Ognl.getValue(propertyName, savedObject) + " already exists");
+					} catch (OgnlException e) {
+						log.warn("Entity of type " + object.getClass() + " identified by unique property " + propertyName + " exists, but couldn't display value of identifying property because of: ", e);
+					}
+					
+					// Need to set the ids to seed beans so a new seed entity with a relationship to existing seed entities can be saved  
+					try {
+						id = Ognl.getValue(identifierDescriptor.getName(), savedObject);
+						Ognl.setValue(identifierDescriptor.getName(), object, id);						
+					} catch (OgnlException e) {
+						log.warn("Couldn't set the id of an already existing entity because of: ", e);
+					}
+	    		continue;
+		    }
 	    	persistenceService.save(object);
 			}
 		}

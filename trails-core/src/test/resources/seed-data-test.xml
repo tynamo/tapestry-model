@@ -58,6 +58,6 @@
 		<property name="name"><value>seed foo</value></property>
 	</bean>
 	<bean id="bar" class="org.trails.test.Bar" lazy-init="true">
-		<property name="name"><value>non-unique</value></property>
+		<property name="name"><value>based on example</value></property>
 	</bean>
 </beans>
