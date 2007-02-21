@@ -78,26 +78,4 @@ public abstract class TrailsDownload extends BaseComponent {
 
         return new TrailsBlobAsset(getBlobService(), getClassDescriptor().getType().getName(), id, getDescriptor().getName(), contentType, fileName);
     }
-
-    /**
-     * In the case of "could not initialize proxy - the owning Session was closed"
-     * we need to maintain this data in the session
-     *
-     * We cannot just goto the model object and parse as follows:
-     *
-            ITrailsBlob trailsBlob = null;
-            if (getBlobDescriptorExtension().isBytes()) {
-                trailsBlob = (ITrailsBlob) getModel();
-            } else if (getBlobDescriptorExtension().isITrailsBlob()) {
-                trailsBlob = (ITrailsBlob) getBytes();
-            }
-            String contentType = trailsBlob.getContentType();
-     */
-    @Parameter(required = false, cache = true)
-    public abstract String getFileName();
-    public abstract void setFileName(String fileName);
-
-    @Parameter(required = false, cache = true)
-    public abstract String getContentType();
-    public abstract void setContentType(String contentType);
 }

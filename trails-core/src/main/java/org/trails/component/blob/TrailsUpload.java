@@ -80,24 +80,4 @@ public abstract class TrailsUpload extends BaseComponent {
             }
         }
     }
-
-    @Parameter(required = true, cache = true)
-    public abstract String getFileName();
-    public abstract void setFileName(String fileName);
-
-    @Parameter(required = true, cache = true)
-    public abstract String getFilePath();
-    public abstract void setFilePath(String filePath);
-
-    @Parameter(required = true, cache = true)
-    public abstract String getFileExtension();
-    public abstract void setFileExtension(String filePath);
-
-    @Parameter(required = true, cache = true)
-    public abstract String getContentType();
-    public abstract void setContentType(String contentType);
-
-    @Parameter(required = true, cache = true)
-    public abstract Long getNumBytes();
-    public abstract void setNumBytes(Long contentType);
 }
