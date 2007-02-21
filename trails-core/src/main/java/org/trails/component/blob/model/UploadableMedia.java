@@ -27,7 +27,7 @@ import org.trails.descriptor.annotation.PropertyDescriptor;
 import org.trails.util.DatePattern;
 
 /**
- * @hibernate.class table="UploadableMedia" lazy="true"
+ * @hibernate.class table="UploadableMedia" lazy="false"
  *
  * UploadableMedia Media, implements domain model for all possible media types
  *
@@ -185,7 +185,6 @@ public class UploadableMedia implements ITrailsBlob {
      */
     @BlobDescriptor(renderType = RenderType.IMAGE, contentDisposition = ContentDisposition.ATTACHMENT)
     @PropertyDescriptor(summary = false)
-    // @Basic(fetch = FetchType.EAGER)
     @Lob
     @Column(columnDefinition = "longblob", length = 6291456)
     public byte[] getBytes() {

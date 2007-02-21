@@ -12,9 +12,11 @@ import org.apache.tapestry.annotations.InjectObject;
 import org.apache.tapestry.annotations.Parameter;
 import org.apache.tapestry.asset.AssetFactory;
 import org.apache.tapestry.html.Image;
+import org.hibernate.LazyInitializationException;
 import org.trails.component.blob.ITrailsBlob;
 import org.trails.descriptor.BlobDescriptorExtension;
 import org.trails.descriptor.IPropertyDescriptor;
+import org.trails.persistence.PersistenceService;
 
 /**
  * This widget overloads the src attribute of @Image
@@ -28,12 +30,15 @@ import org.trails.descriptor.IPropertyDescriptor;
  *
  */
 
-@ComponentClass(allowBody = false, allowInformalParameters = true)
+@ComponentClass(allowBody = false, allowInformalParameters = false)
 public abstract class MimedImage extends Image {
     private Map<String,String> map = new HashMap<String,String>();
 
     @InjectObject("service:tapestry.asset.ClasspathAssetFactory")
     public abstract AssetFactory getClasspathAssetFactory();
+
+    @InjectObject("spring:persistenceService")
+    public abstract PersistenceService getPersistenceService();
 
     @Parameter(required = true)
     public abstract IPropertyDescriptor getDescriptor();
@@ -107,12 +112,18 @@ public abstract class MimedImage extends Image {
         writer.beginEmpty("img");
 
         ITrailsBlob trailsBlob = null;
-        if (getBlobDescriptorExtension().isBytes()) {
-            trailsBlob = (ITrailsBlob) getModel();
-        } else if (getBlobDescriptorExtension().isITrailsBlob()) {
-            trailsBlob = (ITrailsBlob) getBytes();
+        String contentType = null;
+        try {
+            if (getBlobDescriptorExtension().isBytes()) {
+                trailsBlob = (ITrailsBlob) getModel();
+            } else if (getBlobDescriptorExtension().isITrailsBlob()) {
+                trailsBlob = (ITrailsBlob) getBytes();
+            }
+            contentType = trailsBlob.getContentType();
+        } catch (LazyInitializationException e) {
+            getPersistenceService().reattach(trailsBlob);
+            contentType = trailsBlob.getContentType();
         }
-        String contentType = trailsBlob.getContentType();
 
         if (contentType == null) {
             writer.attribute("src", imageAsset.buildURL());
@@ -139,4 +150,22 @@ public abstract class MimedImage extends Image {
 
         writer.closeTag();
     }
+
+    /**
+     * In the case of "could not initialize proxy - the owning Session was closed"
+     * we need to maintain this data in the session
+     *
+     * We cannot just goto the model object and parse as follows:
+     *
+            ITrailsBlob trailsBlob = null;
+            if (getBlobDescriptorExtension().isBytes()) {
+                trailsBlob = (ITrailsBlob) getModel();
+            } else if (getBlobDescriptorExtension().isITrailsBlob()) {
+                trailsBlob = (ITrailsBlob) getBytes();
+            }
+            String contentType = trailsBlob.getContentType();
+     */
+    @Parameter(required = false, cache = true)
+    public abstract String getContentType();
+    public abstract void setContentType(String contentType);
 }
