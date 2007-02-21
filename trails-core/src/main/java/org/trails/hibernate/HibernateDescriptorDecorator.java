@@ -93,6 +93,9 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
                 }
                 else if (notAHibernateProperty(classMetaData, propertyDescriptor))
                 {
+                    // If this is not a hibernate property (i.e. marked Transient), it's certainly not searchable
+                    // Are the any other properties like this?
+                    propertyDescriptor.setSearchable(false);
                     result = propertyDescriptor;
                 }
                 else
