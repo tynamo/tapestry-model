@@ -27,7 +27,6 @@ import org.apache.commons.logging.LogFactory;
 import org.hibernate.validator.NotNull;
 import org.trails.component.blob.ITrailsBlob;
 import org.trails.component.blob.TrailsBlobImpl;
-import org.trails.component.blob.model.UploadableMedia;
 import org.trails.descriptor.BlobDescriptorExtension.ContentDisposition;
 import org.trails.descriptor.BlobDescriptorExtension.RenderType;
 import org.trails.descriptor.annotation.BlobDescriptor;

@@ -19,7 +19,6 @@ import javax.persistence.OrderBy;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.trails.component.blob.model.UploadableMedia;
 import org.trails.descriptor.annotation.ClassDescriptor;
 import org.trails.descriptor.annotation.Collection;
 import org.trails.descriptor.annotation.PropertyDescriptor;

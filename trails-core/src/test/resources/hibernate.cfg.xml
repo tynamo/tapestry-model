@@ -4,7 +4,7 @@
     <session-factory>
         <mapping class="org.trails.security.domain.User" />
         <mapping class="org.trails.security.domain.Role" />
-        <mapping class="org.trails.component.blob.model.UploadableMedia"/>
+        <mapping class="org.trails.test.UploadableMedia"/>
         <mapping class="org.trails.test.Embeddor" />
         <mapping class="org.trails.security.test.FooSecured" />
         <mapping class="org.trails.test.Ancestor" />
@@ -17,6 +17,16 @@
         <mapping class="org.trails.test.Bar" />
         <mapping class="org.trails.test.Wibble" />
         <mapping class="org.trails.test.Gazonk" />
+
+        <mapping class="org.trails.test.Statistic"/>
+        <mapping class="org.trails.test.Coach"/>
+        <mapping class="org.trails.test.Person"/>
+        <mapping class="org.trails.test.Player"/>
+        <mapping class="org.trails.test.Year"/>
+        <mapping class="org.trails.test.Organization"/>
+        <mapping class="org.trails.test.Director"/>
+        <mapping class="org.trails.test.Team"/>
+
         <!--
         <listener type="pre-update"
             class="org.hibernate.validator.event.ValidatePreUpdateEventListener" />

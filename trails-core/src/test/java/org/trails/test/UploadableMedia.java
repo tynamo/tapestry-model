@@ -1,4 +1,4 @@
-package org.trails.component.blob.model;
+package org.trails.test;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -31,7 +31,7 @@ import org.trails.util.DatePattern;
  *
  * UploadableMedia Media, implements domain model for all possible media types
  *
- * @author kenneth.colassi
+ * @author kenneth.colassi    nhhockeyplayer@hotmail.com
  *
     Here are two valid usages for inside your own trails domain object(s):
 
@@ -54,7 +54,6 @@ import org.trails.util.DatePattern;
     }
  */
 @Entity
-@Table(name="TRAILS_UPLOADABLEMEDIA")
 public class UploadableMedia implements ITrailsBlob {
     private static final Log log = LogFactory.getLog(UploadableMedia.class);
 

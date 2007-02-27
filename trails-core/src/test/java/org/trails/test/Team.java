@@ -24,7 +24,6 @@ import javax.persistence.Transient;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.trails.component.blob.model.UploadableMedia;
 import org.trails.descriptor.BlobDescriptorExtension.ContentDisposition;
 import org.trails.descriptor.BlobDescriptorExtension.RenderType;
 import org.trails.descriptor.annotation.BlobDescriptor;
