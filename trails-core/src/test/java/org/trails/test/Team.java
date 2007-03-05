@@ -32,7 +32,6 @@ import org.trails.descriptor.annotation.Collection;
 import org.trails.descriptor.annotation.PropertyDescriptor;
 import org.trails.util.DatePattern;
 
-
 /**
  * @hibernate.class table="Team" lazy="true"
  *
@@ -144,7 +143,7 @@ public class Team implements Serializable {
      */
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "team_id", insertable = true, updatable = true, nullable = true)
-    @Collection(child = false, inverse = "team")
+    @Collection(child = true)
     @PropertyDescriptor(readOnly = false, searchable = true)
     @OrderBy("lastName")
     public Set<Coach> getCoaches() {
@@ -346,11 +345,9 @@ public class Team implements Serializable {
                     + getGender().toString() + " " + getAge().toString();
     }
 
-    public Team clone(Object dto) {
-        if (dto instanceof Team)
-            return new Team((Team) dto);
-        else
-            return null;
+    @Override
+    public Team clone() {
+        return new Team(this);
     }
 
     @Override

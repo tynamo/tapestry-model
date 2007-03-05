@@ -184,11 +184,9 @@ public class Player extends Person {
         this.stats = statistic;
     }
 
-    public Player clone(Object dto) {
-        if (dto instanceof Player)
-            return new Player((Player) dto);
-        else
-            return null;
+    @Override
+    public Player clone() {
+        return new Player(this);
     }
 
     @Override

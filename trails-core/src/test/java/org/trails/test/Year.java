@@ -138,12 +138,12 @@ public class Year implements Serializable {
         this.organization = organization;
     }
 
-    public void setYearStart(Integer start) {
-        this.yearStart = start;
+    public void setYearStart(Integer yearStart) {
+        this.yearStart = yearStart;
     }
 
-    public void setYearEnd(Integer end) {
-        this.yearEnd = end;
+    public void setYearEnd(Integer yearEnd) {
+        this.yearEnd = yearEnd;
     }
 
     @Transient

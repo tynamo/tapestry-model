@@ -97,11 +97,9 @@ public class Coach extends Person {
         return getLastName() + "," + getFirstName();
     }
 
-    public Coach clone(Object dto) {
-        if (dto instanceof Coach)
-            return new Coach((Coach) dto);
-        else
-            return null;
+    @Override
+    public Coach clone() {
+        return new Coach(this);
     }
 
     @Override

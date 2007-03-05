@@ -32,7 +32,6 @@ import org.trails.descriptor.annotation.ClassDescriptor;
 import org.trails.descriptor.annotation.PropertyDescriptor;
 import org.trails.util.DatePattern;
 
-
 /**
  * @hibernate.class table="Person" lazy="true"
  *
@@ -263,11 +262,9 @@ public class Person implements Serializable {
         this.accessed = accessed;
     }
 
-    public Person clone(Object dto) {
-        if (dto instanceof Person)
-            return new Person((Person) dto);
-        else
-            return null;
+    @Override
+    public Person clone() {
+        return new Person(this);
     }
 
     @Override

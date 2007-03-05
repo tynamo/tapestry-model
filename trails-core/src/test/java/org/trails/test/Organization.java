@@ -42,7 +42,7 @@ import org.trails.validation.ValidateUniqueness;
  *
  * Organizations have one Director, and Years, Coaches, Teams
  *
- * @author kenneth.colassi	nhhockeyplayer@hotmail.com
+ * @author kenneth.colassi    nhhockeyplayer@hotmail.com
  */
 @Entity
 @ValidateUniqueness(property = "name")
@@ -307,11 +307,9 @@ public class Organization implements Serializable {
         return getName();
     }
 
-    public Organization clone(Object dto) {
-        if (dto instanceof Organization)
-            return new Organization((Organization) dto);
-        else
-            return null;
+    @Override
+    public Organization clone() {
+        return new Organization(this);
     }
 
     @Override
