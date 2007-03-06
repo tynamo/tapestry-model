@@ -183,39 +183,4 @@ it's because of different versions of apt plugin posted as the same version (whi
             <version>1.8.0.1</version>
         </dependency>
 	</dependencies>
-    <repositories>
-        <repository>
-            <id>trails.codehaus.org</id>
-            <name>Trails Repository</name>
-            <url>http://trails.codehaus.org/repository/</url>
-        </repository>
-        <repository>
-            <id>snapshots.codehaus.org</id>
-            <name>Codehaus Snapshots</name>
-            <url>http://snapshots.repository.codehaus.org/</url>
-            <snapshots><enabled>true</enabled></snapshots>
-        </repository>        
-        <repository>
-            <id>www.carmanconsulting.com</id>
-            <name>Tapernate</name>
-            <url>http://www.carmanconsulting.com/mvn/</url>
-        </repository>
-    </repositories>
-	<pluginRepositories>
-		<pluginRepository>
-			<id>codehaus</id>
-			<name>CodeHaus Repository</name>
-			<url>http://repository.codehaus.org/</url>
-		</pluginRepository>
-        <pluginRepository>
-            <id>snapshots.codehaus.org</id>
-            <url>http://snapshots.repository.codehaus.org/</url>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-        </pluginRepository>
-    </pluginRepositories>
 </project>
