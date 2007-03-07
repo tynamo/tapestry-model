@@ -74,7 +74,10 @@
 							<exclude>**/functional/*</exclude>
 							<exclude>**/ComponentTest.java</exclude>
 							<exclude>**/PageTest.java</exclude>
-						</excludes>
+                            <exclude>**/ClassDescriptorTest.java</exclude>
+                            <excluse>**/ReferencedCollectionCallbackTest.java</excluse>
+                            <excluse>**/DetachedCollectionTest.java</excluse>                            
+                        </excludes>
 					</configuration>
 				</plugin>
         </plugins>
