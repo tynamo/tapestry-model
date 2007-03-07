@@ -10,7 +10,7 @@
 
 	<modules>
 		<module>simple</module>
-		<!-- module>recipe</module-->
+		<module>recipe</module>
 	</modules>
 
 
