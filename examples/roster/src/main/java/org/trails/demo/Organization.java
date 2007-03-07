@@ -38,16 +38,14 @@ import org.trails.validation.ValidateUniqueness;
 
 
 /**
- * @hibernate.class table="Organization" lazy="true"
- *
  * Organizations have one Director, and Years, Coaches, Teams
  *
  * @author kenneth.colassi    nhhockeyplayer@hotmail.com
  */
 @Entity
 @ValidateUniqueness(property = "name")
-@ClassDescriptor(hasCyclicRelationships=true)
-public class Organization implements Serializable {
+public class Organization {
+
     private static final Log log = LogFactory.getLog(Organization.class);
 
     private Integer id = null;
@@ -91,88 +89,61 @@ public class Organization implements Serializable {
      * Accessor for id
      *
      * @return Integer
-     * @hibernate.id generator-class="increment" unsaved-value="-1"
-     *               type="java.lang.Integer" unique="true" insert="true"
      */
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @PropertyDescriptor(readOnly = true, summary = true, index = 0)
+    @PropertyDescriptor(index = 0)
     public Integer getId() {
         return id;
     }
 
 
-    /**
-     * @hibernate.property
-     */
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "organization_id", insertable = true, updatable = true, nullable = true)
-    @Collection(child = true)
-    @PropertyDescriptor(readOnly = false, index = 1)
+    @OneToMany
+    @JoinColumn(name = "year_organization_fk")
+    @Collection(child = true, inverse = "organization")
+    @PropertyDescriptor(index = 1)
     @OrderBy("yearStart")
     public Set<Year> getYears() {
         return years;
     }
 
-    /**
-     * @hibernate.property
-     */
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @PropertyDescriptor(readOnly = false, searchable = true, index = 2)
+    @OneToOne(fetch = FetchType.LAZY)
+    @PropertyDescriptor(index = 2)
     public Director getDirector() {
         return director;
     }
 
-    /**
-     * @hibernate.property
-     */
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "organization_id", insertable = true, updatable = true, nullable = true)
-    @Collection(child = true)
-    @PropertyDescriptor(readOnly = false, searchable = true)
+    @OneToMany
+    @JoinColumn(name = "coach_organization_fk")
+    @Collection(child = false, inverse = "organization")
     @OrderBy("lastName")
     public Set<Coach> getCoaches() {
         return coaches;
     }
 
-    /**
-     * @hibernate.property
-     */
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "organization_id", insertable = true, updatable = true, nullable = true)
-    @Collection(child = true)
-    @PropertyDescriptor(readOnly = false)
+    @OneToMany
+    @JoinColumn(name = "team_organization_fk")
+    @Collection(child = false, inverse = "organization")
     @OrderBy("division")
     public Set<Team> getTeams() {
         return teams;
     }
 
-    /**
-     * @hibernate.property
-     */
     @Column(unique = true)
     @NotNull(message = "is required")
     public String getName() {
         return name;
     }
 
-    /**
-     * @hibernate.property
-     */
     public String getCity() {
         return city;
     }
 
-    /**
-     * @hibernate.property
-     */
     public String getState() {
         return state;
     }
 
-    /**
-     * @hibernate.property
-     */
+    /*
     private UploadableMedia photo = new UploadableMedia();
     @BlobDescriptor(renderType = RenderType.IMAGE, contentDisposition = ContentDisposition.ATTACHMENT)
     @PropertyDescriptor(summary = false, index = 3)
@@ -181,9 +152,6 @@ public class Organization implements Serializable {
         return photo;
     }
 
-    /**
-     * @hibernate.property
-     */
     private UploadableMedia header = new UploadableMedia();
     @BlobDescriptor(renderType = RenderType.IMAGE, contentDisposition = ContentDisposition.ATTACHMENT)
     @PropertyDescriptor(summary = false, index = 4)
@@ -192,9 +160,6 @@ public class Organization implements Serializable {
         return header;
     }
 
-    /**
-     * @hibernate.property
-     */
     private UploadableMedia logo = new UploadableMedia();
     @BlobDescriptor(renderType = RenderType.IMAGE, contentDisposition = ContentDisposition.ATTACHMENT)
     @PropertyDescriptor(summary = true, index = 5)
@@ -202,25 +167,20 @@ public class Organization implements Serializable {
     public UploadableMedia getLogo() {
         return logo;
     }
+*/
 
-    /**
-     * @hibernate.property
-     */
-    @PropertyDescriptor(hidden = true, summary = false, searchable = false)
+    @PropertyDescriptor(hidden = true)
     public Long getCreated() {
         return created;
     }
 
-    /**
-     * @hibernate.property
-     */
-    @PropertyDescriptor(hidden = true, summary = false, searchable = false)
+    @PropertyDescriptor(hidden = true)
     public Long getAccessed() {
         return accessed;
     }
 
     @Transient
-    @PropertyDescriptor(hidden = true, summary = false, searchable = false)
+    @PropertyDescriptor(hidden = true)
     public String getCreatedAsString() {
         Calendar cal = new GregorianCalendar();
         cal.setTimeInMillis(created.longValue());
@@ -228,7 +188,7 @@ public class Organization implements Serializable {
     }
 
     @Transient
-    @PropertyDescriptor(hidden = true, summary = false, searchable = false)
+    @PropertyDescriptor(hidden = true)
     public String getAccessedAsString() {
         Calendar cal = new GregorianCalendar();
         cal.setTimeInMillis(accessed.longValue());
@@ -267,18 +227,19 @@ public class Organization implements Serializable {
         this.state = state;
     }
 
-    public void setPhoto(UploadableMedia photo) {
-        this.photo = photo;
-    }
+    /*
+        public void setPhoto(UploadableMedia photo) {
+            this.photo = photo;
+        }
 
-    public void setHeader(UploadableMedia header) {
-        this.header = header;
-    }
+        public void setHeader(UploadableMedia header) {
+            this.header = header;
+        }
 
-    public void setLogo(UploadableMedia logo) {
-        this.logo = logo;
-    }
-
+        public void setLogo(UploadableMedia logo) {
+            this.logo = logo;
+        }
+    */
     public void setCreated(Long created) {
         this.created = created;
     }
@@ -288,7 +249,7 @@ public class Organization implements Serializable {
     }
 
     @Transient
-    @PropertyDescriptor(hidden = true, summary = false, searchable = false)
+    @PropertyDescriptor(hidden = true)
     public void setCreatedAsString(String value) throws Exception {
         Calendar cal = new GregorianCalendar();
         cal.setTimeInMillis(DatePattern.sdf.parse(value).getTime());
@@ -296,7 +257,7 @@ public class Organization implements Serializable {
     }
 
     @Transient
-    @PropertyDescriptor(hidden = true, summary = false, searchable = false)
+    @PropertyDescriptor(hidden = true)
     public void setAccessedAsString(String value) throws Exception {
         Calendar cal = new GregorianCalendar();
         cal.setTimeInMillis(DatePattern.sdf.parse(value).getTime());

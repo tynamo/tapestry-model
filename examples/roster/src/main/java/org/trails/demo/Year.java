@@ -1,32 +1,21 @@
 package org.trails.demo;
 
-import java.io.Serializable;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Transient;
-
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.trails.descriptor.annotation.ClassDescriptor;
 import org.trails.descriptor.annotation.PropertyDescriptor;
 import org.trails.util.DatePattern;
 
+import javax.persistence.*;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
 /**
- * @hibernate.class table="Year" lazy="true"
- *
  * @author kenneth.colassi    nhhockeyplayer@hotmail.com
  */
 @Entity
-public class Year implements Serializable {
+public class Year {
+
     private static final Log log = LogFactory.getLog(Year.class);
 
     private Integer id = null;
@@ -63,59 +52,42 @@ public class Year implements Serializable {
      * Accessor for id
      *
      * @return Integer
-     * @hibernate.id generator-class="increment" unsaved-value="-1"
-     *               type="java.lang.Integer" unique="true" insert="true"
      */
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @PropertyDescriptor(readOnly = true, summary = true, index = 0)
+    @PropertyDescriptor(index = 0)
     public Integer getId() {
         return id;
     }
 
-    /**
-     * @hibernate.property
-     */
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "organization_id", insertable = true, updatable = true, nullable = true)
+    @ManyToOne
+    @JoinColumn(name = "year_organization_fk")
     public Organization getOrganization() {
         return organization;
     }
 
-    /**
-     * @hibernate.property
-     */
     @PropertyDescriptor(index = 1)
     public Integer getYearStart() {
         return yearStart;
     }
 
-    /**
-     * @hibernate.property
-     */
     @PropertyDescriptor(index = 2)
     public Integer getYearEnd() {
         return yearEnd;
     }
 
-    /**
-     * @hibernate.property
-     */
-    @PropertyDescriptor(hidden = true, summary = false, searchable = false)
+    @PropertyDescriptor(hidden = true)
     public Long getCreated() {
         return created;
     }
 
-    /**
-     * @hibernate.property
-     */
-    @PropertyDescriptor(hidden = true, summary = false, searchable = false)
+    @PropertyDescriptor(hidden = true)
     public Long getAccessed() {
         return accessed;
     }
 
     @Transient
-    @PropertyDescriptor(hidden = true, summary = false, searchable = false)
+    @PropertyDescriptor(hidden = true)
     public String getCreatedAsString() {
         Calendar cal = new GregorianCalendar();
         cal.setTimeInMillis(created.longValue());
@@ -123,7 +95,7 @@ public class Year implements Serializable {
     }
 
     @Transient
-    @PropertyDescriptor(hidden = true, summary = false, searchable = false)
+    @PropertyDescriptor(hidden = true)
     public String getAccessedAsString() {
         Calendar cal = new GregorianCalendar();
         cal.setTimeInMillis(accessed.longValue());
@@ -147,7 +119,7 @@ public class Year implements Serializable {
     }
 
     @Transient
-    @PropertyDescriptor(hidden = true, summary = false, searchable = false)
+    @PropertyDescriptor(hidden = true)
     public void setCreatedAsString(String value) throws Exception {
         Calendar cal = new GregorianCalendar();
         cal.setTimeInMillis(DatePattern.sdf.parse(value).getTime());
@@ -155,7 +127,7 @@ public class Year implements Serializable {
     }
 
     @Transient
-    @PropertyDescriptor(hidden = true, summary = false, searchable = false)
+    @PropertyDescriptor(hidden = true)
     public void setAccessedAsString(String value) throws Exception {
         Calendar cal = new GregorianCalendar();
         cal.setTimeInMillis(DatePattern.sdf.parse(value).getTime());

@@ -1,47 +1,29 @@
 package org.trails.demo;
 
+import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.trails.descriptor.annotation.ClassDescriptor;
+import org.trails.descriptor.annotation.Collection;
+import org.trails.descriptor.annotation.PropertyDescriptor;
+import org.trails.util.DatePattern;
+import org.hibernate.validator.NotNull;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.OrderBy;
-import javax.persistence.Transient;
-
-import org.apache.commons.beanutils.BeanUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.trails.descriptor.BlobDescriptorExtension.ContentDisposition;
-import org.trails.descriptor.BlobDescriptorExtension.RenderType;
-import org.trails.descriptor.annotation.BlobDescriptor;
-import org.trails.descriptor.annotation.ClassDescriptor;
-import org.trails.descriptor.annotation.Collection;
-import org.trails.descriptor.annotation.PropertyDescriptor;
-import org.trails.util.DatePattern;
-
 /**
- * @hibernate.class table="Team" lazy="true"
- *
- * A Team has players and coaches
- *
  * @author kenneth.colassi
+ *         <p/>
+ *         A Team has players and coaches
  */
 @Entity
-@ClassDescriptor(hasCyclicRelationships=true)
-public class Team implements Serializable {
+public class Team {
+
     private static final Log log = LogFactory.getLog(Team.class);
 
     public enum Season {
@@ -72,7 +54,7 @@ public class Team implements Serializable {
         I, II, III, IV
     }
 
-    private Integer id = null;
+    private Integer id;
 
     private EGender gender;
 
@@ -93,6 +75,8 @@ public class Team implements Serializable {
     private Set<Player> players = new HashSet<Player>();
 
     private Year year;
+
+    private String teamName;
 
     private Long created = new Long(GregorianCalendar.getInstance()
             .getTimeInMillis());
@@ -119,136 +103,105 @@ public class Team implements Serializable {
      * Accessor for id
      *
      * @return Integer
-     * @hibernate.id generator-class="increment" unsaved-value="-1"
-     *               type="java.lang.Integer" unique="true" insert="true"
      */
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @PropertyDescriptor(readOnly = true, summary = true, index = 0)
+    @PropertyDescriptor(hidden = true)
     public Integer getId() {
         return id;
     }
 
-    /**
-     * @hibernate.property
-     */
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "organization_id", insertable = false, updatable = true, nullable = true)
+    @ManyToOne
+    @JoinColumn(name = "team_organization_fk")
     public Organization getOrganization() {
         return organization;
     }
 
-    /**
-     * @hibernate.property
-     */
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "team_id", insertable = true, updatable = true, nullable = true)
-    @Collection(child = true)
-    @PropertyDescriptor(readOnly = false, searchable = true)
+    @OneToMany
+    @JoinColumn(name = "team_id")
+    @Collection(child = false, inverse = "team")
     @OrderBy("lastName")
     public Set<Coach> getCoaches() {
         return coaches;
     }
 
-    /**
-     * @hibernate.property
-     */
     @Enumerated(value = EnumType.STRING)
     public EGender getGender() {
         return gender;
     }
 
-    /**
-     * @hibernate.property
-     */
     @Enumerated(value = EnumType.STRING)
     public EDivision getDivision() {
         return division;
     }
 
-    /**
-     * @hibernate.property
-     */
     @Enumerated(value = EnumType.STRING)
     public ELevel getLevel() {
         return level;
     }
 
-    /**
-     * @hibernate.property
-     */
     @Enumerated(value = EnumType.STRING)
     public EAge getAge() {
         return age;
     }
 
-    /**
-     * @hibernate.property
-     */
     @Enumerated(value = EnumType.STRING)
     public EGroupClassification getGroupClassification() {
         return groupClassification;
     }
 
-    /**
-     * @hibernate.property
-     */
     @Enumerated(value = EnumType.STRING)
     public ETier getTier() {
         return tier;
     }
 
-    /**
-     * @hibernate.property
-     */
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "team_id", insertable = true, updatable = true, nullable = true)
-    @Collection(child = true)
-    @PropertyDescriptor(readOnly = false, searchable = true)
+    @OneToMany
+    @JoinColumn(name = "player_team_fk")
+    @Collection(child = false, inverse = "team")
     @OrderBy("lastName")
     public Set<Player> getPlayers() {
         return players;
     }
 
+/*
     private UploadableMedia photo = new UploadableMedia();
 
-    /**
-     * @hibernate.property
-     */
     @BlobDescriptor(renderType = RenderType.IMAGE, contentDisposition = ContentDisposition.ATTACHMENT)
     @PropertyDescriptor(summary = true, index = 2)
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     public UploadableMedia getPhoto() {
         return photo;
     }
+*/
 
-    /**
-     * @hibernate.property
-     */
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @PropertyDescriptor(searchable = true, index = 1)
+    @PropertyDescriptor(index = 1)
     public Year getYear() {
         return year;
     }
 
-    /**
-     * @hibernate.property
-     */
-    @PropertyDescriptor(hidden = true, summary = false, searchable = false)
+    @NotNull
+    @PropertyDescriptor(index = 0)
+    public String getTeamName() {
+        return teamName;
+    }
+
+    public void setTeamName(String teamName) {
+        this.teamName = teamName;
+    }
+
+    @PropertyDescriptor(hidden = true)
     public Long getCreated() {
         return created;
     }
 
-    /**
-     * @hibernate.property
-     */
-    @PropertyDescriptor(hidden = true, summary = false, searchable = false)
+    @PropertyDescriptor(hidden = true)
     public Long getAccessed() {
         return accessed;
     }
 
     @Transient
-    @PropertyDescriptor(hidden = true, summary = false, searchable = false)
+    @PropertyDescriptor(hidden = true)
     public String getCreatedAsString() {
         Calendar cal = new GregorianCalendar();
         cal.setTimeInMillis(created.longValue());
@@ -256,7 +209,7 @@ public class Team implements Serializable {
     }
 
     @Transient
-    @PropertyDescriptor(hidden = true, summary = false, searchable = false)
+    @PropertyDescriptor(hidden = true)
     public String getAccessedAsString() {
         Calendar cal = new GregorianCalendar();
         cal.setTimeInMillis(accessed.longValue());
@@ -302,10 +255,11 @@ public class Team implements Serializable {
     public void setPlayers(Set<Player> players) {
         this.players = players;
     }
-
+/*
     public void setPhoto(UploadableMedia photo) {
         this.photo = photo;
     }
+*/
 
     public void setYear(Year year) {
         this.year = year;
@@ -320,7 +274,7 @@ public class Team implements Serializable {
     }
 
     @Transient
-    @PropertyDescriptor(hidden = true, summary = false, searchable = false)
+    @PropertyDescriptor(hidden = true)
     public void setCreatedAsString(String value) throws Exception {
         Calendar cal = new GregorianCalendar();
         cal.setTimeInMillis(DatePattern.sdf.parse(value).getTime());
@@ -328,7 +282,7 @@ public class Team implements Serializable {
     }
 
     @Transient
-    @PropertyDescriptor(hidden = true, summary = false, searchable = false)
+    @PropertyDescriptor(hidden = true)
     public void setAccessedAsString(String value) throws Exception {
         Calendar cal = new GregorianCalendar();
         cal.setTimeInMillis(DatePattern.sdf.parse(value).getTime());
@@ -337,12 +291,7 @@ public class Team implements Serializable {
 
     @Override
     public String toString() {
-        if (organization == null)
-            return "";
-        else
-            return getOrganization().getCity() + ","
-                    + getOrganization().getState() + " "
-                    + getGender().toString() + " " + getAge().toString();
+        return getTeamName();
     }
 
     @Override
