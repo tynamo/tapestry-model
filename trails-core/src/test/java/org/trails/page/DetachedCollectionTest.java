@@ -5,7 +5,11 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import org.apache.tapestry.IMarkupWriter;
+import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.callback.ICallback;
+import org.apache.tapestry.event.PageEvent;
 import org.apache.tapestry.valid.IValidationDelegate;
 import org.hibernate.SessionFactory;
 import org.jmock.Mock;
@@ -23,9 +27,11 @@ import org.trails.descriptor.DescriptorService;
 import org.trails.descriptor.IClassDescriptor;
 import org.trails.descriptor.IdentifierDescriptor;
 import org.trails.descriptor.TrailsClassDescriptor;
+import org.trails.hibernate.HasAssignedIdentifier;
 import org.trails.persistence.PersistenceService;
 import org.trails.test.Coach;
 import org.trails.test.Director;
+import org.trails.test.Foo;
 import org.trails.test.Organization;
 import org.trails.test.Person;
 import org.trails.test.Player;
@@ -77,25 +83,42 @@ public class DetachedCollectionTest extends ComponentTest {
 
     Mock cycleMock = new Mock(IRequestCycle.class);
     Mock validatorMock = new Mock(IValidationDelegate.class);
+    Mock markupWriterMock = new Mock(IMarkupWriter.class);
 
     IdentifierDescriptor organizationIdDescriptor = new IdentifierDescriptor(Organization.class, "id", Organization.class);
     IdentifierDescriptor yearIdDescriptor = new IdentifierDescriptor(Year.class, "id", Year.class);
     IdentifierDescriptor coachIdDescriptor = new IdentifierDescriptor(Coach.class, "id", Coach.class);
     IdentifierDescriptor teamIdDescriptor = new IdentifierDescriptor(Team.class, "id", Team.class);
 
-    EditPage organizationEditPage = (EditPage)creator.newInstance(EditPage.class);
-    EditPage yearEditPage = (EditPage)creator.newInstance(EditPage.class);
-    EditPage coachEditPage = (EditPage)creator.newInstance(EditPage.class);
-    EditPage teamEditPage = (EditPage)creator.newInstance(EditPage.class);
+    EditPage organizationEditPage = (EditPage)creator.newInstance(EditPage.class,
+            new Object[] {
+            "descriptorService", descriptorService,
+            "persistenceService", psvc
+        });
+    EditPage yearEditPage = (EditPage)creator.newInstance(EditPage.class,
+            new Object[] {
+        "descriptorService", descriptorService,
+        "persistenceService", psvc
+    });
+    EditPage coachEditPage = (EditPage)creator.newInstance(EditPage.class,
+            new Object[] {
+        "descriptorService", descriptorService,
+        "persistenceService", psvc
+    });
+    EditPage teamEditPage = (EditPage)creator.newInstance(EditPage.class,
+            new Object[] {
+        "descriptorService", descriptorService,
+        "persistenceService", psvc
+    });
 
-    IClassDescriptor organizationDescriptor = new TrailsClassDescriptor(Organization.class);
     CollectionDescriptor yearCollectionDescriptor = new CollectionDescriptor(Organization.class, "years", Set.class);
     CollectionDescriptor coachCollectionDescriptor = new CollectionDescriptor(Organization.class, "coaches", Set.class);
     CollectionDescriptor teamCollectionDescriptor = new CollectionDescriptor(Organization.class, "teams", Set.class);
 
-    IClassDescriptor yearDescriptor = new TrailsClassDescriptor(Year.class);
-    IClassDescriptor coachDescriptor = new TrailsClassDescriptor(Coach.class);
-    IClassDescriptor teamDescriptor = new TrailsClassDescriptor(Team.class);
+    IClassDescriptor organizationClassDescriptor = new TrailsClassDescriptor(Organization.class);
+    IClassDescriptor yearClassDescriptor = new TrailsClassDescriptor(Year.class);
+    IClassDescriptor coachClassDescriptor = new TrailsClassDescriptor(Coach.class);
+    IClassDescriptor teamClassDescriptor = new TrailsClassDescriptor(Team.class);
 
     EditCallback organizationCallBack = new EditCallback(organizationPageName, new Organization());
     CollectionCallback yearCallBack;
@@ -125,29 +148,35 @@ public class DetachedCollectionTest extends ComponentTest {
         coachCollectionDescriptor.setChildRelationship(true);
         teamCollectionDescriptor.setElementType(Team.class);
         teamCollectionDescriptor.setChildRelationship(true);
-        yearDescriptor.setChild(true);
-        coachDescriptor.setChild(true);
-        teamDescriptor.setChild(true);
+        yearClassDescriptor.setChild(true);
+        coachClassDescriptor.setChild(true);
+        teamClassDescriptor.setChild(true);
 
         yearCallBack = new CollectionCallback(yearPageName, organization, yearCollectionDescriptor);
         coachCallBack = new CollectionCallback(coachPageName, organization, coachCollectionDescriptor);
         teamCallBack = new CollectionCallback(teamPageName, organization, teamCollectionDescriptor);
 
-        organizationDescriptor.getPropertyDescriptors().add(organizationIdDescriptor);
+        organizationClassDescriptor.getPropertyDescriptors().add(organizationIdDescriptor);
         organizationEditPage = buildEditPage();
         organizationEditPage.setModel(organization);
 
-        yearDescriptor.getPropertyDescriptors().add(yearIdDescriptor);
+        yearClassDescriptor.getPropertyDescriptors().add(yearIdDescriptor);
         yearEditPage = buildEditPage();
         yearEditPage.setModel(year);
 
-        coachDescriptor.getPropertyDescriptors().add(coachIdDescriptor);
+        coachClassDescriptor.getPropertyDescriptors().add(coachIdDescriptor);
         coachEditPage = buildEditPage();
         coachEditPage.setModel(coach);
 
-        teamDescriptor.getPropertyDescriptors().add(teamIdDescriptor);
+        teamClassDescriptor.getPropertyDescriptors().add(teamIdDescriptor);
         teamEditPage = buildEditPage();
         teamEditPage.setModel(team);
+
+        // move these in when you need'em
+        //descriptorServiceMock.expects(atLeastOnce()).method("getClassDescriptor").with(eq(Year.class)).will(returnValue(yearClassDescriptor));
+        //descriptorServiceMock.expects(atLeastOnce()).method("getClassDescriptor").with(eq(Organization.class)).will(returnValue(organizationClassDescriptor));
+        //descriptorServiceMock.expects(atLeastOnce()).method("getClassDescriptor").with(eq(Coach.class)).will(returnValue(coachClassDescriptor));
+        //descriptorServiceMock.expects(atLeastOnce()).method("getClassDescriptor").with(eq(Team.class)).will(returnValue(teamClassDescriptor));
 
     }
 
@@ -248,6 +277,13 @@ public class DetachedCollectionTest extends ComponentTest {
                 }
                 psvc.save(org);
 
+                // onformsubmit
+                Mock callbackMock = new Mock(ICallback.class);
+                callbackMock.expects(once()).method("performCallback").with(isA(IRequestCycle.class));
+                organizationEditPage.setNextPage((ICallback)callbackMock.proxy());
+                organizationEditPage.onFormSubmit((IRequestCycle)cycleMock.proxy());
+                callbackMock.verify();
+
                 // Now populate page/cycle objects and operate them
                 Team localTeam = team.clone(); team.setId(null); team.setOrganization(org); team.setAge(Team.EAge.U19); team.setGender(Team.EGender.MALE);
                 teamEditPage.setModel(localTeam);
@@ -267,6 +303,50 @@ public class DetachedCollectionTest extends ComponentTest {
                 localTeam.getCoaches().add(localCoach);
                 teamEditPage.save((IRequestCycle) cycleMock.proxy());
                 assertEquals(localTeam, teamEditPage.getModel());
+
+                // onformsubmit
+                callbackMock.expects(once()).method("performCallback").with(isA(IRequestCycle.class));
+                teamEditPage.setNextPage((ICallback)callbackMock.proxy());
+                teamEditPage.onFormSubmit((IRequestCycle)cycleMock.proxy());
+                callbackMock.verify();
+
+                // org beginRender
+                descriptorServiceMock.expects(atLeastOnce()).method("getClassDescriptor").with(eq(Organization.class)).will(returnValue(organizationClassDescriptor));
+                Mock pageMock = new Mock(IPage.class);
+                pageMock.expects(once()).method("beginPageRender").with(isA(IRequestCycle.class));
+                organizationEditPage.getCallbackStack().getStack().clear();
+                PageEvent pageEvent = new PageEvent((IPage)pageMock.proxy(), (IRequestCycle)cycleMock.proxy());
+                organizationEditPage.pageBeginRender(pageEvent);
+                assertNotNull(org.getCoaches());
+                assertNotNull(org.getTeams());
+                EditCallback poppedCallback = (EditCallback)organizationEditPage.getCallbackStack().getStack().pop();
+                assertNotSame(org, poppedCallback.getModel());
+                assertTrue(organizationEditPage.getCallbackStack().getStack().isEmpty());
+                cycleMock.verify();
+
+                sessionFactory.close(); // trigger detached collection
+
+                // team beginRender
+                teamEditPage.setModel(team);
+                descriptorServiceMock.expects(atLeastOnce()).method("getClassDescriptor").with(eq(Team.class)).will(returnValue(teamClassDescriptor));
+                pageMock = new Mock(IPage.class);
+                pageMock.expects(once()).method("beginPageRender").with(isA(IRequestCycle.class));
+                teamEditPage.getCallbackStack().getStack().clear();
+                pageEvent = new PageEvent((IPage)pageMock.proxy(), (IRequestCycle)cycleMock.proxy());
+                teamEditPage.pageBeginRender(pageEvent);
+                assertNotNull(team.getCoaches());
+                poppedCallback = (EditCallback)teamEditPage.getCallbackStack().getStack().pop();
+                assertSame(team, poppedCallback.getModel());
+                assertNotNull(team.getCoaches());
+                assertTrue(team.getCoaches().iterator().hasNext());
+                assertTrue(teamEditPage.getCallbackStack().getStack().isEmpty());
+                cycleMock.verify();
+
+                pageMock.expects(once()).method("endPageRender").with(isA(IRequestCycle.class));
+                teamEditPage.getCallbackStack().getStack().clear();
+                pageEvent = new PageEvent((IPage)pageMock.proxy(), (IRequestCycle)cycleMock.proxy());
+                teamEditPage.pageEndRender(pageEvent);
+                cycleMock.verify();
 
                 status.setRollbackOnly(); // force rollback don't change db.
             }
