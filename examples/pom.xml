@@ -7,11 +7,11 @@
 	<name>Trails Examples</name>
 	<url>https://trails.dev.java.net/</url>
 
-	<modules>
-		<module>simple</module>
-		<module>recipe</module>
-	        <module>roster</module>
-  </modules>
+    <modules>
+        <module>simple</module>
+        <module>recipe</module>
+        <!-- module>roster</module-->
+    </modules>
 
 
 	<parent>
