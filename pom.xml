@@ -12,7 +12,7 @@
 
     <modules>
         <module>trails-core</module>
-
+        <module>examples</module>
         <module>trails-archetype</module>
         <module>trails-secure-archetype</module>
     </modules>

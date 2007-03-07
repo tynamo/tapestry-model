@@ -12,6 +12,7 @@
 package org.trails.hibernate;
 
 import javax.persistence.Transient;
+import org.trails.descriptor.annotation.PropertyDescriptor;
 import org.hibernate.type.Type;
 
 
@@ -44,6 +45,7 @@ public aspect AssignedIdentifierAspect
     }
 
     @Transient
+    @PropertyDescriptor(hidden = true)
     public boolean HasAssignedIdentifier.isSaved()
     {
         return saved;
