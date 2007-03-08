@@ -170,7 +170,8 @@
 	
 	<bean id="descriptorInternationalizationAspect" class="org.trails.i18n.DescriptorInternationalization" factory-method="aspectOf">
 		<property name="resourceBundleMessageSource" ref="trailsMessageSource"/>
-	</bean>
+        <property name="localeHolder" ref="localeHolder"/>        
+    </bean>
 
     <bean id="descriptorSecurity" class="org.trails.security.DescriptorSecurity" factory-method="aspectOf">
         <property name="securityService" ref="securityService"/>

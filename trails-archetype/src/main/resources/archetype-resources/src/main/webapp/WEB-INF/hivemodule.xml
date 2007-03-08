@@ -24,9 +24,13 @@
                 <set-object property="localeHolder" value="spring:localeHolder"/>
             </construct>
         </invoke-factory>
-    </service-point> 
-    		
-	<contribution configuration-id="tapestry.url.ServiceEncoders">
+    </service-point>
+
+    <contribution configuration-id="tapestry.request.WebRequestServicerPipeline">
+        <filter name="LocaleHolder" object="service:LocaleHolder"/>
+    </contribution>
+
+    <contribution configuration-id="tapestry.url.ServiceEncoders">
         <page-service-encoder id="page" extension="html" service="page"/>
     </contribution>
 
