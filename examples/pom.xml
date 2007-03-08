@@ -5,12 +5,12 @@
 	<artifactId>examples</artifactId>
 	<packaging>pom</packaging>
 	<name>Trails Examples</name>
-	<url>https://trails.dev.java.net/</url>
+    <url>http://www.trailsframework.org/</url>
 
     <modules>
-        <module>simple</module>
+        <!-- module>simple</module-->
         <module>recipe</module>
-        <!-- module>roster</module-->
+        <module>roster</module>
     </modules>
 
 

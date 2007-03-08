@@ -19,7 +19,7 @@
 		<plugins>
             <plugin>
 				<artifactId>maven-surefire-plugin</artifactId>
-				<!-- executions>
+				<executions>
 					<execution>
 						<id>surefire-it</id>
 						<phase>integration-test</phase>
@@ -40,11 +40,14 @@
 							</excludes>
 						</configuration>
 					</execution>
-				</executions-->
+				</executions>
 				<configuration>
 					<includes>
 						<include>**/ThingTest.java</include>
-					</includes>
+                        <include>
+                            **/functional/*Test.java
+                        </include>
+                    </includes>
 				</configuration>
 			</plugin>
 		</plugins>
