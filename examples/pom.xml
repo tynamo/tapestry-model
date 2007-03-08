@@ -8,7 +8,7 @@
     <url>http://www.trailsframework.org/</url>
 
     <modules>
-        <!-- module>simple</module-->
+        <module>simple</module>
         <module>recipe</module>
         <module>roster</module>
     </modules>
@@ -99,14 +99,38 @@
         <plugin>
             <groupId>org.mortbay.jetty</groupId>
             <artifactId>maven-jetty-plugin</artifactId>
-            <version>6.1.0</version>
+            <version>6.1.1</version>
             <configuration>
                 <contextPath>/</contextPath>
-                <scanTargets>
-                    <scanTarget>src/main/webapp</scanTarget>
-                </scanTargets>
-                <scanIntervalSeconds>10</scanIntervalSeconds>
+                <scanIntervalSeconds>0</scanIntervalSeconds>
+                <systemProperties>
+                    <systemProperty>
+                        <name>slf4j</name>
+                        <value>false</value>
+                    </systemProperty>
+                    <systemProperty>
+                        <name>log4j.configuration</name>
+                        <value>file:${basedir}/target/classes/log4j.properties</value>
+                    </systemProperty>
+                </systemProperties>
             </configuration>
+            <dependencies>
+                <dependency>
+                    <groupId>commons-logging</groupId>
+                    <artifactId>commons-logging</artifactId>
+                    <version>1.1</version>
+                </dependency>
+                <dependency>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-jcl</artifactId>
+                    <version>1.0.1</version>
+                </dependency>
+                <dependency>
+                    <groupId>log4j</groupId>
+                    <artifactId>log4j</artifactId>
+                    <version>1.2.12</version>
+                </dependency>
+            </dependencies>
         </plugin>
 
         <plugin>
@@ -125,10 +149,10 @@
             <configuration>
                 <componentProperties>
                     <configurationfile>
-                        target/generated-sources/resources/hibernate.cfg.xml
+                        ${basedir}/target/generated-sources/resources/hibernate.cfg.xml
                     </configurationfile>
                     <propertyfile>
-                        src/main/resources/hibernate.properties
+                        ${basedir}/src/main/resources/hibernate.properties
                     </propertyfile>
                     <jdk5>true</jdk5>
                     <drop>true</drop>
@@ -139,7 +163,7 @@
                     <dependency>
                         <groupId>log4j</groupId>
                         <artifactId>log4j</artifactId>
-                        <version>1.2.9</version>
+                        <version>1.2.12</version>
                     </dependency>
                 </dependencies>
             </configuration>

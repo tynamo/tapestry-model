@@ -14,7 +14,7 @@ public class TableBlockOverrideTest extends FunctionalTest
         getInputByName(newThingPage, "Name").setValueAttribute("blah");
         getInputByName(newThingPage, "Id").setValueAttribute("1");
         listThingsPage = clickButton(newThingForm, "Ok");
-        assertXPathPresent(listThingsPage, "//td[text()='This is where the name should go.blah']");
+        assertXPathPresent(listThingsPage, "//p[text()='This is where the name should go.blah']");
 		
 	}
 }

@@ -47,17 +47,17 @@
     <mailingLists>
         <mailingList>
             <name>Trails User List</name>
-            <subscribe>users-subscribe@trails.dev.java.net</subscribe>
-            <unsubscribe>users-unsubscribe@trails.dev.java.net</unsubscribe>
-            <post>users@trails.dev.java.net</post>
-            <archive>https://trails.dev.java.net/servlets/SummarizeList?listName=users</archive>
+            <subscribe>http://xircles.codehaus.org/manage_email</subscribe>
+            <unsubscribe>http://xircles.codehaus.org/manage_email</unsubscribe>
+            <post>users@trails.codehaus.org</post>
+            <archive>http://archive.trails.codehaus.org/users</archive>
         </mailingList>
         <mailingList>
             <name>Trails Developer List</name>
-            <subscribe>dev-subscribe@trails.dev.java.net</subscribe>
-            <unsubscribe>dev-unsubscribe@trails.dev.java.net</unsubscribe>
-            <post>dev@trails.dev.java.net</post>
-            <archive>https://trails.dev.java.net/servlets/SummarizeList?listName=dev</archive>
+            <subscribe>http://xircles.codehaus.org/manage_email</subscribe>
+            <unsubscribe>http://xircles.codehaus.org/manage_email</unsubscribe>
+            <post>dev@trails.codehaus.org</post>
+            <archive>http://archive.trails.codehaus.org/dev</archive>
         </mailingList>
     </mailingLists>
     <scm>
@@ -125,11 +125,13 @@
     </pluginRepositories>
 
     <ciManagement>
+        <system>bamboo</system>
+        <url>http://bamboo.ci.codehaus.org/browse/TRAILS</url>
         <notifiers>
             <notifier>
                 <type>mail</type>
                 <configuration>
-                    <address>dev@trails.dev.java.net</address>
+                    <address>ci@trails.codehaus.org</address>
                 </configuration>
             </notifier>
             <notifier>
