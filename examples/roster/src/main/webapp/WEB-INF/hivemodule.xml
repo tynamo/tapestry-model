@@ -31,7 +31,7 @@
     </contribution>
     		
     <contribution configuration-id="tapestry.url.ServiceEncoders">
-        <page-service-encoder id="page" extension="html" service="page"/>
+        <page-service-encoder id="page" extension="page" service="page"/>
     </contribution>
 
     <contribution configuration-id="tapestry.url.ServiceEncoders">

@@ -86,7 +86,7 @@
 
     <servlet-mapping>
         <servlet-name>trails</servlet-name>
-        <url-pattern>*.html</url-pattern>
+        <url-pattern>*.page</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>
