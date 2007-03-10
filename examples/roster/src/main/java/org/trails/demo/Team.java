@@ -174,7 +174,7 @@ public class Team {
     }
 */
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne
     @PropertyDescriptor(index = 1)
     public Year getYear() {
         return year;

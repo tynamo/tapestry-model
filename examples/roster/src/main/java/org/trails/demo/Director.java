@@ -1,25 +1,19 @@
 package org.trails.demo;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.trails.descriptor.annotation.PropertyDescriptor;
+import org.trails.descriptor.annotation.ClassDescriptor;
+
+import javax.persistence.*;
 
 /**
- *
  * A Director belongs to an organization
  *
  * @author kenneth.colassi    nhhockeyplayer@hotmail.com
  */
 @Entity
+@ClassDescriptor(hasCyclicRelationships = true)
 public class Director extends Person {
 
     private static final Log log = LogFactory.getLog(Director.class);
@@ -44,8 +38,17 @@ public class Director extends Person {
         setERole(ERole.USER);
     }
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "organization_id")
+    /**
+     * Note: I couldn't find a better way to get a bidirectional read&write OneToOne relationship
+     *
+     * @return Organization
+     */
+
+    @OneToOne
+    @JoinTable(name = "OrganizationsDirectors",
+            joinColumns = @JoinColumn(name = "organization_fk"),
+            inverseJoinColumns = {@JoinColumn(name = "director_fk")}
+    )
     public Organization getOrganization() {
         return organization;
     }

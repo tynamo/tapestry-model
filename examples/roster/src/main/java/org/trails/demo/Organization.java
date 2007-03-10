@@ -1,40 +1,19 @@
 package org.trails.demo;
 
-import java.io.Serializable;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.OrderBy;
-import javax.persistence.Transient;
-
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.validator.NotNull;
-import org.trails.component.blob.ITrailsBlob;
-import org.trails.component.blob.TrailsBlobImpl;
-import org.trails.descriptor.BlobDescriptorExtension.ContentDisposition;
-import org.trails.descriptor.BlobDescriptorExtension.RenderType;
-import org.trails.descriptor.annotation.BlobDescriptor;
-import org.trails.descriptor.annotation.ClassDescriptor;
 import org.trails.descriptor.annotation.Collection;
 import org.trails.descriptor.annotation.PropertyDescriptor;
 import org.trails.util.DatePattern;
 import org.trails.validation.ValidateUniqueness;
+
+import javax.persistence.*;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.HashSet;
+import java.util.Set;
 
 
 /**
@@ -107,7 +86,17 @@ public class Organization {
         return years;
     }
 
-    @OneToOne(fetch = FetchType.LAZY)
+    /**
+     * Note: I couldn't find a better way to get a bidirectional read&write OneToOne relationship
+     *
+     * @return Director
+     */
+
+    @OneToOne
+    @JoinTable(name = "OrganizationsDirectors",
+            joinColumns = @JoinColumn(name = "director_fk"),
+            inverseJoinColumns = {@JoinColumn(name = "organization_fk")}
+    )
     @PropertyDescriptor(index = 2)
     public Director getDirector() {
         return director;
@@ -282,19 +271,14 @@ public class Organization {
     }
 
     @Override
-    public boolean equals(Object rhs) {
-        if (this == rhs)
-            return true;
-        if (rhs == null)
-            return false;
-        if (!(rhs instanceof Organization))
-            return false;
-        final Organization castedObject = (Organization) rhs;
-        if (id == null) {
-            if (castedObject.id != null)
-                return false;
-        } else if (!id.equals(castedObject.id))
-            return false;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || (!(o instanceof Organization))) return false;
+
+        Organization that = (Organization) o;
+
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+
         return true;
     }
 }
