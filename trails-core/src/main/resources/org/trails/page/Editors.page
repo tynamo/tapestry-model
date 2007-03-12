@@ -1,8 +1,8 @@
 <!DOCTYPE page-specification PUBLIC "-//Apache Software Foundation//Tapestry Specification 4.0//EN" "http://jakarta.apache.org/tapestry/dtd/Tapestry_4_0.dtd">
 <page-specification class="org.trails.page.EditorBlockPage">
-	<property name="model" />
-	<property name="descriptor" />
-	<property name="editPageName" />
+    <property name="model" />
+    <property name="descriptor" />
+    <property name="editPageName" />
     <component id="dateField" type="DatePicker" inherit-informal-parameters="no">
         <binding name="value">model[descriptor.name]</binding>
         <binding name="translator">ognl:validatorTranslatorService.getTranslator(descriptor)</binding>
@@ -47,20 +47,25 @@
     </component>
 
     <component id="insertText" type="Insert">
-    	<binding name="value">model[descriptor.name]</binding>
+        <binding name="value">model[descriptor.name]</binding>
     </component>
     <component id="fckEditor" type="FCKEditor">
-    	<binding name="value">model[descriptor.name]</binding>
+        <binding name="value">model[descriptor.name]</binding>
     </component>
 
     <component id="embeddedEditor" type="EmbeddedEditor">
-    	<binding name="model">model[descriptor.name]</binding>
-    	<binding name="descriptor">descriptor</binding>
+        <binding name="model">model[descriptor.name]</binding>
+        <binding name="descriptor">descriptor</binding>
     </component>
 
     <component id="enumSelect" type="EnumSelect">
         <binding name="value">model[descriptor.name]</binding>
         <binding name="propertyDescriptor">descriptor</binding>
+    </component>
+
+    <component id="blobFields" type="BlobComponent">
+        <binding name="model">model</binding>
+        <binding name="descriptor">descriptor</binding>
     </component>
 
 </page-specification>
