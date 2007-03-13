@@ -68,7 +68,8 @@ public class EditCollectionTest extends ComponentTest
     {
         editCollection = (EditCollection)creator.newInstance(EditCollection.class,
             new Object[] {
-                "descriptorService", descriptorServiceMock.proxy(), 
+                "persistenceService", persistenceMock.proxy(),
+                "descriptorService", descriptorServiceMock.proxy(),
                 "callbackStack", callbackStack,
                 "pageResolver", pageResolverMock.proxy()
             });
@@ -149,6 +150,7 @@ public class EditCollectionTest extends ComponentTest
         cycleMock.expects(atLeastOnce()).method("getPage").will(returnValue(editPage));
         pageMock.expects(atLeastOnce()).method("getRequestCycle").will(returnValue(cycleMock.proxy()));
         Baz baz = new Baz();
+        persistenceMock.expects(once()).method("reattach").with(eq(baz));
         EditPage page = (EditPage)editCollection.edit(baz);
         assertEquals(baz, page.getModel());
         EditCollectionMemberCallback callback = (EditCollectionMemberCallback)

@@ -131,6 +131,7 @@ public abstract class EditCollection extends TrailsComponent
                 getPage().getRequestCycle(),
                 Utils.checkForCGLIB(member.getClass()).getName(),
                 PageType.EDIT);
+        getPersistenceService().reattach(member);
         editPage.setModel(member);
         return editPage;
     }
