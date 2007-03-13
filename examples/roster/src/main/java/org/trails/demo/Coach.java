@@ -63,7 +63,7 @@ public class Coach extends Person {
      * @hibernate.property
      */
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "organization_id", insertable = false, updatable = true, nullable = true)
+    @JoinColumn(name = "coach_organization_fk", insertable = false, updatable = true, nullable = true)
     public Organization getOrganization() {
         return organization;
     }

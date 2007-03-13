@@ -102,9 +102,9 @@ public class Organization implements Serializable {
     /**
      * @hibernate.property
      */
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany
     @JoinColumn(name = "organization_id", insertable = true, updatable = true, nullable = true)
-    @Collection(child = true)
+    @Collection(child = true, inverse = "organization")
     @PropertyDescriptor(readOnly = false, index = 1)
     @OrderBy("yearStart")
     public Set<Year> getYears() {
@@ -128,12 +128,10 @@ public class Organization implements Serializable {
      * @hibernate.property
      */
     @OneToMany
-    @JoinColumn(name = "organization_id", insertable = true, updatable = true, nullable = true)
+    @JoinColumn(name = "coach_organization_fk", insertable = true, updatable = true, nullable = true)
     @Collection(child = true, inverse = "organization")
     @PropertyDescriptor(readOnly = false, searchable = true)
     @OrderBy("lastName")
-    //@JoinColumn(name = "coach_organization_fk")
-    //@Collection(child = false, inverse = "organization")
     public Set<Coach> getCoaches() {
         return coaches;
     }
@@ -141,13 +139,11 @@ public class Organization implements Serializable {
     /**
      * @hibernate.property
      */
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "organization_id", insertable = true, updatable = true, nullable = true)
+    @OneToMany
+    @JoinColumn(name = "team_organization_fk", insertable = true, updatable = true, nullable = true)
     @Collection(child = true, inverse = "organization")
     @PropertyDescriptor(readOnly = false)
     @OrderBy("division")
-    //@JoinColumn(name = "team_organization_fk")
-    //@Collection(child = false, inverse = "organization")
     public Set<Team> getTeams() {
         return teams;
     }

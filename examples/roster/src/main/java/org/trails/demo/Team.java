@@ -142,8 +142,8 @@ public class Team implements Serializable {
     /**
      * @hibernate.property
      */
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "team_id", insertable = true, updatable = true, nullable = true)
+    @OneToMany
+    @JoinColumn(name = "coach_team_fk", insertable = true, updatable = true, nullable = true)
     @Collection(child = false, inverse = "team")
     @PropertyDescriptor(readOnly = false, searchable = true)
     @OrderBy("lastName")
@@ -227,6 +227,7 @@ public class Team implements Serializable {
      * @hibernate.property
      */
     @ManyToOne
+    @JoinColumn(name = "team_year_fk")
     @PropertyDescriptor(index = 1)
     public Year getYear() {
         return year;

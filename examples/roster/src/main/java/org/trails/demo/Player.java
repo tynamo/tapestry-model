@@ -109,9 +109,9 @@ public class Player extends Person {
     /**
      * @hibernate.property
      */
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "player_id", insertable = true, updatable = true, nullable = true)
-    @Collection(child = true)
+    @OneToMany
+    @JoinColumn(name = "clips_player_fk", insertable = true, updatable = true, nullable = true)
+    @Collection(child = true, inverse = "player")
     @PropertyDescriptor(searchable = false, readOnly = false)
     @OrderBy("name")
     public Set<UploadableMedia> getClips() {
@@ -121,8 +121,8 @@ public class Player extends Person {
     /**
      * @hibernate.property
      */
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "player_id")
+    @OneToMany
+    @JoinColumn(name = "stats_player_fk")
     @Collection(child = true, inverse = "player")
     @PropertyDescriptor(searchable = true, readOnly = false)
     public Set<Statistic> getStats() {
