@@ -42,7 +42,7 @@ import org.trails.validation.ValidateUniqueness;
  *
  * Organizations have one Director, and Years, Coaches, Teams
  *
- * @author kenneth.colassi
+ * @author kenneth.colassi        nhhockeyplayer@hotmail.com
  */
 @Entity
 @ValidateUniqueness(property = "name")
@@ -316,7 +316,7 @@ public class Organization implements Serializable {
     public int hashCode() {
         final int PRIME = 31;
         int result = 1;
-        result = PRIME * result + ((id == null) ? 0 : id.hashCode());
+        result = PRIME * result + ((getId() == null) ? 0 : getId().hashCode());
         return result;
     }
 
@@ -329,10 +329,10 @@ public class Organization implements Serializable {
         if (!(rhs instanceof Organization))
             return false;
         final Organization castedObject = (Organization) rhs;
-        if (id == null) {
-            if (castedObject.id != null)
+        if (getId() == null) {
+            if (castedObject.getId() != null)
                 return false;
-        } else if (!id.equals(castedObject.id))
+        } else if (!getId().equals(castedObject.getId()))
             return false;
         return true;
     }

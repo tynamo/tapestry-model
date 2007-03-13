@@ -28,7 +28,7 @@ import org.trails.descriptor.annotation.PropertyDescriptor;
  *
  * A player has a photo and team
  *
- * @author kenneth.colassi
+ * @author kenneth.colassi        nhhockeyplayer@hotmail.com
  */
 @Entity
 @ClassDescriptor(hasCyclicRelationships=true)
@@ -72,20 +72,6 @@ public class Player extends Person {
             log.error(e.toString());
             e.printStackTrace();
         }
-    }
-
-    /**
-     * Accessor for id
-     *
-     * @return Integer
-     * @hibernate.id generator-class="increment" unsaved-value="-1"
-     *               type="java.lang.Integer" unique="true" insert="true"
-     */
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @PropertyDescriptor(readOnly = true, summary = true, index = 0)
-    public Integer getId() {
-        return id;
     }
 
     /**
@@ -193,7 +179,7 @@ public class Player extends Person {
     public int hashCode() {
         final int PRIME = 31;
         int result = 1;
-        result = PRIME * result + ((id == null) ? 0 : id.hashCode());
+        result = PRIME * result + ((getId() == null) ? 0 : getId().hashCode());
         return result;
     }
 
@@ -206,10 +192,10 @@ public class Player extends Person {
         if (!(rhs instanceof Player))
             return false;
         final Player castedObject = (Player) rhs;
-        if (id == null) {
-            if (castedObject.id != null)
+        if (getId() == null) {
+            if (castedObject.getId() != null)
                 return false;
-        } else if (!id.equals(castedObject.id))
+        } else if (!getId().equals(castedObject.getId()))
             return false;
         return true;
     }

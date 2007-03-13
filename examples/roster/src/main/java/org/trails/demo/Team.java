@@ -355,7 +355,7 @@ public class Team implements Serializable {
     public int hashCode() {
         final int PRIME = 31;
         int result = 1;
-        result = PRIME * result + ((id == null) ? 0 : id.hashCode());
+        result = PRIME * result + ((getId() == null) ? 0 : getId().hashCode());
         return result;
     }
 
@@ -368,10 +368,10 @@ public class Team implements Serializable {
         if (!(rhs instanceof Team))
             return false;
         final Team castedObject = (Team) rhs;
-        if (id == null) {
-            if (castedObject.id != null)
+        if (getId() == null) {
+            if (castedObject.getId() != null)
                 return false;
-        } else if (!id.equals(castedObject.id))
+        } else if (!getId().equals(castedObject.getId()))
             return false;
         return true;
     }

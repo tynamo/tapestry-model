@@ -21,7 +21,7 @@ import org.trails.descriptor.annotation.PropertyDescriptor;
  *
  * A Coach belongs to an organization and has a team
  *
- * @author kenneth.colassi
+ * @author kenneth.colassi        nhhockeyplayer@hotmail.com
  */
 @Entity
 @ClassDescriptor(hasCyclicRelationships = true)
@@ -48,22 +48,6 @@ public class Coach extends Person {
 
     public Coach() {
         setERole(ERole.USER);
-    }
-
-    /**
-     * Accessor for id
-     *
-     * @return Integer
-     * @hibernate.id generator-class="increment" unsaved-value="-1"
-     *               type="java.lang.Integer" unique="true" insert="false"
-     *               update="false"
-     */
-    @Override
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @PropertyDescriptor(readOnly = true, summary = true, index = 0)
-    public Integer getId() {
-        return super.getId();
     }
 
     /**
@@ -107,7 +91,7 @@ public class Coach extends Person {
     public int hashCode() {
         final int PRIME = 31;
         int result = 1;
-        result = PRIME * result + ((id == null) ? 0 : id.hashCode());
+        result = PRIME * result + ((getId() == null) ? 0 : getId().hashCode());
         return result;
     }
 
@@ -120,10 +104,10 @@ public class Coach extends Person {
         if (!(rhs instanceof Coach))
             return false;
         final Coach castedObject = (Coach) rhs;
-        if (id == null) {
-            if (castedObject.id != null)
+        if (getId() == null) {
+            if (castedObject.getId() != null)
                 return false;
-        } else if (!id.equals(castedObject.id))
+        } else if (!getId().equals(castedObject.getId()))
             return false;
         return true;
     }

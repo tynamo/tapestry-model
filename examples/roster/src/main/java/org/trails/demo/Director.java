@@ -19,7 +19,7 @@ import org.trails.descriptor.annotation.PropertyDescriptor;
  *
  * A Director belongs to an organization
  *
- * @author kenneth.colassi
+ * @author kenneth.colassi        nhhockeyplayer@hotmail.com
  */
 @Entity
 @ClassDescriptor(hasCyclicRelationships = true)
@@ -47,22 +47,6 @@ public class Director extends Person {
     }
 
     /**
-     * Accessor for id
-     *
-     * @return Integer
-     * @hibernate.id generator-class="increment" unsaved-value="-1"
-     *               type="java.lang.Integer" unique="true" insert="false"
-     *               update="false"
-     */
-    @Override
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @PropertyDescriptor(readOnly = true, summary = true, index = 0)
-    public Integer getId() {
-        return super.getId();
-    }
-
-    /**
      * @hibernate.property
      */
     @OneToOne
@@ -87,7 +71,7 @@ public class Director extends Person {
     public int hashCode() {
         final int PRIME = 31;
         int result = 1;
-        result = PRIME * result + ((id == null) ? 0 : id.hashCode());
+        result = PRIME * result + ((getId() == null) ? 0 : getId().hashCode());
         return result;
     }
 
@@ -100,10 +84,10 @@ public class Director extends Person {
         if (!(rhs instanceof Director))
             return false;
         final Director castedObject = (Director) rhs;
-        if (id == null) {
-            if (castedObject.id != null)
+        if (getId() == null) {
+            if (castedObject.getId() != null)
                 return false;
-        } else if (!id.equals(castedObject.id))
+        } else if (!getId().equals(castedObject.getId()))
             return false;
         return true;
     }

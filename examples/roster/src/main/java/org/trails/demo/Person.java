@@ -36,10 +36,10 @@ import org.trails.util.DatePattern;
 /**
  * @hibernate.class table="Person" lazy="true"
  *
- * @author kenneth.colassi
+ * @author kenneth.colassi        nhhockeyplayer@hotmail.com
  */
-@Entity
-@Inheritance(strategy = InheritanceType.JOINED)
+//@Entity
+//@Inheritance(strategy = InheritanceType.JOINED)
 @MappedSuperclass
 @ClassDescriptor(hidden = true)
 public class Person implements Serializable {
@@ -149,7 +149,7 @@ public class Person implements Serializable {
      * @hibernate.property
      */
     @Column(unique = true)
-    @PrimaryKeyJoinColumn
+    //@PrimaryKeyJoinColumn
     @PropertyDescriptor(summary = true, index = 4)
     public String getEmailAddress() {
         return emailAddress;
@@ -287,7 +287,7 @@ public class Person implements Serializable {
     public int hashCode() {
         final int PRIME = 31;
         int result = 1;
-        result = PRIME * result + ((id == null) ? 0 : id.hashCode());
+        result = PRIME * result + ((getId() == null) ? 0 : getId().hashCode());
         return result;
     }
 
@@ -300,10 +300,10 @@ public class Person implements Serializable {
         if (!(rhs instanceof Person))
             return false;
         final Person castedObject = (Person) rhs;
-        if (id == null) {
-            if (castedObject.id != null)
+        if (getId() == null) {
+            if (castedObject.getId() != null)
                 return false;
-        } else if (!id.equals(castedObject.id))
+        } else if (!getId().equals(castedObject.getId()))
             return false;
         return true;
     }
