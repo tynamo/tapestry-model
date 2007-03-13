@@ -1,21 +1,31 @@
 package org.trails.demo;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.trails.descriptor.annotation.ClassDescriptor;
 import org.trails.descriptor.annotation.PropertyDescriptor;
 
-import javax.persistence.*;
-
 /**
+ * @hibernate.class table="Coach" lazy="false"
  *
  * A Coach belongs to an organization and has a team
  *
- * @author kenneth.colassi	nhhockeyplayer@hotmail.com
+ * @author kenneth.colassi
  */
 @Entity
+@ClassDescriptor(hasCyclicRelationships = true)
 public class Coach extends Person {
-
     private static final Log log = LogFactory.getLog(Coach.class);
 
     private Team team;
@@ -40,15 +50,36 @@ public class Coach extends Person {
         setERole(ERole.USER);
     }
 
-    @ManyToOne
-    @JoinColumn(name = "team_id")
-    @PropertyDescriptor(index = 1)
+    /**
+     * Accessor for id
+     *
+     * @return Integer
+     * @hibernate.id generator-class="increment" unsaved-value="-1"
+     *               type="java.lang.Integer" unique="true" insert="false"
+     *               update="false"
+     */
+    @Override
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @PropertyDescriptor(readOnly = true, summary = true, index = 0)
+    public Integer getId() {
+        return super.getId();
+    }
+
+    /**
+     * @hibernate.property
+     */
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @PropertyDescriptor(searchable = true, index = 1)
     public Team getTeam() {
         return team;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "coach_organization_fk")
+    /**
+     * @hibernate.property
+     */
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "organization_id", insertable = false, updatable = true, nullable = true)
     public Organization getOrganization() {
         return organization;
     }
@@ -76,7 +107,7 @@ public class Coach extends Person {
     public int hashCode() {
         final int PRIME = 31;
         int result = 1;
-        result = PRIME * result + ((getId() == null) ? 0 : getId().hashCode());
+        result = PRIME * result + ((id == null) ? 0 : id.hashCode());
         return result;
     }
 
@@ -89,10 +120,10 @@ public class Coach extends Person {
         if (!(rhs instanceof Coach))
             return false;
         final Coach castedObject = (Coach) rhs;
-        if (getId() == null) {
-            if (castedObject.getId() != null)
+        if (id == null) {
+            if (castedObject.id != null)
                 return false;
-        } else if (!getId().equals(castedObject.getId()))
+        } else if (!id.equals(castedObject.id))
             return false;
         return true;
     }

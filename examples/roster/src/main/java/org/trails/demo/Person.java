@@ -1,55 +1,78 @@
 package org.trails.demo;
 
-import org.apache.commons.beanutils.BeanUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.hibernate.validator.NotNull;
-import org.trails.descriptor.annotation.ClassDescriptor;
-import org.trails.descriptor.annotation.PropertyDescriptor;
-import org.trails.util.DatePattern;
-
-import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.Transient;
+
+import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.hibernate.validator.NotNull;
+import org.trails.descriptor.BlobDescriptorExtension.ContentDisposition;
+import org.trails.descriptor.BlobDescriptorExtension.RenderType;
+import org.trails.descriptor.annotation.BlobDescriptor;
+import org.trails.descriptor.annotation.ClassDescriptor;
+import org.trails.descriptor.annotation.PropertyDescriptor;
+import org.trails.util.DatePattern;
+
+
 /**
- * @author kenneth.colassi    nhhockeyplayer@hotmail.com
+ * @hibernate.class table="Person" lazy="true"
+ *
+ * @author kenneth.colassi
  */
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 @MappedSuperclass
 @ClassDescriptor(hidden = true)
-public class Person {
-
+public class Person implements Serializable {
     private static final Log log = LogFactory.getLog(Person.class);
 
-    public enum ERole {
+    protected enum ERole {
         USER, ADMIN
     }
 
-    public enum ApplicationRole {
+    protected enum ApplicationRole {
         MANAGER, DIRECTOR, HEADCOACH, ASSISTANTCOACH, EQUIPMENTMGR, OPERATIONS, TRAINER, SALES, MARKETING, PLAYER
     }
 
-    private Integer id = null;
+    protected Integer id = null;
 
-    private String firstName;
+    protected String firstName;
 
-    private String lastName;
+    protected String lastName;
 
-    private Date dob;
+    protected Date dob;
 
-    private String emailAddress;
+    protected String emailAddress;
 
-    private String password;
+    protected String password;
 
-    private ERole eRole;
+    protected ERole eRole;
 
-    private ApplicationRole applicationRole;
+    protected ApplicationRole applicationRole;
 
-    private Long created = new Long(GregorianCalendar.getInstance()
+    protected Long created = new Long(GregorianCalendar.getInstance()
             .getTimeInMillis());
 
-    private Long accessed = new Long(GregorianCalendar.getInstance()
+    protected Long accessed = new Long(GregorianCalendar.getInstance()
             .getTimeInMillis());
 
     /**
@@ -71,37 +94,49 @@ public class Person {
      * Accessor for id
      *
      * @return Integer
+     * @hibernate.id generator-class="increment" unsaved-value="-1"
+     *               type="java.lang.Integer" unique="true" insert="true"
      */
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @PropertyDescriptor(index = 0)
+    @PropertyDescriptor(readOnly = true, summary = true, index = 0)
     public Integer getId() {
         return id;
     }
 
-/*
     private UploadableMedia photo = new UploadableMedia();
 
+    /**
+     * @hibernate.property
+     */
     @BlobDescriptor(renderType = RenderType.IMAGE, contentDisposition = ContentDisposition.ATTACHMENT)
     @PropertyDescriptor(summary = true, index = 1)
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     public UploadableMedia getPhoto() {
         return photo;
     }
-*/
 
+    /**
+     * @hibernate.property
+     */
     @Enumerated(value = EnumType.STRING)
     @NotNull(message = "is required")
     public ERole getERole() {
         return eRole;
     }
 
-    @PropertyDescriptor(index = 3)
+    /**
+     * @hibernate.property
+     */
+    @PropertyDescriptor(summary = true, index = 3)
     public String getFirstName() {
         return firstName;
     }
 
-    @PropertyDescriptor(index = 2)
+    /**
+     * @hibernate.property
+     */
+    @PropertyDescriptor(summary = true, index = 2)
     public String getLastName() {
         return lastName;
     }
@@ -110,34 +145,50 @@ public class Person {
         return dob;
     }
 
+    /**
+     * @hibernate.property
+     */
     @Column(unique = true)
-    @PropertyDescriptor(index = 4)
+    @PrimaryKeyJoinColumn
+    @PropertyDescriptor(summary = true, index = 4)
     public String getEmailAddress() {
         return emailAddress;
     }
 
+    /**
+     * @hibernate.property
+     */
     public String getPassword() {
         return password;
     }
 
+    /**
+     * @hibernate.property
+     */
     @Enumerated(value = EnumType.STRING)
     @NotNull(message = "is required")
     public ApplicationRole getApplicationRole() {
         return applicationRole;
     }
 
-    @PropertyDescriptor(hidden = true)
+    /**
+     * @hibernate.property
+     */
+    @PropertyDescriptor(hidden = true, summary = false, searchable = false)
     public Long getCreated() {
         return created;
     }
 
-    @PropertyDescriptor(hidden = true)
+    /**
+     * @hibernate.property
+     */
+    @PropertyDescriptor(hidden = true, summary = false, searchable = false)
     public Long getAccessed() {
         return accessed;
     }
 
     @Transient
-    @PropertyDescriptor(hidden = true)
+    @PropertyDescriptor(hidden = true, summary = false, searchable = false)
     public String getCreatedAsString() {
         Calendar cal = new GregorianCalendar();
         cal.setTimeInMillis(created.longValue());
@@ -145,7 +196,7 @@ public class Person {
     }
 
     @Transient
-    @PropertyDescriptor(hidden = true)
+    @PropertyDescriptor(hidden = true, summary = false, searchable = false)
     public String getAccessedAsString() {
         Calendar cal = new GregorianCalendar();
         cal.setTimeInMillis(accessed.longValue());
@@ -153,7 +204,7 @@ public class Person {
     }
 
     @Transient
-    @PropertyDescriptor(hidden = true)
+    @PropertyDescriptor(hidden = true, summary = false, searchable = false)
     public void setCreatedAsString(String value) throws Exception {
         Calendar cal = new GregorianCalendar();
         cal.setTimeInMillis(DatePattern.sdf.parse(value).getTime());
@@ -161,7 +212,7 @@ public class Person {
     }
 
     @Transient
-    @PropertyDescriptor(hidden = true)
+    @PropertyDescriptor(hidden = true, summary = false, searchable = false)
     public void setAccessedAsString(String value) throws Exception {
         Calendar cal = new GregorianCalendar();
         cal.setTimeInMillis(DatePattern.sdf.parse(value).getTime());
@@ -172,11 +223,9 @@ public class Person {
         this.id = id;
     }
 
-/*
     public void setPhoto(UploadableMedia photo) {
         this.photo = photo;
     }
-*/
 
     public void setERole(ERole role) {
         this.eRole = role;
@@ -223,6 +272,16 @@ public class Person {
     public String toString() {
         return getLastName() + ", " + getFirstName();
     }
+
+    /*
+     * public boolean equals(Object obj) { // return
+     * EqualsBuilder.reflectionEquals(this, obj); if (this == obj) return true;
+     * if (obj == null || this.getClass() != obj.getClass()) return false;
+     *
+     * final Person castedObj = (Person) obj;
+     *
+     * return this.getId().equals(castedObj.getId()); }
+     */
 
     @Override
     public int hashCode() {

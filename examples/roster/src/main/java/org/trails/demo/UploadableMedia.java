@@ -185,7 +185,7 @@ public class UploadableMedia implements ITrailsBlob {
     @BlobDescriptor(renderType = RenderType.IMAGE, contentDisposition = ContentDisposition.ATTACHMENT)
     @PropertyDescriptor(summary = false)
     @Lob
-    @Column(columnDefinition = "longblob", length = 6291456)
+    // mysql @Column(columnDefinition = "longblob", length = 6291456)
     public byte[] getBytes() {
         return bytes;
     }

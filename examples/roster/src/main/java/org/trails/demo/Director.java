@@ -1,21 +1,29 @@
 package org.trails.demo;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.OneToOne;
+
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.trails.descriptor.annotation.ClassDescriptor;
-
-import javax.persistence.*;
+import org.trails.descriptor.annotation.PropertyDescriptor;
 
 /**
+ * @hibernate.class table="Director" lazy="true"
+ *
  * A Director belongs to an organization
  *
- * @author kenneth.colassi    nhhockeyplayer@hotmail.com
+ * @author kenneth.colassi
  */
 @Entity
 @ClassDescriptor(hasCyclicRelationships = true)
 public class Director extends Person {
-
     private static final Log log = LogFactory.getLog(Director.class);
 
     private Organization organization;
@@ -39,11 +47,24 @@ public class Director extends Person {
     }
 
     /**
-     * Note: I couldn't find a better way to get a bidirectional read&write OneToOne relationship
+     * Accessor for id
      *
-     * @return Organization
+     * @return Integer
+     * @hibernate.id generator-class="increment" unsaved-value="-1"
+     *               type="java.lang.Integer" unique="true" insert="false"
+     *               update="false"
      */
+    @Override
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @PropertyDescriptor(readOnly = true, summary = true, index = 0)
+    public Integer getId() {
+        return super.getId();
+    }
 
+    /**
+     * @hibernate.property
+     */
     @OneToOne
     @JoinTable(name = "OrganizationsDirectors",
             joinColumns = @JoinColumn(name = "organization_fk"),
@@ -66,7 +87,7 @@ public class Director extends Person {
     public int hashCode() {
         final int PRIME = 31;
         int result = 1;
-        result = PRIME * result + ((getId() == null) ? 0 : getId().hashCode());
+        result = PRIME * result + ((id == null) ? 0 : id.hashCode());
         return result;
     }
 
@@ -79,10 +100,10 @@ public class Director extends Person {
         if (!(rhs instanceof Director))
             return false;
         final Director castedObject = (Director) rhs;
-        if (getId() == null) {
-            if (castedObject.getId() != null)
+        if (id == null) {
+            if (castedObject.id != null)
                 return false;
-        } else if (!getId().equals(castedObject.getId()))
+        } else if (!id.equals(castedObject.id))
             return false;
         return true;
     }

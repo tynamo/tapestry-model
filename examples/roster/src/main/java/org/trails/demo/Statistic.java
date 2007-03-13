@@ -1,292 +1,311 @@
 package org.trails.demo;
 
+import java.io.Serializable;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
+
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.trails.descriptor.annotation.PropertyDescriptor;
-import org.trails.descriptor.annotation.ClassDescriptor;
 import org.trails.util.DatePattern;
-import org.hibernate.validator.Length;
-
-import javax.persistence.*;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.Date;
-import java.text.SimpleDateFormat;
-import java.text.DateFormat;
 
 
 /**
+ * @hibernate.class table="Statistic" lazy="true"
+ * 
  * Statistics
- *
- * @author kenneth.colassi    nhhockeyplayer@hotmail.com
+ * 
+ * @author kenneth.colassi
  */
 @Entity
-@ClassDescriptor(hidden = true)
-public class Statistic {
+public class Statistic implements Serializable {
+	private static final Log log = LogFactory.getLog(Statistic.class);
 
-    private static final Log log = LogFactory.getLog(Statistic.class);
+	private Integer id = null;
 
-    private Integer id;
+	private Integer gp;
 
-    private Integer gp;
+	private Integer g;
 
-    private Integer g;
+	private Integer a;
 
-    private Integer a;
+	private Integer pts;
 
-    private Integer pts;
+	private Integer pim;
 
-    private Integer pim;
+	private Integer ppg;
 
-    private Integer ppg;
+	private Integer ppa;
 
-    private Integer ppa;
+	private Integer shg;
 
-    private Integer shg;
+	private Integer sha;
 
-    private Integer sha;
+	private Integer gwg;
 
-    private Integer gwg;
+	private Player player;
 
-    private Player player;
+	private Long created = new Long(GregorianCalendar.getInstance()
+			.getTimeInMillis());
 
-    private Long created = new Long(GregorianCalendar.getInstance()
-            .getTimeInMillis());
+	private Long accessed = new Long(GregorianCalendar.getInstance()
+			.getTimeInMillis());
 
-    private Long accessed = new Long(GregorianCalendar.getInstance()
-            .getTimeInMillis());
+	/**
+	 * CTOR
+	 */
 
-    private Date date = Calendar.getInstance().getTime();
+	public Statistic() {
+	}
 
-    private String commnents;
+	public Statistic(Statistic dto) {
+		try {
+			BeanUtils.copyProperties(this, dto);
+		} catch (Exception e) {
+			log.error(e.toString());
+			e.printStackTrace();
+		}
+	}
 
-    /**
-     * CTOR
-     */
+	/**
+	 * Accessor for id
+	 * 
+	 * @return Integer
+	 * @hibernate.id generator-class="increment" unsaved-value="-1"
+	 *               type="java.lang.Integer" unique="true" insert="true"
+	 */
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@PropertyDescriptor(readOnly = true, summary = true, index = 0)
+	public Integer getId() {
+		return id;
+	}
 
-    public Statistic() {
-    }
+	/**
+	 * @hibernate.property
+	 */
+	@PropertyDescriptor(index = 3, hidden = false, summary = true, searchable = true)
+	public Integer getA() {
+		return a;
+	}
 
-    public Statistic(Statistic dto) {
-        try {
-            BeanUtils.copyProperties(this, dto);
-        } catch (Exception e) {
-            log.error(e.toString());
-            e.printStackTrace();
-        }
-    }
+	/**
+	 * @hibernate.property
+	 */
+	@PropertyDescriptor(index = 2, hidden = false, summary = true, searchable = true)
+	public Integer getG() {
+		return g;
+	}
 
-    /**
-     * Accessor for id
-     *
-     * @return Integer
-     */
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @PropertyDescriptor(hidden = true)
-    public Integer getId() {
-        return id;
-    }
+	/**
+	 * @hibernate.property
+	 */
+	@PropertyDescriptor(index = 1, hidden = false, summary = true, searchable = true)
+	public Integer getGp() {
+		return gp;
+	}
 
-    @PropertyDescriptor(index = 3)
-    public Integer getA() {
-        return a;
-    }
+	/**
+	 * @hibernate.property
+	 */
+	@PropertyDescriptor(index = 9, hidden = false, summary = true, searchable = true)
+	public Integer getGwg() {
+		return gwg;
+	}
 
-    @PropertyDescriptor(index = 2)
-    public Integer getG() {
-        return g;
-    }
+	/**
+	 * @hibernate.property
+	 */
+	@PropertyDescriptor(hidden = false, summary = true, searchable = true)
+	public Integer getPim() {
+		return pim;
+	}
 
-    @PropertyDescriptor(index = 1)
-    public Integer getGp() {
-        return gp;
-    }
+	/**
+	 * @hibernate.property
+	 */
+	@PropertyDescriptor(index = 6, hidden = false, summary = true, searchable = true)
+	public Integer getPpa() {
+		return ppa;
+	}
 
-    @PropertyDescriptor(index = 9)
-    public Integer getGwg() {
-        return gwg;
-    }
+	/**
+	 * @hibernate.property
+	 */
+	@PropertyDescriptor(index = 5, hidden = false, summary = true, searchable = true)
+	public Integer getPpg() {
+		return ppg;
+	}
 
-    public Integer getPim() {
-        return pim;
-    }
+	/**
+	 * @hibernate.property
+	 */
+	@PropertyDescriptor(index = 4, hidden = false, summary = true, searchable = true)
+	public Integer getPts() {
+		return pts;
+	}
 
-    @PropertyDescriptor(index = 6)
-    public Integer getPpa() {
-        return ppa;
-    }
+	/**
+	 * @hibernate.property
+	 */
+	@PropertyDescriptor(index = 8, hidden = false, summary = true, searchable = true)
+	public Integer getSha() {
+		return sha;
+	}
 
-    @PropertyDescriptor(index = 5)
-    public Integer getPpg() {
-        return ppg;
-    }
+	/**
+	 * @hibernate.property
+	 */
+	@PropertyDescriptor(index = 7, hidden = false, summary = true, searchable = true)
+	public Integer getShg() {
+		return shg;
+	}
 
-    @PropertyDescriptor(index = 4)
-    public Integer getPts() {
-        return pts;
-    }
+	/**
+	 * @hibernate.property
+	 */
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "player_id", insertable = false, updatable = false, nullable = true)
+	public Player getPlayer() {
+		return player;
+	}
 
-    @PropertyDescriptor(index = 8)
-    public Integer getSha() {
-        return sha;
-    }
+	public void setA(Integer a) {
+		this.a = a;
+	}
 
-    @PropertyDescriptor(index = 7)
-    public Integer getShg() {
-        return shg;
-    }
+	public void setG(Integer g) {
+		this.g = g;
+	}
 
-    @ManyToOne
-    @JoinColumn(name = "player_id", insertable = false, updatable = false, nullable = true)
-    @PropertyDescriptor(readOnly = true, index = 0)
-    public Player getPlayer() {
-        return player;
-    }
+	public void setGp(Integer gp) {
+		this.gp = gp;
+	}
 
-    public void setA(Integer a) {
-        this.a = a;
-    }
+	public void setGwg(Integer gwg) {
+		this.gwg = gwg;
+	}
 
-    public void setG(Integer g) {
-        this.g = g;
-    }
+	public void setPim(Integer pim) {
+		this.pim = pim;
+	}
 
-    public void setGp(Integer gp) {
-        this.gp = gp;
-    }
+	public void setPpa(Integer ppa) {
+		this.ppa = ppa;
+	}
 
-    public void setGwg(Integer gwg) {
-        this.gwg = gwg;
-    }
+	public void setPpg(Integer ppg) {
+		this.ppg = ppg;
+	}
 
-    public void setPim(Integer pim) {
-        this.pim = pim;
-    }
+	public void setPts(Integer pts) {
+		this.pts = pts;
+	}
 
-    public void setPpa(Integer ppa) {
-        this.ppa = ppa;
-    }
+	public void setSha(Integer sha) {
+		this.sha = sha;
+	}
 
-    public void setPpg(Integer ppg) {
-        this.ppg = ppg;
-    }
+	public void setPlayer(Player player) {
+		this.player = player;
+	}
 
-    public void setPts(Integer pts) {
-        this.pts = pts;
-    }
+	public void setShg(Integer shg) {
+		this.shg = shg;
+	}
 
-    public void setSha(Integer sha) {
-        this.sha = sha;
-    }
+	/**
+	 * @hibernate.property
+	 */
+	@PropertyDescriptor(hidden = true, summary = false, searchable = false)
+	public Long getCreated() {
+		return created;
+	}
 
-    public void setPlayer(Player player) {
-        this.player = player;
-    }
+	/**
+	 * @hibernate.property
+	 */
+	@PropertyDescriptor(hidden = true, summary = false, searchable = false)
+	public Long getAccessed() {
+		return accessed;
+	}
 
-    public void setShg(Integer shg) {
-        this.shg = shg;
-    }
+	@Transient
+	@PropertyDescriptor(hidden = true, summary = false, searchable = false)
+	public String getCreatedAsString() {
+		Calendar cal = new GregorianCalendar();
+		cal.setTimeInMillis(created.longValue());
+		return DatePattern.sdf.format(cal.getTime());
+	}
 
-    public Date getDate() {
-        return date;
-    }
+	@Transient
+	@PropertyDescriptor(hidden = true, summary = false, searchable = false)
+	public String getAccessedAsString() {
+		Calendar cal = new GregorianCalendar();
+		cal.setTimeInMillis(accessed.longValue());
+		return DatePattern.sdf.format(cal.getTime());
+	}
 
-    public void setDate(Date date) {
-        this.date = date;
-    }
+	@Transient
+	@PropertyDescriptor(hidden = true, summary = false, searchable = false)
+	public void setCreatedAsString(String value) throws Exception {
+		Calendar cal = new GregorianCalendar();
+		cal.setTimeInMillis(DatePattern.sdf.parse(value).getTime());
+		this.created = new Long(cal.getTimeInMillis());
+	}
 
-    @Length(max = 250)
-    public String getCommnents() {
-        return commnents;
-    }
+	@Transient
+	@PropertyDescriptor(hidden = true, summary = false, searchable = false)
+	public void setAccessedAsString(String value) throws Exception {
+		Calendar cal = new GregorianCalendar();
+		cal.setTimeInMillis(DatePattern.sdf.parse(value).getTime());
+		this.accessed = new Long(cal.getTimeInMillis());
+	}
 
-    public void setCommnents(String commnents) {
-        this.commnents = commnents;
-    }
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
-    @PropertyDescriptor(hidden = true)
-    public Long getCreated() {
-        return created;
-    }
+	public void setAccessed(Long accessed) {
+		this.accessed = accessed;
+	}
 
-    @PropertyDescriptor(hidden = true)
-    public Long getAccessed() {
-        return accessed;
-    }
+	public void setCreated(Long created) {
+		this.created = created;
+	}
 
-    @Transient
-    @PropertyDescriptor(hidden = true)
-    public String getCreatedAsString() {
-        Calendar cal = new GregorianCalendar();
-        cal.setTimeInMillis(created.longValue());
-        return DatePattern.sdf.format(cal.getTime());
-    }
+	@Override
+	public int hashCode() {
+		final int PRIME = 31;
+		int result = 1;
+		result = PRIME * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
 
-    @Transient
-    @PropertyDescriptor(hidden = true)
-    public String getAccessedAsString() {
-        Calendar cal = new GregorianCalendar();
-        cal.setTimeInMillis(accessed.longValue());
-        return DatePattern.sdf.format(cal.getTime());
-    }
-
-    @Transient
-    @PropertyDescriptor(hidden = true)
-    public void setCreatedAsString(String value) throws Exception {
-        Calendar cal = new GregorianCalendar();
-        cal.setTimeInMillis(DatePattern.sdf.parse(value).getTime());
-        this.created = new Long(cal.getTimeInMillis());
-    }
-
-    @Transient
-    @PropertyDescriptor(hidden = true)
-    public void setAccessedAsString(String value) throws Exception {
-        Calendar cal = new GregorianCalendar();
-        cal.setTimeInMillis(DatePattern.sdf.parse(value).getTime());
-        this.accessed = new Long(cal.getTimeInMillis());
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public void setAccessed(Long accessed) {
-        this.accessed = accessed;
-    }
-
-    public void setCreated(Long created) {
-        this.created = created;
-    }
-
-    public String toString() {
-        DateFormat formatter = SimpleDateFormat.getDateInstance();
-        return formatter.format(getDate());
-    }
-
-    @Override
-    public int hashCode() {
-        final int PRIME = 31;
-        int result = 1;
-        result = PRIME * result + ((id == null) ? 0 : id.hashCode());
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object rhs) {
-        if (this == rhs)
-            return true;
-        if (rhs == null)
-            return false;
-        if (!(rhs instanceof Statistic))
-            return false;
-        final Statistic castedObject = (Statistic) rhs;
-        if (id == null) {
-            if (castedObject.id != null)
-                return false;
-        } else if (!id.equals(castedObject.id))
-            return false;
-        return true;
+	@Override
+	public boolean equals(Object rhs) {
+		if (this == rhs)
+			return true;
+		if (rhs == null)
+			return false;
+		if (!(rhs instanceof Statistic))
+			return false;
+		final Statistic castedObject = (Statistic) rhs;
+		if (id == null) {
+			if (castedObject.id != null)
+				return false;
+		} else if (!id.equals(castedObject.id))
+			return false;
+		return true;
 	}
 }
