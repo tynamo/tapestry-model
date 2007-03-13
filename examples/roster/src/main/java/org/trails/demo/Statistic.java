@@ -174,8 +174,9 @@ public class Statistic implements Serializable {
     /**
      * @hibernate.property
      */
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "player_id", insertable = false, updatable = false, nullable = true)
+    @PropertyDescriptor(readOnly = true, index = 0)
     public Player getPlayer() {
         return player;
     }

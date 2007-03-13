@@ -4,13 +4,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -86,6 +84,7 @@ public class Player extends Person {
      * @hibernate.property
      */
     @Enumerated(value = EnumType.STRING)
+    @Column(name = "pos")
     public EPosition getPosition() {
         return position;
     }
@@ -101,8 +100,8 @@ public class Player extends Person {
     /**
      * @hibernate.property
      */
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "team_id", insertable = false, updatable = true, nullable = true)
+    @ManyToOne
+    @JoinColumn(name = "player_team_fk")
     public Team getTeam() {
         return team;
     }
@@ -122,9 +121,9 @@ public class Player extends Person {
     /**
      * @hibernate.property
      */
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "player_id", insertable = true, updatable = true, nullable = true)
-    @Collection(child = true)
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "player_id")
+    @Collection(child = true, inverse = "player")
     @PropertyDescriptor(searchable = true, readOnly = false)
     public Set<Statistic> getStats() {
         return stats;

@@ -77,8 +77,8 @@ public class Year implements Serializable {
     /**
      * @hibernate.property
      */
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "organization_id", insertable = false, updatable = true, nullable = true)
+    @ManyToOne
+    @JoinColumn(name = "year_organization_fk")
     public Organization getOrganization() {
         return organization;
     }
