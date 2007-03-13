@@ -6,7 +6,6 @@ import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,7 +14,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
+import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
@@ -25,8 +24,6 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.validator.NotNull;
-import org.trails.component.blob.ITrailsBlob;
-import org.trails.component.blob.TrailsBlobImpl;
 import org.trails.descriptor.BlobDescriptorExtension.ContentDisposition;
 import org.trails.descriptor.BlobDescriptorExtension.RenderType;
 import org.trails.descriptor.annotation.BlobDescriptor;
@@ -117,8 +114,12 @@ public class Organization implements Serializable {
     /**
      * @hibernate.property
      */
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @PropertyDescriptor(readOnly = false, searchable = true, index = 2)
+    @OneToOne
+    @JoinTable(name = "OrganizationsDirectors",
+        joinColumns = @JoinColumn(name = "director_fk"),
+        inverseJoinColumns = {@JoinColumn(name = "organization_fk")}
+    )
+    @PropertyDescriptor(index = 2)
     public Director getDirector() {
         return director;
     }
@@ -128,9 +129,11 @@ public class Organization implements Serializable {
      */
     @OneToMany
     @JoinColumn(name = "organization_id", insertable = true, updatable = true, nullable = true)
-    @Collection(child = true)
+    @Collection(child = true, inverse = "organization")
     @PropertyDescriptor(readOnly = false, searchable = true)
     @OrderBy("lastName")
+    //@JoinColumn(name = "coach_organization_fk")
+    //@Collection(child = false, inverse = "organization")
     public Set<Coach> getCoaches() {
         return coaches;
     }
@@ -140,9 +143,11 @@ public class Organization implements Serializable {
      */
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "organization_id", insertable = true, updatable = true, nullable = true)
-    @Collection(child = true)
+    @Collection(child = true, inverse = "organization")
     @PropertyDescriptor(readOnly = false)
     @OrderBy("division")
+    //@JoinColumn(name = "team_organization_fk")
+    //@Collection(child = false, inverse = "organization")
     public Set<Team> getTeams() {
         return teams;
     }
