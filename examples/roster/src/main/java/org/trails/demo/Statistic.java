@@ -16,6 +16,7 @@ import javax.persistence.Transient;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.trails.descriptor.annotation.ClassDescriptor;
 import org.trails.descriptor.annotation.PropertyDescriptor;
 import org.trails.util.DatePattern;
 
@@ -28,6 +29,7 @@ import org.trails.util.DatePattern;
  * @author kenneth.colassi        nhhockeyplayer@hotmail.com
  */
 @Entity
+@ClassDescriptor(hasCyclicRelationships=true, hidden = true)
 public class Statistic implements Serializable {
     private static final Log log = LogFactory.getLog(Statistic.class);
 

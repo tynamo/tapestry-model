@@ -26,7 +26,7 @@ import org.trails.util.DatePattern;
  * @author kenneth.colassi
  */
 @Entity
-@ClassDescriptor(hasCyclicRelationships = true)
+@ClassDescriptor(hasCyclicRelationships = true, hidden = true)
 public class Year implements Serializable {
     private static final Log log = LogFactory.getLog(Year.class);
 

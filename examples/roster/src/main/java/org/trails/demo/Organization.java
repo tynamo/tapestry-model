@@ -98,10 +98,6 @@ public class Organization implements Serializable {
         return id;
     }
 
-
-    /**
-     * @hibernate.property
-     */
     @OneToMany
     @JoinColumn(name = "organization_id", insertable = true, updatable = true, nullable = true)
     @Collection(child = true, inverse = "organization")
@@ -111,9 +107,6 @@ public class Organization implements Serializable {
         return years;
     }
 
-    /**
-     * @hibernate.property
-     */
     @OneToOne
     @JoinTable(name = "OrganizationsDirectors",
         joinColumns = @JoinColumn(name = "director_fk"),
@@ -124,9 +117,6 @@ public class Organization implements Serializable {
         return director;
     }
 
-    /**
-     * @hibernate.property
-     */
     @OneToMany
     @JoinColumn(name = "coach_organization_fk", insertable = true, updatable = true, nullable = true)
     @Collection(child = true, inverse = "organization")
@@ -136,9 +126,6 @@ public class Organization implements Serializable {
         return coaches;
     }
 
-    /**
-     * @hibernate.property
-     */
     @OneToMany
     @JoinColumn(name = "team_organization_fk", insertable = true, updatable = true, nullable = true)
     @Collection(child = true, inverse = "organization")
@@ -148,32 +135,20 @@ public class Organization implements Serializable {
         return teams;
     }
 
-    /**
-     * @hibernate.property
-     */
     @Column(unique = true)
     @NotNull(message = "is required")
     public String getName() {
         return name;
     }
 
-    /**
-     * @hibernate.property
-     */
     public String getCity() {
         return city;
     }
 
-    /**
-     * @hibernate.property
-     */
     public String getState() {
         return state;
     }
 
-    /**
-     * @hibernate.property
-     */
     private UploadableMedia photo = new UploadableMedia();
     @BlobDescriptor(renderType = RenderType.IMAGE, contentDisposition = ContentDisposition.ATTACHMENT)
     @PropertyDescriptor(summary = false, index = 3)
@@ -182,9 +157,6 @@ public class Organization implements Serializable {
         return photo;
     }
 
-    /**
-     * @hibernate.property
-     */
     private UploadableMedia header = new UploadableMedia();
     @BlobDescriptor(renderType = RenderType.IMAGE, contentDisposition = ContentDisposition.ATTACHMENT)
     @PropertyDescriptor(summary = false, index = 4)
@@ -193,9 +165,6 @@ public class Organization implements Serializable {
         return header;
     }
 
-    /**
-     * @hibernate.property
-     */
     private UploadableMedia logo = new UploadableMedia();
     @BlobDescriptor(renderType = RenderType.IMAGE, contentDisposition = ContentDisposition.ATTACHMENT)
     @PropertyDescriptor(summary = true, index = 5)
@@ -204,17 +173,11 @@ public class Organization implements Serializable {
         return logo;
     }
 
-    /**
-     * @hibernate.property
-     */
     @PropertyDescriptor(hidden = true, summary = false, searchable = false)
     public Long getCreated() {
         return created;
     }
 
-    /**
-     * @hibernate.property
-     */
     @PropertyDescriptor(hidden = true, summary = false, searchable = false)
     public Long getAccessed() {
         return accessed;

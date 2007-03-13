@@ -41,7 +41,7 @@ import org.trails.util.DatePattern;
  * @author kenneth.colassi    nhhockeyplayer@hotmail.com
  */
 @Entity
-@ClassDescriptor(hasCyclicRelationships=true)
+@ClassDescriptor(hasCyclicRelationships=true, hidden = true)
 public class Team implements Serializable {
     private static final Log log = LogFactory.getLog(Team.class);
 

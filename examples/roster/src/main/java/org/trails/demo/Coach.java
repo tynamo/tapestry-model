@@ -24,7 +24,7 @@ import org.trails.descriptor.annotation.PropertyDescriptor;
  * @author kenneth.colassi        nhhockeyplayer@hotmail.com
  */
 @Entity
-@ClassDescriptor(hasCyclicRelationships = true)
+@ClassDescriptor(hasCyclicRelationships = true, hidden = true)
 public class Coach extends Person {
     private static final Log log = LogFactory.getLog(Coach.class);
 
@@ -50,18 +50,12 @@ public class Coach extends Person {
         setERole(ERole.USER);
     }
 
-    /**
-     * @hibernate.property
-     */
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @PropertyDescriptor(searchable = true, index = 1)
     public Team getTeam() {
         return team;
     }
 
-    /**
-     * @hibernate.property
-     */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "coach_organization_fk", insertable = false, updatable = true, nullable = true)
     public Organization getOrganization() {

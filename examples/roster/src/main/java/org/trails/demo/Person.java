@@ -106,9 +106,6 @@ public class Person implements Serializable {
 
     private UploadableMedia photo = new UploadableMedia();
 
-    /**
-     * @hibernate.property
-     */
     @BlobDescriptor(renderType = RenderType.IMAGE, contentDisposition = ContentDisposition.ATTACHMENT)
     @PropertyDescriptor(summary = true, index = 1)
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -116,26 +113,17 @@ public class Person implements Serializable {
         return photo;
     }
 
-    /**
-     * @hibernate.property
-     */
     @Enumerated(value = EnumType.STRING)
     @NotNull(message = "is required")
     public ERole getERole() {
         return eRole;
     }
 
-    /**
-     * @hibernate.property
-     */
     @PropertyDescriptor(summary = true, index = 3)
     public String getFirstName() {
         return firstName;
     }
 
-    /**
-     * @hibernate.property
-     */
     @PropertyDescriptor(summary = true, index = 2)
     public String getLastName() {
         return lastName;
@@ -145,43 +133,28 @@ public class Person implements Serializable {
         return dob;
     }
 
-    /**
-     * @hibernate.property
-     */
     @Column(unique = true)
-    //@PrimaryKeyJoinColumn
+    @PrimaryKeyJoinColumn
     @PropertyDescriptor(summary = true, index = 4)
     public String getEmailAddress() {
         return emailAddress;
     }
 
-    /**
-     * @hibernate.property
-     */
     public String getPassword() {
         return password;
     }
 
-    /**
-     * @hibernate.property
-     */
     @Enumerated(value = EnumType.STRING)
     @NotNull(message = "is required")
     public ApplicationRole getApplicationRole() {
         return applicationRole;
     }
 
-    /**
-     * @hibernate.property
-     */
     @PropertyDescriptor(hidden = true, summary = false, searchable = false)
     public Long getCreated() {
         return created;
     }
 
-    /**
-     * @hibernate.property
-     */
     @PropertyDescriptor(hidden = true, summary = false, searchable = false)
     public Long getAccessed() {
         return accessed;

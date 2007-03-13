@@ -29,11 +29,9 @@ import org.trails.descriptor.annotation.PropertyDescriptor;
  * @author kenneth.colassi        nhhockeyplayer@hotmail.com
  */
 @Entity
-@ClassDescriptor(hasCyclicRelationships=true)
+@ClassDescriptor(hasCyclicRelationships=true, hidden = true)
 public class Player extends Person {
     private static final Log log = LogFactory.getLog(Player.class);
-
-    private Integer id = null;
 
     protected enum EPosition {
         GOALIE, DEFENSE, LEFTWING, RIGHTWING, CENTER, ALTERNATE, SPARE, BACKUP, WALKON
