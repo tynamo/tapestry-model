@@ -35,8 +35,6 @@ import org.trails.validation.ValidateUniqueness;
 
 
 /**
- * @hibernate.class table="Organization" lazy="true"
- *
  * Organizations have one Director, and Years, Coaches, Teams
  *
  * @author kenneth.colassi        nhhockeyplayer@hotmail.com

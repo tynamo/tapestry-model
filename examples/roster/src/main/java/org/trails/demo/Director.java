@@ -1,9 +1,6 @@
 package org.trails.demo;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.OneToOne;
@@ -12,11 +9,8 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.trails.descriptor.annotation.ClassDescriptor;
-import org.trails.descriptor.annotation.PropertyDescriptor;
 
 /**
- * @hibernate.class table="Director" lazy="true"
- *
  * A Director belongs to an organization
  *
  * @author kenneth.colassi        nhhockeyplayer@hotmail.com

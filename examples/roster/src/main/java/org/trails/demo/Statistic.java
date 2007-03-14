@@ -5,7 +5,6 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -20,10 +19,7 @@ import org.trails.descriptor.annotation.ClassDescriptor;
 import org.trails.descriptor.annotation.PropertyDescriptor;
 import org.trails.util.DatePattern;
 
-
 /**
- * @hibernate.class table="Statistic" lazy="true"
- *
  * Statistics
  *
  * @author kenneth.colassi        nhhockeyplayer@hotmail.com
@@ -93,89 +89,56 @@ public class Statistic implements Serializable {
         return id;
     }
 
-    /**
-     * @hibernate.property
-     */
     @PropertyDescriptor(index = 3, hidden = false, summary = true, searchable = true)
     public Integer getA() {
         return a;
     }
 
-    /**
-     * @hibernate.property
-     */
     @PropertyDescriptor(index = 2, hidden = false, summary = true, searchable = true)
     public Integer getG() {
         return g;
     }
 
-    /**
-     * @hibernate.property
-     */
     @PropertyDescriptor(index = 1, hidden = false, summary = true, searchable = true)
     public Integer getGp() {
         return gp;
     }
 
-    /**
-     * @hibernate.property
-     */
     @PropertyDescriptor(index = 9, hidden = false, summary = true, searchable = true)
     public Integer getGwg() {
         return gwg;
     }
 
-    /**
-     * @hibernate.property
-     */
     @PropertyDescriptor(hidden = false, summary = true, searchable = true)
     public Integer getPim() {
         return pim;
     }
 
-    /**
-     * @hibernate.property
-     */
     @PropertyDescriptor(index = 6, hidden = false, summary = true, searchable = true)
     public Integer getPpa() {
         return ppa;
     }
 
-    /**
-     * @hibernate.property
-     */
     @PropertyDescriptor(index = 5, hidden = false, summary = true, searchable = true)
     public Integer getPpg() {
         return ppg;
     }
 
-    /**
-     * @hibernate.property
-     */
     @PropertyDescriptor(index = 4, hidden = false, summary = true, searchable = true)
     public Integer getPts() {
         return pts;
     }
 
-    /**
-     * @hibernate.property
-     */
     @PropertyDescriptor(index = 8, hidden = false, summary = true, searchable = true)
     public Integer getSha() {
         return sha;
     }
 
-    /**
-     * @hibernate.property
-     */
     @PropertyDescriptor(index = 7, hidden = false, summary = true, searchable = true)
     public Integer getShg() {
         return shg;
     }
 
-    /**
-     * @hibernate.property
-     */
     @ManyToOne
     @JoinColumn(name = "statistic_player_fk", insertable = false, updatable = false, nullable = true)
     @PropertyDescriptor(readOnly = true, index = 0)
@@ -227,17 +190,11 @@ public class Statistic implements Serializable {
         this.shg = shg;
     }
 
-    /**
-     * @hibernate.property
-     */
     @PropertyDescriptor(hidden = true, summary = false, searchable = false)
     public Long getCreated() {
         return created;
     }
 
-    /**
-     * @hibernate.property
-     */
     @PropertyDescriptor(hidden = true, summary = false, searchable = false)
     public Long getAccessed() {
         return accessed;

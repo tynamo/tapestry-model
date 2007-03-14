@@ -7,15 +7,12 @@ import java.util.GregorianCalendar;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
@@ -32,14 +29,11 @@ import org.trails.descriptor.annotation.ClassDescriptor;
 import org.trails.descriptor.annotation.PropertyDescriptor;
 import org.trails.util.DatePattern;
 
-
 /**
- * @hibernate.class table="Person" lazy="true"
+ * A Person has a photo, eRole and application role
  *
  * @author kenneth.colassi        nhhockeyplayer@hotmail.com
  */
-//@Entity
-//@Inheritance(strategy = InheritanceType.JOINED)
 @MappedSuperclass
 @ClassDescriptor(hidden = true)
 public class Person implements Serializable {

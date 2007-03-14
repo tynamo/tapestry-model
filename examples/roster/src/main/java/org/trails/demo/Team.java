@@ -34,9 +34,7 @@ import org.trails.util.DatePattern;
 
 
 /**
- * @hibernate.class table="Team" lazy="true"
- *
- * A Team has players and coaches
+ * A Team has players, coaches, clips and stats
  *
  * @author kenneth.colassi    nhhockeyplayer@hotmail.com
  */
@@ -91,6 +89,8 @@ public class Team implements Serializable {
 
     private ETier tier;
 
+    private Set<UploadableMedia> clips = new HashSet<UploadableMedia>();
+
     private Set<Player> players = new HashSet<Player>();
 
     private Year year;
@@ -130,18 +130,12 @@ public class Team implements Serializable {
         return id;
     }
 
-    /**
-     * @hibernate.property
-     */
     @ManyToOne
     @JoinColumn(name = "team_organization_fk")
     public Organization getOrganization() {
         return organization;
     }
 
-    /**
-     * @hibernate.property
-     */
     @OneToMany
     @JoinColumn(name = "coach_team_fk", insertable = true, updatable = true, nullable = true)
     @Collection(child = false, inverse = "team")
@@ -151,57 +145,45 @@ public class Team implements Serializable {
         return coaches;
     }
 
-    /**
-     * @hibernate.property
-     */
     @Enumerated(value = EnumType.STRING)
     public EGender getGender() {
         return gender;
     }
 
-    /**
-     * @hibernate.property
-     */
     @Enumerated(value = EnumType.STRING)
     public EDivision getDivision() {
         return division;
     }
 
-    /**
-     * @hibernate.property
-     */
     @Enumerated(value = EnumType.STRING)
     public ELevel getLevel() {
         return level;
     }
 
-    /**
-     * @hibernate.property
-     */
     @Enumerated(value = EnumType.STRING)
     public EAge getAge() {
         return age;
     }
 
-    /**
-     * @hibernate.property
-     */
     @Enumerated(value = EnumType.STRING)
     public EGroupClassification getGroupClassification() {
         return groupClassification;
     }
 
-    /**
-     * @hibernate.property
-     */
     @Enumerated(value = EnumType.STRING)
     public ETier getTier() {
         return tier;
     }
 
-    /**
-     * @hibernate.property
-     */
+    @OneToMany
+    @JoinColumn(name = "clips_team_fk", insertable = true, updatable = true, nullable = true)
+    @Collection(child = true, inverse = "team")
+    @PropertyDescriptor(searchable = false, readOnly = false)
+    @OrderBy("name")
+    public Set<UploadableMedia> getClips() {
+        return clips;
+    }
+
     @OneToMany
     @JoinColumn(name = "player_team_fk")
     @Collection(child = false, inverse = "team")
@@ -213,9 +195,6 @@ public class Team implements Serializable {
 
     private UploadableMedia photo = new UploadableMedia();
 
-    /**
-     * @hibernate.property
-     */
     @BlobDescriptor(renderType = RenderType.IMAGE, contentDisposition = ContentDisposition.ATTACHMENT)
     @PropertyDescriptor(summary = true, index = 2)
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -223,9 +202,6 @@ public class Team implements Serializable {
         return photo;
     }
 
-    /**
-     * @hibernate.property
-     */
     @ManyToOne
     @JoinColumn(name = "team_year_fk")
     @PropertyDescriptor(index = 1)
@@ -233,17 +209,11 @@ public class Team implements Serializable {
         return year;
     }
 
-    /**
-     * @hibernate.property
-     */
     @PropertyDescriptor(hidden = true, summary = false, searchable = false)
     public Long getCreated() {
         return created;
     }
 
-    /**
-     * @hibernate.property
-     */
     @PropertyDescriptor(hidden = true, summary = false, searchable = false)
     public Long getAccessed() {
         return accessed;
@@ -299,6 +269,10 @@ public class Team implements Serializable {
 
     public void setTier(ETier tier) {
         this.tier = tier;
+    }
+
+    public void setClips(Set<UploadableMedia> clips) {
+        this.clips = clips;
     }
 
     public void setPlayers(Set<Player> players) {

@@ -25,13 +25,15 @@
     <component-type type="AssociationSearchField" specification-path="search/AssociationSearchField.jwc"/>
     <component-type type="StringSearchField" specification-path="search/StringSearchField.jwc"/>
 
+    <!-- disabled for 1.0 release pending review
     <component-type type="BlobComponent" specification-path="blob/BlobComponent.jwc"/>
     <component-type type="TrailsUpload" specification-path="blob/TrailsUpload.jwc"/>
     <component-type type="TrailsDownload" specification-path="blob/TrailsDownload.jwc"/>
-
     <component-type type="MimedImage" specification-path="blob/image/MimedImage.jwc"/>
+    -->
 
     <component-type type="SearchForm" specification-path="search/SearchForm.jwc"/>
+
     <page name="Editors" specification-path="/org/trails/page/Editors.page" />
     <page name="SearchBlocks" specification-path="/org/trails/page/SearchBlocks.page" />
 </library-specification>

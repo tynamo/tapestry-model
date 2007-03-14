@@ -3,9 +3,6 @@ package org.trails.demo;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
@@ -17,8 +14,6 @@ import org.trails.descriptor.annotation.ClassDescriptor;
 import org.trails.descriptor.annotation.PropertyDescriptor;
 
 /**
- * @hibernate.class table="Coach" lazy="false"
- *
  * A Coach belongs to an organization and has a team
  *
  * @author kenneth.colassi        nhhockeyplayer@hotmail.com

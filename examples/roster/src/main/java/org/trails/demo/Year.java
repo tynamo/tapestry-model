@@ -5,7 +5,6 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -23,7 +22,7 @@ import org.trails.util.DatePattern;
 /**
  * @hibernate.class table="Year" lazy="true"
  *
- * @author kenneth.colassi
+ * @author kenneth.colassi        nhhockeyplayer@hotmail.com
  */
 @Entity
 @ClassDescriptor(hasCyclicRelationships = true, hidden = true)
@@ -74,42 +73,27 @@ public class Year implements Serializable {
         return id;
     }
 
-    /**
-     * @hibernate.property
-     */
     @ManyToOne
     @JoinColumn(name = "year_organization_fk")
     public Organization getOrganization() {
         return organization;
     }
 
-    /**
-     * @hibernate.property
-     */
     @PropertyDescriptor(index = 1)
     public Integer getYearStart() {
         return yearStart;
     }
 
-    /**
-     * @hibernate.property
-     */
     @PropertyDescriptor(index = 2)
     public Integer getYearEnd() {
         return yearEnd;
     }
 
-    /**
-     * @hibernate.property
-     */
     @PropertyDescriptor(hidden = true, summary = false, searchable = false)
     public Long getCreated() {
         return created;
     }
 
-    /**
-     * @hibernate.property
-     */
     @PropertyDescriptor(hidden = true, summary = false, searchable = false)
     public Long getAccessed() {
         return accessed;

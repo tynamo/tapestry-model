@@ -3,12 +3,9 @@ package org.trails.demo;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -22,14 +19,12 @@ import org.trails.descriptor.annotation.Collection;
 import org.trails.descriptor.annotation.PropertyDescriptor;
 
 /**
- * @hibernate.class table="Player" lazy="true"
- *
- * A player has a photo and team
+ * A player has a photo, team, clips and stats
  *
  * @author kenneth.colassi        nhhockeyplayer@hotmail.com
  */
 @Entity
-@ClassDescriptor(hasCyclicRelationships=true, hidden = true)
+@ClassDescriptor(hasCyclicRelationships=true)
 public class Player extends Person {
     private static final Log log = LogFactory.getLog(Player.class);
 
@@ -70,43 +65,27 @@ public class Player extends Person {
         }
     }
 
-    /**
-     * @hibernate.property
-     */
     @PropertyDescriptor(summary = true, index = 1)
     public Integer getPlayerNumber() {
         return playerNumber;
     }
 
-    /**
-     * @hibernate.property
-     */
     @Enumerated(value = EnumType.STRING)
-    @Column(name = "pos")
     public EPosition getPosition() {
         return position;
     }
 
-    /**
-     * @hibernate.property
-     */
     @Enumerated(value = EnumType.STRING)
     public EDexterity getDexterity() {
         return dexterity;
     }
 
-    /**
-     * @hibernate.property
-     */
     @ManyToOne
     @JoinColumn(name = "player_team_fk")
     public Team getTeam() {
         return team;
     }
 
-    /**
-     * @hibernate.property
-     */
     @OneToMany
     @JoinColumn(name = "clips_player_fk", insertable = true, updatable = true, nullable = true)
     @Collection(child = true, inverse = "player")
@@ -116,9 +95,6 @@ public class Player extends Person {
         return clips;
     }
 
-    /**
-     * @hibernate.property
-     */
     @OneToMany
     @JoinColumn(name = "stats_player_fk")
     @Collection(child = true, inverse = "player")

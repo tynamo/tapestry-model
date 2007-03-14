@@ -2,10 +2,7 @@ package org.trails.demo;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.HashSet;
-import java.util.Set;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -13,7 +10,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
-import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.apache.commons.beanutils.BeanUtils;
@@ -115,25 +111,16 @@ public class UploadableMedia implements ITrailsBlob {
         return id;
     }
 
-    /**
-     * @hibernate.property
-     */
     @PropertyDescriptor(hidden = false, summary = true, searchable = true)
     public String getName() {
         return name;
     }
 
-    /**
-     * @hibernate.property
-     */
     @PropertyDescriptor(hidden = false, summary = true, searchable = true)
     public String getDescription() {
         return description;
     }
 
-    /**
-     * @hibernate.property
-     */
     @Enumerated(value = EnumType.STRING)
     @PropertyDescriptor(hidden = false, summary = true, searchable = true)
     public EMedia getMediaType() {
@@ -145,33 +132,21 @@ public class UploadableMedia implements ITrailsBlob {
         return fileName;
     }
 
-    /**
-     * @hibernate.property
-     */
     @PropertyDescriptor(hidden = true, readOnly = true)
     public String getFilePath() {
         return filePath;
     }
 
-    /**
-     * @hibernate.property
-     */
     @PropertyDescriptor(hidden = true, readOnly = true)
     public String getFileExtension() {
         return fileExtension;
     }
 
-    /**
-     * @hibernate.property
-     */
     @PropertyDescriptor(hidden = true, readOnly = true)
     public Long getNumBytes() {
         return numBytes;
     }
 
-    /**
-     * @hibernate.property
-     */
     @PropertyDescriptor(readOnly = true)
     public String getContentType() {
         return contentType;
@@ -179,9 +154,6 @@ public class UploadableMedia implements ITrailsBlob {
 
     private byte[] bytes = new byte[0];
 
-    /**
-     * @hibernate.property
-     */
     @BlobDescriptor(renderType = RenderType.IMAGE, contentDisposition = ContentDisposition.ATTACHMENT)
     @PropertyDescriptor(summary = false)
     @Lob
@@ -190,17 +162,11 @@ public class UploadableMedia implements ITrailsBlob {
         return bytes;
     }
 
-    /**
-     * @hibernate.property
-     */
     @PropertyDescriptor(hidden = true, summary = false, searchable = false)
     public Long getCreated() {
         return created;
     }
 
-    /**
-     * @hibernate.property
-     */
     @PropertyDescriptor(hidden = true, summary = false, searchable = false)
     public Long getAccessed() {
         return accessed;
