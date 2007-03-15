@@ -7,6 +7,7 @@ import java.util.GregorianCalendar;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
@@ -40,11 +41,11 @@ public class Person implements Serializable {
     private static final Log log = LogFactory.getLog(Person.class);
 
     protected enum ERole {
-        USER, ADMIN
+        USER, ADMIN, SYSTEMADMIN
     }
 
     protected enum ApplicationRole {
-        MANAGER, DIRECTOR, HEADCOACH, ASSISTANTCOACH, EQUIPMENTMGR, OPERATIONS, TRAINER, SALES, MARKETING, PLAYER
+        MANAGER, DIRECTOR, SALES, MARKETING
     }
 
     protected Integer id = null;
@@ -52,6 +53,8 @@ public class Person implements Serializable {
     protected String firstName;
 
     protected String lastName;
+
+    private Demographics demographics = new Demographics();
 
     protected Date dob;
 
@@ -109,6 +112,7 @@ public class Person implements Serializable {
 
     @Enumerated(value = EnumType.STRING)
     @NotNull(message = "is required")
+    @PropertyDescriptor(summary = true, index = 2)
     public ERole getERole() {
         return eRole;
     }
@@ -118,28 +122,36 @@ public class Person implements Serializable {
         return firstName;
     }
 
-    @PropertyDescriptor(summary = true, index = 2)
+    @PropertyDescriptor(summary = true, index = 4)
     public String getLastName() {
         return lastName;
     }
 
+    @PropertyDescriptor(summary = true, index = 5)
     public Date getDob() {
         return dob;
     }
 
+    @Embedded
+    public Demographics getDemographics() {
+        return demographics;
+    }
+
     @Column(unique = true)
     @PrimaryKeyJoinColumn
-    @PropertyDescriptor(summary = true, index = 4)
+    @PropertyDescriptor(summary = true, index = 7)
     public String getEmailAddress() {
         return emailAddress;
     }
 
+    @PropertyDescriptor(summary = true, index = 8)
     public String getPassword() {
         return password;
     }
 
     @Enumerated(value = EnumType.STRING)
     @NotNull(message = "is required")
+    @PropertyDescriptor(summary = true, index = 9)
     public ApplicationRole getApplicationRole() {
         return applicationRole;
     }
@@ -170,22 +182,6 @@ public class Person implements Serializable {
         return DatePattern.sdf.format(cal.getTime());
     }
 
-    @Transient
-    @PropertyDescriptor(hidden = true, summary = false, searchable = false)
-    public void setCreatedAsString(String value) throws Exception {
-        Calendar cal = new GregorianCalendar();
-        cal.setTimeInMillis(DatePattern.sdf.parse(value).getTime());
-        this.created = new Long(cal.getTimeInMillis());
-    }
-
-    @Transient
-    @PropertyDescriptor(hidden = true, summary = false, searchable = false)
-    public void setAccessedAsString(String value) throws Exception {
-        Calendar cal = new GregorianCalendar();
-        cal.setTimeInMillis(DatePattern.sdf.parse(value).getTime());
-        this.accessed = new Long(cal.getTimeInMillis());
-    }
-
     public void setId(Integer id) {
         this.id = id;
     }
@@ -210,6 +206,10 @@ public class Person implements Serializable {
         this.dob = dob;
     }
 
+    public void setDemographics(Demographics demographics) {
+        this.demographics = demographics;
+    }
+
     public void setEmailAddress(String emailAddress) {
         this.emailAddress = emailAddress;
     }
@@ -226,8 +226,24 @@ public class Person implements Serializable {
         this.created = created;
     }
 
+    @Transient
+    @PropertyDescriptor(hidden = true, summary = false, searchable = false)
+    public void setCreatedAsString(String value) throws Exception {
+        Calendar cal = new GregorianCalendar();
+        cal.setTimeInMillis(DatePattern.sdf.parse(value).getTime());
+        this.created = new Long(cal.getTimeInMillis());
+    }
+
     public void setAccessed(Long accessed) {
         this.accessed = accessed;
+    }
+
+    @Transient
+    @PropertyDescriptor(hidden = true, summary = false, searchable = false)
+    public void setAccessedAsString(String value) throws Exception {
+        Calendar cal = new GregorianCalendar();
+        cal.setTimeInMillis(DatePattern.sdf.parse(value).getTime());
+        this.accessed = new Long(cal.getTimeInMillis());
     }
 
     @Override
@@ -239,16 +255,6 @@ public class Person implements Serializable {
     public String toString() {
         return getLastName() + ", " + getFirstName();
     }
-
-    /*
-     * public boolean equals(Object obj) { // return
-     * EqualsBuilder.reflectionEquals(this, obj); if (this == obj) return true;
-     * if (obj == null || this.getClass() != obj.getClass()) return false;
-     *
-     * final Person castedObj = (Person) obj;
-     *
-     * return this.getId().equals(castedObj.getId()); }
-     */
 
     @Override
     public int hashCode() {

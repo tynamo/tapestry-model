@@ -39,7 +39,7 @@ import org.trails.util.DatePattern;
  * @author kenneth.colassi    nhhockeyplayer@hotmail.com
  */
 @Entity
-@ClassDescriptor(hasCyclicRelationships=true, hidden = true)
+@ClassDescriptor(hasCyclicRelationships=true)
 public class Team implements Serializable {
     private static final Log log = LogFactory.getLog(Team.class);
 
@@ -175,7 +175,7 @@ public class Team implements Serializable {
         return tier;
     }
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "clips_team_fk", insertable = true, updatable = true, nullable = true)
     @Collection(child = true, inverse = "team")
     @PropertyDescriptor(searchable = false, readOnly = false)
@@ -184,7 +184,7 @@ public class Team implements Serializable {
         return clips;
     }
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "player_team_fk")
     @Collection(child = false, inverse = "team")
     @PropertyDescriptor(readOnly = false, searchable = true)
@@ -313,12 +313,13 @@ public class Team implements Serializable {
 
     @Override
     public String toString() {
-        if (organization == null)
-            return "";
-        else
-            return getOrganization().getCity() + ","
-                    + getOrganization().getState() + " "
-                    + getGender().toString() + " " + getAge().toString();
+        String result = "";
+        //if (organization == null)
+            return result;
+        //else
+            //return getOrganization().getDemographics().getCity() + ","
+            //        + getOrganization().getDemographics().getState() + " "
+            //        + getGender().toString() + " " + getAge().toString();
     }
 
     @Override

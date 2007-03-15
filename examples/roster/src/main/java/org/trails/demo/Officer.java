@@ -1,42 +1,37 @@
 package org.trails.demo;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.trails.descriptor.annotation.ClassDescriptor;
-import org.trails.descriptor.annotation.PropertyDescriptor;
 
 /**
- * A Coach belongs to an organization and has a team
+ * A Coach belongs to an league and has a team
  *
  * @author kenneth.colassi        nhhockeyplayer@hotmail.com
  */
 @Entity
 @ClassDescriptor(hasCyclicRelationships = true, hidden = true)
-public class Coach extends Person {
-    private static final Log log = LogFactory.getLog(Coach.class);
+public class Officer extends Person {
+    private static final Log log = LogFactory.getLog(Officer.class);
 
-    protected enum ETeamRole {
-        HEADCOACH, ASSISTANTCOACH, MANAGER, EQUIPMENTMGR, OPERATIONS, TRAINER
-    }
+    protected enum EOfficer {
+        COMMISSIONER, SECRETARY, TREASURER, OFFICIALS, MEDIA, MARKETING
+    }    
 
-    private ETeamRole    role;
-
-    private Team team;
-
-    private Organization organization;
+    private EOfficer	role;
+    
+    private League league;
 
     /**
      * CTOR
      */
-    public Coach(Coach dto) {
+    public Officer(Officer dto) {
         super(dto);
 
         try {
@@ -47,36 +42,26 @@ public class Coach extends Person {
         }
     }
 
-    public Coach() {
+    public Officer() {
         setERole(ERole.USER);
     }
 
-    public ETeamRole getRole() {
-        return role;
+    public EOfficer getRole() {
+		return role;
+	}
+
+	@ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "officer_league_fk", insertable = false, updatable = true, nullable = true)
+    public League getLeague() {
+        return league;
     }
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @PropertyDescriptor(searchable = true, index = 1)
-    public Team getTeam() {
-        return team;
-    }
+    public void setRole(EOfficer role) {
+		this.role = role;
+	}
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "coach_organization_fk", insertable = false, updatable = true, nullable = true)
-    public Organization getOrganization() {
-        return organization;
-    }
-
-    public void setRole(ETeamRole role) {
-        this.role = role;
-    }
-
-    public void setTeam(Team team) {
-        this.team = team;
-    }
-
-    public void setOrganization(Organization organization) {
-        this.organization = organization;
+	public void setLeague(League league) {
+        this.league = league;
     }
 
     @Override
@@ -86,8 +71,8 @@ public class Coach extends Person {
     }
 
     @Override
-    public Coach clone() {
-        return new Coach(this);
+    public Officer clone() {
+        return new Officer(this);
     }
 
     @Override
@@ -104,9 +89,9 @@ public class Coach extends Person {
             return true;
         if (rhs == null)
             return false;
-        if (!(rhs instanceof Coach))
+        if (!(rhs instanceof Officer))
             return false;
-        final Coach castedObject = (Coach) rhs;
+        final Officer castedObject = (Officer) rhs;
         if (getId() == null) {
             if (castedObject.getId() != null)
                 return false;

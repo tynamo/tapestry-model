@@ -16,7 +16,7 @@ import org.trails.descriptor.annotation.ClassDescriptor;
  * @author kenneth.colassi        nhhockeyplayer@hotmail.com
  */
 @Entity
-@ClassDescriptor(hasCyclicRelationships = true, hidden = true)
+@ClassDescriptor(hasCyclicRelationships = true)
 public class Director extends Person {
     private static final Log log = LogFactory.getLog(Director.class);
 

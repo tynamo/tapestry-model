@@ -31,7 +31,7 @@ public class Year implements Serializable {
 
     private Integer id = null;
 
-    private Organization organization;
+    private League league;
 
     private Integer yearStart = new Integer("0");
 
@@ -74,9 +74,9 @@ public class Year implements Serializable {
     }
 
     @ManyToOne
-    @JoinColumn(name = "year_organization_fk")
-    public Organization getOrganization() {
-        return organization;
+    @JoinColumn(name = "year_league_fk")
+    public League getLeague() {
+        return league;
     }
 
     @PropertyDescriptor(index = 1)
@@ -119,8 +119,8 @@ public class Year implements Serializable {
         this.id = id;
     }
 
-    public void setOrganization(Organization organization) {
-        this.organization = organization;
+    public void setLeague(League league) {
+        this.league = league;
     }
 
     public void setYearStart(Integer yearStart) {

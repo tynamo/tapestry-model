@@ -3,6 +3,7 @@ package org.trails.demo;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -86,7 +87,7 @@ public class Player extends Person {
         return team;
     }
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "clips_player_fk", insertable = true, updatable = true, nullable = true)
     @Collection(child = true, inverse = "player")
     @PropertyDescriptor(searchable = false, readOnly = false)
@@ -95,7 +96,7 @@ public class Player extends Person {
         return clips;
     }
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "stats_player_fk")
     @Collection(child = true, inverse = "player")
     @PropertyDescriptor(searchable = true, readOnly = false)

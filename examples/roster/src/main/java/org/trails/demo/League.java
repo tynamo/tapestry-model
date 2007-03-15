@@ -16,7 +16,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
@@ -37,28 +36,27 @@ import org.trails.validation.ValidateUniqueness;
 
 
 /**
- * Organizations belong to one league and
- * have one Director, Coaches and Teams
+ * Leagues have Years, Officers, Organizations and Demographics
  *
  * @author kenneth.colassi        nhhockeyplayer@hotmail.com
  */
 @Entity
 @ValidateUniqueness(property = "name")
-@ClassDescriptor(hasCyclicRelationships=true, hidden = true)
-public class Organization implements Serializable {
-    private static final Log log = LogFactory.getLog(Organization.class);
+@ClassDescriptor(hasCyclicRelationships=true)
+public class League implements Serializable {
+    private static final Log log = LogFactory.getLog(League.class);
 
     private Integer id = null;
 
-    private League league;
+    private Set<Year> years = new HashSet<Year>();
 
-    private Director director;
+    private Set<Officer> officers = new HashSet<Officer>();
 
-    private Set<Coach> coaches = new HashSet<Coach>();
-
-    private Set<Team> teams = new HashSet<Team>();
+    private Set<Organization> organizations = new HashSet<Organization>();
 
     private String name;
+
+    private String abbreviation;
 
     private Demographics demographics = new Demographics();
 
@@ -71,10 +69,10 @@ public class Organization implements Serializable {
     /**
      * CTOR
      */
-    public Organization() {
+    public League() {
     }
 
-    public Organization(Organization dto) {
+    public League(League dto) {
         try {
             BeanUtils.copyProperties(this, dto);
         } catch (Exception e) {
@@ -97,51 +95,46 @@ public class Organization implements Serializable {
         return id;
     }
 
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "league_id", insertable = true, updatable = true, nullable = true)
+    @Collection(child = true, inverse = "league")
+    @PropertyDescriptor(readOnly = false, index = 1)
+    @OrderBy("yearStart")
+    public Set<Year> getYears() {
+        return years;
+    }
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "officer_league_fk", insertable = true, updatable = true, nullable = true)
+    @Collection(child = true, inverse = "league")
+    @PropertyDescriptor(readOnly = false, searchable = true)
+    @OrderBy("lastName")
+    public Set<Officer> getOfficers() {
+        return officers;
+    }
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "organization_league_fk", insertable = true, updatable = true, nullable = true)
+    @Collection(child = true, inverse = "league")
+    @PropertyDescriptor(readOnly = false, searchable = true)
+    @OrderBy("name")
+    public Set<Organization> getOrganizations() {
+        return organizations;
+    }
 
     @Column(unique = true)
     @NotNull(message = "is required")
-    @PropertyDescriptor(readOnly = false, summary = true, index = 1)
     public String getName() {
         return name;
+    }
+
+    public String getAbbreviation() {
+        return abbreviation;
     }
 
     @Embedded
     public Demographics getDemographics() {
         return demographics;
-    }
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "organization_league_fk", insertable = false, updatable = true, nullable = true)
-    public League getLeague() {
-        return league;
-    }
-
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinTable(name = "OrganizationsDirectors",
-        joinColumns = @JoinColumn(name = "director_fk"),
-        inverseJoinColumns = {@JoinColumn(name = "organization_fk")}
-    )
-    @PropertyDescriptor(readOnly = false, index = 2)
-    public Director getDirector() {
-        return director;
-    }
-
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "coach_organization_fk", insertable = true, updatable = true, nullable = true)
-    @Collection(child = true, inverse = "organization")
-    @PropertyDescriptor(readOnly = false, searchable = true)
-    @OrderBy("lastName")
-    public Set<Coach> getCoaches() {
-        return coaches;
-    }
-
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "team_organization_fk", insertable = true, updatable = true, nullable = true)
-    @Collection(child = true, inverse = "organization")
-    @PropertyDescriptor(readOnly = false)
-    @OrderBy("division")
-    public Set<Team> getTeams() {
-        return teams;
     }
 
     private UploadableMedia photo = new UploadableMedia();
@@ -198,28 +191,28 @@ public class Organization implements Serializable {
         this.id = id;
     }
 
+    public void setYears(Set<Year> years) {
+        this.years = years;
+    }
+
+    public void setOfficers(Set<Officer> officers) {
+        this.officers = officers;
+    }
+
+    public void setOrganizations(Set<Organization> organizations) {
+        this.organizations = organizations;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
 
+    public void setAbbreviation(String abbreviation) {
+        this.abbreviation = abbreviation;
+    }
+
     public void setDemographics(Demographics demographics) {
         this.demographics = demographics;
-    }
-
-    public void setLeague(League league) {
-        this.league = league;
-    }
-
-    public void setDirector(Director director) {
-        this.director = director;
-    }
-
-    public void setCoaches(Set<Coach> coaches) {
-        this.coaches = coaches;
-    }
-
-    public void setTeams(Set<Team> teams) {
-        this.teams = teams;
     }
 
     public void setPhoto(UploadableMedia photo) {
@@ -263,8 +256,8 @@ public class Organization implements Serializable {
     }
 
     @Override
-    public Organization clone() {
-        return new Organization(this);
+    public League clone() {
+        return new League(this);
     }
 
     @Override
@@ -281,9 +274,9 @@ public class Organization implements Serializable {
             return true;
         if (rhs == null)
             return false;
-        if (!(rhs instanceof Organization))
+        if (!(rhs instanceof League))
             return false;
-        final Organization castedObject = (Organization) rhs;
+        final League castedObject = (League) rhs;
         if (getId() == null) {
             if (castedObject.getId() != null)
                 return false;
