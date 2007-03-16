@@ -44,7 +44,7 @@ public class Person implements Serializable {
         USER, ADMIN, SYSTEMADMIN
     }
 
-    protected enum ApplicationRole {
+    protected enum EApplicationRole {
         MANAGER, DIRECTOR, SALES, MARKETING
     }
 
@@ -64,7 +64,7 @@ public class Person implements Serializable {
 
     protected ERole eRole;
 
-    protected ApplicationRole applicationRole;
+    protected EApplicationRole eApplicationRole;
 
     protected Long created = new Long(GregorianCalendar.getInstance()
             .getTimeInMillis());
@@ -152,8 +152,8 @@ public class Person implements Serializable {
     @Enumerated(value = EnumType.STRING)
     @NotNull(message = "is required")
     @PropertyDescriptor(summary = true, index = 9)
-    public ApplicationRole getApplicationRole() {
-        return applicationRole;
+    public EApplicationRole getApplicationRole() {
+        return eApplicationRole;
     }
 
     @PropertyDescriptor(hidden = true, summary = false, searchable = false)
@@ -218,8 +218,8 @@ public class Person implements Serializable {
         this.password = password;
     }
 
-    public void setApplicationRole(ApplicationRole applicationRole) {
-        this.applicationRole = applicationRole;
+    public void setApplicationRole(EApplicationRole eApplicationRole) {
+        this.eApplicationRole = eApplicationRole;
     }
 
     public void setCreated(Long created) {

@@ -48,7 +48,7 @@ public class League implements Serializable {
 
     private Integer id = null;
 
-    private Set<Year> years = new HashSet<Year>();
+    private Set<TeamYear> years = new HashSet<TeamYear>();
 
     private Set<Officer> officers = new HashSet<Officer>();
 
@@ -100,7 +100,7 @@ public class League implements Serializable {
     @Collection(child = true, inverse = "league")
     @PropertyDescriptor(readOnly = false, index = 1)
     @OrderBy("yearStart")
-    public Set<Year> getYears() {
+    public Set<TeamYear> getYears() {
         return years;
     }
 
@@ -191,8 +191,8 @@ public class League implements Serializable {
         this.id = id;
     }
 
-    public void setYears(Set<Year> years) {
-        this.years = years;
+    public void setYears(Set<TeamYear> teamYears) {
+        this.years = teamYears;
     }
 
     public void setOfficers(Set<Officer> officers) {

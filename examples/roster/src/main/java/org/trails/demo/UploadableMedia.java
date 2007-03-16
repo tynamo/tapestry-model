@@ -23,7 +23,6 @@ import org.trails.descriptor.annotation.PropertyDescriptor;
 import org.trails.util.DatePattern;
 
 /**
- * @hibernate.class table="UploadableMedia" lazy="false"
  *
  * UploadableMedia Media, implements domain model for all possible media types
  *

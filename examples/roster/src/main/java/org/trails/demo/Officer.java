@@ -22,10 +22,10 @@ public class Officer extends Person {
 
     protected enum EOfficer {
         COMMISSIONER, SECRETARY, TREASURER, OFFICIALS, MEDIA, MARKETING
-    }    
+    }
 
-    private EOfficer	role;
-    
+    private EOfficer    role;
+
     private League league;
 
     /**
@@ -47,20 +47,20 @@ public class Officer extends Person {
     }
 
     public EOfficer getRole() {
-		return role;
-	}
+        return role;
+    }
 
-	@ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "officer_league_fk", insertable = false, updatable = true, nullable = true)
     public League getLeague() {
         return league;
     }
 
     public void setRole(EOfficer role) {
-		this.role = role;
-	}
+        this.role = role;
+    }
 
-	public void setLeague(League league) {
+    public void setLeague(League league) {
         this.league = league;
     }
 

@@ -116,7 +116,7 @@ public class Organization implements Serializable {
         return league;
     }
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinTable(name = "OrganizationsDirectors",
         joinColumns = @JoinColumn(name = "director_fk"),
         inverseJoinColumns = {@JoinColumn(name = "organization_fk")}
@@ -126,7 +126,7 @@ public class Organization implements Serializable {
         return director;
     }
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany
     @JoinColumn(name = "coach_organization_fk", insertable = true, updatable = true, nullable = true)
     @Collection(child = true, inverse = "organization")
     @PropertyDescriptor(readOnly = false, searchable = true)
@@ -135,7 +135,7 @@ public class Organization implements Serializable {
         return coaches;
     }
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany
     @JoinColumn(name = "team_organization_fk", insertable = true, updatable = true, nullable = true)
     @Collection(child = true, inverse = "organization")
     @PropertyDescriptor(readOnly = false)

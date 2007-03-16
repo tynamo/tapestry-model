@@ -39,7 +39,7 @@ public class Player extends Person {
 
     private Integer playerNumber;
 
-    private EPosition position;
+    private EPosition playerPosition;
 
     private EDexterity dexterity;
 
@@ -47,7 +47,7 @@ public class Player extends Person {
 
     private Set<UploadableMedia> clips = new HashSet<UploadableMedia>();
 
-    private Set<Statistic> stats = new HashSet<Statistic>();
+    private Set<PlayerStat> stats = new HashSet<PlayerStat>();
 
     /**
      * CTOR
@@ -72,8 +72,8 @@ public class Player extends Person {
     }
 
     @Enumerated(value = EnumType.STRING)
-    public EPosition getPosition() {
-        return position;
+    public EPosition getPlayerPosition() {
+        return playerPosition;
     }
 
     @Enumerated(value = EnumType.STRING)
@@ -97,10 +97,10 @@ public class Player extends Person {
     }
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "stats_player_fk")
+    @JoinColumn(name = "playerstat_player_fk")
     @Collection(child = true, inverse = "player")
     @PropertyDescriptor(searchable = true, readOnly = false)
-    public Set<Statistic> getStats() {
+    public Set<PlayerStat> getStats() {
         return stats;
     }
 
@@ -124,8 +124,8 @@ public class Player extends Person {
         this.emailAddress = emailAddress;
     }
 
-    public void setPosition(EPosition position) {
-        this.position = position;
+    public void setPlayerPosition(EPosition position) {
+        this.playerPosition = position;
     }
 
     public void setDexterity(EDexterity dexterity) {
@@ -140,8 +140,8 @@ public class Player extends Person {
         this.clips = clips;
     }
 
-    public void setStats(Set<Statistic> statistic) {
-        this.stats = statistic;
+    public void setStats(Set<PlayerStat> playerStat) {
+        this.stats = playerStat;
     }
 
     @Override

@@ -55,13 +55,14 @@ public class Coach extends Person {
         return role;
     }
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne
+    @JoinColumn(name = "team_id")
     @PropertyDescriptor(searchable = true, index = 1)
     public Team getTeam() {
         return team;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "coach_organization_fk", insertable = false, updatable = true, nullable = true)
     public Organization getOrganization() {
         return organization;

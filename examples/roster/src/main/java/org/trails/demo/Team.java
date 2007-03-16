@@ -19,6 +19,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Transient;
 
 import org.apache.commons.beanutils.BeanUtils;
@@ -43,7 +44,7 @@ import org.trails.util.DatePattern;
 public class Team implements Serializable {
     private static final Log log = LogFactory.getLog(Team.class);
 
-    protected enum Season {
+    protected enum ESeason {
         WINTER, SPRING, SUMMER, FALL
     }
 
@@ -93,7 +94,7 @@ public class Team implements Serializable {
 
     private Set<Player> players = new HashSet<Player>();
 
-    private Year year;
+    private TeamYear teamYear;
 
     private Long created = new Long(GregorianCalendar.getInstance()
             .getTimeInMillis());
@@ -131,13 +132,13 @@ public class Team implements Serializable {
     }
 
     @ManyToOne
-    @JoinColumn(name = "team_organization_fk")
+    @JoinColumn(name = "team_organization_fk", insertable = false, updatable = true, nullable = true)
     public Organization getOrganization() {
         return organization;
     }
 
     @OneToMany
-    @JoinColumn(name = "coach_team_fk", insertable = true, updatable = true, nullable = true)
+    @JoinColumn(name = "team_id")
     @Collection(child = false, inverse = "team")
     @PropertyDescriptor(readOnly = false, searchable = true)
     @OrderBy("lastName")
@@ -184,7 +185,7 @@ public class Team implements Serializable {
         return clips;
     }
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany
     @JoinColumn(name = "player_team_fk")
     @Collection(child = false, inverse = "team")
     @PropertyDescriptor(readOnly = false, searchable = true)
@@ -203,10 +204,11 @@ public class Team implements Serializable {
     }
 
     @ManyToOne
-    @JoinColumn(name = "team_year_fk")
+    @JoinColumn(name = "team_teamyear_fk")
+    @PrimaryKeyJoinColumn
     @PropertyDescriptor(index = 1)
-    public Year getYear() {
-        return year;
+    public TeamYear getTeamYear() {
+        return teamYear;
     }
 
     @PropertyDescriptor(hidden = true, summary = false, searchable = false)
@@ -283,8 +285,8 @@ public class Team implements Serializable {
         this.photo = photo;
     }
 
-    public void setYear(Year year) {
-        this.year = year;
+    public void setTeamYear(TeamYear teamYear) {
+        this.teamYear = teamYear;
     }
 
     public void setCreated(Long created) {
@@ -314,12 +316,12 @@ public class Team implements Serializable {
     @Override
     public String toString() {
         String result = "";
-        //if (organization == null)
+        if (organization == null)
             return result;
-        //else
-            //return getOrganization().getDemographics().getCity() + ","
-            //        + getOrganization().getDemographics().getState() + " "
-            //        + getGender().toString() + " " + getAge().toString();
+        else
+            return getOrganization().getDemographics().getCity() + ","
+                    + getOrganization().getDemographics().getState() + " "
+                    + getGender().toString() + " " + getAge().toString();
     }
 
     @Override

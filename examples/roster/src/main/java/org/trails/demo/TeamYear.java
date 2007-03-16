@@ -20,38 +20,21 @@ import org.trails.descriptor.annotation.PropertyDescriptor;
 import org.trails.util.DatePattern;
 
 /**
- * Statistics
  *
  * @author kenneth.colassi        nhhockeyplayer@hotmail.com
  */
 @Entity
-@ClassDescriptor(hasCyclicRelationships=true, hidden = true)
-public class Statistic implements Serializable {
-    private static final Log log = LogFactory.getLog(Statistic.class);
+@ClassDescriptor(hasCyclicRelationships = true, hidden = true)
+public class TeamYear implements Serializable {
+    private static final Log log = LogFactory.getLog(TeamYear.class);
 
     private Integer id = null;
 
-    private Integer gp;
+    private League league;
 
-    private Integer g;
+    private Integer yearStart = new Integer("0");
 
-    private Integer a;
-
-    private Integer pts;
-
-    private Integer pim;
-
-    private Integer ppg;
-
-    private Integer ppa;
-
-    private Integer shg;
-
-    private Integer sha;
-
-    private Integer gwg;
-
-    private Player player;
+    private Integer yearEnd = new Integer("0");
 
     private Long created = new Long(GregorianCalendar.getInstance()
             .getTimeInMillis());
@@ -63,10 +46,10 @@ public class Statistic implements Serializable {
      * CTOR
      */
 
-    public Statistic() {
+    public TeamYear() {
     }
 
-    public Statistic(Statistic dto) {
+    public TeamYear(TeamYear dto) {
         try {
             BeanUtils.copyProperties(this, dto);
         } catch (Exception e) {
@@ -89,105 +72,20 @@ public class Statistic implements Serializable {
         return id;
     }
 
-    @PropertyDescriptor(index = 3, hidden = false, summary = true, searchable = true)
-    public Integer getA() {
-        return a;
-    }
-
-    @PropertyDescriptor(index = 2, hidden = false, summary = true, searchable = true)
-    public Integer getG() {
-        return g;
-    }
-
-    @PropertyDescriptor(index = 1, hidden = false, summary = true, searchable = true)
-    public Integer getGp() {
-        return gp;
-    }
-
-    @PropertyDescriptor(index = 9, hidden = false, summary = true, searchable = true)
-    public Integer getGwg() {
-        return gwg;
-    }
-
-    @PropertyDescriptor(hidden = false, summary = true, searchable = true)
-    public Integer getPim() {
-        return pim;
-    }
-
-    @PropertyDescriptor(index = 6, hidden = false, summary = true, searchable = true)
-    public Integer getPpa() {
-        return ppa;
-    }
-
-    @PropertyDescriptor(index = 5, hidden = false, summary = true, searchable = true)
-    public Integer getPpg() {
-        return ppg;
-    }
-
-    @PropertyDescriptor(index = 4, hidden = false, summary = true, searchable = true)
-    public Integer getPts() {
-        return pts;
-    }
-
-    @PropertyDescriptor(index = 8, hidden = false, summary = true, searchable = true)
-    public Integer getSha() {
-        return sha;
-    }
-
-    @PropertyDescriptor(index = 7, hidden = false, summary = true, searchable = true)
-    public Integer getShg() {
-        return shg;
-    }
-
     @ManyToOne
-    @JoinColumn(name = "statistic_player_fk", insertable = false, updatable = false, nullable = true)
-    @PropertyDescriptor(readOnly = true, index = 0)
-    public Player getPlayer() {
-        return player;
+    @JoinColumn(name = "teamyear_league_fk")
+    public League getLeague() {
+        return league;
     }
 
-    public void setA(Integer a) {
-        this.a = a;
+    @PropertyDescriptor(index = 1)
+    public Integer getYearStart() {
+        return yearStart;
     }
 
-    public void setG(Integer g) {
-        this.g = g;
-    }
-
-    public void setGp(Integer gp) {
-        this.gp = gp;
-    }
-
-    public void setGwg(Integer gwg) {
-        this.gwg = gwg;
-    }
-
-    public void setPim(Integer pim) {
-        this.pim = pim;
-    }
-
-    public void setPpa(Integer ppa) {
-        this.ppa = ppa;
-    }
-
-    public void setPpg(Integer ppg) {
-        this.ppg = ppg;
-    }
-
-    public void setPts(Integer pts) {
-        this.pts = pts;
-    }
-
-    public void setSha(Integer sha) {
-        this.sha = sha;
-    }
-
-    public void setPlayer(Player player) {
-        this.player = player;
-    }
-
-    public void setShg(Integer shg) {
-        this.shg = shg;
+    @PropertyDescriptor(index = 2)
+    public Integer getYearEnd() {
+        return yearEnd;
     }
 
     @PropertyDescriptor(hidden = true, summary = false, searchable = false)
@@ -216,6 +114,22 @@ public class Statistic implements Serializable {
         return DatePattern.sdf.format(cal.getTime());
     }
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public void setLeague(League league) {
+        this.league = league;
+    }
+
+    public void setYearStart(Integer yearStart) {
+        this.yearStart = yearStart;
+    }
+
+    public void setYearEnd(Integer yearEnd) {
+        this.yearEnd = yearEnd;
+    }
+
     @Transient
     @PropertyDescriptor(hidden = true, summary = false, searchable = false)
     public void setCreatedAsString(String value) throws Exception {
@@ -230,10 +144,6 @@ public class Statistic implements Serializable {
         Calendar cal = new GregorianCalendar();
         cal.setTimeInMillis(DatePattern.sdf.parse(value).getTime());
         this.accessed = new Long(cal.getTimeInMillis());
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public void setAccessed(Long accessed) {
@@ -258,14 +168,18 @@ public class Statistic implements Serializable {
             return true;
         if (rhs == null)
             return false;
-        if (!(rhs instanceof Statistic))
+        if (!(rhs instanceof TeamYear))
             return false;
-        final Statistic castedObject = (Statistic) rhs;
+        final TeamYear castedObject = (TeamYear) rhs;
         if (getId() == null) {
             if (castedObject.getId() != null)
                 return false;
         } else if (!getId().equals(castedObject.getId()))
             return false;
         return true;
+    }
+
+    public String toString() {
+        return getYearStart().toString() + "/" + getYearEnd().toString();
     }
 }
