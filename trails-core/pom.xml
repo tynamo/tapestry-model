@@ -254,7 +254,7 @@
         <dependency>
             <groupId>com.javaforge.tapestry</groupId>
             <artifactId>tapernate</artifactId>
-            <version>0.1-SNAPSHOT</version>
+            <version>0.1-20060609.152149-15</version>
             <exclusions>
                 <exclusion>
                     <groupId>easymock</groupId>
