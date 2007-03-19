@@ -6,9 +6,6 @@
 
 <component-specification class="org.apache.tapestry.BaseComponent" allow-body="yes" allow-informal-parameters="yes">
     <asset name="stylesheet" path="/style/default.css"/>
-    <asset name="arFlag" path="/images/ar.gif"/>
-    <asset name="brFlag" path="/images/br.gif"/>
-    <asset name="usFlag" path="/images/us.gif"/>
 
     <component id="restart" type="ServiceLink">
         <binding name="service" value="@org.apache.tapestry.Tapestry@RESTART_SERVICE"/>
