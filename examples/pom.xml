@@ -8,9 +8,11 @@
     <url>http://www.trailsframework.org/</url>
 
     <modules>
+        <module>ajaxlist</module>
         <module>simple</module>
         <module>recipe</module>
         <module>roster</module>
+        <module>security</module>
     </modules>
 
 
@@ -128,7 +130,7 @@
                 <dependency>
                     <groupId>log4j</groupId>
                     <artifactId>log4j</artifactId>
-                    <version>1.2.12</version>
+                    <version>1.2.14</version>
                 </dependency>
             </dependencies>
         </plugin>
