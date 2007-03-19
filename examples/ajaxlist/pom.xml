@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    
+    <parent>
+		<artifactId>examples</artifactId>
+		<groupId>org.trailsframework</groupId>
+		<version>1.0-SNAPSHOT</version>
+	</parent>
+    
+    <modelVersion>4.0.0</modelVersion>
+	<groupId>org.trailsframework.examples</groupId>
+	<artifactId>ajaxlist</artifactId>
+	<packaging>war</packaging>
+	<name>Trails Example - Ajax List</name>
+	<url>https://trails.dev.java.net/</url>
+
+    <dependencies>
+        <dependency>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+            <version>1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.tacos</groupId>
+            <artifactId>tacos-core</artifactId>
+            <version>4.0.1</version>
+        </dependency>
+    </dependencies>
+    
+    <repositories>
+              <repository>
+          <id>tacos.stable</id>
+          <url>http://tacos.sourceforge.net/repository/</url>
+          <snapshots>
+               <enabled>false</enabled>
+           </snapshots>
+           <releases>
+               <enabled>true</enabled>
+           </releases>
+      </repository>
+    </repositories>      
+</project>
