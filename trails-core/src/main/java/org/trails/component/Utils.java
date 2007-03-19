@@ -15,9 +15,6 @@ import java.util.ArrayList;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.oro.text.perl.Perl5Util;
-import org.apache.tapestry.IPage;
-import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.PageNotFoundException;
 import org.trails.TrailsRuntimeException;
 
 

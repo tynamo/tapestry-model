@@ -30,7 +30,7 @@ public class TrailsClassDescriptor extends TrailsDescriptor implements IClassDes
     //private BeanDescriptor beanDescriptor;
     private boolean child;
 
-    boolean hasCyclicRelationships = false;
+    boolean hasCyclicRelationships;
     
     boolean allowRemove = true;
     

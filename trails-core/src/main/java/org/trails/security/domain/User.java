@@ -30,6 +30,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.validator.NotNull;
 import org.trails.descriptor.annotation.PropertyDescriptor;
+import org.trails.descriptor.annotation.ClassDescriptor;
 import org.trails.security.RestrictionType;
 import org.trails.security.annotation.Restriction;
 import org.trails.security.annotation.Security;
@@ -40,6 +41,7 @@ import org.trails.validation.ValidateUniqueness;
 @ValidateUniqueness(property = "username")
 @Security(restrictions = {@Restriction(restrictionType = RestrictionType.VIEW, 
 		requiredRole = "ROLE_MANAGER")})
+@ClassDescriptor(hasCyclicRelationships = true)
 public class User implements UserDetails, Serializable
 {
 	private static final Log log = LogFactory.getLog(User.class);

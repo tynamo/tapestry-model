@@ -42,7 +42,8 @@ public class TrailsClassDescriptorTest extends TestCase
         classDescriptor.getPropertyDescriptors().add(idProp);
         classDescriptor.getPropertyDescriptors().add(multiWordProp);
         classDescriptor.getMethodDescriptors().add(new TrailsMethodDescriptor("foo", void.class, new Class[] {}));
-        
+        classDescriptor.setHasCyclicRelationships(true);
+        classDescriptor.setShortDescription("a simple foo");
     }
     
     public void testClone() throws Exception
@@ -52,6 +53,8 @@ public class TrailsClassDescriptorTest extends TestCase
         assertEquals("2 props", 2, clone.getPropertyDescriptors().size());
         assertTrue("clone has id", clone.getPropertyDescriptor("id") instanceof IdentifierDescriptor);
         assertEquals("still has a method", 1, clone.getMethodDescriptors().size());
+        assertEquals("a simple foo", clone.getShortDescription());
+        assertTrue("still has cyclic relationships", clone.getHasCyclicRelationships());
     }
     
     public void testCopyConstructor() throws Exception
@@ -59,6 +62,7 @@ public class TrailsClassDescriptorTest extends TestCase
         TrailsClassDescriptor copiedDescriptor = new TrailsClassDescriptor(classDescriptor);
         assertEquals("Foo", copiedDescriptor.getDisplayName());
         assertEquals("2 properties", 2, copiedDescriptor.getPropertyDescriptors().size());
+        assertTrue("still has cyclic relationships", copiedDescriptor.getHasCyclicRelationships());
     }
 
     public void testGetIdentifierProperty() throws Exception
@@ -96,5 +100,11 @@ public class TrailsClassDescriptorTest extends TestCase
         classDescriptor = new TrailsClassDescriptor(BlogEntry.class);
         classDescriptor.setDisplayName("BlogEntry");
         assertEquals("Blog Entry", classDescriptor.getDisplayName());
+    }
+
+    public void testHasCyclicRelationshipsDefaultValueFalse() throws Exception
+    {
+        classDescriptor = new TrailsClassDescriptor(BlogEntry.class);
+        assertFalse("default value should be false", classDescriptor.getHasCyclicRelationships());
     }
 }
