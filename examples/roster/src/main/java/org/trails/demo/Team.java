@@ -44,31 +44,31 @@ import org.trails.util.DatePattern;
 public class Team implements Serializable {
     private static final Log log = LogFactory.getLog(Team.class);
 
-    protected enum ESeason {
+    public enum ESeason {
         WINTER, SPRING, SUMMER, FALL
     }
 
-    protected enum EGender {
+    public enum EGender {
         MALE, FEMALE
     }
 
-    protected enum EDivision {
+    public enum EDivision {
         I, II, III, IV
     }
 
-    protected enum ELevel {
+    public enum ELevel {
         AAA, AA, A, B, C, D
     }
 
-    protected enum EAge {
+    public enum EAge {
         U19, U18, U17, U16, U15, U14, U12, U10, U8
     }
 
-    protected enum EGroupClassification {
+    public enum EGroupClassification {
         Midget, Bantam, Peewee, Squirt, Mite
     }
 
-    protected enum ETier {
+    public enum ETier {
         I, II, III, IV
     }
 

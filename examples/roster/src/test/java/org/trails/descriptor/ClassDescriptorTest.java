@@ -1,10 +1,5 @@
 package org.trails.descriptor;
 
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
-
 import org.hibernate.SessionFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -13,16 +8,13 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
+import org.trails.demo.*;
 import org.trails.persistence.PersistenceService;
-import org.trails.test.Coach;
-import org.trails.test.Director;
-import org.trails.test.Organization;
-import org.trails.test.Person;
-import org.trails.test.Player;
-import org.trails.test.Statistic;
-import org.trails.test.Team;
-import org.trails.test.UploadableMedia;
-import org.trails.test.Year;
+
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
 /**
  * @author kenneth.colassi nhhockeyplayer@hotmail.com
@@ -39,9 +31,9 @@ public class ClassDescriptorTest extends AbstractTransactionalSpringContextTests
 
     // domain model
     private Organization organization = new Organization();
-    private Year year = new Year();
+    private TeamYear TeamYear = new TeamYear();
     private Director director = new Director();
-    private Set<Year> years = new HashSet<Year>();
+    private Set<TeamYear> TeamYears = new HashSet<TeamYear>();
     private Set<Coach> coaches = new HashSet<Coach>();
     private Set<Team> teams = new HashSet<Team>();
     private Set<Player> players = new HashSet<Player>();
@@ -49,7 +41,7 @@ public class ClassDescriptorTest extends AbstractTransactionalSpringContextTests
     // miscellaneous reusable references
     private UploadableMedia photo = new UploadableMedia();
     private Set<UploadableMedia> clips = new HashSet<UploadableMedia>();
-    private Set<Statistic> stats = new HashSet<Statistic>();
+    private Set<PlayerStat> stats = new HashSet<PlayerStat>();
 
     // locals
     Coach coach = new Coach();
@@ -84,12 +76,14 @@ public class ClassDescriptorTest extends AbstractTransactionalSpringContextTests
         Coach localCoach = coach.clone();
         psvc.save(localOrganization);
 
-            Set years = organization.getYears();
-            Iterator yearIter = years.iterator();
-            while ( yearIter.hasNext()) {
-                Year year = (Year) yearIter.next();
-                psvc.save(year);
+/*
+            Set TeamYears = organization.getTeamYears();
+            Iterator TeamYearIter = TeamYears.iterator();
+            while ( TeamYearIter.hasNext()) {
+                TeamYear TeamYear = (TeamYear) TeamYearIter.next();
+                psvc.save(TeamYear);
             }
+*/
 
             Set coaches = organization.getCoaches();
             Iterator coachIter = coaches.iterator();
@@ -116,7 +110,7 @@ public class ClassDescriptorTest extends AbstractTransactionalSpringContextTests
                 team.setGroupClassification(Team.EGroupClassification.Bantam);
                 team.setLevel(Team.ELevel.A);
                 team.setTier(Team.ETier.I);
-                team.setYear((Year) (years.toArray())[0]);
+                team.setTeamYear((TeamYear) (TeamYears.toArray())[0]);
                 team.setPhoto(photo);
                 teams.add(team);
                 team.setOrganization(organization);
@@ -191,16 +185,16 @@ public class ClassDescriptorTest extends AbstractTransactionalSpringContextTests
         }
 
         for (int i = 600; i < 605; i++) {
-            Statistic stat = new Statistic();
+            PlayerStat stat = new PlayerStat();
 
             stat.setId(null);
             stats.add(stat);
         }
 
-        year.setYearStart(new Integer("2006"));
-        year.setYearEnd(new Integer("2007"));
-        year.setId(null);
-        years.add(year);
+        TeamYear.setYearStart(new Integer("2006"));
+        TeamYear.setYearEnd(new Integer("2007"));
+        TeamYear.setId(null);
+        TeamYears.add(TeamYear);
 
         director.setFirstName("Chris");
         director.setLastName("Nelson");
@@ -209,19 +203,19 @@ public class ClassDescriptorTest extends AbstractTransactionalSpringContextTests
         director.setEmailAddress(director.getFirstName() + "."
                 + director.getLastName() + "@" + organization.getName()
                 + ".com");
-        director.setApplicationRole(Person.ApplicationRole.DIRECTOR);
+        director.setApplicationRole(Person.EApplicationRole.DIRECTOR);
         director.setPhoto(photo);
 
         organization = new Organization();
         organization.setName("Trails Sharks");
         organization.setId(null);
-        organization.setCity(testString);
-        organization.setState(testString);
+//        organization.setCity(testString);
+//        organization.setState(testString);
         organization.setHeader(photo);
         organization.setLogo(photo);
         organization.setPhoto(photo);
-        organization.setYears(years);
-        year.setOrganization(organization);
+//        organization.setTeamYears(TeamYears);
+//        TeamYear.setOrganization(organization);
 
         for (int i = 700; i < 705; i++) {
             Integer iCounter = new Integer(i);
@@ -234,7 +228,7 @@ public class ClassDescriptorTest extends AbstractTransactionalSpringContextTests
             coach.setEmailAddress(coach.getFirstName() + "."
                     + coach.getLastName() + "@" + organization.getName()
                     + ".com");
-            coach.setApplicationRole(Person.ApplicationRole.HEADCOACH);
+            coach.setApplicationRole(Person.EApplicationRole.MANAGER); ////@note: it was Person.ApplicationRole.HEADCOACH
             coach.setPassword("test password");
             coach.setPhoto(photo);
 
@@ -252,7 +246,7 @@ public class ClassDescriptorTest extends AbstractTransactionalSpringContextTests
             team.setGroupClassification(Team.EGroupClassification.Bantam);
             team.setLevel(Team.ELevel.A);
             team.setTier(Team.ETier.I);
-            team.setYear((Year) (years.toArray())[0]);
+            team.setTeamYear((TeamYear) (TeamYears.toArray())[0]);
             team.setPhoto(photo);
 
             players.clear();
@@ -264,7 +258,7 @@ public class ClassDescriptorTest extends AbstractTransactionalSpringContextTests
                         + player.getLastName() + "@" + organization.getName()
                         + ".com");
                 player.setDexterity(Player.EDexterity.LEFTY);
-                player.setPosition(Player.EPosition.CENTER);
+                player.setPlayerPosition(Player.EPosition.CENTER);
                 player.setDob(new Date());
                 player.setTeam(team);
                 player.setFirstName(jCounter.toString());
@@ -283,7 +277,7 @@ public class ClassDescriptorTest extends AbstractTransactionalSpringContextTests
             if ( this.team == null ) this.team = team;
         }
 
-        organization.setYears(years);
+//        organization.setTeamYears(TeamYears);
         organization.setDirector(director);
         organization.setCoaches(coaches);
         organization.setTeams(teams);

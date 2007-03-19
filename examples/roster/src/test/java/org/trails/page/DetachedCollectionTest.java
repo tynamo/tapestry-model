@@ -1,10 +1,5 @@
 package org.trails.page;
 
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
-
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
@@ -22,23 +17,14 @@ import org.springframework.transaction.support.TransactionTemplate;
 import org.trails.callback.CollectionCallback;
 import org.trails.callback.EditCallback;
 import org.trails.component.ComponentTest;
-import org.trails.descriptor.CollectionDescriptor;
-import org.trails.descriptor.DescriptorService;
-import org.trails.descriptor.IClassDescriptor;
-import org.trails.descriptor.IdentifierDescriptor;
-import org.trails.descriptor.TrailsClassDescriptor;
-import org.trails.hibernate.HasAssignedIdentifier;
+import org.trails.demo.*;
+import org.trails.descriptor.*;
 import org.trails.persistence.PersistenceService;
-import org.trails.test.Coach;
-import org.trails.test.Director;
-import org.trails.test.Foo;
-import org.trails.test.Organization;
-import org.trails.test.Person;
-import org.trails.test.Player;
-import org.trails.test.Statistic;
-import org.trails.test.Team;
-import org.trails.test.UploadableMedia;
-import org.trails.test.Year;
+
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
 /**
  * @author kenneth.colassi nhhockeyplayer@hotmail.com
@@ -60,9 +46,9 @@ public class DetachedCollectionTest extends ComponentTest {
 
     // domain model
     private Organization organization = new Organization();
-    private Year year = new Year();
+    private TeamYear teamYear = new TeamYear();
     private Director director = new Director();
-    private Set<Year> years = new HashSet<Year>();
+    private Set<TeamYear> teamYears = new HashSet<TeamYear>();
     private Set<Coach> coaches = new HashSet<Coach>();
     private Set<Team> teams = new HashSet<Team>();
     private Set<Player> players = new HashSet<Player>();
@@ -70,14 +56,14 @@ public class DetachedCollectionTest extends ComponentTest {
     // miscellaneous reusable references
     private UploadableMedia photo = new UploadableMedia();
     private Set<UploadableMedia> clips = new HashSet<UploadableMedia>();
-    private Set<Statistic> stats = new HashSet<Statistic>();
+    private Set<PlayerStat> stats = new HashSet<PlayerStat>();
 
     // locals
     private Coach coach = new Coach();
     private Team team = new Team();
 
     String organizationPageName = "organizationEdit";
-    String yearPageName = "yearEdit";
+    String TeamYearPageName = "TeamYearEdit";
     String coachPageName = "coachEdit";
     String teamPageName = "teamEdit";
 
@@ -86,7 +72,7 @@ public class DetachedCollectionTest extends ComponentTest {
     Mock markupWriterMock = new Mock(IMarkupWriter.class);
 
     IdentifierDescriptor organizationIdDescriptor = new IdentifierDescriptor(Organization.class, "id", Organization.class);
-    IdentifierDescriptor yearIdDescriptor = new IdentifierDescriptor(Year.class, "id", Year.class);
+    IdentifierDescriptor TeamYearIdDescriptor = new IdentifierDescriptor(TeamYear.class, "id", TeamYear.class);
     IdentifierDescriptor coachIdDescriptor = new IdentifierDescriptor(Coach.class, "id", Coach.class);
     IdentifierDescriptor teamIdDescriptor = new IdentifierDescriptor(Team.class, "id", Team.class);
 
@@ -95,7 +81,7 @@ public class DetachedCollectionTest extends ComponentTest {
             "descriptorService", descriptorService,
             "persistenceService", psvc
         });
-    EditPage yearEditPage = (EditPage)creator.newInstance(EditPage.class,
+    EditPage TeamYearEditPage = (EditPage)creator.newInstance(EditPage.class,
             new Object[] {
         "descriptorService", descriptorService,
         "persistenceService", psvc
@@ -111,17 +97,17 @@ public class DetachedCollectionTest extends ComponentTest {
         "persistenceService", psvc
     });
 
-    CollectionDescriptor yearCollectionDescriptor = new CollectionDescriptor(Organization.class, "years", Set.class);
+    CollectionDescriptor TeamYearCollectionDescriptor = new CollectionDescriptor(Organization.class, "teamYears", Set.class);
     CollectionDescriptor coachCollectionDescriptor = new CollectionDescriptor(Organization.class, "coaches", Set.class);
     CollectionDescriptor teamCollectionDescriptor = new CollectionDescriptor(Organization.class, "teams", Set.class);
 
     IClassDescriptor organizationClassDescriptor = new TrailsClassDescriptor(Organization.class);
-    IClassDescriptor yearClassDescriptor = new TrailsClassDescriptor(Year.class);
+    IClassDescriptor TeamYearClassDescriptor = new TrailsClassDescriptor(TeamYear.class);
     IClassDescriptor coachClassDescriptor = new TrailsClassDescriptor(Coach.class);
     IClassDescriptor teamClassDescriptor = new TrailsClassDescriptor(Team.class);
 
     EditCallback organizationCallBack = new EditCallback(organizationPageName, new Organization());
-    CollectionCallback yearCallBack;
+    CollectionCallback TeamYearCallBack;
     CollectionCallback coachCallBack;
     CollectionCallback teamCallBack;
 
@@ -142,17 +128,17 @@ public class DetachedCollectionTest extends ComponentTest {
 
         setupDomain();
 
-        yearCollectionDescriptor.setElementType(Year.class);
-        yearCollectionDescriptor.setChildRelationship(true);
+        TeamYearCollectionDescriptor.setElementType(TeamYear.class);
+        TeamYearCollectionDescriptor.setChildRelationship(true);
         coachCollectionDescriptor.setElementType(Coach.class);
         coachCollectionDescriptor.setChildRelationship(true);
         teamCollectionDescriptor.setElementType(Team.class);
         teamCollectionDescriptor.setChildRelationship(true);
-        yearClassDescriptor.setChild(true);
+        TeamYearClassDescriptor.setChild(true);
         coachClassDescriptor.setChild(true);
         teamClassDescriptor.setChild(true);
 
-        yearCallBack = new CollectionCallback(yearPageName, organization, yearCollectionDescriptor);
+        TeamYearCallBack = new CollectionCallback(TeamYearPageName, organization, TeamYearCollectionDescriptor);
         coachCallBack = new CollectionCallback(coachPageName, organization, coachCollectionDescriptor);
         teamCallBack = new CollectionCallback(teamPageName, organization, teamCollectionDescriptor);
 
@@ -160,9 +146,9 @@ public class DetachedCollectionTest extends ComponentTest {
         organizationEditPage = buildEditPage();
         organizationEditPage.setModel(organization);
 
-        yearClassDescriptor.getPropertyDescriptors().add(yearIdDescriptor);
-        yearEditPage = buildEditPage();
-        yearEditPage.setModel(year);
+        TeamYearClassDescriptor.getPropertyDescriptors().add(TeamYearIdDescriptor);
+        TeamYearEditPage = buildEditPage();
+        TeamYearEditPage.setModel(teamYear);
 
         coachClassDescriptor.getPropertyDescriptors().add(coachIdDescriptor);
         coachEditPage = buildEditPage();
@@ -173,7 +159,7 @@ public class DetachedCollectionTest extends ComponentTest {
         teamEditPage.setModel(team);
 
         // move these in when you need'em
-        //descriptorServiceMock.expects(atLeastOnce()).method("getClassDescriptor").with(eq(Year.class)).will(returnValue(yearClassDescriptor));
+        //descriptorServiceMock.expects(atLeastOnce()).method("getClassDescriptor").with(eq(teamYear.class)).will(returnValue(TeamYearClassDescriptor));
         //descriptorServiceMock.expects(atLeastOnce()).method("getClassDescriptor").with(eq(Organization.class)).will(returnValue(organizationClassDescriptor));
         //descriptorServiceMock.expects(atLeastOnce()).method("getClassDescriptor").with(eq(Coach.class)).will(returnValue(coachClassDescriptor));
         //descriptorServiceMock.expects(atLeastOnce()).method("getClassDescriptor").with(eq(Team.class)).will(returnValue(teamClassDescriptor));
@@ -197,13 +183,16 @@ public class DetachedCollectionTest extends ComponentTest {
                 org.getHeader().setId(null);
                 org.getPhoto().setId(null);
                 org.getLogo().setId(null);
+/*
 
-                Set<Year> years = org.getYears();
-                for (Iterator y = years.iterator(); y.hasNext();) {
-                    Year obj = (Year) y.next();
+                Set<teamYear> teamYears = org.getTeamYears();
+                for (Iterator y = teamYears.iterator(); y.hasNext();) {
+                    teamYear obj = (teamYear) y.next();
                     obj.setId(null);
                     obj.setOrganization(org);
                 }
+
+*/
                 Set<Coach> coaches = org.getCoaches();
                 for (Iterator c = coaches.iterator(); c.hasNext();) {
                     Coach obj = (Coach) c.next();
@@ -256,13 +245,16 @@ public class DetachedCollectionTest extends ComponentTest {
                 org.getHeader().setId(null);
                 org.getPhoto().setId(null);
                 org.getLogo().setId(null);
+/*
 
-                Set<Year> years = org.getYears();
-                for (Iterator y = years.iterator(); y.hasNext();) {
-                    Year obj = (Year) y.next();
+                Set<TeamYear> TeamYears = org.getTeamYears();
+                for (Iterator y = TeamYears.iterator(); y.hasNext();) {
+                    TeamYear obj = (TeamYear) y.next();
                     obj.setId(null);
                     obj.setOrganization(org);
                 }
+
+*/
                 Set<Coach> coaches = org.getCoaches();
                 for (Iterator c = coaches.iterator(); c.hasNext();) {
                     Coach obj = (Coach) c.next();
@@ -369,16 +361,17 @@ public class DetachedCollectionTest extends ComponentTest {
         }
 
         for (int i = 600; i < 605; i++) {
-            Statistic stat = new Statistic();
+            PlayerStat stat = new PlayerStat();
 
             stat.setId(null);
             stats.add(stat);
         }
 
-        year.setYearStart(new Integer("2006"));
-        year.setYearEnd(new Integer("2007"));
-        year.setId(null);
-        years.add(year);
+        teamYear.setYearStart(new Integer("2006"));
+        teamYear.setYearEnd(new Integer("2007"));
+
+        teamYear.setId(null);
+        teamYears.add(teamYear);
 
         director.setFirstName("Chris");
         director.setLastName("Nelson");
@@ -387,19 +380,19 @@ public class DetachedCollectionTest extends ComponentTest {
         director.setEmailAddress(director.getFirstName() + "."
                 + director.getLastName() + "@" + organization.getName()
                 + ".com");
-        director.setApplicationRole(Person.ApplicationRole.DIRECTOR);
+        director.setApplicationRole(Person.EApplicationRole.DIRECTOR);
         director.setPhoto(photo);
 
         organization = new Organization();
         organization.setName("Trails Sharks");
         organization.setId(null);
-        organization.setCity(testString);
-        organization.setState(testString);
+//        organization.setCity(testString);
+//        organization.setState(testString);
         organization.setHeader(photo);
         organization.setLogo(photo);
         organization.setPhoto(photo);
-        year.setOrganization(organization);
-        organization.setYears(years);
+//        teamYear.setOrganization(organization);
+//        organization.setTeamYears(teamYears);
 
         for (int i = 700; i < 705; i++) {
             Integer iCounter = new Integer(i);
@@ -411,7 +404,7 @@ public class DetachedCollectionTest extends ComponentTest {
             coach.setEmailAddress(coach.getFirstName() + "."
                     + coach.getLastName() + "@" + organization.getName()
                     + ".com");
-            coach.setApplicationRole(Person.ApplicationRole.HEADCOACH);
+            coach.setApplicationRole(Person.EApplicationRole.MANAGER); //@note: it was Person.ApplicationRole.HEADCOACH 
             coach.setPassword("test password");
             coach.setPhoto(photo);
 
@@ -431,7 +424,7 @@ public class DetachedCollectionTest extends ComponentTest {
             team.setGroupClassification(Team.EGroupClassification.Bantam);
             team.setLevel(Team.ELevel.A);
             team.setTier(Team.ETier.I);
-            team.setYear((Year) (years.toArray())[0]);
+            team.setTeamYear((TeamYear) (teamYears.toArray())[0]);
             team.setPhoto(photo);
 
             players.clear();
@@ -443,7 +436,7 @@ public class DetachedCollectionTest extends ComponentTest {
                         + player.getLastName() + "@" + organization.getName()
                         + ".com");
                 player.setDexterity(Player.EDexterity.LEFTY);
-                player.setPosition(Player.EPosition.CENTER);
+                player.setPlayerPosition(Player.EPosition.CENTER);
                 player.setDob(new Date());
                 player.setTeam(team);
                 player.setFirstName(jCounter.toString());
@@ -466,7 +459,6 @@ public class DetachedCollectionTest extends ComponentTest {
                 this.team = team;
         }
 
-        organization.setYears(years);
         organization.setDirector(director);
         organization.setCoaches(coaches);
         organization.setTeams(teams);

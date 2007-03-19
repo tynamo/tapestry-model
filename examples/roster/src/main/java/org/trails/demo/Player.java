@@ -29,11 +29,11 @@ import org.trails.descriptor.annotation.PropertyDescriptor;
 public class Player extends Person {
     private static final Log log = LogFactory.getLog(Player.class);
 
-    protected enum EPosition {
+    public enum EPosition {
         GOALIE, DEFENSE, LEFTWING, RIGHTWING, CENTER, ALTERNATE, SPARE, BACKUP, WALKON
     }
 
-    protected enum EDexterity {
+    public enum EDexterity {
         LEFTY, RIGHTY
     }
 

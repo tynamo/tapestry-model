@@ -40,11 +40,11 @@ import org.trails.util.DatePattern;
 public class Person implements Serializable {
     private static final Log log = LogFactory.getLog(Person.class);
 
-    protected enum ERole {
+    public enum ERole {
         USER, ADMIN, SYSTEMADMIN
     }
 
-    protected enum EApplicationRole {
+    public enum EApplicationRole {
         MANAGER, DIRECTOR, SALES, MARKETING
     }
 
