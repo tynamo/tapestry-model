@@ -23,41 +23,4 @@
             <version>1.1</version>
         </dependency>
     </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>exec-maven-plugin</artifactId>
-                <version>1.0.1</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>java</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <mainClass>org.trails.security.SecurityStartup</mainClass>
-                    <arguments>
-                        <argument>applicationContext.xml</argument>
-                    </arguments>
-                    <systemProperties>
-                        <systemProperty>
-                            <key>myproperty</key>
-                            <value>myvalue</value>
-                        </systemProperty>
-                    </systemProperties>
-                </configuration>
-                <dependencies>
-                    <dependency>
-                        <groupId>javax.servlet</groupId>
-                        <artifactId>servlet-api</artifactId>
-                        <version>2.4</version>
-                    </dependency>
-                </dependencies>
-            </plugin>
-        </plugins>
-    </build>
-
 </project>

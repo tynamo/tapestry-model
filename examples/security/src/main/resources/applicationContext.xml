@@ -97,11 +97,16 @@
 		<property name="descriptorFactory" ref="descriptorFactory" />
 	</bean>
 	
+	<bean id="validateUniqueAspect" class="org.trails.validation.ValidateUniqueAspect" factory-method="aspectOf">
+		<property name="descriptorService" ref="descriptorService" />
+		<property name="persistenceService" ref="persistenceService" />
+	</bean>
 	
 	<!-- security service bean -->
 	<bean id="securityService" class="org.trails.security.TrailsSecurityService"/>
 	
-		<!-- security startup beans. lazy-init is true since this is used rarely. -->
+	<!-- seed entities for security. Note that cyclic relationships need to be set using saved entities
+	(i.e. in the latter entity), otherwise it will fail -->
 	<bean id="roleUser" class="org.trails.security.domain.Role" lazy-init="true">
 		<property name="name" value="ROLE_USER" />
 		<property name="description" value="User role" />
@@ -114,8 +119,8 @@
 
 	<bean id="user" class="org.trails.security.domain.User" lazy-init="true">
 		<property name="username" value="user" />
-		<property name="password" value="user" /> <!-- default password -->
-		<property name="confirmPassword" value="user" /> <!-- default password -->
+		<property name="password" value="user" />
+		<property name="confirmPassword" value="user" />
 		<property name="firstName" value="Foo" />
 		<property name="lastName" value="Bar" />
 		<property name="roles">
@@ -127,8 +132,8 @@
 
 	<bean id="admin" class="org.trails.security.domain.User" lazy-init="true">
 		<property name="username" value="admin" />
-		<property name="password" value="admin" /> <!-- default password -->
-		<property name="confirmPassword" value="admin" /> <!-- default password -->
+		<property name="password" value="admin" />
+		<property name="confirmPassword" value="admin" />
 		<property name="firstName" value="Admin" />
 		<property name="lastName" value="Admin" />
 		<property name="roles">
@@ -138,35 +143,12 @@
 			</list>
 		</property>
 	</bean>
-	
-    <bean id="seedDataInitializer" class="org.trails.seeddata.SpringSeedEntityInitializer" lazy-init="true">
-        <property name="persistenceService" ref="persistenceService" />
-        <property name="descriptorService" ref="descriptorService" />
-    </bean>
 
-    <bean id="securityStartup" class="org.trails.security.SecurityStartup" lazy-init="true">
-		<property name="persistenceService" ref="persistenceService" />
-        <property name="seedDataInitializer" ref="seedDataInitializer"/>
-        <property name="defaultUsers">
-			<list>
-				<ref local="user"/>
-				<ref local="admin"/>
-			</list>
-		</property>
-		<property name="defaultRoles">
-			<list>
-				<ref local="roleManager"/>
-				<ref local="roleUser"/>
-			</list>
-		</property>
-	</bean>
-
+   <bean id="seedDataInitializer" class="org.trails.seeddata.SpringSeedEntityInitializer" init-method="init">
+       <property name="persistenceService" ref="persistenceService" />
+       <property name="descriptorService" ref="descriptorService" />
+   </bean>
 	<!-- end of security startup beans -->
-	
-	<bean id="validateUniqueAspect" class="org.trails.validation.ValidateUniqueAspect" factory-method="aspectOf">
-		<property name="descriptorService" ref="descriptorService" />
-		<property name="persistenceService" ref="persistenceService" />
-	</bean>
 	
 	<bean id="descriptorInternationalizationAspect" class="org.trails.i18n.DescriptorInternationalization" factory-method="aspectOf">
 		<property name="resourceBundleMessageSource" ref="trailsMessageSource"/>

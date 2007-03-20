@@ -35,17 +35,6 @@
         <property name="persistenceService" ref="persistenceService"/>
     </bean>
 
-
-	<bean id="inMemoryUserDetailsService"
-		class="org.acegisecurity.userdetails.memory.InMemoryDaoImpl">
-		<property name="userMap">
-			<value>
-				user=pwd,ROLE_USER
-				admin=admin,ROLE_USER,ROLE_MANAGER
-			</value>
-		</property>
-	</bean>
-
 	<!-- ======================== FILTER CHAIN ======================= -->
 
 	<!--  if you wish to use channel security, add "channelProcessingFilter," in front
