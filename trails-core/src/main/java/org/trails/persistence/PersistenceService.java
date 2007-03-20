@@ -72,5 +72,7 @@ public interface PersistenceService
     public <T> T reload(T instance);
 
     public <T> T merge(T instance);
+
+    public <T> T saveOrUpdate(T instance);
     
 }

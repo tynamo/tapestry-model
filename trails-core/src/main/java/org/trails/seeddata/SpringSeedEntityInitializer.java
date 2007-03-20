@@ -108,7 +108,7 @@ public class SpringSeedEntityInitializer implements ApplicationContextAware, See
 					}
 	    		continue;
 		    }
-	    	persistenceService.save(object);
+	    	persistenceService.saveOrUpdate(object);
 			}
 		}
 	}

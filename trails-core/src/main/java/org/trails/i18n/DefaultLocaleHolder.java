@@ -1,21 +1,20 @@
 package org.trails.i18n;
 
-import java.io.IOException;
-import java.util.Locale;
-
 import org.apache.hivemind.service.ThreadLocale;
-import org.apache.tapestry.services.WebRequestServicer;
-import org.apache.tapestry.services.WebRequestServicerFilter;
-import org.apache.tapestry.web.WebRequest;
-import org.apache.tapestry.web.WebResponse;
+
+import java.util.Locale;
 
 public class DefaultLocaleHolder implements LocaleHolder
 {
     private ThreadLocale threadLocale;
-    
+
     public Locale getLocale()
     {
-        return getThreadLocale().getLocale();
+        if (getThreadLocale() != null)
+        {
+            return getThreadLocale().getLocale();
+        }
+        return Locale.getDefault();
     }
 
     public ThreadLocale getThreadLocale()

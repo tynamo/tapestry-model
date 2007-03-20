@@ -373,4 +373,21 @@ public class HibernatePersistenceService extends HibernateDaoSupport implements
             throw new PersistenceException( dex );
         }
     }
+
+    /**
+     * @see org.trails.persistence.PersistenceService#saveOrUpdate(java.lang.Object)
+     */
+    @Transactional
+    public <T> T saveOrUpdate(T instance) throws ValidationException
+    {
+        try
+        {
+            getHibernateTemplate().saveOrUpdate(instance);
+            return instance;
+        }
+        catch (DataAccessException dex)
+        {
+            throw new PersistenceException(dex);
+        }
+    }
 }
