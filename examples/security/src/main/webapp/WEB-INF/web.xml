@@ -6,13 +6,14 @@
 
 
 <web-app>
-    <display-name>security</display-name>
+    <display-name>${artifactId}</display-name>
 
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>
             classpath:applicationContext.xml
             classpath:acegi-security.xml
+            classpath:applicationContext-seedData.xml
         </param-value>
     </context-param>
 

@@ -13,6 +13,7 @@
         <param-value>
             classpath:applicationContext.xml
             classpath:acegi-security.xml
+            classpath:applicationContext-seedData.xml
         </param-value>
     </context-param>
 

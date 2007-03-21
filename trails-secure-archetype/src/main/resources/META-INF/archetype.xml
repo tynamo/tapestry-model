@@ -7,6 +7,7 @@
   <resources>
   	<resource>pom.xml</resource>      
     <resource>src/main/resources/acegi-security.xml</resource>
+    <resource>src/main/resources/applicationContext-seedData.xml</resource>
 	<resource>src/main/resources/hibernate.cfg.xml</resource>
 	<resource>src/main/webapp/WEB-INF/web.xml</resource>
 	<resource>src/main/webapp/WEB-INF/Border.html</resource>
