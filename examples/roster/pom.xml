@@ -1,74 +1,190 @@
 <?xml version="1.0"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
-    <parent>
-        <artifactId>examples</artifactId>
-        <groupId>org.trailsframework</groupId>
-        <version>1.0-SNAPSHOT</version>
-    </parent>
 
-    <modelVersion>4.0.0</modelVersion>
-    <groupId>org.trailsframework.examples</groupId>
-    <artifactId>roster</artifactId>
-    <packaging>war</packaging>
-    <name>Trails Example - Roster</name>
-    <url>http://www.trailsframework.org/</url>
+  <parent>
+    <artifactId>examples</artifactId>
+    <groupId>org.trailsframework</groupId>
+    <version>1.0-SNAPSHOT</version>
+  </parent>
+
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.trailsframework.examples</groupId>
+  <artifactId>roster</artifactId>
+  <packaging>war</packaging>
+  <name>Trails Example - Roster</name>
+  <url>http://www.trailsframework.org/</url>
 
   <build>
-    <extensions>
-      <extension>
-        <groupId>hsqldb</groupId>
-        <artifactId>hsqldb</artifactId>
-        <version>1.8.0.1</version>
-      </extension>
-    </extensions>
-    <resources>
-      <resource>
-        <directory>${basedir}/src/main/resources</directory>
-        <excludes>
-          <exclude>**/hibernate.cfg.xml</exclude>
-        </excludes>
-      </resource>
-      <resource>
-        <directory>${basedir}/target/generated-sources/resources</directory>
-      </resource>
-    </resources>
-    <finalName>roster</finalName>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <parallel>true</parallel>
+          <threadCount>4</threadCount>
+          <includes>
+            <include>**/*Test.java</include>
+          </includes>
+          <excludes>
+            <exclude>**/ComponentTest.java</exclude>
+            <exclude>**/ClassDescriptorTest.java</exclude>
+          </excludes>
+        </configuration>
+      </plugin>
+    </plugins>
   </build>
+
+
   <dependencies>
-    <dependency>
-      <groupId>org.trailsframework</groupId>
-      <artifactId>trails-core</artifactId>
-      <version>1.0-SNAPSHOT</version>
-    </dependency>
-    <dependency>
-      <groupId>jaxen</groupId>
-      <artifactId>jaxen</artifactId>
-      <version>1.1</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.javaforge.tapestry</groupId>
-      <artifactId>tapernate</artifactId>
-      <version>0.1-SNAPSHOT</version>
-    </dependency>
-    <dependency>
-      <groupId>hsqldb</groupId>
-      <artifactId>hsqldb</artifactId>
-      <version>1.8.0.1</version>
-    </dependency>
-    <dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>servlet-api</artifactId>
-      <version>2.4</version>
-      <scope>provided</scope>
-    </dependency>
     <dependency>
       <groupId>commons-logging</groupId>
       <artifactId>commons-logging</artifactId>
       <version>1.1</version>
     </dependency>
+    <dependency>
+      <groupId>jmock</groupId>
+      <artifactId>jmock</artifactId>
+      <version>1.0.1</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-mock</artifactId>
+      <version>2.0.2</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>jmock</groupId>
+      <artifactId>jmock-cglib</artifactId>
+      <version>1.0.1</version>
+      <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>cglib</groupId>
+          <artifactId>cglib-full</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.trailsframework</groupId>
+      <artifactId>trails-core</artifactId>
+      <version>1.0-SNAPSHOT</version>
+    </dependency>
+
   </dependencies>
+
+
+  <!-- See http://shale.apache.org/shale-apps/selenium.html -->
+  <!-- Thank you Wendy Smoak-->
+  <profiles>
+    <profile>
+      <id>selenium</id>
+      <activation>
+        <property>
+          <name>selenium</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.mortbay.jetty</groupId>
+            <artifactId>maven-jetty-plugin</artifactId>
+            <version>6.1.1</version>
+            <configuration>
+              <contextPath>/</contextPath>
+              <scanIntervalSeconds>0</scanIntervalSeconds>
+              <systemProperties>
+                <systemProperty>
+                  <name>slf4j</name>
+                  <value>false</value>
+                </systemProperty>
+                <systemProperty>
+                  <name>log4j.configuration</name>
+                  <value>file:${basedir}/target/classes/log4j.properties</value>
+                </systemProperty>
+              </systemProperties>
+              <webAppSourceDirectory>${project.build.directory}/${project.build.finalName}
+              </webAppSourceDirectory>
+            </configuration>
+            <dependencies>
+              <dependency>
+                <groupId>commons-logging</groupId>
+                <artifactId>commons-logging</artifactId>
+                <version>1.1</version>
+              </dependency>
+              <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-jcl</artifactId>
+                <version>1.0.1</version>
+              </dependency>
+              <dependency>
+                <groupId>log4j</groupId>
+                <artifactId>log4j</artifactId>
+                <version>1.2.12</version>
+              </dependency>
+            </dependencies>
+          </plugin>
+
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>dependency-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>unzip-selenium</id>
+                <phase>generate-resources</phase>
+                <goals>
+                  <goal>unpack</goal>
+                </goals>
+                <configuration>
+                  <artifactItems>
+                    <artifactItem>
+                      <groupId>org.openqa.selenium.core</groupId>
+                      <artifactId>selenium-core</artifactId>
+                      <version>0.8.2</version>
+                    </artifactItem>
+                  </artifactItems>
+                  <outputDirectory>${project.build.directory}/selenium</outputDirectory>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>copy-selenium</id>
+                <phase>process-resources</phase>
+                <configuration>
+                  <tasks>
+                    <copy todir="${project.build.directory}/${project.build.finalName}">
+                      <fileset dir="${basedir}/src/main/webapp"/>
+                    </copy>
+                    <copy todir="${project.build.directory}/${project.build.finalName}/selenium/core">
+                      <fileset dir="${project.build.directory}/selenium/core"/>
+                    </copy>
+                    <copy todir="${project.build.directory}/${project.build.finalName}/selenium/tests">
+                      <fileset dir="${basedir}/src/test/selenium"/>
+                    </copy>
+                  </tasks>
+                </configuration>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+      <repositories>
+        <repository>
+          <id>OpenQA</id>
+          <url>http://maven.openqa.org</url>
+        </repository>
+      </repositories>
+    </profile>
+  </profiles>
+
 </project>
