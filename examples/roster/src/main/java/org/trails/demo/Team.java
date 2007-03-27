@@ -72,11 +72,11 @@ public class Team implements Serializable {
         I, II, III, IV
     }
 
-    private Integer id = null;
+    private Integer id = new Integer ("-1");
 
     private EGender gender;
 
-    private Organization organization;
+    private Organization organization = null;
 
     private Set<Coach> coaches = new HashSet<Coach>();
 
@@ -94,7 +94,7 @@ public class Team implements Serializable {
 
     private Set<Player> players = new HashSet<Player>();
 
-    private TeamYear teamYear;
+    private TeamYear teamYear = null;
 
     private Long created = new Long(GregorianCalendar.getInstance()
             .getTimeInMillis());

@@ -2,11 +2,11 @@
 
 <span jwcid="@Border">
     <div id="header">
-        <a href="#" jwcid="@trails:ListAllLink" typeName="ognl:model.class.name"/>
+        <a href="#" jwcid="@trails:ListAllLink" typeName="ognl:model.class.name" />
         &nbsp;
         <a href="#" jwcid="@PageLink" page="Home"><span jwcid="@Insert" value="message:org.trails.i18n.home">Home</span></a>
     </div>
-	<h1><span jwcid="@Insert" value="ognl:title"/></h1>
+    <h1><span jwcid="@Insert" value="ognl:title" /></h1>
     <div jwcid="@If" class="error" condition="ognl:delegate.hasErrors" element="div">
         <span jwcid="@For" source="ognl:delegate.errorRenderers" value="ognl:delegator">
           <img jwcid="@Any" src="images/iconWarning.gif" alt="message:icon.warning" class="icon"/>
@@ -15,17 +15,36 @@
           <br/>
         </span>
     </div>
-    <form jwcid="@trails:ObjectForm" model="ognl:model" class="detail">
-        <td jwcid="director@Block">
-            <label><span jwcid="@Insert"
-                         value="ognl:classDescriptor.getPropertyDescriptor('director').displayName"/></label>
-		    	<span class="editor">
-		    	      <span jwcid="@trails:AssociationSelect"
-                            propertyDescriptor="ognl:classDescriptor.getPropertyDescriptor('director')"
-                            value="ognl:model.director"
-                            criteria="ognl:directorsWithoutOrganizationCriteria"/>
-		    	</span>
-            <br/>
-        </td>
-    </form>
+
+<form jwcid="@trails:ObjectForm" model="ognl:model" class="detail">
+
+    <div jwcid="director@Block">
+        <label><span jwcid="@Insert" value="ognl:classDescriptor.getPropertyDescriptor('director').displayName"/></label>
+
+        <span class="editor">
+            <tr>
+                <span jwcid="@If" condition="ognl:not(page.isModelNew())">
+                    <span jwcid="@If" condition="ognl:page.isCurrentlyAssociatedWithDirector()">
+                        <a href="#" jwcid="editLink"><span jwcid="linkInsert" /></a>
+                    </span>
+                </span>
+            </tr>
+            <tr>
+                <span jwcid="@If" condition="ognl:not(page.isModelNew())">
+                    <span jwcid="@If" condition="ognl:page.isCurrentlyAssociatedWithDirector()">
+                        <input jwcid="removeButton" type="button"
+                               label="Delete" />
+                    </span>
+                    <span jwcid="@If" condition="ognl:page.isNotCurrentlyAssociatedWithDirector()">
+                        <input jwcid="addButton" type="button"
+                               label="Add New..." />
+                    </span>
+                </span>
+            </tr>
+        </span>
+        <br/>
+    </div>
+
+</form>
+
 </span>

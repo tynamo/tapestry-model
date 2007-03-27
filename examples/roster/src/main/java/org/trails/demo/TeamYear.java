@@ -28,9 +28,9 @@ import org.trails.util.DatePattern;
 public class TeamYear implements Serializable {
     private static final Log log = LogFactory.getLog(TeamYear.class);
 
-    private Integer id = null;
+    private Integer id = new Integer ("-1");
 
-    private League league;
+    private League league = null;
 
     private Integer yearStart = new Integer("0");
 

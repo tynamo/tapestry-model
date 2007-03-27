@@ -16,7 +16,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
@@ -44,15 +43,15 @@ import org.trails.validation.ValidateUniqueness;
  */
 @Entity
 @ValidateUniqueness(property = "name")
-@ClassDescriptor(hasCyclicRelationships=true, hidden = true)
+@ClassDescriptor(hasCyclicRelationships=true)
 public class Organization implements Serializable {
     private static final Log log = LogFactory.getLog(Organization.class);
 
     private Integer id = null;
 
-    private League league;
+    //private League league = null;
 
-    private Director director;
+    private Director director = null;
 
     private Set<Coach> coaches = new HashSet<Coach>();
 
@@ -110,14 +109,14 @@ public class Organization implements Serializable {
         return demographics;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "organization_league_fk", insertable = false, updatable = true, nullable = true)
-    public League getLeague() {
-        return league;
-    }
+    //@ManyToOne(fetch = FetchType.LAZY)
+    //@JoinColumn(name = "organization_league_fk", insertable = false, updatable = true, nullable = true)
+   // public League getLeague() {
+   //     return league;
+   // }
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinTable(name = "OrganizationsDirectors",
+    @OneToOne
+    @JoinTable(name = "OrganizationDirector",
         joinColumns = @JoinColumn(name = "director_fk"),
         inverseJoinColumns = {@JoinColumn(name = "organization_fk")}
     )
@@ -206,9 +205,9 @@ public class Organization implements Serializable {
         this.demographics = demographics;
     }
 
-    public void setLeague(League league) {
-        this.league = league;
-    }
+    //public void setLeague(League league) {
+    //    this.league = league;
+    //}
 
     public void setDirector(Director director) {
         this.director = director;

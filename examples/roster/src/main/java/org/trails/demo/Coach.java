@@ -29,9 +29,9 @@ public class Coach extends Person {
 
     private ETeamRole    role;
 
-    private Team team;
+    private Team team = null;
 
-    private Organization organization;
+    private Organization organization = null;
 
     /**
      * CTOR

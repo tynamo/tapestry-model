@@ -26,7 +26,7 @@ public class Officer extends Person {
 
     private EOfficer    role;
 
-    private League league;
+    private League league = null;
 
     /**
      * CTOR

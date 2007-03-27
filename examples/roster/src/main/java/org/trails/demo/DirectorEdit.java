@@ -5,21 +5,22 @@ import org.hibernate.criterion.Restrictions;
 import org.trails.page.EditPage;
 
 /**
- * These custom pages override the AssociationSelect component criteria
- * parameter with a new criteria that properly  considers the @OneToOne
- * use case.
+ * This custom page override the AssociationSelect component criteria
+ * parameter with a new criteria that properly  considers the
  *
- * EXAMPLE one-to-one association (Organization<-->Director) :
- * The "director" select combo in OrganizationEditPage will show
- * only directors without organizations, and vice versa the
- * "organization" select combo in DirectorEditPage will show only
- * organizations without directors. So, when you select a director for an
- * organization, that same director won't be available in the select
- * combo for other organizations.
+ * @OneToOne use case.
+ *
+ * EXAMPLE:
+ *         one-to-one association
+ *
+ *                 Organization-<>-----Director
+ *
+ * The "director" select combo in DirectorEdit Page will show
+ * only directors without organizations.
  *
  * @author kenneth.colassi            nhhockeyplayer@hotmail.com
  */
-public abstract class DirectorEditPage extends EditPage {
+public abstract class DirectorEdit extends EditPage {
 
 
     public DetachedCriteria getOrganizationsWithoutDirectorCriteria() {

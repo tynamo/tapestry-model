@@ -46,7 +46,7 @@ import org.trails.validation.ValidateUniqueness;
 public class League implements Serializable {
     private static final Log log = LogFactory.getLog(League.class);
 
-    private Integer id = null;
+    private Integer id = new Integer ("-1");
 
     private Set<TeamYear> years = new HashSet<TeamYear>();
 

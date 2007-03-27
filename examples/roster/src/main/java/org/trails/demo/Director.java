@@ -8,7 +8,6 @@ import javax.persistence.OneToOne;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.trails.descriptor.annotation.ClassDescriptor;
 
 /**
  * A Director belongs to an organization
@@ -16,11 +15,10 @@ import org.trails.descriptor.annotation.ClassDescriptor;
  * @author kenneth.colassi        nhhockeyplayer@hotmail.com
  */
 @Entity
-@ClassDescriptor(hasCyclicRelationships = true)
 public class Director extends Person {
     private static final Log log = LogFactory.getLog(Director.class);
 
-    private Organization organization;
+    private Organization organization = null;
 
     /**
      * CTOR
@@ -38,10 +36,11 @@ public class Director extends Person {
 
     public Director() {
         setERole(ERole.USER);
+        setApplicationRole(EApplicationRole.DIRECTOR);
     }
 
     @OneToOne
-    @JoinTable(name = "OrganizationsDirectors",
+    @JoinTable(name = "OrganizationDirector",
             joinColumns = @JoinColumn(name = "organization_fk"),
             inverseJoinColumns = {@JoinColumn(name = "director_fk")}
     )

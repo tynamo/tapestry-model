@@ -48,7 +48,7 @@ public class Person implements Serializable {
         MANAGER, DIRECTOR, SALES, MARKETING
     }
 
-    protected Integer id = null;
+    protected Integer id = new Integer ("-1");
 
     protected String firstName;
 
@@ -150,7 +150,6 @@ public class Person implements Serializable {
     }
 
     @Enumerated(value = EnumType.STRING)
-    @NotNull(message = "is required")
     @PropertyDescriptor(summary = true, index = 9)
     public EApplicationRole getApplicationRole() {
         return eApplicationRole;

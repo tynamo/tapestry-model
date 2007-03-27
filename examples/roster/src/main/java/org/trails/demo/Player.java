@@ -43,7 +43,7 @@ public class Player extends Person {
 
     private EDexterity dexterity;
 
-    private Team team;
+    private Team team = null;
 
     private Set<UploadableMedia> clips = new HashSet<UploadableMedia>();
 

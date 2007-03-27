@@ -56,7 +56,7 @@ public class UploadableMedia implements ITrailsBlob {
         DOCUMENT, PHOTO, CLIP
     }
 
-    private Integer id = null;
+    private Integer id = new Integer ("-1");
 
     private String name;
 
