@@ -15,7 +15,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
@@ -34,22 +33,20 @@ import org.trails.descriptor.annotation.PropertyDescriptor;
 import org.trails.util.DatePattern;
 import org.trails.validation.ValidateUniqueness;
 
-
 /**
- * Organizations belong to one league and
- * have one Director, Coaches and Teams
+ * Organizations belong to one league and have one Director, Coaches and Teams
  *
- * @author kenneth.colassi        nhhockeyplayer@hotmail.com
+ * @author kenneth.colassi nhhockeyplayer@hotmail.com
  */
 @Entity
 @ValidateUniqueness(property = "name")
-@ClassDescriptor(hasCyclicRelationships=true)
+@ClassDescriptor(hasCyclicRelationships = true)
 public class Organization implements Serializable {
     private static final Log log = LogFactory.getLog(Organization.class);
 
     private Integer id = null;
 
-    //private League league = null;
+    // private League league = null;
 
     private Director director = null;
 
@@ -96,7 +93,6 @@ public class Organization implements Serializable {
         return id;
     }
 
-
     @Column(unique = true)
     @NotNull(message = "is required")
     @PropertyDescriptor(readOnly = false, summary = true, index = 1)
@@ -109,18 +105,16 @@ public class Organization implements Serializable {
         return demographics;
     }
 
-    //@ManyToOne(fetch = FetchType.LAZY)
-    //@JoinColumn(name = "organization_league_fk", insertable = false, updatable = true, nullable = true)
-   // public League getLeague() {
-   //     return league;
-   // }
+    // @ManyToOne(fetch = FetchType.LAZY)
+    // @JoinColumn(name = "organization_league_fk", insertable = false,
+    // updatable = true, nullable = true)
+    // public League getLeague() {
+    // return league;
+    // }
 
-    @OneToOne
-    @JoinTable(name = "OrganizationDirector",
-        joinColumns = @JoinColumn(name = "director_fk"),
-        inverseJoinColumns = {@JoinColumn(name = "organization_fk")}
-    )
-    @PropertyDescriptor(readOnly = false, index = 2)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "organization")
+    @OrderBy("lastName")
+    @PropertyDescriptor(readOnly = true)
     public Director getDirector() {
         return director;
     }
@@ -144,6 +138,7 @@ public class Organization implements Serializable {
     }
 
     private UploadableMedia photo = new UploadableMedia();
+
     @BlobDescriptor(renderType = RenderType.IMAGE, contentDisposition = ContentDisposition.ATTACHMENT)
     @PropertyDescriptor(summary = false, index = 3)
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -152,6 +147,7 @@ public class Organization implements Serializable {
     }
 
     private UploadableMedia header = new UploadableMedia();
+
     @BlobDescriptor(renderType = RenderType.IMAGE, contentDisposition = ContentDisposition.ATTACHMENT)
     @PropertyDescriptor(summary = false, index = 4)
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -160,6 +156,7 @@ public class Organization implements Serializable {
     }
 
     private UploadableMedia logo = new UploadableMedia();
+
     @BlobDescriptor(renderType = RenderType.IMAGE, contentDisposition = ContentDisposition.ATTACHMENT)
     @PropertyDescriptor(summary = true, index = 5)
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -205,9 +202,9 @@ public class Organization implements Serializable {
         this.demographics = demographics;
     }
 
-    //public void setLeague(League league) {
-    //    this.league = league;
-    //}
+    // public void setLeague(League league) {
+    // this.league = league;
+    // }
 
     public void setDirector(Director director) {
         this.director = director;

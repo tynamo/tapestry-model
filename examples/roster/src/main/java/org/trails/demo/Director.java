@@ -1,8 +1,9 @@
 package org.trails.demo;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.OneToOne;
 
 import org.apache.commons.beanutils.BeanUtils;
@@ -12,7 +13,7 @@ import org.apache.commons.logging.LogFactory;
 /**
  * A Director belongs to an organization
  *
- * @author kenneth.colassi        nhhockeyplayer@hotmail.com
+ * @author kenneth.colassi nhhockeyplayer@hotmail.com
  */
 @Entity
 public class Director extends Person {
@@ -39,11 +40,8 @@ public class Director extends Person {
         setApplicationRole(EApplicationRole.DIRECTOR);
     }
 
-    @OneToOne
-    @JoinTable(name = "OrganizationDirector",
-            joinColumns = @JoinColumn(name = "organization_fk"),
-            inverseJoinColumns = {@JoinColumn(name = "director_fk")}
-    )
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "organization_id", insertable = true, updatable = true, nullable = true)
     public Organization getOrganization() {
         return organization;
     }
