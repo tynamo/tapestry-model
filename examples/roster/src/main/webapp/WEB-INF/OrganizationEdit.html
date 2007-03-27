@@ -23,26 +23,30 @@
 
         <span class="editor">
             <tr>
+                <td>
                 <span jwcid="@If" condition="ognl:not(page.isModelNew())">
                     <span jwcid="@If" condition="ognl:page.isCurrentlyAssociatedWithDirector()">
                         <a href="#" jwcid="editLink"><span jwcid="linkInsert" /></a>
                     </span>
                 </span>
+                </td>
             </tr>
             <tr>
+                <td><br><br>
+                <span jwcid="@If" condition="ognl:page.isCurrentlyAssociatedWithDirector()">
+                    <input jwcid="removeButton" type="button"
+                           label="ognl:getMessage(@org.trails.component.Utils@REMOVE_MESSAGE)" />
+                </span>
                 <span jwcid="@If" condition="ognl:not(page.isModelNew())">
-                    <span jwcid="@If" condition="ognl:page.isCurrentlyAssociatedWithDirector()">
-                        <input jwcid="removeButton" type="button"
-                               label="ognl:getMessage(@org.trails.component.Utils@REMOVE_MESSAGE)" />
-                    </span>
                     <span jwcid="@If" condition="ognl:page.isNotCurrentlyAssociatedWithDirector()">
                         <input jwcid="addButton" type="button"
                                label="message:org.trails.i18n.addNew" />
                     </span>
                 </span>
+                </td>
             </tr>
         </span>
-        <br/>
+        <br>
     </div>
 
 </form>
