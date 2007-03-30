@@ -47,15 +47,15 @@
     <mailingLists>
         <mailingList>
             <name>Trails User List</name>
-            <subscribe>http://xircles.codehaus.org/manage_email</subscribe>
-            <unsubscribe>http://xircles.codehaus.org/manage_email</unsubscribe>
+            <subscribe>http://xircles.codehaus.org/manage_email/users@trails.codehaus.org</subscribe>
+            <unsubscribe>http://xircles.codehaus.org/manage_email/users@trails.codehaus.org</unsubscribe>
             <post>users@trails.codehaus.org</post>
             <archive>http://archive.trails.codehaus.org/users</archive>
         </mailingList>
         <mailingList>
             <name>Trails Developer List</name>
-            <subscribe>http://xircles.codehaus.org/manage_email</subscribe>
-            <unsubscribe>http://xircles.codehaus.org/manage_email</unsubscribe>
+            <subscribe>http://xircles.codehaus.org/manage_email/dev@trails.codehaus.org</subscribe>
+            <unsubscribe>http://xircles.codehaus.org/manage_email/dev@trails.codehaus.org</unsubscribe>
             <post>dev@trails.codehaus.org</post>
             <archive>http://archive.trails.codehaus.org/dev</archive>
         </mailingList>
