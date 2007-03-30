@@ -9,7 +9,8 @@
     <artifactId>trails-core</artifactId>
     <name>Trails Core</name>
     <version>1.0-SNAPSHOT</version>
-    <url>http://www.trailsframework.org/</url>
+    <packaging>jar</packaging>
+
     <build>
         <plugins>
             <plugin>
@@ -31,55 +32,42 @@
                 </executions>
             </plugin>
         </plugins>
-		<pluginManagement>
-		<plugins>
-            <plugin>
-               <groupId>org.apache.maven.plugins</groupId>
-               <artifactId>maven-surefire-report-plugin</artifactId>
-            </plugin>
-            <plugin>
-            	<groupId>org.apache.maven.plugins</groupId>
-            	<artifactId>maven-javadoc-plugin</artifactId>
-            	<version>2.0</version>
-				<configuration>
-					<source>1.5</source>
-				</configuration>
-            </plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-site-plugin</artifactId>
-				<version>2.0-beta-5</version>
-			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>cobertura-maven-plugin</artifactId>
-				<version>2.0</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>clean</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-surefire-plugin</artifactId>
-					<configuration>
-						<parallel>true</parallel>
-						<threadCount>4</threadCount>
-						<includes>
-							<include>**/*Test.java</include>
-						</includes>
-						<excludes>
-							<exclude>**/functional/*</exclude>
-							<exclude>**/ComponentTest.java</exclude>
-							<exclude>**/PageTest.java</exclude>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-report-plugin</artifactId>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>cobertura-maven-plugin</artifactId>
+                    <version>2.0</version>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>clean</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <configuration>
+                        <parallel>true</parallel>
+                        <threadCount>4</threadCount>
+                        <includes>
+                            <include>**/*Test.java</include>
+                        </includes>
+                        <excludes>
+                            <exclude>**/functional/*</exclude>
+                            <exclude>**/ComponentTest.java</exclude>
+                            <exclude>**/PageTest.java</exclude>
                         </excludes>
-					</configuration>
-				</plugin>
-        </plugins>
-		</pluginManagement>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
         
     </build>
     <dependencies>
@@ -117,7 +105,7 @@
             <artifactId>commons-beanutils</artifactId>
             <version>1.7.0</version>
         </dependency>
-		<dependency>
+        <dependency>
             <groupId>commons-dbcp</groupId>
             <artifactId>commons-dbcp</artifactId>
             <version>1.2.1</version>
@@ -136,10 +124,10 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-			<groupId>javax.persistence</groupId>
-			<artifactId>persistence-api</artifactId>
-			<version>1.0</version>
-		</dependency>
+            <groupId>javax.persistence</groupId>
+            <artifactId>persistence-api</artifactId>
+            <version>1.0</version>
+        </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>servlet-api</artifactId>
@@ -246,7 +234,7 @@
         <dependency>
             <groupId>com.javaforge.tapestry</groupId>
             <artifactId>tapestry-spring</artifactId>
-			<version>1.0.0</version>
+            <version>1.0.0</version>
         </dependency>
         <dependency>
             <groupId>com.javaforge.tapestry</groupId>
@@ -262,25 +250,6 @@
     </dependencies>
     <reporting>
         <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-				<version>2.0</version>
-                <configuration>
-                    <doclet>ydoc.doclets.YStandard</doclet>
-                    <docletPath>${ydoc.home}/lib/ydoc.jar${path.separator}${ydoc.home}/lib/class2svg.jar${path.separator}${ydoc.home}/resources</docletPath>
-                    <additionalparam>-license ${ydoc.license} -filter ydoc.filters.ExcludeFilter -filterpath ${ydoc.home}/lib/ydoc.jar -umlautogen</additionalparam>
-                    <author>true</author>
-                    <bottom>true</bottom>
-                    <header><![CDATA[<a href="/" target="_top">Trails Framework</a>]]></header>
-                    <minmemory>128m</minmemory>
-                    <maxmemory>512</maxmemory>
-                    <packagenames>org.trails.*</packagenames>
-                    <use>true</use>
-                    <version>true</version>
-                    <windowtitle>${project.name} ${project.version} API</windowtitle>
-                </configuration>
-            </plugin>
             <plugin>
                 <groupId>net.objectlab</groupId>
                 <artifactId>mvn-qalab-plugin</artifactId>
@@ -311,24 +280,6 @@
                         <format>html</format>
                     </formats>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>
-                    maven-project-info-reports-plugin
-                </artifactId>
-                <reportSets>
-                    <reportSet>
-                        <reports>
-                            <report>dependencies</report>
-                            <report>dependency-convergence</report>
-                            <report>project-team</report>
-                            <report>cim</report>
-                            <report>issue-tracking</report>
-                            <report>scm</report>
-                        </reports>
-                    </reportSet>
-                </reportSets>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -419,6 +370,37 @@
                     <systemPath>${java.home}/../lib/tools.jar</systemPath>
                 </dependency>
             </dependencies>
+        </profile>
+        <profile>
+            <id>ydoc</id>
+            <activation>
+              <property>
+                <name>ydoc</name>
+              </property>
+            </activation>
+            <reporting>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>2.0</version>
+                        <configuration>
+                            <doclet>ydoc.doclets.YStandard</doclet>
+                            <docletPath>${ydoc.home}/lib/ydoc.jar${path.separator}${ydoc.home}/lib/class2svg.jar${path.separator}${ydoc.home}/resources</docletPath>
+                            <additionalparam>-license ${ydoc.license} -filter ydoc.filters.ExcludeFilter -filterpath ${ydoc.home}/lib/ydoc.jar -umlautogen</additionalparam>
+                            <author>true</author>
+                            <bottom>true</bottom>
+                            <header><![CDATA[<a href="/" target="_top">Trails Framework</a>]]></header>
+                            <minmemory>128m</minmemory>
+                            <maxmemory>512</maxmemory>
+                            <packagenames>org.trails.*</packagenames>
+                            <use>true</use>
+                            <version>true</version>
+                            <windowtitle>${project.name} ${project.version} API</windowtitle>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </reporting>
         </profile>
     </profiles>
 </project>

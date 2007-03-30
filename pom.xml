@@ -144,7 +144,13 @@
             </notifier>
         </notifiers>
     </ciManagement>
+
+    
     <distributionManagement>
+        <site>
+            <id>trails</id>
+            <url>dav:https://dav.codehaus.org/trails/site/</url>
+        </site>
         <repository>
             <id>trails-release</id>
             <name>Trails' release repository</name>

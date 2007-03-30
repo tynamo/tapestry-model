@@ -5,7 +5,7 @@
 	<artifactId>examples</artifactId>
 	<packaging>pom</packaging>
 	<name>Trails Examples</name>
-    <url>http://www.trailsframework.org/</url>
+
 
     <modules>
         <module>ajaxlist</module>
