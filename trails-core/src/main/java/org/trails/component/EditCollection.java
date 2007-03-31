@@ -31,6 +31,7 @@ import org.apache.tapestry.contrib.palette.SortMode;
 import org.apache.tapestry.form.IPropertySelectionModel;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.NonUniqueObjectException;
 import org.trails.TrailsRuntimeException;
 import org.trails.callback.CallbackStack;
 import org.trails.callback.CollectionCallback;
@@ -131,7 +132,13 @@ public abstract class EditCollection extends TrailsComponent
                 getPage().getRequestCycle(),
                 Utils.checkForCGLIB(member.getClass()).getName(),
                 PageType.EDIT);
-        getPersistenceService().reattach(member);
+        try
+        {
+            getPersistenceService().reattach(member);
+        } catch (NonUniqueObjectException e)
+        {
+            member = getPersistenceService().reload(member);
+        }
         editPage.setModel(member);
         return editPage;
     }
