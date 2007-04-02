@@ -2,7 +2,6 @@ package org.trails.demo;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
@@ -12,7 +11,7 @@ import org.apache.commons.logging.LogFactory;
 import org.trails.descriptor.annotation.ClassDescriptor;
 
 /**
- * A Director belongs to an organization
+ * A Director belongs to an Organization
  *
  * @author kenneth.colassi nhhockeyplayer@hotmail.com
  */
@@ -24,7 +23,7 @@ public class Director extends Person {
     private Organization organization = null;
 
     /**
-     * CTOR
+     * Copy CTOR
      */
     public Director(Director dto) {
         super(dto);
@@ -42,7 +41,7 @@ public class Director extends Person {
         setApplicationRole(EApplicationRole.DIRECTOR);
     }
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "organization_id", insertable = true, updatable = true, nullable = true)
     public Organization getOrganization() {
         return organization;

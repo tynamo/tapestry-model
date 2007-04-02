@@ -15,6 +15,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
@@ -34,7 +35,8 @@ import org.trails.util.DatePattern;
 import org.trails.validation.ValidateUniqueness;
 
 /**
- * Organizations belong to one league and have one Director, Coaches and Teams
+ * Organizations belong to one league and have Demographics, Director, Coaches
+ * and Teams
  *
  * @author kenneth.colassi nhhockeyplayer@hotmail.com
  */
@@ -46,7 +48,7 @@ public class Organization implements Serializable {
 
     private Integer id = null;
 
-    // private League league = null;
+    private League league = null;
 
     private Director director = null;
 
@@ -64,9 +66,6 @@ public class Organization implements Serializable {
     private Long accessed = new Long(GregorianCalendar.getInstance()
             .getTimeInMillis());
 
-    /**
-     * CTOR
-     */
     public Organization() {
     }
 
@@ -105,14 +104,13 @@ public class Organization implements Serializable {
         return demographics;
     }
 
-    // @ManyToOne(fetch = FetchType.LAZY)
-    // @JoinColumn(name = "organization_league_fk", insertable = false,
-    // updatable = true, nullable = true)
-    // public League getLeague() {
-    // return league;
-    // }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "organization_league_fk", insertable = false, updatable = true, nullable = true)
+    public League getLeague() {
+        return league;
+    }
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "organization")
+    @OneToOne(mappedBy = "organization")
     @OrderBy("lastName")
     @PropertyDescriptor(readOnly = false, index = 2)
     public Director getDirector() {
@@ -202,9 +200,9 @@ public class Organization implements Serializable {
         this.demographics = demographics;
     }
 
-    // public void setLeague(League league) {
-    // this.league = league;
-    // }
+    public void setLeague(League league) {
+        this.league = league;
+    }
 
     public void setDirector(Director director) {
         this.director = director;
