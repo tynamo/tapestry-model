@@ -9,6 +9,7 @@ import javax.persistence.OneToOne;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.trails.descriptor.annotation.ClassDescriptor;
 
 /**
  * A Director belongs to an organization
@@ -16,6 +17,7 @@ import org.apache.commons.logging.LogFactory;
  * @author kenneth.colassi nhhockeyplayer@hotmail.com
  */
 @Entity
+@ClassDescriptor(hasCyclicRelationships = true)
 public class Director extends Person {
     private static final Log log = LogFactory.getLog(Director.class);
 

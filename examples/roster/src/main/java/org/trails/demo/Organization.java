@@ -112,9 +112,9 @@ public class Organization implements Serializable {
     // return league;
     // }
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "organization")
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "organization")
     @OrderBy("lastName")
-    @PropertyDescriptor(readOnly = true)
+    @PropertyDescriptor(readOnly = false, index = 2)
     public Director getDirector() {
         return director;
     }
