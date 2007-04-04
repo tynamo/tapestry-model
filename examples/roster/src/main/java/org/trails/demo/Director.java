@@ -8,7 +8,7 @@ import javax.persistence.OneToOne;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.trails.descriptor.annotation.ClassDescriptor;
+import org.trails.descriptor.annotation.PropertyDescriptor;
 
 /**
  * A Director belongs to an Organization
@@ -16,7 +16,6 @@ import org.trails.descriptor.annotation.ClassDescriptor;
  * @author kenneth.colassi nhhockeyplayer@hotmail.com
  */
 @Entity
-@ClassDescriptor(hasCyclicRelationships = true)
 public class Director extends Person {
     private static final Log log = LogFactory.getLog(Director.class);
 
@@ -41,8 +40,8 @@ public class Director extends Person {
         setApplicationRole(EApplicationRole.DIRECTOR);
     }
 
-    @OneToOne(cascade = CascadeType.REFRESH)
-    @JoinColumn(name = "organization_id", insertable = true, updatable = true, nullable = true)
+    @OneToOne(mappedBy = "director")
+    @PropertyDescriptor(readOnly = false)
     public Organization getOrganization() {
         return organization;
     }

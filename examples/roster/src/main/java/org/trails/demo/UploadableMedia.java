@@ -33,7 +33,7 @@ import org.trails.util.DatePattern;
     private UploadableMedia photo = new UploadableMedia();
     @BlobDescriptor(renderType = RenderType.IMAGE, contentDisposition = ContentDisposition.ATTACHMENT)
     @PropertyDescriptor(summary = true, index = 1)
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL)
     public UploadableMedia getPhoto() {
         return photo;
     }

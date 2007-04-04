@@ -50,7 +50,7 @@ public class Organization implements Serializable {
 
     private League league = null;
 
-    private Director director = null;
+    private Director director = new Director();
 
     private Set<Coach> coaches = new HashSet<Coach>();
 
@@ -110,9 +110,9 @@ public class Organization implements Serializable {
         return league;
     }
 
-    @OneToOne(mappedBy = "organization")
+    @OneToOne(cascade = CascadeType.ALL)
     @OrderBy("lastName")
-    @PropertyDescriptor(readOnly = false, index = 2)
+    @PropertyDescriptor(index = 2)
     public Director getDirector() {
         return director;
     }
@@ -139,7 +139,7 @@ public class Organization implements Serializable {
 
     @BlobDescriptor(renderType = RenderType.IMAGE, contentDisposition = ContentDisposition.ATTACHMENT)
     @PropertyDescriptor(summary = false, index = 3)
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL)
     public UploadableMedia getPhoto() {
         return photo;
     }
@@ -148,7 +148,7 @@ public class Organization implements Serializable {
 
     @BlobDescriptor(renderType = RenderType.IMAGE, contentDisposition = ContentDisposition.ATTACHMENT)
     @PropertyDescriptor(summary = false, index = 4)
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL)
     public UploadableMedia getHeader() {
         return header;
     }
@@ -157,7 +157,7 @@ public class Organization implements Serializable {
 
     @BlobDescriptor(renderType = RenderType.IMAGE, contentDisposition = ContentDisposition.ATTACHMENT)
     @PropertyDescriptor(summary = true, index = 5)
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL)
     public UploadableMedia getLogo() {
         return logo;
     }

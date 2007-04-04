@@ -140,7 +140,7 @@ public class League implements Serializable {
     private UploadableMedia photo = new UploadableMedia();
     @BlobDescriptor(renderType = RenderType.IMAGE, contentDisposition = ContentDisposition.ATTACHMENT)
     @PropertyDescriptor(summary = false, index = 3)
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL)
     public UploadableMedia getPhoto() {
         return photo;
     }
@@ -148,7 +148,7 @@ public class League implements Serializable {
     private UploadableMedia header = new UploadableMedia();
     @BlobDescriptor(renderType = RenderType.IMAGE, contentDisposition = ContentDisposition.ATTACHMENT)
     @PropertyDescriptor(summary = false, index = 4)
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL)
     public UploadableMedia getHeader() {
         return header;
     }
@@ -156,7 +156,7 @@ public class League implements Serializable {
     private UploadableMedia logo = new UploadableMedia();
     @BlobDescriptor(renderType = RenderType.IMAGE, contentDisposition = ContentDisposition.ATTACHMENT)
     @PropertyDescriptor(summary = true, index = 5)
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL)
     public UploadableMedia getLogo() {
         return logo;
     }
