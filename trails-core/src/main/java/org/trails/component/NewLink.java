@@ -30,10 +30,10 @@ public abstract class NewLink extends AbstractTypeNavigationLink {
     public abstract String getTypeName();
 
     public void click(IRequestCycle cycle) {
-        ((TrailsPage)getPage()).pushCallback();
+
         PageResolver pageResolver = getPageResolver();
         EditPage page = (EditPage) pageResolver.resolvePage(cycle, getTypeName(), TrailsPage.PageType.EDIT);
-        
+
         try {
             Class clazz = Class.forName(getTypeName());
             Constructor constructor = clazz.getDeclaredConstructor();
@@ -44,7 +44,7 @@ public abstract class NewLink extends AbstractTypeNavigationLink {
             throw new TrailsRuntimeException(ex);
         }
     }
-    
+
     /**
      * Get the text for the rendered link
      * @return Full i18n text in the form "List Foobars"

@@ -41,14 +41,14 @@ public class NewLinkTest extends ComponentTest
     Mock cycleMock = new Mock(IRequestCycle.class);
     Mock pageMock = new Mock(IPage.class);
     EditPage editPage;
-    
-    
+
+
     public void testClick()
     {
     	ListPage listPage = buildTrailsPage(ListPage.class);
         listPage.setTypeName(Foo.class.getName());
         listPage.setPageName("list");
-        
+
         buildNewLink(listPage);
         cycleMock.verify();
         assertTrue("model is a foo", editPage.getModel() instanceof Foo);
@@ -62,7 +62,7 @@ public class NewLinkTest extends ComponentTest
         cycleMock.expects(atLeastOnce()).method("activate").with(same(editPage));
 		pageResolverMock.expects(once()).method("resolvePage")
 			.with(isA(IRequestCycle.class), eq(Foo.class.getName()), eq(TrailsPage.PageType.EDIT))
-			.will(returnValue(editPage));    
+			.will(returnValue(editPage));
         //newLink = (NewLink) creator.newInstance(NewLink.class);
         newLink.setTypeName(Foo.class.getName());
         newLink.setPage(listPage);
@@ -71,13 +71,15 @@ public class NewLinkTest extends ComponentTest
 
     public void testFromHomePage() throws Exception
     {
-    	HomePage homePage = (HomePage)buildTrailsPage(HomePage.class);
-    	buildNewLink(homePage);
-    	assertTrue("Default callback", homePage.getCallbackStack().getStack().pop() instanceof TrailsCallback);
+        HomePage homePage = (HomePage) buildTrailsPage(HomePage.class);
+        homePage.pushCallback();
+        buildNewLink(homePage);
+        assertTrue("Default callback", homePage.getCallbackStack().getStack().pop() instanceof TrailsCallback);
+        assertTrue("Now is empty", homePage.getCallbackStack().getStack().empty());
     }
-    
+
     Mock pageResolverMock;
-    
+
     @Override
     public void setUp() throws Exception
     {
@@ -89,14 +91,14 @@ public class NewLinkTest extends ComponentTest
         messageSource.setMessageSource(springMessageSource);
         editPage = buildTrailsPage(EditPage.class);
         pageResolverMock = new Mock(PageResolver.class);
-    
-        newLink = (NewLink) creator.newInstance(NewLink.class, 
+
+        newLink = (NewLink) creator.newInstance(NewLink.class,
                 new Object[] {
                     "descriptorService", descriptorService,
                     "resourceBundleMessageSource", messageSource,
                     "pageResolver", pageResolverMock.proxy()
                 });
-        
+
     }
 
 
@@ -104,7 +106,7 @@ public class NewLinkTest extends ComponentTest
     {
         newLink.setTypeName(BlogEntry.class.getName());
         IClassDescriptor descriptor = new TrailsClassDescriptor(BlogEntry.class, "BlogEntry");
-        descriptorServiceMock.expects(once()).method("getClassDescriptor").will(returnValue(descriptor));  
+        descriptorServiceMock.expects(once()).method("getClassDescriptor").will(returnValue(descriptor));
         assertEquals("New Blog Entry", newLink.getLinkText());
     }
 }
