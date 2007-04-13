@@ -1,16 +1,16 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
-	<modelVersion>4.0.0</modelVersion>
-	<groupId>${groupId}</groupId>
-	<artifactId>${artifactId}</artifactId>
-	<packaging>war</packaging>
-	<version>${version}</version>
-	<name>A simple trails project</name>
-	<url>https://trails.dev.java.net/</url>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>${groupId}</groupId>
+    <artifactId>${artifactId}</artifactId>
+    <packaging>war</packaging>
+    <version>${version}</version>
+    <name>A simple trails project</name>
+    <url>https://trails.dev.java.net/</url>
 
-	<build>
+    <build>
         <finalName>${artifactId}</finalName>
         <extensions>
             <extension>
@@ -20,125 +20,127 @@
             </extension>
         </extensions>
         <plugins>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>aspectj-maven-plugin</artifactId>
-				<configuration>
-					<source>1.5</source>
-					<target>1.5</target>
-					<aspectLibraries>
-						<aspectLibrary>
-							<groupId>org.trailsframework</groupId>
-							<artifactId>trails-core</artifactId>
-						</aspectLibrary>
-					</aspectLibraries>
-				</configuration>
-				<executions>
-					<execution>
-						<goals>
-							<goal>compile</goal><!-- use this goal to weave all your main classes -->
-							<goal>test-compile</goal><!-- use this goal to weave all your test classes -->
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<source>1.5</source>
-					<target>1.5</target>
-				</configuration>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>aspectj-maven-plugin</artifactId>
+                <configuration>
+                    <source>1.5</source>
+                    <target>1.5</target>
+                    <aspectLibraries>
+                        <aspectLibrary>
+                            <groupId>org.trailsframework</groupId>
+                            <artifactId>trails-core</artifactId>
+                        </aspectLibrary>
+                    </aspectLibraries>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>compile</goal>
+                            <!-- use this goal to weave all your main classes -->
+                            <goal>test-compile</goal>
+                            <!-- use this goal to weave all your test classes -->
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.5</source>
+                    <target>1.5</target>
+                </configuration>
 
-			</plugin>
+            </plugin>
 
-			<plugin>
-				<groupId>org.apache.myfaces.tobago</groupId>
-				<artifactId>maven-apt-plugin</artifactId>
-				<executions>
-					<execution>
-						<phase>generate-resources</phase>
-						<goals>
-							<goal>execute</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<factory>
-						org.trails.hibernate.HibernateAnnotationProcessorFactory
-					</factory>
-					<force>true</force>
-					<nocompile>true</nocompile>
-					<generated>target/generated-sources/java</generated>
-					<A>
-						configFile=\${basedir}/src/main/resources/hibernate.cfg.xml,
-						destFile=\${basedir}/target/generated-sources/resources/hibernate.cfg.xml
-					</A>
-					<target>1.5</target>
-					<!--
-						<excludes>
-						<exclude 
-						implementation="java.lang.String">**/*Point*.java</exclude>
-						</excludes>
-					-->
-				</configuration>
+            <plugin>
+                <groupId>org.apache.myfaces.tobago</groupId>
+                <artifactId>maven-apt-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>execute</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <factory>
+                        org.trails.hibernate.HibernateAnnotationProcessorFactory
+                    </factory>
+                    <force>true</force>
+                    <nocompile>true</nocompile>
+                    <generated>target/generated-sources/java</generated>
+                    <A>
+                        configFile=\${basedir}/src/main/resources/hibernate.cfg.xml,
+                        destFile=\${basedir}/target/generated-sources/resources/hibernate.cfg.xml
+                    </A>
+                    <target>1.5</target>
+                    <!--
+                             <excludes>
+                             <exclude
+                             implementation="java.lang.String">**/*Point*.java</exclude>
+                             </excludes>
+                         -->
+                </configuration>
             </plugin>
 
 
-			<plugin>
-				<groupId>org.mortbay.jetty</groupId>
-				<artifactId>maven-jetty-plugin</artifactId>
-				<version>6.1.0</version>
-				<configuration>
+            <plugin>
+                <groupId>org.mortbay.jetty</groupId>
+                <artifactId>maven-jetty-plugin</artifactId>
+                <version>6.1.0</version>
+                <configuration>
                     <contextPath>/</contextPath>
                     <scanTargets>
                         <scanTarget>src/main/webapp</scanTarget>
                     </scanTargets>
                     <scanIntervalSeconds>10</scanIntervalSeconds>
                 </configuration>
-			</plugin>
+            </plugin>
 
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
-                    <artifactId>tomcat-maven-plugin</artifactId>
-				<version>1.0-SNAPSHOT</version>                
+                <artifactId>tomcat-maven-plugin</artifactId>
+                <version>1.0-SNAPSHOT</version>
                 <configuration>
                     <path>/</path>
                 </configuration>
             </plugin>
 
             <plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>hibernate3-maven-plugin</artifactId>
-				<version>2.0-alpha-1</version>
-				<configuration>
-					<componentProperties>
-						<configurationfile>
-							target/generated-sources/resources/hibernate.cfg.xml
-						</configurationfile>
-						<propertyfile>
-							src/main/resources/hibernate.properties
-						</propertyfile>
-						<jdk5>true</jdk5>
-						<drop>true</drop>
-						<ejb3>true</ejb3>
-						<outputfilename>export.ddl</outputfilename>
-					</componentProperties>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>hibernate3-maven-plugin</artifactId>
+                <version>2.0-alpha-1</version>
+                <configuration>
+                    <componentProperties>
+                        <configurationfile>
+                            target/generated-sources/resources/hibernate.cfg.xml
+                        </configurationfile>
+                        <propertyfile>
+                            src/main/resources/hibernate.properties
+                        </propertyfile>
+                        <jdk5>true</jdk5>
+                        <drop>true</drop>
+                        <ejb3>true</ejb3>
+                        <outputfilename>export.ddl</outputfilename>
+                    </componentProperties>
                     <dependencies>
-                            <dependency>
-                                <groupId>log4j</groupId>
-                                <artifactId>log4j</artifactId>
-                                <version>1.2.9</version>
-                            </dependency>
+                        <dependency>
+                            <groupId>log4j</groupId>
+                            <artifactId>log4j</artifactId>
+                            <version>1.2.9</version>
+                        </dependency>
                     </dependencies>
                 </configuration>
-			</plugin>
+            </plugin>
         </plugins>
         <resources>
             <resource>
                 <directory>\${basedir}/src/main/resources</directory>
                 <excludes>
-                	<exclude>**/hibernate.cfg.xml</exclude>
+                    <exclude>**/hibernate.cfg.xml</exclude>
                 </excludes>
             </resource>
             <resource>
@@ -146,41 +148,38 @@
             </resource>
         </resources>
     </build>
-	<dependencies>
-		<dependency>
-			<groupId>org.trailsframework</groupId>
-			<artifactId>trails-core</artifactId>
-			<version>1.0-SNAPSHOT</version>
+    <dependencies>
+        <dependency>
+            <groupId>org.trailsframework</groupId>
+            <artifactId>trails-core</artifactId>
+            <version>1.0-SNAPSHOT</version>
             <exclusions>
                 <exclusion>
-		            <groupId>javax.servlet</groupId>
-		            <artifactId>servlet-api</artifactId>
+                    <groupId>javax.servlet</groupId>
+                    <artifactId>servlet-api</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
-		<dependency>
+        <dependency>
             <!-- kaosko 2006-09-06: Apt plugin may silently fail if Jaxen isn't declared. The reason's a bit unclear, but my best guess
 it's because of different versions of apt plugin posted as the same version (which is wrong for non-snapshots) -->
             <groupId>jaxen</groupId>
             <artifactId>jaxen</artifactId>
-			<version>1.1</version>
+            <version>1.1</version>
             <scope>provided</scope>
         </dependency>
-		<dependency>
-			<groupId>com.javaforge.tapestry</groupId>
-			<artifactId>tapernate</artifactId>
-			<version>0.1-SNAPSHOT</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>easymock</groupId>
-                    <artifactId>easymock</artifactId>
-                </exclusion>
-            </exclusions>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>3.8.2</version>
+            <scope>test</scope>
         </dependency>
+
         <dependency>
             <groupId>hsqldb</groupId>
             <artifactId>hsqldb</artifactId>
             <version>1.8.0.1</version>
         </dependency>
-	</dependencies>
+    </dependencies>
 </project>

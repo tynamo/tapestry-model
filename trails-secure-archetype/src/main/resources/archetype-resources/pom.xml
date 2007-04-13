@@ -168,17 +168,14 @@ it's because of different versions of apt plugin posted as the same version (whi
             <version>1.1</version>
             <scope>provided</scope>
         </dependency>
+
         <dependency>
-            <groupId>com.javaforge.tapestry</groupId>
-            <artifactId>tapernate</artifactId>
-            <version>0.1-SNAPSHOT</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>easymock</groupId>
-                    <artifactId>easymock</artifactId>
-                </exclusion>
-            </exclusions>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>3.8.2</version>
+            <scope>test</scope>
         </dependency>
+
         <dependency>
             <groupId>hsqldb</groupId>
             <artifactId>hsqldb</artifactId>
