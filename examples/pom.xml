@@ -205,17 +205,6 @@ it's because of different versions of apt plugin posted as the same version (whi
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.javaforge.tapestry</groupId>
-            <artifactId>tapernate</artifactId>
-            <version>0.1-SNAPSHOT</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>easymock</groupId>
-                    <artifactId>easymock</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
             <groupId>hsqldb</groupId>
             <artifactId>hsqldb</artifactId>
             <version>1.8.0.1</version>
