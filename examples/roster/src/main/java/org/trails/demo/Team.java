@@ -10,7 +10,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -72,7 +71,7 @@ public class Team implements Serializable {
         I, II, III, IV
     }
 
-    private Integer id = new Integer ("-1");
+    private Integer id = null;
 
     private EGender gender;
 

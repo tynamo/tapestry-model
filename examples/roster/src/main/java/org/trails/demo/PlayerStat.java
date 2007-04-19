@@ -29,7 +29,7 @@ import org.trails.util.DatePattern;
 public class PlayerStat implements Serializable {
     private static final Log log = LogFactory.getLog(PlayerStat.class);
 
-    private Integer id = new Integer ("-1");
+    private Integer id = null;
 
     private Integer gp;
 

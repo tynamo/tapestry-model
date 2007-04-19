@@ -8,12 +8,14 @@ import java.util.GregorianCalendar;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
+import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
@@ -35,6 +37,8 @@ import org.trails.util.DatePattern;
  *
  * @author kenneth.colassi        nhhockeyplayer@hotmail.com
  */
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 @MappedSuperclass
 @ClassDescriptor(hidden = true)
 public class Person implements Serializable {
@@ -48,7 +52,7 @@ public class Person implements Serializable {
         MANAGER, DIRECTOR, SALES, MARKETING
     }
 
-    protected Integer id = new Integer ("-1");
+    protected Integer id = null;
 
     protected String firstName;
 

@@ -1,14 +1,16 @@
 package org.trails.demo;
 
-import javax.persistence.CascadeType;
+import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.OneToOne;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.trails.descriptor.annotation.PropertyDescriptor;
+import org.trails.descriptor.annotation.ClassDescriptor;
 
 /**
  * A Director belongs to an Organization
@@ -16,10 +18,11 @@ import org.trails.descriptor.annotation.PropertyDescriptor;
  * @author kenneth.colassi nhhockeyplayer@hotmail.com
  */
 @Entity
-public class Director extends Person {
+@ClassDescriptor(hasCyclicRelationships = false)
+public class Director extends Person implements Serializable {
     private static final Log log = LogFactory.getLog(Director.class);
 
-    private Organization organization = null;
+    private Organization organization;
 
     /**
      * Copy CTOR
@@ -40,8 +43,7 @@ public class Director extends Person {
         setApplicationRole(EApplicationRole.DIRECTOR);
     }
 
-    @OneToOne(mappedBy = "director")
-    @PropertyDescriptor(readOnly = false)
+    @OneToOne(optional = true, mappedBy = "director")
     public Organization getOrganization() {
         return organization;
     }

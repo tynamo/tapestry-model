@@ -50,7 +50,7 @@ public class Organization implements Serializable {
 
     private League league = null;
 
-    private Director director = new Director();
+    private Director director = null;
 
     private Set<Coach> coaches = new HashSet<Coach>();
 
@@ -110,7 +110,7 @@ public class Organization implements Serializable {
         return league;
     }
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @OrderBy("lastName")
     @PropertyDescriptor(index = 2)
     public Director getDirector() {
