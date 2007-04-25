@@ -53,6 +53,11 @@ public class SpringSeedEntityInitializer implements ApplicationContextAware, See
 			Object object = applicationContext.getBean(beanName);
 			if (object.getClass().getAnnotation(Entity.class) != null && object != this) {
 				IClassDescriptor classDescriptor = descriptorService.getClassDescriptor(object.getClass());
+				if (classDescriptor == null) {
+	    		log.error("Cannot handle entity of type " + object.getClass() + " because of non-existent class descriptor");
+	    		log.warn("Skipped seeding the entity bean " + beanName + ", check that hibernate configuration exists in the correct location and/or is generated correctly");
+	    		continue;
+				}
 				IPropertyDescriptor identifierDescriptor = classDescriptor.getIdentifierDescriptor();
 				Object id = null, savedObject = null;
 				String propertyName = identifierDescriptor.getName();
