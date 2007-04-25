@@ -198,6 +198,20 @@
             <artifactId>spring-remoting</artifactId>
             <version>2.0.2</version>
         </dependency>
+
+        <!-- begin patch for maven 2.0.4 -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-aop</artifactId>
+            <version>2.0.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+            <version>2.0.2</version>
+        </dependency>
+        <!-- end patch for maven 2.0.4 -->        
+
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-jdbc</artifactId>
