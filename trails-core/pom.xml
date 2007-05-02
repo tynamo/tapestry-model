@@ -244,6 +244,11 @@
             <version>1.0.0</version>
         </dependency>
         <dependency>
+              <groupId>com.javaforge.tapestry</groupId>
+              <artifactId>tapestry-flash</artifactId>
+              <version>1.0.0</version>
+        </dependency>
+        <dependency>
             <groupId>com.javaforge.tapestry</groupId>
             <artifactId>tapernate</artifactId>
             <version>0.1-20060609.152149-15</version>
