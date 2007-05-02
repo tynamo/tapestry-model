@@ -92,88 +92,95 @@ public class BlobDownloadService implements IEngineService {
 
     public void service(IRequestCycle cycle) throws IOException {
 
-        String blobID = cycle.getParameter(BLOBID);
-        String entityName = cycle.getParameter(ENTITY_NAME);
-        String bytesProp = cycle.getParameter(BYTES_PROPERTY);
-        String fileName = cycle.getParameter(FILE_NAME);
-        String contentType = cycle.getParameter(CONTENT_TYPE);
+        synchronized (cycle) {
+            String blobID = cycle.getParameter(BLOBID);
+            String entityName = cycle.getParameter(ENTITY_NAME);
+            String bytesProp = cycle.getParameter(BYTES_PROPERTY);
+            String fileName = cycle.getParameter(FILE_NAME);
+            String contentType = cycle.getParameter(CONTENT_TYPE);
 
-        try {
-            BlobDescriptorExtension blobDescriptor = getDescriptorService()
-                    .getClassDescriptor(Class.forName(entityName))
-                    .getPropertyDescriptor(bytesProp).getExtension(
-                            BlobDescriptorExtension.class);
+            try {
+                BlobDescriptorExtension blobDescriptor = getDescriptorService()
+                        .getClassDescriptor(Class.forName(entityName))
+                        .getPropertyDescriptor(bytesProp).getExtension(
+                                BlobDescriptorExtension.class);
 
-            if (blobDescriptor != null && blobID != null && !"".equals(blobID)) {
-                Object model = getPersistenceService().getInstance(
-                        Class.forName(entityName), Integer.valueOf(blobID));
-                if (model != null) {
-                    byte[] bytes = new byte[0];
+                if (blobDescriptor != null && blobID != null
+                        && !"".equals(blobID)) {
+                    Object model = getPersistenceService().getInstance(
+                            Class.forName(entityName), Integer.valueOf(blobID));
+                    if (model != null) {
+                        byte[] bytes = new byte[0];
 
-                    if (blobDescriptor.isBytes()) {
-                        if (fileName == null) {
-                            if (!"".equals(blobDescriptor.getFileName()))
-                                fileName = blobDescriptor.getFileName();
-                            else
-                                fileName = ((ITrailsBlob) model).getFileName();
-                        }
-                        if (contentType == null) {
-                            if (!"".equals(blobDescriptor.getContentType()))
-                                contentType = blobDescriptor.getContentType();
-                            else
-                                contentType = ((ITrailsBlob) model)
+                        if (blobDescriptor.isBytes()) {
+                            if (fileName == null) {
+                                if (!"".equals(blobDescriptor.getFileName()))
+                                    fileName = blobDescriptor.getFileName();
+                                else
+                                    fileName = ((ITrailsBlob) model)
+                                            .getFileName();
+                            }
+                            if (contentType == null) {
+                                if (!"".equals(blobDescriptor.getContentType()))
+                                    contentType = blobDescriptor
+                                            .getContentType();
+                                else
+                                    contentType = ((ITrailsBlob) model)
+                                            .getContentType();
+                            }
+
+                            bytes = (byte[]) Ognl.getValue(bytesProp, model);
+                        } else if (blobDescriptor.isITrailsBlob()) {
+                            ITrailsBlob trailsBlob = (ITrailsBlob) Ognl
+                                    .getValue(bytesProp, model);
+                            if (trailsBlob != null) {
+                                bytes = trailsBlob.getBytes();
+                                contentType = !"".equals(blobDescriptor
+                                        .getContentType()) ? blobDescriptor
+                                        .getContentType() : trailsBlob
                                         .getContentType();
+                                fileName = !"".equals(blobDescriptor
+                                        .getFileName()) ? blobDescriptor
+                                        .getFileName() : trailsBlob
+                                        .getFileName();
+                            }
                         }
 
-                        bytes = (byte[]) Ognl.getValue(bytesProp, model);
-                    } else if (blobDescriptor.isITrailsBlob()) {
-                        ITrailsBlob trailsBlob = (ITrailsBlob) Ognl.getValue(
-                                bytesProp, model);
-                        if (trailsBlob != null) {
-                            bytes = trailsBlob.getBytes();
-                            contentType = !"".equals(blobDescriptor
-                                    .getContentType()) ? blobDescriptor
-                                    .getContentType() : trailsBlob
-                                    .getContentType();
-                            fileName = !"".equals(blobDescriptor.getFileName()) ? blobDescriptor
-                                    .getFileName()
-                                    : trailsBlob.getFileName();
+                        if (bytes.length > 0) {
+                            _response.setHeader("Expires", "0");
+                            _response
+                                    .setHeader("Cache-Control",
+                                            "must-revalidate, post-check=0,pre-check=0");
+                            _response.setHeader("Pragma", "public");
+                            _response.setHeader("Content-Disposition",
+                                    blobDescriptor.getContentDisposition()
+                                            .getValue()
+                                            + "; filename=" + fileName);
+                            _response.setContentLength(bytes.length);
+
+                            OutputStream output = _response
+                                    .getOutputStream(new ContentType(
+                                            contentType));
+                            output.write(bytes);
+                        } else {
+                            String errorText = "Entity has no ID or does not exist yet";
+                            LOG.info(errorText);
+                            throw new TrailsRuntimeException(errorText);
                         }
                     }
 
-                    if (bytes.length > 0) {
-                        _response.setHeader("Expires", "0");
-                        _response.setHeader("Cache-Control",
-                                "must-revalidate, post-check=0,pre-check=0");
-                        _response.setHeader("Pragma", "public");
-                        _response.setHeader("Content-Disposition",
-                                blobDescriptor.getContentDisposition()
-                                        .getValue()
-                                        + "; filename=" + fileName);
-                        _response.setContentLength(bytes.length);
-
-                        OutputStream output = _response
-                                .getOutputStream(new ContentType(contentType));
-                        output.write(bytes);
-                    } else {
-                        String errorText = "Entity has no ID or does not exist yet";
-                        LOG.info(errorText);
-                        throw new TrailsRuntimeException(errorText);
-                    }
+                } else {
+                    String errorText = "Entity has no ID or does not exist yet";
+                    LOG.info(errorText);
+                    throw new TrailsRuntimeException(errorText);
                 }
 
-            } else {
-                String errorText = "Entity has no ID or does not exist yet";
-                LOG.info(errorText);
-                throw new TrailsRuntimeException(errorText);
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            } catch (OgnlException e) {
+                e.printStackTrace();
             }
-
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (OgnlException e) {
-            e.printStackTrace();
         }
-
         return;
     }
 
