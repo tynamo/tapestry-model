@@ -86,8 +86,11 @@ public class SpringSeedEntityInitializer implements ApplicationContextAware, See
 			    DetachedCriteria criteria = DetachedCriteria.forClass(object.getClass());
 					if (validateUniqueness != null) {
 						propertyName = validateUniqueness.property();
-				    try {
-							criteria.add(Restrictions.eq(propertyName, Ognl.getValue(propertyName, object) ));
+
+						try {
+							Object value = Ognl.getValue(propertyName, object);
+	            if (value == null) criteria.add(Restrictions.isNull(propertyName) );
+	            else criteria.add(Restrictions.eq(propertyName, value ));
 						} catch (OgnlException e) {
 							log.error("Couldn't find if an entity already exists because of: ", e);
 						}

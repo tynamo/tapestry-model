@@ -54,7 +54,8 @@ public aspect ValidateUniqueAspect
         {
             String propertyName = validateUniqueness.property();
             Object value = PropertyUtils.getProperty(savee, propertyName);
-            criteria.add(Restrictions.eq(propertyName, value));
+            if (value == null) criteria.add(Restrictions.isNull(propertyName) );
+            else criteria.add(Restrictions.eq(propertyName, value));
             String idPropertyName = descriptor.getIdentifierDescriptor().getName();
             Object idValue = PropertyUtils.getProperty(savee, idPropertyName);
             if (idValue != null)
