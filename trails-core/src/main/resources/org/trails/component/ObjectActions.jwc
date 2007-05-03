@@ -29,10 +29,10 @@
 	<component id="invokeMethod" type="InvokeMethod" inherit-informal-parameters="no">
     </component>
     <component id="saveButton" type="Submit" inherit-informal-parameters="no">
-        <binding name="listener">ognl:page.listeners.save</binding>
+        <binding name="action">ognl:page.listeners.save</binding>
     </component>
     <component id="saveAndReturnButton" type="Submit" inherit-informal-parameters="no">
-        <binding name="listener">ognl:page.listeners.saveAndReturn</binding>
+        <binding name="action">ognl:page.listeners.saveAndReturn</binding>
     </component>
      <component id="removeButton" type="Submit" inherit-informal-parameters="no">
         <binding name="listener">ognl:page.listeners.remove</binding>
@@ -49,7 +49,7 @@
     </component>
 
     <component id="cancelButton" type="Submit" inherit-informal-parameters="no">
-        <binding name="listener">ognl:page.listeners.cancel</binding>
+        <binding name="onclick" value="literal:this.form.events.cancel();"/>
     </component>
     
     <property name="methodDescriptor"/>

@@ -120,7 +120,8 @@ public class EditCollectionTest extends ComponentTest
     		.will(returnValue(editPage));
     	cycleMock.expects(atLeastOnce()).method("getPage").will(returnValue(editPage));
         pageMock.expects(atLeastOnce()).method("getRequestCycle").will(returnValue(cycleMock.proxy()));
-    	buildCollectionDescriptor("bazzes", Baz.class);
+        cycleMock.expects(atLeastOnce()).method("activate").with(same(editPage));
+        buildCollectionDescriptor("bazzes", Baz.class);
 
         editCollection.setCreateExpression("createBaz()");
 
@@ -131,10 +132,6 @@ public class EditCollectionTest extends ComponentTest
         CollectionCallback callback = (CollectionCallback)editCollection.getCallbackStack().getStack().pop();
         //assertEquals("right ognl", "bazzes.add", callback.getAddOgnlExpression());
         
-        EditCallback nextPageCallback = (EditCallback)editPage.getNextPage();
-        assertTrue(nextPageCallback.getModel() instanceof Baz);
-        Baz createdBaz = (Baz)nextPageCallback.getModel();
-        assertEquals(foo, createdBaz.getFoo());
         assertTrue("is child", callback.isChildRelationship());
         assertEquals("right page", callback.getPageName(), "fooPage");
         //assertNotNull(editPage.getNextPage());

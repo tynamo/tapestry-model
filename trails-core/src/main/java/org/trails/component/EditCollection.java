@@ -156,8 +156,7 @@ public abstract class EditCollection extends TrailsComponent
             // we need to do some indirection to avoid a StaleLink
             EditCallback nextPage = new EditCallback(editPage.getPageName(),
                 buildNewMemberInstance());
-            String currentEditPageName = getPage().getRequestCycle().getPage().getPageName();
-            ((EditPage)cycle.getPage(currentEditPageName)).setNextPage(nextPage);
+            nextPage.performCallback(cycle);
             //editPage.setModel(getCollectionDescriptor().getElementType().newInstance());
             
         }catch (Exception ex)
