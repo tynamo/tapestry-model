@@ -244,14 +244,13 @@
             <version>1.0.0</version>
         </dependency>
         <dependency>
-              <groupId>com.javaforge.tapestry</groupId>
-              <artifactId>tapestry-flash</artifactId>
-              <version>1.0.0</version>
-        </dependency>
-        <dependency>
             <groupId>com.javaforge.tapestry</groupId>
             <artifactId>tapernate</artifactId>
+            <!-- Since there's no official Tapernate 0.1 release,
+            we use a snapshot posted as 0.0.9 release into our own repository  
             <version>0.1-20060609.152149-15</version>
+            -->
+            <version>0.0.9</version>
             <exclusions>
                 <exclusion>
                     <groupId>easymock</groupId>
