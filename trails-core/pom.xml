@@ -364,7 +364,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
-                <version>2.2-SNAPSHOT</version>
                 <inherited>true</inherited>
                 <configuration>
                     <configLocation>trails-checkstyle.xml</configLocation>

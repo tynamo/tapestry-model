@@ -35,6 +35,18 @@
             <email>topping@N05PAMcodehaus.org</email>
             <url>http://blogs.codehaus.org/people/topping/</url>
         </developer>
+        <developer>
+            <id>ascandroli</id>
+            <name>Alejandro Scandroli</name>
+            <email>ascandroli@codehaus.org</email>
+            <url>http://docs.codehaus.org/display/~ascandroli</url>
+        </developer>
+        <developer>
+            <id>kaosko</id>
+            <name>Kalle Korhonen</name>
+            <email>kalle.o.korhonen@gmail.com</email>
+            <url>http://docs.codehaus.org/display/~kaosko</url>
+        </developer>
     </developers>
     <licenses>
         <license>
@@ -79,6 +91,7 @@
             <name>Trails Repository</name>
             <url>http://trails.codehaus.org/repository</url>
         </repository>
+        <!-- Don't use snapshots unless absolutely necessary
         <repository>
             <id>snapshots.codehaus.org</id>
             <name>Codehaus Snapshots</name>
@@ -87,6 +100,7 @@
                 <enabled>true</enabled>
             </snapshots>
         </repository>
+        -->
         <repository>
             <id>howardlewisship.com</id>
             <name>Howard Lewis Ship's Repository</name>
@@ -191,6 +205,10 @@
             </plugin>
             <plugin>
               <artifactId>maven-clean-plugin</artifactId>
+              <version>2.1</version>
+            </plugin>
+            <plugin>
+              <artifactId>maven-checkstyle-plugin</artifactId>
               <version>2.1</version>
             </plugin>
             <plugin>
