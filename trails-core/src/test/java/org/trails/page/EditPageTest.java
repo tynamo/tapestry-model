@@ -11,15 +11,14 @@
  */
 package org.trails.page;
 
-import java.util.ArrayList;
 import java.util.Set;
 
 import org.apache.tapestry.IExternalPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.callback.ICallback;
+import org.apache.tapestry.engine.ILink;
 import org.apache.tapestry.event.PageEvent;
 import org.apache.tapestry.valid.IValidationDelegate;
-import org.hibernate.Criteria;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.validator.InvalidStateException;
 import org.hibernate.validator.InvalidValue;
@@ -90,11 +89,16 @@ public class EditPageTest extends ComponentTest
     
     public void testOnFormSubmit()
     {
-        Mock callbackMock = new Mock(ICallback.class);
+    		Mock callbackMock = new Mock(ICallback.class);
+        Mock linkMock = new Mock(ILink.class);
+        pageServiceMock.expects(once()).method("getLink").with(eq(false), isA(String.class) ).will(returnValue(linkMock.proxy()) );
         callbackMock.expects(once()).method("performCallback").with(isA(IRequestCycle.class));
+        cycleMock.expects(once()).method("getPage").will(returnValue(editPage));
+        editPage.setPageName(EditPage.class.getSimpleName());
         editPage.setNextPage((ICallback)callbackMock.proxy());
         editPage.onFormSubmit((IRequestCycle)cycleMock.proxy());
         callbackMock.verify();
+        pageServiceMock.verify();
     }
 
     public void testActivateExternalPage() throws Exception
@@ -262,7 +266,6 @@ public class EditPageTest extends ComponentTest
         Mock cycleMock = new Mock(IRequestCycle.class);
         
         // Pretend Foo has a custom page
-        ArrayList instances = new ArrayList();
         cycleMock.expects(once()).method("getPage").with(eq("FooList")).will(returnValue(
                 listPage));
         persistenceMock.expects(once()).method("remove").with(same(foo));
