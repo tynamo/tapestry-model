@@ -14,7 +14,6 @@
 package org.trails.component;
 
 
-import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.test.Creator;
 import org.jmock.MockObjectTestCase;
 import org.jmock.cglib.Mock;
@@ -37,7 +36,6 @@ public class ComponentTest extends MockObjectTestCase
     protected Creator creator = new Creator();
     protected Mock descriptorServiceMock = new Mock(DescriptorService.class);
     protected DescriptorService descriptorService;
-    protected Mock pageServiceMock = new Mock(IEngineService.class);
     protected CallbackStack callbackStack = new CallbackStack();
     protected Mock persistenceMock = new Mock(PersistenceService.class);
     protected TrailsValidationDelegate delegate = new TrailsValidationDelegate();
@@ -61,7 +59,6 @@ public class ComponentTest extends MockObjectTestCase
     protected EditPage buildEditPage()
     {
         DescriptorService descriptorService = (DescriptorService)descriptorServiceMock.proxy();
-        
         DefaultTrailsResourceBundleMessageSource messageSource = new DefaultTrailsResourceBundleMessageSource();
         ResourceBundleMessageSource springMessageSource = new ResourceBundleMessageSource();
         springMessageSource.setBasename("messages");
@@ -71,7 +68,6 @@ public class ComponentTest extends MockObjectTestCase
              new Object[] {
             "persistenceService", persistenceMock.proxy(),
             "descriptorService", descriptorServiceMock.proxy(),
-            "pageService", pageServiceMock.proxy(),
             "callbackStack", callbackStack,
             "delegate", delegate,
             "resourceBundleMessageSource", messageSource

@@ -14,11 +14,8 @@ package org.trails.page;
 import org.apache.tapestry.IExternalPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.annotations.Bean;
-import org.apache.tapestry.annotations.InjectObject;
 import org.apache.tapestry.annotations.Lifecycle;
 import org.apache.tapestry.callback.ICallback;
-import org.apache.tapestry.engine.IEngineService;
-import org.apache.tapestry.engine.ILink;
 import org.hibernate.validator.InvalidStateException;
 import org.trails.callback.CollectionCallback;
 import org.trails.callback.EditCallback;
@@ -36,9 +33,6 @@ public abstract class EditPage extends ModelPage implements IExternalPage
     @Bean(lifecycle=Lifecycle.REQUEST)
     public abstract TrailsValidationDelegate getDelegate();
 
-    @InjectObject("engine-service:page")
-    public abstract IEngineService getPageService();
-
     
     public void activateExternalPage(Object[] parameters, IRequestCycle cycle)
 	{
@@ -51,19 +45,14 @@ public abstract class EditPage extends ModelPage implements IExternalPage
      * the middle of the rewind without causing a StaleLinkException
      * @return
      */
-/*
     public abstract ICallback getNextPage();
 
     public abstract void setNextPage(ICallback NextPage);
-*/
 
-    public ILink save(IRequestCycle cycle)
+    public void save(IRequestCycle cycle)
     {
-        if (save()) {
-            return getPageService().getLink(true, cycle.getPage().getPageName());
-        } else {
-            return null;
-        }
+        save();
+
     }
 
 
@@ -105,7 +94,7 @@ public abstract class EditPage extends ModelPage implements IExternalPage
         return false;
     }
 
-    public ILink remove(IRequestCycle cycle)
+    public void remove(IRequestCycle cycle)
     {
 
         try
@@ -114,7 +103,7 @@ public abstract class EditPage extends ModelPage implements IExternalPage
 		} catch (PersistenceException pe)
 		{
 			getDelegate().record(pe);
-			return null;
+			return;
 		}
 
         ICallback callback = getCallbackStack().popPreviousCallback();
@@ -123,22 +112,31 @@ public abstract class EditPage extends ModelPage implements IExternalPage
             ((CollectionCallback)callback).remove(getPersistenceService(), getModel());
         }
         callback.performCallback(cycle);
-
-        return getPageService().getLink(false, cycle.getPage().getPageName());
     }
 
 
-    public ILink cancel(IRequestCycle cycle)
+    public void cancel(IRequestCycle cycle)
     {
         ICallback callback = (ICallback) getCallbackStack().popPreviousCallback();
         callback.performCallback(cycle);
-        return getPageService().getLink(false, cycle.getPage().getPageName());
+    }
+
+    /*
+     * This is here so that if a component needs to go to a new page it
+     * won't do so in the middle of a rewind and generate a StaleLink
+     */
+    public void onFormSubmit(IRequestCycle cycle)
+    {
+        if (getNextPage() != null)
+        {
+            getNextPage().performCallback(cycle);
+        }
     }
 
     /**
      * @param cycle
      */
-    public ILink saveAndReturn(IRequestCycle cycle)
+    public void saveAndReturn(IRequestCycle cycle)
     {
         if (save())
         {
@@ -149,10 +147,6 @@ public abstract class EditPage extends ModelPage implements IExternalPage
                 ((CollectionCallback)callback).save(getPersistenceService(), getModel());
             }
             callback.performCallback(cycle);
-
-            return getPageService().getLink(true, cycle.getPage().getPageName());
-        } else {
-            return null;
         }
     }
 

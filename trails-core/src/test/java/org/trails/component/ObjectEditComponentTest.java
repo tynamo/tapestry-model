@@ -2,13 +2,13 @@
  * Created on Jan 11, 2005
  *
  * Copyright 2004 Chris Nelson
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); 
+ * you may not use this file except in compliance with the License. 
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0 
+ * Unless required by applicable law or agreed to in writing, 
+ * software distributed under the License is distributed on an "AS IS" BASIS, 
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
  * See the License for the specific language governing permissions and limitations under the License.
  */
 package org.trails.component;
@@ -21,7 +21,6 @@ import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.callback.ICallback;
 import org.apache.tapestry.components.Block;
-import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.valid.IValidationDelegate;
 import org.jmock.cglib.Mock;
 import org.trails.callback.CallbackStack;
@@ -40,8 +39,8 @@ import org.trails.validation.TrailsValidationDelegate;
  */
 public class ObjectEditComponentTest extends ComponentTest
 {
-
-
+    
+    
     Mock pageMock;
     ObjectEditComponent editComponent;
     Mock cycleMock;
@@ -49,21 +48,21 @@ public class ObjectEditComponentTest extends ComponentTest
     HashMap fooComponents = new HashMap();
     IRequestCycle cycle;
     MockFooEditPage fooEditPage;
-
+    
     public void testHasBlock()
     {
-
-
+        
+        
         thisPageComponents.put("blah2", creator.newInstance(Block.class));
-
-        fooComponents.put("blah", creator.newInstance(Block.class));
-
+        
+        fooComponents.put("blah", creator.newInstance(Block.class));       
+        
         //assertTrue("found our block", editComponent.hasBlock("blah"));
         assertFalse("one thats not there", editComponent.hasBlock("qwerqrew"));
-
+        
         assertTrue("found block on this page", editComponent.hasBlock("blah2"));
     }
-
+    
     public void setUp()
     {
         editComponent = (ObjectEditComponent)creator.newInstance(ObjectEditComponent.class);
@@ -72,16 +71,16 @@ public class ObjectEditComponentTest extends ComponentTest
         fooEditPage.setComponents(fooComponents);
         // the page we are on
         pageMock = new Mock(IPage.class);
-
+        
         editComponent.setPage((IPage)pageMock.proxy());
         // the page for the object
-
+       
         cycleMock = new Mock(IRequestCycle.class);
         cycle = (IRequestCycle)cycleMock.proxy();
-
+        
         pageMock.expects(atLeastOnce()).method("getComponents").will(returnValue(thisPageComponents));
-
-
+        
+        
         //pageMock.expects(atLeastOnce()).method("getRequestCycle").will(returnValue(cycle));
         //cycleMock.expects(atLeastOnce()).method("getPage").with(eq("FooEdit")).will(returnValue(fooEditPage));
     }
@@ -94,37 +93,28 @@ public class ObjectEditComponentTest extends ComponentTest
         thisPageComponents.put("block", block2);
 //        fooComponents.put("block", block1);
 //        fooComponents.put("otherblock", otherblock);
-
+        
         //pageMock2.expects(atLeastOnce()).method("getComponent").with(eq("block")).will(returnValue(block1));
         pageMock.expects(atLeastOnce()).method("getComponent").with(eq("block")).will(returnValue(block2));
         //pageMock.expects(atLeastOnce()).method("getComponent").with(eq("otherblock")).will(returnValue(null));
-
+       
         assertEquals("right block", block2, editComponent.getBlock("block"));
-
+        
 //        assertEquals("right block", otherblock, editComponent.getBlock("otherblock"));
 //        assertNotNull("model is passed", fooEditPage.getModel());
-
+        
     }
-
+    
     public class MockFooEditPage extends EditPage
     {
         private Object model;
-
+        
         private CallbackStack callbackStack = new CallbackStack();
-
+        
         private TrailsValidationDelegate delegate = new TrailsValidationDelegate();
-
+        
         private Map components;
-
-        /* (non-Javadoc)
-         * @see org.trails.page.EditPage#getPageService()
-         */
-        public IEngineService getPageService()
-        {
-            // TODO Auto-generated method stub
-            return null;
-        }
-
+        
         /* (non-Javadoc)
          * @see org.trails.page.EditPage#getPersistenceService()
          */
@@ -149,7 +139,7 @@ public class ObjectEditComponentTest extends ComponentTest
             // TODO Auto-generated method stub
 
         }
-
+ 
         /* (non-Javadoc)
          * @see org.trails.page.EditPage#setPersistenceService(org.trails.persistence.PersistenceService)
          */
@@ -167,7 +157,7 @@ public class ObjectEditComponentTest extends ComponentTest
             // TODO Auto-generated method stub
 
         }
-
+        
         /**
          * @return Returns the model.
          */
@@ -175,7 +165,7 @@ public class ObjectEditComponentTest extends ComponentTest
         {
             return model;
         }
-
+        
         /**
          * @param model The model to set.
          */
@@ -197,8 +187,8 @@ public class ObjectEditComponentTest extends ComponentTest
         {
             this.components = components;
         }
-
-
+        
+        
         /* (non-Javadoc)
          * @see org.apache.tapestry.IComponent#getComponent(java.lang.String)
          */
@@ -221,7 +211,7 @@ public class ObjectEditComponentTest extends ComponentTest
         public void setNextPage(ICallback NextPage)
         {
             // TODO Auto-generated method stub
-
+            
         }
         public TrailsValidationDelegate getDelegate()
         {
@@ -239,11 +229,11 @@ public class ObjectEditComponentTest extends ComponentTest
         {
             this.callbackStack = callbackStack;
         }
-        @Override
-        public ResourceBundleMessageSource getResourceBundleMessageSource() {
-            // TODO Auto-generated method stub
-            return null;
-        }
-
+		@Override
+		public ResourceBundleMessageSource getResourceBundleMessageSource() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+ 
     }
 }
