@@ -86,7 +86,7 @@ The core trails checkstyle configuration
             <property name="scope" value="public"/>
         </module>
         <module name="JavadocStyle"/>
-        <module name="WriteTag"/>
+        <!-- module name="WriteTag"/ --> <!-- This needs maven-checkstyle-plugin 2.2-SNAPSHOT. In version 2.1 it fails --> 
     </module>
     <module name="PackageHtml"/>
     <module name="NewlineAtEndOfFile">

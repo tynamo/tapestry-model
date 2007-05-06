@@ -40,12 +40,14 @@
             <name>Alejandro Scandroli</name>
             <email>ascandroli@codehaus.org</email>
             <url>http://docs.codehaus.org/display/~ascandroli</url>
+            <timezone>+1</timezone>
         </developer>
         <developer>
             <id>kaosko</id>
             <name>Kalle Korhonen</name>
             <email>kalle.o.korhonen@gmail.com</email>
             <url>http://docs.codehaus.org/display/~kaosko</url>
+            <timezone>-8</timezone>
         </developer>
     </developers>
     <licenses>
@@ -82,7 +84,7 @@
     </scm>
 
     <prerequisites>
-        <maven>2.0.4</maven>
+        <maven>2.0.6</maven>
     </prerequisites>
 
     <repositories>
@@ -165,7 +167,7 @@
 
     <distributionManagement>
         <site>
-            <id>trails</id>
+            <id>trails-site</id>
             <url>dav:https://dav.codehaus.org/trails/site/</url>
         </site>
         <repository>

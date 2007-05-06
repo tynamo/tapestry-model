@@ -14,8 +14,8 @@
 	<artifactId>simple</artifactId>
 	<packaging>war</packaging>
 	<name>Trails Example - Simple</name>
-	<url>https://trails.dev.java.net/</url>
-	<build>
+
+    <build>
 		<plugins>
             <plugin>
 				<artifactId>maven-surefire-plugin</artifactId>

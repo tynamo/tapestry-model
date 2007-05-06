@@ -16,7 +16,6 @@
   <packaging>war</packaging>
   <name>Classic Hibernate Roster Demo</name>
   <version>1.0-SNAPSHOT</version>
-  <url>http://www.trailsframework.org/</url>
 
   <build>
     <plugins>

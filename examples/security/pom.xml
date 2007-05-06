@@ -14,7 +14,6 @@
 	<artifactId>security</artifactId>
 	<packaging>war</packaging>
 	<name>Trails Example - Security</name>
-    <url>http://www.trailsframework.org/</url>
 
     <dependencies>
         <dependency>
