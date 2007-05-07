@@ -13,6 +13,7 @@
 	<name>Trails Example - Simple</name>
 
     <build>
+    <finalName>trails-simple</finalName>
 		<plugins>
             <plugin>
 				<artifactId>maven-surefire-plugin</artifactId>
