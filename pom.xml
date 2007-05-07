@@ -7,7 +7,7 @@
     <groupId>org.trailsframework</groupId>
     <artifactId>trails</artifactId>
     <packaging>pom</packaging>
-    <version>1.0</version>
+    <version>1.1-SNAPSHOT</version>
     <properties>
       <!-- Plugin dependencies don't use dependencyManagement section, specify a single log4j version here -->
       <log4j.version>1.2.14</log4j.version>
@@ -77,9 +77,9 @@
         </mailingList>
     </mailingLists>
     <scm>
-        <connection>scm:svn:http://svn.codehaus.org/trails/tags/trails-1.0</connection>
-        <developerConnection>scm:svn:https://svn.codehaus.org/trails/tags/trails-1.0</developerConnection>
-        <url>http://svn.trails.codehaus.org/tags/trails-1.0</url>
+        <connection>scm:svn:http://svn.codehaus.org/trails/trunk/trails</connection>
+        <developerConnection>scm:svn:https://svn.codehaus.org/trails/trunk/trails</developerConnection>
+        <url>http://svn.trails.codehaus.org/</url>
     </scm>
 
     <prerequisites>
