@@ -57,12 +57,12 @@ import org.trails.validation.ValidationException;
 public class HibernatePersistenceService extends HibernateDaoSupport implements
                                                                      PersistenceService, ApplicationContextAware
 {
-	ApplicationContext appContext  = null;
-	private DescriptorService _descriptorService = null;
-	
-	/**
-	 * We need this because cylcic reference between HibernatePersistenceService and TrailsDescriptorService 
-	 */
+    ApplicationContext appContext  = null;
+    private DescriptorService _descriptorService = null;
+
+    /**
+     * We need this because cylcic reference between HibernatePersistenceService and TrailsDescriptorService
+     */
     public DescriptorService getDescriptorService()
     {
         if (_descriptorService == null)
@@ -89,10 +89,10 @@ public class HibernatePersistenceService extends HibernateDaoSupport implements
             }
         });
     }
-    
+
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.blah.service.IPersistenceService#getAllInstances(java.lang.Class)
      */
     @Transactional
@@ -108,7 +108,7 @@ public class HibernatePersistenceService extends HibernateDaoSupport implements
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.blah.service.IPersistenceService#save(java.lang.Object)
      */
     @Transactional
@@ -140,7 +140,7 @@ public class HibernatePersistenceService extends HibernateDaoSupport implements
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.trails.persistence.PersistenceService#getInstances(org.trails.persistence.Query)
      */
     @Transactional
@@ -166,18 +166,18 @@ public class HibernatePersistenceService extends HibernateDaoSupport implements
 
     }
 
-    
+
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.trails.persistence.PersistenceService#getInstance(final Class<T> type)
      */
     @Transactional
     public <T> T getInstance( final Class<T> type)
     {
-    	return getInstance(DetachedCriteria.forClass(type) );
+        return getInstance(DetachedCriteria.forClass(type) );
     }
-    
+
     @Transactional
     public <T> T getInstance(final DetachedCriteria criteria)
     {
@@ -189,7 +189,7 @@ public class HibernatePersistenceService extends HibernateDaoSupport implements
         });
         return (T) result;
     }
-    
+
     @Transactional
     public List getInstances( final Object example )
     {
@@ -229,6 +229,15 @@ public class HibernatePersistenceService extends HibernateDaoSupport implements
                                 else if( propertyDescriptor.isObjectReference() )
                                 {
                                     //'one'-end of many-to-one -> just match the identifier
+                                    Object identifierValue = Ognl.getValue( descriptorService
+                                            .getClassDescriptor( value.getClass() ).getIdentifierDescriptor().getName(),
+                                                                            value );
+                                    searchCriteria.createCriteria( propertyName )
+                                            .add( Restrictions.idEq( identifierValue ) );
+                                }
+                                else if( propertyDescriptor.isOwningObjectReference() )
+                                {
+                                    //'one'-end of one-to-one -> just match the identifier
                                     Object identifierValue = Ognl.getValue( descriptorService
                                             .getClassDescriptor( value.getClass() ).getIdentifierDescriptor().getName(),
                                                                             value );

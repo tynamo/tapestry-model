@@ -48,15 +48,15 @@ public abstract class TrailsDownload extends BaseComponent {
 
     public IAsset getByteArrayAsset() {
         String id = "";
-        try
-        {
-            id = Ognl.getValue(getIdentifierDescriptor().getName(), getModel()).toString();
-        } catch (OgnlException e)
-        {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        } catch (NullPointerException npe)
-        {
-            id = "";
+        try {
+            if (Ognl.getValue(getIdentifierDescriptor().getName(), getModel()) != null)
+                id = Ognl.getValue(getIdentifierDescriptor().getName(),
+                        getModel()).toString();
+        } catch (OgnlException e) {
+            e.printStackTrace();
+
+            // To change body of catch statement use
+            // File | Settings | File Templates.
         }
 
         ITrailsBlob trailsBlob = null;
@@ -76,6 +76,8 @@ public abstract class TrailsDownload extends BaseComponent {
             fileName = trailsBlob.getFileName();
         }
 
-        return new TrailsBlobAsset(getBlobService(), getClassDescriptor().getType().getName(), id, getDescriptor().getName(), contentType, fileName);
+        return new TrailsBlobAsset(getBlobService(), getClassDescriptor()
+                .getType().getName(), id, getDescriptor().getName(),
+                contentType, fileName);
     }
 }

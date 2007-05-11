@@ -26,25 +26,25 @@ import org.trails.descriptor.IClassDescriptor;
 
 /**
  * List all the instances of a type
- * 
+ *
  * @author Chris Nelson
- * 
+ *
  */
 public abstract class ListPage extends TrailsPage implements IExternalPage, PageBeginRenderListener
 {
 
-	
-    @Override
-	public void pageBeginRender(PageEvent event)
-	{
-    	super.pageBeginRender(event);
-//    	if (!getRequestCycle().isRewinding())
-//    	{
-//    		setInstances(getPersistenceService().getInstances(getCriteria()));
-//    	}
-	}
 
-	/* (non-Javadoc)
+    @Override
+    public void pageBeginRender(PageEvent event)
+    {
+        super.pageBeginRender(event);
+//        if (!getRequestCycle().isRewinding())
+//        {
+//            setInstances(getPersistenceService().getInstances(getCriteria()));
+//        }
+    }
+
+    /* (non-Javadoc)
      * @see org.apache.tapestry.IExternalPage#activateExternalPage(java.lang.Object[], org.apache.tapestry.IRequestCycle)
      */
     public void activateExternalPage(Object[] args, IRequestCycle cycle)
@@ -56,13 +56,13 @@ public abstract class ListPage extends TrailsPage implements IExternalPage, Page
 
     public abstract List getInstances();
 
-	public abstract void setInstances(List Instances);
-	
-	@Persist
+    public abstract void setInstances(List Instances);
+
+    @Persist
     public abstract DetachedCriteria getCriteria();
 
-	public abstract void setCriteria(DetachedCriteria Criteria);
-	
+    public abstract void setCriteria(DetachedCriteria Criteria);
+
     public abstract String getTypeName();
 
     public abstract void setTypeName(String typeName);
@@ -79,12 +79,10 @@ public abstract class ListPage extends TrailsPage implements IExternalPage, Page
         }
     }
 
-    /**
-     * 
-     */
+    @Override
     public void pushCallback()
     {
-        
+
         getCallbackStack().push(new ListCallback(getPageName(), getTypeName(), getCriteria()));
     }
 }

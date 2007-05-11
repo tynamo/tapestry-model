@@ -250,7 +250,7 @@
                         <constructor-arg index="1"><value>enumEditor</value></constructor-arg>
                     </bean>
                 </entry>
-                <!-- disabled for 1.0 release pending review
+
                 <entry>
                     <key><value>supportsExtension('org.trails.descriptor.BlobDescriptorExtension')</value></key>
                     <bean class="org.apache.tapestry.util.ComponentAddress">
@@ -258,8 +258,7 @@
                         <constructor-arg index="1"><value>blobEditor</value></constructor-arg>
                     </bean>
                 </entry>
-                -->
-                <!-- disabled for 1.0 release pending review
+
                 <entry>
                     <key><value>owningObjectReference</value></key>
                     <bean class="org.apache.tapestry.util.ComponentAddress">
@@ -267,7 +266,7 @@
                         <constructor-arg index="1"><value>owningReferenceEditor</value></constructor-arg>
                     </bean>
                 </entry>
-                -->
+
                 <entry>
                 <key><value>objectReference</value></key>
                 <bean class="org.apache.tapestry.util.ComponentAddress">

@@ -18,7 +18,7 @@ import org.trails.descriptor.annotation.ClassDescriptor;
  * @author kenneth.colassi nhhockeyplayer@hotmail.com
  */
 @Entity
-@ClassDescriptor(hasCyclicRelationships = false)
+@ClassDescriptor(hasCyclicRelationships = true)
 public class Director extends Person implements Serializable {
     private static final Log log = LogFactory.getLog(Director.class);
 
@@ -43,7 +43,11 @@ public class Director extends Person implements Serializable {
         setApplicationRole(EApplicationRole.DIRECTOR);
     }
 
-    @OneToOne(optional = true, mappedBy = "director")
+    @OneToOne(mappedBy = "director")
+    @JoinTable(name = "join_table_Organization_Director",
+            joinColumns = @JoinColumn(name = "organization_fk", insertable = true, updatable = true, nullable = true),
+            inverseJoinColumns = {@JoinColumn(name = "director_fk", insertable = true, updatable = true, nullable = true)}
+    )
     public Organization getOrganization() {
         return organization;
     }

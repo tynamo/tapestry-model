@@ -41,11 +41,6 @@
        <binding name="descriptor">descriptor</binding>
    </component>
 
-    <component id="associationSelect" type="AssociationSelect" inherit-informal-parameters="no">
-         <binding name="value">model[descriptor.name]</binding>
-        <binding name="propertyDescriptor">descriptor</binding>
-    </component>
-
     <component id="insertText" type="Insert">
         <binding name="value">model[descriptor.name]</binding>
     </component>
@@ -63,11 +58,25 @@
         <binding name="propertyDescriptor">descriptor</binding>
     </component>
 
-    <!-- disabled for 1.0 release pending review
     <component id="blobFields" type="BlobComponent">
         <binding name="model">model</binding>
         <binding name="descriptor">descriptor</binding>
     </component>
-    -->
+
+    <component id="associationMgt" type="AssociationMgt">
+        <binding name="model">model</binding>
+        <binding name="value">model[descriptor.name]</binding>
+        <binding name="owner">model</binding>
+        <binding name="association">model[descriptor.name]</binding>
+        <binding name="descriptor">descriptor</binding>
+    </component>
+
+    <component id="associationSelect" type="AssociationSelect">
+        <binding name="model">model</binding>
+        <binding name="value">model[descriptor.name]</binding>
+        <binding name="owner">model</binding>
+        <binding name="association">model[descriptor.name]</binding>
+        <binding name="propertyDescriptor">descriptor</binding>
+    </component>
 
 </page-specification>

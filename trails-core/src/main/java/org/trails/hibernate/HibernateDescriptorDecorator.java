@@ -51,62 +51,57 @@ import org.trails.descriptor.IClassDescriptor;
 import org.trails.descriptor.IPropertyDescriptor;
 import org.trails.descriptor.IdentifierDescriptor;
 import org.trails.descriptor.ObjectReferenceDescriptor;
+import org.trails.descriptor.OwningObjectReferenceDescriptor;
 import org.trails.descriptor.TrailsPropertyDescriptor;
 
-
 /**
- * This decorator will add metadata information.  It will replace simple reflection based 
- * TrailsPropertyIPropertyDescriptors with appropriate Hibernate descriptors
- * 
+ * This decorator will add metadata information. It will replace simple
+ * reflection based TrailsPropertyIPropertyDescriptors with appropriate
+ * Hibernate descriptors
+ *
  * @see TrailsPropertyDescriptor
  * @see ObjectReferenceDescriptor
+ * @see OwningObjectReferenceDescriptor
  * @see CollectionDescriptor
  * @see EmbeddedDescriptor
  */
-public class HibernateDescriptorDecorator implements DescriptorDecorator
-{
-	protected static final Log LOG = LogFactory.getLog(HibernateDescriptorDecorator.class);
-	
+public class HibernateDescriptorDecorator implements DescriptorDecorator {
+    protected static final Log LOG = LogFactory
+            .getLog(HibernateDescriptorDecorator.class);
+
     private LocalSessionFactoryBean localSessionFactoryBean;
     private List types;
-
     private DescriptorFactory descriptorFactory;
-
     private HashMap<Class, IClassDescriptor> descriptors = new HashMap<Class, IClassDescriptor>();
-
     private int largeColumnLength = 100;
 
-    public IClassDescriptor decorate(IClassDescriptor descriptor)
-    {
+    public IClassDescriptor decorate(IClassDescriptor descriptor) {
         ArrayList<IPropertyDescriptor> decoratedPropertyDescriptors = new ArrayList<IPropertyDescriptor>();
-        for (IPropertyDescriptor propertyDescriptor : descriptor.getPropertyDescriptors())
-        {
+        for (IPropertyDescriptor propertyDescriptor : descriptor
+                .getPropertyDescriptors()) {
             Class type = descriptor.getType();
 
             IPropertyDescriptor result;
-            try
-            {
+            try {
                 ClassMetadata classMetaData = findMetadata(type);
-                if (propertyDescriptor.getName().equals(getIdentifierProperty(type)))
-                {
+                if (propertyDescriptor.getName().equals(
+                        getIdentifierProperty(type))) {
                     result = buildIdentifierDescriptor(type, propertyDescriptor);
-                }
-                else if (notAHibernateProperty(classMetaData, propertyDescriptor))
-                {
-                    // If this is not a hibernate property (i.e. marked Transient), it's certainly not searchable
+                } else if (notAHibernateProperty(classMetaData,
+                        propertyDescriptor)) {
+                    // If this is not a hibernate property (i.e. marked
+                    // Transient), it's certainly not searchable
                     // Are the any other properties like this?
                     propertyDescriptor.setSearchable(false);
                     result = propertyDescriptor;
-                }
-                else
-                {
-                    Property mappingProperty = getMapping(type).getProperty(propertyDescriptor.getName());
-                    result = decoratePropertyDescriptor(type, mappingProperty, propertyDescriptor, descriptor);
+                } else {
+                    Property mappingProperty = getMapping(type).getProperty(
+                            propertyDescriptor.getName());
+                    result = decoratePropertyDescriptor(type, mappingProperty,
+                            propertyDescriptor, descriptor);
                 }
 
-            }
-            catch (HibernateException e)
-            {
+            } catch (HibernateException e) {
                 throw new TrailsRuntimeException(e);
             }
             decoratedPropertyDescriptors.add(result);
@@ -115,68 +110,141 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
         return descriptor;
     }
 
-    protected IPropertyDescriptor decoratePropertyDescriptor(Class type, Property mappingProperty, IPropertyDescriptor descriptor, IClassDescriptor parentClassDescriptor)
-    {
-        if (isFormula(mappingProperty))
-        {
+    protected IPropertyDescriptor decoratePropertyDescriptor(Class type,
+            Property mappingProperty, IPropertyDescriptor descriptor,
+            IClassDescriptor parentClassDescriptor) {
+        if (isFormula(mappingProperty)) {
             descriptor.setReadOnly(true);
             return descriptor;
         }
         descriptor.setLength(findColumnLength(mappingProperty));
         descriptor.setLarge(isLarge(mappingProperty));
-        if (!mappingProperty.isOptional())
-        {
+        if (!mappingProperty.isOptional()) {
             descriptor.setRequired(true);
         }
 
-        if (!mappingProperty.isInsertable() && !mappingProperty.isUpdateable())
-        {
+        if (!mappingProperty.isInsertable() && !mappingProperty.isUpdateable()) {
             descriptor.setReadOnly(true);
         }
 
         IPropertyDescriptor result = descriptor;
         Type hibernateType = mappingProperty.getType();
-        if (mappingProperty.getType() instanceof ComponentType)
-        {
-            EmbeddedDescriptor embeddedDescriptor = buildEmbeddedDescriptor(type, mappingProperty, descriptor, parentClassDescriptor);
+        if (mappingProperty.getType() instanceof ComponentType) {
+            EmbeddedDescriptor embeddedDescriptor = buildEmbeddedDescriptor(
+                    type, mappingProperty, descriptor, parentClassDescriptor);
             result = embeddedDescriptor;
-        }
-        else if (Collection.class.isAssignableFrom(descriptor.getPropertyType()))
-        {
-            result = buildCollectionDescriptor(type, descriptor, parentClassDescriptor);
-        }
-        else if (hibernateType.isAssociationType())
-        {
-            result = buildReferenceDescriptor(type, descriptor, (AssociationType) hibernateType);
-        }
-        else if (hibernateType.getReturnedClass().isEnum())
-        {
-            descriptor.addExtension(EnumReferenceDescriptor.class.getName(), new EnumReferenceDescriptor(hibernateType.getReturnedClass()));
+        } else if (Collection.class.isAssignableFrom(descriptor
+                .getPropertyType())) {
+            result = buildCollectionDescriptor(type, descriptor,
+                    parentClassDescriptor);
+        } else if (hibernateType.isAssociationType()) {
+            type = parentClassDescriptor.getType();
+            try {
+                Field propertyField = type.getDeclaredField(descriptor
+                        .getName());
+                PropertyDescriptor beanPropDescriptor = (PropertyDescriptor) Ognl
+                        .getValue("propertyDescriptors.{? name == '"
+                                + descriptor.getName() + "'}[0]", Introspector
+                                .getBeanInfo(type));
+                Method readMethod = beanPropDescriptor.getReadMethod();
+                String mappedBy = "";
+                if (readMethod
+                        .isAnnotationPresent(javax.persistence.OneToOne.class) ) {
+                    mappedBy = readMethod.getAnnotation(
+                            javax.persistence.OneToOne.class).mappedBy();
+                    if ("".equals(mappedBy)) {
+                        result = buildOwningObjectReferenceDescriptor(type,
+                                descriptor, (AssociationType) hibernateType);
+
+                        // http://forums.hibernate.org/viewtopic.php?t=974287&sid=12d018b08dffe07e263652190cfc4e60
+                        // Caution... this does not support multiple
+                        // class references across the OneToOne relationship
+                        Class returnType =  readMethod.getReturnType();
+                        String ognlUsableProperty = "";
+                        for ( int i = 0; i < returnType.getDeclaredMethods().length; i++ ) {
+                            if ( returnType.getDeclaredMethods()[i].getReturnType().equals(propertyField.getDeclaringClass()) ) {
+                                 Method theProperty = returnType.getDeclaredMethods()[i];
+                                 ognlUsableProperty = theProperty.getName().substring(3).toLowerCase(); // strips preceding 'get'
+                                 break;
+                            }
+                        }
+                        ((OwningObjectReferenceDescriptor)result).setInverseProperty(ognlUsableProperty);
+                    } else {
+                        result = buildObjectReferenceDescriptor(type,
+                                descriptor, (AssociationType) hibernateType);
+                        ((ObjectReferenceDescriptor)result).setInverseProperty(mappedBy);
+                    }
+                } else if (propertyField
+                        .isAnnotationPresent(javax.persistence.OneToOne.class) ) {
+                    mappedBy = propertyField.getAnnotation(
+                            javax.persistence.OneToOne.class).mappedBy();
+                    if ("".equals(mappedBy)) {
+                        result = buildOwningObjectReferenceDescriptor(type,
+                                descriptor, (AssociationType) hibernateType);
+
+                        // http://forums.hibernate.org/viewtopic.php?t=974287&sid=12d018b08dffe07e263652190cfc4e60
+                        // Caution... this does not support multiple
+                        // class references across the OneToOne relationship
+                        Class returnType =  readMethod.getReturnType();
+                        String ognlUsableProperty = "";
+                        for ( int i = 0; i < returnType.getDeclaredMethods().length; i++ ) {
+                            if ( returnType.getDeclaredMethods()[i].getReturnType().equals(propertyField.getDeclaringClass()) ) {
+                                 Method theProperty = returnType.getDeclaredMethods()[i];
+                                 ognlUsableProperty = theProperty.getName().substring(3).toLowerCase(); // strips preceding 'get'
+                                 break;
+                            }
+                        }
+                        ((OwningObjectReferenceDescriptor)result).setInverseProperty(ognlUsableProperty);
+                    } else {
+                        result = buildObjectReferenceDescriptor(type,
+                                descriptor, (AssociationType) hibernateType);
+                        ((ObjectReferenceDescriptor)result).setInverseProperty(mappedBy);
+                    }
+                } else {
+                    result = buildObjectReferenceDescriptor(type,
+                            descriptor, (AssociationType) hibernateType);
+                }
+            } catch (SecurityException e) {
+                LOG.error(e.getMessage());
+            } catch (NoSuchFieldException e) {
+                LOG.error(e.getMessage());
+            } catch (OgnlException e) {
+                LOG.error(e.getMessage());
+            } catch (IntrospectionException e) {
+                LOG.error(e.getMessage());
+            }
+        } else if (hibernateType.getReturnedClass().isEnum()) {
+            descriptor.addExtension(EnumReferenceDescriptor.class.getName(),
+                    new EnumReferenceDescriptor(hibernateType
+                            .getReturnedClass()));
         }
 
         return result;
     }
 
-    private EmbeddedDescriptor buildEmbeddedDescriptor(Class type, Property mappingProperty, IPropertyDescriptor descriptor, IClassDescriptor parentClassDescriptor)
-    {
+    private EmbeddedDescriptor buildEmbeddedDescriptor(Class type,
+            Property mappingProperty, IPropertyDescriptor descriptor,
+            IClassDescriptor parentClassDescriptor) {
         Component componentMapping = (Component) mappingProperty.getValue();
-        IClassDescriptor baseDescriptor = getDescriptorFactory().buildClassDescriptor(descriptor.getPropertyType());
+        IClassDescriptor baseDescriptor = getDescriptorFactory()
+                .buildClassDescriptor(descriptor.getPropertyType());
         // build from base descriptor
-        EmbeddedDescriptor embeddedDescriptor = new EmbeddedDescriptor(type, baseDescriptor);
+        EmbeddedDescriptor embeddedDescriptor = new EmbeddedDescriptor(type,
+                baseDescriptor);
         // and copy from property descriptor
         embeddedDescriptor.copyFrom(descriptor);
         ArrayList<IPropertyDescriptor> decoratedProperties = new ArrayList<IPropertyDescriptor>();
         // go thru each property and decorate it with Hibernate info
-        for (IPropertyDescriptor propertyDescriptor : embeddedDescriptor.getPropertyDescriptors())
-        {
-            if (notAHibernateProperty(componentMapping, propertyDescriptor))
-            {
+        for (IPropertyDescriptor propertyDescriptor : embeddedDescriptor
+                .getPropertyDescriptors()) {
+            if (notAHibernateProperty(componentMapping, propertyDescriptor)) {
                 decoratedProperties.add(propertyDescriptor);
-            }
-            else
-            {
-                Property property = componentMapping.getProperty(propertyDescriptor.getName());
-                IPropertyDescriptor iPropertyDescriptor = decoratePropertyDescriptor(embeddedDescriptor.getBeanType(), property, propertyDescriptor, parentClassDescriptor);
+            } else {
+                Property property = componentMapping
+                        .getProperty(propertyDescriptor.getName());
+                IPropertyDescriptor iPropertyDescriptor = decoratePropertyDescriptor(
+                        embeddedDescriptor.getBeanType(), property,
+                        propertyDescriptor, parentClassDescriptor);
                 decoratedProperties.add(iPropertyDescriptor);
             }
         }
@@ -185,63 +253,57 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
     }
 
     /**
-     * The default way to order our property descriptors is by the order they appear in the hibernate config, with id
-     * first.  Any non-mapped properties are tacked on at the end, til I think of a better way.
+     * The default way to order our property descriptors is by the order they
+     * appear in the hibernate config, with id first. Any non-mapped properties
+     * are tacked on at the end, til I think of a better way.
      *
      * @param propertyDescriptors
      * @return
      */
-    protected List sortPropertyDescriptors(Class type, List propertyDescriptors)
-    {
+    protected List sortPropertyDescriptors(Class type, List propertyDescriptors) {
         ArrayList sortedPropertyDescriptors = new ArrayList();
 
-        try
-        {
-            sortedPropertyDescriptors.add(Ognl.getValue("#this.{? identifier == true}[0]", propertyDescriptors));
+        try {
+            sortedPropertyDescriptors.add(Ognl.getValue(
+                    "#this.{? identifier == true}[0]", propertyDescriptors));
             for (Iterator iter = getMapping(type).getPropertyIterator(); iter
-                    .hasNext();)
-            {
+                    .hasNext();) {
                 Property mapping = (Property) iter.next();
-                sortedPropertyDescriptors.addAll((List) Ognl.getValue("#this.{ ? name == \"" + mapping.getName() + "\"}", propertyDescriptors));
+                sortedPropertyDescriptors.addAll((List) Ognl.getValue(
+                        "#this.{ ? name == \"" + mapping.getName() + "\"}",
+                        propertyDescriptors));
             }
-        }
-        catch (Exception ex)
-        {
+        } catch (Exception ex) {
             throw new TrailsRuntimeException(ex);
         }
         return sortedPropertyDescriptors;
     }
 
     /**
-     * Find the Hibernate metadata for this type, traversing up the hierarchy to supertypes if necessary
+     * Find the Hibernate metadata for this type, traversing up the hierarchy to
+     * supertypes if necessary
      *
      * @param type
      * @return
      */
-    protected ClassMetadata findMetadata(Class type) throws MetadataNotFoundException
-    {
+    protected ClassMetadata findMetadata(Class type)
+            throws MetadataNotFoundException {
         ClassMetadata metaData = getSessionFactory().getClassMetadata(type);
-        if (metaData != null)
-        {
+        if (metaData != null) {
             return metaData;
         }
-        if (!type.equals(Object.class))
-        {
+        if (!type.equals(Object.class)) {
             return findMetadata(type.getSuperclass());
-        }
-        else
-        {
+        } else {
             throw new MetadataNotFoundException("Failed to find metadata.");
         }
     }
 
-    private boolean isFormula(Property mappingProperty)
-    {
-        for (Iterator iter = mappingProperty.getColumnIterator(); iter.hasNext();)
-        {
+    private boolean isFormula(Property mappingProperty) {
+        for (Iterator iter = mappingProperty.getColumnIterator(); iter
+                .hasNext();) {
             Selectable selectable = (Selectable) iter.next();
-            if (selectable.isFormula())
-            {
+            if (selectable.isFormula()) {
                 return true;
             }
         }
@@ -255,31 +317,29 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
      * @param propertyDescriptor
      * @return true if the propertyDescriptor property is in componentMapping
      */
-    protected boolean notAHibernateProperty(Component componentMapping, IPropertyDescriptor propertyDescriptor)
-    {
-        for (Iterator iter = componentMapping.getPropertyIterator(); iter.hasNext();)
-        {
+    protected boolean notAHibernateProperty(Component componentMapping,
+            IPropertyDescriptor propertyDescriptor) {
+        for (Iterator iter = componentMapping.getPropertyIterator(); iter
+                .hasNext();) {
             Property property = (Property) iter.next();
-            if (property.getName().equals(propertyDescriptor.getName()))
-            {
+            if (property.getName().equals(propertyDescriptor.getName())) {
                 return false;
             }
         }
         return true;
     }
 
-    private boolean isLarge(Property mappingProperty)
-    {
+    private boolean isLarge(Property mappingProperty) {
         // Hack to avoid setting large property if length
         // is exactly equal to Hibernate default column length
-        return findColumnLength(mappingProperty) != Column.DEFAULT_LENGTH && findColumnLength(mappingProperty) > getLargeColumnLength();
+        return findColumnLength(mappingProperty) != Column.DEFAULT_LENGTH
+                && findColumnLength(mappingProperty) > getLargeColumnLength();
     }
 
-    private int findColumnLength(Property mappingProperty)
-    {
+    private int findColumnLength(Property mappingProperty) {
         int length = 0;
-        for (Iterator iter = mappingProperty.getColumnIterator(); iter.hasNext();)
-        {
+        for (Iterator iter = mappingProperty.getColumnIterator(); iter
+                .hasNext();) {
             Column column = (Column) iter.next();
             length += column.getLength();
         }
@@ -291,14 +351,12 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
      * @param type
      * @return
      */
-    protected boolean notAHibernateProperty(ClassMetadata classMetaData, IPropertyDescriptor descriptor)
-    {
-        try
-        {
-            return (Boolean) Ognl.getValue("propertyNames.{ ? #this == \"" + descriptor.getName() + "\"}.size() == 0", classMetaData);
-        }
-        catch (OgnlException oe)
-        {
+    protected boolean notAHibernateProperty(ClassMetadata classMetaData,
+            IPropertyDescriptor descriptor) {
+        try {
+            return (Boolean) Ognl.getValue("propertyNames.{ ? #this == \""
+                    + descriptor.getName() + "\"}.size() == 0", classMetaData);
+        } catch (OgnlException oe) {
             throw new TrailsRuntimeException(oe);
         }
     }
@@ -309,9 +367,26 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
      * @param parentClassDescriptor
      * @return
      */
-    private IPropertyDescriptor buildReferenceDescriptor(Class beanType, IPropertyDescriptor descriptor, AssociationType type)
-    {
-        return new ObjectReferenceDescriptor(beanType, descriptor, type.getReturnedClass());
+    private IPropertyDescriptor buildObjectReferenceDescriptor(Class beanType,
+            IPropertyDescriptor descriptor, AssociationType type) {
+        ObjectReferenceDescriptor newInstance = new ObjectReferenceDescriptor(beanType, descriptor, type
+                .getReturnedClass());
+        newInstance.setOneToOne(true);
+        return newInstance;
+    }
+
+    /**
+     * @param descriptor
+     * @param type
+     * @param parentClassDescriptor
+     * @return
+     */
+    private IPropertyDescriptor buildOwningObjectReferenceDescriptor(
+            Class beanType, IPropertyDescriptor descriptor, AssociationType type) {
+        OwningObjectReferenceDescriptor newInstance = new OwningObjectReferenceDescriptor(beanType, descriptor, type
+                .getReturnedClass());
+        newInstance.setOneToOne(true);
+        return newInstance;
     }
 
     /**
@@ -320,13 +395,14 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
      * @param parentClassDescriptor
      * @return
      */
-    private IdentifierDescriptor buildIdentifierDescriptor(Class type, IPropertyDescriptor descriptor)
-    {
-        IdentifierDescriptor identifierDescriptor = new IdentifierDescriptor(type, descriptor);
+    private IdentifierDescriptor buildIdentifierDescriptor(Class type,
+            IPropertyDescriptor descriptor) {
+        IdentifierDescriptor identifierDescriptor = new IdentifierDescriptor(
+                type, descriptor);
         PersistentClass mapping = getMapping(type);
 
-        if (((SimpleValue) mapping.getIdentifier()).getIdentifierGeneratorStrategy().equals("assigned"))
-        {
+        if (((SimpleValue) mapping.getIdentifier())
+                .getIdentifierGeneratorStrategy().equals("assigned")) {
             identifierDescriptor.setGenerated(false);
         }
 
@@ -337,8 +413,7 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
      * @param type
      * @return
      */
-    protected PersistentClass getMapping(Class type)
-    {
+    protected PersistentClass getMapping(Class type) {
         Configuration cfg = getLocalSessionFactoryBean().getConfiguration();
 
         return cfg.getClassMapping(type.getName());
@@ -348,99 +423,108 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
      * @param type
      * @param newDescriptor
      */
-    private CollectionDescriptor buildCollectionDescriptor(Class type, IPropertyDescriptor descriptor, IClassDescriptor parentClassDescriptor)
-    {
-        try
-        {
-            CollectionDescriptor collectionDescriptor = new CollectionDescriptor(type, descriptor);
-            org.hibernate.mapping.Collection collectionMapping = findCollectionMapping(type, descriptor.getName());
-            // It is a child relationship if it has delete-orphan specified in the mapping
-            collectionDescriptor.setChildRelationship(collectionMapping.hasOrphanDelete());
+    private CollectionDescriptor buildCollectionDescriptor(Class type,
+            IPropertyDescriptor descriptor,
+            IClassDescriptor parentClassDescriptor) {
+        try {
+            CollectionDescriptor collectionDescriptor = new CollectionDescriptor(
+                    type, descriptor);
+            org.hibernate.mapping.Collection collectionMapping = findCollectionMapping(
+                    type, descriptor.getName());
+            // It is a child relationship if it has delete-orphan specified in
+            // the mapping
+            collectionDescriptor.setChildRelationship(collectionMapping
+                    .hasOrphanDelete());
             CollectionMetadata collectionMetaData = getSessionFactory()
                     .getCollectionMetadata(collectionMapping.getRole());
 
-            collectionDescriptor.setElementType(collectionMetaData.getElementType()
-                    .getReturnedClass());
+            collectionDescriptor.setElementType(collectionMetaData
+                    .getElementType().getReturnedClass());
 
             collectionDescriptor.setOneToMany(collectionMapping.isOneToMany());
-            
-            decorateOneToManyCollection(parentClassDescriptor, collectionDescriptor, collectionMapping);
-            
+
+            decorateOneToManyCollection(parentClassDescriptor,
+                    collectionDescriptor, collectionMapping);
+
             return collectionDescriptor;
-        }
-        catch (HibernateException e)
-        {
+        } catch (HibernateException e) {
             throw new TrailsRuntimeException(e);
         }
     }
 
     /**
-     * I couldn't find a way to get the "mappedBy" value from the collection metadata, so I'm getting it from the OneToMany annotation.  
+     * I couldn't find a way to get the "mappedBy" value from the collection
+     * metadata, so I'm getting it from the OneToMany annotation.
      */
-    private void decorateOneToManyCollection(IClassDescriptor parentClassDescriptor , CollectionDescriptor collectionDescriptor, org.hibernate.mapping.Collection collectionMapping) {
-    	Class type = parentClassDescriptor.getType();
-		if (collectionDescriptor.isOneToMany() && collectionMapping.isInverse()) {
-			try {
+    private void decorateOneToManyCollection(
+            IClassDescriptor parentClassDescriptor,
+            CollectionDescriptor collectionDescriptor,
+            org.hibernate.mapping.Collection collectionMapping) {
+        Class type = parentClassDescriptor.getType();
+        if (collectionDescriptor.isOneToMany() && collectionMapping.isInverse()) {
+            try {
 
-				Field propertyField = type.getDeclaredField(collectionDescriptor.getName());
-			    PropertyDescriptor beanPropDescriptor =  (PropertyDescriptor)Ognl.getValue("propertyDescriptors.{? name == '" + collectionDescriptor.getName() + "'}[0]", Introspector.getBeanInfo(type));
-			    Method readMethod = beanPropDescriptor.getReadMethod();
-			    String mappedBy = "";
-			    if (readMethod.isAnnotationPresent(javax.persistence.OneToMany.class)) {
-			    	mappedBy = readMethod.getAnnotation(javax.persistence.OneToMany.class).mappedBy();
-			    } else if (propertyField.isAnnotationPresent(javax.persistence.OneToMany.class)) {
-			    	mappedBy = propertyField.getAnnotation(javax.persistence.OneToMany.class).mappedBy();
-			    }
-			    
-			    if (!"".equals(mappedBy)) {
-			    	collectionDescriptor.setInverseProperty(mappedBy);
-			    }
-			    
-            	parentClassDescriptor.setHasCyclicRelationships(true);
-            	
-			} catch (SecurityException e) {
-				LOG.error(e.getMessage());
-			} catch (NoSuchFieldException e) {
-				LOG.error(e.getMessage());
-			} catch (OgnlException e) {
-				LOG.error(e.getMessage());
-			} catch (IntrospectionException e) {
-				LOG.error(e.getMessage());
-			}
-		}
-	}
+                Field propertyField = type
+                        .getDeclaredField(collectionDescriptor.getName());
+                PropertyDescriptor beanPropDescriptor = (PropertyDescriptor) Ognl
+                        .getValue("propertyDescriptors.{? name == '"
+                                + collectionDescriptor.getName() + "'}[0]",
+                                Introspector.getBeanInfo(type));
+                Method readMethod = beanPropDescriptor.getReadMethod();
+                String mappedBy = "";
+                if (readMethod
+                        .isAnnotationPresent(javax.persistence.OneToMany.class)) {
+                    mappedBy = readMethod.getAnnotation(
+                            javax.persistence.OneToMany.class).mappedBy();
+                } else if (propertyField
+                        .isAnnotationPresent(javax.persistence.OneToMany.class)) {
+                    mappedBy = propertyField.getAnnotation(
+                            javax.persistence.OneToMany.class).mappedBy();
+                }
 
-    protected org.hibernate.mapping.Collection findCollectionMapping(Class type, String name)
-    {
+                if (!"".equals(mappedBy)) {
+                    collectionDescriptor.setInverseProperty(mappedBy);
+                }
+
+                parentClassDescriptor.setHasCyclicRelationships(true);
+
+            } catch (SecurityException e) {
+                LOG.error(e.getMessage());
+            } catch (NoSuchFieldException e) {
+                LOG.error(e.getMessage());
+            } catch (OgnlException e) {
+                LOG.error(e.getMessage());
+            } catch (IntrospectionException e) {
+                LOG.error(e.getMessage());
+            }
+        }
+    }
+
+    protected org.hibernate.mapping.Collection findCollectionMapping(
+            Class type, String name) {
         String roleName = type.getName() + "." + name;
-        org.hibernate.mapping.Collection collectionMapping = getLocalSessionFactoryBean().getConfiguration().getCollectionMapping(roleName);
-        if (collectionMapping != null)
-        {
+        org.hibernate.mapping.Collection collectionMapping = getLocalSessionFactoryBean()
+                .getConfiguration().getCollectionMapping(roleName);
+        if (collectionMapping != null) {
             return collectionMapping;
-        }
-        else if (!type.equals(Object.class))
-        {
+        } else if (!type.equals(Object.class)) {
             return findCollectionMapping(type.getSuperclass(), name);
-        }
-        else
-        {
+        } else {
             throw new MetadataNotFoundException("Metadata not found.");
         }
 
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     *
      * @see org.trails.descriptor.PropertyDescriptorService#getIdentifierProperty(java.lang.Class)
      */
-    public String getIdentifierProperty(Class type)
-    {
-        try
-        {
+    public String getIdentifierProperty(Class type) {
+        try {
             return getSessionFactory().getClassMetadata(type)
                     .getIdentifierPropertyName();
-        }
-        catch (HibernateException e)
-        {
+        } catch (HibernateException e) {
             throw new TrailsRuntimeException(e);
         }
     }
@@ -448,54 +532,48 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
     /**
      * @return Returns the sessionFactory.
      */
-    public SessionFactory getSessionFactory()
-    {
+    public SessionFactory getSessionFactory() {
         return (SessionFactory) getLocalSessionFactoryBean().getObject();
     }
 
-    public IClassDescriptor getClassDescriptor(Class type)
-    {
+    public IClassDescriptor getClassDescriptor(Class type) {
         return descriptors.get(type);
     }
 
     /**
      * @return Returns the localSessionFactoryBean.
      */
-    public LocalSessionFactoryBean getLocalSessionFactoryBean()
-    {
+    public LocalSessionFactoryBean getLocalSessionFactoryBean() {
         return localSessionFactoryBean;
     }
 
     /**
-     * @param localSessionFactoryBean The localSessionFactoryBean to set.
+     * @param localSessionFactoryBean
+     *            The localSessionFactoryBean to set.
      */
-    public void setLocalSessionFactoryBean(LocalSessionFactoryBean localSessionFactoryBean)
-    {
+    public void setLocalSessionFactoryBean(
+            LocalSessionFactoryBean localSessionFactoryBean) {
         this.localSessionFactoryBean = localSessionFactoryBean;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     *
      * @see org.trails.descriptor.TrailsDescriptorService#getAllDescriptors()
      */
-    public List<IClassDescriptor> getAllDescriptors()
-    {
+    public List<IClassDescriptor> getAllDescriptors() {
         return new ArrayList<IClassDescriptor>(descriptors.values());
     }
 
-
-    public List getTypes()
-    {
+    public List getTypes() {
         return types;
     }
 
-
-    public void setTypes(List types)
-    {
+    public void setTypes(List types) {
         this.types = types;
     }
 
-    public int getLargeColumnLength()
-    {
+    public int getLargeColumnLength() {
         return largeColumnLength;
     }
 
@@ -504,18 +582,15 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
      *
      * @param largeColumnLength
      */
-    public void setLargeColumnLength(int largeColumnLength)
-    {
+    public void setLargeColumnLength(int largeColumnLength) {
         this.largeColumnLength = largeColumnLength;
     }
 
-    public DescriptorFactory getDescriptorFactory()
-    {
+    public DescriptorFactory getDescriptorFactory() {
         return descriptorFactory;
     }
 
-    public void setDescriptorFactory(DescriptorFactory descriptorFactory)
-    {
+    public void setDescriptorFactory(DescriptorFactory descriptorFactory) {
         this.descriptorFactory = descriptorFactory;
     }
 

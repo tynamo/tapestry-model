@@ -15,6 +15,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -110,7 +111,11 @@ public class Organization implements Serializable {
         return league;
     }
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinTable(name = "join_table_Organization_Director",
+            joinColumns = @JoinColumn(name = "director_fk", insertable = true, updatable = true, nullable = true),
+            inverseJoinColumns = {@JoinColumn(name = "organization_fk", insertable = true, updatable = true, nullable = true)}
+    )
     @OrderBy("lastName")
     @PropertyDescriptor(index = 2)
     public Director getDirector() {

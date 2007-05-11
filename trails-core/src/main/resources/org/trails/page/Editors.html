@@ -56,6 +56,7 @@
                 </span>
                 <br/>
             </td>
+
             <td jwcid="collectionEditor@Block" >
                 <label><span jwcid="@Insert" value="ognl:descriptor.displayName" /></label>
                 <span class="editor">
@@ -89,7 +90,7 @@
                 </span>
                 <br/>
             </td>
-            <!-- disabled for 1.0 release pending review
+
             <td jwcid="blobEditor@Block">
                 <label class="desc"><span jwcid="@Insert" value="ognl:descriptor.displayName"/></label>
                 <span class="editor">
@@ -98,5 +99,12 @@
                 <br/>
                 <br/>
             </td>
-            -->
+
+            <td jwcid="owningReferenceEditor@Block" >
+                <label><span jwcid="@Insert" value="ognl:descriptor.displayName" /></label>
+                <span class="editor">
+                    <span jwcid="associationMgt"  />
+                </span>
+                <br/>
+            </td>
 

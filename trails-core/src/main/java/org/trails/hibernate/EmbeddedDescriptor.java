@@ -7,12 +7,12 @@ import org.trails.descriptor.TrailsClassDescriptor;
 
 public class EmbeddedDescriptor extends TrailsClassDescriptor implements IPropertyDescriptor
 {
-	
-	private int index;
-	
-	private boolean readOnly;
-	
-	private String name;
+
+    private int index;
+
+    private boolean readOnly;
+
+    private String name;
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////
     // constructors
@@ -37,99 +37,105 @@ public class EmbeddedDescriptor extends TrailsClassDescriptor implements IProper
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////
     // bean setters/getters
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////    
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////
     public boolean isNumeric()
-	{
-		// TODO Auto-generated method stub
-		return false;
-	}
+    {
+        // TODO Auto-generated method stub
+        return false;
+    }
 
-	public boolean isBoolean()
-	{
-		// TODO Auto-generated method stub
-		return false;
-	}
+    public boolean isBoolean()
+    {
+        // TODO Auto-generated method stub
+        return false;
+    }
 
-	public boolean isDate()
-	{
-		// TODO Auto-generated method stub
-		return false;
-	}
+    public boolean isDate()
+    {
+        // TODO Auto-generated method stub
+        return false;
+    }
 
-	public boolean isString()
-	{
-		// TODO Auto-generated method stub
-		return false;
-	}
+    public boolean isString()
+    {
+        // TODO Auto-generated method stub
+        return false;
+    }
 
-	public boolean isObjectReference()
-	{
-		// TODO Auto-generated method stub
-		return false;
-	}
+    public boolean isObjectReference()
+    {
+        // TODO Auto-generated method stub
+        return false;
+    }
 
-	private boolean required;
-	
-	private int length;
-	
-	private boolean large;
-	
-	private String format;
-	
-	private boolean searchable;
-	
-	private boolean summary;
+    public boolean isOwningObjectReference()
+    {
+        // TODO Auto-generated method stub
+        return false;
+    }
 
-	private boolean richText;
-	
-	private Class beanType;
+    private boolean required;
 
-	public boolean isEmbedded()
-	{
-		return true;
-	}
+    private int length;
 
-	public Class getPropertyType()
-	{
-		return getType();
-	}
+    private boolean large;
 
-	public void setPropertyType(Class propertyType)
-	{
-		setType(propertyType);
-	}
+    private String format;
 
-	public int getIndex()
-	{
-		return index;
-	}
+    private boolean searchable;
 
-	public boolean isReadOnly()
-	{
-		return readOnly;
-	}
+    private boolean summary;
 
-	public void setReadOnly(boolean readOnly)
-	{
-		this.readOnly = readOnly;
-	}
+    private boolean richText;
 
-	public void setIndex(int index)
-	{
-		this.index = index;
-	}
+    private Class beanType;
 
-	public String getName()
-	{
-		return name;
-	}
+    public boolean isEmbedded()
+    {
+        return true;
+    }
 
-	public void setName(String name)
-	{
-		this.name = name;
-	}
+    public Class getPropertyType()
+    {
+        return getType();
+    }
 
-	public boolean isCollection() { return false; }
+    public void setPropertyType(Class propertyType)
+    {
+        setType(propertyType);
+    }
+
+    public int getIndex()
+    {
+        return index;
+    }
+
+    public boolean isReadOnly()
+    {
+        return readOnly;
+    }
+
+    public void setReadOnly(boolean readOnly)
+    {
+        this.readOnly = readOnly;
+    }
+
+    public void setIndex(int index)
+    {
+        this.index = index;
+    }
+
+    public String getName()
+    {
+        return name;
+    }
+
+    public void setName(String name)
+    {
+        this.name = name;
+    }
+
+    public boolean isCollection() { return false; }
 
 
     public IClassDescriptor getParentClassDescriptor()
@@ -143,103 +149,103 @@ public class EmbeddedDescriptor extends TrailsClassDescriptor implements IProper
     }
 
     @Override
-	public Object clone()
-	{
-		return new EmbeddedDescriptor(getBeanType(), this);
-	}
+    public Object clone()
+    {
+        return new EmbeddedDescriptor(getBeanType(), this);
+    }
 
-	public String getFormat()
-	{
-		return format;
-	}
+    public String getFormat()
+    {
+        return format;
+    }
 
-	public void setFormat(String format)
-	{
-		this.format = format;
-	}
+    public void setFormat(String format)
+    {
+        this.format = format;
+    }
 
-	public boolean isLarge()
-	{
-		return large;
-	}
+    public boolean isLarge()
+    {
+        return large;
+    }
 
-	public void setLarge(boolean large)
-	{
-		this.large = large;
-	}
+    public void setLarge(boolean large)
+    {
+        this.large = large;
+    }
 
-	public int getLength()
-	{
-		return length;
-	}
+    public int getLength()
+    {
+        return length;
+    }
 
-	public void setLength(int length)
-	{
-		this.length = length;
-	}
+    public void setLength(int length)
+    {
+        this.length = length;
+    }
 
-	public boolean isSearchable()
-	{
-		return searchable;
-	}
+    public boolean isSearchable()
+    {
+        return searchable;
+    }
 
-	public void setSearchable(boolean searchable)
-	{
-		this.searchable = searchable;
-	}
+    public void setSearchable(boolean searchable)
+    {
+        this.searchable = searchable;
+    }
 
-	public boolean isSummary()
-	{
-		return summary;
-	}
+    public boolean isSummary()
+    {
+        return summary;
+    }
 
-	public void setSummary(boolean summary)
-	{
-		this.summary = summary;
-	}
+    public void setSummary(boolean summary)
+    {
+        this.summary = summary;
+    }
 
-	public Class getBeanType()
-	{
-		return beanType;
-	}
+    public Class getBeanType()
+    {
+        return beanType;
+    }
 
-	public void setBeanType(Class beanType)
-	{
-		this.beanType = beanType;
-	}
+    public void setBeanType(Class beanType)
+    {
+        this.beanType = beanType;
+    }
 
     public boolean isRichText()
-	{
-		return richText;
-	}
+    {
+        return richText;
+    }
 
-	public void setRichText(boolean richText)
-	{
-		this.richText = richText;
-	}
+    public void setRichText(boolean richText)
+    {
+        this.richText = richText;
+    }
 
-	public boolean isRequired()
-	{
-		return required;
-	}
+    public boolean isRequired()
+    {
+        return required;
+    }
 
-	public void setRequired(boolean required)
-	{
-		this.required = required;
-	}
+    public void setRequired(boolean required)
+    {
+        this.required = required;
+    }
 
-	@Override
-	public void copyFrom(IDescriptor descriptor)
-	{
+    @Override
+    public void copyFrom(IDescriptor descriptor)
+    {
 
-		super.copyFrom(descriptor);
-	}
+        super.copyFrom(descriptor);
+    }
 
-	public boolean isIdentifier()
-	{
-		return false;
-	}
-	
-	
-	
+    public boolean isIdentifier()
+    {
+        return false;
+    }
+
+
+
 }

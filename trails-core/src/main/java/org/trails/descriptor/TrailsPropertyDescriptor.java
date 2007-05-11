@@ -24,29 +24,29 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 public class TrailsPropertyDescriptor extends TrailsDescriptor implements IPropertyDescriptor
 {
     private boolean searchable = true;
-    
+
     private boolean required;
-    
+
     private boolean readOnly;
-    
+
     private String name;
-    
+
     private int index = UNDEFINED_INDEX;
-    
+
     private int length = DEFAULT_LENGTH;
-    
+
     private boolean large;
-    
+
     private String format;
 
     private boolean summary = true;
-    
+
     private boolean richText;
-    
+
     private Class beanType;
 
     private IClassDescriptor parentClassDescriptor;
-    
+
     /////////////////////////////////////////////////////////////////////////////////////////////////////////
     // constructors
     /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -63,7 +63,7 @@ public class TrailsPropertyDescriptor extends TrailsDescriptor implements IPrope
     public TrailsPropertyDescriptor(Class beanType, Class type)
     {
         super(type);
-    	this.beanType = beanType;
+        this.beanType = beanType;
     }
 
     public TrailsPropertyDescriptor(Class beanType, String name, Class type)
@@ -103,7 +103,7 @@ public class TrailsPropertyDescriptor extends TrailsDescriptor implements IPrope
     public boolean isBoolean()
     {
         return getPropertyType().getName().endsWith("boolean") ||
-        	getPropertyType().getName().endsWith("Boolean");
+            getPropertyType().getName().endsWith("Boolean");
     }
     /**
      * @return
@@ -162,7 +162,15 @@ public class TrailsPropertyDescriptor extends TrailsDescriptor implements IPrope
     {
         return false;
     }
-    
+
+    /**
+     * @return
+     */
+    public boolean isOwningObjectReference()
+    {
+        return false;
+    }
+
     /**
      * @return Returns the required.
      */
@@ -170,7 +178,7 @@ public class TrailsPropertyDescriptor extends TrailsDescriptor implements IPrope
     {
         return required;
     }
-    
+
     /**
      * @param required The required to set.
      */
@@ -186,7 +194,7 @@ public class TrailsPropertyDescriptor extends TrailsDescriptor implements IPrope
     {
         return readOnly;
     }
-    
+
     /**
      * @param readOnly The readOnly to set.
      */
@@ -194,7 +202,7 @@ public class TrailsPropertyDescriptor extends TrailsDescriptor implements IPrope
     {
         this.readOnly = readOnly;
     }
-    
+
     /**
      * @return
      */
@@ -295,17 +303,17 @@ public class TrailsPropertyDescriptor extends TrailsDescriptor implements IPrope
         this.richText = richText;
     }
 
-	public Class getBeanType() {
-		return beanType;
-	}
+    public Class getBeanType() {
+        return beanType;
+    }
 
-	public void setBeanType(Class beanType) {
-		this.beanType = beanType;
-	}
+    public void setBeanType(Class beanType) {
+        this.beanType = beanType;
+    }
 
-	public boolean isEmbedded()
-	{
-		return false;
-	}
+    public boolean isEmbedded()
+    {
+        return false;
+    }
 
 }
