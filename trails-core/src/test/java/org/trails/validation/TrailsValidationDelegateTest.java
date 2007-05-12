@@ -10,7 +10,6 @@ import org.jmock.Mock;
 import org.trails.component.ComponentTest;
 import org.trails.descriptor.TrailsClassDescriptor;
 import org.trails.descriptor.TrailsPropertyDescriptor;
-import org.trails.persistence.PersistenceException;
 import org.trails.test.Baz;
 import org.trails.test.Foo;
 
@@ -108,4 +107,38 @@ public class TrailsValidationDelegateTest extends ComponentTest
         assertFalse(nonErrorTracking.isInError());
         
     }
+
+
+	public void testRecordInvalidStateExceptionWithoutPropertyDescriptor() throws Exception
+	{
+
+		TrailsClassDescriptor descriptor = new TrailsClassDescriptor(Baz.class, "Baz");
+		InvalidValue invalidValue = new InvalidValue("Is not a valid entity", Baz.class, "foo", "blarg", new Baz());
+		InvalidStateException invalidStateException = new InvalidStateException(new InvalidValue[]{invalidValue});
+		delegate.record(descriptor, invalidStateException);
+
+		assertTrue(delegate.getHasErrors());
+		assertFalse(delegate.getErrorRenderers().isEmpty());
+
+		IFieldTracking fieldTracking = delegate.getFieldTracking("Description");
+		assertTrue(fieldTracking.isInError());
+		assertEquals("right field tracking", "foo", fieldTracking.getFieldName());
+		RenderString renderString = (RenderString) fieldTracking.getErrorRenderer();
+		assertEquals("Is not a valid entity", renderString.getString());
+
+		IFieldTracking nonErrorTracking = delegate.getFieldTracking("OtherProperty");
+		renderString = (RenderString) nonErrorTracking.getErrorRenderer();
+		assertTrue(nonErrorTracking.isInError());
+		assertEquals("Is not a valid entity", renderString.getString());
+
+
+		nonErrorTracking = delegate.getFieldTracking("OtherOne");
+		renderString = (RenderString) nonErrorTracking.getErrorRenderer();
+		assertTrue(nonErrorTracking.isInError());
+		assertEquals("Is not a valid entity", renderString.getString());
+
+		renderString = (RenderString) delegate.getErrorRenderers().get(0);
+		assertEquals("Is not a valid entity", renderString.getString());
+	}
+	
 }
