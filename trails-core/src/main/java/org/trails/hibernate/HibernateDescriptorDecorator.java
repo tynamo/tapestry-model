@@ -70,9 +70,13 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator {
             .getLog(HibernateDescriptorDecorator.class);
 
     private LocalSessionFactoryBean localSessionFactoryBean;
+
     private List types;
+
     private DescriptorFactory descriptorFactory;
+
     private HashMap<Class, IClassDescriptor> descriptors = new HashMap<Class, IClassDescriptor>();
+
     private int largeColumnLength = 100;
 
     public IClassDescriptor decorate(IClassDescriptor descriptor) {
@@ -86,7 +90,7 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator {
                 ClassMetadata classMetaData = findMetadata(type);
                 if (propertyDescriptor.getName().equals(
                         getIdentifierProperty(type))) {
-                    result = buildIdentifierDescriptor(type, propertyDescriptor);
+                    result = createIdentifierDescriptor(type, propertyDescriptor);
                 } else if (notAHibernateProperty(classMetaData,
                         propertyDescriptor)) {
                     // If this is not a hibernate property (i.e. marked
@@ -138,81 +142,8 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator {
             result = buildCollectionDescriptor(type, descriptor,
                     parentClassDescriptor);
         } else if (hibernateType.isAssociationType()) {
-            type = parentClassDescriptor.getType();
-            try {
-                Field propertyField = type.getDeclaredField(descriptor
-                        .getName());
-                PropertyDescriptor beanPropDescriptor = (PropertyDescriptor) Ognl
-                        .getValue("propertyDescriptors.{? name == '"
-                                + descriptor.getName() + "'}[0]", Introspector
-                                .getBeanInfo(type));
-                Method readMethod = beanPropDescriptor.getReadMethod();
-                String mappedBy = "";
-                if (readMethod
-                        .isAnnotationPresent(javax.persistence.OneToOne.class) ) {
-                    mappedBy = readMethod.getAnnotation(
-                            javax.persistence.OneToOne.class).mappedBy();
-                    if ("".equals(mappedBy)) {
-                        result = buildOwningObjectReferenceDescriptor(type,
-                                descriptor, (AssociationType) hibernateType);
-
-                        // http://forums.hibernate.org/viewtopic.php?t=974287&sid=12d018b08dffe07e263652190cfc4e60
-                        // Caution... this does not support multiple
-                        // class references across the OneToOne relationship
-                        Class returnType =  readMethod.getReturnType();
-                        String ognlUsableProperty = "";
-                        for ( int i = 0; i < returnType.getDeclaredMethods().length; i++ ) {
-                            if ( returnType.getDeclaredMethods()[i].getReturnType().equals(propertyField.getDeclaringClass()) ) {
-                                 Method theProperty = returnType.getDeclaredMethods()[i];
-                                 ognlUsableProperty = theProperty.getName().substring(3).toLowerCase(); // strips preceding 'get'
-                                 break;
-                            }
-                        }
-                        ((OwningObjectReferenceDescriptor)result).setInverseProperty(ognlUsableProperty);
-                    } else {
-                        result = buildObjectReferenceDescriptor(type,
-                                descriptor, (AssociationType) hibernateType);
-                        ((ObjectReferenceDescriptor)result).setInverseProperty(mappedBy);
-                    }
-                } else if (propertyField
-                        .isAnnotationPresent(javax.persistence.OneToOne.class) ) {
-                    mappedBy = propertyField.getAnnotation(
-                            javax.persistence.OneToOne.class).mappedBy();
-                    if ("".equals(mappedBy)) {
-                        result = buildOwningObjectReferenceDescriptor(type,
-                                descriptor, (AssociationType) hibernateType);
-
-                        // http://forums.hibernate.org/viewtopic.php?t=974287&sid=12d018b08dffe07e263652190cfc4e60
-                        // Caution... this does not support multiple
-                        // class references across the OneToOne relationship
-                        Class returnType =  readMethod.getReturnType();
-                        String ognlUsableProperty = "";
-                        for ( int i = 0; i < returnType.getDeclaredMethods().length; i++ ) {
-                            if ( returnType.getDeclaredMethods()[i].getReturnType().equals(propertyField.getDeclaringClass()) ) {
-                                 Method theProperty = returnType.getDeclaredMethods()[i];
-                                 ognlUsableProperty = theProperty.getName().substring(3).toLowerCase(); // strips preceding 'get'
-                                 break;
-                            }
-                        }
-                        ((OwningObjectReferenceDescriptor)result).setInverseProperty(ognlUsableProperty);
-                    } else {
-                        result = buildObjectReferenceDescriptor(type,
-                                descriptor, (AssociationType) hibernateType);
-                        ((ObjectReferenceDescriptor)result).setInverseProperty(mappedBy);
-                    }
-                } else {
-                    result = buildObjectReferenceDescriptor(type,
-                            descriptor, (AssociationType) hibernateType);
-                }
-            } catch (SecurityException e) {
-                LOG.error(e.getMessage());
-            } catch (NoSuchFieldException e) {
-                LOG.error(e.getMessage());
-            } catch (OgnlException e) {
-                LOG.error(e.getMessage());
-            } catch (IntrospectionException e) {
-                LOG.error(e.getMessage());
-            }
+            result = buildAssociationDescriptor(type, mappingProperty,
+                    descriptor, parentClassDescriptor);
         } else if (hibernateType.getReturnedClass().isEnum()) {
             descriptor.addExtension(EnumReferenceDescriptor.class.getName(),
                     new EnumReferenceDescriptor(hibernateType
@@ -367,10 +298,10 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator {
      * @param parentClassDescriptor
      * @return
      */
-    private IPropertyDescriptor buildObjectReferenceDescriptor(Class beanType,
+    private IPropertyDescriptor createObjectReferenceDescriptor(Class beanType,
             IPropertyDescriptor descriptor, AssociationType type) {
-        ObjectReferenceDescriptor newInstance = new ObjectReferenceDescriptor(beanType, descriptor, type
-                .getReturnedClass());
+        ObjectReferenceDescriptor newInstance = new ObjectReferenceDescriptor(
+                beanType, descriptor, type.getReturnedClass());
         newInstance.setOneToOne(true);
         return newInstance;
     }
@@ -381,10 +312,10 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator {
      * @param parentClassDescriptor
      * @return
      */
-    private IPropertyDescriptor buildOwningObjectReferenceDescriptor(
+    private IPropertyDescriptor createOwningObjectReferenceDescriptor(
             Class beanType, IPropertyDescriptor descriptor, AssociationType type) {
-        OwningObjectReferenceDescriptor newInstance = new OwningObjectReferenceDescriptor(beanType, descriptor, type
-                .getReturnedClass());
+        OwningObjectReferenceDescriptor newInstance = new OwningObjectReferenceDescriptor(
+                beanType, descriptor, type.getReturnedClass());
         newInstance.setOneToOne(true);
         return newInstance;
     }
@@ -395,7 +326,7 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator {
      * @param parentClassDescriptor
      * @return
      */
-    private IdentifierDescriptor buildIdentifierDescriptor(Class type,
+    private IdentifierDescriptor createIdentifierDescriptor(Class type,
             IPropertyDescriptor descriptor) {
         IdentifierDescriptor identifierDescriptor = new IdentifierDescriptor(
                 type, descriptor);
@@ -450,6 +381,103 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator {
         } catch (HibernateException e) {
             throw new TrailsRuntimeException(e);
         }
+    }
+
+    public IPropertyDescriptor buildAssociationDescriptor(Class type,
+            Property mappingProperty, IPropertyDescriptor descriptor,
+            IClassDescriptor parentClassDescriptor) {
+        Type hibernateType = mappingProperty.getType();
+        type = parentClassDescriptor.getType();
+        IPropertyDescriptor result = descriptor;
+
+        try {
+            Field propertyField = type.getDeclaredField(descriptor.getName());
+            PropertyDescriptor beanPropDescriptor = (PropertyDescriptor) Ognl
+                    .getValue("propertyDescriptors.{? name == '"
+                            + descriptor.getName() + "'}[0]", Introspector
+                            .getBeanInfo(type));
+            Method readMethod = beanPropDescriptor.getReadMethod();
+            String mappedBy = "";
+            if (readMethod
+                    .isAnnotationPresent(javax.persistence.OneToOne.class)) {
+                mappedBy = readMethod.getAnnotation(
+                        javax.persistence.OneToOne.class).mappedBy();
+                if ("".equals(mappedBy)) {
+                    result = createOwningObjectReferenceDescriptor(type,
+                            descriptor, (AssociationType) hibernateType);
+
+                    // http://forums.hibernate.org/viewtopic.php?t=974287&sid=12d018b08dffe07e263652190cfc4e60
+                    // Caution... this does not support multiple
+                    // class references across the OneToOne relationship
+                    Class returnType = readMethod.getReturnType();
+                    String ognlUsableProperty = "";
+                    for (int i = 0; i < returnType.getDeclaredMethods().length; i++) {
+                        if (returnType.getDeclaredMethods()[i].getReturnType()
+                                .equals(propertyField.getDeclaringClass())) {
+                            Method theProperty = returnType
+                                    .getDeclaredMethods()[i];
+                            ognlUsableProperty = theProperty.getName()
+                                    .substring(3).toLowerCase(); // strips
+                                                                    // preceding
+                                                                    // 'get'
+                            break;
+                        }
+                    }
+                    ((OwningObjectReferenceDescriptor) result)
+                            .setInverseProperty(ognlUsableProperty);
+                } else {
+                    result = createObjectReferenceDescriptor(type, descriptor,
+                            (AssociationType) hibernateType);
+                    ((ObjectReferenceDescriptor) result)
+                            .setInverseProperty(mappedBy);
+                }
+            } else if (propertyField
+                    .isAnnotationPresent(javax.persistence.OneToOne.class)) {
+                mappedBy = propertyField.getAnnotation(
+                        javax.persistence.OneToOne.class).mappedBy();
+                if ("".equals(mappedBy)) {
+                    result = createOwningObjectReferenceDescriptor(type,
+                            descriptor, (AssociationType) hibernateType);
+
+                    // http://forums.hibernate.org/viewtopic.php?t=974287&sid=12d018b08dffe07e263652190cfc4e60
+                    // Caution... this does not support multiple
+                    // class references across the OneToOne relationship
+                    Class returnType = readMethod.getReturnType();
+                    String ognlUsableProperty = "";
+                    for (int i = 0; i < returnType.getDeclaredMethods().length; i++) {
+                        if (returnType.getDeclaredMethods()[i].getReturnType()
+                                .equals(propertyField.getDeclaringClass())) {
+                            Method theProperty = returnType
+                                    .getDeclaredMethods()[i];
+                            ognlUsableProperty = theProperty.getName()
+                                    .substring(3).toLowerCase(); // strips
+                                                                    // preceding
+                                                                    // 'get'
+                            break;
+                        }
+                    }
+                    ((OwningObjectReferenceDescriptor) result)
+                            .setInverseProperty(ognlUsableProperty);
+                } else {
+                    result = createObjectReferenceDescriptor(type, descriptor,
+                            (AssociationType) hibernateType);
+                    ((ObjectReferenceDescriptor) result)
+                            .setInverseProperty(mappedBy);
+                }
+            } else {
+                result = createObjectReferenceDescriptor(type, descriptor,
+                        (AssociationType) hibernateType);
+            }
+        } catch (SecurityException e) {
+            LOG.error(e.getMessage());
+        } catch (NoSuchFieldException e) {
+            LOG.error(e.getMessage());
+        } catch (OgnlException e) {
+            LOG.error(e.getMessage());
+        } catch (IntrospectionException e) {
+            LOG.error(e.getMessage());
+        }
+        return result;
     }
 
     /**
