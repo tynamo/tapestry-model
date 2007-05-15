@@ -59,6 +59,21 @@ import org.trails.descriptor.TrailsPropertyDescriptor;
  * reflection based TrailsPropertyIPropertyDescriptors with appropriate
  * Hibernate descriptors
  *
+ * Background...
+ * TrailsDescriptorService operates one ReflectorDescriptorFactory
+ *         -    TrailsDescriptorService iterates/scans all class types encountered
+ *         -    ReflectorDescriptorFactory allocates property descriptor instance
+ *             for the class type
+ *         -    TrailsDescriptorService decorates property descriptor by calling
+ *             this module HibernateDescriptorDecorator
+ *         -    HibernateDescriptorDecorator caches the decorated property descriptor
+ *             into a decorated descriptor list
+ *         -    decorated descriptor list gets populated into class descriptor for
+ *             class type
+ *         -    TrailsDescriptorService finally populates decorated class descriptor and
+ *             it's aggregated list of decorated property descriptors into it's own
+ *             list/cache of referenced class descriptors
+ *
  * @see TrailsPropertyDescriptor
  * @see ObjectReferenceDescriptor
  * @see OwningObjectReferenceDescriptor
@@ -70,13 +85,9 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator {
             .getLog(HibernateDescriptorDecorator.class);
 
     private LocalSessionFactoryBean localSessionFactoryBean;
-
     private List types;
-
     private DescriptorFactory descriptorFactory;
-
     private HashMap<Class, IClassDescriptor> descriptors = new HashMap<Class, IClassDescriptor>();
-
     private int largeColumnLength = 100;
 
     public IClassDescriptor decorate(IClassDescriptor descriptor) {
@@ -85,30 +96,30 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator {
                 .getPropertyDescriptors()) {
             Class type = descriptor.getType();
 
-            IPropertyDescriptor result;
+            IPropertyDescriptor descriptorReference;
             try {
                 ClassMetadata classMetaData = findMetadata(type);
                 if (propertyDescriptor.getName().equals(
                         getIdentifierProperty(type))) {
-                    result = createIdentifierDescriptor(type, propertyDescriptor);
+                    descriptorReference = createIdentifierDescriptor(type, propertyDescriptor);
                 } else if (notAHibernateProperty(classMetaData,
                         propertyDescriptor)) {
                     // If this is not a hibernate property (i.e. marked
                     // Transient), it's certainly not searchable
                     // Are the any other properties like this?
                     propertyDescriptor.setSearchable(false);
-                    result = propertyDescriptor;
+                    descriptorReference = propertyDescriptor;
                 } else {
                     Property mappingProperty = getMapping(type).getProperty(
                             propertyDescriptor.getName());
-                    result = decoratePropertyDescriptor(type, mappingProperty,
+                    descriptorReference = decoratePropertyDescriptor(type, mappingProperty,
                             propertyDescriptor, descriptor);
                 }
 
             } catch (HibernateException e) {
                 throw new TrailsRuntimeException(e);
             }
-            decoratedPropertyDescriptors.add(result);
+            decoratedPropertyDescriptors.add(descriptorReference);
         }
         descriptor.setPropertyDescriptors(decoratedPropertyDescriptors);
         return descriptor;
@@ -131,18 +142,18 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator {
             descriptor.setReadOnly(true);
         }
 
-        IPropertyDescriptor result = descriptor;
+        IPropertyDescriptor descriptorReference = descriptor;
         Type hibernateType = mappingProperty.getType();
         if (mappingProperty.getType() instanceof ComponentType) {
             EmbeddedDescriptor embeddedDescriptor = buildEmbeddedDescriptor(
                     type, mappingProperty, descriptor, parentClassDescriptor);
-            result = embeddedDescriptor;
+            descriptorReference = embeddedDescriptor;
         } else if (Collection.class.isAssignableFrom(descriptor
                 .getPropertyType())) {
-            result = buildCollectionDescriptor(type, descriptor,
+            descriptorReference = decorateCollectionDescriptor(type, descriptor,
                     parentClassDescriptor);
         } else if (hibernateType.isAssociationType()) {
-            result = buildAssociationDescriptor(type, mappingProperty,
+            descriptorReference = decorateAssociationDescriptor(type, mappingProperty,
                     descriptor, parentClassDescriptor);
         } else if (hibernateType.getReturnedClass().isEnum()) {
             descriptor.addExtension(EnumReferenceDescriptor.class.getName(),
@@ -150,7 +161,7 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator {
                             .getReturnedClass()));
         }
 
-        return result;
+        return descriptorReference;
     }
 
     private EmbeddedDescriptor buildEmbeddedDescriptor(Class type,
@@ -293,34 +304,6 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator {
     }
 
     /**
-     * @param descriptor
-     * @param type
-     * @param parentClassDescriptor
-     * @return
-     */
-    private IPropertyDescriptor createObjectReferenceDescriptor(Class beanType,
-            IPropertyDescriptor descriptor, AssociationType type) {
-        ObjectReferenceDescriptor newInstance = new ObjectReferenceDescriptor(
-                beanType, descriptor, type.getReturnedClass());
-        newInstance.setOneToOne(true);
-        return newInstance;
-    }
-
-    /**
-     * @param descriptor
-     * @param type
-     * @param parentClassDescriptor
-     * @return
-     */
-    private IPropertyDescriptor createOwningObjectReferenceDescriptor(
-            Class beanType, IPropertyDescriptor descriptor, AssociationType type) {
-        OwningObjectReferenceDescriptor newInstance = new OwningObjectReferenceDescriptor(
-                beanType, descriptor, type.getReturnedClass());
-        newInstance.setOneToOne(true);
-        return newInstance;
-    }
-
-    /**
      * @param type
      * @param descriptor
      * @param parentClassDescriptor
@@ -354,7 +337,7 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator {
      * @param type
      * @param newDescriptor
      */
-    private CollectionDescriptor buildCollectionDescriptor(Class type,
+    private CollectionDescriptor decorateCollectionDescriptor(Class type,
             IPropertyDescriptor descriptor,
             IClassDescriptor parentClassDescriptor) {
         try {
@@ -383,12 +366,12 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator {
         }
     }
 
-    public IPropertyDescriptor buildAssociationDescriptor(Class type,
+    public IPropertyDescriptor decorateAssociationDescriptor(Class type,
             Property mappingProperty, IPropertyDescriptor descriptor,
             IClassDescriptor parentClassDescriptor) {
         Type hibernateType = mappingProperty.getType();
         type = parentClassDescriptor.getType();
-        IPropertyDescriptor result = descriptor;
+        IPropertyDescriptor descriptorReference = descriptor;
 
         try {
             Field propertyField = type.getDeclaredField(descriptor.getName());
@@ -403,9 +386,6 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator {
                 mappedBy = readMethod.getAnnotation(
                         javax.persistence.OneToOne.class).mappedBy();
                 if ("".equals(mappedBy)) {
-                    result = createOwningObjectReferenceDescriptor(type,
-                            descriptor, (AssociationType) hibernateType);
-
                     // http://forums.hibernate.org/viewtopic.php?t=974287&sid=12d018b08dffe07e263652190cfc4e60
                     // Caution... this does not support multiple
                     // class references across the OneToOne relationship
@@ -423,22 +403,20 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator {
                             break;
                         }
                     }
-                    ((OwningObjectReferenceDescriptor) result)
-                            .setInverseProperty(ognlUsableProperty);
+
+                    descriptorReference = descriptor;
+                    ((OwningObjectReferenceDescriptor) descriptorReference).setOneToOne(true);
+                    ((OwningObjectReferenceDescriptor) descriptorReference).setInverseProperty(ognlUsableProperty);
                 } else {
-                    result = createObjectReferenceDescriptor(type, descriptor,
-                            (AssociationType) hibernateType);
-                    ((ObjectReferenceDescriptor) result)
-                            .setInverseProperty(mappedBy);
+                    descriptorReference = descriptor;
+                    ((ObjectReferenceDescriptor) descriptorReference).setOneToOne(true);
+                    ((ObjectReferenceDescriptor) descriptorReference).setInverseProperty(mappedBy);
                 }
             } else if (propertyField
                     .isAnnotationPresent(javax.persistence.OneToOne.class)) {
                 mappedBy = propertyField.getAnnotation(
                         javax.persistence.OneToOne.class).mappedBy();
                 if ("".equals(mappedBy)) {
-                    result = createOwningObjectReferenceDescriptor(type,
-                            descriptor, (AssociationType) hibernateType);
-
                     // http://forums.hibernate.org/viewtopic.php?t=974287&sid=12d018b08dffe07e263652190cfc4e60
                     // Caution... this does not support multiple
                     // class references across the OneToOne relationship
@@ -456,17 +434,17 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator {
                             break;
                         }
                     }
-                    ((OwningObjectReferenceDescriptor) result)
-                            .setInverseProperty(ognlUsableProperty);
+
+                    descriptorReference = descriptor;
+                    ((OwningObjectReferenceDescriptor) descriptorReference).setOneToOne(true);
+                    ((OwningObjectReferenceDescriptor) descriptorReference).setInverseProperty(ognlUsableProperty);
                 } else {
-                    result = createObjectReferenceDescriptor(type, descriptor,
-                            (AssociationType) hibernateType);
-                    ((ObjectReferenceDescriptor) result)
-                            .setInverseProperty(mappedBy);
+                    descriptorReference = descriptor;
+                    ((ObjectReferenceDescriptor) descriptorReference).setOneToOne(true);
+                    ((ObjectReferenceDescriptor) descriptorReference).setInverseProperty(mappedBy);
                 }
             } else {
-                result = createObjectReferenceDescriptor(type, descriptor,
-                        (AssociationType) hibernateType);
+                descriptorReference = descriptor;
             }
         } catch (SecurityException e) {
             LOG.error(e.getMessage());
@@ -477,7 +455,7 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator {
         } catch (IntrospectionException e) {
             LOG.error(e.getMessage());
         }
-        return result;
+        return descriptorReference;
     }
 
     /**
