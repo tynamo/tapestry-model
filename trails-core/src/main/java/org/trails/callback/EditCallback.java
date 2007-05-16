@@ -19,39 +19,39 @@ import org.trails.page.EditPage;
 
 /**
  * @author Chris Nelson
- *
- *  Returns control to an EditPage
+ *         <p/>
+ *         Returns control to an EditPage
  */
 public class EditCallback extends TrailsCallback
 {
-    protected Object model;
-    
-    private boolean modelNew;
-    
-    /**
-     * 
-     */
-    public EditCallback(String pageName, Object model)
-    {
-        super(pageName);
-        this.model = model;
-    }
-    
-    public EditCallback(String pageName, Object model, boolean modelNew)
-    {
-    	this(pageName, model);
-    	this.modelNew = modelNew;
-    }
-    
-    /* (non-Javadoc)
-     * @see org.apache.tapestry.callback.ICallback#performCallback(org.apache.tapestry.IRequestCycle)
-     */
-    public void performCallback(IRequestCycle cycle)
-    {
-        EditPage editPage = (EditPage)cycle.getPage(getPageName());
-        editPage.setModel(model);
-        cycle.activate(editPage);
-    }
+	protected Object model;
+
+	private boolean modelNew;
+
+	/**
+	 *
+	 */
+	public EditCallback(String pageName, Object model)
+	{
+		super(pageName);
+		this.model = model;
+	}
+
+	public EditCallback(String pageName, Object model, boolean modelNew)
+	{
+		this(pageName, model);
+		this.modelNew = modelNew;
+	}
+
+	/* (non-Javadoc)
+		 * @see org.apache.tapestry.callback.ICallback#performCallback(org.apache.tapestry.IRequestCycle)
+		 */
+	public void performCallback(IRequestCycle cycle)
+	{
+		EditPage editPage = (EditPage) cycle.getPage(getPageName());
+		editPage.setModel(model);
+		cycle.activate(editPage);
+	}
 
 	public Object getModel()
 	{
@@ -74,7 +74,7 @@ public class EditCallback extends TrailsCallback
 	}
 
 	/**
-	 * We should always replace this callback if its model is new. 
+	 * We should always replace this callback if its model is new.
 	 * This works to make sure that after a model is saved for the first
 	 * time its call back is replaced and we can go back to the right one.
 	 */
@@ -83,22 +83,19 @@ public class EditCallback extends TrailsCallback
 	{
 		if (callback instanceof EditCallback)
 		{
-			EditCallback editCallback = (EditCallback)callback;
+			EditCallback editCallback = (EditCallback) callback;
 			if (editCallback.isModelNew())
 			{
 				return true;
-			}
-			else
+			} else
 			{
 				return this.equals(editCallback);
 			}
-		}
-		else
+		} else
 		{
 			return false;
 		}
 	}
-	
-	
+
 
 }

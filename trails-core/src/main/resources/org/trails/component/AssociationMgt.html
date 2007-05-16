@@ -1,26 +1,27 @@
 <span jwcid="$content$">
     <tr>
-        <td>
+		<td>
             <span jwcid="@If" condition="ognl:not(page.isModelNew())">
             <span jwcid="@If" condition="ognl:association">
-               <a href="#" jwcid="editLink" model="association" ><span jwcid="linkInsert" /></a>
+               <a href="#" jwcid="editLink" model="association"><span jwcid="linkInsert"/></a>
             </span>
             </span>
-        </td>
-    </tr>
+		</td>
+	</tr>
     <tr>
-        <td><br>
-            <div jwcid="@If" condition="ognl:association">
-                <input jwcid="removeButton" type="button"
-                       value="ognl:getMessage(@org.trails.component.Utils@REMOVE_MESSAGE)" />
-            </div>
-            <div jwcid="@If" condition="ognl:not(page.isModelNew())">
-            <div jwcid="@If" condition="ognl:not association">
-                <input jwcid="addButton" type="button"
-                       value="ognl:getMessage(@org.trails.component.Utils@ADD_NEW_MESSAGE)" />
-            </div>
-            </div>
-        </td>
-    </tr>
+		<td><br>
+
+			<div jwcid="@If" condition="ognl:association">
+				<input jwcid="removeButton" type="button"
+					   value="ognl:getMessage(@org.trails.component.Utils@REMOVE_MESSAGE)"/>
+			</div>
+			<div jwcid="@If" condition="ognl:not(page.isModelNew())">
+				<div jwcid="@If" condition="ognl:not association">
+					<input jwcid="addButton" type="button"
+						   value="ognl:getMessage(@org.trails.component.Utils@ADD_NEW_MESSAGE)"/>
+				</div>
+			</div>
+		</td>
+	</tr>
 </span>
 

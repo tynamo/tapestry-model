@@ -1,5 +1,6 @@
 package org.trails.seeddata;
 
+import junit.framework.TestCase;
 import org.acegisecurity.userdetails.UserDetails;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
@@ -13,69 +14,76 @@ import org.trails.security.domain.User;
 import org.trails.test.Bar;
 import org.trails.test.Foo;
 
-import junit.framework.TestCase;
-
-public class SpringSeedEntityInitializerTest extends TestCase {
+public class SpringSeedEntityInitializerTest extends TestCase
+{
 	private ApplicationContext applicationContext;
 	private SpringSeedEntityInitializer seedDataInitializer;
 	private PersistenceService persistenceService;
 	private TrailsUserDAO userDAO;
 	private Role roleUser;
 	private Role roleAdmin;
-	
+
 	@Override
-	protected void setUp() throws Exception {
-		applicationContext = new ClassPathXmlApplicationContext(new String[]{"applicationContext-test.xml", "seed-data-test.xml"} );
-		persistenceService = (PersistenceService)applicationContext.getBean("persistenceService");
-		
-		userDAO =  (TrailsUserDAO)applicationContext.getBean("trailsUserDAO");
-		seedDataInitializer = (SpringSeedEntityInitializer)applicationContext.getBean(SeedDataInitializer.class.getSimpleName());
-		roleUser = (Role)applicationContext.getBean("roleUser");
-		roleAdmin = (Role)applicationContext.getBean("roleAdmin");
+	protected void setUp() throws Exception
+	{
+		applicationContext = new ClassPathXmlApplicationContext(new String[]{"applicationContext-test.xml", "seed-data-test.xml"});
+		persistenceService = (PersistenceService) applicationContext.getBean("persistenceService");
+
+		userDAO = (TrailsUserDAO) applicationContext.getBean("trailsUserDAO");
+		seedDataInitializer = (SpringSeedEntityInitializer) applicationContext.getBean(SeedDataInitializer.class.getSimpleName());
+		roleUser = (Role) applicationContext.getBean("roleUser");
+		roleAdmin = (Role) applicationContext.getBean("roleAdmin");
 		seedDataInitializer.init();
 	}
-	
-	public void testInit() {
+
+	public void testInit()
+	{
 		UserDetails user = userDAO.loadUserByUsername("user");
 		assertEquals(user.getAuthorities()[0], roleUser);
 	}
 
-	public void testArbitraryEntitySeeded() {
+	public void testArbitraryEntitySeeded()
+	{
 		seedDataInitializer.init();
-    DetachedCriteria criteria = DetachedCriteria.forClass(Foo.class);
-    criteria.add(Restrictions.eq("name", "seed foo"));
-    Foo foo = (Foo)persistenceService.getInstance(criteria);
-    assertNotNull(foo);
-	}
-	
-	public void testSeedingEntityWithoutUniquelyIdentifyingProperty() {
-		seedDataInitializer.init();
-		seedDataInitializer.init();
-    DetachedCriteria criteria = DetachedCriteria.forClass(Bar.class);
-    criteria.add(Restrictions.eq("name", "based on example"));
-    try {
-    	Object object = persistenceService.getInstance(criteria);
-    	if (object == null) fail("Seed entity not found");
-    }
-    catch (IncorrectResultSizeDataAccessException e) {
-    	fail("More than one entity returned");
-    }
+		DetachedCriteria criteria = DetachedCriteria.forClass(Foo.class);
+		criteria.add(Restrictions.eq("name", "seed foo"));
+		Foo foo = (Foo) persistenceService.getInstance(criteria);
+		assertNotNull(foo);
 	}
 
-	public void testEntityAlreadySeeded() {
+	public void testSeedingEntityWithoutUniquelyIdentifyingProperty()
+	{
 		seedDataInitializer.init();
-    DetachedCriteria criteria = DetachedCriteria.forClass(User.class);
-    criteria.add(Restrictions.eq("username", "admin"));
-    User user = (User)persistenceService.getInstance(criteria);
-    user.setLastName("Changed something");
-    persistenceService.save(user);
-    // Data is not re-seeded, so it shouldn't get overwritten
 		seedDataInitializer.init();
-    user = (User)persistenceService.getInstance(criteria);
-    assertEquals("Changed something", user.getLastName());
+		DetachedCriteria criteria = DetachedCriteria.forClass(Bar.class);
+		criteria.add(Restrictions.eq("name", "based on example"));
+		try
+		{
+			Object object = persistenceService.getInstance(criteria);
+			if (object == null) fail("Seed entity not found");
+		}
+		catch (IncorrectResultSizeDataAccessException e)
+		{
+			fail("More than one entity returned");
+		}
 	}
 
-	public void tearDown() {
+	public void testEntityAlreadySeeded()
+	{
+		seedDataInitializer.init();
+		DetachedCriteria criteria = DetachedCriteria.forClass(User.class);
+		criteria.add(Restrictions.eq("username", "admin"));
+		User user = (User) persistenceService.getInstance(criteria);
+		user.setLastName("Changed something");
+		persistenceService.save(user);
+		// Data is not re-seeded, so it shouldn't get overwritten
+		seedDataInitializer.init();
+		user = (User) persistenceService.getInstance(criteria);
+		assertEquals("Changed something", user.getLastName());
+	}
+
+	public void tearDown()
+	{
 		// Clean up
 		// Seems I have to clean up because HSQL must be using static class members
 		UserDetails user = userDAO.loadUserByUsername("user");
@@ -87,8 +95,8 @@ public class SpringSeedEntityInitializerTest extends TestCase {
 
 		Foo foo = new Foo();
 		foo.setId(1);
-    persistenceService.remove(foo);
+		persistenceService.remove(foo);
 		// TODO see if you can do this instead: sessionFactory.dropDatabaseSchema();
 	}
-	
+
 }

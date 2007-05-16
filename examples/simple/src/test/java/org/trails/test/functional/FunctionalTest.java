@@ -17,10 +17,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Properties;
 
-import junit.framework.TestCase;
-
-import org.jaxen.JaxenException;
-
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlDivision;
 import com.gargoylesoftware.htmlunit.html.HtmlForm;
@@ -31,87 +27,89 @@ import com.gargoylesoftware.htmlunit.html.HtmlSubmitInput;
 import com.gargoylesoftware.htmlunit.html.HtmlTextArea;
 import com.gargoylesoftware.htmlunit.html.HtmlTextInput;
 import com.gargoylesoftware.htmlunit.html.xpath.HtmlUnitXPath;
+import junit.framework.TestCase;
+import org.jaxen.JaxenException;
 
 /**
  * @author fus8882
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
+ *         <p/>
+ *         TODO To change the template for this generated type comment go to
+ *         Window - Preferences - Java - Code Style - Code Templates
  */
 public class FunctionalTest extends TestCase
 {
 
-    WebClient webClient;
-    protected HtmlPage startPage;
+	WebClient webClient;
+	protected HtmlPage startPage;
 
-    public void setUp() throws Exception
-    {
-        Properties testProperties = new Properties();
-        testProperties.load(this.getClass().getResourceAsStream("/functionaltest.properties"));
-        webClient = new WebClient();
-        startPage = (HtmlPage)webClient.getPage(new URL(testProperties.getProperty("test.url")));
-    }
+	public void setUp() throws Exception
+	{
+		Properties testProperties = new Properties();
+		testProperties.load(this.getClass().getResourceAsStream("/functionaltest.properties"));
+		webClient = new WebClient();
+		startPage = (HtmlPage) webClient.getPage(new URL(testProperties.getProperty("test.url")));
+	}
 
-    protected HtmlForm getFirstForm(HtmlPage page)
-    {
-        return (HtmlForm)page.getForms().get(0);
-    }
+	protected HtmlForm getFirstForm(HtmlPage page)
+	{
+		return (HtmlForm) page.getForms().get(0);
+	}
 
-    protected HtmlPage clickButton(HtmlForm form, String buttonValue) throws IOException
-    {
-        return (HtmlPage)((HtmlSubmitInput)form.getInputByValue(buttonValue)).click();
-    }
+	protected HtmlPage clickButton(HtmlForm form, String buttonValue) throws IOException
+	{
+		return (HtmlPage) ((HtmlSubmitInput) form.getInputByValue(buttonValue)).click();
+	}
 
-    protected HtmlPage clickButton(HtmlPage page, String buttonValue) throws IOException
-    {
-        return clickButton((HtmlForm)page.getForms().get(0), buttonValue);
-    }
-    
-    protected HtmlPage clickLinkOnPage(HtmlPage page, String linkText) throws IOException
-    {
-        return (HtmlPage)page.getFirstAnchorByText(linkText).click();
-    }
+	protected HtmlPage clickButton(HtmlPage page, String buttonValue) throws IOException
+	{
+		return clickButton((HtmlForm) page.getForms().get(0), buttonValue);
+	}
 
-    protected HtmlDivision getErrorDiv(HtmlPage page) throws JaxenException
-    {
-        return (HtmlDivision) new HtmlUnitXPath("//div[@class='error']").selectSingleNode(page);
-    }
+	protected HtmlPage clickLinkOnPage(HtmlPage page, String linkText) throws IOException
+	{
+		return (HtmlPage) page.getFirstAnchorByText(linkText).click();
+	}
 
-    protected String getId(String idField, HtmlPage savedCategoryPage) throws JaxenException
-    {
-        HtmlSpan span = (HtmlSpan)new HtmlUnitXPath("//span/preceding-sibling::label[contains(text(), '" + idField + "')]/following-sibling::span").selectSingleNode(savedCategoryPage);
-        return span.asText();
-    }
+	protected HtmlDivision getErrorDiv(HtmlPage page) throws JaxenException
+	{
+		return (HtmlDivision) new HtmlUnitXPath("//div[@class='error']").selectSingleNode(page);
+	}
 
-    protected HtmlTextInput getTextInputForField(HtmlPage newProductPage, String field) throws JaxenException
-    {
-        HtmlTextInput input = (HtmlTextInput)
-            new HtmlUnitXPath("//span/preceding-sibling::label[contains(text(), '" + field + "')]/following-sibling::span/input").selectSingleNode(newProductPage);
-        return input;
-    }
+	protected String getId(String idField, HtmlPage savedCategoryPage) throws JaxenException
+	{
+		HtmlSpan span = (HtmlSpan) new HtmlUnitXPath("//span/preceding-sibling::label[contains(text(), '" + idField + "')]/following-sibling::span").selectSingleNode(savedCategoryPage);
+		return span.asText();
+	}
 
-    protected void assertXPathPresent(HtmlPage page, String xpath) throws Exception
-    {
-        assertNotNull(new HtmlUnitXPath(xpath).selectSingleNode(page));
-        
-    }
+	protected HtmlTextInput getTextInputForField(HtmlPage newProductPage, String field) throws JaxenException
+	{
+		HtmlTextInput input = (HtmlTextInput)
+			new HtmlUnitXPath("//span/preceding-sibling::label[contains(text(), '" + field + "')]/following-sibling::span/input").selectSingleNode(newProductPage);
+		return input;
+	}
 
-    protected void assertXPathNotPresent(HtmlPage page, String xpath) throws Exception
-    {
-        assertNull(new HtmlUnitXPath(xpath).selectSingleNode(page));
-    }
-    
-    protected HtmlTextArea getTextAreaByName(HtmlPage page, String name) throws JaxenException
-    {
-        HtmlTextArea textArea = (HtmlTextArea) 
-            new HtmlUnitXPath("//span/preceding-sibling::label[contains(text(), '" + name + "')]/following-sibling::span/textarea").selectSingleNode(page);
-        return textArea;
-    }
+	protected void assertXPathPresent(HtmlPage page, String xpath) throws Exception
+	{
+		assertNotNull(new HtmlUnitXPath(xpath).selectSingleNode(page));
 
-    protected HtmlInput getInputByName(HtmlPage page, String name) throws JaxenException
-    {
-        return (HtmlInput) 
-            new HtmlUnitXPath("//span/preceding-sibling::label[contains(text(), '" + name + "')]/following-sibling::span/input").selectSingleNode(page);
-    }
+	}
+
+	protected void assertXPathNotPresent(HtmlPage page, String xpath) throws Exception
+	{
+		assertNull(new HtmlUnitXPath(xpath).selectSingleNode(page));
+	}
+
+	protected HtmlTextArea getTextAreaByName(HtmlPage page, String name) throws JaxenException
+	{
+		HtmlTextArea textArea = (HtmlTextArea)
+			new HtmlUnitXPath("//span/preceding-sibling::label[contains(text(), '" + name + "')]/following-sibling::span/textarea").selectSingleNode(page);
+		return textArea;
+	}
+
+	protected HtmlInput getInputByName(HtmlPage page, String name) throws JaxenException
+	{
+		return (HtmlInput)
+			new HtmlUnitXPath("//span/preceding-sibling::label[contains(text(), '" + name + "')]/following-sibling::span/input").selectSingleNode(page);
+	}
 
 }

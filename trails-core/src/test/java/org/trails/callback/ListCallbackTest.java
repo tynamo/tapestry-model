@@ -13,8 +13,6 @@
  */
 package org.trails.callback;
 
-import java.util.ArrayList;
-
 import org.apache.tapestry.IRequestCycle;
 import org.hibernate.criterion.DetachedCriteria;
 import org.jmock.Mock;
@@ -24,41 +22,42 @@ import org.trails.test.Foo;
 
 /**
  * @author fus8882
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
+ *         <p/>
+ *         TODO To change the template for this generated type comment go to
+ *         Window - Preferences - Java - Code Style - Code Templates
  */
 public class ListCallbackTest extends ComponentTest
 {
 
 	DetachedCriteria criteria = DetachedCriteria.forClass(Foo.class);
-    public void testCallBack()
-    {
-        
-        ListPage listPage = buildTrailsPage(ListPage.class);
-        String pageName = "fooList";
-        Object model = new Object();
-        Mock cycleMock = new Mock(IRequestCycle.class);
-        cycleMock.expects(once()).method("getPage").with(eq(pageName)).will(returnValue(listPage));
-        cycleMock.expects(once()).method("activate").with(same(listPage));
-        
-        ListCallback callBack = new ListCallback(pageName, Foo.class.getName(), criteria);
-        DetachedCriteria criteria = DetachedCriteria.forClass(Foo.class);
-        callBack.setCriteria(criteria);
-        callBack.performCallback((IRequestCycle)cycleMock.proxy());
-        assertEquals(criteria, listPage.getCriteria());
-        cycleMock.verify();
-    }
-    
-    public void testShouldReplace()
-    {
-    	ListCallback callBack = new ListCallback("FooList", Foo.class.getName(), criteria);
-    	ListCallback callBack2 = new ListCallback("FooList", Foo.class.getName(), criteria);
-    	assertTrue(callBack2.shouldReplace(callBack));
-    	callBack2 = new ListCallback("Blork", Foo.class.getName(), criteria);
-    	assertFalse(callBack2.shouldReplace(callBack));
-    	EditCallback editCallback = new EditCallback("FooEdit", new Foo());
-    	assertFalse(editCallback.shouldReplace(callBack2));
-    	
-    }
+
+	public void testCallBack()
+	{
+
+		ListPage listPage = buildTrailsPage(ListPage.class);
+		String pageName = "fooList";
+		Object model = new Object();
+		Mock cycleMock = new Mock(IRequestCycle.class);
+		cycleMock.expects(once()).method("getPage").with(eq(pageName)).will(returnValue(listPage));
+		cycleMock.expects(once()).method("activate").with(same(listPage));
+
+		ListCallback callBack = new ListCallback(pageName, Foo.class.getName(), criteria);
+		DetachedCriteria criteria = DetachedCriteria.forClass(Foo.class);
+		callBack.setCriteria(criteria);
+		callBack.performCallback((IRequestCycle) cycleMock.proxy());
+		assertEquals(criteria, listPage.getCriteria());
+		cycleMock.verify();
+	}
+
+	public void testShouldReplace()
+	{
+		ListCallback callBack = new ListCallback("FooList", Foo.class.getName(), criteria);
+		ListCallback callBack2 = new ListCallback("FooList", Foo.class.getName(), criteria);
+		assertTrue(callBack2.shouldReplace(callBack));
+		callBack2 = new ListCallback("Blork", Foo.class.getName(), criteria);
+		assertFalse(callBack2.shouldReplace(callBack));
+		EditCallback editCallback = new EditCallback("FooEdit", new Foo());
+		assertFalse(editCallback.shouldReplace(callBack2));
+
+	}
 }

@@ -21,20 +21,20 @@ import junit.framework.TestCase;
 
 /**
  * @author fus8882
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
+ *         <p/>
+ *         TODO To change the template for this generated type comment go to
+ *         Window - Preferences - Java - Code Style - Code Templates
  */
 public class TestTest extends TestCase
 {
-    public void testBlah() throws Exception
-    {
-        Foo foo = new Foo();
-        BeanInfo beanInfo = Introspector.getBeanInfo(Foo.class);
-        for (int i = 0; i < beanInfo.getPropertyDescriptors().length; i++)
-        {
-            PropertyDescriptor descriptor = beanInfo.getPropertyDescriptors()[i];
-            //System.out.println(descriptor.getName());
-        }
-    }
+	public void testBlah() throws Exception
+	{
+		Foo foo = new Foo();
+		BeanInfo beanInfo = Introspector.getBeanInfo(Foo.class);
+		for (int i = 0; i < beanInfo.getPropertyDescriptors().length; i++)
+		{
+			PropertyDescriptor descriptor = beanInfo.getPropertyDescriptors()[i];
+			//System.out.println(descriptor.getName());
+		}
+	}
 }

@@ -28,7 +28,7 @@ public class TrailsCallback implements ICallback
 	{
 		this.pageName = pageName;
 	}
-	
+
 	public boolean shouldReplace(ICallback callback)
 	{
 		return this.equals(callback);
@@ -39,6 +39,6 @@ public class TrailsCallback implements ICallback
 	{
 		return EqualsBuilder.reflectionEquals(this, obj);
 	}
-	
-	
+
+
 }

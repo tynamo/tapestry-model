@@ -22,121 +22,121 @@ import org.trails.validation.ValidateUniqueness;
 @ValidateUniqueness(property = "name")
 public class Thing
 {
-    private Integer id;
+	private Integer id;
 
-    private String name;
+	private String name;
 
-    private String text;
-    
-    private Integer number;
-    
-    private Integer number2;
+	private String text;
 
-    private boolean flag;
+	private Integer number;
 
-    @Id
-    @PropertyDescriptor(summary = false)
-    public Integer getId()
-    {
-        return id;
-    }
+	private Integer number2;
 
-    /**
-     * @param id
-     *            The id to set.
-     */
-    public void setId(Integer id)
-    {
-        this.id = id;
-    }
+	private boolean flag;
 
-    /**
-     * @return Returns the name.
-     * @hibernate.property not-null="true"
-     */
-    public String getName()
-    {
-        return name;
-    }
+	@Id
+	@PropertyDescriptor(summary = false)
+	public Integer getId()
+	{
+		return id;
+	}
 
-    /**
-     * @param name
-     *            The name to set.
-     */
-    public void setName(String name)
-    {
-        this.name = name;
-    }
+	/**
+	 * @param id The id to set.
+	 */
+	public void setId(Integer id)
+	{
+		this.id = id;
+	}
 
-    /**
-     * @hibernate.property type="yes_no"
-     * @return Returns the on.
-     */
-    public boolean isFlag()
-    {
-        return flag;
-    }
+	/**
+	 * @return Returns the name.
+	 * @hibernate.property not-null="true"
+	 */
+	public String getName()
+	{
+		return name;
+	}
 
-    /**
-     * @param on
-     *            The on to set.
-     */
-    public void setFlag(boolean on)
-    {
-        this.flag = on;
-    }
+	/**
+	 * @param name The name to set.
+	 */
+	public void setName(String name)
+	{
+		this.name = name;
+	}
 
-    @Column(length = 300)
-    @PropertyDescriptor(summary = false)
-    public String getText()
-    {
-        return text;
-    }
+	/**
+	 * @return Returns the on.
+	 * @hibernate.property type="yes_no"
+	 */
+	public boolean isFlag()
+	{
+		return flag;
+	}
 
-    public void setText(String text)
-    {
-        this.text = text;
-    }
+	/**
+	 * @param on The on to set.
+	 */
+	public void setFlag(boolean on)
+	{
+		this.flag = on;
+	}
 
-    @Override
-    public boolean equals(Object obj)
-    {
+	@Column(length = 300)
+	@PropertyDescriptor(summary = false)
+	public String getText()
+	{
+		return text;
+	}
 
-        if (this == obj)
-            return true;
-        try
-        {
-            final Thing many = (Thing) obj;
-            if (!getId().equals(many.getId()))
-                return false;
-            return true;
-        } catch (Exception e)
-        {
-            return false;
-        }
+	public void setText(String text)
+	{
+		this.text = text;
+	}
 
-    }
-    
-    public String toString() { return getName(); }
+	@Override
+	public boolean equals(Object obj)
+	{
 
-    public Integer getNumber()
-    {
-        return number;
-    }
+		if (this == obj)
+			return true;
+		try
+		{
+			final Thing many = (Thing) obj;
+			if (!getId().equals(many.getId()))
+				return false;
+			return true;
+		} catch (Exception e)
+		{
+			return false;
+		}
 
-    public void setNumber(Integer number)
-    {
-        this.number = number;
-    }
+	}
 
-    public Integer getNumber2()
-    {
-        return number2;
-    }
+	public String toString()
+	{
+		return getName();
+	}
 
-    public void setNumber2(Integer number2)
-    {
-        this.number2 = number2;
-    }
+	public Integer getNumber()
+	{
+		return number;
+	}
+
+	public void setNumber(Integer number)
+	{
+		this.number = number;
+	}
+
+	public Integer getNumber2()
+	{
+		return number2;
+	}
+
+	public void setNumber2(Integer number2)
+	{
+		this.number2 = number2;
+	}
 
 }

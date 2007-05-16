@@ -8,6 +8,7 @@ import org.trails.security.RestrictionType;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Restriction
 {
-    RestrictionType restrictionType();
-    String requiredRole();
+	RestrictionType restrictionType();
+
+	String requiredRole();
 }

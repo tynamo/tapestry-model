@@ -17,82 +17,80 @@ import java.util.List;
 
 /**
  * @author fus8882
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
+ *         <p/>
+ *         TODO To change the template for this generated type comment go to
+ *         Window - Preferences - Java - Code Style - Code Templates
  */
 public interface IClassDescriptor extends IDescriptor
 {
-    public Class getType();
+	public Class getType();
 
-    /**
-     * @return Returns the methodDescriptors.
-     */
-    public List<IMethodDescriptor> getMethodDescriptors();
+	/**
+	 * @return Returns the methodDescriptors.
+	 */
+	public List<IMethodDescriptor> getMethodDescriptors();
 
-    /**
-     * @param methodDescriptors
-     *            The methodDescriptors to set.
-     */
-    public void setMethodDescriptors(List<IMethodDescriptor> methodDescriptors);
+	/**
+	 * @param methodDescriptors The methodDescriptors to set.
+	 */
+	public void setMethodDescriptors(List<IMethodDescriptor> methodDescriptors);
 
-    /**
-     * @return Returns the propertyDescriptors.
-     */
-    public List<IPropertyDescriptor> getPropertyDescriptors();
+	/**
+	 * @return Returns the propertyDescriptors.
+	 */
+	public List<IPropertyDescriptor> getPropertyDescriptors();
 
-    /**
-     * @param propertyDescriptors
-     *            The propertyDescriptors to set.
-     */
-    public void setPropertyDescriptors(List<IPropertyDescriptor> propertyDescriptors);
+	/**
+	 * @param propertyDescriptors The propertyDescriptors to set.
+	 */
+	public void setPropertyDescriptors(List<IPropertyDescriptor> propertyDescriptors);
 
-    public IPropertyDescriptor getIdentifierDescriptor();
+	public IPropertyDescriptor getIdentifierDescriptor();
 
-    /**
-     * @return
-     */
-    public String getDisplayName();
-    
-    public void setDisplayName(String displayName);
+	/**
+	 * @return
+	 */
+	public String getDisplayName();
 
-    /**
-     * @return
-     */
-    public String getShortDescription();
-    
-    public void setShortDescription(String shortDescription);
+	public void setDisplayName(String displayName);
 
-    /**
-     * @param string
-     * @return
-     */
-    public IPropertyDescriptor getPropertyDescriptor(String name);
+	/**
+	 * @return
+	 */
+	public String getShortDescription();
 
-    /**
-     * @return
-     */
-    public String getPluralDisplayName();
+	public void setShortDescription(String shortDescription);
 
-    /**
-     * @return
-     */
-    public boolean isChild();
+	/**
+	 * @param string
+	 * @return
+	 */
+	public IPropertyDescriptor getPropertyDescriptor(String name);
 
-    /**
-     * @param 
-     */
-    public void setChild(boolean child);
+	/**
+	 * @return
+	 */
+	public String getPluralDisplayName();
 
-    public List getPropertyDescriptors(String[] strings);
-    
-    public boolean isAllowSave();
-    
-    public void setAllowSave(boolean allowSave);
-    
-    public boolean isAllowRemove();
-    
-    public void setAllowRemove(boolean allowRemove);
+	/**
+	 * @return
+	 */
+	public boolean isChild();
+
+	/**
+	 * @param
+	 */
+	public void setChild(boolean child);
+
+	public List getPropertyDescriptors(String[] strings);
+
+	public boolean isAllowSave();
+
+	public void setAllowSave(boolean allowSave);
+
+	public boolean isAllowRemove();
+
+	public void setAllowRemove(boolean allowRemove);
 
 	public boolean getHasCyclicRelationships();
 

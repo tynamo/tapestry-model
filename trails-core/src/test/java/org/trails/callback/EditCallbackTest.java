@@ -21,9 +21,9 @@ import org.trails.test.Foo;
 
 /**
  * @author fus8882
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
+ *         <p/>
+ *         TODO To change the template for this generated type comment go to
+ *         Window - Preferences - Java - Code Style - Code Templates
  */
 public class EditCallbackTest extends ComponentTest
 {
@@ -31,51 +31,51 @@ public class EditCallbackTest extends ComponentTest
 	EditCallback editCallback;
 	EditCallback editCallback2;
 	Foo foo2;
-	
+
 	public void setUp() throws Exception
 	{
-    	foo = new Foo();
-    	editCallback = new EditCallback("FooEdit", foo);
-    	editCallback2 = new EditCallback("FooEdit", foo);
-    	foo2 = new Foo();
+		foo = new Foo();
+		editCallback = new EditCallback("FooEdit", foo);
+		editCallback2 = new EditCallback("FooEdit", foo);
+		foo2 = new Foo();
 	}
 
 	public void testCallBack()
-    {
-        EditPage editPage = (EditPage)creator.newInstance(EditPage.class);
-        String pageName = "fooPage";
-        Object model = new Object();
-        Mock cycleMock = new Mock(IRequestCycle.class);
-        cycleMock.expects(once()).method("getPage").with(eq(pageName)).will(returnValue(editPage));
-        cycleMock.expects(once()).method("activate").with(same(editPage));
-        EditCallback callBack = new EditCallback(pageName, model);
-        callBack.performCallback((IRequestCycle)cycleMock.proxy());
-    }
-    
-    public void testEquals() throws Exception
-    {
-    	assertEquals(editCallback, editCallback2);
-    	
-    	EditCallback editCallback3 = new EditCallback("FooEdit", foo2);
-    	assertFalse(editCallback3.equals(editCallback));
-    	assertFalse(editCallback.equals(editCallback3));
-    	editCallback3 = new EditCallback("NotFooEdit", foo);
-    	assertFalse(editCallback3.equals(editCallback));
-    	assertFalse(editCallback.equals(editCallback3));    	
+	{
+		EditPage editPage = (EditPage) creator.newInstance(EditPage.class);
+		String pageName = "fooPage";
+		Object model = new Object();
+		Mock cycleMock = new Mock(IRequestCycle.class);
+		cycleMock.expects(once()).method("getPage").with(eq(pageName)).will(returnValue(editPage));
+		cycleMock.expects(once()).method("activate").with(same(editPage));
+		EditCallback callBack = new EditCallback(pageName, model);
+		callBack.performCallback((IRequestCycle) cycleMock.proxy());
+	}
+
+	public void testEquals() throws Exception
+	{
+		assertEquals(editCallback, editCallback2);
+
+		EditCallback editCallback3 = new EditCallback("FooEdit", foo2);
+		assertFalse(editCallback3.equals(editCallback));
+		assertFalse(editCallback.equals(editCallback3));
+		editCallback3 = new EditCallback("NotFooEdit", foo);
+		assertFalse(editCallback3.equals(editCallback));
+		assertFalse(editCallback.equals(editCallback3));
 //    	CollectionCallback collectionCallback = new CollectionCallback("FooEdit", foo);
 //    	assertFalse(editCallback.equals(collectionCallback));
 //    	assertFalse(collectionCallback.equals(editCallback));
-    }
-    
-    public void testShouldReplace() throws Exception
-    {
-    	EditCallback editCallback = new EditCallback("FooEdit", foo);
-    	EditCallback editCallback2 = new EditCallback("FooEdit", foo);
-    	assertTrue(editCallback.shouldReplace(editCallback2));
-    	editCallback2 = new EditCallback("FooEdit", foo2);
-    	assertFalse(editCallback.shouldReplace(editCallback2));
-    	editCallback2 = new EditCallback("FooEdit", foo2, true);
-    	assertTrue(editCallback.shouldReplace(editCallback2));
-    	
-    }
+	}
+
+	public void testShouldReplace() throws Exception
+	{
+		EditCallback editCallback = new EditCallback("FooEdit", foo);
+		EditCallback editCallback2 = new EditCallback("FooEdit", foo);
+		assertTrue(editCallback.shouldReplace(editCallback2));
+		editCallback2 = new EditCallback("FooEdit", foo2);
+		assertFalse(editCallback.shouldReplace(editCallback2));
+		editCallback2 = new EditCallback("FooEdit", foo2, true);
+		assertTrue(editCallback.shouldReplace(editCallback2));
+
+	}
 }

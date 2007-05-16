@@ -16,7 +16,8 @@ import org.hibernate.validator.InvalidValue;
 import org.trails.component.Utils;
 import org.trails.servlet.TrailsApplicationServlet;
 
-public class HibernateClassValidatorFactory {
+public class HibernateClassValidatorFactory
+{
 
 	private static Map classValidator = new HashMap();
 
@@ -25,73 +26,86 @@ public class HibernateClassValidatorFactory {
 	 * the bundle. This is nice so we don't have exceptions thrown in the screen
 	 * by hibernate ClassValidator. Instead, we will have a
 	 * [TRAILS][KEY-IN-UPPER] string returned.
-	 * 
-	 * @author Eduardo Fernandes Piva (eduardo@gwe.com.br)
 	 *
+	 * @author Eduardo Fernandes Piva (eduardo@gwe.com.br)
 	 */
-	private class MyBundle extends ResourceBundle {
+	private class MyBundle extends ResourceBundle
+	{
 
 		private ResourceBundle parentBundle;
-		
-		public MyBundle(ResourceBundle bundle) {
+
+		public MyBundle(ResourceBundle bundle)
+		{
 			this.parentBundle = bundle;
 		}
-		
+
 		@Override
-		protected Object handleGetObject(String key) {
-			try {
-				return parentBundle.getObject(key);				
-			} catch (Exception e) {
+		protected Object handleGetObject(String key)
+		{
+			try
+			{
+				return parentBundle.getObject(key);
+			} catch (Exception e)
+			{
 				return "[TRAILS][" + key.toUpperCase() + "]";
 			}
 		}
 
 		@Override
-		public Enumeration<String> getKeys() {
+		public Enumeration<String> getKeys()
+		{
 			return parentBundle.getKeys();
 		}
-		
+
 	}
-	
-	private static final HibernateClassValidatorFactory singleton = new HibernateClassValidatorFactory(); 
-	
-	private HibernateClassValidatorFactory() {
+
+	private static final HibernateClassValidatorFactory singleton = new HibernateClassValidatorFactory();
+
+	private HibernateClassValidatorFactory()
+	{
 	}
-	
-	public static HibernateClassValidatorFactory getSingleton() {
+
+	public static HibernateClassValidatorFactory getSingleton()
+	{
 		return singleton;
 	}
-	
-	public void validateEntity(Object entity) {
+
+	public void validateEntity(Object entity)
+	{
 		Locale locale = TrailsApplicationServlet.getCurrentLocale();
 
-		String key = entity.getClass().toString() + "locale:" + locale;		
+		String key = entity.getClass().toString() + "locale:" + locale;
 		ClassValidator validator = (ClassValidator) classValidator.get(key);
-		if (validator == null) {
+		if (validator == null)
+		{
 			validator = initializeCache(key, entity, locale);
 		}
-		
+
 		InvalidValue[] invalidValues = validator.getInvalidValues(entity);
-		if (invalidValues.length > 0) {
+		if (invalidValues.length > 0)
+		{
 			throw new InvalidStateException(invalidValues);
 		}
-		
+
 	}
 
-	private ClassValidator initializeCache(String key, Object entity, Locale locale) {
+	private ClassValidator initializeCache(String key, Object entity, Locale locale)
+	{
 		Class entityClass = Utils.checkForCGLIB(entity.getClass());
 		ClassValidator validator;
-		if (locale == null) {
-			validator = new ClassValidator(entityClass);			
-		} else {
+		if (locale == null)
+		{
+			validator = new ClassValidator(entityClass);
+		} else
+		{
 			ResourceBundle bundle = ResourceBundle.getBundle("messages", locale);
 			ResourceBundle myBundle = new MyBundle(bundle);
 			validator = new ClassValidator(entityClass, myBundle);
 		}
-		
+
 		classValidator.put(key, validator);
 		return validator;
 	}
-	
-	
+
+
 }

@@ -7,7 +7,6 @@ package org.trails.i18n;
 import java.util.Locale;
 
 import junit.framework.TestCase;
-
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.trails.descriptor.IClassDescriptor;
 import org.trails.descriptor.IPropertyDescriptor;
@@ -17,7 +16,8 @@ import org.trails.test.Bar;
 import org.trails.test.Foo;
 import org.trails.test.TestTest;
 
-public class ResourceBundleMessageSourceTest extends TestCase {
+public class ResourceBundleMessageSourceTest extends TestCase
+{
 
 	private DefaultTrailsResourceBundleMessageSource messageSource;
 	private IClassDescriptor classDescriptor;
@@ -27,45 +27,47 @@ public class ResourceBundleMessageSourceTest extends TestCase {
 	private IPropertyDescriptor namePropertyDescriptor;
 	private Locale pt = new Locale("pt");
 	private Locale ptBR = new Locale("pt", "BR");
-	private Locale en = Locale.ENGLISH;	
-	
+	private Locale en = Locale.ENGLISH;
+
 	@Override
-	protected void setUp() throws Exception {
-        messageSource = new DefaultTrailsResourceBundleMessageSource();
-        ResourceBundleMessageSource springMessageSource = new ResourceBundleMessageSource();
-        springMessageSource.setBasename("messagestest");
-        messageSource.setMessageSource(springMessageSource);
-        
-        classDescriptor = new TrailsClassDescriptor(Foo.class);
-        secondClassDescriptor = new TrailsClassDescriptor(Bar.class);
-        thirdClassDescriptor = new TrailsClassDescriptor(TestTest.class);
-        numberPropertyDescriptor = new TrailsPropertyDescriptor(Foo.class, Bar.class);
-        namePropertyDescriptor = new TrailsPropertyDescriptor(Foo.class, Bar.class);
-        numberPropertyDescriptor.setName("number");
-        numberPropertyDescriptor.setDisplayName("number");
-        namePropertyDescriptor.setName("name");
-        namePropertyDescriptor.setDisplayName("name");
-        
+	protected void setUp() throws Exception
+	{
+		messageSource = new DefaultTrailsResourceBundleMessageSource();
+		ResourceBundleMessageSource springMessageSource = new ResourceBundleMessageSource();
+		springMessageSource.setBasename("messagestest");
+		messageSource.setMessageSource(springMessageSource);
+
+		classDescriptor = new TrailsClassDescriptor(Foo.class);
+		secondClassDescriptor = new TrailsClassDescriptor(Bar.class);
+		thirdClassDescriptor = new TrailsClassDescriptor(TestTest.class);
+		numberPropertyDescriptor = new TrailsPropertyDescriptor(Foo.class, Bar.class);
+		namePropertyDescriptor = new TrailsPropertyDescriptor(Foo.class, Bar.class);
+		numberPropertyDescriptor.setName("number");
+		numberPropertyDescriptor.setDisplayName("number");
+		namePropertyDescriptor.setName("name");
+		namePropertyDescriptor.setDisplayName("name");
+
 	}
-	
-	public void testGetDisplayName() {
+
+	public void testGetDisplayName()
+	{
 		String value;
-		
+
 		value = messageSource.getDisplayName(numberPropertyDescriptor, pt, "Default");
 		assertEquals(value, "i18n ptnumber");
-		
+
 		value = messageSource.getDisplayName(numberPropertyDescriptor, ptBR, "Default");
 		assertEquals(value, "i18n ptnumber");
 
 		value = messageSource.getDisplayName(numberPropertyDescriptor, en, "Default");
 		assertEquals(value, "i18n number");
-		
+
 		value = messageSource.getDisplayName(namePropertyDescriptor, en, "Default");
 		assertEquals(value, "i18n name");
 
 		value = messageSource.getDisplayName(namePropertyDescriptor, pt, "Default");
 		assertEquals(value, "i18n ptname");
-		
+
 		value = messageSource.getDisplayName(namePropertyDescriptor, ptBR, "Default");
 		assertEquals(value, "i18n ptname");
 
@@ -89,7 +91,7 @@ public class ResourceBundleMessageSourceTest extends TestCase {
 
 		value = messageSource.getDisplayName(thirdClassDescriptor, pt, "Default");
 		assertEquals(value, "Default");
-		
+
 		value = messageSource.getDisplayName(thirdClassDescriptor, ptBR, "Default");
 		assertEquals(value, "Default");
 
@@ -97,10 +99,11 @@ public class ResourceBundleMessageSourceTest extends TestCase {
 		assertEquals(value, "Default");
 
 	}
-	
-	public void testGetPluralDisplayName() {
+
+	public void testGetPluralDisplayName()
+	{
 		String value;
-		
+
 		value = messageSource.getPluralDislayName(classDescriptor, pt, "Default");
 		assertEquals(value, "i18n ptFoo Plural");
 
@@ -120,35 +123,37 @@ public class ResourceBundleMessageSourceTest extends TestCase {
 		assertEquals(value, "i18n Bar Plural");
 
 		value = messageSource.getPluralDislayName(thirdClassDescriptor, pt, "Default");
-		assertEquals(value, "Default");		
+		assertEquals(value, "Default");
 
 		value = messageSource.getPluralDislayName(thirdClassDescriptor, ptBR, "Default");
-		assertEquals(value, "Default");		
+		assertEquals(value, "Default");
 	}
-	
-	public void testGetMessage() {
+
+	public void testGetMessage()
+	{
 		String value;
-		
+
 		value = messageSource.getMessage("idon'texist", en);
 		assertNull(value);
-		
+
 		value = messageSource.getMessage("idon'texist", pt);
 		assertNull(value);
-		
+
 		value = messageSource.getMessage("idon'texist", ptBR);
 		assertNull(value);
-		
+
 		value = messageSource.getMessage("name", pt);
 		assertEquals(value, "i18n ptname");
-		
+
 		value = messageSource.getMessage("name", en);
 		assertEquals(value, "i18n name");
-		
+
 		value = messageSource.getMessage("name", ptBR);
 		assertEquals(value, "i18n ptname");
 	}
-	
-	public void testGetMessageWithParameter() {
+
+	public void testGetMessageWithParameter()
+	{
 		Object[] args = new Object[]{"test"};
 		String value;
 
@@ -171,7 +176,8 @@ public class ResourceBundleMessageSourceTest extends TestCase {
 		assertNull(value);
 	}
 
-	public void testGetMessageWithDefaultValue() {
+	public void testGetMessageWithDefaultValue()
+	{
 		String value;
 
 		value = messageSource.getMessageWithDefaultValue("idon'texist", en, "DefaultMessage");
@@ -182,18 +188,19 @@ public class ResourceBundleMessageSourceTest extends TestCase {
 
 		value = messageSource.getMessageWithDefaultValue("idon'texist", ptBR, "DefaultMessage");
 		assertEquals(value, "DefaultMessage");
-		
+
 		value = messageSource.getMessageWithDefaultValue("name", pt, "DefaultMessage");
 		assertEquals(value, "i18n ptname");
 
 		value = messageSource.getMessageWithDefaultValue("name", en, "DefaultMessage");
 		assertEquals(value, "i18n name");
-		
+
 		value = messageSource.getMessageWithDefaultValue("name", ptBR, "DefaultMessage");
 		assertEquals(value, "i18n ptname");
 	}
-	
-	public void testGetMessageWithDefaultValueAndParameter() {
+
+	public void testGetMessageWithDefaultValueAndParameter()
+	{
 		Object[] args = new Object[]{"test"};
 		String value;
 

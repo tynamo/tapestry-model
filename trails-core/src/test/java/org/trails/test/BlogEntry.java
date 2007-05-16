@@ -20,36 +20,36 @@ import javax.persistence.Id;
 
 /**
  * @author fus8882
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
+ *         <p/>
+ *         TODO To change the template for this generated type comment go to
+ *         Window - Preferences - Java - Code Style - Code Templates
  */
 @Entity
 public class BlogEntry
 {
-    private Integer id;
-    
-    private String text;
+	private Integer id;
 
-    @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
-    public Integer getId()
-    {
-        return id;
-    }
+	private String text;
 
-    public void setId(Integer id)
-    {
-        this.id = id;
-    }
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	public Integer getId()
+	{
+		return id;
+	}
 
-    public String getText()
-    {
-        return text;
-    }
+	public void setId(Integer id)
+	{
+		this.id = id;
+	}
 
-    public void setText(String text)
-    {
-        this.text = text;
-    }
+	public String getText()
+	{
+		return text;
+	}
+
+	public void setText(String text)
+	{
+		this.text = text;
+	}
 }

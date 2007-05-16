@@ -7,6 +7,6 @@ import org.trails.descriptor.IClassDescriptor;
 public interface SecurityService
 {
 
-    List findRestrictions(IClassDescriptor classDescriptor);
+	List findRestrictions(IClassDescriptor classDescriptor);
 
 }

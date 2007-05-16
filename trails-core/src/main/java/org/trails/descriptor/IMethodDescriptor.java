@@ -1,17 +1,15 @@
-
 package org.trails.descriptor;
 
 
+public interface IMethodDescriptor extends IDescriptor
+{
 
+	public abstract Class[] getArgumentTypes();
 
-public interface IMethodDescriptor extends IDescriptor {
+	public abstract void setArgumentTypes(Class[] argumentTypes);
 
-    public abstract Class[] getArgumentTypes();
+	public abstract String getName();
 
-    public abstract void setArgumentTypes(Class[] argumentTypes);
-
-    public abstract String getName();
-
-    public abstract void setName(String name);
+	public abstract void setName(String name);
 
 }

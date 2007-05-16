@@ -1,30 +1,30 @@
 package org.trails.demo;
 
-import org.trails.descriptor.annotation.ClassDescriptor;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import org.trails.descriptor.annotation.ClassDescriptor;
+
 @Entity
 @ClassDescriptor(hasCyclicRelationships = true)
 public class TreeNode
 {
-    private Integer id;
-    
-    private String name;
-    
-    private TreeNode parent;
-    
+	private Integer id;
+
+	private String name;
+
+	private TreeNode parent;
+
 //    private Set<TreeNode> children = new HashSet<TreeNode>();
-    
-    public TreeNode()
-    {
-        super();
-        // TODO Auto-generated constructor stub
-    }
+
+	public TreeNode()
+	{
+		super();
+		// TODO Auto-generated constructor stub
+	}
 
 //    @OneToMany
 //    @PropertyDescriptor(hidden=true)
@@ -38,60 +38,61 @@ public class TreeNode
 //        this.children = children;
 //    }
 
-    @Id @GeneratedValue(strategy=GenerationType.AUTO)
-    public Integer getId()
-    {
-        return id;
-    }
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	public Integer getId()
+	{
+		return id;
+	}
 
-    public void setId(Integer id)
-    {
-        this.id = id;
-    }
+	public void setId(Integer id)
+	{
+		this.id = id;
+	}
 
-    public String getName()
-    {
-        return name;
-    }
+	public String getName()
+	{
+		return name;
+	}
 
-    public void setName(String name)
-    {
-        this.name = name;
-    }
+	public void setName(String name)
+	{
+		this.name = name;
+	}
 
-    @ManyToOne
-    public TreeNode getParent()
-    {
-        return parent;
-    }
+	@ManyToOne
+	public TreeNode getParent()
+	{
+		return parent;
+	}
 
-    public void setParent(TreeNode parent)
-    {
-        this.parent = parent;
-    }
+	public void setParent(TreeNode parent)
+	{
+		this.parent = parent;
+	}
 
-    @Override
-    public boolean equals(Object obj)
-    {
-        if (this == obj)
-            return true;
-        try
-        {
-            final TreeNode many = (TreeNode) obj;
-            if (!getId().equals(many.getId()))
-                return false;
-            return true;
-        } catch (Exception e)
-        {
-            return false;
-        }
-    }
+	@Override
+	public boolean equals(Object obj)
+	{
+		if (this == obj)
+			return true;
+		try
+		{
+			final TreeNode many = (TreeNode) obj;
+			if (!getId().equals(many.getId()))
+				return false;
+			return true;
+		} catch (Exception e)
+		{
+			return false;
+		}
+	}
 
-    @Override
-    public String toString()
-    {
-        return getName();
-    }
+	@Override
+	public String toString()
+	{
+		return getName();
+	}
 
-    
+
 }

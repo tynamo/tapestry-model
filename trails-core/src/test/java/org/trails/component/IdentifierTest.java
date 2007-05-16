@@ -21,26 +21,26 @@ import org.trails.test.Foo;
 
 /**
  * @author fus8882
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
+ *         <p/>
+ *         TODO To change the template for this generated type comment go to
+ *         Window - Preferences - Java - Code Style - Code Templates
  */
 public class IdentifierTest extends ComponentTest
 {
-    public void testIsEditable() throws Exception
-    {
-        
-        Identifier identifier = (Identifier)creator.newInstance(Identifier.class);
-        Foo foo = new Foo();
-        identifier.setModel(foo);
-        IdentifierDescriptor descriptor = new IdentifierDescriptor(Foo.class, "id", Integer.class);
-        descriptor.setGenerated(false);
-        identifier.setDescriptor(descriptor);
-        assertTrue("is editable", identifier.isEditable());
-        ((HasAssignedIdentifier)foo).onInsert(new Object[]{"myName"}, new String[]{"name"}, null);
-        assertFalse("not editable", identifier.isEditable());
-        descriptor.setGenerated(true);
-        identifier.setModel(new Bar());
-        assertFalse("not editable", identifier.isEditable());
-    }
+	public void testIsEditable() throws Exception
+	{
+
+		Identifier identifier = (Identifier) creator.newInstance(Identifier.class);
+		Foo foo = new Foo();
+		identifier.setModel(foo);
+		IdentifierDescriptor descriptor = new IdentifierDescriptor(Foo.class, "id", Integer.class);
+		descriptor.setGenerated(false);
+		identifier.setDescriptor(descriptor);
+		assertTrue("is editable", identifier.isEditable());
+		((HasAssignedIdentifier) foo).onInsert(new Object[]{"myName"}, new String[]{"name"}, null);
+		assertFalse("not editable", identifier.isEditable());
+		descriptor.setGenerated(true);
+		identifier.setModel(new Bar());
+		assertFalse("not editable", identifier.isEditable());
+	}
 }

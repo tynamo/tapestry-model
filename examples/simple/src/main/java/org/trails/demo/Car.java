@@ -10,62 +10,63 @@ import javax.persistence.ManyToOne;
 public class Car
 {
 
-    public Car()
-    {
-        super();
-        // TODO Auto-generated constructor stub
-    }
+	public Car()
+	{
+		super();
+		// TODO Auto-generated constructor stub
+	}
 
-    private Integer id;
-    
-    private String name;
+	private Integer id;
 
-    @Id @GeneratedValue(strategy=GenerationType.AUTO)
-    public Integer getId()
-    {
-        return id;
-    }
+	private String name;
 
-    public void setId(Integer id)
-    {
-        this.id = id;
-    }
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	public Integer getId()
+	{
+		return id;
+	}
 
-    public String getName()
-    {
-        return name;
-    }
+	public void setId(Integer id)
+	{
+		this.id = id;
+	}
 
-    public void setName(String name)
-    {
-        this.name = name;
-    }
-    
-    private Make make;
-    
-    private Model model;
+	public String getName()
+	{
+		return name;
+	}
 
-    @ManyToOne
-    public Make getMake()
-    {
-        return make;
-    }
+	public void setName(String name)
+	{
+		this.name = name;
+	}
 
-    public void setMake(Make make)
-    {
-        this.make = make;
-    }
+	private Make make;
 
-    @ManyToOne
-    public Model getModel()
-    {
-        return model;
-    }
+	private Model model;
 
-    public void setModel(Model model)
-    {
-        this.model = model;
-    }
-    
-    
+	@ManyToOne
+	public Make getMake()
+	{
+		return make;
+	}
+
+	public void setMake(Make make)
+	{
+		this.make = make;
+	}
+
+	@ManyToOne
+	public Model getModel()
+	{
+		return model;
+	}
+
+	public void setModel(Model model)
+	{
+		this.model = model;
+	}
+
+
 }

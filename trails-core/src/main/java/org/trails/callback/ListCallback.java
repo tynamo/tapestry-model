@@ -19,47 +19,48 @@ import org.trails.page.ListPage;
 
 /**
  * @author Chris Nelson
- * 
- * Returns control to a ListPage
+ *         <p/>
+ *         Returns control to a ListPage
  */
 public class ListCallback extends TrailsCallback
 {
-    private String typeName;
-    
-    private DetachedCriteria criteria;
-    
-    public ListCallback(String pageName, String typeName, DetachedCriteria criteria)
-    {
-        super(pageName);
-        this.typeName = typeName;
-        this.criteria = criteria;
-    }
-    
-    /* (non-Javadoc)T
-     * @see org.apache.tapestry.callback.ICallback#performCallback(org.apache.tapestry.IRequestCycle)
-     */
-    public void performCallback(IRequestCycle cycle)
-    {
-        ListPage listPage = (ListPage)cycle.getPage(getPageName());
-        listPage.setTypeName(typeName);
-        listPage.setCriteria(getCriteria());
-        cycle.activate(listPage);
-    }
+	private String typeName;
 
-    /**
-     * @return Returns the typeName.
-     */
-    public String getTypeName()
-    {
-        return typeName;
-    }
-    /**
-     * @param typeName The typeName to set.
-     */
-    public void setTypeName(String typeName)
-    {
-        this.typeName = typeName;
-    }
+	private DetachedCriteria criteria;
+
+	public ListCallback(String pageName, String typeName, DetachedCriteria criteria)
+	{
+		super(pageName);
+		this.typeName = typeName;
+		this.criteria = criteria;
+	}
+
+	/* (non-Javadoc)T
+		 * @see org.apache.tapestry.callback.ICallback#performCallback(org.apache.tapestry.IRequestCycle)
+		 */
+	public void performCallback(IRequestCycle cycle)
+	{
+		ListPage listPage = (ListPage) cycle.getPage(getPageName());
+		listPage.setTypeName(typeName);
+		listPage.setCriteria(getCriteria());
+		cycle.activate(listPage);
+	}
+
+	/**
+	 * @return Returns the typeName.
+	 */
+	public String getTypeName()
+	{
+		return typeName;
+	}
+
+	/**
+	 * @param typeName The typeName to set.
+	 */
+	public void setTypeName(String typeName)
+	{
+		this.typeName = typeName;
+	}
 
 	public DetachedCriteria getCriteria()
 	{
@@ -70,6 +71,6 @@ public class ListCallback extends TrailsCallback
 	{
 		this.criteria = criteria;
 	}
-    
-    
+
+
 }

@@ -6,7 +6,7 @@ public class SearchTest extends FunctionalTest
 {
 	public void testSearch() throws Exception
 	{
-        HtmlPage listApplesPage = clickLinkOnPage(startPage, "List Apples");
+		HtmlPage listApplesPage = clickLinkOnPage(startPage, "List Apples");
 		HtmlPage newApplePage = clickLinkOnPage(listApplesPage, "New Apple");
 		getInputByName(newApplePage, "Color").setValueAttribute("Blue");
 		listApplesPage = clickButton(newApplePage, "Ok");

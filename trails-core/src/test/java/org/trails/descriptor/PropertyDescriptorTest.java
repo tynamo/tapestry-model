@@ -14,69 +14,68 @@ package org.trails.descriptor;
 import java.util.Date;
 
 import junit.framework.TestCase;
-
 import org.trails.test.Foo;
 
 
 /**
  * @author fus8882
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
+ *         <p/>
+ *         TODO To change the template for this generated type comment go to
+ *         Window - Preferences - Java - Code Style - Code Templates
  */
 public class PropertyDescriptorTest extends TestCase
 {
-    public void testIsNumeric() throws Exception
-    {
-  
-        IPropertyDescriptor propertyDescriptor = new TrailsPropertyDescriptor(Foo.class, Double.class);
-        assertTrue(propertyDescriptor.isNumeric());        
-    }
+	public void testIsNumeric() throws Exception
+	{
 
-    public void testIsBoolean() throws Exception
-    {
+		IPropertyDescriptor propertyDescriptor = new TrailsPropertyDescriptor(Foo.class, Double.class);
+		assertTrue(propertyDescriptor.isNumeric());
+	}
 
-        IPropertyDescriptor propertyDescriptor = new TrailsPropertyDescriptor(Foo.class, boolean.class);
-        assertTrue(propertyDescriptor.isBoolean());
-    }
-    
-    public void testDisplayName() throws Exception
-    {
-        IPropertyDescriptor propertyDescriptor = new TrailsPropertyDescriptor(Foo.class, String.class);
-        propertyDescriptor.setDisplayName("multiWordProperty");
-        assertEquals("display name", "Multi Word Property",
-            propertyDescriptor.getDisplayName());
-    }
+	public void testIsBoolean() throws Exception
+	{
 
-    public void testIsDate() throws Exception
-    {
-        java.beans.PropertyDescriptor realDescriptor = new java.beans.PropertyDescriptor("date",
-           Foo.class);
-        IPropertyDescriptor propertyDescriptor = new TrailsPropertyDescriptor(Foo.class, Date.class);
-        assertTrue(propertyDescriptor.isDate());
-    }
-    
-    public void testClone() throws Exception
-    {
-        TrailsPropertyDescriptor descriptor1 = new TrailsPropertyDescriptor(Foo.class, "foo", String.class);
-        TrailsPropertyDescriptor descriptor2 = (TrailsPropertyDescriptor)descriptor1.clone();
-        assertEquals("foo", descriptor2.getName());
-    }
+		IPropertyDescriptor propertyDescriptor = new TrailsPropertyDescriptor(Foo.class, boolean.class);
+		assertTrue(propertyDescriptor.isBoolean());
+	}
 
-    public void testCloneWidthExtensions() throws Exception
-    {
-        String testExtension = "testExtension";
-        IDescriptorExtension descriptorExtension = new IDescriptorExtension()
-        {
-        };
+	public void testDisplayName() throws Exception
+	{
+		IPropertyDescriptor propertyDescriptor = new TrailsPropertyDescriptor(Foo.class, String.class);
+		propertyDescriptor.setDisplayName("multiWordProperty");
+		assertEquals("display name", "Multi Word Property",
+			propertyDescriptor.getDisplayName());
+	}
 
-        TrailsPropertyDescriptor descriptor1 = new TrailsPropertyDescriptor(Foo.class, "foo", String.class);
-        descriptor1.addExtension(testExtension, descriptorExtension);
+	public void testIsDate() throws Exception
+	{
+		java.beans.PropertyDescriptor realDescriptor = new java.beans.PropertyDescriptor("date",
+			Foo.class);
+		IPropertyDescriptor propertyDescriptor = new TrailsPropertyDescriptor(Foo.class, Date.class);
+		assertTrue(propertyDescriptor.isDate());
+	}
 
-        TrailsPropertyDescriptor descriptor2 = (TrailsPropertyDescriptor) descriptor1.clone();
+	public void testClone() throws Exception
+	{
+		TrailsPropertyDescriptor descriptor1 = new TrailsPropertyDescriptor(Foo.class, "foo", String.class);
+		TrailsPropertyDescriptor descriptor2 = (TrailsPropertyDescriptor) descriptor1.clone();
+		assertEquals("foo", descriptor2.getName());
+	}
 
-        assertTrue(descriptor2.supportsExtension(testExtension));
-        assertEquals(descriptorExtension, descriptor2.getExtension(testExtension));
-    }
-    
+	public void testCloneWidthExtensions() throws Exception
+	{
+		String testExtension = "testExtension";
+		IDescriptorExtension descriptorExtension = new IDescriptorExtension()
+		{
+		};
+
+		TrailsPropertyDescriptor descriptor1 = new TrailsPropertyDescriptor(Foo.class, "foo", String.class);
+		descriptor1.addExtension(testExtension, descriptorExtension);
+
+		TrailsPropertyDescriptor descriptor2 = (TrailsPropertyDescriptor) descriptor1.clone();
+
+		assertTrue(descriptor2.supportsExtension(testExtension));
+		assertEquals(descriptorExtension, descriptor2.getExtension(testExtension));
+	}
+
 }

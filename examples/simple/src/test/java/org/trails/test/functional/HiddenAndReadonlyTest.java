@@ -18,20 +18,20 @@ import com.gargoylesoftware.htmlunit.html.xpath.HtmlUnitXPath;
 
 /**
  * @author fus8882
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
+ *         <p/>
+ *         TODO To change the template for this generated type comment go to
+ *         Window - Preferences - Java - Code Style - Code Templates
  */
 public class HiddenAndReadonlyTest extends FunctionalTest
 {
-    public void testThing2() throws Exception
-    {
-        HtmlPage listThing2sPage = clickLinkOnPage(startPage, "List Thing2s");
-        //assertNull("no hidden column", new HtmlUnitXPath("//td/a[contains(text(), 'Hidden')]").selectSingleNode(listThing2sPage));
-        HtmlPage newThing2Page = clickLinkOnPage(listThing2sPage, "New Thing2");
-        assertNull("no hidden editor", new HtmlUnitXPath("//label[text() = 'Hidden']").selectSingleNode(newThing2Page));
-        assertXPathPresent(newThing2Page,
-                "//span/preceding-sibling::label[contains(text(), 'Read Only')]/following-sibling::span[contains(text(), 'foo')]");
-        
-    }
+	public void testThing2() throws Exception
+	{
+		HtmlPage listThing2sPage = clickLinkOnPage(startPage, "List Thing2s");
+		//assertNull("no hidden column", new HtmlUnitXPath("//td/a[contains(text(), 'Hidden')]").selectSingleNode(listThing2sPage));
+		HtmlPage newThing2Page = clickLinkOnPage(listThing2sPage, "New Thing2");
+		assertNull("no hidden editor", new HtmlUnitXPath("//label[text() = 'Hidden']").selectSingleNode(newThing2Page));
+		assertXPathPresent(newThing2Page,
+			"//span/preceding-sibling::label[contains(text(), 'Read Only')]/following-sibling::span[contains(text(), 'foo')]");
+
+	}
 }

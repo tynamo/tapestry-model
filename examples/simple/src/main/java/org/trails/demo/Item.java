@@ -2,7 +2,6 @@ package org.trails.demo;
 
 import java.util.HashSet;
 import java.util.Set;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,73 +11,74 @@ import javax.persistence.ManyToMany;
 @Entity
 public class Item
 {
-    private Integer id;
-    
-    private String name;
-    
-    private Set<Item2> item2s = new HashSet<Item2>();
-    
-    public Item()
-    {
-        super();
-        // TODO Auto-generated constructor stub
-    }
+	private Integer id;
 
-    @Id @GeneratedValue(strategy=GenerationType.AUTO)
-    public Integer getId()
-    {
-        return id;
-    }
+	private String name;
 
-    public void setId(Integer id)
-    {
-        this.id = id;
-    }
+	private Set<Item2> item2s = new HashSet<Item2>();
 
-    @ManyToMany
-    public Set<Item2> getItem2s()
-    {
-        return item2s;
-    }
+	public Item()
+	{
+		super();
+		// TODO Auto-generated constructor stub
+	}
 
-    public void setItem2s(Set<Item2> item2s)
-    {
-        this.item2s = item2s;
-    }
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	public Integer getId()
+	{
+		return id;
+	}
 
-    public String getName()
-    {
-        return name;
-    }
+	public void setId(Integer id)
+	{
+		this.id = id;
+	}
 
-    public void setName(String name)
-    {
-        this.name = name;
-    }
+	@ManyToMany
+	public Set<Item2> getItem2s()
+	{
+		return item2s;
+	}
 
-    @Override
-    public boolean equals(Object obj)
-    {
-        if (this == obj)
-            return true;
-        try
-        {
-            final Item many = (Item) obj;
-            if (!getId().equals(many.getId()))
-                return false;
-            return true;
-        } catch (Exception e)
-        {
-            return false;
-        }
+	public void setItem2s(Set<Item2> item2s)
+	{
+		this.item2s = item2s;
+	}
 
-    }
+	public String getName()
+	{
+		return name;
+	}
 
-    @Override
-    public String toString()
-    {
-        return getName();
-    }
+	public void setName(String name)
+	{
+		this.name = name;
+	}
 
-    
+	@Override
+	public boolean equals(Object obj)
+	{
+		if (this == obj)
+			return true;
+		try
+		{
+			final Item many = (Item) obj;
+			if (!getId().equals(many.getId()))
+				return false;
+			return true;
+		} catch (Exception e)
+		{
+			return false;
+		}
+
+	}
+
+	@Override
+	public String toString()
+	{
+		return getName();
+	}
+
+
 }

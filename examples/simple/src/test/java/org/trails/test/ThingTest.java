@@ -1,9 +1,8 @@
 package org.trails.test;
 
+import junit.framework.TestCase;
 import org.trails.demo.Thing;
 import org.trails.hibernate.HasAssignedIdentifier;
-
-import junit.framework.TestCase;
 
 public class ThingTest extends TestCase
 {

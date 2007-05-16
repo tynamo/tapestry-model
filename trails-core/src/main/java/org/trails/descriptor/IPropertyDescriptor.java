@@ -16,126 +16,128 @@ package org.trails.descriptor;
 
 /**
  * @author fus8882
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
+ *         <p/>
+ *         TODO To change the template for this generated type comment go to
+ *         Window - Preferences - Java - Code Style - Code Templates
  */
 public interface IPropertyDescriptor extends IDescriptor
 {
-    public static final int UNDEFINED_INDEX = -1;
+	public static final int UNDEFINED_INDEX = -1;
 
-    public static final int DEFAULT_LENGTH = 255;
+	public static final int DEFAULT_LENGTH = 255;
 
-    public void setIndex(int index);
+	public void setIndex(int index);
 
-    public int getIndex();
+	public int getIndex();
 
-    /**
-     * @return
-     */
-    public Class getPropertyType();
+	/**
+	 * @return
+	 */
+	public Class getPropertyType();
 
-    /**
-     * @return
-     */
-    public boolean isNumeric();
+	/**
+	 * @return
+	 */
+	public boolean isNumeric();
 
-    public boolean isBoolean();
+	public boolean isBoolean();
 
-    /**
-     * @return
-     */
-    public boolean isDate();
+	/**
+	 * @return
+	 */
+	public boolean isDate();
 
-    /**
-     * @return
-     */
-    public boolean isString();
+	/**
+	 * @return
+	 */
+	public boolean isString();
 
-    /**
-     * @return
-     */
-    public boolean isObjectReference();
+	/**
+	 * @return
+	 */
+	public boolean isObjectReference();
 
-    /**
-     * @return
-     */
-    public boolean isOwningObjectReference();
+	/**
+	 * @return
+	 */
+	public boolean isOwningObjectReference();
 
 
-    /**
-     * @return Returns the required.
-     */
-    public boolean isRequired();
+	/**
+	 * @return Returns the required.
+	 */
+	public boolean isRequired();
 
-    /**
-     * @param required The required to set.
-     */
-    public void setRequired(boolean required);
+	/**
+	 * @param required The required to set.
+	 */
+	public void setRequired(boolean required);
 
-    /**
-     * @return
-     */
-    public boolean isReadOnly();
+	/**
+	 * @return
+	 */
+	public boolean isReadOnly();
 
-    /**
-     * @param readOnly The readOnly to set.
-     */
-    public void setReadOnly(boolean readOnly);
+	/**
+	 * @param readOnly The readOnly to set.
+	 */
+	public void setReadOnly(boolean readOnly);
 
-    /**
-     * @return
-     */
-    public String getName();
+	/**
+	 * @return
+	 */
+	public String getName();
 
-    public void setName(String name);
+	public void setName(String name);
 
-    /**
-     * @return
-     */
-    public String getShortDescription();
+	/**
+	 * @return
+	 */
+	public String getShortDescription();
 
-    public void setShortDescription(String shortDescription);
+	public void setShortDescription(String shortDescription);
 
-    public int getLength();
+	public int getLength();
 
-    public void setLength(int length);
+	public void setLength(int length);
 
-    public abstract boolean isLarge();
+	public abstract boolean isLarge();
 
-    public abstract void setLarge(boolean Large);
+	public abstract void setLarge(boolean Large);
 
-    public String getFormat();
+	public String getFormat();
 
-    public void setFormat(String format);
+	public void setFormat(String format);
 
-    public boolean isSearchable();
+	public boolean isSearchable();
 
-    public void setSearchable(boolean searchable);
+	public void setSearchable(boolean searchable);
 
-    public boolean isSummary();
+	public boolean isSummary();
 
-    public boolean isCollection();
+	public boolean isCollection();
 
-    public void setSummary(boolean summary);
+	public void setSummary(boolean summary);
 
-    public boolean isEmbedded();
+	public boolean isEmbedded();
 
-    public boolean isRichText();
+	public boolean isRichText();
 
-    public boolean isIdentifier();
+	public boolean isIdentifier();
 
-    public void setRichText(boolean richText);
+	public void setRichText(boolean richText);
 
-    public Class getBeanType();
+	public Class getBeanType();
 
-    public void setBeanType(Class beanType);
+	public void setBeanType(Class beanType);
 
-    /**
-     * Retrieve the parent ClassDescriptor for this PropertyDescriptor.  ClassDescriptor.findTraversalPath() returns a
-     * list of IPropertyDescriptors to traverse between the classes, this provides a way to find the containing class.
-     * @return ClassDescriptor for parent of this property
-     */
-    IClassDescriptor getParentClassDescriptor();
-    void setParentClassDescriptor(IClassDescriptor parent);
+	/**
+	 * Retrieve the parent ClassDescriptor for this PropertyDescriptor.  ClassDescriptor.findTraversalPath() returns a
+	 * list of IPropertyDescriptors to traverse between the classes, this provides a way to find the containing class.
+	 *
+	 * @return ClassDescriptor for parent of this property
+	 */
+	IClassDescriptor getParentClassDescriptor();
+
+	void setParentClassDescriptor(IClassDescriptor parent);
 }

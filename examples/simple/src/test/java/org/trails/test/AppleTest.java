@@ -4,12 +4,10 @@ import org.springframework.test.AbstractTransactionalDataSourceSpringContextTest
 import org.trails.demo.Apple;
 import org.trails.persistence.PersistenceService;
 
-import junit.framework.TestCase;
-
 public class AppleTest extends AbstractTransactionalDataSourceSpringContextTests
 {
 	PersistenceService persistenceService;
-	
+
 	public void testApple() throws Exception
 	{
 		Apple apple = new Apple();
@@ -20,7 +18,7 @@ public class AppleTest extends AbstractTransactionalDataSourceSpringContextTests
 	@Override
 	protected String[] getConfigLocations()
 	{
-		return new String[] {"applicationContext.xml"};
+		return new String[]{"applicationContext.xml"};
 	}
 
 	public PersistenceService getPersistenceService()

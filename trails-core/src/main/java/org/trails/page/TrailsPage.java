@@ -26,15 +26,20 @@ import org.trails.persistence.PersistenceService;
 
 /**
  * @author fus8882
- * 
- * TODO To change the template for this generated type comment go to Window -
- * Preferences - Java - Code Style - Code Templates
+ *         <p/>
+ *         TODO To change the template for this generated type comment go to Window -
+ *         Preferences - Java - Code Style - Code Templates
  */
 public abstract class TrailsPage extends BasePage implements PageBeginRenderListener
 {
-	
-	public enum PageType {SEARCH, EDIT, LIST, VIEW};
-	
+
+	public enum PageType
+	{
+		SEARCH, EDIT, LIST, VIEW
+	}
+
+	;
+
 	public void pushCallback()
 	{
 		getCallbackStack().push(new TrailsCallback(getPageName()));
@@ -42,7 +47,7 @@ public abstract class TrailsPage extends BasePage implements PageBeginRenderList
 
 	/**
 	 * This property is injected with the callbackStack ASO
-	 * 
+	 *
 	 * @return
 	 */
 	@InjectState("callbackStack")
@@ -50,7 +55,7 @@ public abstract class TrailsPage extends BasePage implements PageBeginRenderList
 
 	/**
 	 * This property is injected with the Spring persistenceService bean
-	 * 
+	 *
 	 * @return
 	 */
 	@InjectObject("spring:persistenceService")
@@ -58,7 +63,7 @@ public abstract class TrailsPage extends BasePage implements PageBeginRenderList
 
 	/**
 	 * This property is injected with the Spring descriptorService bean
-	 * 
+	 *
 	 * @return
 	 */
 	@InjectObject("spring:descriptorService")
@@ -66,7 +71,7 @@ public abstract class TrailsPage extends BasePage implements PageBeginRenderList
 
 	/**
 	 * Message source to i18n pages
-	 * 
+	 *
 	 * @return
 	 */
 	@InjectObject("spring:trailsMessageSource")

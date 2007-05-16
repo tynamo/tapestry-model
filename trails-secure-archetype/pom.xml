@@ -19,9 +19,9 @@
 						<phase>generate-sources</phase>
 						<configuration>
 							<tasks>
-								<mkdir dir="${basedir}/src/main/resources/base-archetype-resources" />
+								<mkdir dir="${basedir}/src/main/resources/base-archetype-resources"/>
 								<copy todir="${basedir}/src/main/resources/base-archetype-resources">
-									<fileset dir="${basedir}/../trails-archetype/src/main/resources/archetype-resources" />
+									<fileset dir="${basedir}/../trails-archetype/src/main/resources/archetype-resources"/>
 								</copy>
 							</tasks>
 						</configuration>

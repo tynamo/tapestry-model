@@ -7,10 +7,10 @@ import java.text.SimpleDateFormat;
  * Pattern
  *
  * @author kenneth.colassi
- *
  */
-public class DatePattern {
-    public static SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy");
+public class DatePattern
+{
+	public static SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy");
 
-    public static final String MM_DD_yyyy = "MM-DD-yyyy";
+	public static final String MM_DD_yyyy = "MM-DD-yyyy";
 }

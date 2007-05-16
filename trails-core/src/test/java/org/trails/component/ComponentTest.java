@@ -27,52 +27,52 @@ import org.trails.validation.TrailsValidationDelegate;
 
 /**
  * @author fus8882
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
+ *         <p/>
+ *         TODO To change the template for this generated type comment go to
+ *         Window - Preferences - Java - Code Style - Code Templates
  */
 public class ComponentTest extends MockObjectTestCase
 {
-    protected Creator creator = new Creator();
-    protected Mock descriptorServiceMock = new Mock(DescriptorService.class);
-    protected DescriptorService descriptorService;
-    protected CallbackStack callbackStack = new CallbackStack();
-    protected Mock persistenceMock = new Mock(PersistenceService.class);
-    protected TrailsValidationDelegate delegate = new TrailsValidationDelegate();
-    
-    public void setUp() throws Exception
-    {
-        descriptorService = (DescriptorService)descriptorServiceMock.proxy();
-    }
+	protected Creator creator = new Creator();
+	protected Mock descriptorServiceMock = new Mock(DescriptorService.class);
+	protected DescriptorService descriptorService;
+	protected CallbackStack callbackStack = new CallbackStack();
+	protected Mock persistenceMock = new Mock(PersistenceService.class);
+	protected TrailsValidationDelegate delegate = new TrailsValidationDelegate();
 
-    protected <T> T buildTrailsPage(Class<T> pageClass)
-    {
-        T page = (T) creator.newInstance(pageClass, 
-                new Object[] {
-                    "persistenceService", persistenceMock.proxy(),
-                    "descriptorService", descriptorServiceMock.proxy(),
-                    "callbackStack", callbackStack
-                });
-        return page;
-    }
+	public void setUp() throws Exception
+	{
+		descriptorService = (DescriptorService) descriptorServiceMock.proxy();
+	}
 
-    protected EditPage buildEditPage()
-    {
-        DescriptorService descriptorService = (DescriptorService)descriptorServiceMock.proxy();
-        DefaultTrailsResourceBundleMessageSource messageSource = new DefaultTrailsResourceBundleMessageSource();
-        ResourceBundleMessageSource springMessageSource = new ResourceBundleMessageSource();
-        springMessageSource.setBasename("messages");
-        messageSource.setMessageSource(springMessageSource);
+	protected <T> T buildTrailsPage(Class<T> pageClass)
+	{
+		T page = (T) creator.newInstance(pageClass,
+			new Object[]{
+				"persistenceService", persistenceMock.proxy(),
+				"descriptorService", descriptorServiceMock.proxy(),
+				"callbackStack", callbackStack
+			});
+		return page;
+	}
 
-        EditPage editPage = (EditPage)creator.newInstance(EditPage.class,
-             new Object[] {
-            "persistenceService", persistenceMock.proxy(),
-            "descriptorService", descriptorServiceMock.proxy(),
-            "callbackStack", callbackStack,
-            "delegate", delegate,
-            "resourceBundleMessageSource", messageSource
-            });
-        return editPage;
-    }
-    
+	protected EditPage buildEditPage()
+	{
+		DescriptorService descriptorService = (DescriptorService) descriptorServiceMock.proxy();
+		DefaultTrailsResourceBundleMessageSource messageSource = new DefaultTrailsResourceBundleMessageSource();
+		ResourceBundleMessageSource springMessageSource = new ResourceBundleMessageSource();
+		springMessageSource.setBasename("messages");
+		messageSource.setMessageSource(springMessageSource);
+
+		EditPage editPage = (EditPage) creator.newInstance(EditPage.class,
+			new Object[]{
+				"persistenceService", persistenceMock.proxy(),
+				"descriptorService", descriptorServiceMock.proxy(),
+				"callbackStack", callbackStack,
+				"delegate", delegate,
+				"resourceBundleMessageSource", messageSource
+			});
+		return editPage;
+	}
+
 }

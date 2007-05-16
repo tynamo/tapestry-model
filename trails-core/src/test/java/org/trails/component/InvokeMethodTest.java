@@ -16,7 +16,6 @@ import java.beans.Introspector;
 import java.beans.MethodDescriptor;
 
 import ognl.Ognl;
-
 import org.apache.tapestry.IActionListener;
 import org.apache.tapestry.IRequestCycle;
 import org.jmock.Mock;
@@ -25,64 +24,64 @@ import org.trails.test.Baz;
 
 /**
  * @author fus8882
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
+ *         <p/>
+ *         TODO To change the template for this generated type comment go to
+ *         Window - Preferences - Java - Code Style - Code Templates
  */
 public class InvokeMethodTest extends ComponentTest
 {
-    
-    InvokeMethod invokeMethod;
-    Baz baz;
-    BeanInfo beanInfo;
-    Mock listenerMock;
-    IRequestCycle cycle;
-    Mock cycleMock;
 
-    /*
-     * @see TestCase#setUp()
-     */
-    public void setUp() throws Exception
-    {
-        super.setUp();
-        beanInfo = Introspector.getBeanInfo(Baz.class);
-        invokeMethod = (InvokeMethod) creator.newInstance(InvokeMethod.class);
-        baz = new Baz();
-        invokeMethod.setModel(baz);
-        listenerMock = new Mock(IActionListener.class);
-        cycleMock = new Mock(IRequestCycle.class);
-        cycle = (IRequestCycle) cycleMock.proxy();
-        listenerMock.expects(once()).method("actionTriggered").with(same(invokeMethod),
-            same(cycle));
-        invokeMethod.setListener((IActionListener) listenerMock.proxy());
-    }
+	InvokeMethod invokeMethod;
+	Baz baz;
+	BeanInfo beanInfo;
+	Mock listenerMock;
+	IRequestCycle cycle;
+	Mock cycleMock;
 
-    public void testClick() throws Exception
-    {
-        MethodDescriptor methodDescriptor = (MethodDescriptor) Ognl.getValue("methodDescriptors.{? name == 'doSomething'}[0]",
-                beanInfo);
+	/*
+		 * @see TestCase#setUp()
+		 */
+	public void setUp() throws Exception
+	{
+		super.setUp();
+		beanInfo = Introspector.getBeanInfo(Baz.class);
+		invokeMethod = (InvokeMethod) creator.newInstance(InvokeMethod.class);
+		baz = new Baz();
+		invokeMethod.setModel(baz);
+		listenerMock = new Mock(IActionListener.class);
+		cycleMock = new Mock(IRequestCycle.class);
+		cycle = (IRequestCycle) cycleMock.proxy();
+		listenerMock.expects(once()).method("actionTriggered").with(same(invokeMethod),
+			same(cycle));
+		invokeMethod.setListener((IActionListener) listenerMock.proxy());
+	}
 
-        invokeMethod.setMethodDescriptor(methodDescriptor);
+	public void testClick() throws Exception
+	{
+		MethodDescriptor methodDescriptor = (MethodDescriptor) Ognl.getValue("methodDescriptors.{? name == 'doSomething'}[0]",
+			beanInfo);
 
-        invokeMethod.click(cycle);
-        assertEquals("method invokes", "something done", baz.getDescription());
-        listenerMock.verify();
+		invokeMethod.setMethodDescriptor(methodDescriptor);
 
-        // test w/parameters
-    }
+		invokeMethod.click(cycle);
+		assertEquals("method invokes", "something done", baz.getDescription());
+		listenerMock.verify();
 
-    //    public void testWithParameters() throws Exception
-    //    {
-    //        MethodDescriptor methodWParams = (MethodDescriptor)
-    //    	Ognl.getValue("methodDescriptors.{? name == 'doSomethingElse'}[0]", beanInfo);
-    //        	invokeMethod.setMethodDescriptor(methodWParams);
-    //        InvokeMethodPage invokeMethodPage = (InvokeMethodPage)creator.newInstance(InvokeMethodPage.class);
-    //        cycleMock.expects(once()).method("getPage").with(same("Baz_doSomethingElse"))
-    //        	.will(returnValue(invokeMethodPage));
-    //        cycleMock.expects(once()).method("activate").with(same(invokeMethodPage));
-    //        invokeMethod.click((IRequestCycle)cycleMock.proxy());
-    //        assertEquals("right method descriptor", methodWParams, invokeMethodPage.getMethodDescriptor());
-    //        assertEquals("got model", invokeMethod.getModel(), invokeMethodPage.getModel());
-    //        cycleMock.verify();
-    //    }
+		// test w/parameters
+	}
+
+	//    public void testWithParameters() throws Exception
+	//    {
+	//        MethodDescriptor methodWParams = (MethodDescriptor)
+	//    	Ognl.getValue("methodDescriptors.{? name == 'doSomethingElse'}[0]", beanInfo);
+	//        	invokeMethod.setMethodDescriptor(methodWParams);
+	//        InvokeMethodPage invokeMethodPage = (InvokeMethodPage)creator.newInstance(InvokeMethodPage.class);
+	//        cycleMock.expects(once()).method("getPage").with(same("Baz_doSomethingElse"))
+	//        	.will(returnValue(invokeMethodPage));
+	//        cycleMock.expects(once()).method("activate").with(same(invokeMethodPage));
+	//        invokeMethod.click((IRequestCycle)cycleMock.proxy());
+	//        assertEquals("right method descriptor", methodWParams, invokeMethodPage.getMethodDescriptor());
+	//        assertEquals("got model", invokeMethod.getModel(), invokeMethodPage.getModel());
+	//        cycleMock.verify();
+	//    }
 }

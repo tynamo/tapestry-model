@@ -2,7 +2,6 @@ package org.trails.test;
 
 import java.util.HashSet;
 import java.util.Set;
-
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,55 +14,56 @@ import javax.persistence.OneToMany;
 
 @Entity
 @Inheritance(
-        strategy=InheritanceType.SINGLE_TABLE
-       
-    )
-@DiscriminatorColumn(name="type")
+	strategy = InheritanceType.SINGLE_TABLE
+
+)
+@DiscriminatorColumn(name = "type")
 public class Ancestor
 {
 
-    public Ancestor()
-    {
-        super();
-        // TODO Auto-generated constructor stub
-    }
-    
-    private Integer id;
-    
-    private String name;
+	public Ancestor()
+	{
+		super();
+		// TODO Auto-generated constructor stub
+	}
 
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
-    public Integer getId()
-    {
-        return id;
-    }
+	private Integer id;
 
-    public void setId(Integer id)
-    {
-        this.id = id;
-    }
+	private String name;
 
-    public String getName()
-    {
-        return name;
-    }
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	public Integer getId()
+	{
+		return id;
+	}
 
-    public void setName(String name)
-    {
-        this.name = name;
-    }
+	public void setId(Integer id)
+	{
+		this.id = id;
+	}
 
-    private Set<Baz> bazzes = new HashSet<Baz>();
+	public String getName()
+	{
+		return name;
+	}
 
-    @OneToMany
-    @JoinColumn(name="ancestor_id")
-    public Set<Baz> getBazzes()
-    {
-        return bazzes;
-    }
+	public void setName(String name)
+	{
+		this.name = name;
+	}
 
-    public void setBazzes(Set<Baz> bazzes)
-    {
-        this.bazzes = bazzes;
-    }
+	private Set<Baz> bazzes = new HashSet<Baz>();
+
+	@OneToMany
+	@JoinColumn(name = "ancestor_id")
+	public Set<Baz> getBazzes()
+	{
+		return bazzes;
+	}
+
+	public void setBazzes(Set<Baz> bazzes)
+	{
+		this.bazzes = bazzes;
+	}
 }

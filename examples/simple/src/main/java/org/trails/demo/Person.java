@@ -12,38 +12,40 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 public class Person
 {
 
-    private Integer id;
-    
-    private String name;
-    
-    public Person()
-    {
-        super();
-        // TODO Auto-generated constructor stub
-    }
-    
-    @Id @GeneratedValue(strategy=GenerationType.AUTO)
-    public Integer getId()
-    {
-        return id;
-    }
-    public void setId(Integer id)
-    {
-        this.id = id;
-    }
+	private Integer id;
 
-    private Address address = new Address();
-    
-    @Embedded
-    public Address getAddress()
-    {
-        return address;
-    }
+	private String name;
 
-    public void setAddress(Address address)
-    {
-        this.address = address;
-    }
+	public Person()
+	{
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	public Integer getId()
+	{
+		return id;
+	}
+
+	public void setId(Integer id)
+	{
+		this.id = id;
+	}
+
+	private Address address = new Address();
+
+	@Embedded
+	public Address getAddress()
+	{
+		return address;
+	}
+
+	public void setAddress(Address address)
+	{
+		this.address = address;
+	}
 
 	public String getName()
 	{
@@ -61,6 +63,6 @@ public class Person
 		// TODO Auto-generated method stub
 		return EqualsBuilder.reflectionEquals(this, obj);
 	}
-	
-	
+
+
 }

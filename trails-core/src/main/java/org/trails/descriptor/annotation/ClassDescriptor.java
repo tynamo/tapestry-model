@@ -11,12 +11,15 @@ import java.lang.annotation.Target;
 @DescriptorAnnotation(ClassDescriptorAnnotationHandler.class)
 public @interface ClassDescriptor
 {
-    public static final String DEFAULT_displayName = "";
-    public static final boolean DEFAULT_hidden = false;
-    
-    String displayName() default "";
-    String pluralDisplayName() default "";
-    boolean hidden() default false;
-    boolean hasCyclicRelationships() default false;
-    
+	public static final String DEFAULT_displayName = "";
+	public static final boolean DEFAULT_hidden = false;
+
+	String displayName() default "";
+
+	String pluralDisplayName() default "";
+
+	boolean hidden() default false;
+
+	boolean hasCyclicRelationships() default false;
+
 }

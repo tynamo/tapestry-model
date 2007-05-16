@@ -1,74 +1,86 @@
 package org.trails.test;
 
-import javax.persistence.Id;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
-import javax.persistence.Enumerated;
-import javax.persistence.EnumType;
-import javax.persistence.Entity;
+import javax.persistence.Id;
 
 @Entity
 public class Gazonk
 {
-    public enum Origin
-    {
-        AFRICA,AMERICA,ASIA,EUROPE,OCEANIA
-    }
+	public enum Origin
+	{
+		AFRICA, AMERICA, ASIA, EUROPE, OCEANIA
+	}
 
-    private Origin origin = Origin.ASIA;
+	private Origin origin = Origin.ASIA;
 
-    public enum Animal
-    {
-        CAT 
-        {
-            public String toString() { return "Cat"; }
-            public String getSound() { return "Meow"; }
-        },
-        DOG
-        {
-            public String toString() { return "Dog"; }
-            public String getSound() { return "Ruff!"; }
-        };
-        
-        public abstract String getSound();
-    }
-    
-    private Integer id;
+	public enum Animal
+	{
+		CAT
+			{
+				public String toString()
+				{
+					return "Cat";
+				}
+				public String getSound()
+				{
+					return "Meow";
+				}
+			},
+		DOG
+			{
+				public String toString()
+				{
+					return "Dog";
+				}
+				public String getSound()
+				{
+					return "Ruff!";
+				}
+			};
 
-    private String name;
+		public abstract String getSound();
+	}
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    public Integer getId()
-    {
-        return id;
-    }
+	private Integer id;
 
-    public void setId(Integer id)
-    {
-        this.id = id;
-    }
+	private String name;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	public Integer getId()
+	{
+		return id;
+	}
+
+	public void setId(Integer id)
+	{
+		this.id = id;
+	}
 
 
-    public String getName()
-    {
-        return name;
-    }
+	public String getName()
+	{
+		return name;
+	}
 
-    public void setName(String name)
-    {
-        this.name = name;
-    }
+	public void setName(String name)
+	{
+		this.name = name;
+	}
 
-    @Enumerated(value = EnumType.STRING)
-    public Origin getOrigin()
-    {
-        return origin;
-    }
+	@Enumerated(value = EnumType.STRING)
+	public Origin getOrigin()
+	{
+		return origin;
+	}
 
-    public void setOrigin(Origin origen)
-    {
-        this.origin = origen;
-    }
+	public void setOrigin(Origin origen)
+	{
+		this.origin = origen;
+	}
 
 }

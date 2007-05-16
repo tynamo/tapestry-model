@@ -16,16 +16,16 @@ import java.util.List;
 
 /**
  * @author fus8882
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
+ *         <p/>
+ *         TODO To change the template for this generated type comment go to
+ *         Window - Preferences - Java - Code Style - Code Templates
  */
 public interface DescriptorService
 {
-    public IClassDescriptor getClassDescriptor(Class type);
-    
-    public List getAllDescriptors();
-    
-    public void setDecorators(List<DescriptorDecorator> decorators);
+	public IClassDescriptor getClassDescriptor(Class type);
+
+	public List getAllDescriptors();
+
+	public void setDecorators(List<DescriptorDecorator> decorators);
 
 }

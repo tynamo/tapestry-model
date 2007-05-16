@@ -27,37 +27,38 @@ import org.trails.test.Foo;
 
 /**
  * @author fus8882
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
+ *         <p/>
+ *         TODO To change the template for this generated type comment go to
+ *         Window - Preferences - Java - Code Style - Code Templates
  */
 public class ListAllLinkTest extends ComponentTest
 {
-    ListAllLink listLink;
-    public void setUp()
-    {
-        
-        DescriptorService descriptorService = (DescriptorService)descriptorServiceMock.proxy();
-        DefaultTrailsResourceBundleMessageSource messageSource = new DefaultTrailsResourceBundleMessageSource();
-        ResourceBundleMessageSource springMessageSource = new ResourceBundleMessageSource();
-        springMessageSource.setBasename("messages");
-        messageSource.setMessageSource(springMessageSource);
-        listLink = (ListAllLink) creator.newInstance(ListAllLink.class, 
-                new Object[] {"descriptorService", descriptorService,
-        					  "resourceBundleMessageSource", messageSource});
-        listLink.setTypeName(Foo.class.getName());
-        
-    }
-    
-    public void testGetLinkText() throws Exception
-    {
- 
-        //listLink.setDescriptorService(descriptorService);
-        IClassDescriptor descriptor = new TrailsClassDescriptor(BlogEntry.class, "BlogEntry");
-        descriptorServiceMock.expects(once()).method("getClassDescriptor").will(returnValue(descriptor));
-        assertEquals("List Blog Entries", listLink.getLinkText());
-        
-    }
+	ListAllLink listLink;
+
+	public void setUp()
+	{
+
+		DescriptorService descriptorService = (DescriptorService) descriptorServiceMock.proxy();
+		DefaultTrailsResourceBundleMessageSource messageSource = new DefaultTrailsResourceBundleMessageSource();
+		ResourceBundleMessageSource springMessageSource = new ResourceBundleMessageSource();
+		springMessageSource.setBasename("messages");
+		messageSource.setMessageSource(springMessageSource);
+		listLink = (ListAllLink) creator.newInstance(ListAllLink.class,
+			new Object[]{"descriptorService", descriptorService,
+				"resourceBundleMessageSource", messageSource});
+		listLink.setTypeName(Foo.class.getName());
+
+	}
+
+	public void testGetLinkText() throws Exception
+	{
+
+		//listLink.setDescriptorService(descriptorService);
+		IClassDescriptor descriptor = new TrailsClassDescriptor(BlogEntry.class, "BlogEntry");
+		descriptorServiceMock.expects(once()).method("getClassDescriptor").will(returnValue(descriptor));
+		assertEquals("List Blog Entries", listLink.getLinkText());
+
+	}
 
 	public void testGetPageName()
 	{
@@ -69,8 +70,8 @@ public class ListAllLinkTest extends ComponentTest
 			.will(returnValue(pageMock.proxy()));
 		pageMock.expects(once()).method("getPageName").will(returnValue("FooList"));
 		pageMock.expects(once()).method("getRequestCycle").will(returnValue(cycleMock.proxy()));
-		ListAllLink listAllLink = (ListAllLink)creator.newInstance(ListAllLink.class, new Object[] {"pageResolver", pageResolverMock.proxy()});
-		listAllLink.setPage((IPage)pageMock.proxy());
+		ListAllLink listAllLink = (ListAllLink) creator.newInstance(ListAllLink.class, new Object[]{"pageResolver", pageResolverMock.proxy()});
+		listAllLink.setPage((IPage) pageMock.proxy());
 		listAllLink.setTypeName(Foo.class.getName());
 		assertEquals("FooList", listAllLink.getListPageName());
 	}

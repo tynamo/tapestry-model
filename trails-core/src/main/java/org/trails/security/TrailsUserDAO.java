@@ -17,17 +17,17 @@ import org.trails.persistence.PersistenceService;
 public class TrailsUserDAO implements UserDetailsService
 {
 
-    PersistenceService persistenceService;
+	PersistenceService persistenceService;
 
-    public void setPersistenceService(PersistenceService persistenceService)
-    {
-        this.persistenceService = persistenceService;
-    }
+	public void setPersistenceService(PersistenceService persistenceService)
+	{
+		this.persistenceService = persistenceService;
+	}
 
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException, DataAccessException
-    {
-        DetachedCriteria criteria = DetachedCriteria.forClass(UserDetails.class);
-        criteria.add(Restrictions.eq("username", username));
-        return (UserDetails)persistenceService.getInstance(criteria);
-    }
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException, DataAccessException
+	{
+		DetachedCriteria criteria = DetachedCriteria.forClass(UserDetails.class);
+		criteria.add(Restrictions.eq("username", username));
+		return (UserDetails) persistenceService.getInstance(criteria);
+	}
 }

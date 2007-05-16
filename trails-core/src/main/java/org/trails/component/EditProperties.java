@@ -25,22 +25,22 @@ import org.trails.descriptor.IPropertyDescriptor;
 
 /**
  * @author fus8882
- * 
- * TODO To change the template for this generated type comment go to Window -
- * Preferences - Java - Code Style - Code Templates
+ *         <p/>
+ *         TODO To change the template for this generated type comment go to Window -
+ *         Preferences - Java - Code Style - Code Templates
  */
 public abstract class EditProperties extends ObjectEditComponent
 {
-    @InjectObject("spring:editorService")
-    public abstract BlockFinder getBlockFinder();
-    
-    /**
-     * @return Returns the current property.
-     */
-    public abstract IPropertyDescriptor getProperty();
+	@InjectObject("spring:editorService")
+	public abstract BlockFinder getBlockFinder();
 
-    public Block getBlock() 
-    {
-    	return getBlockFinder().findBlock(getPage().getRequestCycle(), getProperty());
-    }
+	/**
+	 * @return Returns the current property.
+	 */
+	public abstract IPropertyDescriptor getProperty();
+
+	public Block getBlock()
+	{
+		return getBlockFinder().findBlock(getPage().getRequestCycle(), getProperty());
+	}
 }

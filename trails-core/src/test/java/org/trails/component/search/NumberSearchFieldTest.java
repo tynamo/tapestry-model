@@ -4,8 +4,6 @@ import org.trails.component.ComponentTest;
 import org.trails.descriptor.TrailsPropertyDescriptor;
 import org.trails.test.Foo;
 
-import junit.framework.TestCase;
-
 public class NumberSearchFieldTest extends ComponentTest
 {
 	/*
@@ -13,7 +11,7 @@ public class NumberSearchFieldTest extends ComponentTest
 	 */
 	public void testGetTypeSpecificValue()
 	{
-		NumberSearchField numberSearchField = (NumberSearchField)creator.newInstance(
+		NumberSearchField numberSearchField = (NumberSearchField) creator.newInstance(
 			NumberSearchField.class);
 		TrailsPropertyDescriptor propDescriptor = new TrailsPropertyDescriptor(Foo.class, "id", Integer.class);
 		numberSearchField.setPropertyDescriptor(propDescriptor);

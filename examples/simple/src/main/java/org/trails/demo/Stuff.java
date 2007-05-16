@@ -2,7 +2,6 @@ package org.trails.demo;
 
 import java.util.HashSet;
 import java.util.Set;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,49 +13,50 @@ import javax.persistence.OneToMany;
 public class Stuff
 {
 
-    public Stuff()
-    {
-        super();
-        // TODO Auto-generated constructor stub
-    }
+	public Stuff()
+	{
+		super();
+		// TODO Auto-generated constructor stub
+	}
 
-    private Integer id;
-    
-    private String name;
+	private Integer id;
 
-    private Set<Thing> things = new HashSet<Thing>();
-    
-    @Id @GeneratedValue(strategy=GenerationType.AUTO)
-    public Integer getId()
-    {
-        return id;
-    }
+	private String name;
 
-    public void setId(Integer id)
-    {
-        this.id = id;
-    }
+	private Set<Thing> things = new HashSet<Thing>();
 
-    public String getName()
-    {
-        return name;
-    }
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	public Integer getId()
+	{
+		return id;
+	}
 
-    public void setName(String name)
-    {
-        this.name = name;
-    }
+	public void setId(Integer id)
+	{
+		this.id = id;
+	}
 
-    @OneToMany(cascade=CascadeType.ALL)
-    
-    public Set<Thing> getThings()
-    {
-        return things;
-    }
+	public String getName()
+	{
+		return name;
+	}
 
-    public void setThings(Set<Thing> things)
-    {
-        this.things = things;
-    }
+	public void setName(String name)
+	{
+		this.name = name;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL)
+
+	public Set<Thing> getThings()
+	{
+		return things;
+	}
+
+	public void setThings(Set<Thing> things)
+	{
+		this.things = things;
+	}
 }
 

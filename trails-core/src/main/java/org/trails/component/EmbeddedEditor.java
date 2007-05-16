@@ -14,15 +14,15 @@ public abstract class EmbeddedEditor extends BaseComponent
 	}
 
 	public abstract IPropertyDescriptor getDescriptor();
-	
+
 	public abstract void setDescriptor(IPropertyDescriptor descriptor);
-	
+
 	public abstract Object getModel();
-	
+
 	public abstract void setModel(Object model);
-	
-	public EmbeddedDescriptor getEmbeddedDescriptor() 
+
+	public EmbeddedDescriptor getEmbeddedDescriptor()
 	{
-		return (EmbeddedDescriptor)getDescriptor();
+		return (EmbeddedDescriptor) getDescriptor();
 	}
 }

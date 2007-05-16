@@ -20,93 +20,92 @@ import org.trails.validation.ValidateUniqueness;
 
 
 /**
- * @hibernate.class
- *
- * TODO To change the template for this generated type comment go to
+ * @hibernate.class TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
 @Entity
-@ValidateUniqueness(property="number")
+@ValidateUniqueness(property = "number")
 public class Bing
 {
-    private Integer id;
-    private String description;
-    private String excludeMe;
-    private Integer number;
+	private Integer id;
+	private String description;
+	private String excludeMe;
+	private Integer number;
 
-    /**
-     * @hibernate.property
-     * @return
-     */
-    public Integer getNumber()
-    {
-        return number;
-    }
+	/**
+	 * @return
+	 * @hibernate.property
+	 */
+	public Integer getNumber()
+	{
+		return number;
+	}
 
-    public void setNumber(Integer number)
-    {
-        this.number = number;
-    }
+	public void setNumber(Integer number)
+	{
+		this.number = number;
+	}
 
-    /**
-     * @hibernate.property
-     */
-    public String getDescription()
-    {
-        return description;
-    }
+	/**
+	 * @hibernate.property
+	 */
+	public String getDescription()
+	{
+		return description;
+	}
 
-    /**
-     * @param description The description to set.
-     */
-    public void setDescription(String description)
-    {
-        this.description = description;
-    }
+	/**
+	 * @param description The description to set.
+	 */
+	public void setDescription(String description)
+	{
+		this.description = description;
+	}
 
-    /**
-     * @hibernate.id generator-class="native"
-     */
-    @Id @GeneratedValue(strategy=GenerationType.AUTO)
-    public Integer getId()
-    {
-        return id;
-    }
+	/**
+	 * @hibernate.id generator-class="native"
+	 */
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	public Integer getId()
+	{
+		return id;
+	}
 
-    /**
-     * @param id The id to set.
-     */
-    public void setId(Integer id)
-    {
-        this.id = id;
-    }
+	/**
+	 * @param id The id to set.
+	 */
+	public void setId(Integer id)
+	{
+		this.id = id;
+	}
 
-    public void shouldExclude()
-    {
-    }
+	public void shouldExclude()
+	{
+	}
 
-    /**
-     * @return Returns the excludeMe.
-     */
-    public String getExcludeMe()
-    {
-        return excludeMe;
-    }
+	/**
+	 * @return Returns the excludeMe.
+	 */
+	public String getExcludeMe()
+	{
+		return excludeMe;
+	}
 
-    /**
-     * @param excludeMe The excludeMe to set.
-     */
-    public void setExcludeMe(String excludeMe)
-    {
-        this.excludeMe = excludeMe;
-    }
-    
-    
-    /* (non-Javadoc)
-     * @see java.lang.Object#toString()
-     */
-    public String toString()
-    {
-        return getDescription();
-    }
+	/**
+	 * @param excludeMe The excludeMe to set.
+	 */
+	public void setExcludeMe(String excludeMe)
+	{
+		this.excludeMe = excludeMe;
+	}
+
+
+	/* (non-Javadoc)
+		 * @see java.lang.Object#toString()
+		 */
+	public String toString()
+	{
+		return getDescription();
+	}
 }

@@ -17,20 +17,20 @@ import org.trails.test.Foo;
 
 /**
  * @author fus8882
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
+ *         <p/>
+ *         TODO To change the template for this generated type comment go to
+ *         Window - Preferences - Java - Code Style - Code Templates
  */
 public class TrailsInterceptorTest extends MockObjectTestCase
 {
-    public void testIsUnsaved()
-    {
-        Foo foo = new Foo();
-        Interceptable interceptable = (Interceptable) foo;
-        assertFalse("not saved", interceptable.isSaved());
-        interceptable.onInsert(new Object[]{"myName"}, new String[]{"name"}, null);
-        assertTrue("saved", interceptable.isSaved());
-    }
+	public void testIsUnsaved()
+	{
+		Foo foo = new Foo();
+		Interceptable interceptable = (Interceptable) foo;
+		assertFalse("not saved", interceptable.isSaved());
+		interceptable.onInsert(new Object[]{"myName"}, new String[]{"name"}, null);
+		assertTrue("saved", interceptable.isSaved());
+	}
 
 //    public void testSaveAssignedId()
 //    {

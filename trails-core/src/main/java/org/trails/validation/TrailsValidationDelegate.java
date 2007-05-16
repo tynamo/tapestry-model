@@ -11,63 +11,61 @@ import org.hibernate.validator.InvalidStateException;
 import org.hibernate.validator.InvalidValue;
 import org.trails.descriptor.IClassDescriptor;
 import org.trails.descriptor.IPropertyDescriptor;
-import org.trails.persistence.PersistenceException;
 
 public class TrailsValidationDelegate extends ValidationDelegate
 {
-    
-    public void record(Exception ex)
-    {
-        FieldTracking tracking = findCurrentTracking();
-        tracking.setErrorRenderer(new RenderString(ex.getMessage()));
-        
-    }
 
-    public IFieldTracking getFieldTracking(String displayName)
-    {
-        if (_trackingsByDisplayName.containsKey(displayName))
-        {
-            return _trackingsByDisplayName.get(displayName);
-        }
-        else
-        {
-            return findCurrentTracking();
-        }
-    }
+	public void record(Exception ex)
+	{
+		FieldTracking tracking = findCurrentTracking();
+		tracking.setErrorRenderer(new RenderString(ex.getMessage()));
 
-    protected Map<String,IFieldTracking> _trackingsByDisplayName = new HashMap<String,IFieldTracking>();
-    
-    @Override
-    public void recordFieldInputValue(String input)
-    {
-        FieldTracking tracking = findCurrentTracking();
+	}
 
-        tracking.setInput(input);
-        _trackingsByDisplayName.put(tracking.getComponent().getDisplayName(), tracking);
-        
-    }
+	public IFieldTracking getFieldTracking(String displayName)
+	{
+		if (_trackingsByDisplayName.containsKey(displayName))
+		{
+			return _trackingsByDisplayName.get(displayName);
+		} else
+		{
+			return findCurrentTracking();
+		}
+	}
 
-    public void record(IClassDescriptor descriptor, InvalidStateException invalidStateException)
-    {
-        for (InvalidValue invalidValue : invalidStateException.getInvalidValues())
-        {
+	protected Map<String, IFieldTracking> _trackingsByDisplayName = new HashMap<String, IFieldTracking>();
+
+	@Override
+	public void recordFieldInputValue(String input)
+	{
+		FieldTracking tracking = findCurrentTracking();
+
+		tracking.setInput(input);
+		_trackingsByDisplayName.put(tracking.getComponent().getDisplayName(), tracking);
+
+	}
+
+	public void record(IClassDescriptor descriptor, InvalidStateException invalidStateException)
+	{
+		for (InvalidValue invalidValue : invalidStateException.getInvalidValues())
+		{
 
 			IPropertyDescriptor propertyDescriptor = descriptor.getPropertyDescriptor(invalidValue.getPropertyName());
 			FieldTracking fieldTracking = null;
 			String message = null;
 			if (propertyDescriptor != null)
 			{
-			  fieldTracking = (FieldTracking) getFieldTracking(propertyDescriptor.getDisplayName());
-			  message = propertyDescriptor.getDisplayName() + " " + invalidValue.getMessage();
+				fieldTracking = (FieldTracking) getFieldTracking(propertyDescriptor.getDisplayName());
+				message = propertyDescriptor.getDisplayName() + " " + invalidValue.getMessage();
 			} else
 			{
-			  fieldTracking = findCurrentTracking();
-			  message = invalidValue.getMessage();
+				fieldTracking = findCurrentTracking();
+				message = invalidValue.getMessage();
 			}
-                   
-            fieldTracking.setErrorRenderer(new RenderString(message));
-           
-        }
-    }
-    
+
+			fieldTracking.setErrorRenderer(new RenderString(message));
+
+		}
+	}
+
 }

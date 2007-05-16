@@ -5,7 +5,6 @@ import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.annotations.InjectObject;
 import org.apache.tapestry.annotations.Parameter;
-import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 import org.trails.descriptor.IPropertyDescriptor;
@@ -16,17 +15,17 @@ public abstract class SimpleSearchField extends BaseComponent
 	public abstract Object getValue();
 
 	public abstract void setValue(Object Value);
-	
-	@Parameter(required=false, defaultValue="page.criteria")
+
+	@Parameter(required = false, defaultValue = "page.criteria")
 	public abstract DetachedCriteria getCriteria();
 
 	public abstract void setCriteria(DetachedCriteria Criteria);
-	
-	@Parameter(required=true)
+
+	@Parameter(required = true)
 	public abstract IPropertyDescriptor getPropertyDescriptor();
 
 	public abstract void setPropertyDescriptor(IPropertyDescriptor PropertyDescriptor);
-	
+
 	@InjectObject("spring:validatorTranslatorService")
 	public abstract ValidatorTranslatorService getValidatorTranslatorService();
 
@@ -48,6 +47,6 @@ public abstract class SimpleSearchField extends BaseComponent
 			buildCriterion();
 		}
 	}
-	
-	
+
+
 }

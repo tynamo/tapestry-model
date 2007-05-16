@@ -19,29 +19,34 @@ import org.trails.page.TrailsPage;
  * ListAllLink renders a single link that has a target of the List page for a given object.  It is abstract because
  * Tapestry will populate the bean with getter/setters for fields in it.  The base class is constructed with the name
  * of the type that this link will connect to, and all list operations are synthesized from that single name.
+ *
  * @author fus8882
  * @date Sep 26, 2004
- *
  */
-public abstract class ListAllLink extends AbstractTypeNavigationLink {
+public abstract class ListAllLink extends AbstractTypeNavigationLink
+{
 
-    /**
-     * Get the text for the rendered link
-     * @return Full i18n text in the form "List Foobars"
-     */
-    public String getLinkText() {
-        String name = getClassDescriptor().getPluralDisplayName();
-        return generateLinkText(name, "org.trails.component.listalllink", "[TRAILS][ORG.TRAILS.COMPONENT.LISTALLLINK]");
-    }
+	/**
+	 * Get the text for the rendered link
+	 *
+	 * @return Full i18n text in the form "List Foobars"
+	 */
+	public String getLinkText()
+	{
+		String name = getClassDescriptor().getPluralDisplayName();
+		return generateLinkText(name, "org.trails.component.listalllink", "[TRAILS][ORG.TRAILS.COMPONENT.LISTALLLINK]");
+	}
 
-    /**
-     * For the page type TrailsPage.PageType.LIST, try to get the name of the page.  Called by ListAllLink.jwc
-     * @return Name of the page
-     */
-    public String getListPageName()	{
-        IRequestCycle cycle = getPage().getRequestCycle();
-        IPage iPage = getPageResolver().resolvePage(cycle, getTypeName(), TrailsPage.PageType.LIST);
+	/**
+	 * For the page type TrailsPage.PageType.LIST, try to get the name of the page.  Called by ListAllLink.jwc
+	 *
+	 * @return Name of the page
+	 */
+	public String getListPageName()
+	{
+		IRequestCycle cycle = getPage().getRequestCycle();
+		IPage iPage = getPageResolver().resolvePage(cycle, getTypeName(), TrailsPage.PageType.LIST);
 
-        return iPage.getPageName();
+		return iPage.getPageName();
 	}
 }

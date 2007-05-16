@@ -11,48 +11,49 @@ import org.trails.descriptor.annotation.PropertyDescriptor;
 @Entity
 public class VersionedThing
 {
-    private Integer id;
-    
-    public VersionedThing()
-    {
-        super();
-        // TODO Auto-generated constructor stub
-    }
+	private Integer id;
 
-    @Id @GeneratedValue(strategy=GenerationType.AUTO)
-    public Integer getId()
-    {
-        return id;
-    }
+	public VersionedThing()
+	{
+		super();
+		// TODO Auto-generated constructor stub
+	}
 
-    public void setId(Integer id)
-    {
-        this.id = id;
-    }
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	public Integer getId()
+	{
+		return id;
+	}
 
-    private String name;
+	public void setId(Integer id)
+	{
+		this.id = id;
+	}
 
-    public String getName()
-    {
-        return name;
-    }
+	private String name;
 
-    public void setName(String name)
-    {
-        this.name = name;
-    }
-    
-    private Integer version;
+	public String getName()
+	{
+		return name;
+	}
 
-    @Version
-    @PropertyDescriptor(readOnly=true)
-    public Integer getVersion()
-    {
-        return version;
-    }
+	public void setName(String name)
+	{
+		this.name = name;
+	}
 
-    public void setVersion(Integer version)
-    {
-        this.version = version;
-    }
+	private Integer version;
+
+	@Version
+	@PropertyDescriptor(readOnly = true)
+	public Integer getVersion()
+	{
+		return version;
+	}
+
+	public void setVersion(Integer version)
+	{
+		this.version = version;
+	}
 }

@@ -1,13 +1,13 @@
 package org.trails.demo;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.trails.descriptor.annotation.ClassDescriptor;
+import org.trails.descriptor.annotation.PropertyDescriptor;
+
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.GeneratedValue;
-
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.trails.descriptor.annotation.PropertyDescriptor;
-import org.trails.descriptor.annotation.ClassDescriptor;
 
 @Entity
 @ClassDescriptor(hidden = true)

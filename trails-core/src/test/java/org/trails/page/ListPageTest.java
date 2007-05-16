@@ -25,60 +25,60 @@ import org.trails.test.Foo;
 
 /**
  * @author fus8882
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
+ *         <p/>
+ *         TODO To change the template for this generated type comment go to
+ *         Window - Preferences - Java - Code Style - Code Templates
  */
 public class ListPageTest extends ComponentTest
 {
-    public static final String PAGE_NAME = "fooList";
-    ListPage listPage;
-    Mock cycleMock;
-    
-    List stuff = new ArrayList();
-    
-    public void setUp()
-    {
-        
-        listPage = (ListPage) buildTrailsPage(ListPage.class);
-        listPage.setPageName(PAGE_NAME);
+	public static final String PAGE_NAME = "fooList";
+	ListPage listPage;
+	Mock cycleMock;
 
-        cycleMock = new Mock(IRequestCycle.class);
-        listPage.attach(null, (IRequestCycle)cycleMock.proxy());
-        
-    }
-    
-    public void testPageBeginRender() throws Exception
-    {
-    	
+	List stuff = new ArrayList();
+
+	public void setUp()
+	{
+
+		listPage = (ListPage) buildTrailsPage(ListPage.class);
+		listPage.setPageName(PAGE_NAME);
+
+		cycleMock = new Mock(IRequestCycle.class);
+		listPage.attach(null, (IRequestCycle) cycleMock.proxy());
+
+	}
+
+	public void testPageBeginRender() throws Exception
+	{
+
 //        persistenceMock.expects(once()).method("getInstances")
 //    		.with(isA(DetachedCriteria.class)).will(returnValue(stuff));    
-        PageEvent pageEvent = new PageEvent(listPage, (IRequestCycle)cycleMock.proxy());
+		PageEvent pageEvent = new PageEvent(listPage, (IRequestCycle) cycleMock.proxy());
 //        cycleMock.expects(once()).method("isRewinding").will(returnValue(false));
-        listPage.setCriteria(DetachedCriteria.forClass(Foo.class));
-    	listPage.pageBeginRender(pageEvent);
+		listPage.setCriteria(DetachedCriteria.forClass(Foo.class));
+		listPage.pageBeginRender(pageEvent);
 //        assertEquals(stuff, listPage.getInstances());
-        assertEquals(1, listPage.getCallbackStack().getStack().size());
-    }
-    
-    public void testExternalPage()
-    {
-        listPage.activateExternalPage(new Object[] { Foo.class },
-            (IRequestCycle) cycleMock.proxy());
-        assertNotNull(listPage.getCriteria());
-    }
-    
-    
-    public void testPushCallback()
-    {
-    	DetachedCriteria criteria = DetachedCriteria.forClass(Foo.class);
-        listPage.setTypeName(Foo.class.getName());
-        listPage.setCriteria(criteria);
-        listPage.pushCallback();
-        ListCallback listCallback = (ListCallback)listPage.getCallbackStack().getStack().pop();
-        
-        assertEquals(PAGE_NAME, listCallback.getPageName());
-        assertEquals(Foo.class.getName(), listCallback.getTypeName());
-        assertEquals(criteria, listCallback.getCriteria());
-    }
+		assertEquals(1, listPage.getCallbackStack().getStack().size());
+	}
+
+	public void testExternalPage()
+	{
+		listPage.activateExternalPage(new Object[]{Foo.class},
+			(IRequestCycle) cycleMock.proxy());
+		assertNotNull(listPage.getCriteria());
+	}
+
+
+	public void testPushCallback()
+	{
+		DetachedCriteria criteria = DetachedCriteria.forClass(Foo.class);
+		listPage.setTypeName(Foo.class.getName());
+		listPage.setCriteria(criteria);
+		listPage.pushCallback();
+		ListCallback listCallback = (ListCallback) listPage.getCallbackStack().getStack().pop();
+
+		assertEquals(PAGE_NAME, listCallback.getPageName());
+		assertEquals(Foo.class.getName(), listCallback.getTypeName());
+		assertEquals(criteria, listCallback.getCriteria());
+	}
 }

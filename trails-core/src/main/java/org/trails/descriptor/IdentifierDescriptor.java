@@ -12,67 +12,66 @@
 package org.trails.descriptor;
 
 
-
 /**
  * @author fus8882
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
+ *         <p/>
+ *         TODO To change the template for this generated type comment go to
+ *         Window - Preferences - Java - Code Style - Code Templates
  */
 public class IdentifierDescriptor extends TrailsPropertyDescriptor implements IIdentifierDescriptor
 {
-    private boolean generated = true;
+	private boolean generated = true;
 
-    public IdentifierDescriptor(Class beanType, IPropertyDescriptor descriptor)
-    {
-        super(beanType, descriptor.getPropertyType());
-        copyFrom(descriptor);
-        setSearchable(false);
-    }
+	public IdentifierDescriptor(Class beanType, IPropertyDescriptor descriptor)
+	{
+		super(beanType, descriptor.getPropertyType());
+		copyFrom(descriptor);
+		setSearchable(false);
+	}
 
-    /**
-     * @param realDescriptor
-     */
-    public IdentifierDescriptor(Class beanType, Class type)
-    {
-        super(beanType, type);
-        setSearchable(false);
-    }
-    
-    public IdentifierDescriptor(Class beanType, String name, Class type)
-    {
-        super(beanType, name, type);
-        setSearchable(false);
-    }
+	/**
+	 * @param realDescriptor
+	 */
+	public IdentifierDescriptor(Class beanType, Class type)
+	{
+		super(beanType, type);
+		setSearchable(false);
+	}
 
-    /* (non-Javadoc)
-     * @see org.trails.descriptor.PropertyDescriptor#isIdentifier()
-     */
-    public boolean isIdentifier()
-    {
-        return true;
-    }
+	public IdentifierDescriptor(Class beanType, String name, Class type)
+	{
+		super(beanType, name, type);
+		setSearchable(false);
+	}
 
-    /**
-     * @return Returns the generated.
-     */
-    public boolean isGenerated()
-    {
-        return generated;
-    }
+	/* (non-Javadoc)
+		 * @see org.trails.descriptor.PropertyDescriptor#isIdentifier()
+		 */
+	public boolean isIdentifier()
+	{
+		return true;
+	}
 
-    /**
-     * @param generated The generated to set.
-     */
-    public void setGenerated(boolean generated)
-    {
-        this.generated = generated;
-    }
+	/**
+	 * @return Returns the generated.
+	 */
+	public boolean isGenerated()
+	{
+		return generated;
+	}
 
-    public Object clone()
-    {
-        return new IdentifierDescriptor(getBeanType(), this);
-    }
-    
-    
+	/**
+	 * @param generated The generated to set.
+	 */
+	public void setGenerated(boolean generated)
+	{
+		this.generated = generated;
+	}
+
+	public Object clone()
+	{
+		return new IdentifierDescriptor(getBeanType(), this);
+	}
+
+
 }

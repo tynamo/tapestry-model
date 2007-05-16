@@ -1,39 +1,39 @@
 <project name="Trails">
-  <bannerLeft>
-    <name>Trails</name>
-    <src>images/trails-header94.jpg</src>
-    <href>http://www.trailsframework.org/</href>
-  </bannerLeft>
-  <skin>
-    <groupId>org.apache.tapestry</groupId>
-    <artifactId>maven-skin</artifactId>
-    <version>1.1</version>
-  </skin>
+	<bannerLeft>
+		<name>Trails</name>
+		<src>images/trails-header94.jpg</src>
+		<href>http://www.trailsframework.org/</href>
+	</bannerLeft>
+	<skin>
+		<groupId>org.apache.tapestry</groupId>
+		<artifactId>maven-skin</artifactId>
+		<version>1.1</version>
+	</skin>
 
-  <publishDate format="dd MMM yyyy" />    
+	<publishDate format="dd MMM yyyy"/>
 
-  <body>
-    <links>
-      <item name="Trails" href="http://www.trailsframework.org/"/>
-      <item name="Codehaus" href="http://www.codehaus.org/"/>
-    </links>
+	<body>
+		<links>
+			<item name="Trails" href="http://www.trailsframework.org/"/>
+			<item name="Codehaus" href="http://www.codehaus.org/"/>
+		</links>
 
-    <menu name="Trails">
-      <item name="News" href="http://docs.codehaus.org/pages/viewrecentblogposts.action?key=TRAILS"/>
-      <item name="Wiki" href="http://docs.codehaus.org/pages/listpages-dirview.action?key=TRAILS"/>
-      <item name="Trails Google Co-op" href="http://www.google.com/coop/cse?cx=013250026102135188957%3Anax2woa71p0"/>
-    </menu>
+		<menu name="Trails">
+			<item name="News" href="http://docs.codehaus.org/pages/viewrecentblogposts.action?key=TRAILS"/>
+			<item name="Wiki" href="http://docs.codehaus.org/pages/listpages-dirview.action?key=TRAILS"/>
+			<item name="Trails Google Co-op" href="http://www.google.com/coop/cse?cx=013250026102135188957%3Anax2woa71p0"/>
+		</menu>
 
-    <menu name="Quick Links">
-      <item name="Quick Start (read this first!)" href="http://www.trailsframework.org/Quick+Start"/>
-      <item name="User Guide" href="http://www.trailsframework.org/User%27s+Guide"/>
-    </menu>
+		<menu name="Quick Links">
+			<item name="Quick Start (read this first!)" href="http://www.trailsframework.org/Quick+Start"/>
+			<item name="User Guide" href="http://www.trailsframework.org/User%27s+Guide"/>
+		</menu>
 
-    <menu ref="parent" />
+		<menu ref="parent"/>
 
-    <menu ref="modules"/>
+		<menu ref="modules"/>
 
-    ${reports}
+		${reports}
 
-  </body>
+	</body>
 </project>

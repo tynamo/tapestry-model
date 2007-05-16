@@ -20,134 +20,150 @@ import org.trails.persistence.PersistenceService;
 
 /**
  * This widget overloads the src attribute of @Image
- *
+ * <p/>
  * It substitutes icons when tapestry fails to negotiate a
  * proper src for uploadable media.
- *
+ * <p/>
  * This is exclusively intended for org.trails.component.blob.ITrailsBlob
  *
  * @author kenneth.colassi
- *
  */
 
 @ComponentClass(allowBody = false, allowInformalParameters = false)
-public abstract class MimedImage extends Image {
-    private Map<String,String> map = new HashMap<String,String>();
+public abstract class MimedImage extends Image
+{
+	private Map<String, String> map = new HashMap<String, String>();
 
-    @InjectObject("service:tapestry.asset.ClasspathAssetFactory")
-    public abstract AssetFactory getClasspathAssetFactory();
+	@InjectObject("service:tapestry.asset.ClasspathAssetFactory")
+	public abstract AssetFactory getClasspathAssetFactory();
 
-    @InjectObject("spring:persistenceService")
-    public abstract PersistenceService getPersistenceService();
+	@InjectObject("spring:persistenceService")
+	public abstract PersistenceService getPersistenceService();
 
-    @Parameter(required = true)
-    public abstract IPropertyDescriptor getDescriptor();
-    public abstract void setDescriptor(
-            IPropertyDescriptor descriptor);
+	@Parameter(required = true)
+	public abstract IPropertyDescriptor getDescriptor();
 
-    @Parameter(required = true)
-    public abstract Object getBytes();
-    public abstract void setBytes(Object bytes);
+	public abstract void setDescriptor(
+		IPropertyDescriptor descriptor);
 
-    @Parameter(required = true)
-    public abstract Object getModel();
-    public abstract void setModel(Object bytes);
+	@Parameter(required = true)
+	public abstract Object getBytes();
 
-    @Parameter(required = true)
-    public abstract IAsset getImage();
-    public abstract void setImage(IAsset image);
+	public abstract void setBytes(Object bytes);
 
-    public BlobDescriptorExtension getBlobDescriptorExtension() {
-        return getDescriptor().getExtension(
-                BlobDescriptorExtension.class);
-    }
+	@Parameter(required = true)
+	public abstract Object getModel();
 
-    public MimedImage() {
-        /**
-         * Map keyes MUST adhere to standard mime
-         */
-        map.put("application/x-zip-compressed",
-                "/org/trails/component/blob/image/asset/winzip.gif");
-        map.put("application/pdf",
-                "/org/trails/component/blob/image/asset/icadobe.gif");
-        map.put("application/msword",
-                "/org/trails/component/blob/image/asset/icdoc.gif");
-        map.put("application/vnd.visio",
-                "/org/trails/component/blob/image/asset/icdoc.gif");
-        map.put("application/vnd.ms-powerpoint",
-                "/org/trails/component/blob/image/asset/icppt.gif");
-        map.put("application/vnd.ms-excel",
-                "/org/trails/component/blob/image/asset/icxls.gif");
-        map.put("application/octet-stream",
-                "/org/trails/component/blob/image/asset/icgen.gif");
+	public abstract void setModel(Object bytes);
 
-        map.put("text/html", "/org/trails/component/blob/image/asset/ichtm.gif");
-        map.put("text/plain", "/org/trails/component/blob/image/asset/ictxt.gif");
-        map.put("text/css", "/org/trails/component/blob/image/asset/ictxt.gif");
-        map.put("text/xml", "/org/trails/component/blob/image/asset/icxml.gif");
+	@Parameter(required = true)
+	public abstract IAsset getImage();
 
-        map.put("image/tiff", "/org/trails/component/blob/image/asset/icgen.gif");
+	public abstract void setImage(IAsset image);
 
-        map.put("video/avi", "/org/trails/component/blob/image/asset/icwmp.gif");
-        map.put("video/mpeg", "/org/trails/component/blob/image/asset/icwmp.gif");
-        map.put("video/mp4", "/org/trails/component/blob/image/asset/icwmp.gif");
-        map.put("video/quicktime",
-                "/org/trails/component/blob/image/asset/icwmp.gif");
-        map
-                .put("video/x-ms-wmv",
-                        "/org/trails/component/blob/image/asset/icwmp.gif");
+	public BlobDescriptorExtension getBlobDescriptorExtension()
+	{
+		return getDescriptor().getExtension(
+			BlobDescriptorExtension.class);
+	}
 
-    }
+	public MimedImage()
+	{
+		/**
+		 * Map keyes MUST adhere to standard mime
+		 */
+		map.put("application/x-zip-compressed",
+			"/org/trails/component/blob/image/asset/winzip.gif");
+		map.put("application/pdf",
+			"/org/trails/component/blob/image/asset/icadobe.gif");
+		map.put("application/msword",
+			"/org/trails/component/blob/image/asset/icdoc.gif");
+		map.put("application/vnd.visio",
+			"/org/trails/component/blob/image/asset/icdoc.gif");
+		map.put("application/vnd.ms-powerpoint",
+			"/org/trails/component/blob/image/asset/icppt.gif");
+		map.put("application/vnd.ms-excel",
+			"/org/trails/component/blob/image/asset/icxls.gif");
+		map.put("application/octet-stream",
+			"/org/trails/component/blob/image/asset/icgen.gif");
 
-    @Override
-    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle) {
-        if (cycle.isRewinding())
-            return;
+		map.put("text/html", "/org/trails/component/blob/image/asset/ichtm.gif");
+		map.put("text/plain", "/org/trails/component/blob/image/asset/ictxt.gif");
+		map.put("text/css", "/org/trails/component/blob/image/asset/ictxt.gif");
+		map.put("text/xml", "/org/trails/component/blob/image/asset/icxml.gif");
 
-        IAsset imageAsset = getImage();
+		map.put("image/tiff", "/org/trails/component/blob/image/asset/icgen.gif");
 
-        if (imageAsset == null)
-            throw Tapestry.createRequiredParameterException(this, "image");
+		map.put("video/avi", "/org/trails/component/blob/image/asset/icwmp.gif");
+		map.put("video/mpeg", "/org/trails/component/blob/image/asset/icwmp.gif");
+		map.put("video/mp4", "/org/trails/component/blob/image/asset/icwmp.gif");
+		map.put("video/quicktime",
+			"/org/trails/component/blob/image/asset/icwmp.gif");
+		map
+			.put("video/x-ms-wmv",
+				"/org/trails/component/blob/image/asset/icwmp.gif");
 
-        writer.beginEmpty("img");
+	}
 
-        ITrailsBlob trailsBlob = null;
-        String contentType = null;
-        try {
-            if (getBlobDescriptorExtension().isBytes()) {
-                trailsBlob = (ITrailsBlob) getModel();
-            } else if (getBlobDescriptorExtension().isITrailsBlob()) {
-                trailsBlob = (ITrailsBlob) getBytes();
-            }
-            contentType = trailsBlob.getContentType();
-        } catch (LazyInitializationException e) {
-            getPersistenceService().reattach(trailsBlob);
-            contentType = trailsBlob.getContentType();
-        }
+	@Override
+	protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
+	{
+		if (cycle.isRewinding())
+			return;
 
-        if (contentType == null) {
-            writer.attribute("src", imageAsset.buildURL());
-        } else if (contentType.equalsIgnoreCase("image/pjpeg")
-                || contentType.equalsIgnoreCase("image/gif")) {
-            writer.attribute("src", imageAsset.buildURL());
-        } else {
-            AssetFactory fact = getClasspathAssetFactory();
+		IAsset imageAsset = getImage();
 
-            IAsset asset;
+		if (imageAsset == null)
+			throw Tapestry.createRequiredParameterException(this, "image");
 
-            if (map.containsKey(contentType)) {
-                asset = fact.createAbsoluteAsset(map.get(contentType)
-                        .toString(), null, null);
-                writer.attribute("src", asset.buildURL());
-            } else {
-                asset = fact.createAbsoluteAsset(map.get(
-                        "application/octet-stream").toString(), null, null);
-                writer.attribute("src", asset.buildURL());
-            }
-        }
+		writer.beginEmpty("img");
 
-        renderInformalParameters(writer, cycle);
+		ITrailsBlob trailsBlob = null;
+		String contentType = null;
+		try
+		{
+			if (getBlobDescriptorExtension().isBytes())
+			{
+				trailsBlob = (ITrailsBlob) getModel();
+			} else if (getBlobDescriptorExtension().isITrailsBlob())
+			{
+				trailsBlob = (ITrailsBlob) getBytes();
+			}
+			contentType = trailsBlob.getContentType();
+		} catch (LazyInitializationException e)
+		{
+			getPersistenceService().reattach(trailsBlob);
+			contentType = trailsBlob.getContentType();
+		}
 
-        writer.closeTag();
-    }
+		if (contentType == null)
+		{
+			writer.attribute("src", imageAsset.buildURL());
+		} else if (contentType.equalsIgnoreCase("image/pjpeg")
+			|| contentType.equalsIgnoreCase("image/gif"))
+		{
+			writer.attribute("src", imageAsset.buildURL());
+		} else
+		{
+			AssetFactory fact = getClasspathAssetFactory();
+
+			IAsset asset;
+
+			if (map.containsKey(contentType))
+			{
+				asset = fact.createAbsoluteAsset(map.get(contentType)
+					.toString(), null, null);
+				writer.attribute("src", asset.buildURL());
+			} else
+			{
+				asset = fact.createAbsoluteAsset(map.get(
+					"application/octet-stream").toString(), null, null);
+				writer.attribute("src", asset.buildURL());
+			}
+		}
+
+		renderInformalParameters(writer, cycle);
+
+		writer.closeTag();
+	}
 }

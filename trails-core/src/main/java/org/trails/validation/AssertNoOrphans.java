@@ -12,9 +12,10 @@ import java.lang.annotation.Target;
 public @interface AssertNoOrphans
 {
 	// we can't default this to null, which sucks!
-    Class value() default Object.class;
-    
-    String childrenProperty() default "";
-    
-    String message() default "";
+
+	Class value() default Object.class;
+
+	String childrenProperty() default "";
+
+	String message() default "";
 }

@@ -23,68 +23,70 @@ import org.trails.validation.ValidateUniqueness;
 
 
 /**
- * @hibernate.class
- *
- * TODO To change the template for this generated type comment go to
+ * @hibernate.class TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
 @Entity
-@ValidateUniqueness(property="description")
+@ValidateUniqueness(property = "description")
 public class Baz
 {
-    private Integer id;
-    private String description;
-    
-    private Foo foo;
+	private Integer id;
+	private String description;
 
-    /**
-     * @hibernate.property
-     */
-    @NotNull
-    @Length(max=10,message="was too long.")
-    public String getDescription()
-    {
-        return description;
-    }
+	private Foo foo;
 
-    /**
-     * @param description The description to set.
-     */
-    public void setDescription(String description)
-    {
-        this.description = description;
-    }
+	/**
+	 * @hibernate.property
+	 */
+	@NotNull
+	@Length(max = 10, message = "was too long.")
+	public String getDescription()
+	{
+		return description;
+	}
 
-    /**
-     * @hibernate.id generator-class="native"
-     */
-    @Id @GeneratedValue(strategy=GenerationType.AUTO)
-    public Integer getId()
-    {
-        return id;
-    }
+	/**
+	 * @param description The description to set.
+	 */
+	public void setDescription(String description)
+	{
+		this.description = description;
+	}
 
-    /**
-     * @param id The id to set.
-     */
-    public void setId(Integer id)
-    {
-        this.id = id;
-    }
+	/**
+	 * @hibernate.id generator-class="native"
+	 */
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	public Integer getId()
+	{
+		return id;
+	}
 
-    public void doSomething()
-    {
-        description = "something done";
-    }
+	/**
+	 * @param id The id to set.
+	 */
+	public void setId(Integer id)
+	{
+		this.id = id;
+	}
 
-    public void doSomethingElse(String something)
-    {
-        description = something;
-    }
-    
-    public String toString() { return getDescription(); }
+	public void doSomething()
+	{
+		description = "something done";
+	}
 
-    @ManyToOne
+	public void doSomethingElse(String something)
+	{
+		description = something;
+	}
+
+	public String toString()
+	{
+		return getDescription();
+	}
+
+	@ManyToOne
 	public Foo getFoo()
 	{
 		return foo;

@@ -12,7 +12,6 @@
 package org.trails.demo;
 
 import java.util.Date;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -31,131 +30,133 @@ import org.trails.descriptor.annotation.PropertyDescriptor;
 @Entity
 public class Product
 {
-    private String name;
-    private String description;
-    private Date bornOnDate;
-    private Integer id;
-    private Double cost;
+	private String name;
+	private String description;
+	private Date bornOnDate;
+	private Integer id;
+	private Double cost;
 
-    public Product(String name)
-    {
-        this.name = name;
-    }
+	public Product(String name)
+	{
+		this.name = name;
+	}
 
-    public Product()
-    {
-    }
+	public Product()
+	{
+	}
 
-    /**
-     * @hibernate.property
-     */
-    public String getDescription()
-    {
-        return description;
-    }
+	/**
+	 * @hibernate.property
+	 */
+	public String getDescription()
+	{
+		return description;
+	}
 
-    /**
-     * @param description The description to set.
-     */
-    public void setDescription(String description)
-    {
-        this.description = description;
-    }
+	/**
+	 * @param description The description to set.
+	 */
+	public void setDescription(String description)
+	{
+		this.description = description;
+	}
 
-    /**
-     * @hibernate.property
-     */
-    public String getName()
-    {
-        return name;
-    }
+	/**
+	 * @hibernate.property
+	 */
+	public String getName()
+	{
+		return name;
+	}
 
-    /**
-     * @param name The name to set.
-     */
-    public void setName(String name)
-    {
-        this.name = name;
-    }
+	/**
+	 * @param name The name to set.
+	 */
+	public void setName(String name)
+	{
+		this.name = name;
+	}
 
-    /**
-     * @hibernate.property type="date"
-     */
-    @PropertyDescriptor(format="MM/dd/yyyy")
-    public Date getBornOnDate()
-    {
-        return bornOnDate;
-    }
+	/**
+	 * @hibernate.property type="date"
+	 */
+	@PropertyDescriptor(format = "MM/dd/yyyy")
+	public Date getBornOnDate()
+	{
+		return bornOnDate;
+	}
 
-    /**
-     * @param bornOnDate The bornOnDate to set.
-     */
-    public void setBornOnDate(Date bornOnDate)
-    {
-        this.bornOnDate = bornOnDate;
-    }
+	/**
+	 * @param bornOnDate The bornOnDate to set.
+	 */
+	public void setBornOnDate(Date bornOnDate)
+	{
+		this.bornOnDate = bornOnDate;
+	}
 
-    /* (non-Javadoc)
-     * @see java.lang.Object#toString()
-     */
-    public String toString()
-    {
-        return getName();
-    }
+	/* (non-Javadoc)
+		 * @see java.lang.Object#toString()
+		 */
+	public String toString()
+	{
+		return getName();
+	}
 
-    /**
-     * @hibernate.id generator-class="native"
-     */
-    @Id @GeneratedValue(strategy=GenerationType.AUTO)
-    public Integer getId()
-    {
-        return id;
-    }
+	/**
+	 * @hibernate.id generator-class="native"
+	 */
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	public Integer getId()
+	{
+		return id;
+	}
 
-    /**
-     * @param number The number to set.
-     */
-    public void setId(Integer number)
-    {
-        this.id = number;
-    }
+	/**
+	 * @param number The number to set.
+	 */
+	public void setId(Integer number)
+	{
+		this.id = number;
+	}
 
-    public void blork()
-    {
-        description = "blork";
-    }
+	public void blork()
+	{
+		description = "blork";
+	}
 
-    /**
-     * @return Returns the cost.
-     * @hibernate.property
-     */
-    
-    public Double getCost()
-    {
-        return cost;
-    }
+	/**
+	 * @return Returns the cost.
+	 * @hibernate.property
+	 */
 
-    /**
-     * @param cost The cost to set.
-     */
-    public void setCost(Double cost)
-    {
-        this.cost = cost;
-    }
-    
-    
-    /* (non-Javadoc)
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
-    public boolean equals(Object obj)
-    {
-        return EqualsBuilder.reflectionEquals(this, obj);
-    }
-    /* (non-Javadoc)
-     * @see java.lang.Object#hashCode()
-     */
-    public int hashCode()
-    {
-        return HashCodeBuilder.reflectionHashCode(this);
-    }
+	public Double getCost()
+	{
+		return cost;
+	}
+
+	/**
+	 * @param cost The cost to set.
+	 */
+	public void setCost(Double cost)
+	{
+		this.cost = cost;
+	}
+
+
+	/* (non-Javadoc)
+		 * @see java.lang.Object#equals(java.lang.Object)
+		 */
+	public boolean equals(Object obj)
+	{
+		return EqualsBuilder.reflectionEquals(this, obj);
+	}
+
+	/* (non-Javadoc)
+		 * @see java.lang.Object#hashCode()
+		 */
+	public int hashCode()
+	{
+		return HashCodeBuilder.reflectionHashCode(this);
+	}
 }

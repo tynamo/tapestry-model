@@ -2,20 +2,20 @@
 <component-specification class="org.trails.component.NewLink" allow-body="yes" allow-informal-parameters="yes" deprecated="no">
 	<description>Produces a link to an EditPage containing a new instance of specified type</description>
 	<parameter name="typeName" required="yes" cache="yes" deprecated="no"/>
-	
-    <component id="link" type="DirectLink" inherit-informal-parameters="no">
-        <binding name="listener">listeners.click</binding>
-    </component>	
-    <component id="insert" type="Insert" inherit-informal-parameters="no">
-        <binding name="value">linkText</binding>
-    </component>
-   <component id="hasBody" type="If" inherit-informal-parameters="no">
-        <binding name="condition">bodyCount &gt; 0</binding>
-	</component>
-     <component id="hasNoBody" type="If" inherit-informal-parameters="no">
-        <binding name="condition">bodyCount == 0</binding>
-	</component> 
-     <component id="renderBody" type="RenderBody" inherit-informal-parameters="no">
 
-	</component>       
+	<component id="link" type="DirectLink" inherit-informal-parameters="no">
+		<binding name="listener">listeners.click</binding>
+	</component>
+	<component id="insert" type="Insert" inherit-informal-parameters="no">
+		<binding name="value">linkText</binding>
+	</component>
+	<component id="hasBody" type="If" inherit-informal-parameters="no">
+		<binding name="condition">bodyCount &gt; 0</binding>
+	</component>
+	<component id="hasNoBody" type="If" inherit-informal-parameters="no">
+		<binding name="condition">bodyCount == 0</binding>
+	</component>
+	<component id="renderBody" type="RenderBody" inherit-informal-parameters="no">
+
+	</component>
 </component-specification>

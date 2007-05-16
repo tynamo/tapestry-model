@@ -3,8 +3,8 @@
 	<parameter name="model" required="yes" cache="yes" deprecated="no"/>
 	<parameter name="descriptor" default-value="container.property" required="no" cache="yes" deprecated="no"/>
 
-    
-    <component id="renderBlock" type="RenderBlock">
-    	<binding name="block">ognl:block</binding>
-    </component>
+
+	<component id="renderBlock" type="RenderBlock">
+		<binding name="block">ognl:block</binding>
+	</component>
 </component-specification>

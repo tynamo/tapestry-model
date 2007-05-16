@@ -21,88 +21,86 @@ import org.trails.validation.ValidateUniqueness;
 
 /**
  * @author fus8882
- * @hibernate.class
- *
- * TODO To change the template for this generated type comment go to
+ * @hibernate.class TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
-@ValidateUniqueness(property="name")
+@ValidateUniqueness(property = "name")
 @Entity
 public class Thing2
 {
-    String identifier;
-    String name;
-    
-    private String title;
-    String hidden;
-    
-    String readOnly = "foo";
+	String identifier;
+	String name;
 
-    @Id
-    public String getIdentifier()
-    {
-        return identifier;
-    }
+	private String title;
+	String hidden;
 
-    /**
-     * @param identifier The identifier to set.
-     */
-    public void setIdentifier(String identifier)
-    {
-        this.identifier = identifier;
-    }
+	String readOnly = "foo";
 
-    @PropertyDescriptor(displayName="The name")
-    @Pattern(regex="[a-z]+")
-    public String getName()
-    {
-        return name;
-    }
+	@Id
+	public String getIdentifier()
+	{
+		return identifier;
+	}
 
-    /**
-     * @param name The name to set.
-     */
-    public void setName(String name)
-    {
-        this.name = name;
-    }
-    
-    @PropertyDescriptor(hidden=true)
-    public String getHidden()
-    {
-        return hidden;
-    }
-    
-    /**
-     * @param hidden The hidden to set.
-     */
-    public void setHidden(String hidden)
-    {
-        this.hidden = hidden;
-    }
-    
-    @PropertyDescriptor(readOnly=true)
-    public String getReadOnly()
-    {
-        return readOnly;
-    }
-    
-    /**
-     * @param readOnly The readOnly to set.
-     */
-    public void setReadOnly(String readOnly)
-    {
-        this.readOnly = readOnly;
-    }
+	/**
+	 * @param identifier The identifier to set.
+	 */
+	public void setIdentifier(String identifier)
+	{
+		this.identifier = identifier;
+	}
 
-    @Pattern(regex="[a-z]+")
-    public String getTitle()
-    {
-        return title;
-    }
+	@PropertyDescriptor(displayName = "The name")
+	@Pattern(regex = "[a-z]+")
+	public String getName()
+	{
+		return name;
+	}
 
-    public void setTitle(String title)
-    {
-        this.title = title;
-    }
+	/**
+	 * @param name The name to set.
+	 */
+	public void setName(String name)
+	{
+		this.name = name;
+	}
+
+	@PropertyDescriptor(hidden = true)
+	public String getHidden()
+	{
+		return hidden;
+	}
+
+	/**
+	 * @param hidden The hidden to set.
+	 */
+	public void setHidden(String hidden)
+	{
+		this.hidden = hidden;
+	}
+
+	@PropertyDescriptor(readOnly = true)
+	public String getReadOnly()
+	{
+		return readOnly;
+	}
+
+	/**
+	 * @param readOnly The readOnly to set.
+	 */
+	public void setReadOnly(String readOnly)
+	{
+		this.readOnly = readOnly;
+	}
+
+	@Pattern(regex = "[a-z]+")
+	public String getTitle()
+	{
+		return title;
+	}
+
+	public void setTitle(String title)
+	{
+		this.title = title;
+	}
 }

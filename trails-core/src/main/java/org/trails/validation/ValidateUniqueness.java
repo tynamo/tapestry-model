@@ -11,5 +11,5 @@ import java.lang.annotation.Target;
 @Inherited
 public @interface ValidateUniqueness
 {
-    String property();
+	String property();
 }

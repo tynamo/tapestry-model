@@ -1,6 +1,5 @@
 package org.trails.validation;
 
-import org.trails.TrailsRuntimeException;
 import org.trails.descriptor.IPropertyDescriptor;
 
 public class OrphanException extends ValidationException
@@ -41,5 +40,5 @@ public class OrphanException extends ValidationException
 		super(cause);
 		// TODO Auto-generated constructor stub
 	}
-	
+
 }

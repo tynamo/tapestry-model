@@ -14,7 +14,6 @@ package org.trails.component;
 import org.apache.tapestry.BaseComponent;
 import org.trails.descriptor.IClassDescriptor;
 
-
 /*
  * Created on Sep 30, 2004
  *
@@ -24,19 +23,19 @@ import org.trails.descriptor.IClassDescriptor;
 
 /**
  * @author fus8882
- *
- * TODO To change the template for this generated type comment go to Window -
- * Preferences - Java - Code Style - Code Templates
+ *         <p/>
+ *         TODO To change the template for this generated type comment go to Window -
+ *         Preferences - Java - Code Style - Code Templates
  */
 public abstract class ObjectForm extends BaseComponent
 {
 
 
-    public abstract Object getModel();
+	public abstract Object getModel();
 
-    public abstract void setModel(Object model);
+	public abstract void setModel(Object model);
 
-    public abstract IClassDescriptor getClassDescriptor();
+	public abstract IClassDescriptor getClassDescriptor();
 
-    public abstract void setClassDescriptor(IClassDescriptor ClassDescriptor);
+	public abstract void setClassDescriptor(IClassDescriptor ClassDescriptor);
 }

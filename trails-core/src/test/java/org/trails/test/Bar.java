@@ -22,49 +22,50 @@ import org.trails.validation.AssertNoOrphans;
 
 /**
  * @author fus8882
- * @hibernate.class
- * TODO To change the template for this generated type comment go to
+ * @hibernate.class TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
 @Entity
 @AssertNoOrphans(Wibble.class)
 public class Bar implements IBar
 {
-    
-    private Integer id;
-    
-    private String name;
 
-    public String getName() {
-			return name;
-		}
+	private Integer id;
 
-		public void setName(String name) {
-			this.name = name;
-		}
+	private String name;
 
-		/**
-     * @return Returns the id.
-     * @hibernate.id
-         *   generator-class = "native"
-     */
-    @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
-    public Integer getId()
-    {
-        return id;
-    }
+	public String getName()
+	{
+		return name;
+	}
 
-    /**
-     * @param id The id to set.
-     */
-    public void setId(Integer id)
-    {
-        this.id = id;
-    }
-    
-  	@Transient
-    public String getTransientProperty() {
-        return "Hello World";
-    }
+	public void setName(String name)
+	{
+		this.name = name;
+	}
+
+	/**
+	 * @return Returns the id.
+	 * @hibernate.id generator-class = "native"
+	 */
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	public Integer getId()
+	{
+		return id;
+	}
+
+	/**
+	 * @param id The id to set.
+	 */
+	public void setId(Integer id)
+	{
+		this.id = id;
+	}
+
+	@Transient
+	public String getTransientProperty()
+	{
+		return "Hello World";
+	}
 }

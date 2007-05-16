@@ -2,7 +2,6 @@ package org.trails.component;
 
 import ognl.Ognl;
 import ognl.OgnlException;
-
 import org.apache.tapestry.BaseComponent;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.annotations.InjectObject;
@@ -20,113 +19,132 @@ import org.trails.persistence.PersistenceService;
 
 /**
  * @author Chris Nelson
- *
- * This guy interacts with persistence service to produce a Select containing
- * all the elements of the PropertyDescriptor's type. If a criteria is
- * specified, it will filter the list by it.
- *
- * Additionally, a detached criteria is available to automatically filter out
- * associations without owners, or get all owners by default.
- *
+ *         <p/>
+ *         This guy interacts with persistence service to produce a Select containing
+ *         all the elements of the PropertyDescriptor's type. If a criteria is
+ *         specified, it will filter the list by it.
+ *         <p/>
+ *         Additionally, a detached criteria is available to automatically filter out
+ *         associations without owners, or get all owners by default.
  */
-public abstract class AssociationSelect extends BaseComponent {
-    @InjectObject("spring:persistenceService")
-    public abstract PersistenceService getPersistenceService();
+public abstract class AssociationSelect extends BaseComponent
+{
+	@InjectObject("spring:persistenceService")
+	public abstract PersistenceService getPersistenceService();
 
-    @InjectObject("spring:descriptorService")
-    public abstract DescriptorService getDescriptorService();
+	@InjectObject("spring:descriptorService")
+	public abstract DescriptorService getDescriptorService();
 
-    @InjectObject("spring:pageResolver")
-    public abstract PageResolver getPageResolver();
+	@InjectObject("spring:pageResolver")
+	public abstract PageResolver getPageResolver();
 
-    public abstract IPropertySelectionModel getPropertySelectionModel();
-    public abstract void setPropertySelectionModel(
-            IPropertySelectionModel PropertySelectionModel);
+	public abstract IPropertySelectionModel getPropertySelectionModel();
 
-    public abstract DetachedCriteria getCriteria();
-    public abstract void setCriteria(DetachedCriteria Criteria);
+	public abstract void setPropertySelectionModel(
+		IPropertySelectionModel PropertySelectionModel);
 
-    @Parameter(required = true, cache = true)
-    public abstract Object getModel();
-    public abstract void setModel(Object bytes);
+	public abstract DetachedCriteria getCriteria();
 
-    @Persist
-    public abstract Object getValue();
-    public abstract void setValue(Object value);
+	public abstract void setCriteria(DetachedCriteria Criteria);
 
-    @Parameter(required = true, cache = true)
-    public abstract IPropertyDescriptor getPropertyDescriptor();
-    public abstract void setPropertyDescriptor(IPropertyDescriptor propertyDescriptor);
+	@Parameter(required = true, cache = true)
+	public abstract Object getModel();
 
-    @Parameter(required = true, cache = true)
-    public abstract Object getOwner();
-    public abstract void setOwner(Object owner);
+	public abstract void setModel(Object bytes);
 
-    @Parameter(required = true, cache = true)
-    public abstract Object getAssociation();
-    public abstract void setAssociation(Object association);
+	@Persist
+	public abstract Object getValue();
 
-    public abstract boolean isAllowNone();
-    public abstract void setAllowNone(boolean allowNone);
+	public abstract void setValue(Object value);
 
-    public abstract String getNoneLabel();
-    public abstract void setNoneLabel(String noneLabel);
+	@Parameter(required = true, cache = true)
+	public abstract IPropertyDescriptor getPropertyDescriptor();
 
-    public AssociationSelect() {
-        super();
-    }
+	public abstract void setPropertyDescriptor(IPropertyDescriptor propertyDescriptor);
 
-    public IClassDescriptor getClassDescriptor() {
-        return getDescriptorService().getClassDescriptor(
-                getPropertyDescriptor().getPropertyType());
-    }
+	@Parameter(required = true, cache = true)
+	public abstract Object getOwner();
 
-    @Override
-    protected void prepareForRender(IRequestCycle cycle) {
-        buildSelectionModel();
+	public abstract void setOwner(Object owner);
 
-        super.prepareForRender(cycle);
-    }
+	@Parameter(required = true, cache = true)
+	public abstract Object getAssociation();
 
-    public void buildSelectionModel() {
-        DetachedCriteria criteria = getCriteria() != null ? getCriteria()
-                : getAllAssociations();
-        IdentifierSelectionModel selectionModel = new IdentifierSelectionModel(
-                getPersistenceService().getInstances(criteria),
-                getClassDescriptor().getIdentifierDescriptor().getName(),
-                isAllowNone());
-        selectionModel.setNoneLabel(getNoneLabel());
-        setPropertySelectionModel(selectionModel);
-    }
+	public abstract void setAssociation(Object association);
 
-    public DetachedCriteria getAssociationsWithoutOwners() {
-        DetachedCriteria criteria = DetachedCriteria.forClass(getClassDescriptor().getType());
-        try {
-            EditPage page = (EditPage) getPage().getRequestCycle().getPage();
-            String ownerOgnlIdentifier = page.getClassDescriptor().getIdentifierDescriptor().getName();
-            String associationOgnlIdentifier = getClassDescriptor().getIdentifierDescriptor().getName();
-            String inverseOgnlProperty = getPropertyDescriptor().getName(); // league
+	public abstract boolean isAllowNone();
 
-            if (getOwner() != null) {
+	public abstract void setAllowNone(boolean allowNone);
 
-                criteria.add(Restrictions.disjunction().add(
-                        Restrictions.isNull(inverseOgnlProperty)).add(
-                        Restrictions.eq(inverseOgnlProperty + "."
-                                + associationOgnlIdentifier, Ognl.getValue(
-                                ownerOgnlIdentifier, getOwner()))));
+	public abstract String getNoneLabel();
 
-            } else {
-                criteria.add(Restrictions.isNull(inverseOgnlProperty));
-            }
-        } catch (OgnlException e) {
-            e.printStackTrace();
-        }
-        return criteria;
-    }
+	public abstract void setNoneLabel(String noneLabel);
 
-    public DetachedCriteria getAllAssociations() {
-        DetachedCriteria criteria = DetachedCriteria
-                .forClass(getClassDescriptor().getType());
-        return criteria;
-    }
+	public AssociationSelect()
+	{
+		super();
+	}
+
+	public IClassDescriptor getClassDescriptor()
+	{
+		return getDescriptorService().getClassDescriptor(
+			getPropertyDescriptor().getPropertyType());
+	}
+
+	@Override
+	protected void prepareForRender(IRequestCycle cycle)
+	{
+		buildSelectionModel();
+
+		super.prepareForRender(cycle);
+	}
+
+	public void buildSelectionModel()
+	{
+		DetachedCriteria criteria = getCriteria() != null ? getCriteria()
+			: getAllAssociations();
+		IdentifierSelectionModel selectionModel = new IdentifierSelectionModel(
+			getPersistenceService().getInstances(criteria),
+			getClassDescriptor().getIdentifierDescriptor().getName(),
+			isAllowNone());
+		selectionModel.setNoneLabel(getNoneLabel());
+		setPropertySelectionModel(selectionModel);
+	}
+
+	public DetachedCriteria getAssociationsWithoutOwners()
+	{
+		DetachedCriteria criteria = DetachedCriteria.forClass(getClassDescriptor().getType());
+		try
+		{
+			EditPage page = (EditPage) getPage().getRequestCycle().getPage();
+			String ownerOgnlIdentifier = page.getClassDescriptor().getIdentifierDescriptor().getName();
+			String associationOgnlIdentifier = getClassDescriptor().getIdentifierDescriptor().getName();
+			String inverseOgnlProperty = getPropertyDescriptor().getName(); // league
+
+			if (getOwner() != null)
+			{
+
+				criteria.add(Restrictions.disjunction().add(
+					Restrictions.isNull(inverseOgnlProperty)).add(
+					Restrictions.eq(inverseOgnlProperty + "."
+						+ associationOgnlIdentifier, Ognl.getValue(
+						ownerOgnlIdentifier, getOwner()))));
+
+			} else
+			{
+				criteria.add(Restrictions.isNull(inverseOgnlProperty));
+			}
+		} catch (OgnlException e)
+		{
+			e.printStackTrace();
+		}
+		return criteria;
+	}
+
+	public DetachedCriteria getAllAssociations()
+	{
+		DetachedCriteria criteria = DetachedCriteria
+			.forClass(getClassDescriptor().getType());
+		return criteria;
+	}
 }

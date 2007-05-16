@@ -1,16 +1,15 @@
 package org.trails.demo;
 
-import java.io.Serializable;
+import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.trails.descriptor.annotation.ClassDescriptor;
 
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.OneToOne;
-
-import org.apache.commons.beanutils.BeanUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.trails.descriptor.annotation.ClassDescriptor;
+import java.io.Serializable;
 
 /**
  * A Director belongs to an Organization

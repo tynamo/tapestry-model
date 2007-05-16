@@ -2,16 +2,16 @@
 <component-specification class="org.trails.component.EnumSelect" allow-body="yes" allow-informal-parameters="yes">
 	<description>produces a select list for an enumeration</description>
 
-    <parameter name="value" required="no" />
-    <parameter name="model" default-value="page.model" required="no"/>
-    <parameter name="propertyDescriptor" required="yes"/>
-    <parameter name="allowNone" required="no" default-value="not(propertyDescriptor.required)" />
-    
-    <property name="propertySelectionModel"/>
+	<parameter name="value" required="no"/>
+	<parameter name="model" default-value="page.model" required="no"/>
+	<parameter name="propertyDescriptor" required="yes"/>
+	<parameter name="allowNone" required="no" default-value="not(propertyDescriptor.required)"/>
 
-    <component id="select" type="PropertySelection">
-        <binding name="model">propertySelectionModel</binding>
-        <binding name="value">value</binding>
-    </component>
- 
+	<property name="propertySelectionModel"/>
+
+	<component id="select" type="PropertySelection">
+		<binding name="model">propertySelectionModel</binding>
+		<binding name="value">value</binding>
+	</component>
+
 </component-specification>

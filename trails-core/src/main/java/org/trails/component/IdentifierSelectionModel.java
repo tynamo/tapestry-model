@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ognl.Ognl;
-
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry.form.IPropertySelectionModel;
@@ -24,133 +23,134 @@ import org.trails.TrailsRuntimeException;
 
 /**
  * @author fus8882
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
+ *         <p/>
+ *         TODO To change the template for this generated type comment go to
+ *         Window - Preferences - Java - Code Style - Code Templates
  */
 public class IdentifierSelectionModel implements IPropertySelectionModel
 {
-    protected List instances;
-    private String idProperty = "id";
-    protected boolean allowNone;
-    
-    protected String labelProperty = "toString()"; 
-    
-    public static String DEFAULT_NONE_LABEL = "None";
-    public static String DEFAULT_NONE_VALUE = "none";
-    
-    protected String noneLabel = DEFAULT_NONE_LABEL;
-    
-    public IdentifierSelectionModel() {}
-    
-    public IdentifierSelectionModel(List instances, String idProperty)
-    {
-        this.idProperty = idProperty;
+	protected List instances;
+	private String idProperty = "id";
+	protected boolean allowNone;
 
-        this.instances = instances;
-    }
-    
-    public IdentifierSelectionModel(List instances, boolean allowNone)
-    {
-        setAllowNone(instances, allowNone);        
-    }
+	protected String labelProperty = "toString()";
 
-    protected void setAllowNone(List instances, boolean allowNone)
-    {
-        this.allowNone = allowNone;
-        this.instances = new ArrayList();
-        this.instances.addAll(instances);
-        if (this.allowNone)
-        {
-            this.instances.add(0, null);
-        }
-    }
+	public static String DEFAULT_NONE_LABEL = "None";
+	public static String DEFAULT_NONE_VALUE = "none";
 
-    public IdentifierSelectionModel(List instances, String idProperty, boolean allowNone)
-    {
-        this(instances, allowNone);
-        this.idProperty = idProperty;
-    }
-    
-    /* (non-Javadoc)
-     * @see org.apache.tapestry.form.IPropertySelectionModel#getOptionCount()
-     */
-    public int getOptionCount()
-    {
-        // TODO Auto-generated method stub
-        return instances.size();
-    }
+	protected String noneLabel = DEFAULT_NONE_LABEL;
 
-    /* (non-Javadoc)
-     * @see org.apache.tapestry.form.IPropertySelectionModel#getOption(int)
-     */
-    public Object getOption(int index)
-    {
-        return instances.get(index);
-    }
+	public IdentifierSelectionModel()
+	{
+	}
 
-    /* (non-Javadoc)
-     * @see org.apache.tapestry.form.IPropertySelectionModel#getLabel(int)
-     */
-    public String getLabel(int index)
-    {
-        if (allowNone && index == 0)
-        {
-            return getNoneLabel();
-        }
-        try
-        {
-            return Ognl.getValue( labelProperty, instances.get(index) ).toString();
-        } catch (Exception e)
-        {
-            throw new TrailsRuntimeException(e);
-        }
-    }
+	public IdentifierSelectionModel(List instances, String idProperty)
+	{
+		this.idProperty = idProperty;
 
-    /* (non-Javadoc)
-     * @see org.apache.tapestry.form.IPropertySelectionModel#getValue(int)
-     */
-    public String getValue(int index)
-    {
-        try
-        {
-            if (allowNone && index == 0)
-            {
-                return DEFAULT_NONE_VALUE;
-            }
-            else
-            {
-                return BeanUtils.getProperty(instances.get(index), idProperty);
-            }
-        }catch (Exception e)
-        {
-            throw new TrailsRuntimeException(e);
-        }
-    }
+		this.instances = instances;
+	}
 
-    /* (non-Javadoc)
-     * @see org.apache.tapestry.form.IPropertySelectionModel#translateValue(java.lang.String)
-     */
-    public Object translateValue(String value)
-    {
-        if (StringUtils.isEmpty(value)) return null;
-        List realInstances = allowNone ? instances.subList(1, instances.size()) : instances;
-        try
-        {
-            if (allowNone)
-            {
-                if (value.equals(DEFAULT_NONE_VALUE)) return null;
-            }
-            List matches = (List)Ognl.getValue(
-                "#root.{? #this." + idProperty + ".toString() == \"" + value + "\" }", 
-                realInstances);
-            if (matches.size() > 0) return matches.get(0);
-            return null;
-        }catch (Exception e)
-        {
-            throw new TrailsRuntimeException(e);
-        }
-    }
+	public IdentifierSelectionModel(List instances, boolean allowNone)
+	{
+		setAllowNone(instances, allowNone);
+	}
+
+	protected void setAllowNone(List instances, boolean allowNone)
+	{
+		this.allowNone = allowNone;
+		this.instances = new ArrayList();
+		this.instances.addAll(instances);
+		if (this.allowNone)
+		{
+			this.instances.add(0, null);
+		}
+	}
+
+	public IdentifierSelectionModel(List instances, String idProperty, boolean allowNone)
+	{
+		this(instances, allowNone);
+		this.idProperty = idProperty;
+	}
+
+	/* (non-Javadoc)
+		 * @see org.apache.tapestry.form.IPropertySelectionModel#getOptionCount()
+		 */
+	public int getOptionCount()
+	{
+		// TODO Auto-generated method stub
+		return instances.size();
+	}
+
+	/* (non-Javadoc)
+		 * @see org.apache.tapestry.form.IPropertySelectionModel#getOption(int)
+		 */
+	public Object getOption(int index)
+	{
+		return instances.get(index);
+	}
+
+	/* (non-Javadoc)
+		 * @see org.apache.tapestry.form.IPropertySelectionModel#getLabel(int)
+		 */
+	public String getLabel(int index)
+	{
+		if (allowNone && index == 0)
+		{
+			return getNoneLabel();
+		}
+		try
+		{
+			return Ognl.getValue(labelProperty, instances.get(index)).toString();
+		} catch (Exception e)
+		{
+			throw new TrailsRuntimeException(e);
+		}
+	}
+
+	/* (non-Javadoc)
+		 * @see org.apache.tapestry.form.IPropertySelectionModel#getValue(int)
+		 */
+	public String getValue(int index)
+	{
+		try
+		{
+			if (allowNone && index == 0)
+			{
+				return DEFAULT_NONE_VALUE;
+			} else
+			{
+				return BeanUtils.getProperty(instances.get(index), idProperty);
+			}
+		} catch (Exception e)
+		{
+			throw new TrailsRuntimeException(e);
+		}
+	}
+
+	/* (non-Javadoc)
+		 * @see org.apache.tapestry.form.IPropertySelectionModel#translateValue(java.lang.String)
+		 */
+	public Object translateValue(String value)
+	{
+		if (StringUtils.isEmpty(value)) return null;
+		List realInstances = allowNone ? instances.subList(1, instances.size()) : instances;
+		try
+		{
+			if (allowNone)
+			{
+				if (value.equals(DEFAULT_NONE_VALUE)) return null;
+			}
+			List matches = (List) Ognl.getValue(
+				"#root.{? #this." + idProperty + ".toString() == \"" + value + "\" }",
+				realInstances);
+			if (matches.size() > 0) return matches.get(0);
+			return null;
+		} catch (Exception e)
+		{
+			throw new TrailsRuntimeException(e);
+		}
+	}
 
 	public String getNoneLabel()
 	{

@@ -2,11 +2,8 @@ package org.trails.component.search;
 
 import java.lang.reflect.Constructor;
 
-import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 import org.trails.TrailsRuntimeException;
-import org.trails.descriptor.IPropertyDescriptor;
-import org.trails.validation.ValidatorTranslatorService;
 
 public abstract class NumberSearchField extends SimpleSearchField
 {
@@ -19,7 +16,7 @@ public abstract class NumberSearchField extends SimpleSearchField
 		try
 		{
 			Class type = getPropertyDescriptor().getPropertyType();
-			Constructor cons = type.getConstructor(new Class[] {String.class});
+			Constructor cons = type.getConstructor(new Class[]{String.class});
 			return cons.newInstance(getValue().toString());
 		}
 		catch (Exception ex)
@@ -36,7 +33,6 @@ public abstract class NumberSearchField extends SimpleSearchField
 			getCriteria().add(Restrictions.eq(getPropertyDescriptor().getName(), getTypeSpecificValue()));
 		}
 	}
-	
-	
+
 
 }

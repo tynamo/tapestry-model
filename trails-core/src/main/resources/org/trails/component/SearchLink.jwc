@@ -1,20 +1,20 @@
 <!DOCTYPE component-specification PUBLIC "-//Apache Software Foundation//Tapestry Specification 4.0//EN" "http://jakarta.apache.org/tapestry/dtd/Tapestry_4_0.dtd">
 <component-specification class="org.trails.component.SearchLink" allow-body="yes" allow-informal-parameters="yes" deprecated="no">
 	<parameter name="typeName" required="yes" cache="yes" deprecated="no"/>
-	
-    <component id="link" type="DirectLink" inherit-informal-parameters="no">
-        <binding name="listener">listeners.click</binding>
-    </component>	
-    <component id="insert" type="Insert" inherit-informal-parameters="no">
-        <binding name="value">linkText</binding>
-    </component>
-   <component id="hasBody" type="If" inherit-informal-parameters="no">
-        <binding name="condition">bodyCount &gt; 0</binding>
-	</component>
-     <component id="hasNoBody" type="If" inherit-informal-parameters="no">
-        <binding name="condition">bodyCount == 0</binding>
-	</component> 
-     <component id="renderBody" type="RenderBody" inherit-informal-parameters="no">
 
-	</component>       
+	<component id="link" type="DirectLink" inherit-informal-parameters="no">
+		<binding name="listener">listeners.click</binding>
+	</component>
+	<component id="insert" type="Insert" inherit-informal-parameters="no">
+		<binding name="value">linkText</binding>
+	</component>
+	<component id="hasBody" type="If" inherit-informal-parameters="no">
+		<binding name="condition">bodyCount &gt; 0</binding>
+	</component>
+	<component id="hasNoBody" type="If" inherit-informal-parameters="no">
+		<binding name="condition">bodyCount == 0</binding>
+	</component>
+	<component id="renderBody" type="RenderBody" inherit-informal-parameters="no">
+
+	</component>
 </component-specification>

@@ -7,7 +7,7 @@ import com.gargoylesoftware.htmlunit.html.HtmlPage;
 
 public class SecurityTest extends FunctionalTest
 {
-	
+
 	public void testAdminLogin() throws Exception
 	{
 		login("admin", "admin");
@@ -27,10 +27,9 @@ public class SecurityTest extends FunctionalTest
 	{
 		login("user", "user");
 		assertXPathPresent(startPage,
-				"//a[contains(text(), 'List Secure Things')]");
+			"//a[contains(text(), 'List Secure Things')]");
 		assertXPathNotPresent(startPage, "//a[contains(text(), 'List Users')]");
 	}
 
 
-	
 }

@@ -18,28 +18,28 @@ import java.util.List;
 
 /**
  * @author fus8882
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
+ *         <p/>
+ *         TODO To change the template for this generated type comment go to
+ *         Window - Preferences - Java - Code Style - Code Templates
  */
 
 public class A
 {
-    private List Bs = new ArrayList();
-    
-    /**
-     * @return Returns the cs.
-     */
-    public List getBs()
-    {
-        return Bs;
-    }
-    
-    /**
-     * @param cs The cs to set.
-     */
-    public void setBs(List bs)
-    {
-        Bs = bs;
-    }
+	private List Bs = new ArrayList();
+
+	/**
+	 * @return Returns the cs.
+	 */
+	public List getBs()
+	{
+		return Bs;
+	}
+
+	/**
+	 * @param cs The cs to set.
+	 */
+	public void setBs(List bs)
+	{
+		Bs = bs;
+	}
 }

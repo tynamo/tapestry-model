@@ -4,14 +4,14 @@
 	<description>Shows a link to change the locale</description>
 	<parameter name="linkText" required="yes" cache="yes" deprecated="no"/>
 	<parameter name="language" required="yes" cache="yes" deprecated="no"/>
-  <parameter name="country"  required="no" cache="yes" deprecated="no" default-value="''" />
-  <parameter name="imageAsset" required="no" cache="yes" deprecated="no" />
+	<parameter name="country" required="no" cache="yes" deprecated="no" default-value="''"/>
+	<parameter name="imageAsset" required="no" cache="yes" deprecated="no"/>
 
-    <component id="link" type="DirectLink" inherit-informal-parameters="no">
-        <binding name="listener">listeners.click</binding>
-    </component>
-    <component id="insert" type="Insert" inherit-informal-parameters="no">
-        <binding name="value">linkText</binding>
-    </component>
+	<component id="link" type="DirectLink" inherit-informal-parameters="no">
+		<binding name="listener">listeners.click</binding>
+	</component>
+	<component id="insert" type="Insert" inherit-informal-parameters="no">
+		<binding name="value">linkText</binding>
+	</component>
 
 </component-specification>

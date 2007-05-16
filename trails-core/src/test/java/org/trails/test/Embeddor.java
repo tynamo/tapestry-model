@@ -10,10 +10,11 @@ import javax.persistence.Id;
 public class Embeddor
 {
 	private Integer id;
-	
+
 	private String name;
 
-	@Id @GeneratedValue(strategy=GenerationType.AUTO)
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	public Integer getId()
 	{
 		return id;
@@ -33,7 +34,7 @@ public class Embeddor
 	{
 		this.name = name;
 	}
-	
+
 	private Embeddee embeddee;
 
 	@Embedded

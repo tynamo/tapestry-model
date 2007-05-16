@@ -10,13 +10,13 @@ import javax.persistence.ManyToOne;
 public class Wibble
 {
 	private Integer id;
-	
+
 	private String name;
-	
+
 	private Bar bar;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	public Integer getId()
 	{
 		return id;
@@ -47,5 +47,5 @@ public class Wibble
 	{
 		this.bar = bar;
 	}
-	
+
 }

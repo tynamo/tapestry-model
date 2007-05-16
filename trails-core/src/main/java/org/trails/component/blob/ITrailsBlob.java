@@ -2,7 +2,8 @@ package org.trails.component.blob;
 
 import java.io.Serializable;
 
-public interface ITrailsBlob extends Serializable {
+public interface ITrailsBlob extends Serializable
+{
 
 	String getFileName();
 

@@ -2,21 +2,21 @@
 <component-specification class="org.trails.component.ListAllLink" allow-body="yes" allow-informal-parameters="yes" deprecated="no">
 	<description>Shows a link to the ListPage for a given type</description>
 	<parameter name="typeName" required="yes" cache="yes" deprecated="no"/>
-	
-    <component id="link" type="ExternalLink" inherit-informal-parameters="no">
-        <binding name="page">listPageName</binding>
-        <binding name="parameters">type</binding>
-    </component>
-    <component id="insert" type="Insert" inherit-informal-parameters="no">
-        <binding name="value">linkText</binding>
-    </component>
-    <component id="hasBody" type="If" inherit-informal-parameters="no">
-        <binding name="condition">bodyCount &gt; 0</binding>
-	</component>
-     <component id="hasNoBody" type="If" inherit-informal-parameters="no">
-        <binding name="condition">bodyCount == 0</binding>
-	</component> 
-     <component id="renderBody" type="RenderBody" inherit-informal-parameters="no">
 
-	</component>             
+	<component id="link" type="ExternalLink" inherit-informal-parameters="no">
+		<binding name="page">listPageName</binding>
+		<binding name="parameters">type</binding>
+	</component>
+	<component id="insert" type="Insert" inherit-informal-parameters="no">
+		<binding name="value">linkText</binding>
+	</component>
+	<component id="hasBody" type="If" inherit-informal-parameters="no">
+		<binding name="condition">bodyCount &gt; 0</binding>
+	</component>
+	<component id="hasNoBody" type="If" inherit-informal-parameters="no">
+		<binding name="condition">bodyCount == 0</binding>
+	</component>
+	<component id="renderBody" type="RenderBody" inherit-informal-parameters="no">
+
+	</component>
 </component-specification>

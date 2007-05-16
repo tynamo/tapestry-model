@@ -2,7 +2,6 @@ package org.trails.component;
 
 import ognl.Ognl;
 import ognl.OgnlException;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.tapestry.IRequestCycle;
@@ -12,7 +11,6 @@ import org.apache.tapestry.annotations.InjectObject;
 import org.apache.tapestry.annotations.InjectState;
 import org.apache.tapestry.annotations.Lifecycle;
 import org.apache.tapestry.annotations.Parameter;
-import org.apache.tapestry.callback.ICallback;
 import org.apache.tapestry.components.Insert;
 import org.trails.TrailsRuntimeException;
 import org.trails.callback.AssociationCallback;
@@ -26,161 +24,186 @@ import org.trails.descriptor.OwningObjectReferenceDescriptor;
 import org.trails.page.EditPage;
 import org.trails.page.PageResolver;
 import org.trails.page.TrailsPage.PageType;
-import org.trails.persistence.PersistenceException;
 import org.trails.persistence.PersistenceService;
 import org.trails.validation.TrailsValidationDelegate;
 
 /**
- * @OneToOne use case.
- *
- * This guy manages the owning side user interface of a OneToOne association.
- *
- * Owner-<>-----Association
- *
  * @author kenneth.colassi nhhockeyplayer@hotmail.com
+ * @OneToOne use case.
+ * <p/>
+ * This guy manages the owning side user interface of a OneToOne association.
+ * <p/>
+ * Owner-<>-----Association
  */
 @ComponentClass(allowBody = true, allowInformalParameters = true)
-public abstract class AssociationMgt extends TrailsComponent {
-    protected static final Log LOG = LogFactory.getLog(AssociationMgt.class);
+public abstract class AssociationMgt extends TrailsComponent
+{
+	protected static final Log LOG = LogFactory.getLog(AssociationMgt.class);
 
-    @Bean(lifecycle = Lifecycle.REQUEST)
-    public abstract TrailsValidationDelegate getDelegate();
+	@Bean(lifecycle = Lifecycle.REQUEST)
+	public abstract TrailsValidationDelegate getDelegate();
 
-    public abstract String getCreateExpression();
-    public abstract void setCreateExpression(String CreateExpression);
+	public abstract String getCreateExpression();
 
-    @Parameter(required = true, cache = true)
-    public abstract IPropertyDescriptor getDescriptor();
-    public abstract void setDescriptor(IPropertyDescriptor descriptor);
+	public abstract void setCreateExpression(String CreateExpression);
 
-    @Parameter(required = true, cache = true)
-    public abstract Object getOwner();
-    public abstract void setOwner(Object owner);
+	@Parameter(required = true, cache = true)
+	public abstract IPropertyDescriptor getDescriptor();
 
-    @Parameter(required = true, cache = true)
-    public abstract Object getAssociation();
-    public abstract void setAssociation(Object association);
+	public abstract void setDescriptor(IPropertyDescriptor descriptor);
 
-    @Parameter(required = true, cache = true)
-    public abstract Object getValue();
-    public abstract void setValue(Object value);
+	@Parameter(required = true, cache = true)
+	public abstract Object getOwner();
 
-    @Parameter(required = true, cache = true)
-    public abstract Object getModel();
-    public abstract void setModel(Object bytes);
+	public abstract void setOwner(Object owner);
 
-    @InjectState("callbackStack")
-    public abstract CallbackStack getCallbackStack();
+	@Parameter(required = true, cache = true)
+	public abstract Object getAssociation();
 
-    @InjectObject("spring:pageResolver")
-    public abstract PageResolver getPageResolver();
+	public abstract void setAssociation(Object association);
 
-    @InjectObject("spring:persistenceService")
-    public abstract PersistenceService getPersistenceService();
+	@Parameter(required = true, cache = true)
+	public abstract Object getValue();
 
-    @InjectObject("spring:editorService")
-    public abstract BlockFinder getBlockFinder();
+	public abstract void setValue(Object value);
 
-    @InjectObject("spring:descriptorService")
-    public abstract DescriptorService getDescriptorService();
+	@Parameter(required = true, cache = true)
+	public abstract Object getModel();
 
-    public IClassDescriptor getClassDescriptor() {
-        return getDescriptorService().getClassDescriptor(
-                getDescriptor().getPropertyType());
-    }
+	public abstract void setModel(Object bytes);
 
-    public AssociationMgt() {
-        super();
-    }
+	@InjectState("callbackStack")
+	public abstract CallbackStack getCallbackStack();
 
-    public String getOwnerTypeName() {
-        return getOwner().getClass().getName();
-    }
+	@InjectObject("spring:pageResolver")
+	public abstract PageResolver getPageResolver();
 
-    public Class getOwnerType() {
-        return getOwner().getClass();
-    }
+	@InjectObject("spring:persistenceService")
+	public abstract PersistenceService getPersistenceService();
 
-    public String getAssociationTypeName() {
-        return getDescriptor().getPropertyType().getCanonicalName();
-    }
+	@InjectObject("spring:editorService")
+	public abstract BlockFinder getBlockFinder();
 
-    public Class getAssociationType() {
-        return getDescriptor().getPropertyType().getClass();
-    }
+	@InjectObject("spring:descriptorService")
+	public abstract DescriptorService getDescriptorService();
 
-    AssociationCallback buildCallback() {
-        AssociationCallback callback = new AssociationCallback(getPage()
-                .getRequestCycle().getPage().getPageName(), getModel(),
-                getObjectReferenceDescriptor());
-        return callback;
-    }
+	public IClassDescriptor getClassDescriptor()
+	{
+		return getDescriptorService().getClassDescriptor(
+			getDescriptor().getPropertyType());
+	}
 
-    public void addNew(IRequestCycle cycle) {
-        getCallbackStack().push(buildCallback());
+	public AssociationMgt()
+	{
+		super();
+	}
 
-        String currentEditPageName = getPage().getRequestCycle().getPage()
-                .getPageName();
-        EditPage ownerEditPage = (EditPage) getPageResolver().resolvePage(
-                cycle, getDescriptor().getClass().getName(), PageType.EDIT);
+	public String getOwnerTypeName()
+	{
+		return getOwner().getClass().getName();
+	}
 
-        try {
-            Object newModel = buildNewMemberInstance();
-            EditCallback nextPage = new EditCallback(ownerEditPage
-                    .getPageName(), newModel);
+	public Class getOwnerType()
+	{
+		return getOwner().getClass();
+	}
 
-            ((EditPage) cycle.getPage(currentEditPageName))
-                    .setNextPage(nextPage);
-        } catch (Exception ex) {
-            throw new TrailsRuntimeException(ex);
-        }
-    }
+	public String getAssociationTypeName()
+	{
+		return getDescriptor().getPropertyType().getCanonicalName();
+	}
 
-    protected Object buildNewMemberInstance() throws InstantiationException,
-            IllegalAccessException {
-        Object associationModel;
-        if (getCreateExpression() == null) {
-            associationModel = getDescriptor().getPropertyType().newInstance();
-        } else {
-            try {
-                associationModel = Ognl.getValue(getCreateExpression(),
-                        getOwner());
-            } catch (OgnlException oe) {
-                oe.printStackTrace();
-                return null;
-            }
-        }
+	public Class getAssociationType()
+	{
+		return getDescriptor().getPropertyType().getClass();
+	}
 
-        if (getObjectReferenceDescriptor().getInverseProperty() != null
-                && getObjectReferenceDescriptor().isOneToOne()) {
-            try {
-                Ognl.setValue(getObjectReferenceDescriptor()
-                        .getInverseProperty(), associationModel, getOwner());
-            } catch (OgnlException e) {
-                LOG.error(e.getMessage());
-            }
-        }
+	AssociationCallback buildCallback()
+	{
+		AssociationCallback callback = new AssociationCallback(getPage()
+			.getRequestCycle().getPage().getPageName(), getModel(),
+			getObjectReferenceDescriptor());
+		return callback;
+	}
 
-        return associationModel;
-    }
+	public void addNew(IRequestCycle cycle)
+	{
+		getCallbackStack().push(buildCallback());
 
-    public void remove(IRequestCycle cycle) {
-        EditPage editPage = (EditPage) getPageResolver().resolvePage(cycle,
-                getDescriptor().getClass().getName(), PageType.EDIT);
+		String currentEditPageName = getPage().getRequestCycle().getPage()
+			.getPageName();
+		EditPage ownerEditPage = (EditPage) getPageResolver().resolvePage(
+			cycle, getDescriptor().getClass().getName(), PageType.EDIT);
 
-        AssociationCallback callback = buildCallback();
+		try
+		{
+			Object newModel = buildNewMemberInstance();
+			EditCallback nextPage = new EditCallback(ownerEditPage
+				.getPageName(), newModel);
 
-        callback.remove(getPersistenceService(), getAssociation());
-        cycle.activate(editPage);
+			((EditPage) cycle.getPage(currentEditPageName))
+				.setNextPage(nextPage);
+		} catch (Exception ex)
+		{
+			throw new TrailsRuntimeException(ex);
+		}
+	}
 
-        callback.performCallback(cycle);
-    }
+	protected Object buildNewMemberInstance() throws InstantiationException,
+		IllegalAccessException
+	{
+		Object associationModel;
+		if (getCreateExpression() == null)
+		{
+			associationModel = getDescriptor().getPropertyType().newInstance();
+		} else
+		{
+			try
+			{
+				associationModel = Ognl.getValue(getCreateExpression(),
+					getOwner());
+			} catch (OgnlException oe)
+			{
+				oe.printStackTrace();
+				return null;
+			}
+		}
 
-    public abstract EditLink getEditLink();
+		if (getObjectReferenceDescriptor().getInverseProperty() != null
+			&& getObjectReferenceDescriptor().isOneToOne())
+		{
+			try
+			{
+				Ognl.setValue(getObjectReferenceDescriptor()
+					.getInverseProperty(), associationModel, getOwner());
+			} catch (OgnlException e)
+			{
+				LOG.error(e.getMessage());
+			}
+		}
 
-    public abstract Insert getLinkInsert();
+		return associationModel;
+	}
 
-    public OwningObjectReferenceDescriptor getObjectReferenceDescriptor() {
-        return (OwningObjectReferenceDescriptor) getDescriptor();
-    }
+	public void remove(IRequestCycle cycle)
+	{
+		EditPage editPage = (EditPage) getPageResolver().resolvePage(cycle,
+			getDescriptor().getClass().getName(), PageType.EDIT);
+
+		AssociationCallback callback = buildCallback();
+
+		callback.remove(getPersistenceService(), getAssociation());
+		cycle.activate(editPage);
+
+		callback.performCallback(cycle);
+	}
+
+	public abstract EditLink getEditLink();
+
+	public abstract Insert getLinkInsert();
+
+	public OwningObjectReferenceDescriptor getObjectReferenceDescriptor()
+	{
+		return (OwningObjectReferenceDescriptor) getDescriptor();
+	}
 }

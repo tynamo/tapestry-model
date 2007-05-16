@@ -1,9 +1,5 @@
 package org.trails.validation;
 
-import java.util.List;
-
-import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Restrictions;
 import org.springframework.test.AbstractTransactionalSpringContextTests;
 import org.trails.persistence.PersistenceService;
 import org.trails.test.Bar;
@@ -12,10 +8,10 @@ import org.trails.test.Foo;
 import org.trails.test.Wibble;
 
 public class AssertNoOrphansTest extends
-		AbstractTransactionalSpringContextTests
+	AbstractTransactionalSpringContextTests
 {
 
-	
+
 	public AssertNoOrphansTest()
 	{
 		super();
@@ -26,7 +22,7 @@ public class AssertNoOrphansTest extends
 	protected String[] getConfigLocations()
 	{
 		// TODO Auto-generated method stub
-		return new String[] {"applicationContext-test.xml"};
+		return new String[]{"applicationContext-test.xml"};
 	}
 
 	private PersistenceService persistenceService;
@@ -43,14 +39,14 @@ public class AssertNoOrphansTest extends
 
 	Wibble wibble;
 	Bar bar;
-	
-    @Override
+
+	@Override
 	protected void onSetUpInTransaction() throws Exception
 	{
 		wibble = new Wibble();
-		
+
 		bar = new Bar();
-		
+
 		bar = persistenceService.save(bar);
 		wibble.setBar(bar);
 		wibble = persistenceService.save(wibble);
@@ -59,7 +55,7 @@ public class AssertNoOrphansTest extends
 	public void testAssertNoOrphans() throws Exception
 	{
 
-		
+
 		OrphanException orphanException = null;
 		try
 		{
@@ -71,11 +67,11 @@ public class AssertNoOrphansTest extends
 		}
 		assertNotNull(orphanException);
 		assertEquals("This Bar cannot be removed because there is a Wibble that refers to it.",
-				orphanException.getMessage());
+			orphanException.getMessage());
 		//persistenceService.remove(gazonk);
 		//persistenceService.remove(bar);
 	}
-	
+
 	public void testAssertNoOrphansUsingProperty() throws Exception
 	{
 		Foo foo = new Foo();
@@ -91,6 +87,6 @@ public class AssertNoOrphansTest extends
 			orphanException = oe;
 		}
 		assertNotNull(orphanException);
-		assertEquals("This is a message", orphanException.getMessage());		
+		assertEquals("This is a message", orphanException.getMessage());
 	}
 }

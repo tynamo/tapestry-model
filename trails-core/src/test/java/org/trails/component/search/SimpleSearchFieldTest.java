@@ -10,7 +10,7 @@ public class SimpleSearchFieldTest extends ComponentTest
 {
 	public void testAddCriterion() throws Exception
 	{
-		SimpleSearchField stringSearchField = (SimpleSearchField)creator.newInstance(SimpleSearchField.class);
+		SimpleSearchField stringSearchField = (SimpleSearchField) creator.newInstance(SimpleSearchField.class);
 		DetachedCriteria criteria = DetachedCriteria.forClass(Foo.class);
 		stringSearchField.setCriteria(criteria);
 		IPropertyDescriptor propDescriptor = new TrailsPropertyDescriptor(Foo.class, "name", String.class);
@@ -21,6 +21,6 @@ public class SimpleSearchFieldTest extends ComponentTest
 		stringSearchField.setValue("bunk");
 		stringSearchField.buildCriterion();
 		assertTrue(stringSearchField.getCriteria().toString().indexOf("name=bunk") > -1);
-		
+
 	}
 }

@@ -16,41 +16,48 @@ import java.lang.reflect.Constructor;
 import org.apache.tapestry.IRequestCycle;
 import org.trails.TrailsRuntimeException;
 import org.trails.page.EditPage;
-import org.trails.page.TrailsPage;
 import org.trails.page.PageResolver;
+import org.trails.page.TrailsPage;
 
 /**
  * Render a link allowing a new entity of the parameterized type to be created.
+ *
  * @author fus8882
  * @date Sep 29, 2004
  */
-public abstract class NewLink extends AbstractTypeNavigationLink {
-    public static String SUFFIX = "Edit";
+public abstract class NewLink extends AbstractTypeNavigationLink
+{
+	public static String SUFFIX = "Edit";
 
-    public abstract String getTypeName();
+	public abstract String getTypeName();
 
-    public void click(IRequestCycle cycle) {
+	public void click(IRequestCycle cycle)
+	{
 
-        PageResolver pageResolver = getPageResolver();
-        EditPage page = (EditPage) pageResolver.resolvePage(cycle, getTypeName(), TrailsPage.PageType.EDIT);
+		PageResolver pageResolver = getPageResolver();
+		EditPage page = (EditPage) pageResolver.resolvePage(cycle, getTypeName(), TrailsPage.PageType.EDIT);
 
-        try {
-            Class clazz = Class.forName(getTypeName());
-            Constructor constructor = clazz.getDeclaredConstructor();
-            constructor.setAccessible(true);
-            page.setModel(constructor.newInstance());
-            cycle.activate(page);
-        } catch (Exception ex) {
-            throw new TrailsRuntimeException(ex);
-        }
-    }
+		try
+		{
+			Class clazz = Class.forName(getTypeName());
+			Constructor constructor = clazz.getDeclaredConstructor();
+			constructor.setAccessible(true);
+			page.setModel(constructor.newInstance());
+			cycle.activate(page);
+		} catch (Exception ex)
+		{
+			throw new TrailsRuntimeException(ex);
+		}
+	}
 
-    /**
-     * Get the text for the rendered link
-     * @return Full i18n text in the form "List Foobars"
-     */
-    public String getLinkText() {
-        String name = getClassDescriptor().getDisplayName();
-        return generateLinkText(name, "org.trails.component.newlink", "[TRAILS][ORG.TRAILS.COMPONENT.NEWLINK]");
-    }
+	/**
+	 * Get the text for the rendered link
+	 *
+	 * @return Full i18n text in the form "List Foobars"
+	 */
+	public String getLinkText()
+	{
+		String name = getClassDescriptor().getDisplayName();
+		return generateLinkText(name, "org.trails.component.newlink", "[TRAILS][ORG.TRAILS.COMPONENT.NEWLINK]");
+	}
 }

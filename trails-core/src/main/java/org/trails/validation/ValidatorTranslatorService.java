@@ -12,44 +12,42 @@ import org.trails.descriptor.IPropertyDescriptor;
 
 public class ValidatorTranslatorService
 {
-    /**
-     * @param class1
-     * @return
-     */
-    public IValidator getValidator(IPropertyDescriptor descriptor)
-    {
-        BaseValidator validator = null;
+	/**
+	 * @param class1
+	 * @return
+	 */
+	public IValidator getValidator(IPropertyDescriptor descriptor)
+	{
+		BaseValidator validator = null;
 
-        if (descriptor.isNumeric())
-        {
-            validator = new NumberValidator();
-            ((NumberValidator) validator).setValueTypeClass(descriptor.getPropertyType());
-        }else
-        {
-            validator = new StringValidator();
-        }
-        validator.setRequired(descriptor.isRequired());
-        return validator;
-    }
+		if (descriptor.isNumeric())
+		{
+			validator = new NumberValidator();
+			((NumberValidator) validator).setValueTypeClass(descriptor.getPropertyType());
+		} else
+		{
+			validator = new StringValidator();
+		}
+		validator.setRequired(descriptor.isRequired());
+		return validator;
+	}
 
-    public Translator getTranslator(IPropertyDescriptor descriptor)
-    {
-        if (descriptor.isNumeric())
-        {
-            NumberTranslator numberTranslator = new NumberTranslator();
-            if (descriptor.getFormat() != null) numberTranslator.setPattern(descriptor.getFormat());
-            return numberTranslator;
-        }
-        else if(descriptor.isDate())
-        {
-            DateTranslator dateTranslator = new DateTranslator();
-            if (descriptor.getFormat() != null) dateTranslator.setPattern(descriptor.getFormat());
-            return dateTranslator;
-        }
-        else
-        {
-            return new StringTranslator();
-        }
-        
-    }
+	public Translator getTranslator(IPropertyDescriptor descriptor)
+	{
+		if (descriptor.isNumeric())
+		{
+			NumberTranslator numberTranslator = new NumberTranslator();
+			if (descriptor.getFormat() != null) numberTranslator.setPattern(descriptor.getFormat());
+			return numberTranslator;
+		} else if (descriptor.isDate())
+		{
+			DateTranslator dateTranslator = new DateTranslator();
+			if (descriptor.getFormat() != null) dateTranslator.setPattern(descriptor.getFormat());
+			return dateTranslator;
+		} else
+		{
+			return new StringTranslator();
+		}
+
+	}
 }

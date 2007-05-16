@@ -1,12 +1,11 @@
 package org.trails.demo;
 
-import java.io.Serializable;
-
-import javax.persistence.Embeddable;
-
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import javax.persistence.Embeddable;
+import java.io.Serializable;
 
 /**
  * Demographics

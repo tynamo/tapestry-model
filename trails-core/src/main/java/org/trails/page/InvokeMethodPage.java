@@ -18,17 +18,17 @@ import org.apache.tapestry.html.BasePage;
 
 /**
  * @author fus8882
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
+ *         <p/>
+ *         TODO To change the template for this generated type comment go to
+ *         Window - Preferences - Java - Code Style - Code Templates
  */
 public abstract class InvokeMethodPage extends BasePage
 {
-    public abstract Object getModel();
+	public abstract Object getModel();
 
-    public abstract void setModel(Object Model);
+	public abstract void setModel(Object Model);
 
-    public abstract MethodDescriptor getMethodDescriptor();
+	public abstract MethodDescriptor getMethodDescriptor();
 
-    public abstract void setMethodDescriptor(MethodDescriptor MethodDescriptor);
+	public abstract void setMethodDescriptor(MethodDescriptor MethodDescriptor);
 }

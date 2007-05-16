@@ -1,20 +1,24 @@
 package org.trails.descriptor;
 
 
-public class EnumReferenceDescriptor implements IDescriptorExtension {
+public class EnumReferenceDescriptor implements IDescriptorExtension
+{
 
-    private Class actualType;
+	private Class actualType;
 
-    public EnumReferenceDescriptor(Class actualType) {
-        this.actualType = actualType;
+	public EnumReferenceDescriptor(Class actualType)
+	{
+		this.actualType = actualType;
 
-    }
+	}
 
-    public Class getPropertyType() {
-        return actualType;
-    }
+	public Class getPropertyType()
+	{
+		return actualType;
+	}
 
-    public boolean isEnumReference() {
-        return true;
-    }
+	public boolean isEnumReference()
+	{
+		return true;
+	}
 }

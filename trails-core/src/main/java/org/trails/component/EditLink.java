@@ -13,7 +13,6 @@ package org.trails.component;
 
 import org.trails.page.TrailsPage;
 
-
 /*
  * Created on Sep 23, 2004
  *
@@ -23,31 +22,33 @@ import org.trails.page.TrailsPage;
 
 /**
  * @author fus8882
- *
- * TODO To change the template for this generated type comment go to Window -
- * Preferences - Java - Code Style - Code Templates
+ *         <p/>
+ *         TODO To change the template for this generated type comment go to Window -
+ *         Preferences - Java - Code Style - Code Templates
  */
 public abstract class EditLink extends Link
 {
-    
-    public String getTypeName()
-    {
-        return getModel().getClass().getName();
-    }
-    
-    // so we don't get enhanced
-    public void setTypeName() {}
-    
-    public abstract Object getModel();
 
-    public abstract void setModel(Object model);
+	public String getTypeName()
+	{
+		return getModel().getClass().getName();
+	}
+
+	// so we don't get enhanced
+	public void setTypeName()
+	{
+	}
+
+	public abstract Object getModel();
+
+	public abstract void setModel(Object model);
 
 	public String getEditPageName()
 	{
 		return getPageResolver().resolvePage(
-				getPage().getRequestCycle(), 
-				getModel().getClass().getName(),
-				TrailsPage.PageType.EDIT).getPageName();
+			getPage().getRequestCycle(),
+			getModel().getClass().getName(),
+			TrailsPage.PageType.EDIT).getPageName();
 	}
 
 }

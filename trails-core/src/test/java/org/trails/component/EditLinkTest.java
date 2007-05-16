@@ -21,9 +21,9 @@ import org.trails.test.Foo;
 
 /**
  * @author fus8882
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
+ *         <p/>
+ *         TODO To change the template for this generated type comment go to
+ *         Window - Preferences - Java - Code Style - Code Templates
  */
 public class EditLinkTest extends ComponentTest
 {
@@ -37,8 +37,8 @@ public class EditLinkTest extends ComponentTest
 			.will(returnValue(pageMock.proxy()));
 		pageMock.expects(once()).method("getPageName").will(returnValue("FooEdit"));
 		pageMock.expects(once()).method("getRequestCycle").will(returnValue(cycleMock.proxy()));
-		EditLink editLink = (EditLink)creator.newInstance(EditLink.class, new Object[] {"pageResolver", pageResolverMock.proxy()});
-		editLink.setPage((IPage)pageMock.proxy());
+		EditLink editLink = (EditLink) creator.newInstance(EditLink.class, new Object[]{"pageResolver", pageResolverMock.proxy()});
+		editLink.setPage((IPage) pageMock.proxy());
 		editLink.setModel(new Foo());
 		assertEquals("FooEdit", editLink.getEditPageName());
 	}

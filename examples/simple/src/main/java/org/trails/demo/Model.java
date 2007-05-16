@@ -11,49 +11,50 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 public class Model
 {
 
-    public Model()
-    {
-        super();
-        // TODO Auto-generated constructor stub
-    }
+	public Model()
+	{
+		super();
+		// TODO Auto-generated constructor stub
+	}
 
-    private Integer id;
+	private Integer id;
 
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
-    public Integer getId()
-    {
-        return id;
-    }
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	public Integer getId()
+	{
+		return id;
+	}
 
-    public void setId(Integer id)
-    {
-        this.id = id;
-    }
-    
-    private String name;
+	public void setId(Integer id)
+	{
+		this.id = id;
+	}
 
-    public String getName()
-    {
-        return name;
-    }
+	private String name;
 
-    public void setName(String name)
-    {
-        this.name = name;
-    }
+	public String getName()
+	{
+		return name;
+	}
 
-    @Override
-    public boolean equals(Object obj)
-    {
-        // TODO Auto-generated method stub
-        return EqualsBuilder.reflectionEquals(this, obj);
-    }
+	public void setName(String name)
+	{
+		this.name = name;
+	}
 
-    @Override
-    public String toString()
-    {
-        // TODO Auto-generated method stub
-        return getName();
-    }
+	@Override
+	public boolean equals(Object obj)
+	{
+		// TODO Auto-generated method stub
+		return EqualsBuilder.reflectionEquals(this, obj);
+	}
+
+	@Override
+	public String toString()
+	{
+		// TODO Auto-generated method stub
+		return getName();
+	}
 
 }

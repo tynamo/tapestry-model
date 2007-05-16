@@ -20,38 +20,38 @@ import org.trails.TrailsRuntimeException;
 
 /**
  * @author fus8882
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
+ *         <p/>
+ *         TODO To change the template for this generated type comment go to
+ *         Window - Preferences - Java - Code Style - Code Templates
  */
 public abstract class InvokeMethod extends TrailsComponent
 {
-    public abstract MethodDescriptor getMethodDescriptor();
+	public abstract MethodDescriptor getMethodDescriptor();
 
-    public abstract void setMethodDescriptor(MethodDescriptor MethodDescriptor);
+	public abstract void setMethodDescriptor(MethodDescriptor MethodDescriptor);
 
-    public abstract IActionListener getListener();
+	public abstract IActionListener getListener();
 
-    public abstract void setListener(IActionListener Listener);
+	public abstract void setListener(IActionListener Listener);
 
-    public abstract Object getModel();
+	public abstract Object getModel();
 
-    public abstract void setModel(Object Model);
+	public abstract void setModel(Object Model);
 
-    public void click(IRequestCycle cycle)
-    {
-        try
-        {
-            getMethodDescriptor().getMethod().invoke(getModel(),
-                new Object[] {  });
-        }catch (Exception e)
-        {
-            throw new TrailsRuntimeException(e);
-        }
+	public void click(IRequestCycle cycle)
+	{
+		try
+		{
+			getMethodDescriptor().getMethod().invoke(getModel(),
+				new Object[]{});
+		} catch (Exception e)
+		{
+			throw new TrailsRuntimeException(e);
+		}
 
-        if (getListener() != null)
-        {
-            getListener().actionTriggered(this, cycle);
-        }
-    }
+		if (getListener() != null)
+		{
+			getListener().actionTriggered(this, cycle);
+		}
+	}
 }

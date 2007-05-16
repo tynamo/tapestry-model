@@ -1,9 +1,10 @@
 package org.trails.descriptor;
 
-public interface IIdentifierDescriptor extends IPropertyDescriptor {
+public interface IIdentifierDescriptor extends IPropertyDescriptor
+{
 
-  public boolean isGenerated();
+	public boolean isGenerated();
 
-  public void setGenerated(boolean generated);
+	public void setGenerated(boolean generated);
 
 }

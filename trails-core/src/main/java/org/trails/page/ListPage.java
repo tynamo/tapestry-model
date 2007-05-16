@@ -28,61 +28,60 @@ import org.trails.descriptor.IClassDescriptor;
  * List all the instances of a type
  *
  * @author Chris Nelson
- *
  */
 public abstract class ListPage extends TrailsPage implements IExternalPage, PageBeginRenderListener
 {
 
 
-    @Override
-    public void pageBeginRender(PageEvent event)
-    {
-        super.pageBeginRender(event);
+	@Override
+	public void pageBeginRender(PageEvent event)
+	{
+		super.pageBeginRender(event);
 //        if (!getRequestCycle().isRewinding())
 //        {
 //            setInstances(getPersistenceService().getInstances(getCriteria()));
 //        }
-    }
+	}
 
-    /* (non-Javadoc)
-     * @see org.apache.tapestry.IExternalPage#activateExternalPage(java.lang.Object[], org.apache.tapestry.IRequestCycle)
-     */
-    public void activateExternalPage(Object[] args, IRequestCycle cycle)
-    {
-        Class instanceClass = (Class) args[0];
-        setTypeName(instanceClass.getName());
-        setCriteria(DetachedCriteria.forClass(instanceClass));
-    }
+	/* (non-Javadoc)
+		 * @see org.apache.tapestry.IExternalPage#activateExternalPage(java.lang.Object[], org.apache.tapestry.IRequestCycle)
+		 */
+	public void activateExternalPage(Object[] args, IRequestCycle cycle)
+	{
+		Class instanceClass = (Class) args[0];
+		setTypeName(instanceClass.getName());
+		setCriteria(DetachedCriteria.forClass(instanceClass));
+	}
 
-    public abstract List getInstances();
+	public abstract List getInstances();
 
-    public abstract void setInstances(List Instances);
+	public abstract void setInstances(List Instances);
 
-    @Persist
-    public abstract DetachedCriteria getCriteria();
+	@Persist
+	public abstract DetachedCriteria getCriteria();
 
-    public abstract void setCriteria(DetachedCriteria Criteria);
+	public abstract void setCriteria(DetachedCriteria Criteria);
 
-    public abstract String getTypeName();
+	public abstract String getTypeName();
 
-    public abstract void setTypeName(String typeName);
+	public abstract void setTypeName(String typeName);
 
-    public IClassDescriptor getClassDescriptor()
-    {
-        try
-        {
-            return getDescriptorService().getClassDescriptor(Class.forName(
-                    getTypeName()));
-        }catch (ClassNotFoundException e)
-        {
-            throw new TrailsRuntimeException(e);
-        }
-    }
+	public IClassDescriptor getClassDescriptor()
+	{
+		try
+		{
+			return getDescriptorService().getClassDescriptor(Class.forName(
+				getTypeName()));
+		} catch (ClassNotFoundException e)
+		{
+			throw new TrailsRuntimeException(e);
+		}
+	}
 
-    @Override
-    public void pushCallback()
-    {
+	@Override
+	public void pushCallback()
+	{
 
-        getCallbackStack().push(new ListCallback(getPageName(), getTypeName(), getCriteria()));
-    }
+		getCallbackStack().push(new ListCallback(getPageName(), getTypeName(), getCriteria()));
+	}
 }

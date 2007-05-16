@@ -9,7 +9,7 @@ import org.trails.descriptor.annotation.PropertyDescriptor;
 public class Embeddee
 {
 	private String title;
-	
+
 	private String description;
 
 	public String getDescription()
@@ -22,7 +22,7 @@ public class Embeddee
 		this.description = description;
 	}
 
-	@PropertyDescriptor(displayName="The Title")
+	@PropertyDescriptor(displayName = "The Title")
 	public String getTitle()
 	{
 		return title;
@@ -32,7 +32,7 @@ public class Embeddee
 	{
 		this.title = title;
 	}
-	
+
 	// Added to expose a bug
 	@Transient
 	public boolean isTrue()

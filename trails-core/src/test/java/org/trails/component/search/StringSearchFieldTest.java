@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.trails.component.search;
 
@@ -11,13 +11,12 @@ import org.trails.test.Foo;
 
 /**
  * @author cnelson
- *
  */
 public class StringSearchFieldTest extends ComponentTest
 {
 	public void testAddCriterion() throws Exception
 	{
-		StringSearchField stringSearchField = (StringSearchField)creator.newInstance(StringSearchField.class);
+		StringSearchField stringSearchField = (StringSearchField) creator.newInstance(StringSearchField.class);
 		DetachedCriteria criteria = DetachedCriteria.forClass(Foo.class);
 		stringSearchField.setCriteria(criteria);
 		IPropertyDescriptor propDescriptor = new TrailsPropertyDescriptor(Foo.class, "name", String.class);
@@ -25,6 +24,6 @@ public class StringSearchFieldTest extends ComponentTest
 		stringSearchField.setValue("bunk");
 		stringSearchField.buildCriterion();
 		assertTrue(stringSearchField.getCriteria().toString().indexOf("name like %bunk%") > -1);
-		
+
 	}
 }

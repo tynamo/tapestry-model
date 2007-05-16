@@ -13,21 +13,15 @@
  */
 package org.trails.demo;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import javax.persistence.*;
-
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.hibernate.annotations.IndexColumn;
-import org.hibernate.validator.Length;
 import org.hibernate.validator.NotNull;
 import org.trails.descriptor.annotation.Collection;
 import org.trails.descriptor.annotation.PropertyDescriptor;
 import org.trails.validation.ValidateUniqueness;
+
+import javax.persistence.*;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @ValidateUniqueness(property="title")

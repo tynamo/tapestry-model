@@ -15,69 +15,84 @@ import org.trails.descriptor.IPropertyDescriptor;
 import org.trails.persistence.PersistenceService;
 
 @ComponentClass(allowBody = true, allowInformalParameters = true)
-public abstract class TrailsUpload extends BaseComponent {
-    @Parameter(required = true)
-    public abstract IPropertyDescriptor getDescriptor();
-    public abstract void setDescriptor(
-            IPropertyDescriptor descriptor);
+public abstract class TrailsUpload extends BaseComponent
+{
+	@Parameter(required = true)
+	public abstract IPropertyDescriptor getDescriptor();
 
-    @Parameter(required = true)
-    public abstract Object getBytes();
-    public abstract void setBytes(Object bytes);
+	public abstract void setDescriptor(
+		IPropertyDescriptor descriptor);
 
-    @Parameter(required = true)
-    public abstract Object getModel();
-    public abstract void setModel(Object bytes);
+	@Parameter(required = true)
+	public abstract Object getBytes();
 
-    @InjectObject("spring:persistenceService")
-    public abstract PersistenceService getPersistenceService();
+	public abstract void setBytes(Object bytes);
 
-    public BlobDescriptorExtension getBlobDescriptorExtension() {
-        return getDescriptor().getExtension(
-                BlobDescriptorExtension.class);
-    }
+	@Parameter(required = true)
+	public abstract Object getModel();
 
-    public IUploadFile getFile() {
-        return null;
-    }
+	public abstract void setModel(Object bytes);
 
-    public void setFile(IUploadFile file) {
-        if (file != null) {
-            ITrailsBlob trailsBlob = null;
-            byte[] data = new byte[0];
-            InputStream inputStream = file.getStream();
-            try {
-                data = IOUtils.toByteArray(inputStream);
-                if (getBlobDescriptorExtension().isBytes()) {
-                    trailsBlob = (ITrailsBlob) getModel();
-                } else if (getBlobDescriptorExtension().isITrailsBlob()) {
-                    trailsBlob = (ITrailsBlob) getBytes();
-                }
-            } catch (IOException ioe) {
-                ioe.printStackTrace();
-            }
+	@InjectObject("spring:persistenceService")
+	public abstract PersistenceService getPersistenceService();
 
-            if (data.length > 1) {
-                try {
-                    trailsBlob.setFileName(file.getFileName());
-                    trailsBlob.setFilePath(file.getFilePath());
-                    trailsBlob.setFileExtension(file.getFilePath());
-                    trailsBlob.setContentType(file.getContentType());
-                    trailsBlob.setNumBytes(new Long(((byte[]) trailsBlob
-                            .getBytes()).length));
-                    trailsBlob.setBytes(data);
-                } catch (LazyInitializationException e) {
-                    getPersistenceService().reattach(trailsBlob);
+	public BlobDescriptorExtension getBlobDescriptorExtension()
+	{
+		return getDescriptor().getExtension(
+			BlobDescriptorExtension.class);
+	}
 
-                    trailsBlob.setFileName(file.getFileName());
-                    trailsBlob.setFilePath(file.getFilePath());
-                    trailsBlob.setFileExtension(file.getFilePath());
-                    trailsBlob.setContentType(file.getContentType());
-                    trailsBlob.setNumBytes(new Long(((byte[]) trailsBlob
-                            .getBytes()).length));
-                    trailsBlob.setBytes(data);
-                }
-            }
-        }
-    }
+	public IUploadFile getFile()
+	{
+		return null;
+	}
+
+	public void setFile(IUploadFile file)
+	{
+		if (file != null)
+		{
+			ITrailsBlob trailsBlob = null;
+			byte[] data = new byte[0];
+			InputStream inputStream = file.getStream();
+			try
+			{
+				data = IOUtils.toByteArray(inputStream);
+				if (getBlobDescriptorExtension().isBytes())
+				{
+					trailsBlob = (ITrailsBlob) getModel();
+				} else if (getBlobDescriptorExtension().isITrailsBlob())
+				{
+					trailsBlob = (ITrailsBlob) getBytes();
+				}
+			} catch (IOException ioe)
+			{
+				ioe.printStackTrace();
+			}
+
+			if (data.length > 1)
+			{
+				try
+				{
+					trailsBlob.setFileName(file.getFileName());
+					trailsBlob.setFilePath(file.getFilePath());
+					trailsBlob.setFileExtension(file.getFilePath());
+					trailsBlob.setContentType(file.getContentType());
+					trailsBlob.setNumBytes(new Long(((byte[]) trailsBlob
+						.getBytes()).length));
+					trailsBlob.setBytes(data);
+				} catch (LazyInitializationException e)
+				{
+					getPersistenceService().reattach(trailsBlob);
+
+					trailsBlob.setFileName(file.getFileName());
+					trailsBlob.setFilePath(file.getFilePath());
+					trailsBlob.setFileExtension(file.getFilePath());
+					trailsBlob.setContentType(file.getContentType());
+					trailsBlob.setNumBytes(new Long(((byte[]) trailsBlob
+						.getBytes()).length));
+					trailsBlob.setBytes(data);
+				}
+			}
+		}
+	}
 }

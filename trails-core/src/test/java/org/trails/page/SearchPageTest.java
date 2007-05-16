@@ -2,11 +2,8 @@ package org.trails.page;
 
 import java.util.Set;
 
-import org.apache.tapestry.IRequestCycle;
-import org.jmock.Mock;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.trails.callback.SearchCallback;
 import org.trails.component.ComponentTest;
 import org.trails.descriptor.CollectionDescriptor;
 import org.trails.descriptor.IdentifierDescriptor;
@@ -19,26 +16,26 @@ import org.trails.test.Searchee;
 public class SearchPageTest extends ComponentTest
 {
 
-    PersistenceService persistenceService;
-    
-    ApplicationContext appContext;
-    SearchPage searchPage;
-    
-    public void setUp() throws Exception
-    {
-        appContext = new ClassPathXmlApplicationContext(
-                "applicationContext-test.xml");
-        persistenceService = (PersistenceService) appContext.getBean(
-                "persistenceService");
-        searchPage = buildSearchPage();
-    }
-    
-    public SearchPageTest()
-    {
-        super();
-        // TODO Auto-generated constructor stub
-    }
-    
+	PersistenceService persistenceService;
+
+	ApplicationContext appContext;
+	SearchPage searchPage;
+
+	public void setUp() throws Exception
+	{
+		appContext = new ClassPathXmlApplicationContext(
+			"applicationContext-test.xml");
+		persistenceService = (PersistenceService) appContext.getBean(
+			"persistenceService");
+		searchPage = buildSearchPage();
+	}
+
+	public SearchPageTest()
+	{
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
 //    public void testSearch()
 //    {
 //        Mock cycleMock = new Mock(IRequestCycle.class);
@@ -71,32 +68,32 @@ public class SearchPageTest extends ComponentTest
 //        
 //    }
 
-    public void testGetSearchableProperties() 
-    {
-        TrailsClassDescriptor classDescriptor = new TrailsClassDescriptor(Searchee.class);
-        classDescriptor.getPropertyDescriptors().add(
-                new TrailsPropertyDescriptor(Foo.class, "name", String.class));
-        classDescriptor.getPropertyDescriptors().add(
-                new IdentifierDescriptor(Foo.class, "id", String.class)); 
-        classDescriptor.getPropertyDescriptors().add(
-                new CollectionDescriptor(Foo.class, "name", Set.class));
-        descriptorServiceMock.expects(atLeastOnce()).method("getClassDescriptor").with(eq(Searchee.class)).will(returnValue(classDescriptor));
-        searchPage.setTypeName(Searchee.class.getName());
-        String[] searchableProperties = searchPage.getSearchableProperties();
-        assertEquals("should only be 2 search properties", 2, searchableProperties.length);
-        assertEquals("name", searchableProperties[0]);
-    }
-    
-    protected SearchPage buildSearchPage()
-    {
-        SearchPage searchPage = (SearchPage)creator.newInstance(SearchPage.class,
-             new Object[] {
-            "persistenceService", persistenceService,
-            "descriptorService", descriptorServiceMock.proxy(),
-            "callbackStack", callbackStack,
-            });
-        return searchPage;
-    }
-    
-    
+	public void testGetSearchableProperties()
+	{
+		TrailsClassDescriptor classDescriptor = new TrailsClassDescriptor(Searchee.class);
+		classDescriptor.getPropertyDescriptors().add(
+			new TrailsPropertyDescriptor(Foo.class, "name", String.class));
+		classDescriptor.getPropertyDescriptors().add(
+			new IdentifierDescriptor(Foo.class, "id", String.class));
+		classDescriptor.getPropertyDescriptors().add(
+			new CollectionDescriptor(Foo.class, "name", Set.class));
+		descriptorServiceMock.expects(atLeastOnce()).method("getClassDescriptor").with(eq(Searchee.class)).will(returnValue(classDescriptor));
+		searchPage.setTypeName(Searchee.class.getName());
+		String[] searchableProperties = searchPage.getSearchableProperties();
+		assertEquals("should only be 2 search properties", 2, searchableProperties.length);
+		assertEquals("name", searchableProperties[0]);
+	}
+
+	protected SearchPage buildSearchPage()
+	{
+		SearchPage searchPage = (SearchPage) creator.newInstance(SearchPage.class,
+			new Object[]{
+				"persistenceService", persistenceService,
+				"descriptorService", descriptorServiceMock.proxy(),
+				"callbackStack", callbackStack,
+			});
+		return searchPage;
+	}
+
+
 }

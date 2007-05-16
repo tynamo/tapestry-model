@@ -4,7 +4,7 @@ import java.util.Stack;
 
 public class CallbackStack
 {
-	
+
 	private Stack<TrailsCallback> stack = new Stack<TrailsCallback>();
 
 	public Stack<TrailsCallback> getStack()
@@ -16,10 +16,11 @@ public class CallbackStack
 	{
 		this.stack = stack;
 	}
-	
+
 	/**
 	 * If this callback should replace the previous callback,
 	 * pop it off before we push this one on.
+	 *
 	 * @param callback
 	 */
 	public void push(TrailsCallback callback)
@@ -30,13 +31,11 @@ public class CallbackStack
 		}
 		getStack().push(callback);
 	}
-	
-	
+
 
 	/**
-	 * 
 	 * @return the callback of the previous page, assumes the current page will
-	 * be at the top of the stack
+	 *         be at the top of the stack
 	 */
 	public TrailsCallback popPreviousCallback()
 	{
@@ -44,8 +43,7 @@ public class CallbackStack
 		{
 			getStack().pop();
 			return getStack().pop();
-		}
-		else return null;
+		} else return null;
 	}
 
 	public TrailsCallback getPreviousCallback()
@@ -53,7 +51,6 @@ public class CallbackStack
 		if (getStack().size() > 1)
 		{
 			return getStack().get(getStack().size() - 2);
-		}
-		else return null;
+		} else return null;
 	}
 }

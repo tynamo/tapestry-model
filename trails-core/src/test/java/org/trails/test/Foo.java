@@ -16,7 +16,6 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -33,255 +32,256 @@ import org.trails.validation.AssertNoOrphans;
 /**
  * @javabean.class name="Foo"
  * @hibernate.class table="FOO"
- *
+ * <p/>
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
 @Entity
-@AssertNoOrphans(childrenProperty="bazzes", message="This is a message")
+@AssertNoOrphans(childrenProperty = "bazzes", message = "This is a message")
 public class Foo
 {
-    
-    private Integer id;
-    private boolean primitive;
-    private String multiWordProperty;
 
-    private String name;
-    private Double number;
-    private String readOnly;
-    private String hidden;
-    
-    private String fromFormula;
-    
-    private Date date;
-    private Bar bar;
-    private Set<Baz> bazzes = new HashSet<Baz>();
-    private List<Bing> bings = new ArrayList<Bing>();
+	private Integer id;
+	private boolean primitive;
+	private String multiWordProperty;
 
-    /**
-     * @javabean.property
-     * @hibernate.id generator-class="assigned"
-     */
-    @Id
-    public Integer getId()
-    {
-        return id;
-    }
+	private String name;
+	private Double number;
+	private String readOnly;
+	private String hidden;
 
-    /**
-     * @param id The id to set.
-     */
-    public void setId(Integer id)
-    {
-        this.id = id;
-    }
+	private String fromFormula;
 
-    /**
-     * @hibernate.property not-null="true"
-     * @javabean.property displayName="The Name"
-     */
-    public String getName()
-    {
-        return name;
-    }
+	private Date date;
+	private Bar bar;
+	private Set<Baz> bazzes = new HashSet<Baz>();
+	private List<Bing> bings = new ArrayList<Bing>();
 
-    /**
-     * @param name The name to set.
-     */
-    public void setName(String name)
-    {
-        this.name = name;
-    }
-    
+	/**
+	 * @javabean.property
+	 * @hibernate.id generator-class="assigned"
+	 */
+	@Id
+	public Integer getId()
+	{
+		return id;
+	}
 
-    /**
-     * @javabean.property
-     * @hibernate.property
-     * @return
-     */
-    public Date getDate()
-    {
-        return date;
-    }
+	/**
+	 * @param id The id to set.
+	 */
+	public void setId(Integer id)
+	{
+		this.id = id;
+	}
 
-    public void setDate(Date date)
-    {
-        this.date = date;
-    }
+	/**
+	 * @hibernate.property not-null="true"
+	 * @javabean.property displayName="The Name"
+	 */
+	public String getName()
+	{
+		return name;
+	}
 
-    /**
-     * @javabean.property
-     * @hibernate.property
-     * @return
-     */
-    public Double getNumber()
-    {
-        return number;
-    }
+	/**
+	 * @param name The name to set.
+	 */
+	public void setName(String name)
+	{
+		this.name = name;
+	}
 
-    public void setNumber(Double number)
-    {
-        this.number = number;
-    }
 
-    /**
-     * @javabean.property
-     * @hibernate.property
-     * @return
-     */
-    @Column(length=101)
-    public String getMultiWordProperty()
-    {
-        return multiWordProperty;
-    }
+	/**
+	 * @return
+	 * @javabean.property
+	 * @hibernate.property
+	 */
+	public Date getDate()
+	{
+		return date;
+	}
 
-    public void setMultiWordProperty(String value)
-    {
-        this.multiWordProperty = value;
-    }
+	public void setDate(Date date)
+	{
+		this.date = date;
+	}
 
-    /**
-     * @javabean.property expert="true"
-     * @hibernate.set cascade="all-delete-orphan"
-     * @hibernate.collection-key column="BAZ_ID"
-     * @hibernate.collection-one-to-many class="org.trails.test.Baz"
-     *      
-     */
-    
-    @OneToMany(cascade=CascadeType.ALL, mappedBy="foo")
-    public Set<Baz> getBazzes()
-    {
-        return bazzes;
-    }
+	/**
+	 * @return
+	 * @javabean.property
+	 * @hibernate.property
+	 */
+	public Double getNumber()
+	{
+		return number;
+	}
 
-    /**
-     * @param bazzes The bazzes to set.
-     */
-    public void setBazzes(Set<Baz> bazzes)
-    {
-        this.bazzes = bazzes;
-    }
+	public void setNumber(Double number)
+	{
+		this.number = number;
+	}
 
-    /**
-     * @javabean.property
-     * @hibernate.list
-     * @hibernate.collection-key column="BING_ID"
-     * @hibernate.collection-index column="BING_INDEX"
-     * @hibernate.collection-one-to-many class="org.trails.test.Bing"
-     *
-     */
-    @OneToMany
-    @JoinColumn(name="FOO_ID")
-    @IndexColumn(name="BING_INDEX")
-    public List<Bing> getBings()
-    {
-        return bings;
-    }
+	/**
+	 * @return
+	 * @javabean.property
+	 * @hibernate.property
+	 */
+	@Column(length = 101)
+	public String getMultiWordProperty()
+	{
+		return multiWordProperty;
+	}
 
-    /**
-     * @param bings The bings to set.
-     */
-    public void setBings(List<Bing> bings)
-    {
-        this.bings = bings;
-    }
+	public void setMultiWordProperty(String value)
+	{
+		this.multiWordProperty = value;
+	}
 
-    public void addBing(Bing bing)
-    {
-        getBings().add(bing);
-    }
-    
-    public void removeBing(Bing bing)
-    {
-        getBings().remove(bing);
-    }
-    /**
-     * @return
-     */
-    public void doSomething()
-    {
-        // TODO Auto-generated method stub
-        setName("something done");
-    }
+	/**
+	 * @javabean.property expert="true"
+	 * @hibernate.set cascade="all-delete-orphan"
+	 * @hibernate.collection-key column="BAZ_ID"
+	 * @hibernate.collection-one-to-many class="org.trails.test.Baz"
+	 */
 
-    /**
-     * @return Returns the primitive.
-     * @hibernate.property type="yes_no"
-     * @javabean.property
-     */
-    public boolean isPrimitive()
-    {
-        return primitive;
-    }
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "foo")
+	public Set<Baz> getBazzes()
+	{
+		return bazzes;
+	}
 
-    /**
-     * @param primitive The primitive to set.
-     */
-    public void setPrimitive(boolean primitive)
-    {
-        this.primitive = primitive;
-    }
-    
-    
-    /* (non-Javadoc)
-     * @see java.lang.Object#toString()
-     */
-    public String toString()
-    {
+	/**
+	 * @param bazzes The bazzes to set.
+	 */
+	public void setBazzes(Set<Baz> bazzes)
+	{
+		this.bazzes = bazzes;
+	}
 
-        return getName();
-    }
-    /**
-     * @return Returns the hidden.
-     * @hibernate.property
-     * @javabean.property hidden="true"
-     */
-    public String getHidden()
-    {
-        return hidden;
-    }
-    /**
-     * @param hidden The hidden to set.
-     */
-    public void setHidden(String hidden)
-    {
-        this.hidden = hidden;
-    }
-    
-    /**
-     * @javabean.property readOnly="true"
-     * @hibernate.property insert="false" update="false"
-     * @return Returns the readOnly.
-     */
-    public String getReadOnly()
-    {
-        return readOnly;
-    }
-    
-    public void setReadOnly(String readOnly)
-    {
-        this.readOnly = readOnly;
-    }
+	/**
+	 * @javabean.property
+	 * @hibernate.list
+	 * @hibernate.collection-key column="BING_ID"
+	 * @hibernate.collection-index column="BING_INDEX"
+	 * @hibernate.collection-one-to-many class="org.trails.test.Bing"
+	 */
+	@OneToMany
+	@JoinColumn(name = "FOO_ID")
+	@IndexColumn(name = "BING_INDEX")
+	public List<Bing> getBings()
+	{
+		return bings;
+	}
 
-    @ManyToOne(cascade=CascadeType.ALL)
-    public Bar getBar()
-    {
-        return bar;
-    }
+	/**
+	 * @param bings The bings to set.
+	 */
+	public void setBings(List<Bing> bings)
+	{
+		this.bings = bings;
+	}
 
-    public void setBar(Bar bar)
-    {
-        this.bar = bar;
-    }
-    
-    public Baz createBaz()
-    {
-    	Baz baz = new Baz();
-    	baz.setFoo(this);
-    	return baz;
-    }
+	public void addBing(Bing bing)
+	{
+		getBings().add(bing);
+	}
 
-    @Formula("lower('ABC')")
+	public void removeBing(Bing bing)
+	{
+		getBings().remove(bing);
+	}
+
+	/**
+	 * @return
+	 */
+	public void doSomething()
+	{
+		// TODO Auto-generated method stub
+		setName("something done");
+	}
+
+	/**
+	 * @return Returns the primitive.
+	 * @hibernate.property type="yes_no"
+	 * @javabean.property
+	 */
+	public boolean isPrimitive()
+	{
+		return primitive;
+	}
+
+	/**
+	 * @param primitive The primitive to set.
+	 */
+	public void setPrimitive(boolean primitive)
+	{
+		this.primitive = primitive;
+	}
+
+
+	/* (non-Javadoc)
+		 * @see java.lang.Object#toString()
+		 */
+	public String toString()
+	{
+
+		return getName();
+	}
+
+	/**
+	 * @return Returns the hidden.
+	 * @hibernate.property
+	 * @javabean.property hidden="true"
+	 */
+	public String getHidden()
+	{
+		return hidden;
+	}
+
+	/**
+	 * @param hidden The hidden to set.
+	 */
+	public void setHidden(String hidden)
+	{
+		this.hidden = hidden;
+	}
+
+	/**
+	 * @return Returns the readOnly.
+	 * @javabean.property readOnly="true"
+	 * @hibernate.property insert="false" update="false"
+	 */
+	public String getReadOnly()
+	{
+		return readOnly;
+	}
+
+	public void setReadOnly(String readOnly)
+	{
+		this.readOnly = readOnly;
+	}
+
+	@ManyToOne(cascade = CascadeType.ALL)
+	public Bar getBar()
+	{
+		return bar;
+	}
+
+	public void setBar(Bar bar)
+	{
+		this.bar = bar;
+	}
+
+	public Baz createBaz()
+	{
+		Baz baz = new Baz();
+		baz.setFoo(this);
+		return baz;
+	}
+
+	@Formula("lower('ABC')")
 	public String getFromFormula()
 	{
 		return fromFormula;

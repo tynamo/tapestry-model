@@ -6,17 +6,17 @@ import com.gargoylesoftware.htmlunit.html.HtmlPage;
 public class TextAreaTest extends FunctionalTest
 {
 
-    public TextAreaTest()
-    {
-        super();
-        // TODO Auto-generated constructor stub
-    }
+	public TextAreaTest()
+	{
+		super();
+		// TODO Auto-generated constructor stub
+	}
 
-    public void testTextArea() throws Exception
-    {
-        HtmlPage listThingsPage = clickLinkOnPage(startPage, "List Things");
-        HtmlPage newThingPage = clickLinkOnPage(listThingsPage, "New Thing");
-        HtmlForm newThingForm = getFirstForm(newThingPage);
-        //assertNotNull(newThingForm.getTextAreasByName("textArea").get(0));
-    }
+	public void testTextArea() throws Exception
+	{
+		HtmlPage listThingsPage = clickLinkOnPage(startPage, "List Things");
+		HtmlPage newThingPage = clickLinkOnPage(listThingsPage, "New Thing");
+		HtmlForm newThingForm = getFirstForm(newThingPage);
+		//assertNotNull(newThingForm.getTextAreasByName("textArea").get(0));
+	}
 }

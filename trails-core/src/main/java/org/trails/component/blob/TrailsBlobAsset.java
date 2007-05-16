@@ -5,7 +5,8 @@ import java.io.InputStream;
 import org.apache.tapestry.asset.AbstractAsset;
 import org.apache.tapestry.engine.ILink;
 
-public class TrailsBlobAsset extends AbstractAsset {
+public class TrailsBlobAsset extends AbstractAsset
+{
 
 	private BlobDownloadService bytesService;
 
@@ -20,7 +21,8 @@ public class TrailsBlobAsset extends AbstractAsset {
 	private String fileName;
 
 	public TrailsBlobAsset(BlobDownloadService chartService, String entityName,
-			String idProperty, String bytesProperty) {
+						   String idProperty, String bytesProperty)
+	{
 		super(null, null);
 		this.bytesService = chartService;
 		this.entityName = entityName;
@@ -29,8 +31,9 @@ public class TrailsBlobAsset extends AbstractAsset {
 	}
 
 	public TrailsBlobAsset(BlobDownloadService chartService, String entityName,
-			String idProperty, String bytesProperty, String contentType,
-			String fileName) {
+						   String idProperty, String bytesProperty, String contentType,
+						   String fileName)
+	{
 		super(null, null);
 		this.bytesService = chartService;
 		this.entityName = entityName;
@@ -40,32 +43,39 @@ public class TrailsBlobAsset extends AbstractAsset {
 		this.fileName = fileName;
 	}
 
-	public String getBytesProperty() {
+	public String getBytesProperty()
+	{
 		return bytesProperty;
 	}
 
-	public String getEntityName() {
+	public String getEntityName()
+	{
 		return entityName;
 	}
 
-	public String getIdProperty() {
+	public String getIdProperty()
+	{
 		return idProperty;
 	}
 
-	public String getContentType() {
+	public String getContentType()
+	{
 		return contentType;
 	}
 
-	public String getFileName() {
+	public String getFileName()
+	{
 		return fileName;
 	}
 
-	public String buildURL() {
-		ILink l = bytesService.getLink(false, new Object[] { this });
+	public String buildURL()
+	{
+		ILink l = bytesService.getLink(false, new Object[]{this});
 		return l.getURL();
 	}
 
-	public InputStream getResourceAsStream() {
+	public InputStream getResourceAsStream()
+	{
 		// TODO Auto-generated method stub
 		return null;
 	}

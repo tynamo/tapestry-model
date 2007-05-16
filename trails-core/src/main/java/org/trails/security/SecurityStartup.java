@@ -4,12 +4,10 @@
  */
 package org.trails.security;
 
-import java.util.LinkedHashSet;
 import java.util.List;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.context.support.FileSystemXmlApplicationContext;
 import org.trails.persistence.PersistenceService;
 import org.trails.security.domain.Role;
 import org.trails.security.domain.User;
@@ -17,11 +15,12 @@ import org.trails.seeddata.SeedDataInitializer;
 
 /**
  * This class startup the db for security.
- * @author Eduardo Fernandes Piva (eduardo@gwe.com.br)
  *
+ * @author Eduardo Fernandes Piva (eduardo@gwe.com.br)
  */
 @Deprecated
-public class SecurityStartup {
+public class SecurityStartup
+{
 
 	private PersistenceService persistenceService;
 	private List<User> defaultUsers;
@@ -29,21 +28,24 @@ public class SecurityStartup {
 	private SeedDataInitializer seedDataInitializer;
 
 	@Deprecated
-	public void startup() {
+	public void startup()
+	{
 		seedDataInitializer.init();
 	}
-	
+
 	/**
 	 * This can be called from command line or directly from ant.
+	 *
 	 * @param args
 	 */
-	public static void main(String args[]) {
+	public static void main(String args[])
+	{
 		String appContextFile = "applicationContext.xml";
 		if (args.length == 1)
 		{
 			appContextFile = args[0];
 		}
-		
+
 		ApplicationContext context = new ClassPathXmlApplicationContext(appContextFile);
 		SecurityStartup bootStrap = (SecurityStartup) context.getBean("securityStartup");
 		bootStrap.startup();
@@ -51,22 +53,26 @@ public class SecurityStartup {
 
 
 	@Deprecated
-	public void setPersistenceService(PersistenceService persistenceService) {
+	public void setPersistenceService(PersistenceService persistenceService)
+	{
 		this.persistenceService = persistenceService;
 	}
-	
-	
+
+
 	@Deprecated
-	public void setDefaultRoles(List<Role> defaultRoles) {
+	public void setDefaultRoles(List<Role> defaultRoles)
+	{
 		this.defaultRoles = defaultRoles;
 	}
 
 	@Deprecated
-	public void setDefaultUsers(List<User> defaultUsers) {
+	public void setDefaultUsers(List<User> defaultUsers)
+	{
 		this.defaultUsers = defaultUsers;
 	}
-	
-	public void setSeedDataInitializer(SeedDataInitializer seedDataInitializer) {
+
+	public void setSeedDataInitializer(SeedDataInitializer seedDataInitializer)
+	{
 		this.seedDataInitializer = seedDataInitializer;
 	}
 

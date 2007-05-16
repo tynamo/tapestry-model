@@ -12,27 +12,28 @@ import org.trails.page.TrailsPage.PageType;
 public class DefaultPageResolver implements PageResolver
 {
 	private String defaultPrefix = "Default";
-	
+
 	private Map<TrailsPage.PageType, String> postFixMap;
+
 	public String getPostFix(TrailsPage.PageType pageType)
 	{
 		return getPostFixMap().get(pageType);
 	}
-	
+
 	public IPage resolvePage(IRequestCycle cycle, String className, PageType pageType)
 	{
 		String pageName = Utils.unqualify(className) + getPostFix(pageType);
-        IPage page = null;
+		IPage page = null;
 		try
-        {
-            page = cycle.getPage(pageName);
-        }catch (PageNotFoundException ae)
-        {
+		{
+			page = cycle.getPage(pageName);
+		} catch (PageNotFoundException ae)
+		{
 
-            page = cycle.getPage(getDefaultPrefix() + getPostFix(pageType));
+			page = cycle.getPage(getDefaultPrefix() + getPostFix(pageType));
 
-        }
-        return page;		
+		}
+		return page;
 	}
 
 	public Map<TrailsPage.PageType, String> getPostFixMap()

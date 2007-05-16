@@ -19,35 +19,35 @@ import org.trails.descriptor.IPropertyDescriptor;
 
 /**
  * @author fus8882
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
+ *         <p/>
+ *         TODO To change the template for this generated type comment go to
+ *         Window - Preferences - Java - Code Style - Code Templates
  */
 public abstract class PropertyEditor extends TrailsComponent
 {
-    public abstract IPropertyDescriptor getDescriptor();
+	public abstract IPropertyDescriptor getDescriptor();
 
-    public abstract void setDescriptor(IPropertyDescriptor Descriptor);
-    
-    public abstract Object getModel();
-    
-    @InjectObject("spring:editorService")
-    public abstract BlockFinder getBlockFinder();
-    
-    public Block getBlock()
-    {
-        
-        Block editorBlock = (Block)
-            getEditorAddress().findComponent(getPage().getRequestCycle());
-        editorBlock.getPage().setProperty("model", getModel());
-        editorBlock.getPage().setProperty("descriptor", getDescriptor());
-        editorBlock.getPage().setProperty("editPageName", getPage().getPageName());
-        return editorBlock;
-    }
+	public abstract void setDescriptor(IPropertyDescriptor Descriptor);
 
-    public ComponentAddress getEditorAddress()
-    {
-        
-        return getBlockFinder().findBlockAddress(getDescriptor());
-    }
+	public abstract Object getModel();
+
+	@InjectObject("spring:editorService")
+	public abstract BlockFinder getBlockFinder();
+
+	public Block getBlock()
+	{
+
+		Block editorBlock = (Block)
+			getEditorAddress().findComponent(getPage().getRequestCycle());
+		editorBlock.getPage().setProperty("model", getModel());
+		editorBlock.getPage().setProperty("descriptor", getDescriptor());
+		editorBlock.getPage().setProperty("editPageName", getPage().getPageName());
+		return editorBlock;
+	}
+
+	public ComponentAddress getEditorAddress()
+	{
+
+		return getBlockFinder().findBlockAddress(getDescriptor());
+	}
 }

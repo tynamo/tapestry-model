@@ -17,7 +17,6 @@ import java.util.HashMap;
 
 import ognl.Ognl;
 import ognl.OgnlException;
-
 import org.trails.TrailsRuntimeException;
 import org.trails.descriptor.CollectionDescriptor;
 import org.trails.persistence.PersistenceService;
@@ -28,58 +27,58 @@ import org.trails.persistence.PersistenceService;
  */
 public class CollectionCallback extends EditCallback
 {
-    private CollectionDescriptor collectionDescriptor;
-	
+	private CollectionDescriptor collectionDescriptor;
+
 	private boolean childRelationship;
-    
-    /**
-     * @param pageName
-     * @param model
-     */
-    public CollectionCallback(String pageName, Object model, CollectionDescriptor collectionDescriptor)
-    {
-        super(pageName, model);
-        this.collectionDescriptor = collectionDescriptor;
-    }
 
-    public void save(PersistenceService persistenceService, Object newObject)
-    {
-        executeOgnlExpression(collectionDescriptor.findAddExpression(), newObject);
-        persistenceService.save(getModel());
-    }
-    
-    public void remove(PersistenceService persistenceService, Object object)
-    {
-        executeOgnlExpression(collectionDescriptor.findRemoveExpression(), object);
-        persistenceService.save(getModel());
-    }
-    
-    /**
-     * @param previousModel
-     */
-    private void executeOgnlExpression(String ognlExpression, Object newObject)
-    {
-        HashMap context = new HashMap();
-        context.put("member", newObject);
+	/**
+	 * @param pageName
+	 * @param model
+	 */
+	public CollectionCallback(String pageName, Object model, CollectionDescriptor collectionDescriptor)
+	{
+		super(pageName, model);
+		this.collectionDescriptor = collectionDescriptor;
+	}
 
-        try
-        {
-            Ognl.getValue(ognlExpression + "(#member)", context, model);
-        }catch (OgnlException e)
-        {
-            throw new TrailsRuntimeException(e);
-        }
-    }
-    
-    public boolean isChildRelationship()
-    {
-        return childRelationship;
-    }
-    
+	public void save(PersistenceService persistenceService, Object newObject)
+	{
+		executeOgnlExpression(collectionDescriptor.findAddExpression(), newObject);
+		persistenceService.save(getModel());
+	}
 
-    public void setChildRelationship(boolean child)
-    {
-        this.childRelationship = child;
-    }
-	
+	public void remove(PersistenceService persistenceService, Object object)
+	{
+		executeOgnlExpression(collectionDescriptor.findRemoveExpression(), object);
+		persistenceService.save(getModel());
+	}
+
+	/**
+	 * @param previousModel
+	 */
+	private void executeOgnlExpression(String ognlExpression, Object newObject)
+	{
+		HashMap context = new HashMap();
+		context.put("member", newObject);
+
+		try
+		{
+			Ognl.getValue(ognlExpression + "(#member)", context, model);
+		} catch (OgnlException e)
+		{
+			throw new TrailsRuntimeException(e);
+		}
+	}
+
+	public boolean isChildRelationship()
+	{
+		return childRelationship;
+	}
+
+
+	public void setChildRelationship(boolean child)
+	{
+		this.childRelationship = child;
+	}
+
 }

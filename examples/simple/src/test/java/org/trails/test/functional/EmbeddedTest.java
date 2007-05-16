@@ -4,7 +4,7 @@ import com.gargoylesoftware.htmlunit.html.HtmlPage;
 
 public class EmbeddedTest extends FunctionalTest
 {
-	
+
 	public void testPerson() throws Exception
 	{
 		HtmlPage listPersonsPage = clickLinkOnPage(startPage, "List Persons");

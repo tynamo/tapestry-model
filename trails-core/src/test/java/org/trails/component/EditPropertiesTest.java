@@ -23,37 +23,37 @@ import org.trails.test.Foo;
 
 /**
  * @author fus8882
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
+ *         <p/>
+ *         TODO To change the template for this generated type comment go to
+ *         Window - Preferences - Java - Code Style - Code Templates
  */
 public class EditPropertiesTest extends ComponentTest
 {
 
-    public void testGetPropertyDescriptors() throws Exception
-    {
-        EditProperties propertyTable = (EditProperties)creator.newInstance(EditProperties.class);
-        
-        IClassDescriptor classDescriptor = new TrailsClassDescriptor(Foo.class);
-        IPropertyDescriptor nameDescriptor = new TrailsPropertyDescriptor(Foo.class, 
-            "name", String.class);
-        IPropertyDescriptor dateDescriptor = new TrailsPropertyDescriptor(Foo.class, 
-            "date", Date.class);
-        IPropertyDescriptor numberDescriptor = new TrailsPropertyDescriptor(Foo.class,
-            "nubmer", Double.class);
-        classDescriptor.getPropertyDescriptors().add(nameDescriptor);
-        classDescriptor.getPropertyDescriptors().add(dateDescriptor);
-        classDescriptor.getPropertyDescriptors().add(numberDescriptor);
-        propertyTable.setClassDescriptor(classDescriptor);
-        assertEquals("got 3", 3, propertyTable.getPropertyDescriptors().size());
-        nameDescriptor.setHidden(true);
-        assertEquals("got 2", 2, propertyTable.getPropertyDescriptors().size());
-        assertFalse(propertyTable.getPropertyDescriptors().contains(nameDescriptor));
-        
-        propertyTable.setPropertyNames(new String[] {"date", "name"});
-        assertTrue(propertyTable.getPropertyDescriptors().contains(nameDescriptor));
-        assertEquals("got 2", 2, propertyTable.getPropertyDescriptors().size());
-        assertEquals("first one is date", dateDescriptor, 
-            propertyTable.getPropertyDescriptors().get(0));
-    }
+	public void testGetPropertyDescriptors() throws Exception
+	{
+		EditProperties propertyTable = (EditProperties) creator.newInstance(EditProperties.class);
+
+		IClassDescriptor classDescriptor = new TrailsClassDescriptor(Foo.class);
+		IPropertyDescriptor nameDescriptor = new TrailsPropertyDescriptor(Foo.class,
+			"name", String.class);
+		IPropertyDescriptor dateDescriptor = new TrailsPropertyDescriptor(Foo.class,
+			"date", Date.class);
+		IPropertyDescriptor numberDescriptor = new TrailsPropertyDescriptor(Foo.class,
+			"nubmer", Double.class);
+		classDescriptor.getPropertyDescriptors().add(nameDescriptor);
+		classDescriptor.getPropertyDescriptors().add(dateDescriptor);
+		classDescriptor.getPropertyDescriptors().add(numberDescriptor);
+		propertyTable.setClassDescriptor(classDescriptor);
+		assertEquals("got 3", 3, propertyTable.getPropertyDescriptors().size());
+		nameDescriptor.setHidden(true);
+		assertEquals("got 2", 2, propertyTable.getPropertyDescriptors().size());
+		assertFalse(propertyTable.getPropertyDescriptors().contains(nameDescriptor));
+
+		propertyTable.setPropertyNames(new String[]{"date", "name"});
+		assertTrue(propertyTable.getPropertyDescriptors().contains(nameDescriptor));
+		assertEquals("got 2", 2, propertyTable.getPropertyDescriptors().size());
+		assertEquals("first one is date", dateDescriptor,
+			propertyTable.getPropertyDescriptors().get(0));
+	}
 }

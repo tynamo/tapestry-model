@@ -18,18 +18,17 @@ import com.gargoylesoftware.htmlunit.html.HtmlPage;
 
 /**
  * Chris Nelson
- *
  */
 public class AssignedIdentifierTest extends FunctionalTest
 {
-    public void testStringId() throws Exception
-    {
-        HtmlPage listThing2sPage = clickLinkOnPage(startPage, "List Thing2s");
-        HtmlPage newThing2Page = clickLinkOnPage(listThing2sPage, "New Thing2");
-        HtmlForm newThing2Form = getFirstForm(newThing2Page);
-        newThing2Form.getInputByName("idStringField").setValueAttribute("blah");
-        newThing2Page = clickButton(newThing2Form, "Apply");
-        assertNull("no errors", getErrorDiv(newThing2Page));
-        assertEquals("right id", "blah", getId("Identifier", newThing2Page));
-    }
+	public void testStringId() throws Exception
+	{
+		HtmlPage listThing2sPage = clickLinkOnPage(startPage, "List Thing2s");
+		HtmlPage newThing2Page = clickLinkOnPage(listThing2sPage, "New Thing2");
+		HtmlForm newThing2Form = getFirstForm(newThing2Page);
+		newThing2Form.getInputByName("idStringField").setValueAttribute("blah");
+		newThing2Page = clickButton(newThing2Form, "Apply");
+		assertNull("no errors", getErrorDiv(newThing2Page));
+		assertEquals("right id", "blah", getId("Identifier", newThing2Page));
+	}
 }

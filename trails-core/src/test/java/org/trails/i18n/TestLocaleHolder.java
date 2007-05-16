@@ -7,15 +7,15 @@ import org.apache.hivemind.service.ThreadLocale;
 public class TestLocaleHolder implements LocaleHolder
 {
 
-    public Locale getLocale()
-    {
-        return null;
-    }
+	public Locale getLocale()
+	{
+		return null;
+	}
 
-    public void setThreadLocale(ThreadLocale threadLocale)
-    {
-        // TODO Auto-generated method stub
-        
-    }
+	public void setThreadLocale(ThreadLocale threadLocale)
+	{
+		// TODO Auto-generated method stub
+
+	}
 
 }
