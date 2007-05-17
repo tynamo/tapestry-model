@@ -14,7 +14,10 @@
 	</parent>
 
 	<modules>
+		<module>trails-test</module>
 		<module>trails-core</module>
+		<module>trails-hibernate</module>
+		<module>trails-security</module>
 	</modules>
 
 	<build>
