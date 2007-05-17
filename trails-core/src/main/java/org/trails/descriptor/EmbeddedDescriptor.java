@@ -1,9 +1,4 @@
-package org.trails.hibernate;
-
-import org.trails.descriptor.IClassDescriptor;
-import org.trails.descriptor.IDescriptor;
-import org.trails.descriptor.IPropertyDescriptor;
-import org.trails.descriptor.TrailsClassDescriptor;
+package org.trails.descriptor;
 
 public class EmbeddedDescriptor extends TrailsClassDescriptor implements IPropertyDescriptor
 {
