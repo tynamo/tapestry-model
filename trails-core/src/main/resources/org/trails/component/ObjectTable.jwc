@@ -1,0 +1,29 @@
+<!DOCTYPE component-specification PUBLIC "-//Apache Software Foundation//Tapestry Specification 4.0//EN" "http://jakarta.apache.org/tapestry/dtd/Tapestry_4_0.dtd">
+<component-specification class="org.trails.component.ObjectTable" allow-body="yes" allow-informal-parameters="yes" deprecated="no">
+	<description>Produces a table for the list of instances</description>
+	<parameter name="classDescriptor" default-value="page.classDescriptor" required="no" cache="yes" deprecated="no"/>
+	<parameter name="showCollections" default-value="false" required="no" cache="yes" deprecated="no"/>
+	<parameter name="propertyNames" required="no" default-value="null" cache="yes" deprecated="no"/>
+
+
+	<parameter name="object" cache="no" default-value="currentObject"/>
+	<parameter name="rowsClass" cache="no"/>
+	<parameter name="pageSize" default-value="10"/>
+
+	<component id="table" inherit-informal-parameters="yes" type="contrib:Table">
+		<inherited-binding name="row" parameter-name="object"/>
+		<binding name="source">source</binding>
+		<binding name="columns">columns</binding>
+		<inherited-binding name="rowsClass" parameter-name="rowsClass"/>
+		<binding name="pageSize">pageSize</binding>
+	</component>
+
+	<component id="editLink" type="EditLink" inherit-informal-parameters="no">
+		<binding name="model">object</binding>
+	</component>
+	<component id="linkInsert" type="Insert" inherit-informal-parameters="no">
+		<binding name="value">object[linkProperty]</binding>
+	</component>
+	<component id="linkColumnValue" type="Block" inherit-informal-parameters="no"/>
+	<property name="currentObject"/>
+</component-specification>

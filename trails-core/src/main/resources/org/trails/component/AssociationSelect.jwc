@@ -1,0 +1,11 @@
+<!DOCTYPE component-specification PUBLIC "-//Apache Software Foundation//Tapestry Specification 4.0//EN" "http://jakarta.apache.org/tapestry/dtd/Tapestry_4_0.dtd">
+<component-specification class="org.trails.component.AssociationSelect" allow-body="yes" allow-informal-parameters="yes">
+	<description>produces a select list for an association property</description>
+
+	<parameter name="criteria" required="no"/>
+	<parameter name="allowNone" required="no" default-value="not(propertyDescriptor.required)"/>
+
+	<property name="propertySelectionModel"/>
+
+	<component id="select" type="PropertySelection" inherit-informal-parameters="yes"/>
+</component-specification>
