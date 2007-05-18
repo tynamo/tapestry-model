@@ -11,7 +11,7 @@ import org.trails.component.ClassDescriptorComponent;
 import org.trails.descriptor.BlockFinder;
 import org.trails.descriptor.IClassDescriptor;
 import org.trails.descriptor.IPropertyDescriptor;
-import org.trails.page.ListPage;
+import org.trails.page.HibernateListPage;
 import org.trails.page.PageResolver;
 import org.trails.page.TrailsPage.PageType;
 
@@ -39,7 +39,7 @@ public abstract class SearchForm extends ClassDescriptorComponent implements Pag
 
 	public void search(IRequestCycle cycle)
 	{
-		ListPage listPage = (ListPage) getPageResolver().resolvePage(cycle,
+		HibernateListPage listPage = (HibernateListPage) getPageResolver().resolvePage(cycle,
 			getClassDescriptor().getType().getName(),
 			PageType.LIST);
 		listPage.setCriteria(getCriteria());

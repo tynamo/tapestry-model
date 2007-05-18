@@ -20,17 +20,8 @@ import java.util.List;
 
 import ognl.Ognl;
 import ognl.OgnlException;
-import org.hibernate.Criteria;
-import org.hibernate.EntityMode;
-import org.hibernate.HibernateException;
-import org.hibernate.LockMode;
-import org.hibernate.Session;
-import org.hibernate.criterion.CriteriaSpecification;
-import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Expression;
-import org.hibernate.criterion.MatchMode;
-import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Restrictions;
+import org.hibernate.*;
+import org.hibernate.criterion.*;
 import org.hibernate.metadata.ClassMetadata;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
@@ -43,24 +34,19 @@ import org.trails.component.Utils;
 import org.trails.descriptor.DescriptorService;
 import org.trails.descriptor.IClassDescriptor;
 import org.trails.descriptor.IPropertyDescriptor;
+import org.trails.persistence.HibernatePersistenceService;
 import org.trails.persistence.PersistenceException;
-import org.trails.persistence.PersistenceService;
 import org.trails.validation.ValidationException;
 
-/**
- * @author fus8882
- *         <p/>
- *         TODO To change the template for this generated type comment go to Window - Preferences - Java - Code Style -
- *         Code Templates
- */
 public class HibernatePersistenceServiceImpl extends HibernateDaoSupport implements
-	PersistenceService, ApplicationContextAware
+	HibernatePersistenceService, ApplicationContextAware
 {
+
 	ApplicationContext appContext = null;
 	private DescriptorService _descriptorService = null;
 
 	/**
-	 * We need this because cylcic reference between HibernatePersistenceService and TrailsDescriptorService
+	 * We need this because cylcic reference between HibernatePersistenceServiceImpl and TrailsDescriptorService
 	 */
 	public DescriptorService getDescriptorService()
 	{
@@ -72,12 +58,12 @@ public class HibernatePersistenceServiceImpl extends HibernateDaoSupport impleme
 	}
 
 
-	/*
-		* (non-Javadoc)
-		*
-		* @see org.blah.service.IPersistenceService#getInstance(java.lang.Class,
-		*      java.io.Serializable)
-		*/
+	/**
+	 * (non-Javadoc)
+	 *
+	 * @see org.blah.service.IPersistenceService#getInstance(java.lang.Class,
+	 *java.io.Serializable)
+	 */
 	@Transactional
 	public <T> T getInstance(final Class<T> type, final Serializable id)
 	{
@@ -107,6 +93,11 @@ public class HibernatePersistenceServiceImpl extends HibernateDaoSupport impleme
 				return alterCriteria(criteria).list();
 			}
 		});
+	}
+
+	public <T> List<T> getInstances(Class<T> type, int startIndex, int maxResults)
+	{
+		return getInstances(DetachedCriteria.forClass(type), startIndex, maxResults);
 	}
 
 	/*
@@ -171,11 +162,11 @@ public class HibernatePersistenceServiceImpl extends HibernateDaoSupport impleme
 	}
 
 
-	/*
-		 * (non-Javadoc)
-		 *
-		 * @see org.trails.persistence.PersistenceService#getInstance(final Class<T> type)
-		 */
+	/**
+	 * (non-Javadoc)
+	 *
+	 * @see org.trails.persistence.PersistenceService#getInstance(finalClass<T> type)
+	 */
 	@Transactional
 	public <T> T getInstance(final Class<T> type)
 	{
@@ -234,14 +225,6 @@ public class HibernatePersistenceServiceImpl extends HibernateDaoSupport impleme
 								} else if (propertyDescriptor.isObjectReference())
 								{
 									//'one'-end of many-to-one -> just match the identifier
-									Object identifierValue = Ognl.getValue(descriptorService
-										.getClassDescriptor(value.getClass()).getIdentifierDescriptor().getName(),
-										value);
-									searchCriteria.createCriteria(propertyName)
-										.add(Restrictions.idEq(identifierValue));
-								} else if (propertyDescriptor.isOwningObjectReference())
-								{
-									//'one'-end of one-to-one -> just match the identifier
 									Object identifierValue = Ognl.getValue(descriptorService
 										.getClassDescriptor(value.getClass()).getIdentifierDescriptor().getName(),
 										value);
@@ -377,7 +360,7 @@ public class HibernatePersistenceServiceImpl extends HibernateDaoSupport impleme
 	}
 
 	/**
-	 * @see org.trails.persistence.PersistenceService#merge(java.lang.Object)
+	 * @see org.trails.persistence.HibernatePersistenceService#saveOrUpdate(java.lang.Object)
 	 */
 	@Transactional
 	public <T> T merge(T instance)
@@ -393,7 +376,7 @@ public class HibernatePersistenceServiceImpl extends HibernateDaoSupport impleme
 	}
 
 	/**
-	 * @see org.trails.persistence.PersistenceService#saveOrUpdate(java.lang.Object)
+	 * @see org.trails.persistence.HibernatePersistenceService#saveOrUpdate(java.lang.Object)
 	 */
 	@Transactional
 	public <T> T saveOrUpdate(T instance) throws ValidationException

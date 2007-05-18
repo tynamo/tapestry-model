@@ -12,12 +12,12 @@ import org.trails.TrailsRuntimeException;
 import org.trails.descriptor.DescriptorService;
 import org.trails.descriptor.IClassDescriptor;
 import org.trails.descriptor.IPropertyDescriptor;
-import org.trails.persistence.PersistenceService;
+import org.trails.persistence.HibernatePersistenceService;
 
 public aspect CheckForOrphansAspect
 {
-	private PersistenceService persistenceService;
-	
+	private HibernatePersistenceService persistenceService;
+
 	private DescriptorService descriptorService;
 
 	public DescriptorService getDescriptorService()
@@ -30,21 +30,21 @@ public aspect CheckForOrphansAspect
 		this.descriptorService = descriptorService;
 	}
 
-	public PersistenceService getPersistenceService()
+	public HibernatePersistenceService getPersistenceService()
 	{
 		return persistenceService;
 	}
 
-	public void setPersistenceService(PersistenceService persistenceService)
+	public void setPersistenceService(HibernatePersistenceService persistenceService)
 	{
 		this.persistenceService = persistenceService;
 	}
-	
-    pointcut removeWithAssertNoOrphans(AssertNoOrphans assertNoOrphans, Object removee) : execution(* PersistenceService.remove(..))
+
+    pointcut removeWithAssertNoOrphans(AssertNoOrphans assertNoOrphans, Object removee) : execution(* HibernatePersistenceService.remove(..))
     && @args(assertNoOrphans) && args(removee);
 
     before(AssertNoOrphans assertNoOrphans, Object removee) : removeWithAssertNoOrphans(assertNoOrphans, removee)
-    {	
+    {
     	Class orphanClass = assertNoOrphans.value();
     	if (!orphanClass.equals(Object.class))
     	{
@@ -71,7 +71,7 @@ public aspect CheckForOrphansAspect
     		throw new TrailsRuntimeException(oe);
     	}
     }
-    
+
     private String buildMessage(AssertNoOrphans assertNoOrphans, String defaultMessage)
     {
     	if (assertNoOrphans.message().length() == 0)
@@ -83,7 +83,7 @@ public aspect CheckForOrphansAspect
     		return assertNoOrphans.message();
     	}
     }
-    
+
 	private void checkForOrphansUsingClass(AssertNoOrphans assertNoOrphans, Object removee)
 	{
 		Class orphanClass = assertNoOrphans.value();
@@ -99,8 +99,8 @@ public aspect CheckForOrphansAspect
 				List instances = getPersistenceService().getInstances(criteria);
 				if (instances.size() > 0)
 				{
-					String defaultMessage = "This " + removeeDescriptor.getDisplayName() + 
-						" cannot be removed because there is a " + orphanDescriptor.getDisplayName() + 
+					String defaultMessage = "This " + removeeDescriptor.getDisplayName() +
+						" cannot be removed because there is a " + orphanDescriptor.getDisplayName() +
 						" that refers to it.";
 					throw new OrphanException(buildMessage(assertNoOrphans, defaultMessage));
 				}

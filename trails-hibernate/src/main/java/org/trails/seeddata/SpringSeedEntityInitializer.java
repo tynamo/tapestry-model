@@ -16,20 +16,20 @@ import org.springframework.context.ApplicationContextAware;
 import org.trails.descriptor.DescriptorService;
 import org.trails.descriptor.IClassDescriptor;
 import org.trails.descriptor.IPropertyDescriptor;
-import org.trails.persistence.PersistenceService;
+import org.trails.persistence.HibernatePersistenceService;
 import org.trails.validation.ValidateUniqueness;
 
 public class SpringSeedEntityInitializer implements ApplicationContextAware, SeedDataInitializer
 {
 	private static final Log log = LogFactory.getLog(SpringSeedEntityInitializer.class);
 
-	private PersistenceService persistenceService;
+	private HibernatePersistenceService persistenceService;
 
 	private ApplicationContext applicationContext;
 
 	private DescriptorService descriptorService;
 
-	public void setPersistenceService(PersistenceService persistenceService)
+	public void setPersistenceService(HibernatePersistenceService persistenceService)
 	{
 		this.persistenceService = persistenceService;
 	}

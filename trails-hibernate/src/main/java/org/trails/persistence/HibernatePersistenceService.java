@@ -11,42 +11,13 @@
  */
 package org.trails.persistence;
 
-import java.io.Serializable;
 import java.util.List;
 
 import org.hibernate.criterion.DetachedCriteria;
 
 
-/**
- * @author fus8882
- *         <p/>
- *         TODO To change the template for this generated type comment go to
- *         Window - Preferences - Java - Code Style - Code Templates
- */
-public interface HibernatePersistenceService
+public interface HibernatePersistenceService extends PersistenceService
 {
-	public <T> T getInstance(Class<T> type, Serializable id);
-
-	public <T> List<T> getAllInstances(Class<T> type);
-
-	/**
-	 * @return a List containing all the classes this persistence
-	 *         service knows about
-	 */
-	public List getAllTypes();
-
-	public <T> T save(T instance);
-
-	public void remove(Object instance);
-
-	/**
-	 * A convenience method for getting a singleton instance of specific type
-	 *
-	 * @param <T>  Specific type of the entity
-	 * @param type Type of singleton entity you want return
-	 * @return Returns the singleton entity of requested type
-	 */
-	public <T> T getInstance(final Class<T> type);
 
 	public <T> T getInstance(DetachedCriteria criteria);
 

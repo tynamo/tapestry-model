@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.trails.validation;
 
@@ -10,14 +10,14 @@ import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 import org.trails.descriptor.DescriptorService;
 import org.trails.descriptor.IClassDescriptor;
-import org.trails.persistence.PersistenceService;
+import org.trails.persistence.HibernatePersistenceService;
 
 public aspect ValidateUniqueAspect
 {
-    private PersistenceService persistenceService;
-    
+    private HibernatePersistenceService persistenceService;
+
     private DescriptorService descriptorService;
-    
+
     public DescriptorService getDescriptorService()
     {
         return descriptorService;
@@ -28,34 +28,33 @@ public aspect ValidateUniqueAspect
         this.descriptorService = descriptorService;
     }
 
-    public PersistenceService getPersistenceService()
+    public HibernatePersistenceService getPersistenceService()
     {
         return persistenceService;
     }
 
-    public void setPersistenceService(PersistenceService persistenceService)
+    public void setPersistenceService(HibernatePersistenceService persistenceService)
     {
         this.persistenceService = persistenceService;
     }
 
-    pointcut saveWithUnique(ValidateUniqueness validateUniqueness, Object savee) : 
-    	(execution(* PersistenceService.save(..)) && @args(validateUniqueness) && args(savee))
-    	|| (execution(* PersistenceService.merge(..)) && @args(validateUniqueness) && args(savee));
-    
+    pointcut saveWithUnique(ValidateUniqueness validateUniqueness, Object savee) :
+    	(execution(* HibernatePersistenceService.save(..)) && @args(validateUniqueness) && args(savee))
+    	|| (execution(* HibernatePersistenceService.merge(..)) && @args(validateUniqueness) && args(savee));
+
     before(ValidateUniqueness validateUniqueness, Object savee) : saveWithUnique(validateUniqueness, savee)
     {
         DetachedCriteria criteria = DetachedCriteria.forClass(savee.getClass());
         IClassDescriptor descriptor = getDescriptorService().getClassDescriptor(savee.getClass());
-		
+
 		if (descriptor == null)
 			throw new RuntimeException("Class " + savee.getClass() + " isn't mapped in Trails.");
- 
+
         try
         {
             String propertyName = validateUniqueness.property();
             Object value = PropertyUtils.getProperty(savee, propertyName);
-            if (value == null) criteria.add(Restrictions.isNull(propertyName) );
-            else criteria.add(Restrictions.eq(propertyName, value));
+            criteria.add(Restrictions.eq(propertyName, value));
             String idPropertyName = descriptor.getIdentifierDescriptor().getName();
             Object idValue = PropertyUtils.getProperty(savee, idPropertyName);
             if (idValue != null)
@@ -79,8 +78,8 @@ public aspect ValidateUniqueAspect
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
- 
+
     }
-    
-    
+
+
 }

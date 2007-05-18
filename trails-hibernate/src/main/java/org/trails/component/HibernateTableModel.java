@@ -11,6 +11,7 @@ import org.trails.persistence.HibernatePersistenceService;
 
 public class HibernateTableModel implements IBasicTableModel
 {
+
 	private HibernatePersistenceService persistenceService;
 
 	private DetachedCriteria criteria;
@@ -19,6 +20,26 @@ public class HibernateTableModel implements IBasicTableModel
 	{
 		super();
 		this.persistenceService = persistenceService;
+		this.criteria = criteria;
+	}
+
+	public HibernatePersistenceService getPersistenceService()
+	{
+		return persistenceService;
+	}
+
+	public void setPersistenceService(HibernatePersistenceService persistenceService)
+	{
+		this.persistenceService = persistenceService;
+	}
+
+	public DetachedCriteria getCriteria()
+	{
+		return criteria;
+	}
+
+	public void setCriteria(DetachedCriteria criteria)
+	{
 		this.criteria = criteria;
 	}
 
@@ -41,25 +62,4 @@ public class HibernateTableModel implements IBasicTableModel
 		DetachedCriteria clonedCriteria = (DetachedCriteria) SerializationUtils.clone(getCriteria());
 		return getPersistenceService().count(clonedCriteria);
 	}
-
-	public DetachedCriteria getCriteria()
-	{
-		return criteria;
-	}
-
-	public void setCriteria(DetachedCriteria criteria)
-	{
-		this.criteria = criteria;
-	}
-
-	public HibernatePersistenceService getPersistenceService()
-	{
-		return persistenceService;
-	}
-
-	public void setPersistenceService(HibernatePersistenceService persistenceService)
-	{
-		this.persistenceService = persistenceService;
-	}
-
 }

@@ -63,11 +63,11 @@ import org.trails.descriptor.*;
  * it's aggregated list of decorated property descriptors into it's own
  * list/cache of referenced class descriptors
  *
- * @see TrailsPropertyDescriptor
- * @see ObjectReferenceDescriptor
- * @see OwningObjectReferenceDescriptor
- * @see CollectionDescriptor
- * @see EmbeddedDescriptor
+ * @see org.trails.descriptor.TrailsPropertyDescriptor
+ * @see org.trails.descriptor.ObjectReferenceDescriptor
+ * @see org.trails.descriptor.OwningObjectReferenceDescriptor
+ * @see org.trails.descriptor.CollectionDescriptor
+ * @see org.trails.descriptor.EmbeddedDescriptor
  */
 public class HibernateDescriptorDecorator implements DescriptorDecorator
 {

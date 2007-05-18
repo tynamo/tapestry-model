@@ -38,12 +38,12 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>com.amneris.trails</groupId>
+			<groupId>org.trailsframework</groupId>
 			<artifactId>trails-core</artifactId>
 			<version>1.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
-			<groupId>com.amneris.trails</groupId>
+			<groupId>org.trailsframework</groupId>
 			<artifactId>trails-test</artifactId>
 			<version>1.1-SNAPSHOT</version>
 			<scope>test</scope>
@@ -89,14 +89,34 @@
 		<dependency>
 			<groupId>com.javaforge.tapestry</groupId>
 			<artifactId>tapernate</artifactId>
-			<version>0.1-20060609.152149-15</version>
+			<!--
+				Since there's no official Tapernate 0.1 release,
+				we use a snapshot posted as 0.0.9 release into our own repository
+				<version>0.1-20060609.152149-15</version>
+			-->
+			<version>0.0.9</version>
 			<exclusions>
 				<exclusion>
 					<groupId>easymock</groupId>
 					<artifactId>easymock</artifactId>
 				</exclusion>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>junit</groupId>
+					<artifactId>junit</artifactId>
+				</exclusion>
 			</exclusions>
 		</dependency>
+		<!-- Needed by Tapernate -->
+		<dependency>
+			<groupId>commons-collections</groupId>
+			<artifactId>commons-collections</artifactId>
+			<version>3.1</version>
+		</dependency>
+		<!-- /Needed by Tapernate -->
 	</dependencies>
 
 </project>
