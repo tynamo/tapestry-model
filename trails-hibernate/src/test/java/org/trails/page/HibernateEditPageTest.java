@@ -46,7 +46,7 @@ import org.trails.validation.ValidationException;
  *         TODO To change the template for this generated type comment go to
  *         Window - Preferences - Java - Code Style - Code Templates
  */
-public class EditPageTest extends ComponentTest
+public class HibernateEditPageTest extends ComponentTest
 {
 	Mock cycleMock = new Mock(IRequestCycle.class);
 	Baz baz = new Baz();

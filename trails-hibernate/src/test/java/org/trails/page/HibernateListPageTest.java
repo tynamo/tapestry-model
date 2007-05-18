@@ -29,7 +29,7 @@ import org.trails.test.Foo;
  *         TODO To change the template for this generated type comment go to
  *         Window - Preferences - Java - Code Style - Code Templates
  */
-public class ListPageTest extends ComponentTest
+public class HibernateListPageTest extends ComponentTest
 {
 	public static final String PAGE_NAME = "fooList";
 	HibernateListPage listPage;

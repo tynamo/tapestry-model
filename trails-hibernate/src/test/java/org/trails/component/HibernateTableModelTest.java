@@ -15,7 +15,7 @@ import org.trails.descriptor.TrailsPropertyDescriptor;
 import org.trails.persistence.HibernatePersistenceService;
 import org.trails.test.Foo;
 
-public class TrailsTableModelTest extends MockObjectTestCase
+public class HibernateTableModelTest extends MockObjectTestCase
 {
 
 	HibernateTableModel trailsTableModel;
