@@ -28,14 +28,10 @@ import org.apache.tapestry.annotations.InjectObject;
 import org.apache.tapestry.annotations.InjectState;
 import org.apache.tapestry.contrib.palette.SortMode;
 import org.apache.tapestry.form.IPropertySelectionModel;
-import org.hibernate.NonUniqueObjectException;
-import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Restrictions;
 import org.trails.TrailsRuntimeException;
 import org.trails.callback.CallbackStack;
 import org.trails.callback.CollectionCallback;
 import org.trails.callback.EditCallback;
-import org.trails.callback.EditCollectionMemberCallback;
 import org.trails.descriptor.CollectionDescriptor;
 import org.trails.descriptor.DescriptorService;
 import org.trails.descriptor.IClassDescriptor;
@@ -89,9 +85,11 @@ public abstract class EditCollection extends TrailsComponent
 	private List selected = new ArrayList();
 
 
-	/* (non-Javadoc)
-		 * @see org.apache.tapestry.AbstractComponent#prepareForRender(org.apache.tapestry.IRequestCycle)
-		 */
+	/**
+	 * (non-Javadoc)
+	 *
+	 * @see org.apache.tapestry.AbstractComponent#prepareForRender(org.apache.tapestry.IRequestCycle)
+	 */
 	protected void prepareForRender(IRequestCycle arg0)
 	{
 		// TODO Auto-generated method stub
@@ -122,7 +120,7 @@ public abstract class EditCollection extends TrailsComponent
 
 	public IPage edit(Object member)
 	{
-		EditCollectionMemberCallback callback = new EditCollectionMemberCallback(
+		CollectionCallback callback = new CollectionCallback(
 			getPage().getRequestCycle().getPage().getPageName(),
 			getModel(),
 			getCollectionDescriptor());
@@ -131,13 +129,7 @@ public abstract class EditCollection extends TrailsComponent
 			getPage().getRequestCycle(),
 			Utils.checkForCGLIB(member.getClass()).getName(),
 			PageType.EDIT);
-		try
-		{
-			getPersistenceService().reattach(member);
-		} catch (NonUniqueObjectException e)
-		{
-			member = getPersistenceService().reload(member);
-		}
+
 		editPage.setModel(member);
 		return editPage;
 	}
@@ -261,9 +253,11 @@ public abstract class EditCollection extends TrailsComponent
 	}
 
 
-	/* (non-Javadoc)
-		 * @see java.lang.Object#equals(java.lang.Object)
-		 */
+	/**
+	 * (non-Javadoc)
+	 *
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
 	public boolean equals(Object obj)
 	{
 		// TODO Auto-generated method stub
@@ -271,9 +265,11 @@ public abstract class EditCollection extends TrailsComponent
 	}
 
 
-	/* (non-Javadoc)
-		 * @see java.lang.Object#hashCode()
-		 */
+	/**
+	 * (non-Javadoc)
+	 *
+	 * @see java.lang.Object#hashCode()
+	 */
 	public int hashCode()
 	{
 		return HashCodeBuilder.reflectionHashCode(this);
@@ -298,37 +294,13 @@ public abstract class EditCollection extends TrailsComponent
 	public IPropertySelectionModel getSelectionModel()
 	{
 		IClassDescriptor elementDescriptor = getDescriptorService().getClassDescriptor(getCollectionDescriptor().getElementType());
-
 		// don't allow use to select from all here
 		if (getCollectionDescriptor().isChildRelationship())
 		{
 			return new IdentifierSelectionModel(getSelectedList(), elementDescriptor.getIdentifierDescriptor().getName());
-		}
-		// but do here
-		else if (getCollectionDescriptor().getInverseProperty() != null && getCollectionDescriptor().isOneToMany())
-		{
-			DetachedCriteria criteria = DetachedCriteria.forClass(getCollectionDescriptor().getElementType());
-			String identifier = elementDescriptor.getIdentifierDescriptor().getName();
-			if (getModel() != null)
-			{
-				try
-				{
-					criteria.add(
-						Restrictions.disjunction()
-							.add(Restrictions.isNull(getCollectionDescriptor().getInverseProperty()))
-							.add(Restrictions.eq(getCollectionDescriptor().getInverseProperty() + "." + identifier, Ognl.getValue(elementDescriptor.getIdentifierDescriptor().getName(), getModel()))));
-				} catch (OgnlException e)
-				{
-					LOG.error(e.getMessage());
-				}
-			} else
-			{
-				criteria.add(Restrictions.isNull(getCollectionDescriptor().getInverseProperty()));
-			}
-
-			return new IdentifierSelectionModel(getPersistenceService().getInstances(criteria), elementDescriptor.getIdentifierDescriptor().getName());
 		} else
 		{
+			// but do here
 			return new IdentifierSelectionModel(getPersistenceService().getAllInstances(getCollectionDescriptor().getElementType()),
 				elementDescriptor.getIdentifierDescriptor().getName());
 		}

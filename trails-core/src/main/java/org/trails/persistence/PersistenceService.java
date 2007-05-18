@@ -14,20 +14,14 @@ package org.trails.persistence;
 import java.io.Serializable;
 import java.util.List;
 
-import org.hibernate.criterion.DetachedCriteria;
-
-
-/**
- * @author fus8882
- *         <p/>
- *         TODO To change the template for this generated type comment go to
- *         Window - Preferences - Java - Code Style - Code Templates
- */
 public interface PersistenceService
 {
+
 	public <T> T getInstance(Class<T> type, Serializable id);
 
 	public <T> List<T> getAllInstances(Class<T> type);
+
+	public <T> List<T> getInstances(Class<T> type, int startIndex, int maxResults);
 
 	/**
 	 * @return a List containing all the classes this persistence
@@ -47,32 +41,5 @@ public interface PersistenceService
 	 * @return Returns the singleton entity of requested type
 	 */
 	public <T> T getInstance(final Class<T> type);
-
-	public <T> T getInstance(DetachedCriteria criteria);
-
-	public List getInstances(DetachedCriteria criteria);
-
-	public List getInstances(DetachedCriteria criteria, int startIndex, int maxResults);
-
-	public int count(DetachedCriteria criteria);
-
-	/**
-	 * @param model to attach to the current persistence session
-	 */
-	public void reattach(Object model);
-
-	/**
-	 * Does a query by example
-	 *
-	 * @param example
-	 * @return
-	 */
-	public List getInstances(Object example);
-
-	public <T> T reload(T instance);
-
-	public <T> T merge(T instance);
-
-	public <T> T saveOrUpdate(T instance);
 
 }

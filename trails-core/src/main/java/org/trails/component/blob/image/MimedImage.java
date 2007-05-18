@@ -12,7 +12,6 @@ import org.apache.tapestry.annotations.InjectObject;
 import org.apache.tapestry.annotations.Parameter;
 import org.apache.tapestry.asset.AssetFactory;
 import org.apache.tapestry.html.Image;
-import org.hibernate.LazyInitializationException;
 import org.trails.component.blob.ITrailsBlob;
 import org.trails.descriptor.BlobDescriptorExtension;
 import org.trails.descriptor.IPropertyDescriptor;
@@ -120,21 +119,15 @@ public abstract class MimedImage extends Image
 
 		ITrailsBlob trailsBlob = null;
 		String contentType = null;
-		try
+
+		if (getBlobDescriptorExtension().isBytes())
 		{
-			if (getBlobDescriptorExtension().isBytes())
-			{
-				trailsBlob = (ITrailsBlob) getModel();
-			} else if (getBlobDescriptorExtension().isITrailsBlob())
-			{
-				trailsBlob = (ITrailsBlob) getBytes();
-			}
-			contentType = trailsBlob.getContentType();
-		} catch (LazyInitializationException e)
+			trailsBlob = (ITrailsBlob) getModel();
+		} else if (getBlobDescriptorExtension().isITrailsBlob())
 		{
-			getPersistenceService().reattach(trailsBlob);
-			contentType = trailsBlob.getContentType();
+			trailsBlob = (ITrailsBlob) getBytes();
 		}
+		contentType = trailsBlob.getContentType();
 
 		if (contentType == null)
 		{

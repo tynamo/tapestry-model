@@ -14,7 +14,7 @@ import org.trails.descriptor.DescriptorDecorator;
 import org.trails.descriptor.IClassDescriptor;
 import org.trails.descriptor.IDescriptor;
 import org.trails.descriptor.IPropertyDescriptor;
-import org.trails.hibernate.EmbeddedDescriptor;
+import org.trails.descriptor.EmbeddedDescriptor;
 
 /**
  * This class uses the annotations on a given class or property to modify its

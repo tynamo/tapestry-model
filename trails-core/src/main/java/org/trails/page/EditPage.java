@@ -16,7 +16,6 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.annotations.Bean;
 import org.apache.tapestry.annotations.Lifecycle;
 import org.apache.tapestry.callback.ICallback;
-import org.hibernate.validator.InvalidStateException;
 import org.trails.callback.AssociationCallback;
 import org.trails.callback.CollectionCallback;
 import org.trails.callback.EditCallback;
@@ -80,10 +79,6 @@ public abstract class EditPage extends ModelPage implements IExternalPage
 			} catch (PersistenceException pe)
 			{
 				getDelegate().record(pe);
-				return false;
-			} catch (InvalidStateException ivex)
-			{
-				getDelegate().record(getClassDescriptor(), ivex);
 				return false;
 			}
 			// }

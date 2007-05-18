@@ -13,17 +13,11 @@ package org.trails.component;
 
 import org.trails.descriptor.IIdentifierDescriptor;
 import org.trails.descriptor.IPropertyDescriptor;
-import org.trails.hibernate.HasAssignedIdentifier;
+import org.trails.page.ModelPage;
 
-
-/**
- * @author fus8882
- *         <p/>
- *         TODO To change the template for this generated type comment go to
- *         Window - Preferences - Java - Code Style - Code Templates
- */
 public abstract class Identifier extends PropertyEditor
 {
+
 	public abstract IPropertyDescriptor getDescriptor();
 
 	public abstract void setDescriptor(IPropertyDescriptor Descriptor);
@@ -32,14 +26,8 @@ public abstract class Identifier extends PropertyEditor
 
 	public abstract void setModel(Object Model);
 
-	/**
-	 * @return
-	 */
 	public boolean isEditable()
 	{
-		if (!((IIdentifierDescriptor) getDescriptor()).isGenerated())
-		{
-			return !((HasAssignedIdentifier) getModel()).isSaved();
-		} else return false;
+		return !((IIdentifierDescriptor) getDescriptor()).isGenerated() && ((ModelPage) getPage()).isModelNew();
 	}
 }

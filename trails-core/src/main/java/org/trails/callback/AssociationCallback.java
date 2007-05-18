@@ -38,7 +38,7 @@ public class AssociationCallback extends EditCallback
 	public void save(PersistenceService persistenceService, Object newObject)
 	{
 		executeOgnlExpression(od.findAddExpression(), newObject);
-		persistenceService.merge(getModel());
+		persistenceService.save(getModel());
 	}
 
 	public void remove(PersistenceService persistenceService, Object object)
@@ -48,7 +48,7 @@ public class AssociationCallback extends EditCallback
 			Ognl.setValue(od.findAddExpression(), model, null);
 			Ognl.getValue(od.findAddExpression(), model);
 
-			persistenceService.merge(getModel());
+			persistenceService.save(getModel());
 			persistenceService.remove(object);
 		} catch (OgnlException e)
 		{

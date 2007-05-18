@@ -2,7 +2,7 @@ package org.trails.component;
 
 import org.apache.tapestry.BaseComponent;
 import org.trails.descriptor.IPropertyDescriptor;
-import org.trails.hibernate.EmbeddedDescriptor;
+import org.trails.descriptor.EmbeddedDescriptor;
 
 public abstract class EmbeddedEditor extends BaseComponent
 {

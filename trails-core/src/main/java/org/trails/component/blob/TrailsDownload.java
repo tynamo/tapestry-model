@@ -7,7 +7,6 @@ import org.apache.tapestry.IAsset;
 import org.apache.tapestry.annotations.ComponentClass;
 import org.apache.tapestry.annotations.InjectObject;
 import org.apache.tapestry.annotations.Parameter;
-import org.hibernate.LazyInitializationException;
 import org.trails.descriptor.BlobDescriptorExtension;
 import org.trails.descriptor.IClassDescriptor;
 import org.trails.descriptor.IPropertyDescriptor;
@@ -71,23 +70,16 @@ public abstract class TrailsDownload extends BaseComponent
 		ITrailsBlob trailsBlob = null;
 		String contentType = null;
 		String fileName = null;
-		try
+
+		if (getBlobDescriptorExtension().isBytes())
 		{
-			if (getBlobDescriptorExtension().isBytes())
-			{
-				trailsBlob = (ITrailsBlob) getModel();
-			} else if (getBlobDescriptorExtension().isITrailsBlob())
-			{
-				trailsBlob = (ITrailsBlob) getBytes();
-			}
-			contentType = trailsBlob.getContentType();
-			fileName = trailsBlob.getFileName();
-		} catch (LazyInitializationException e)
+			trailsBlob = (ITrailsBlob) getModel();
+		} else if (getBlobDescriptorExtension().isITrailsBlob())
 		{
-			getPersistenceService().reattach(trailsBlob);
-			contentType = trailsBlob.getContentType();
-			fileName = trailsBlob.getFileName();
+			trailsBlob = (ITrailsBlob) getBytes();
 		}
+		contentType = trailsBlob.getContentType();
+		fileName = trailsBlob.getFileName();
 
 		return new TrailsBlobAsset(getBlobService(), getClassDescriptor()
 			.getType().getName(), id, getDescriptor().getName(),

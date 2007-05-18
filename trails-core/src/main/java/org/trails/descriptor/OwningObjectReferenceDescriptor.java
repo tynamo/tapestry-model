@@ -7,7 +7,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.trails.component.AssociationMgt;
 import org.trails.component.AssociationSelect;
-import org.trails.hibernate.HibernateDescriptorDecorator;
 
 /**
  * This class represents a one-to-one association and is created by
@@ -32,7 +31,6 @@ import org.trails.hibernate.HibernateDescriptorDecorator;
  * In short this guy operates the owning side of the association for the
  * framework and gets detected as owner iff OneToOne does NOT have the mappedBy
  * attribute set
- * @see HibernateDescriptorDecorator
  * @see ObjectReferenceDescriptor
  * @see AssociationSelect
  * @see AssociationMgt

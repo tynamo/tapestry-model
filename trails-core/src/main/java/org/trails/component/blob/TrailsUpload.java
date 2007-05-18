@@ -9,7 +9,6 @@ import org.apache.tapestry.annotations.ComponentClass;
 import org.apache.tapestry.annotations.InjectObject;
 import org.apache.tapestry.annotations.Parameter;
 import org.apache.tapestry.request.IUploadFile;
-import org.hibernate.LazyInitializationException;
 import org.trails.descriptor.BlobDescriptorExtension;
 import org.trails.descriptor.IPropertyDescriptor;
 import org.trails.persistence.PersistenceService;
@@ -71,27 +70,13 @@ public abstract class TrailsUpload extends BaseComponent
 
 			if (data.length > 1)
 			{
-				try
-				{
-					trailsBlob.setFileName(file.getFileName());
-					trailsBlob.setFilePath(file.getFilePath());
-					trailsBlob.setFileExtension(file.getFilePath());
-					trailsBlob.setContentType(file.getContentType());
-					trailsBlob.setNumBytes(new Long(((byte[]) trailsBlob
-						.getBytes()).length));
-					trailsBlob.setBytes(data);
-				} catch (LazyInitializationException e)
-				{
-					getPersistenceService().reattach(trailsBlob);
-
-					trailsBlob.setFileName(file.getFileName());
-					trailsBlob.setFilePath(file.getFilePath());
-					trailsBlob.setFileExtension(file.getFilePath());
-					trailsBlob.setContentType(file.getContentType());
-					trailsBlob.setNumBytes(new Long(((byte[]) trailsBlob
-						.getBytes()).length));
-					trailsBlob.setBytes(data);
-				}
+				trailsBlob.setFileName(file.getFileName());
+				trailsBlob.setFilePath(file.getFilePath());
+				trailsBlob.setFileExtension(file.getFilePath());
+				trailsBlob.setContentType(file.getContentType());
+				trailsBlob.setNumBytes(new Long(((byte[]) trailsBlob
+					.getBytes()).length));
+				trailsBlob.setBytes(data);
 			}
 		}
 	}

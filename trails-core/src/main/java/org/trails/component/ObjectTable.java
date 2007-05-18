@@ -19,30 +19,19 @@ import org.apache.tapestry.annotations.InjectObject;
 import org.apache.tapestry.annotations.Parameter;
 import org.apache.tapestry.services.ExpressionEvaluator;
 import org.apache.tapestry.util.ComponentAddress;
-import org.hibernate.criterion.DetachedCriteria;
 import org.trails.descriptor.IPropertyDescriptor;
 import org.trails.persistence.PersistenceService;
 
 
-/**
- * @author fus8882
- *         <p/>
- *         TODO To change the template for this generated type comment go to
- *         Window - Preferences - Java - Code Style - Code Templates
- */
 public abstract class ObjectTable extends ClassDescriptorComponent
 {
+
 	public static final String LINK_COLUMN = "linkColumnValue";
 
 	public abstract boolean isShowCollections();
 
 	@InjectObject("spring:persistenceService")
 	public abstract PersistenceService getPersistenceService();
-
-	@Parameter
-	public abstract DetachedCriteria getCriteria();
-
-	public abstract void setCriteria(DetachedCriteria criteria);
 
 	@Parameter
 	public abstract List getInstances();
@@ -65,6 +54,7 @@ public abstract class ObjectTable extends ClassDescriptorComponent
 	@InjectObject("service:tapestry.ognl.ExpressionEvaluator")
 	public abstract ExpressionEvaluator getEvaluator();
 
+
 	/**
 	 * @return
 	 */
@@ -80,11 +70,12 @@ public abstract class ObjectTable extends ClassDescriptorComponent
 				if (getLinkProperty().equals(descriptor.getName())
 					&& (getClassDescriptor().isAllowSave() || getClassDescriptor()
 					.isAllowRemove()))
-				{/*
-                	Add a link for the edit page following these rules:
-                	a) Use the identifier descriptor if is displayable ( summary=true ).
-                	b) Use the first displayable property if the identifier property is not displayable (summary=false)
-                 */
+				{
+					/**
+					 Add a link for the edit page following these rules:
+					 a) Use the identifier descriptor if is displayable ( summary=true ).
+					 b) Use the first displayable property if the identifier property is not displayable (summary=false)
+					 */
 					columns.add(new TrailsTableColumn(descriptor, getEvaluator(), getLinkBlockAddress(descriptor)));
 
 				} else
@@ -162,7 +153,6 @@ public abstract class ObjectTable extends ClassDescriptorComponent
 
 		return null; //If we get here, that means we have no displayable descriptors
 		//TODO check if we should throw an exception instead
-
 	}
 
 	/**
@@ -185,10 +175,6 @@ public abstract class ObjectTable extends ClassDescriptorComponent
 
 	public Object getSource()
 	{
-		if (getInstances() == null)
-		{
-			return new TrailsTableModel(getPersistenceService(), getCriteria());
-		}
 		return getInstances();
 	}
 }

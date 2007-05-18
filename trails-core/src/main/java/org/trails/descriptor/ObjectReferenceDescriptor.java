@@ -16,14 +16,12 @@ import java.lang.reflect.InvocationTargetException;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.trails.hibernate.HibernateDescriptorDecorator;
 
 /**
  * @author Chris Nelson
  *         <p/>
  *         This class represents a to-one association and is created by
  *         HibernateDescriptorDecorator
- * @see HibernateDescriptorDecorator
  */
 public class ObjectReferenceDescriptor extends TrailsPropertyDescriptor
 {

@@ -15,10 +15,7 @@ import java.util.List;
 
 import org.apache.tapestry.IExternalPage;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.annotations.Persist;
 import org.apache.tapestry.event.PageBeginRenderListener;
-import org.apache.tapestry.event.PageEvent;
-import org.hibernate.criterion.DetachedCriteria;
 import org.trails.TrailsRuntimeException;
 import org.trails.callback.ListCallback;
 import org.trails.descriptor.IClassDescriptor;
@@ -33,38 +30,30 @@ public abstract class ListPage extends TrailsPage implements IExternalPage, Page
 {
 
 
-	@Override
-	public void pageBeginRender(PageEvent event)
-	{
-		super.pageBeginRender(event);
-//        if (!getRequestCycle().isRewinding())
-//        {
-//            setInstances(getPersistenceService().getInstances(getCriteria()));
-//        }
-	}
-
-	/* (non-Javadoc)
-		 * @see org.apache.tapestry.IExternalPage#activateExternalPage(java.lang.Object[], org.apache.tapestry.IRequestCycle)
-		 */
+	/**
+	 * (non-Javadoc)
+	 *
+	 * @see org.apache.tapestry.IExternalPage#activateExternalPage(java.lang.Object[],org.apache.tapestry.IRequestCycle)
+	 */
 	public void activateExternalPage(Object[] args, IRequestCycle cycle)
 	{
 		Class instanceClass = (Class) args[0];
+		setType(instanceClass);
 		setTypeName(instanceClass.getName());
-		setCriteria(DetachedCriteria.forClass(instanceClass));
+		reloadInstances();
 	}
 
 	public abstract List getInstances();
 
 	public abstract void setInstances(List Instances);
 
-	@Persist
-	public abstract DetachedCriteria getCriteria();
-
-	public abstract void setCriteria(DetachedCriteria Criteria);
-
 	public abstract String getTypeName();
 
 	public abstract void setTypeName(String typeName);
+
+	public abstract Class getType();
+
+	public abstract void setType(Class type);
 
 	public IClassDescriptor getClassDescriptor()
 	{
@@ -78,10 +67,18 @@ public abstract class ListPage extends TrailsPage implements IExternalPage, Page
 		}
 	}
 
-	@Override
 	public void pushCallback()
 	{
+		getCallbackStack().push(new ListCallback(getPageName(), getTypeName(), getType()));
+	}
 
-		getCallbackStack().push(new ListCallback(getPageName(), getTypeName(), getCriteria()));
+	private void loadInstances(Class clazz)
+	{
+		setInstances(getPersistenceService().getAllInstances(clazz));
+	}
+
+	public void reloadInstances()
+	{
+		loadInstances(getType());
 	}
 }
