@@ -18,7 +18,7 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.event.PageEvent;
 import org.hibernate.criterion.DetachedCriteria;
 import org.jmock.Mock;
-import org.trails.callback.ListCallback;
+import org.trails.callback.HibernateListCallback;
 import org.trails.component.ComponentTest;
 import org.trails.test.Foo;
 
@@ -32,7 +32,7 @@ import org.trails.test.Foo;
 public class ListPageTest extends ComponentTest
 {
 	public static final String PAGE_NAME = "fooList";
-	ListPage listPage;
+	HibernateListPage listPage;
 	Mock cycleMock;
 
 	List stuff = new ArrayList();
@@ -40,7 +40,7 @@ public class ListPageTest extends ComponentTest
 	public void setUp()
 	{
 
-		listPage = (ListPage) buildTrailsPage(ListPage.class);
+		listPage = (HibernateListPage) buildTrailsPage(HibernateListPage.class);
 		listPage.setPageName(PAGE_NAME);
 
 		cycleMock = new Mock(IRequestCycle.class);
@@ -75,7 +75,7 @@ public class ListPageTest extends ComponentTest
 		listPage.setTypeName(Foo.class.getName());
 		listPage.setCriteria(criteria);
 		listPage.pushCallback();
-		ListCallback listCallback = (ListCallback) listPage.getCallbackStack().getStack().pop();
+		HibernateListCallback listCallback = (HibernateListCallback) listPage.getCallbackStack().getStack().pop();
 
 		Assert.assertEquals(PAGE_NAME, listCallback.getPageName());
 		assertEquals(Foo.class.getName(), listCallback.getTypeName());

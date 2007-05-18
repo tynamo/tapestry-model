@@ -10,7 +10,7 @@ import org.trails.descriptor.IClassDescriptor;
 import org.trails.descriptor.IPropertyDescriptor;
 import org.trails.descriptor.TrailsClassDescriptor;
 import org.trails.descriptor.TrailsPropertyDescriptor;
-import org.trails.page.ListPage;
+import org.trails.page.HibernateListPage;
 import org.trails.page.PageResolver;
 import org.trails.page.TrailsPage.PageType;
 import org.trails.test.Foo;
@@ -53,7 +53,7 @@ public class SearchFormTest extends ComponentTest
 
 	public void testSearch() throws Exception
 	{
-		ListPage listPage = (ListPage) creator.newInstance(ListPage.class);
+		HibernateListPage listPage = (HibernateListPage) creator.newInstance(HibernateListPage.class);
 		searchForm.setCriteria(DetachedCriteria.forClass(Foo.class));
 		pageResolverMock.expects(once()).method("resolvePage").with(
 			isA(IRequestCycle.class),

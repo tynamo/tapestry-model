@@ -22,7 +22,7 @@ import org.trails.hibernate.HasAssignedIdentifier;
  *         TODO To change the template for this generated type comment go to
  *         Window - Preferences - Java - Code Style - Code Templates
  */
-public abstract class Identifier extends PropertyEditor
+public abstract class HibernateIdentifier extends PropertyEditor
 {
 	public abstract IPropertyDescriptor getDescriptor();
 

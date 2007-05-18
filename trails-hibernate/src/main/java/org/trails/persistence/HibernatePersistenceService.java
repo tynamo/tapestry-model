@@ -23,7 +23,7 @@ import org.hibernate.criterion.DetachedCriteria;
  *         TODO To change the template for this generated type comment go to
  *         Window - Preferences - Java - Code Style - Code Templates
  */
-public interface PersistenceService
+public interface HibernatePersistenceService
 {
 	public <T> T getInstance(Class<T> type, Serializable id);
 

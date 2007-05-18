@@ -29,7 +29,7 @@ import org.springframework.orm.hibernate3.SessionFactoryUtils;
 import org.springframework.test.AbstractTransactionalSpringContextTests;
 import org.trails.descriptor.DescriptorService;
 import org.trails.persistence.PersistenceException;
-import org.trails.persistence.PersistenceService;
+import org.trails.persistence.HibernatePersistenceService;
 import org.trails.security.domain.Role;
 import org.trails.security.domain.User;
 import org.trails.test.Ancestor;
@@ -49,8 +49,8 @@ import org.trails.test.Wibble;
  */
 public class HibernatePersistenceServiceTest extends AbstractTransactionalSpringContextTests
 {
-	PersistenceService persistenceService;
-	HibernatePersistenceService psvcWithMockTemplate;
+	HibernatePersistenceService persistenceService;
+	org.trails.hibernate.HibernatePersistenceServiceImpl psvcWithMockTemplate;
 
 	Mock templateMock = new Mock(HibernateTemplate.class);
 
@@ -60,14 +60,14 @@ public class HibernatePersistenceServiceTest extends AbstractTransactionalSpring
 
 	public void onSetUpInTransaction() throws Exception
 	{
-		persistenceService = (PersistenceService) applicationContext.getBean(
+		persistenceService = (HibernatePersistenceService) applicationContext.getBean(
 			"persistenceService");
 		sessionFactory = (SessionFactory) applicationContext.getBean("sessionFactory");
 	}
 
 	public void testIgnoreCGLIBEnhancements()
 	{
-		PersistenceService psvc = (PersistenceService) applicationContext.getBean("persistenceService");
+		HibernatePersistenceService psvc = (HibernatePersistenceService) applicationContext.getBean("persistenceService");
 		DescriptorService descSvc = (DescriptorService) applicationContext.getBean("descriptorService");
 		Foo foo = new Foo();
 		foo.setId(new Integer(1));

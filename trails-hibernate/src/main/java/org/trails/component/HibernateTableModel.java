@@ -7,15 +7,15 @@ import org.apache.tapestry.contrib.table.model.IBasicTableModel;
 import org.apache.tapestry.contrib.table.model.ITableColumn;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
-import org.trails.persistence.PersistenceService;
+import org.trails.persistence.HibernatePersistenceService;
 
-public class TrailsTableModel implements IBasicTableModel
+public class HibernateTableModel implements IBasicTableModel
 {
-	private PersistenceService persistenceService;
+	private HibernatePersistenceService persistenceService;
 
 	private DetachedCriteria criteria;
 
-	public TrailsTableModel(PersistenceService persistenceService, DetachedCriteria criteria)
+	public HibernateTableModel(HibernatePersistenceService persistenceService, DetachedCriteria criteria)
 	{
 		super();
 		this.persistenceService = persistenceService;
@@ -52,12 +52,12 @@ public class TrailsTableModel implements IBasicTableModel
 		this.criteria = criteria;
 	}
 
-	public PersistenceService getPersistenceService()
+	public HibernatePersistenceService getPersistenceService()
 	{
 		return persistenceService;
 	}
 
-	public void setPersistenceService(PersistenceService persistenceService)
+	public void setPersistenceService(HibernatePersistenceService persistenceService)
 	{
 		this.persistenceService = persistenceService;
 	}

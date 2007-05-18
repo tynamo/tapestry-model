@@ -28,7 +28,7 @@ import org.trails.validation.TrailsValidationDelegate;
  *         <p/>
  *         This page will edit an instance contained in the model property
  */
-public abstract class EditPage extends ModelPage implements IExternalPage
+public abstract class HibernateEditPage extends ModelPage implements IExternalPage
 {
 	@Bean(lifecycle = Lifecycle.REQUEST)
 	public abstract TrailsValidationDelegate getDelegate();

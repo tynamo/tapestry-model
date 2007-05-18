@@ -13,9 +13,9 @@ import org.hibernate.criterion.Restrictions;
 import org.trails.descriptor.DescriptorService;
 import org.trails.descriptor.IClassDescriptor;
 import org.trails.descriptor.IPropertyDescriptor;
-import org.trails.page.EditPage;
+import org.trails.page.HibernateEditPage;
 import org.trails.page.PageResolver;
-import org.trails.persistence.PersistenceService;
+import org.trails.persistence.HibernatePersistenceService;
 
 /**
  * @author Chris Nelson
@@ -27,10 +27,10 @@ import org.trails.persistence.PersistenceService;
  *         Additionally, a detached criteria is available to automatically filter out
  *         associations without owners, or get all owners by default.
  */
-public abstract class AssociationSelect extends BaseComponent
+public abstract class HibernateAssociationSelect extends BaseComponent
 {
 	@InjectObject("spring:persistenceService")
-	public abstract PersistenceService getPersistenceService();
+	public abstract HibernatePersistenceService getPersistenceService();
 
 	@InjectObject("spring:descriptorService")
 	public abstract DescriptorService getDescriptorService();
@@ -80,7 +80,7 @@ public abstract class AssociationSelect extends BaseComponent
 
 	public abstract void setNoneLabel(String noneLabel);
 
-	public AssociationSelect()
+	public HibernateAssociationSelect()
 	{
 		super();
 	}
@@ -116,7 +116,7 @@ public abstract class AssociationSelect extends BaseComponent
 		DetachedCriteria criteria = DetachedCriteria.forClass(getClassDescriptor().getType());
 		try
 		{
-			EditPage page = (EditPage) getPage().getRequestCycle().getPage();
+			HibernateEditPage page = (HibernateEditPage) getPage().getRequestCycle().getPage();
 			String ownerOgnlIdentifier = page.getClassDescriptor().getIdentifierDescriptor().getName();
 			String associationOgnlIdentifier = getClassDescriptor().getIdentifierDescriptor().getName();
 			String inverseOgnlProperty = getPropertyDescriptor().getName(); // league

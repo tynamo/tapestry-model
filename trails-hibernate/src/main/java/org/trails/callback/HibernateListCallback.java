@@ -15,20 +15,20 @@ package org.trails.callback;
 
 import org.apache.tapestry.IRequestCycle;
 import org.hibernate.criterion.DetachedCriteria;
-import org.trails.page.ListPage;
+import org.trails.page.HibernateListPage;
 
 /**
  * @author Chris Nelson
  *         <p/>
  *         Returns control to a ListPage
  */
-public class ListCallback extends TrailsCallback
+public class HibernateListCallback extends TrailsCallback
 {
 	private String typeName;
 
 	private DetachedCriteria criteria;
 
-	public ListCallback(String pageName, String typeName, DetachedCriteria criteria)
+	public HibernateListCallback(String pageName, String typeName, DetachedCriteria criteria)
 	{
 		super(pageName);
 		this.typeName = typeName;
@@ -40,7 +40,7 @@ public class ListCallback extends TrailsCallback
 		 */
 	public void performCallback(IRequestCycle cycle)
 	{
-		ListPage listPage = (ListPage) cycle.getPage(getPageName());
+		HibernateListPage listPage = (HibernateListPage) cycle.getPage(getPageName());
 		listPage.setTypeName(typeName);
 		listPage.setCriteria(getCriteria());
 		cycle.activate(listPage);

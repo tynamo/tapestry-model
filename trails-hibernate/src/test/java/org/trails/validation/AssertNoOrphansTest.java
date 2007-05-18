@@ -1,7 +1,7 @@
 package org.trails.validation;
 
 import org.springframework.test.AbstractTransactionalSpringContextTests;
-import org.trails.persistence.PersistenceService;
+import org.trails.persistence.HibernatePersistenceService;
 import org.trails.test.Bar;
 import org.trails.test.Baz;
 import org.trails.test.Foo;
@@ -25,14 +25,14 @@ public class AssertNoOrphansTest extends
 		return new String[]{"applicationContext-test.xml"};
 	}
 
-	private PersistenceService persistenceService;
+	private HibernatePersistenceService persistenceService;
 
-	public PersistenceService getPersistenceService()
+	public HibernatePersistenceService getPersistenceService()
 	{
 		return persistenceService;
 	}
 
-	public void setPersistenceService(PersistenceService persistenceService)
+	public void setPersistenceService(HibernatePersistenceService persistenceService)
 	{
 		this.persistenceService = persistenceService;
 	}

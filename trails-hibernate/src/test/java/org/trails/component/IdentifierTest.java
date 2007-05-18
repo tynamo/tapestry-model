@@ -30,7 +30,7 @@ public class IdentifierTest extends ComponentTest
 	public void testIsEditable() throws Exception
 	{
 
-		Identifier identifier = (Identifier) creator.newInstance(Identifier.class);
+		HibernateIdentifier identifier = (HibernateIdentifier) creator.newInstance(HibernateIdentifier.class);
 		Foo foo = new Foo();
 		identifier.setModel(foo);
 		IdentifierDescriptor descriptor = new IdentifierDescriptor(Foo.class, "id", Integer.class);

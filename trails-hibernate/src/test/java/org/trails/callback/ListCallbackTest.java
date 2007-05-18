@@ -17,7 +17,7 @@ import org.apache.tapestry.IRequestCycle;
 import org.hibernate.criterion.DetachedCriteria;
 import org.jmock.Mock;
 import org.trails.component.ComponentTest;
-import org.trails.page.ListPage;
+import org.trails.page.HibernateListPage;
 import org.trails.test.Foo;
 
 /**
@@ -34,14 +34,14 @@ public class ListCallbackTest extends ComponentTest
 	public void testCallBack()
 	{
 
-		ListPage listPage = buildTrailsPage(ListPage.class);
+		HibernateListPage listPage = buildTrailsPage(HibernateListPage.class);
 		String pageName = "fooList";
 		Object model = new Object();
 		Mock cycleMock = new Mock(IRequestCycle.class);
 		cycleMock.expects(once()).method("getPage").with(eq(pageName)).will(returnValue(listPage));
 		cycleMock.expects(once()).method("activate").with(same(listPage));
 
-		ListCallback callBack = new ListCallback(pageName, Foo.class.getName(), criteria);
+		HibernateListCallback callBack = new HibernateListCallback(pageName, Foo.class.getName(), criteria);
 		DetachedCriteria criteria = DetachedCriteria.forClass(Foo.class);
 		callBack.setCriteria(criteria);
 		callBack.performCallback((IRequestCycle) cycleMock.proxy());
@@ -51,10 +51,10 @@ public class ListCallbackTest extends ComponentTest
 
 	public void testShouldReplace()
 	{
-		ListCallback callBack = new ListCallback("FooList", Foo.class.getName(), criteria);
-		ListCallback callBack2 = new ListCallback("FooList", Foo.class.getName(), criteria);
+		HibernateListCallback callBack = new HibernateListCallback("FooList", Foo.class.getName(), criteria);
+		HibernateListCallback callBack2 = new HibernateListCallback("FooList", Foo.class.getName(), criteria);
 		Assert.assertTrue(callBack2.shouldReplace(callBack));
-		callBack2 = new ListCallback("Blork", Foo.class.getName(), criteria);
+		callBack2 = new HibernateListCallback("Blork", Foo.class.getName(), criteria);
 		Assert.assertFalse(callBack2.shouldReplace(callBack));
 		EditCallback editCallback = new EditCallback("FooEdit", new Foo());
 		Assert.assertFalse(editCallback.shouldReplace(callBack2));

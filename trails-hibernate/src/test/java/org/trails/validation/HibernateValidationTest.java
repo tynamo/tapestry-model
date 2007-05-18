@@ -4,7 +4,7 @@ import org.hibernate.validator.ClassValidator;
 import org.hibernate.validator.InvalidStateException;
 import org.hibernate.validator.InvalidValue;
 import org.springframework.test.AbstractTransactionalSpringContextTests;
-import org.trails.persistence.PersistenceService;
+import org.trails.persistence.HibernatePersistenceService;
 import org.trails.test.Baz;
 
 
@@ -17,13 +17,13 @@ public class HibernateValidationTest extends AbstractTransactionalSpringContextT
 		// TODO Auto-generated constructor stub
 	}
 
-	PersistenceService persistenceService;
+	HibernatePersistenceService persistenceService;
 
 	@Override
 	protected void onSetUpInTransaction() throws Exception
 	{
 		super.onSetUpInTransaction();
-		persistenceService = (PersistenceService) applicationContext.getBean("persistenceService");
+		persistenceService = (HibernatePersistenceService) applicationContext.getBean("persistenceService");
 	}
 
 	public void testValidation()

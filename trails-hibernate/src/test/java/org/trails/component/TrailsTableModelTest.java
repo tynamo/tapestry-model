@@ -12,13 +12,13 @@ import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 import org.jmock.core.Constraint;
 import org.trails.descriptor.TrailsPropertyDescriptor;
-import org.trails.persistence.PersistenceService;
+import org.trails.persistence.HibernatePersistenceService;
 import org.trails.test.Foo;
 
 public class TrailsTableModelTest extends MockObjectTestCase
 {
 
-	TrailsTableModel trailsTableModel;
+	HibernateTableModel trailsTableModel;
 	DetachedCriteria criteria;
 	ArrayList foos;
 	Foo foo;
@@ -31,8 +31,8 @@ public class TrailsTableModelTest extends MockObjectTestCase
 		foos.add(foo);
 
 		criteria = DetachedCriteria.forClass(Foo.class);
-		persistenceServiceMock = new Mock(PersistenceService.class);
-		trailsTableModel = new TrailsTableModel((PersistenceService) persistenceServiceMock.proxy(), criteria);
+		persistenceServiceMock = new Mock(HibernatePersistenceService.class);
+		trailsTableModel = new HibernateTableModel((HibernatePersistenceService) persistenceServiceMock.proxy(), criteria);
 	}
 
 	DetachedCriteria argCriteria;

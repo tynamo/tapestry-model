@@ -7,7 +7,7 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
-import org.trails.persistence.PersistenceService;
+import org.trails.persistence.HibernatePersistenceService;
 import org.trails.security.TrailsUserDAO;
 import org.trails.security.domain.Role;
 import org.trails.security.domain.User;
@@ -18,7 +18,7 @@ public class SpringSeedEntityInitializerTest extends TestCase
 {
 	private ApplicationContext applicationContext;
 	private SpringSeedEntityInitializer seedDataInitializer;
-	private PersistenceService persistenceService;
+	private HibernatePersistenceService persistenceService;
 	private TrailsUserDAO userDAO;
 	private Role roleUser;
 	private Role roleAdmin;
@@ -27,7 +27,7 @@ public class SpringSeedEntityInitializerTest extends TestCase
 	protected void setUp() throws Exception
 	{
 		applicationContext = new ClassPathXmlApplicationContext(new String[]{"applicationContext-test.xml", "seed-data-test.xml"});
-		persistenceService = (PersistenceService) applicationContext.getBean("persistenceService");
+		persistenceService = (HibernatePersistenceService) applicationContext.getBean("persistenceService");
 
 		userDAO = (TrailsUserDAO) applicationContext.getBean("trailsUserDAO");
 		seedDataInitializer = (SpringSeedEntityInitializer) applicationContext.getBean(SeedDataInitializer.class.getSimpleName());

@@ -21,7 +21,7 @@ import org.apache.tapestry.services.ExpressionEvaluator;
 import org.apache.tapestry.util.ComponentAddress;
 import org.hibernate.criterion.DetachedCriteria;
 import org.trails.descriptor.IPropertyDescriptor;
-import org.trails.persistence.PersistenceService;
+import org.trails.persistence.HibernatePersistenceService;
 
 
 /**
@@ -30,14 +30,14 @@ import org.trails.persistence.PersistenceService;
  *         TODO To change the template for this generated type comment go to
  *         Window - Preferences - Java - Code Style - Code Templates
  */
-public abstract class ObjectTable extends ClassDescriptorComponent
+public abstract class HibernateObjectTable extends ClassDescriptorComponent
 {
 	public static final String LINK_COLUMN = "linkColumnValue";
 
 	public abstract boolean isShowCollections();
 
 	@InjectObject("spring:persistenceService")
-	public abstract PersistenceService getPersistenceService();
+	public abstract HibernatePersistenceService getPersistenceService();
 
 	@Parameter
 	public abstract DetachedCriteria getCriteria();
@@ -187,7 +187,7 @@ public abstract class ObjectTable extends ClassDescriptorComponent
 	{
 		if (getInstances() == null)
 		{
-			return new TrailsTableModel(getPersistenceService(), getCriteria());
+			return new HibernateTableModel(getPersistenceService(), getCriteria());
 		}
 		return getInstances();
 	}

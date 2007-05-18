@@ -40,10 +40,10 @@ import org.trails.descriptor.CollectionDescriptor;
 import org.trails.descriptor.DescriptorService;
 import org.trails.descriptor.IClassDescriptor;
 import org.trails.descriptor.IPropertyDescriptor;
-import org.trails.page.EditPage;
+import org.trails.page.HibernateEditPage;
 import org.trails.page.PageResolver;
 import org.trails.page.TrailsPage.PageType;
-import org.trails.persistence.PersistenceService;
+import org.trails.persistence.HibernatePersistenceService;
 
 
 /**
@@ -51,10 +51,10 @@ import org.trails.persistence.PersistenceService;
  *         <p/>
  *         This component produces a editor for a ManyToOne or ManyToMany collection
  */
-public abstract class EditCollection extends TrailsComponent
+public abstract class HibernateEditCollection extends TrailsComponent
 {
 
-	protected static final Log LOG = LogFactory.getLog(EditCollection.class);
+	protected static final Log LOG = LogFactory.getLog(HibernateEditCollection.class);
 
 	@InjectState("callbackStack")
 	public abstract CallbackStack getCallbackStack();
@@ -84,7 +84,7 @@ public abstract class EditCollection extends TrailsComponent
 
 	public abstract DescriptorService getDescriptorService();
 
-	public abstract PersistenceService getPersistenceService();
+	public abstract HibernatePersistenceService getPersistenceService();
 
 	private List selected = new ArrayList();
 
@@ -127,7 +127,7 @@ public abstract class EditCollection extends TrailsComponent
 			getModel(),
 			getCollectionDescriptor());
 		getCallbackStack().push(callback);
-		EditPage editPage = (EditPage) getPageResolver().resolvePage(
+		HibernateEditPage editPage = (HibernateEditPage) getPageResolver().resolvePage(
 			getPage().getRequestCycle(),
 			Utils.checkForCGLIB(member.getClass()).getName(),
 			PageType.EDIT);
@@ -147,7 +147,7 @@ public abstract class EditCollection extends TrailsComponent
 	{
 		getCallbackStack().push(buildCallback());
 
-		EditPage editPage = (EditPage) getPageResolver().resolvePage(cycle,
+		HibernateEditPage editPage = (HibernateEditPage) getPageResolver().resolvePage(cycle,
 			getCollectionDescriptor().getElementType().getName(),
 			PageType.EDIT);
 		try
@@ -156,7 +156,7 @@ public abstract class EditCollection extends TrailsComponent
 			EditCallback nextPage = new EditCallback(editPage.getPageName(),
 				buildNewMemberInstance());
 			String currentEditPageName = getPage().getRequestCycle().getPage().getPageName();
-			((EditPage) cycle.getPage(currentEditPageName)).setNextPage(nextPage);
+			((HibernateEditPage) cycle.getPage(currentEditPageName)).setNextPage(nextPage);
 			//editPage.setModel(getCollectionDescriptor().getElementType().newInstance());
 
 		} catch (Exception ex)

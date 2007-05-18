@@ -25,7 +25,7 @@ import org.hibernate.validator.InvalidValue;
 import org.jmock.Mock;
 import org.trails.callback.CollectionCallback;
 import org.trails.callback.EditCallback;
-import org.trails.callback.ListCallback;
+import org.trails.callback.HibernateListCallback;
 import org.trails.component.ComponentTest;
 import org.trails.descriptor.CollectionDescriptor;
 import org.trails.descriptor.IClassDescriptor;
@@ -51,13 +51,13 @@ public class EditPageTest extends ComponentTest
 	Mock cycleMock = new Mock(IRequestCycle.class);
 	Baz baz = new Baz();
 	IClassDescriptor descriptor = new TrailsClassDescriptor(Bar.class);
-	EditPage editPage;
-	EditPage bazEditPage;
+	HibernateEditPage editPage;
+	HibernateEditPage bazEditPage;
 	Foo foo = new Foo();
 	IdentifierDescriptor idDescriptor;
 	Mock validatorMock;
-	ListCallback listCallBack = new ListCallback("FooList", Foo.class.getName(), DetachedCriteria.forClass(Foo.class));
-	ListPage listPage;
+	HibernateListCallback listCallBack = new HibernateListCallback("FooList", Foo.class.getName(), DetachedCriteria.forClass(Foo.class));
+	HibernateListPage listPage;
 	EditCallback editCallback;
 	CollectionDescriptor bazzesDescriptor = new CollectionDescriptor(Foo.class, "bazzes", Set.class);
 
@@ -66,7 +66,7 @@ public class EditPageTest extends ComponentTest
 	{
 		foo.setName("foo");
 		validatorMock = new Mock(IValidationDelegate.class);
-		listPage = buildTrailsPage(ListPage.class);
+		listPage = buildTrailsPage(HibernateListPage.class);
 		editPage = buildEditPage();
 		editPage.setModel(foo);
 
@@ -231,7 +231,7 @@ public class EditPageTest extends ComponentTest
 		Assert.assertEquals("1 baz", 1, foo.getBazzes().size());
 	}
 
-	private void makeBazCallback(EditPage editPage, boolean isChild)
+	private void makeBazCallback(HibernateEditPage editPage, boolean isChild)
 	{
 
 		CollectionCallback bazCallback = new CollectionCallback("fooPage", foo, bazzesDescriptor);

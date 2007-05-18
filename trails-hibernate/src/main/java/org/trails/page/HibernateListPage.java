@@ -20,7 +20,7 @@ import org.apache.tapestry.event.PageBeginRenderListener;
 import org.apache.tapestry.event.PageEvent;
 import org.hibernate.criterion.DetachedCriteria;
 import org.trails.TrailsRuntimeException;
-import org.trails.callback.ListCallback;
+import org.trails.callback.HibernateListCallback;
 import org.trails.descriptor.IClassDescriptor;
 
 
@@ -29,7 +29,7 @@ import org.trails.descriptor.IClassDescriptor;
  *
  * @author Chris Nelson
  */
-public abstract class ListPage extends TrailsPage implements IExternalPage, PageBeginRenderListener
+public abstract class HibernateListPage extends TrailsPage implements IExternalPage, PageBeginRenderListener
 {
 
 
@@ -82,6 +82,6 @@ public abstract class ListPage extends TrailsPage implements IExternalPage, Page
 	public void pushCallback()
 	{
 
-		getCallbackStack().push(new ListCallback(getPageName(), getTypeName(), getCriteria()));
+		getCallbackStack().push(new HibernateListCallback(getPageName(), getTypeName(), getCriteria()));
 	}
 }

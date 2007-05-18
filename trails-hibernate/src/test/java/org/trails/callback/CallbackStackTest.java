@@ -33,7 +33,7 @@ public class CallbackStackTest extends MockObjectTestCase
 	{
 		CallbackStack callbackStack = new CallbackStack();
 		EditCallback callback = new EditCallback("FooEdit", new Foo());
-		ListCallback listCallback = new ListCallback("ListEdit", Foo.class.getName(), DetachedCriteria.forClass(Foo.class));
+		HibernateListCallback listCallback = new HibernateListCallback("ListEdit", Foo.class.getName(), DetachedCriteria.forClass(Foo.class));
 		callbackStack.push(callback);
 		callbackStack.push(listCallback);
 		Assert.assertEquals(callback, callbackStack.getPreviousCallback());

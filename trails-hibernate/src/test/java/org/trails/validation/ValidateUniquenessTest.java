@@ -1,7 +1,7 @@
 package org.trails.validation;
 
 import org.springframework.test.AbstractTransactionalSpringContextTests;
-import org.trails.persistence.PersistenceService;
+import org.trails.persistence.HibernatePersistenceService;
 import org.trails.test.Baz;
 import org.trails.test.Bing;
 
@@ -22,11 +22,11 @@ public class ValidateUniquenessTest extends AbstractTransactionalSpringContextTe
 
 	public void onSetUpInTransaction() throws Exception
 	{
-		persistenceService = (PersistenceService) applicationContext.getBean(
+		persistenceService = (HibernatePersistenceService) applicationContext.getBean(
 			"persistenceService");
 	}
 
-	PersistenceService persistenceService;
+	HibernatePersistenceService persistenceService;
 
 	public void testUniqueness() throws Exception
 	{

@@ -53,7 +53,7 @@ import org.trails.validation.ValidationException;
  *         TODO To change the template for this generated type comment go to Window - Preferences - Java - Code Style -
  *         Code Templates
  */
-public class HibernatePersistenceService extends HibernateDaoSupport implements
+public class HibernatePersistenceServiceImpl extends HibernateDaoSupport implements
 	PersistenceService, ApplicationContextAware
 {
 	ApplicationContext appContext = null;

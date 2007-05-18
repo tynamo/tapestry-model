@@ -21,7 +21,7 @@ public class AssociationSelectTest extends ComponentTest
 
 	TrailsClassDescriptor classDescriptor;
 	IPropertyDescriptor associationDescriptor;
-	AssociationSelect associationSelect;
+	HibernateAssociationSelect associationSelect;
 
 	public void setUp() throws Exception
 	{
@@ -31,7 +31,7 @@ public class AssociationSelectTest extends ComponentTest
 		descriptorServiceMock.expects(atLeastOnce()).method("getClassDescriptor").with(eq(Foo.class)).will(returnValue(classDescriptor));
 
 		associationDescriptor = new TrailsPropertyDescriptor(Foo.class, "foo", Foo.class);
-		associationSelect = (AssociationSelect) creator.newInstance(AssociationSelect.class,
+		associationSelect = (HibernateAssociationSelect) creator.newInstance(HibernateAssociationSelect.class,
 			new Object[]{
 				"persistenceService", persistenceMock.proxy(),
 				"descriptorService", descriptorServiceMock.proxy()
