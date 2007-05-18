@@ -12,7 +12,7 @@ import org.hibernate.validator.InvalidValue;
 import org.trails.descriptor.IClassDescriptor;
 import org.trails.descriptor.IPropertyDescriptor;
 
-public class TrailsValidationDelegate extends ValidationDelegate
+public class HibernateValidationDelegate extends ValidationDelegate
 {
 
 	public void record(Exception ex)
