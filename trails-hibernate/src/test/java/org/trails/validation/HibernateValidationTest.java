@@ -40,7 +40,7 @@ public class HibernateValidationTest extends AbstractTransactionalSpringContextT
 			ivex = ex;
 		}
 		//ivex.printStackTrace();
-		assertNotNull(ivex);
+		Assert.assertNotNull(ivex);
 		InvalidValue invalidValue = ivex.getInvalidValues()[0];
 		assertEquals("right message", "was too long.", invalidValue.getMessage());
 	}
@@ -50,7 +50,7 @@ public class HibernateValidationTest extends AbstractTransactionalSpringContextT
 		Baz baz = new Baz();
 		ClassValidator<Baz> validator = new ClassValidator<Baz>(Baz.class);
 		InvalidValue[] invalidValues = validator.getInvalidValues(baz);
-		assertEquals(1, invalidValues.length);
+		Assert.assertEquals(1, invalidValues.length);
 	}
 
 	@Override

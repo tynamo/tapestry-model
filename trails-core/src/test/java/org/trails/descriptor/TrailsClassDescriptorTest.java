@@ -14,7 +14,6 @@ package org.trails.descriptor;
 import java.util.List;
 
 import junit.framework.TestCase;
-import org.trails.hibernate.EmbeddedDescriptor;
 import org.trails.test.Bar;
 import org.trails.test.BlogEntry;
 import org.trails.test.Foo;

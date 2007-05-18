@@ -1,4 +1,5 @@
 /*
+/*
  * Copyright 2004 Chris Nelson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,28 +17,8 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-
-import org.hibernate.annotations.Formula;
-import org.hibernate.annotations.IndexColumn;
-import org.trails.validation.AssertNoOrphans;
 
 
-/**
- * @javabean.class name="Foo"
- * @hibernate.class table="FOO"
- * <p/>
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
- */
-@Entity
-@AssertNoOrphans(childrenProperty = "bazzes", message = "This is a message")
 public class Foo
 {
 
@@ -57,11 +38,6 @@ public class Foo
 	private Set<Baz> bazzes = new HashSet<Baz>();
 	private List<Bing> bings = new ArrayList<Bing>();
 
-	/**
-	 * @javabean.property
-	 * @hibernate.id generator-class="assigned"
-	 */
-	@Id
 	public Integer getId()
 	{
 		return id;
@@ -75,10 +51,6 @@ public class Foo
 		this.id = id;
 	}
 
-	/**
-	 * @hibernate.property not-null="true"
-	 * @javabean.property displayName="The Name"
-	 */
 	public String getName()
 	{
 		return name;
@@ -95,8 +67,6 @@ public class Foo
 
 	/**
 	 * @return
-	 * @javabean.property
-	 * @hibernate.property
 	 */
 	public Date getDate()
 	{
@@ -110,8 +80,6 @@ public class Foo
 
 	/**
 	 * @return
-	 * @javabean.property
-	 * @hibernate.property
 	 */
 	public Double getNumber()
 	{
@@ -125,10 +93,7 @@ public class Foo
 
 	/**
 	 * @return
-	 * @javabean.property
-	 * @hibernate.property
 	 */
-	@Column(length = 101)
 	public String getMultiWordProperty()
 	{
 		return multiWordProperty;
@@ -139,14 +104,6 @@ public class Foo
 		this.multiWordProperty = value;
 	}
 
-	/**
-	 * @javabean.property expert="true"
-	 * @hibernate.set cascade="all-delete-orphan"
-	 * @hibernate.collection-key column="BAZ_ID"
-	 * @hibernate.collection-one-to-many class="org.trails.test.Baz"
-	 */
-
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "foo")
 	public Set<Baz> getBazzes()
 	{
 		return bazzes;
@@ -160,16 +117,6 @@ public class Foo
 		this.bazzes = bazzes;
 	}
 
-	/**
-	 * @javabean.property
-	 * @hibernate.list
-	 * @hibernate.collection-key column="BING_ID"
-	 * @hibernate.collection-index column="BING_INDEX"
-	 * @hibernate.collection-one-to-many class="org.trails.test.Bing"
-	 */
-	@OneToMany
-	@JoinColumn(name = "FOO_ID")
-	@IndexColumn(name = "BING_INDEX")
 	public List<Bing> getBings()
 	{
 		return bings;
@@ -204,8 +151,7 @@ public class Foo
 
 	/**
 	 * @return Returns the primitive.
-	 * @hibernate.property type="yes_no"
-	 * @javabean.property
+	 *         type="yes_no"
 	 */
 	public boolean isPrimitive()
 	{
@@ -221,9 +167,11 @@ public class Foo
 	}
 
 
-	/* (non-Javadoc)
-		 * @see java.lang.Object#toString()
-		 */
+	/**
+	 * (non-Javadoc)
+	 *
+	 * @see java.lang.Object#toString()
+	 */
 	public String toString()
 	{
 
@@ -232,8 +180,8 @@ public class Foo
 
 	/**
 	 * @return Returns the hidden.
-	 * @hibernate.property
-	 * @javabean.property hidden="true"
+	 *         <p/>
+	 *         hidden="true"
 	 */
 	public String getHidden()
 	{
@@ -249,9 +197,10 @@ public class Foo
 	}
 
 	/**
+	 * readOnly="true"
+	 * insert="false" update="false"
+	 *
 	 * @return Returns the readOnly.
-	 * @javabean.property readOnly="true"
-	 * @hibernate.property insert="false" update="false"
 	 */
 	public String getReadOnly()
 	{
@@ -263,7 +212,6 @@ public class Foo
 		this.readOnly = readOnly;
 	}
 
-	@ManyToOne(cascade = CascadeType.ALL)
 	public Bar getBar()
 	{
 		return bar;
@@ -281,7 +229,6 @@ public class Foo
 		return baz;
 	}
 
-	@Formula("lower('ABC')")
 	public String getFromFormula()
 	{
 		return fromFormula;

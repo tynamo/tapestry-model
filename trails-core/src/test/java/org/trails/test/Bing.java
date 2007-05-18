@@ -11,20 +11,7 @@
  */
 package org.trails.test;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 
-import org.trails.validation.ValidateUniqueness;
-
-
-/**
- * @hibernate.class TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
- */
-@Entity
-@ValidateUniqueness(property = "number")
 public class Bing
 {
 	private Integer id;
@@ -34,7 +21,6 @@ public class Bing
 
 	/**
 	 * @return
-	 * @hibernate.property
 	 */
 	public Integer getNumber()
 	{
@@ -46,9 +32,6 @@ public class Bing
 		this.number = number;
 	}
 
-	/**
-	 * @hibernate.property
-	 */
 	public String getDescription()
 	{
 		return description;
@@ -62,11 +45,6 @@ public class Bing
 		this.description = description;
 	}
 
-	/**
-	 * @hibernate.id generator-class="native"
-	 */
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
 	public Integer getId()
 	{
 		return id;
@@ -101,9 +79,11 @@ public class Bing
 	}
 
 
-	/* (non-Javadoc)
-		 * @see java.lang.Object#toString()
-		 */
+	/**
+	 * (non-Javadoc)
+	 *
+	 * @see java.lang.Object#toString()
+	 */
 	public String toString()
 	{
 		return getDescription();

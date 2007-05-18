@@ -7,7 +7,7 @@ import org.trails.descriptor.IPropertyDescriptor;
 import org.trails.descriptor.IdentifierDescriptor;
 import org.trails.descriptor.TrailsClassDescriptor;
 import org.trails.descriptor.TrailsPropertyDescriptor;
-import org.trails.hibernate.EmbeddedDescriptor;
+import org.trails.descriptor.EmbeddedDescriptor;
 import org.trails.test.Embeddee;
 import org.trails.test.Embeddor;
 import org.trails.test.Foo;

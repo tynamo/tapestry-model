@@ -5,12 +5,9 @@
 package org.trails.component;
 
 import org.apache.tapestry.test.Creator;
-import org.hibernate.type.Type;
-import org.jmock.cglib.Mock;
 import org.trails.descriptor.IClassDescriptor;
+import org.trails.descriptor.IdentifierDescriptor;
 import org.trails.descriptor.TrailsClassDescriptor;
-import org.trails.hibernate.HasAssignedIdentifier;
-import org.trails.hibernate.Interceptable;
 import org.trails.page.EditPage;
 import org.trails.test.Foo;
 
@@ -21,7 +18,6 @@ public class ObjectActionsTest extends ComponentTest
 	private Creator creator = new Creator();
 	private IClassDescriptor descriptor;
 	private EditPage editPage;
-	private Mock modelPage;
 
 	@Override
 	public void setUp() throws Exception
@@ -29,36 +25,18 @@ public class ObjectActionsTest extends ComponentTest
 		objectActions = (ObjectActions) creator.newInstance(ObjectActions.class);
 		editPage = buildEditPage();
 		descriptor = new TrailsClassDescriptor(Foo.class);
+		descriptor.getPropertyDescriptors().add(new IdentifierDescriptor(Foo.class, "id", Integer.class));
 		descriptorServiceMock.expects(atLeastOnce()).method("getClassDescriptor").withAnyArguments().will(returnValue(descriptor));
 		objectActions.setPage(editPage);
 	}
 
 	public void testShowRemoveButton()
 	{
-		Interceptable interceptable = new HasAssignedIdentifier()
-		{
-			public boolean isSaved()
-			{
-				return true;
-			}
 
-			public boolean onLoad(Object[] state, String[] propertyNames, Type[] types)
-			{
-				return false;
-			}
+		Foo foo = new Foo();
+		foo.setId(1);
 
-			public boolean onInsert(Object[] state, String[] propertyNames, Type[] types)
-			{
-				return false;
-			}
-
-			public boolean onUpdate(Object[] currentState, Object[] previousState, String[] propertyNames, Type[] types)
-			{
-				return false;
-			}
-		};
-
-		editPage.setModel(interceptable);
+		editPage.setModel(foo);
 
 		descriptor.setAllowRemove(true);
 		assertTrue(objectActions.isShowRemoveButton());
@@ -66,29 +44,8 @@ public class ObjectActionsTest extends ComponentTest
 		descriptor.setAllowRemove(false);
 		assertTrue(!objectActions.isShowRemoveButton());
 
-		interceptable = new HasAssignedIdentifier()
-		{
-			public boolean isSaved()
-			{
-				return false;
-			}
-
-			public boolean onLoad(Object[] state, String[] propertyNames, Type[] types)
-			{
-				return false;
-			}
-
-			public boolean onInsert(Object[] state, String[] propertyNames, Type[] types)
-			{
-				return false;
-			}
-
-			public boolean onUpdate(Object[] currentState, Object[] previousState, String[] propertyNames, Type[] types)
-			{
-				return false;
-			}
-		};
-		editPage.setModel(interceptable);
+		foo.setId(null);
+		editPage.setModel(foo);
 
 		descriptor.setAllowRemove(true);
 		assertTrue(!objectActions.isShowRemoveButton());

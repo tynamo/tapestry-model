@@ -11,23 +11,6 @@
  */
 package org.trails.test;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-
-import org.hibernate.validator.Length;
-import org.hibernate.validator.NotNull;
-import org.trails.validation.ValidateUniqueness;
-
-
-/**
- * @hibernate.class TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
- */
-@Entity
-@ValidateUniqueness(property = "description")
 public class Baz
 {
 	private Integer id;
@@ -35,11 +18,6 @@ public class Baz
 
 	private Foo foo;
 
-	/**
-	 * @hibernate.property
-	 */
-	@NotNull
-	@Length(max = 10, message = "was too long.")
 	public String getDescription()
 	{
 		return description;
@@ -53,11 +31,6 @@ public class Baz
 		this.description = description;
 	}
 
-	/**
-	 * @hibernate.id generator-class="native"
-	 */
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
 	public Integer getId()
 	{
 		return id;
@@ -86,7 +59,6 @@ public class Baz
 		return getDescription();
 	}
 
-	@ManyToOne
 	public Foo getFoo()
 	{
 		return foo;

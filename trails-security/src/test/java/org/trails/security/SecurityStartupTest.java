@@ -42,7 +42,7 @@ public class SecurityStartupTest extends TestCase
 	protected void setUp() throws Exception
 	{
 		appContext = new ClassPathXmlApplicationContext(new String[]{
-			"applicationContext-test.xml", "seed-data-test.xml"});
+			"applicationContext-test.xml", "../../../../../../../trails-hibernate/src/main/resources/seed-data-test.xml"});
 		bootStrap = (SecurityStartup) appContext.getBean("securityStartup");
 		persistenceService = (PersistenceService) appContext.getBean("persistenceService");
 		txManager = (PlatformTransactionManager) appContext.getBean("transactionManager");

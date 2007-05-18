@@ -20,6 +20,7 @@ import java.util.Set;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.components.Block;
 import org.apache.tapestry.util.ComponentAddress;
+import org.hibernate.criterion.DetachedCriteria;
 import org.jmock.Mock;
 import org.trails.descriptor.CollectionDescriptor;
 import org.trails.descriptor.IClassDescriptor;
@@ -28,6 +29,8 @@ import org.trails.descriptor.IdentifierDescriptor;
 import org.trails.descriptor.TrailsClassDescriptor;
 import org.trails.descriptor.TrailsPropertyDescriptor;
 import org.trails.persistence.PersistenceService;
+import org.trails.security.SecurityAuthorities;
+import org.trails.security.test.FooSecured;
 import org.trails.test.Foo;
 
 
@@ -43,10 +46,17 @@ public class ObjectTableTest extends ComponentTest
 	Mock psvcMock = new Mock(PersistenceService.class);
 	Mock pageMock = new Mock(IPage.class);
 	IPage page;
+	SecurityAuthorities autorities;
+	IClassDescriptor fooSecuredDescriptor;
+	IdentifierDescriptor idSecured;
+	IPropertyDescriptor nameSecured;
+	IPropertyDescriptor fooFieldSecured;
 	Map components = new HashMap();
 
 	public void setUp() throws Exception
 	{
+
+		autorities = new SecurityAuthorities();
 
 		page = (IPage) pageMock.proxy();
 		objectTable = (ObjectTable) creator.newInstance(ObjectTable.class, new Object[]{
@@ -63,7 +73,9 @@ public class ObjectTableTest extends ComponentTest
 		objectTable.setContainer(page);
 
 		IClassDescriptor classDescriptor = new TrailsClassDescriptor(Foo.class);
+		fooSecuredDescriptor = new TrailsClassDescriptor(FooSecured.class);
 		List propertyDescriptors = new ArrayList();
+		List fooSecuredPropertyDescriptors = new ArrayList();
 		IdentifierDescriptor idProp = new IdentifierDescriptor(Foo.class,
 			"id", Integer.class);
 
@@ -79,13 +91,22 @@ public class ObjectTableTest extends ComponentTest
 		CollectionDescriptor bazzesDesriptor = new CollectionDescriptor(Foo.class, Set.class);
 		bazzesDesriptor.setName("bazzes");
 
+		idSecured = new IdentifierDescriptor(FooSecured.class, "id", Integer.class);
+		nameSecured = new TrailsPropertyDescriptor(FooSecured.class, "name", String.class);
+		fooFieldSecured = new TrailsPropertyDescriptor(FooSecured.class, "Foo Field", String.class);
+
 		propertyDescriptors.add(idProp);
 		propertyDescriptors.add(multiWordProp);
 		propertyDescriptors.add(hiddenDescriptor);
 		propertyDescriptors.add(summaryDescriptor);
 		propertyDescriptors.add(bazzesDesriptor);
 
+		fooSecuredPropertyDescriptors.add(idSecured);
+		fooSecuredPropertyDescriptors.add(nameSecured);
+		fooSecuredPropertyDescriptors.add(fooFieldSecured);
+
 		classDescriptor.setPropertyDescriptors(propertyDescriptors);
+		fooSecuredDescriptor.setPropertyDescriptors(fooSecuredPropertyDescriptors);
 		objectTable.setClassDescriptor(classDescriptor);
 	}
 
@@ -95,18 +116,18 @@ public class ObjectTableTest extends ComponentTest
 		pageMock.expects(atLeastOnce()).method("getPageName").will(returnValue("fooPage"));
 		pageMock.expects(atLeastOnce()).method("getIdPath").will(returnValue(null));
 		List columns = objectTable.getColumns();
-		assertEquals("2 columns", 2, columns.size());
-		assertTrue(columns.get(0) instanceof TrailsTableColumn);
+		Assert.assertEquals("2 columns", 2, columns.size());
+		Assert.assertTrue(columns.get(0) instanceof TrailsTableColumn);
 		TrailsTableColumn idColumn = (TrailsTableColumn) columns.get(0);
-		assertEquals("Id", idColumn.getDisplayName());
+		Assert.assertEquals("Id", idColumn.getDisplayName());
 
 		Block fakeBlock = (Block) creator.newInstance(Block.class);
 		components.put("multiWordPropertyColumnValue", fakeBlock);
 		objectTable.setPropertyNames(new String[]{"multiWordProperty"});
 		columns = objectTable.getColumns();
-		assertEquals("1 column", 1, columns.size());
+		Assert.assertEquals("1 column", 1, columns.size());
 		TrailsTableColumn column = (TrailsTableColumn) columns.get(0);
-		assertNotNull(column.getBlockAddress());
+		Assert.assertNotNull(column.getBlockAddress());
 
 	}
 
@@ -119,11 +140,11 @@ public class ObjectTableTest extends ComponentTest
 		pageMock.expects(atLeastOnce()).method("getPageName").will(returnValue("listPage"));
 		IPropertyDescriptor descriptor = new TrailsPropertyDescriptor(Foo.class, "name", String.class);
 		ComponentAddress address = objectTable.getBlockAddress(descriptor);
-		assertEquals("listPage", address.getPageName());
-		assertEquals("nameColumnValue", address.getIdPath());
+		Assert.assertEquals("listPage", address.getPageName());
+		Assert.assertEquals("nameColumnValue", address.getIdPath());
 
 		descriptor = new TrailsPropertyDescriptor(Foo.class, "wump", String.class);
-		assertNull(objectTable.getBlockAddress(descriptor));
+		Assert.assertNull(objectTable.getBlockAddress(descriptor));
 	}
 
 	public void testGetLinkBlockAddress() throws Exception
@@ -134,32 +155,98 @@ public class ObjectTableTest extends ComponentTest
 		pageMock.expects(atLeastOnce()).method("getPageName").will(returnValue("listPage"));
 		IPropertyDescriptor descriptor = new TrailsPropertyDescriptor(Foo.class, "id", Integer.class);
 		ComponentAddress address = objectTable.getLinkBlockAddress(descriptor);
-		assertEquals("linkColumnValue", address.getIdPath());
+		Assert.assertEquals("linkColumnValue", address.getIdPath());
 		Block fakeBlock = (Block) creator.newInstance(Block.class);
 		components.put("idColumnValue", fakeBlock);
 		address = objectTable.getLinkBlockAddress(descriptor);
-		assertEquals("idColumnValue", address.getIdPath());
+		Assert.assertEquals("idColumnValue", address.getIdPath());
+	}
+
+	public void testGetColumnsWithSecurity() throws Exception
+	{
+
+		pageMock.expects(atLeastOnce()).method("getComponents").will(returnValue(components));
+		pageMock.expects(atLeastOnce()).method("getIdPath").will(returnValue(null));
+		pageMock.expects(atLeastOnce()).method("getPageName").will(returnValue("fooPage"));
+
+		objectTable.setClassDescriptor(fooSecuredDescriptor);
+		fooSecuredDescriptor.setAllowSave(false);
+		nameSecured.setHidden(true);
+
+		List columns = objectTable.getColumns();
+		/* name must be hidden */
+		Assert.assertEquals(columns.size(), 2);
+		TrailsTableColumn idColumn = (TrailsTableColumn) columns.get(0);
+		TrailsTableColumn fooField = (TrailsTableColumn) columns.get(1);
+		Assert.assertEquals("Id", idColumn.getDisplayName());
+		Assert.assertEquals("Foo Field", fooField.getDisplayName());
+
+		/* Id must be link because we can still delete the item */
+		Assert.assertNotNull(idColumn.getBlockAddress());
+
+		fooSecuredDescriptor.setAllowSave(true);
+		fooSecuredDescriptor.setAllowRemove(false);
+
+		columns = objectTable.getColumns();
+		/* name must be hidden */
+		Assert.assertEquals(columns.size(), 2);
+		idColumn = (TrailsTableColumn) columns.get(0);
+		fooField = (TrailsTableColumn) columns.get(1);
+
+		/* Id must be link because we can still update/save the item */
+		Assert.assertNotNull(idColumn.getBlockAddress());
+
+		fooSecuredDescriptor.setAllowSave(false);
+		fooSecuredDescriptor.setAllowRemove(false);
+
+		columns = objectTable.getColumns();
+		/* name must be hidden */
+		Assert.assertEquals(columns.size(), 2);
+		idColumn = (TrailsTableColumn) columns.get(0);
+		fooField = (TrailsTableColumn) columns.get(1);
+
+		/* Id can't be a link*/
+		Assert.assertNull(idColumn.getBlockAddress());
+	}
+
+	public void testGetColumnWithSecurityAdminRole() throws Exception
+	{
+		pageMock.expects(atLeastOnce()).method("getPageName").will(returnValue("fooPage"));
+		pageMock.expects(atLeastOnce()).method("getIdPath").will(returnValue(null));
+		pageMock.expects(atLeastOnce()).method("getComponents").will(returnValue(components));
+		objectTable.setClassDescriptor(fooSecuredDescriptor);
+
+		List columns = objectTable.getColumns();
+		/* name must be hidden */
+		Assert.assertEquals(columns.size(), 3);
+		TrailsTableColumn idColumn = (TrailsTableColumn) columns.get(0);
+		TrailsTableColumn nameField = (TrailsTableColumn) columns.get(1);
+		TrailsTableColumn fooField = (TrailsTableColumn) columns.get(2);
+		Assert.assertEquals("Id", idColumn.getDisplayName());
+		Assert.assertEquals("Foo Field", fooField.getDisplayName());
+		Assert.assertEquals("Name", nameField.getDisplayName());
+
+		/* Id must be a link */
+		Assert.assertNotNull(idColumn.getBlockAddress());
 	}
 
 	public void testGetTableSource() throws Exception
 	{
-/*		 //@todo: reimplement this test without hibernate
 		DetachedCriteria criteria = DetachedCriteria.forClass(Foo.class);
 		objectTable.setCriteria(criteria);
 		TrailsTableModel tableModel = (TrailsTableModel) objectTable.getSource();
 
-		assertNotNull(tableModel.getPersistenceService());
+		Assert.assertNotNull(tableModel.getPersistenceService());
 		assertEquals(criteria, tableModel.getCriteria());
 
 		objectTable.setCriteria(null);
 		List instances = new ArrayList();
 		objectTable.setInstances(instances);
-		assertEquals(instances, objectTable.getSource());
-		*/
+		Assert.assertEquals(instances, objectTable.getSource());
 	}
 
 	public void testGetIdentifierProperty() throws Exception
 	{
-		assertEquals("right id prop", "id", objectTable.getIdentifierProperty());
+		Assert.assertEquals("right id prop", "id", objectTable.getIdentifierProperty());
 	}
 }

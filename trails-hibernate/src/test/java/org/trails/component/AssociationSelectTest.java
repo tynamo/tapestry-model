@@ -3,6 +3,7 @@ package org.trails.component;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.criterion.DetachedCriteria;
 import org.trails.descriptor.IPropertyDescriptor;
 import org.trails.descriptor.IdentifierDescriptor;
 import org.trails.descriptor.TrailsClassDescriptor;
@@ -11,6 +12,12 @@ import org.trails.test.Foo;
 
 public class AssociationSelectTest extends ComponentTest
 {
+
+	public AssociationSelectTest()
+	{
+		super();
+		// TODO Auto-generated constructor stub
+	}
 
 	TrailsClassDescriptor classDescriptor;
 	IPropertyDescriptor associationDescriptor;
@@ -38,27 +45,25 @@ public class AssociationSelectTest extends ComponentTest
 	{
 
 		List instances = new ArrayList();
-
-		persistenceMock.expects(atLeastOnce()).method("getAllInstances").with(eq(Foo.class)).will(returnValue(instances));
-
+		persistenceMock.expects(atLeastOnce()).method("getInstances").with(isA(DetachedCriteria.class)).will(returnValue(instances));
 		associationSelect.buildSelectionModel();
 		IdentifierSelectionModel selectionModel = (IdentifierSelectionModel) associationSelect.getPropertySelectionModel();
-		assertEquals(1, selectionModel.getOptionCount());
+		Assert.assertEquals(1, selectionModel.getOptionCount());
 
 		associationSelect.setAllowNone(false);
 		associationSelect.buildSelectionModel();
 		selectionModel = (IdentifierSelectionModel) associationSelect.getPropertySelectionModel();
-		assertEquals(0, selectionModel.getOptionCount());
+		Assert.assertEquals(0, selectionModel.getOptionCount());
 
 		associationSelect.setNoneLabel("Any");
 		associationSelect.buildSelectionModel();
 		selectionModel = (IdentifierSelectionModel) associationSelect.getPropertySelectionModel();
-		assertEquals("Any", selectionModel.getNoneLabel());
+		Assert.assertEquals("Any", selectionModel.getNoneLabel());
 
 	}
 
 	public void testGetClassDescriptor()
 	{
-		assertEquals(classDescriptor, associationSelect.getClassDescriptor());
+		Assert.assertEquals(classDescriptor, associationSelect.getClassDescriptor());
 	}
 }

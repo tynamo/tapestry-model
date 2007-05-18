@@ -2,14 +2,9 @@ package org.trails.test;
 
 import java.util.HashSet;
 import java.util.Set;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 
 import org.trails.descriptor.annotation.PropertyDescriptor;
 
-@Entity
 public class Searchee
 {
 
@@ -21,14 +16,6 @@ public class Searchee
 
 	private Set<Foo> foos = new HashSet<Foo>();
 
-	public Searchee()
-	{
-		super();
-		// TODO Auto-generated constructor stub
-	}
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
 	public Integer getId()
 	{
 		return id;

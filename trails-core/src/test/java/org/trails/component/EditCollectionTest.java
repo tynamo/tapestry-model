@@ -25,7 +25,6 @@ import org.jmock.Mock;
 import org.trails.callback.CallbackStack;
 import org.trails.callback.CollectionCallback;
 import org.trails.callback.EditCallback;
-import org.trails.callback.EditCollectionMemberCallback;
 import org.trails.descriptor.CollectionDescriptor;
 import org.trails.descriptor.IClassDescriptor;
 import org.trails.descriptor.IdentifierDescriptor;
@@ -39,14 +38,9 @@ import org.trails.test.Bing;
 import org.trails.test.Foo;
 
 
-/**
- * @author fus8882
- *         <p/>
- *         TODO To change the template for this generated type comment go to
- *         Window - Preferences - Java - Code Style - Code Templates
- */
 public class EditCollectionTest extends ComponentTest
 {
+
 	EditPage editPage;
 
 	Foo foo;
@@ -149,11 +143,9 @@ public class EditCollectionTest extends ComponentTest
 		cycleMock.expects(atLeastOnce()).method("getPage").will(returnValue(editPage));
 		pageMock.expects(atLeastOnce()).method("getRequestCycle").will(returnValue(cycleMock.proxy()));
 		Baz baz = new Baz();
-		persistenceMock.expects(once()).method("reattach").with(eq(baz));
 		EditPage page = (EditPage) editCollection.edit(baz);
 		assertEquals(baz, page.getModel());
-		EditCollectionMemberCallback callback = (EditCollectionMemberCallback)
-			editCollection.getCallbackStack().getStack().pop();
+		CollectionCallback callback = (CollectionCallback) editCollection.getCallbackStack().getStack().pop();
 		assertNotNull(callback);
 	}
 

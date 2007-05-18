@@ -11,22 +11,6 @@
  */
 package org.trails.test;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Transient;
-
-import org.trails.validation.AssertNoOrphans;
-
-
-/**
- * @author fus8882
- * @hibernate.class TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
- */
-@Entity
-@AssertNoOrphans(Wibble.class)
 public class Bar implements IBar
 {
 
@@ -46,10 +30,7 @@ public class Bar implements IBar
 
 	/**
 	 * @return Returns the id.
-	 * @hibernate.id generator-class = "native"
 	 */
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
 	public Integer getId()
 	{
 		return id;
@@ -63,7 +44,6 @@ public class Bar implements IBar
 		this.id = id;
 	}
 
-	@Transient
 	public String getTransientProperty()
 	{
 		return "Hello World";

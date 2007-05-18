@@ -46,7 +46,7 @@ public class ValidateUniquenessTest extends AbstractTransactionalSpringContextTe
 			caught = pe;
 			//pe.printStackTrace();
 		}
-		assertNotNull(caught);
+		Assert.assertNotNull(caught);
 		assertEquals("right message", "Description must be unique.",
 			caught.getMessage());
 	}

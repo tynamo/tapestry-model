@@ -1,15 +1,9 @@
 package org.trails.test;
 
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 
-@Entity
 public class Gazonk
 {
+
 	public enum Origin
 	{
 		AFRICA, AMERICA, ASIA, EUROPE, OCEANIA
@@ -49,8 +43,6 @@ public class Gazonk
 
 	private String name;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
 	public Integer getId()
 	{
 		return id;
@@ -72,7 +64,6 @@ public class Gazonk
 		this.name = name;
 	}
 
-	@Enumerated(value = EnumType.STRING)
 	public Origin getOrigin()
 	{
 		return origin;

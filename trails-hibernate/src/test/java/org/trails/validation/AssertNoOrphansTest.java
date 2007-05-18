@@ -15,7 +15,7 @@ public class AssertNoOrphansTest extends
 	public AssertNoOrphansTest()
 	{
 		super();
-		setAutowireMode(AUTOWIRE_BY_NAME);
+		setAutowireMode(AbstractDependencyInjectionSpringContextTests.AUTOWIRE_BY_NAME);
 	}
 
 	@Override
@@ -65,7 +65,7 @@ public class AssertNoOrphansTest extends
 		{
 			orphanException = oe;
 		}
-		assertNotNull(orphanException);
+		Assert.assertNotNull(orphanException);
 		assertEquals("This Bar cannot be removed because there is a Wibble that refers to it.",
 			orphanException.getMessage());
 		//persistenceService.remove(gazonk);
@@ -86,7 +86,7 @@ public class AssertNoOrphansTest extends
 		{
 			orphanException = oe;
 		}
-		assertNotNull(orphanException);
+		Assert.assertNotNull(orphanException);
 		assertEquals("This is a message", orphanException.getMessage());
 	}
 }
