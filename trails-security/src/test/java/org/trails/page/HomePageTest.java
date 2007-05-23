@@ -50,14 +50,14 @@ public class HomePageTest extends ComponentTest
 	{
 		List homeDescriptors = home.getAllDescriptors();
 		List descriptors = service.getAllDescriptors();
-		Assert.assertNotNull(homeDescriptors);
-		Assert.assertNotNull(descriptors);
+		assertNotNull(homeDescriptors);
+		assertNotNull(descriptors);
 
 		Iterator i = descriptors.iterator();
 		while (i.hasNext())
 		{
 			IClassDescriptor tmp = (IClassDescriptor) i.next();
-			if (!tmp.isHidden()) Assert.assertTrue(descriptorContains(homeDescriptors, tmp));
+			if (!tmp.isHidden()) assertTrue(descriptorContains(homeDescriptors, tmp));
 		}
 	}
 
@@ -76,16 +76,16 @@ public class HomePageTest extends ComponentTest
 			IClassDescriptor tmp = (IClassDescriptor) i.next();
 			if (tmp.getType().equals(FooSecured.class))
 			{
-				Assert.assertTrue(!descriptorContains(homeDescriptors, tmp));
-				Assert.assertTrue(tmp.isHidden());
+				assertTrue(!descriptorContains(homeDescriptors, tmp));
+				assertTrue(tmp.isHidden());
 				hasSecurityAnnotated = true;
 			} else
 			{
-				if (!tmp.isHidden()) Assert.assertTrue(descriptorContains(homeDescriptors, tmp));
+				if (!tmp.isHidden()) assertTrue(descriptorContains(homeDescriptors, tmp));
 			}
 		}
 
-		Assert.assertTrue(hasSecurityAnnotated);
+		assertTrue(hasSecurityAnnotated);
 	}
 
 	public void testGetAllDescriptionsWithRole()
@@ -105,12 +105,12 @@ public class HomePageTest extends ComponentTest
 			if (tmp.getType().equals(FooSecured.class))
 			{
 				hasSecurityAnnotated = true;
-				Assert.assertFalse(tmp.isHidden());
+				assertFalse(tmp.isHidden());
 			}
-			if (!tmp.isHidden()) Assert.assertTrue(descriptorContains(homeDescriptors, tmp));
+			if (!tmp.isHidden()) assertTrue(descriptorContains(homeDescriptors, tmp));
 		}
 
-		Assert.assertTrue(hasSecurityAnnotated);
+		assertTrue(hasSecurityAnnotated);
 	}
 
 	private HomePage buildHomePage()

@@ -11,15 +11,16 @@ import org.acegisecurity.userdetails.UsernameNotFoundException;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.dao.DataAccessException;
+import org.trails.persistence.HibernatePersistenceService;
 import org.trails.persistence.PersistenceService;
 
 
 public class TrailsUserDAO implements UserDetailsService
 {
 
-	PersistenceService persistenceService;
+	HibernatePersistenceService persistenceService;
 
-	public void setPersistenceService(PersistenceService persistenceService)
+	public void setPersistenceService(HibernatePersistenceService persistenceService)
 	{
 		this.persistenceService = persistenceService;
 	}
