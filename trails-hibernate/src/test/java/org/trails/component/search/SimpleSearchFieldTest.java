@@ -4,7 +4,7 @@ import org.hibernate.criterion.DetachedCriteria;
 import org.trails.component.ComponentTest;
 import org.trails.descriptor.IPropertyDescriptor;
 import org.trails.descriptor.TrailsPropertyDescriptor;
-import org.trails.test.Foo;
+import org.trails.testhibernate.Foo;
 
 public class SimpleSearchFieldTest extends ComponentTest
 {

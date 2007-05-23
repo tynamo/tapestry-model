@@ -16,13 +16,8 @@ import org.trails.testhibernate.Foo;
 public class HibernateValidationDelegateTest extends ComponentTest
 {
 
-	public HibernateValidationDelegateTest()
-	{
-		super();
-		// TODO Auto-generated constructor stub
-	}
-
 	Mock componentMock;
+	protected HibernateValidationDelegate delegate = new HibernateValidationDelegate();
 
 	public void setUp() throws Exception
 	{

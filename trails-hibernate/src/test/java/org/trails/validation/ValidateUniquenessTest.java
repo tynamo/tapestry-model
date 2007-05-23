@@ -2,8 +2,8 @@ package org.trails.validation;
 
 import org.springframework.test.AbstractTransactionalSpringContextTests;
 import org.trails.persistence.HibernatePersistenceService;
-import org.trails.test.Baz;
-import org.trails.test.Bing;
+import org.trails.testhibernate.Baz;
+import org.trails.testhibernate.Bing;
 
 public class ValidateUniquenessTest extends AbstractTransactionalSpringContextTests
 {
@@ -46,7 +46,7 @@ public class ValidateUniquenessTest extends AbstractTransactionalSpringContextTe
 			caught = pe;
 			//pe.printStackTrace();
 		}
-		Assert.assertNotNull(caught);
+		assertNotNull(caught);
 		assertEquals("right message", "Description must be unique.",
 			caught.getMessage());
 	}

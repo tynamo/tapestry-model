@@ -15,8 +15,20 @@ import org.trails.persistence.HibernatePersistenceService;
 public abstract class HibernateAssociationSelect extends AssociationSelect
 {
 
+	/**
+	 * @todo: remove when the components reuse issue goes away
+	 */
 	@InjectObject("spring:persistenceService")
-	public abstract HibernatePersistenceService getPersistenceService();
+	public abstract HibernatePersistenceService getHibernatePersistenceService();
+
+	/**
+	 * @todo: remove when the components reuse issue goes away
+	 */
+	@Override
+	public HibernatePersistenceService getPersistenceService()
+	{
+		return getHibernatePersistenceService();
+	}
 
 	@Parameter(required = false)
 	public abstract DetachedCriteria getCriteria();

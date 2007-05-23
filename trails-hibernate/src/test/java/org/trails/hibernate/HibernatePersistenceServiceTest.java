@@ -30,15 +30,13 @@ import org.springframework.test.AbstractTransactionalSpringContextTests;
 import org.trails.descriptor.DescriptorService;
 import org.trails.persistence.PersistenceException;
 import org.trails.persistence.HibernatePersistenceService;
-import org.trails.security.domain.Role;
-import org.trails.security.domain.User;
-import org.trails.test.Ancestor;
-import org.trails.test.Bar;
-import org.trails.test.Baz;
-import org.trails.test.BlogEntry;
-import org.trails.test.Descendant;
-import org.trails.test.Foo;
-import org.trails.test.Wibble;
+import org.trails.testhibernate.Ancestor;
+import org.trails.testhibernate.Bar;
+import org.trails.testhibernate.Baz;
+import org.trails.testhibernate.BlogEntry;
+import org.trails.testhibernate.Descendant;
+import org.trails.testhibernate.Foo;
+import org.trails.testhibernate.Wibble;
 
 
 /**
@@ -355,29 +353,6 @@ public class HibernatePersistenceServiceTest extends AbstractTransactionalSpring
 		assertNull(persistenceService.getInstance(Foo.class, new Integer(-999)));
 	}
 
-	public void testGetInstances() throws Exception
-	{
-		User user = new User();
-		Role role = new Role();
-		role.setName("one");
-		role.setDescription("one");
-		Role role2 = new Role();
-		role2.setName("two");
-		role2.setDescription("two");
-		role = persistenceService.save(role);
-		role2 = persistenceService.save(role2);
-		user.setUsername("user");
-		user.setFirstName("what");
-		user.setLastName("blah");
-		user.setPassword("user");
-		user.setConfirmPassword("user");
-		user.getRoles().add(role);
-		user.getRoles().add(role2);
-		persistenceService.save(user);
-		assertEquals(1, persistenceService.getInstances(DetachedCriteria.forClass(User.class)).size());
-
-	}
-
 	public void testBazzes() throws Exception
 	{
 		Foo foo = new Foo();
@@ -391,7 +366,7 @@ public class HibernatePersistenceServiceTest extends AbstractTransactionalSpring
 
 		SessionFactory sessionFactory = (SessionFactory) applicationContext.getBean("sessionFactory");
 		Session session = SessionFactoryUtils.getSession(sessionFactory, true);
-		List foos = session.createQuery("from org.trails.test.Foo").list();
+		List foos = session.createQuery("from org.trails.testhibernate.Foo").list();
 		foo = (Foo) foos.get(0);
 		assertEquals("1 baz", 1, foo.getBazzes().size());
 	}

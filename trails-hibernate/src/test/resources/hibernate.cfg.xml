@@ -2,29 +2,17 @@
 <!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
 	<session-factory>
-		<mapping class="org.trails.security.domain.User"/>
-		<mapping class="org.trails.security.domain.Role"/>
-		<mapping class="org.trails.test.Embeddor"/>
-		<mapping class="org.trails.security.test.FooSecured"/>
-		<mapping class="org.trails.test.Ancestor"/>
-		<mapping class="org.trails.test.Foo"/>
-		<mapping class="org.trails.test.Baz"/>
-		<mapping class="org.trails.test.Descendant"/>
-		<mapping class="org.trails.test.Bing"/>
-		<mapping class="org.trails.test.Searchee"/>
-		<mapping class="org.trails.test.BlogEntry"/>
-		<mapping class="org.trails.test.Bar"/>
-		<mapping class="org.trails.test.Wibble"/>
-		<mapping class="org.trails.test.Gazonk"/>
-		<!-- 
-		<listener type="pre-update"
-			class="org.hibernate.validator.event.ValidatePreUpdateEventListener" />
-		<listener type="merge"
-			class="org.trails.validation.ValidateMergeEventListener" />
-		<listener type="save-update"
-			class="org.trails.validation.ValidateSaveOrUpdateEventListener" />
-		<listener type="pre-insert"
-			class="org.hibernate.validator.event.ValidatePreInsertEventListener" />
-		 -->
+
+		<mapping class="org.trails.testhibernate.Embeddor"/>
+		<mapping class="org.trails.testhibernate.Ancestor"/>
+		<mapping class="org.trails.testhibernate.Foo"/>
+		<mapping class="org.trails.testhibernate.Baz"/>
+		<mapping class="org.trails.testhibernate.Descendant"/>
+		<mapping class="org.trails.testhibernate.Bing"/>
+		<mapping class="org.trails.testhibernate.Searchee"/>
+		<mapping class="org.trails.testhibernate.BlogEntry"/>
+		<mapping class="org.trails.testhibernate.Bar"/>
+		<mapping class="org.trails.testhibernate.Wibble"/>
+
 	</session-factory>
 </hibernate-configuration>

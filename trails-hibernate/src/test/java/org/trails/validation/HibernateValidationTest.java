@@ -5,17 +5,11 @@ import org.hibernate.validator.InvalidStateException;
 import org.hibernate.validator.InvalidValue;
 import org.springframework.test.AbstractTransactionalSpringContextTests;
 import org.trails.persistence.HibernatePersistenceService;
-import org.trails.test.Baz;
+import org.trails.testhibernate.Baz;
 
 
 public class HibernateValidationTest extends AbstractTransactionalSpringContextTests
 {
-
-	public HibernateValidationTest()
-	{
-		super();
-		// TODO Auto-generated constructor stub
-	}
 
 	HibernatePersistenceService persistenceService;
 
@@ -39,8 +33,7 @@ public class HibernateValidationTest extends AbstractTransactionalSpringContextT
 		{
 			ivex = ex;
 		}
-		//ivex.printStackTrace();
-		Assert.assertNotNull(ivex);
+		assertNotNull(ivex);
 		InvalidValue invalidValue = ivex.getInvalidValues()[0];
 		assertEquals("right message", "was too long.", invalidValue.getMessage());
 	}
@@ -50,7 +43,7 @@ public class HibernateValidationTest extends AbstractTransactionalSpringContextT
 		Baz baz = new Baz();
 		ClassValidator<Baz> validator = new ClassValidator<Baz>(Baz.class);
 		InvalidValue[] invalidValues = validator.getInvalidValues(baz);
-		Assert.assertEquals(1, invalidValues.length);
+		assertEquals(1, invalidValues.length);
 	}
 
 	@Override

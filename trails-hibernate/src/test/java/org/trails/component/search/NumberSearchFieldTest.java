@@ -2,7 +2,7 @@ package org.trails.component.search;
 
 import org.trails.component.ComponentTest;
 import org.trails.descriptor.TrailsPropertyDescriptor;
-import org.trails.test.Foo;
+import org.trails.testhibernate.Foo;
 
 public class NumberSearchFieldTest extends ComponentTest
 {

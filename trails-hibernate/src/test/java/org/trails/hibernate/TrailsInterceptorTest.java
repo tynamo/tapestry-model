@@ -12,7 +12,7 @@
 package org.trails.hibernate;
 
 import org.jmock.MockObjectTestCase;
-import org.trails.test.Foo;
+import org.trails.testhibernate.Foo;
 
 
 /**

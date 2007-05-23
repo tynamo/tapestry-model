@@ -6,7 +6,7 @@
  */
 package org.trails.hibernate;
 
-import org.trails.test.Foo;
+import org.trails.testhibernate.Foo;
 
 /**
  * @author fus8882
@@ -16,5 +16,5 @@ import org.trails.test.Foo;
  */
 public aspect AssignedIdAspect
 {
-    declare parents : org.trails.test.Foo implements HasAssignedIdentifier;	
+	declare parents : org.trails.testhibernate.Foo implements HasAssignedIdentifier;
 }

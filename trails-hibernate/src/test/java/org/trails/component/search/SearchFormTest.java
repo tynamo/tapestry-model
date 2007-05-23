@@ -13,7 +13,7 @@ import org.trails.descriptor.TrailsPropertyDescriptor;
 import org.trails.page.HibernateListPage;
 import org.trails.page.PageResolver;
 import org.trails.page.TrailsPage.PageType;
-import org.trails.test.Foo;
+import org.trails.testhibernate.Foo;
 
 public class SearchFormTest extends ComponentTest
 {

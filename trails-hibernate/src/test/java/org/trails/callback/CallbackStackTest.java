@@ -2,43 +2,21 @@ package org.trails.callback;
 
 import org.hibernate.criterion.DetachedCriteria;
 import org.jmock.MockObjectTestCase;
-import org.trails.test.Foo;
+import org.trails.testhibernate.Foo;
 
 public class CallbackStackTest extends MockObjectTestCase
 {
-
-
-	public void testPush()
-	{
-		CallbackStack callbackStack = new CallbackStack();
-		Foo foo = new Foo();
-		Foo foo2 = new Foo();
-		EditCallback editCallback = new EditCallback("FooEdit", foo);
-		EditCallback editCallback2 = new EditCallback("FooEdit", foo2);
-		callbackStack.push(editCallback);
-		callbackStack.push(editCallback2);
-		Assert.assertEquals(
-			2, callbackStack.getStack().size());
-
-		callbackStack.getStack().clear();
-		editCallback.setModelNew(true);
-		callbackStack.push(editCallback);
-		callbackStack.push(editCallback2);
-		Assert.assertEquals(
-			1, callbackStack.getStack().size());
-	}
-
 
 	public void testPreviousCallback()
 	{
 		CallbackStack callbackStack = new CallbackStack();
 		EditCallback callback = new EditCallback("FooEdit", new Foo());
-		HibernateListCallback listCallback = new HibernateListCallback("ListEdit", Foo.class.getName(), DetachedCriteria.forClass(Foo.class));
+		HibernateListCallback listCallback = new HibernateListCallback("ListEdit", Foo.class.getName(), Foo.class, DetachedCriteria.forClass(Foo.class));
 		callbackStack.push(callback);
 		callbackStack.push(listCallback);
-		Assert.assertEquals(callback, callbackStack.getPreviousCallback());
-		Assert.assertEquals(2, callbackStack.getStack().size());
-		Assert.assertEquals(callback, callbackStack.popPreviousCallback());
-		Assert.assertTrue("stack is empty", callbackStack.getStack().isEmpty());
+		assertEquals(callback, callbackStack.getPreviousCallback());
+		assertEquals(2, callbackStack.getStack().size());
+		assertEquals(callback, callbackStack.popPreviousCallback());
+		assertTrue("stack is empty", callbackStack.getStack().isEmpty());
 	}
 }

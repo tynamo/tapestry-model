@@ -13,7 +13,7 @@ import org.jmock.MockObjectTestCase;
 import org.jmock.core.Constraint;
 import org.trails.descriptor.TrailsPropertyDescriptor;
 import org.trails.persistence.HibernatePersistenceService;
-import org.trails.test.Foo;
+import org.trails.testhibernate.Foo;
 
 public class HibernateTableModelTest extends MockObjectTestCase
 {
@@ -61,8 +61,8 @@ public class HibernateTableModelTest extends MockObjectTestCase
 		TrailsPropertyDescriptor propDescriptor = new TrailsPropertyDescriptor(Foo.class, "name", String.class);
 		TrailsTableColumn column = new TrailsTableColumn(propDescriptor, (ExpressionEvaluator) exprEvalMock.proxy());
 		Iterator iter = trailsTableModel.getCurrentPageRows(0, 10, column, true);
-		Assert.assertTrue(iter.hasNext());
-		Assert.assertEquals(foo, iter.next());
+		assertTrue(iter.hasNext());
+		assertEquals(foo, iter.next());
 		// some reflection evilness to make sure correct criteria were built
 		Field criteriaImplField = DetachedCriteria.class.getDeclaredField("criteria");
 		criteriaImplField.setAccessible(true);
@@ -70,7 +70,7 @@ public class HibernateTableModelTest extends MockObjectTestCase
 		Field orderEntriesField = CriteriaImpl.class.getDeclaredField("orderEntries");
 		orderEntriesField.setAccessible(true);
 		List orderEntries = (List) orderEntriesField.get(criteriaImpl);
-		Assert.assertEquals(1, orderEntries.size());
+		assertEquals(1, orderEntries.size());
 	}
 
 	public void testRowCount() throws Exception

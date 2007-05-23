@@ -22,6 +22,7 @@ public abstract class HibernateEditPage extends EditPage
 	}
 
 
+	@Override
 	protected boolean save()
 	{
 		if (!getDelegate().getHasErrors())
@@ -43,6 +44,7 @@ public abstract class HibernateEditPage extends EditPage
 		return false;
 	}
 
+	@Override
 	protected boolean isModelNew(Object model)
 	{
 		if (model instanceof HasAssignedIdentifier)

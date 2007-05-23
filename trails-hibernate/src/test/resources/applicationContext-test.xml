@@ -48,7 +48,7 @@
 
 	<bean id="persistenceService" class="org.trails.hibernate.HibernatePersistenceServiceImpl" autowire="autodetect"/>
 
-	<bean name="trailsUserDAO" class="org.trails.security.TrailsUserDAO" autowire="byName"/>
+	<!-- bean name="trailsUserDAO" class="org.trails.security.TrailsUserDAO" autowire="byName" /-->
 
 	<bean id="descriptorService" class="org.trails.descriptor.TrailsDescriptorService" init-method="init">
 		<property name="types">
@@ -148,19 +148,6 @@
 		</property>
 	</bean>
 
-	<!-- security service bean -->
-	<bean id="securityService" class="org.trails.security.TrailsSecurityService"/>
-
-	<bean id="SeedDataInitializer" class="org.trails.seeddata.SpringSeedEntityInitializer" lazy-init="true">
-		<property name="persistenceService" ref="persistenceService"/>
-		<property name="descriptorService" ref="descriptorService"/>
-	</bean>
-
-	<bean id="securityStartup" class="org.trails.security.SecurityStartup" lazy-init="true">
-		<property name="persistenceService" ref="persistenceService"/>
-		<property name="seedDataInitializer" ref="SeedDataInitializer"/>
-	</bean>
-
 	<bean id="validateUniqueAspect" class="org.trails.validation.ValidateUniqueAspect" factory-method="aspectOf">
 		<property name="descriptorService" ref="descriptorService"/>
 		<property name="persistenceService" ref="persistenceService"/>
@@ -177,9 +164,5 @@
 	</bean>
 
 	<bean id="localeHolder" class="org.trails.i18n.TestLocaleHolder"/>
-
-	<bean id="descriptorSecurity" class="org.trails.security.DescriptorSecurity" factory-method="aspectOf">
-		<property name="securityService" ref="securityService"/>
-	</bean>
 
 </beans>

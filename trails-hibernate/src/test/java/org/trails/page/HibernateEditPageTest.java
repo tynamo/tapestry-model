@@ -23,21 +23,26 @@ import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.validator.InvalidStateException;
 import org.hibernate.validator.InvalidValue;
 import org.jmock.Mock;
+import org.springframework.context.support.ResourceBundleMessageSource;
 import org.trails.callback.CollectionCallback;
 import org.trails.callback.EditCallback;
 import org.trails.callback.HibernateListCallback;
 import org.trails.component.ComponentTest;
 import org.trails.descriptor.CollectionDescriptor;
+import org.trails.descriptor.DescriptorService;
 import org.trails.descriptor.IClassDescriptor;
 import org.trails.descriptor.IdentifierDescriptor;
 import org.trails.descriptor.TrailsClassDescriptor;
 import org.trails.descriptor.TrailsPropertyDescriptor;
 import org.trails.hibernate.HasAssignedIdentifier;
-import org.trails.test.Bar;
-import org.trails.test.Baz;
-import org.trails.test.Foo;
+import org.trails.i18n.DefaultTrailsResourceBundleMessageSource;
+import org.trails.testhibernate.Bar;
+import org.trails.testhibernate.Baz;
+import org.trails.testhibernate.Foo;
+import org.trails.validation.HibernateValidationDelegate;
 import org.trails.validation.OrphanException;
 import org.trails.validation.ValidationException;
+import org.trails.persistence.HibernatePersistenceService;
 
 
 /**
@@ -56,7 +61,7 @@ public class HibernateEditPageTest extends ComponentTest
 	Foo foo = new Foo();
 	IdentifierDescriptor idDescriptor;
 	Mock validatorMock;
-	HibernateListCallback listCallBack = new HibernateListCallback("FooList", Foo.class.getName(), DetachedCriteria.forClass(Foo.class));
+	HibernateListCallback listCallBack = new HibernateListCallback("FooList", Foo.class.getName(), Foo.class, DetachedCriteria.forClass(Foo.class));
 	HibernateListPage listPage;
 	EditCallback editCallback;
 	CollectionDescriptor bazzesDescriptor = new CollectionDescriptor(Foo.class, "bazzes", Set.class);
@@ -64,6 +69,8 @@ public class HibernateEditPageTest extends ComponentTest
 
 	public void setUp() throws Exception
 	{
+		persistenceMock = new org.jmock.cglib.Mock(HibernatePersistenceService.class);  // @todo: remove when the components reuse issue goes away
+
 		foo.setName("foo");
 		validatorMock = new Mock(IValidationDelegate.class);
 		listPage = buildTrailsPage(HibernateListPage.class);
@@ -101,7 +108,7 @@ public class HibernateEditPageTest extends ComponentTest
 		editPage.setModel(null);
 		IExternalPage externalEditPage = (IExternalPage) editPage;
 		externalEditPage.activateExternalPage(new Object[]{foo}, (IRequestCycle) cycleMock.proxy());
-		Assert.assertEquals(foo, editPage.getModel());
+		assertEquals(foo, editPage.getModel());
 	}
 
 	public void testGetPropertyDescriptors()
@@ -109,7 +116,7 @@ public class HibernateEditPageTest extends ComponentTest
 		descriptorServiceMock.expects(once()).method("getClassDescriptor")
 			.with(same(Foo.class)).will(returnValue(descriptor));
 
-		Assert.assertEquals("got descriptors", descriptor,
+		assertEquals("got descriptors", descriptor,
 			editPage.getClassDescriptor());
 		descriptorServiceMock.verify();
 	}
@@ -123,14 +130,14 @@ public class HibernateEditPageTest extends ComponentTest
 			.will(returnValue(fooDescriptor));
 		descriptorServiceMock.expects(atLeastOnce()).method("getClassDescriptor").with(eq(Baz.class))
 			.will(returnValue(bazDescriptor));
-		Assert.assertEquals("Edit Foo", editPage.getTitle());
+		assertEquals("Edit Foo", editPage.getTitle());
 		CollectionCallback bazCallback = new CollectionCallback("fooPage", foo, bazzesDescriptor);
 		bazEditPage.getCallbackStack().push(bazCallback);
 		EditCallback newCallback = new EditCallback("fooPage", foo);
 		bazEditPage.getCallbackStack().push(newCallback);
-		Assert.assertFalse(newCallback.equals(bazCallback));
+		assertFalse(newCallback.equals(bazCallback));
 		bazDescriptor.getPropertyDescriptors().add(new IdentifierDescriptor(Foo.class, "id", Baz.class));
-		Assert.assertEquals("Add Baz", bazEditPage.getTitle());
+		assertEquals("Add Baz", bazEditPage.getTitle());
 	}
 
 	public void testIsNew() throws Exception
@@ -148,14 +155,14 @@ public class HibernateEditPageTest extends ComponentTest
 //        descriptorServiceMock.expects(atLeastOnce()).method("getClassDescriptor")
 //            .with(same(Foo.class)).will(returnValue(barDescriptor));
 
-		Assert.assertTrue("is new", editPage.isModelNew());
+		assertTrue("is new", editPage.isModelNew());
 		((HasAssignedIdentifier) foo).onInsert(new Object[]{"myName"}, new String[]{"name"}, null);
-		Assert.assertFalse("not new", editPage.isModelNew());
+		assertFalse("not new", editPage.isModelNew());
 		Bar bar = new Bar();
 		editPage.setModel(bar);
-		Assert.assertTrue("is new", editPage.isModelNew());
+		assertTrue("is new", editPage.isModelNew());
 		bar.setId(new Integer(1));
-		Assert.assertFalse("not new", editPage.isModelNew());
+		assertFalse("not new", editPage.isModelNew());
 	}
 
 	public void testSave()
@@ -164,7 +171,7 @@ public class HibernateEditPageTest extends ComponentTest
 		foo2.setName("foo2");
 		persistenceMock.expects(once()).method("save").with(same(foo)).will(returnValue(foo2));
 		editPage.save((IRequestCycle) cycleMock.proxy());
-		Assert.assertEquals(foo2, editPage.getModel());
+		assertEquals(foo2, editPage.getModel());
 	}
 
 	public void testSaveWithException()
@@ -172,7 +179,7 @@ public class HibernateEditPageTest extends ComponentTest
 		persistenceMock.expects(atLeastOnce()).method("save").with(same(foo)).will(
 			throwException(new ValidationException("error")));
 		editPage.save((IRequestCycle) cycleMock.proxy());
-		Assert.assertTrue("delegate has errors", delegate.getHasErrors());
+		assertTrue("delegate has errors", delegate.getHasErrors());
 
 	}
 
@@ -186,7 +193,7 @@ public class HibernateEditPageTest extends ComponentTest
 
 		persistenceMock.expects(once()).method("save").with(same(foo)).will(throwException(invalidStateException));
 		editPage.save((IRequestCycle) cycleMock.proxy());
-		Assert.assertTrue("delegate has errors", delegate.getHasErrors());
+		assertTrue("delegate has errors", delegate.getHasErrors());
 
 	}
 
@@ -228,10 +235,10 @@ public class HibernateEditPageTest extends ComponentTest
 		persistenceMock.expects(once()).method("save").with(eq(foo));
 		makeBazCallback(bazEditPage, false);
 		bazEditPage.saveAndReturn((IRequestCycle) cycleMock.proxy());
-		Assert.assertEquals("1 baz", 1, foo.getBazzes().size());
+		assertEquals("1 baz", 1, foo.getBazzes().size());
 	}
 
-	private void makeBazCallback(HibernateEditPage editPage, boolean isChild)
+	private void makeBazCallback(EditPage editPage, boolean isChild)
 	{
 
 		CollectionCallback bazCallback = new CollectionCallback("fooPage", foo, bazzesDescriptor);
@@ -251,7 +258,7 @@ public class HibernateEditPageTest extends ComponentTest
 		persistenceMock.expects(once()).method("save").with(eq(foo));
 		makeBazCallback(bazEditPage, true);
 		bazEditPage.remove((IRequestCycle) cycleMock.proxy());
-		Assert.assertEquals("no bazzes", 0, foo.getBazzes().size());
+		assertEquals("no bazzes", 0, foo.getBazzes().size());
 	}
 
 	public void testRemove()
@@ -279,7 +286,7 @@ public class HibernateEditPageTest extends ComponentTest
 		persistenceMock.expects(once()).method("remove").with(same(foo)).will(
 			throwException(new OrphanException()));
 		editPage.remove((IRequestCycle) cycleMock.proxy());
-		Assert.assertTrue(editPage.getDelegate().getHasErrors());
+		assertTrue(editPage.getDelegate().getHasErrors());
 	}
 
 	public void testPageBeginRender() throws Exception
@@ -287,16 +294,34 @@ public class HibernateEditPageTest extends ComponentTest
 		editPage.getCallbackStack().getStack().clear();
 		PageEvent pageEvent = new PageEvent(editPage, (IRequestCycle) cycleMock.proxy());
 		editPage.pageBeginRender(pageEvent);
-		Assert.assertEquals(1, editPage.getCallbackStack().getStack().size());
+		assertEquals(1, editPage.getCallbackStack().getStack().size());
 		Foo foo2 = new Foo();
 		((HasAssignedIdentifier) foo2).onInsert(new Object[]{"myName"}, new String[]{"name"}, null);
 		foo2.setId(new Integer(3));
 		editPage.setModel(foo2);
 		editPage.pageBeginRender(pageEvent);
 		EditCallback poppedCallback = (EditCallback) editPage.getCallbackStack().getStack().pop();
-		Assert.assertEquals(foo2, poppedCallback.getModel());
-		Assert.assertTrue(editPage.getCallbackStack().getStack().isEmpty());
+		assertEquals(foo2, poppedCallback.getModel());
+		assertTrue(editPage.getCallbackStack().getStack().isEmpty());
 	}
 
+	protected HibernateEditPage buildEditPage()
+	{
+		DescriptorService descriptorService = (DescriptorService) descriptorServiceMock.proxy();
+		DefaultTrailsResourceBundleMessageSource messageSource = new DefaultTrailsResourceBundleMessageSource();
+		ResourceBundleMessageSource springMessageSource = new ResourceBundleMessageSource();
+		springMessageSource.setBasename("messagestest");
+		messageSource.setMessageSource(springMessageSource);
+
+		HibernateEditPage editPage = (HibernateEditPage) creator.newInstance(HibernateEditPage.class,
+			new Object[]{
+				"persistenceService", persistenceMock.proxy(),
+				"descriptorService", descriptorServiceMock.proxy(),
+				"callbackStack", callbackStack,
+				"hibernateValidationDelegate", new HibernateValidationDelegate(),
+				"resourceBundleMessageSource", messageSource
+			});
+		return editPage;
+	}
 
 }

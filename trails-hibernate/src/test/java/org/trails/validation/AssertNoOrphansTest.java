@@ -1,11 +1,12 @@
 package org.trails.validation;
 
 import org.springframework.test.AbstractTransactionalSpringContextTests;
+import org.springframework.test.AbstractDependencyInjectionSpringContextTests;
 import org.trails.persistence.HibernatePersistenceService;
-import org.trails.test.Bar;
-import org.trails.test.Baz;
-import org.trails.test.Foo;
-import org.trails.test.Wibble;
+import org.trails.testhibernate.Bar;
+import org.trails.testhibernate.Baz;
+import org.trails.testhibernate.Foo;
+import org.trails.testhibernate.Wibble;
 
 public class AssertNoOrphansTest extends
 	AbstractTransactionalSpringContextTests
@@ -65,7 +66,7 @@ public class AssertNoOrphansTest extends
 		{
 			orphanException = oe;
 		}
-		Assert.assertNotNull(orphanException);
+		assertNotNull(orphanException);
 		assertEquals("This Bar cannot be removed because there is a Wibble that refers to it.",
 			orphanException.getMessage());
 		//persistenceService.remove(gazonk);
@@ -86,7 +87,7 @@ public class AssertNoOrphansTest extends
 		{
 			orphanException = oe;
 		}
-		Assert.assertNotNull(orphanException);
+		assertNotNull(orphanException);
 		assertEquals("This is a message", orphanException.getMessage());
 	}
 }
