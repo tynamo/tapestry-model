@@ -75,16 +75,17 @@ public abstract class ObjectTable extends ClassDescriptorComponent
 			.hasNext();)
 		{
 			IPropertyDescriptor descriptor = (IPropertyDescriptor) iter.next();
+			if ( descriptor != null )
 			if (displaying(descriptor))
 			{
 				if (getLinkProperty().equals(descriptor.getName())
 					&& (getClassDescriptor().isAllowSave() || getClassDescriptor()
 					.isAllowRemove()))
 				{/*
-                	Add a link for the edit page following these rules:
-                	a) Use the identifier descriptor if is displayable ( summary=true ).
-                	b) Use the first displayable property if the identifier property is not displayable (summary=false)
-                 */
+					Add a link for the edit page following these rules:
+					a) Use the identifier descriptor if is displayable ( summary=true ).
+					b) Use the first displayable property if the identifier property is not displayable (summary=false)
+				 */
 					columns.add(new TrailsTableColumn(descriptor, getEvaluator(), getLinkBlockAddress(descriptor)));
 
 				} else
@@ -137,8 +138,12 @@ public abstract class ObjectTable extends ClassDescriptorComponent
 	public String getLinkProperty()
 	{
 		IPropertyDescriptor propertyDescriptor = this.getIdentifierPropertyDescriptor();
-		if (!this.displaying(propertyDescriptor))
+		if (propertyDescriptor == null )
 			propertyDescriptor = this.getFirstDisplayableProperty();
+		else {
+			if ( ! this.displaying(propertyDescriptor) )
+				propertyDescriptor = this.getFirstDisplayableProperty();
+		}
 
 		return propertyDescriptor.getName();
 	}
