@@ -12,180 +12,184 @@ import org.trails.hibernate.HibernateDescriptorDecorator;
 /**
  * This class represents a one-to-one association and is created by
  * HibernateDescriptorDecorator at bootstrap time
- *
- * @author kenneth.colassi nhhockeyplayer@hotmail.com
+ * 
  * @OneToOne use case.
- * <p/>
+ * 
  * EXAMPLE: one-to-one association
- * <p/>
+ * 
  * Organization-<>-----Director
- * <p/>
+ * 
  * Organization is the owner. Director is the reference.
- * <p/>
+ * 
  * Each requires a specialized trails property editor.
- * <p/>
- * Both of these objects are manipulated by
- * dedicated descriptors respectively OwningObjectReferenceDescriptor and
- * ObjectReferenceDescriptor which have a sole duty of governing which
- * property editor launches.
- * <p/>
+ * 
+ * Both of these objects are manipulated by dedicated descriptors respectively
+ * OwningObjectReferenceDescriptor and ObjectReferenceDescriptor which have a
+ * sole duty of governing which property editor launches.
+ * 
  * In short this guy operates the owning side of the association for the
  * framework and gets detected as owner iff OneToOne does NOT have the mappedBy
  * attribute set
+ * 
+ * @author kenneth.colassi nhhockeyplayer@hotmail.com
+ * 
  * @see HibernateDescriptorDecorator
  * @see ObjectReferenceDescriptor
  * @see AssociationSelect
  * @see AssociationMgt
  */
-public class OwningObjectReferenceDescriptor extends TrailsPropertyDescriptor
-	implements IPropertyDescriptor
-{
+public class OwningObjectReferenceDescriptor implements IDescriptorExtension,
+		IExpressionSupport {
 	protected static final Log LOG = LogFactory
-		.getLog(OwningObjectReferenceDescriptor.class);
+			.getLog(OwningObjectReferenceDescriptor.class);
 
-	private Class actualType;
+	private Class beanType;
+
+	private Class propertyType;
+
+	private boolean hidden = true;
+
+	private boolean searchable = true;
+
+	private IPropertyDescriptor propertyDescriptor = null;
 
 	private String inverseProperty = null;
 
 	private boolean oneToOne = false;
 
 	/**
+	 * 
 	 * @param beanType
-	 * @param descriptor
-	 * @param actualType
+	 * @param propertyDescriptor
 	 */
-	public OwningObjectReferenceDescriptor(Class beanType,
-										   IPropertyDescriptor descriptor, Class actualType)
-	{
-		this(beanType, descriptor.getPropertyType(), actualType);
-		copyFrom(descriptor);
+	public OwningObjectReferenceDescriptor(Class beanType, IPropertyDescriptor propertyDescriptor) {
+		this.beanType = beanType;
+		this.propertyType = propertyDescriptor.getPropertyType();
+		this.propertyDescriptor = propertyDescriptor;
 	}
 
 	/**
-	 * @param beanType
-	 * @param declaredType
-	 * @param actualType
-	 */
-	public OwningObjectReferenceDescriptor(Class beanType, Class declaredType,
-										   Class actualType)
-	{
-		super(beanType, declaredType);
-		this.actualType = actualType;
-	}
-
-	/**
-	 * @param beanType
-	 * @param name
-	 * @param type
-	 */
-	public OwningObjectReferenceDescriptor(Class beanType, String name,
-										   Class type)
-	{
-		super(beanType, name, type);
-		this.actualType = type;
-	}
-
-	/**
+	 * 
 	 * @param dto
 	 */
-	public OwningObjectReferenceDescriptor(OwningObjectReferenceDescriptor dto)
-	{
-		super(dto.getBeanType(), dto.getName(), dto.getType());
-
-		try
-		{
+	public OwningObjectReferenceDescriptor(OwningObjectReferenceDescriptor dto) {
+		try {
 			BeanUtils.copyProperties(this, dto);
-		} catch (Exception e)
-		{
+		} catch (IllegalAccessException e) {
+			LOG.error(e.getMessage());
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			LOG.error(e.getMessage());
+			e.printStackTrace();
+		} catch (Exception e) {
+			LOG.error(e.toString());
+			e.printStackTrace();
+		}
+	}
+
+	public String getInverseProperty() {
+		return inverseProperty;
+	}
+
+	public void setInverseProperty(String inverseProperty) {
+		this.inverseProperty = inverseProperty;
+	}
+
+	public boolean isOneToOne() {
+		return oneToOne;
+	}
+
+	/**
+	 * @see org.trails.descriptor.PropertyDescriptor#isOwningObjectReference()
+	 */
+	public boolean isOwningObjectReference() {
+		return true;
+	}
+
+	public void setOneToOne(boolean oneToOne) {
+		this.oneToOne = oneToOne;
+	}
+
+	/**
+	 * Overrides
+	 */
+	@Override
+	public Object clone() {
+		return new OwningObjectReferenceDescriptor(this);
+	}
+
+	public void copyFrom (IDescriptor descriptor) {
+
+		try {
+			BeanUtils.copyProperties(this, (OwningObjectReferenceDescriptor)descriptor);
+		} catch (IllegalAccessException e) {
+			LOG.error(e.getMessage());
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			LOG.error(e.getMessage());
+			e.printStackTrace();
+		} catch (Exception e) {
 			LOG.error(e.toString());
 			e.printStackTrace();
 		}
 	}
 
 	/**
+	 * Interface Implementation
+	 */
+
+	public String findAddExpression() {
+		return getExpression("");
+	}
+
+	public String findRemoveExpression() {
+		return getExpression("");
+	}
+
+	public String getExpression(String method) {
+		return getPropertyDescriptor().getName();
+	}
+
+	public Class getBeanType() {
+		return beanType;
+	}
+
+	public void setBeanType(Class beanType) {
+		this.beanType = beanType;
+	}
+
+	/**
 	 * @see org.trails.descriptor.PropertyDescriptor#getPropertyType()
 	 */
-	public Class getPropertyType()
-	{
-		return actualType;
+	public Class getPropertyType() {
+		return propertyType;
 	}
 
-	/**
-	 * @see org.trails.descriptor.PropertyDescriptor#isOwningObjectReference()
-	 */
-	@Override
-	public boolean isOwningObjectReference()
-	{
-		return true;
+	public void setPropertyType(Class propertyType) {
+		this.propertyType = propertyType;
 	}
 
-	public Class getActualType()
-	{
-		return actualType;
+	public boolean isSearchable() {
+		return searchable;
 	}
 
-	public void setActualType(Class actualType)
-	{
-		this.actualType = actualType;
+	public void setSearchable(boolean searchable) {
+		this.searchable = searchable;
 	}
 
-	public String getInverseProperty()
-	{
-		return inverseProperty;
+	public IPropertyDescriptor getPropertyDescriptor() {
+		return propertyDescriptor;
 	}
 
-	public void setInverseProperty(String inverseProperty)
-	{
-		this.inverseProperty = inverseProperty;
+	public void setPropertyDescriptor(IPropertyDescriptor propertyDescriptor) {
+		this.propertyDescriptor = propertyDescriptor;
 	}
 
-	public boolean isOneToOne()
-	{
-		return oneToOne;
+	public boolean isHidden() {
+		return hidden;
 	}
 
-	public void setOneToOne(boolean oneToOne)
-	{
-		this.oneToOne = oneToOne;
-	}
-
-	public Object clone()
-	{
-		return new OwningObjectReferenceDescriptor(this);
-	}
-
-	public String findAddExpression()
-	{
-		return findExpression();
-	}
-
-	public String findRemoveExpression()
-	{
-		return findExpression();
-	}
-
-	/**
-	 * This expression is entity oriented
-	 *
-	 * @return
-	 */
-	String findExpression()
-	{
-		return getName();
-	}
-
-	private void copyFrom(OwningObjectReferenceDescriptor owd)
-	{
-		LOG.debug("Cloning OwningObjectReferenceDescriptor");
-		try
-		{
-			BeanUtils.copyProperties(this, owd);
-		} catch (IllegalAccessException e)
-		{
-			LOG.error(e.getMessage());
-		} catch (InvocationTargetException e)
-		{
-			LOG.error(e.getMessage());
-		}
+	public void setHidden(boolean hidden) {
+		this.hidden = hidden;
 	}
 }

@@ -13,6 +13,10 @@ public class ClassDescriptorAnnotationHandler extends AbstractAnnotationHandler 
 
 	public IClassDescriptor decorateFromAnnotation(ClassDescriptor annotation, IClassDescriptor descriptor)
 	{
+		/**
+		 * !! This is how we get our properties migrated from our
+		 * annotation to our property descriptor !! 	 
+		 */
 		setPropertiesFromAnnotation(annotation, descriptor);
 		return descriptor;
 	}

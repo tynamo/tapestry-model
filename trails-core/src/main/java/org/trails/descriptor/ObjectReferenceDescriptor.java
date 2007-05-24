@@ -20,115 +20,169 @@ import org.trails.hibernate.HibernateDescriptorDecorator;
 
 /**
  * @author Chris Nelson
- *         <p/>
- *         This class represents a to-one association and is created by
- *         HibernateDescriptorDecorator
+ * 
+ * This class represents a to-one association and is created by
+ * HibernateDescriptorDecorator
+ * 
  * @see HibernateDescriptorDecorator
  */
-public class ObjectReferenceDescriptor extends TrailsPropertyDescriptor
-{
-	protected static final Log LOG = LogFactory.getLog(ObjectReferenceDescriptor.class);
+public class ObjectReferenceDescriptor implements IDescriptorExtension,
+		IExpressionSupport {
+	protected static final Log LOG = LogFactory
+			.getLog(ObjectReferenceDescriptor.class);
 
-	private Class actualType;
+	private Class propertyType;
+
+	private Class beanType;
+
+	private IPropertyDescriptor propertyDescriptor = null;
+
+	private boolean hidden = true;
+
+	private boolean searchable = true;
+
 	private String inverseProperty = null;
+
 	private boolean oneToOne = false;
 
-	public ObjectReferenceDescriptor(Class beanType,
-									 IPropertyDescriptor descriptor, Class actualType)
-	{
-		this(beanType, descriptor.getPropertyType(), actualType);
-		copyFrom(descriptor);
-	}
-
 	/**
-	 * @param realDescriptor
-	 */
-	public ObjectReferenceDescriptor(Class beanType, Class declaredType,
-									 Class actualType)
-	{
-		super(beanType, declaredType);
-		this.actualType = actualType;
-	}
-
-	/**
+	 * 
 	 * @param beanType
-	 * @param name
-	 * @param type
+	 * @param propertyDescriptor
 	 */
-	public ObjectReferenceDescriptor(Class beanType, String name, Class type)
-	{
-		super(beanType, name, type);
-		this.actualType = type;
+	public ObjectReferenceDescriptor(Class beanType,
+			IPropertyDescriptor propertyDescriptor) {
+		this.beanType = beanType;
+		this.propertyType = propertyDescriptor.getPropertyType();
+		this.propertyDescriptor = propertyDescriptor;
+	}
+
+	/**
+	 * 
+	 * @param dto
+	 */
+	public ObjectReferenceDescriptor(ObjectReferenceDescriptor dto) {
+		try {
+			BeanUtils.copyProperties(this, dto);
+		} catch (IllegalAccessException e) {
+			LOG.error(e.getMessage());
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			LOG.error(e.getMessage());
+			e.printStackTrace();
+		} catch (Exception e) {
+			LOG.error(e.toString());
+			e.printStackTrace();
+		}
 	}
 
 	/*
-		 * (non-Javadoc)
-		 *
-		 * @see org.trails.descriptor.PropertyDescriptor#getPropertyType()
-		 */
-	public Class getPropertyType()
-	{
-		return actualType;
-	}
-
-	/*
-		 * (non-Javadoc)
-		 *
-		 * @see org.trails.descriptor.PropertyDescriptor#isObjectReference()
-		 */
-	public boolean isObjectReference()
-	{
+	 * (non-Javadoc)
+	 * 
+	 * @see org.trails.descriptor.PropertyDescriptor#isObjectReference()
+	 */
+	public boolean isObjectReference() {
 		return true;
 	}
 
-	public Class getActualType()
-	{
-		return actualType;
-	}
-
-	public void setActualType(Class actualType)
-	{
-		this.actualType = actualType;
-	}
-
-	public String getInverseProperty()
-	{
+	public String getInverseProperty() {
 		return inverseProperty;
 	}
 
-	public void setInverseProperty(String inverseProperty)
-	{
+	public void setInverseProperty(String inverseProperty) {
 		this.inverseProperty = inverseProperty;
 	}
 
-	public boolean isOneToOne()
-	{
+	public boolean isOneToOne() {
 		return oneToOne;
 	}
 
-	public void setOneToOne(boolean oneToOne)
-	{
+	public void setOneToOne(boolean oneToOne) {
 		this.oneToOne = oneToOne;
 	}
 
-	public Object clone()
-	{
-		return new ObjectReferenceDescriptor(getBeanType(), this,
-			getPropertyType());
+	/**
+	 * Overrides
+	 */
+	@Override
+	public Object clone() {
+		return new ObjectReferenceDescriptor(this);
 	}
 
-	private void copyFrom(ObjectReferenceDescriptor ord)
-	{
-		LOG.debug("Cloning ObjectReferenceDescriptor");
-		try
-		{
-			BeanUtils.copyProperties(this, ord);
-		} catch (IllegalAccessException e)
-		{
+	public void copyFrom (IDescriptor descriptor) {
+
+		try {
+			BeanUtils.copyProperties(this, (ObjectReferenceDescriptor)descriptor);
+		} catch (IllegalAccessException e) {
 			LOG.error(e.getMessage());
-		} catch (InvocationTargetException e)
-		{
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
 			LOG.error(e.getMessage());
+			e.printStackTrace();
+		} catch (Exception e) {
+			LOG.error(e.toString());
+			e.printStackTrace();
 		}
+	}
+
+	/**
+	 * Interface Implementation
+	 */
+
+	public String findAddExpression() {
+		return getExpression("");
+	}
+
+	public String findRemoveExpression() {
+		return getExpression("");
+	}
+
+	public String getExpression(String method) {
+		return getPropertyDescriptor().getName();
+	}
+
+	public Class getBeanType() {
+		return beanType;
+	}
+
+	public void setBeanType(Class beanType) {
+		this.beanType = beanType;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.trails.descriptor.PropertyDescriptor#getPropertyType()
+	 */
+	public Class getPropertyType() {
+		return propertyType;
+	}
+
+	public void setPropertyType(Class propertyType) {
+		this.propertyType = propertyType;
+	}
+
+	public boolean isSearchable() {
+		return searchable;
+	}
+
+	public void setSearchable(boolean searchable) {
+		this.searchable = searchable;
+	}
+
+	public IPropertyDescriptor getPropertyDescriptor() {
+		return propertyDescriptor;
+	}
+
+	public void setPropertyDescriptor(IPropertyDescriptor propertyDescriptor) {
+		this.propertyDescriptor = propertyDescriptor;
+	}
+
+	public boolean isHidden() {
+		return hidden;
+	}
+
+	public void setHidden(boolean hidden) {
+		this.hidden = hidden;
 	}
 }

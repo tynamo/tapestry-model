@@ -17,6 +17,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 import ognl.Ognl;
+
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.contrib.palette.SortMode;
@@ -28,8 +29,10 @@ import org.trails.callback.EditCallback;
 import org.trails.callback.EditCollectionMemberCallback;
 import org.trails.descriptor.CollectionDescriptor;
 import org.trails.descriptor.IClassDescriptor;
+import org.trails.descriptor.IPropertyDescriptor;
 import org.trails.descriptor.IdentifierDescriptor;
 import org.trails.descriptor.TrailsClassDescriptor;
+import org.trails.descriptor.TrailsPropertyDescriptor;
 import org.trails.page.EditPage;
 import org.trails.page.EditorBlockPage;
 import org.trails.page.PageResolver;
@@ -65,8 +68,8 @@ public class EditCollectionTest extends ComponentTest
 
 	public void setUp()
 	{
-		editCollection = (EditCollection) creator.newInstance(EditCollection.class,
-			new Object[]{
+		editCollection = (EditCollection)creator.newInstance(EditCollection.class,
+			new Object[] {
 				"persistenceService", persistenceMock.proxy(),
 				"descriptorService", descriptorServiceMock.proxy(),
 				"callbackStack", callbackStack,
@@ -94,13 +97,13 @@ public class EditCollectionTest extends ComponentTest
 		editPage.setPageName("fooPage");
 
 
-		EditorBlockPage editorBlockPage = (EditorBlockPage) creator.newInstance(EditorBlockPage.class,
-			new Object[]{"model", foo, "editPageName", EDIT_PAGE_NAME});
+		EditorBlockPage editorBlockPage = (EditorBlockPage)creator.newInstance(EditorBlockPage.class,
+			new Object[] {"model", foo, "editPageName", EDIT_PAGE_NAME});
 		addPage = (EditPage) creator.newInstance(EditPage.class);
 
 
 		editCollection.setCallbackStack(new CallbackStack());
-		editCollection.setPage((IPage) pageMock.proxy());
+		editCollection.setPage((IPage)pageMock.proxy());
 
 		editCollection.setCollection(new ArrayList());
 	}
@@ -127,12 +130,12 @@ public class EditCollectionTest extends ComponentTest
 
 		assertTrue("AddToCollectionCallback on stack",
 			editCollection.getCallbackStack().getStack().peek() instanceof CollectionCallback);
-		CollectionCallback callback = (CollectionCallback) editCollection.getCallbackStack().getStack().pop();
+		CollectionCallback callback = (CollectionCallback)editCollection.getCallbackStack().getStack().pop();
 		//assertEquals("right ognl", "bazzes.add", callback.getAddOgnlExpression());
 
-		EditCallback nextPageCallback = (EditCallback) editPage.getNextPage();
+		EditCallback nextPageCallback = (EditCallback)editPage.getNextPage();
 		assertTrue(nextPageCallback.getModel() instanceof Baz);
-		Baz createdBaz = (Baz) nextPageCallback.getModel();
+		Baz createdBaz = (Baz)nextPageCallback.getModel();
 		assertEquals(foo, createdBaz.getFoo());
 		assertTrue("is child", callback.isChildRelationship());
 		assertEquals("right page", callback.getPageName(), "fooPage");
@@ -150,7 +153,7 @@ public class EditCollectionTest extends ComponentTest
 		pageMock.expects(atLeastOnce()).method("getRequestCycle").will(returnValue(cycleMock.proxy()));
 		Baz baz = new Baz();
 		persistenceMock.expects(once()).method("reattach").with(eq(baz));
-		EditPage page = (EditPage) editCollection.edit(baz);
+		EditPage page = (EditPage)editCollection.edit(baz);
 		assertEquals(baz, page.getModel());
 		EditCollectionMemberCallback callback = (EditCollectionMemberCallback)
 			editCollection.getCallbackStack().getStack().pop();
@@ -163,11 +166,15 @@ public class EditCollectionTest extends ComponentTest
 	private void buildCollectionDescriptor(String property, Class elementType)
 		throws IntrospectionException
 	{
-		CollectionDescriptor collectionDescriptor = new CollectionDescriptor(Foo.class, Set.class);
-		collectionDescriptor.setName(property);
+		IPropertyDescriptor collectionPropertyDescriptor = new TrailsPropertyDescriptor(Foo.class, "bazzes", Set.class);
+
+		CollectionDescriptor collectionDescriptor = new CollectionDescriptor(Foo.class, collectionPropertyDescriptor);
+		collectionPropertyDescriptor.addExtension(CollectionDescriptor.class.getName(), collectionDescriptor);
+
+		collectionDescriptor.getPropertyDescriptor().setName(property);
 		collectionDescriptor.setElementType(elementType);
 		collectionDescriptor.setChildRelationship(true);
-		editCollection.setPropertyDescriptor(collectionDescriptor);
+		editCollection.setPropertyDescriptor(collectionDescriptor.getPropertyDescriptor());
 		editCollection.setModel(foo);
 
 	}
@@ -181,10 +188,10 @@ public class EditCollectionTest extends ComponentTest
 		// lets say Foo_addBaz has custom page
 		Mock cycleMock = new Mock(IRequestCycle.class);
 		cycleMock.expects(once()).method("getPage").with(eq(
-			element + "Edit")).will(returnValue(addPage));
+				element + "Edit")).will(returnValue(addPage));
 		cycleMock.expects(atLeastOnce()).method("activate").with(same(addPage));
 		cycleMock.expects(atLeastOnce()).method("getPage").with(eq("fooEditPage")).will(
-			returnValue(editPage));
+				returnValue(editPage));
 
 		return cycleMock;
 	}
@@ -195,7 +202,7 @@ public class EditCollectionTest extends ComponentTest
 		editCollection.setCollection(foo.getBazzes());
 		editCollection.buildSelectedList();
 		assertEquals("2 in list", 2, editCollection.getSelected().size());
-		Boolean toBeDeleted = (Boolean) editCollection.getSelected().get(1);
+		Boolean toBeDeleted = (Boolean)editCollection.getSelected().get(1);
 		assertFalse("not to be deleted", toBeDeleted.booleanValue());
 		editCollection.setCollection(null);
 		editCollection.buildSelectedList();
@@ -213,10 +220,10 @@ public class EditCollectionTest extends ComponentTest
 
 		// dunno what order they're in really
 		Iterator bazIterator = foo.getBazzes().iterator();
-		baz1 = (Baz) bazIterator.next();
-		baz2 = (Baz) bazIterator.next();
+		baz1 = (Baz)bazIterator.next();
+		baz2 = (Baz)bazIterator.next();
 		editCollection.setSelected(deletedList);
-		editCollection.remove((IRequestCycle) cycleMock.proxy());
+		editCollection.remove((IRequestCycle)cycleMock.proxy());
 		//System.out.println("size of collection: " + foo.getBazzes().size());
 		assertFalse("baz1 removed", foo.getBazzes().contains(baz1));
 		assertTrue("baz2 not removed", foo.getBazzes().contains(baz2));
@@ -232,14 +239,14 @@ public class EditCollectionTest extends ComponentTest
 		selectedList.add(new Boolean(true));
 		editCollection.setSelected(selectedList);
 		Mock cycleMock = new Mock(IRequestCycle.class);
-		editCollection.moveUp((IRequestCycle) cycleMock.proxy());
+		editCollection.moveUp((IRequestCycle)cycleMock.proxy());
 
 		assertEquals("still 2", 2, foo.getBings().size());
 		assertEquals("bing2 moved up", bing2, foo.getBings().get(0));
 
 		selectedList.set(0, new Boolean(true));
 		selectedList.set(1, new Boolean(false));
-		editCollection.moveDown((IRequestCycle) cycleMock.proxy());
+		editCollection.moveDown((IRequestCycle)cycleMock.proxy());
 		assertEquals("still 2", 2, foo.getBings().size());
 		assertEquals("bing2 moved down", bing2, foo.getBings().get(1));
 	}

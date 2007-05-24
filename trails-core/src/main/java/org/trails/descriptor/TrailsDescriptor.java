@@ -14,141 +14,189 @@
 package org.trails.descriptor;
 
 import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.Map;
 
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.trails.component.Utils;
 
 /**
  * @author fus8882
- *         <p/>
- *         TODO To change the template for this generated type comment go to
- *         Window - Preferences - Java - Code Style - Code Templates
+ * 
+ * TODO To change the template for this generated type comment go to Window -
+ * Preferences - Java - Code Style - Code Templates
  */
-public class TrailsDescriptor implements IDescriptor, Serializable
-{
+public class TrailsDescriptor implements IDescriptor, Serializable {
+	protected static final Log LOG = LogFactory.getLog(TrailsDescriptor.class);
 
 	private String displayName;
+
 	private String shortDescription;
+
 	protected Class type;
+
 	private boolean hidden;
-
-	public TrailsDescriptor(IDescriptor descriptor)
-	{
-		copyFrom(descriptor);
-	}
-
-	public TrailsDescriptor(Class type)
-	{
-		this.type = type;
-	}
-
-
-	@Override
-	public Object clone()
-	{
-		return new TrailsDescriptor(this);
-	}
-
-	public String getDisplayName()
-	{
-		return Utils.unCamelCase(displayName);
-	}
-
-	public void setDisplayName(String displayName)
-	{
-		this.displayName = displayName;
-	}
-
-	public String getShortDescription()
-	{
-		return shortDescription;
-	}
-
-	public void setShortDescription(String shortDescription)
-	{
-		this.shortDescription = shortDescription;
-	}
-
-	protected void copyFrom(IDescriptor descriptor)
-	{
-		try
-		{
-			BeanUtils.copyProperties(this, descriptor);
-		}
-		catch (Exception ex)
-		{
-			//ex.printStackTrace();
-		}
-	}
-
-	public boolean isHidden()
-	{
-		return hidden;
-	}
-
-	public void setHidden(boolean hidden)
-	{
-		this.hidden = hidden;
-	}
-
-	public Class getType()
-	{
-		return type;
-	}
-
-	public void setType(Class type)
-	{
-		this.type = type;
-	}
 
 	Map<String, IDescriptorExtension> extensions = new Hashtable<String, IDescriptorExtension>();
 
-	public boolean supportsExtension(String extensionType)
-	{
-		return getExtension(extensionType) != null;
+	/**
+	 * 
+	 * @param dto
+	 */
+	public TrailsDescriptor(TrailsDescriptor dto) {
+		try {
+			BeanUtils.copyProperties(this, dto);
+			copyExtensionsFrom(dto);
+		} catch (IllegalAccessException e) {
+			LOG.error(e.getMessage());
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			LOG.error(e.getMessage());
+			e.printStackTrace();
+		} catch (Exception e) {
+			LOG.error(e.toString());
+			e.printStackTrace();
+		}
 	}
 
-	public IDescriptorExtension getExtension(String extentionType)
-	{
-		return extensions.get(extentionType);
+	public TrailsDescriptor(IDescriptor descriptor) {
+		try {
+			BeanUtils.copyProperties(this, (TrailsDescriptor) descriptor);
+			copyExtensionsFrom(descriptor);
+		} catch (IllegalAccessException e) {
+			LOG.error(e.getMessage());
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			LOG.error(e.getMessage());
+			e.printStackTrace();
+		} catch (Exception e) {
+			LOG.error(e.toString());
+			e.printStackTrace();
+		}
 	}
 
-	public void addExtension(String extenstionType, IDescriptorExtension extension)
-	{
-		extensions.put(extenstionType, extension);
+	public TrailsDescriptor(Class type) {
+		this.type = type;
 	}
 
-	public void removeExtension(String extensionType)
-	{
-		extensions.remove(extensionType);
+	public String getDisplayName() {
+		return Utils.unCamelCase(displayName);
 	}
 
+	public void setDisplayName(String displayName) {
+		this.displayName = displayName;
+	}
 
-	public <E extends IDescriptorExtension> E getExtension(Class<E> extensionType)
-	{
+	public String getShortDescription() {
+		return shortDescription;
+	}
+
+	public void setShortDescription(String shortDescription) {
+		this.shortDescription = shortDescription;
+	}
+
+	@Override
+	public Object clone() {
+		return new TrailsDescriptor(this);
+	}
+
+	public void copyFrom(IDescriptor descriptor) {
+		try {
+			BeanUtils.copyProperties(this, (TrailsDescriptor) descriptor);
+			copyExtensionsFrom(descriptor);
+		} catch (IllegalAccessException e) {
+			LOG.error(e.getMessage());
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			LOG.error(e.getMessage());
+			e.printStackTrace();
+		} catch (Exception e) {
+			LOG.error(e.toString());
+			e.printStackTrace();
+		}
+	}
+
+	public void copyExtensionsFrom(IDescriptor descriptor) {
+		Map<String, IDescriptorExtension> exts = ((TrailsDescriptor) descriptor)
+				.getExtensions();
+
+		for (Iterator iter = exts.entrySet().iterator(); iter.hasNext();) {
+			Map.Entry entry = (Map.Entry) iter.next();
+			String keye = (String) entry.getKey();
+			IDescriptorExtension value = (IDescriptorExtension) entry
+					.getValue();
+
+			this.addExtension(keye, (IDescriptorExtension.class.cast(value
+					.clone())));
+		}
+	}
+
+	public boolean isHidden() {
+		return hidden;
+	}
+
+	public void setHidden(boolean hidden) {
+		this.hidden = hidden;
+	}
+
+	public Class getType() {
+		return type;
+	}
+
+	public void setType(Class type) {
+		this.type = type;
+	}
+
+	/**
+	 * Keye is property name preceded by package name
+	 */
+	public boolean supportsExtension(String keye) {
+		return getExtension(keye) != null;
+	}
+
+	/**
+	 * Keye is property name preceded by package name
+	 */
+	public IDescriptorExtension getExtension(String keye) {
+		return extensions.get(keye);
+	}
+
+	/**
+	 * Keye is property name preceded by package name
+	 */
+	public void addExtension(String keye, IDescriptorExtension extension) {
+		extensions.put(keye, extension);
+	}
+
+	/**
+	 * Keye is property name preceded by package name
+	 */
+	public void removeExtension(String keye) {
+		extensions.remove(keye);
+	}
+
+	public <E extends IDescriptorExtension> E getExtension(
+			Class<E> extensionType) {
 		return (E) extensions.get(extensionType.getName());
 	}
 
-
 	/**
 	 * This getter method is here just to allow clone(), copyFrom() and
-	 * BeanUtils.copyProperties(this, descriptor);
-	 * to work correctly
+	 * BeanUtils.copyProperties(this, descriptor); to work correctly
 	 */
-	public Map<String, IDescriptorExtension> getExtensions()
-	{
+	public Map<String, IDescriptorExtension> getExtensions() {
 		return extensions;
 	}
 
 	/**
 	 * This setter method is here just to allow clone(), copyFrom() and
-	 * BeanUtils.copyProperties(this, descriptor);
-	 * to work correctly
+	 * BeanUtils.copyProperties(this, descriptor); to work correctly
 	 */
-	public void setExtensions(Map<String, IDescriptorExtension> extensions)
-	{
+	public void setExtensions(Map<String, IDescriptorExtension> extensions) {
 		this.extensions = extensions;
 	}
 }

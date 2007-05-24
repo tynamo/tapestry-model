@@ -7,6 +7,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.trails.component.ComponentTest;
 import org.trails.descriptor.CollectionDescriptor;
 import org.trails.descriptor.IdentifierDescriptor;
+import org.trails.descriptor.ObjectReferenceDescriptor;
 import org.trails.descriptor.TrailsClassDescriptor;
 import org.trails.descriptor.TrailsPropertyDescriptor;
 import org.trails.persistence.PersistenceService;
@@ -44,20 +45,20 @@ public class SearchPageTest extends ComponentTest
 //            .with(eq("SearcheeList"))
 //            .will(returnValue(searcheeListPage));
 //        cycleMock.expects(atLeastOnce()).method("activate").with(same(searcheeListPage));
-//        
+//
 //        Searchee searchee1 = new Searchee();
 //        searchee1.setName("searchee1");
 //        Searchee searchee2 = new Searchee();
 //        searchee2.setName("searchee2");
 //        persistenceService.save(searchee1);
 //        persistenceService.save(searchee2);
-//        
+//
 //        // try with an empty one
 //        searchPage.setExampleModel(new Searchee());
 //        searchPage.search((IRequestCycle)cycleMock.proxy());
 //        assertEquals("got 2 back", 2, searcheeListPage.getInstances().size());
 //        // make sure callback is on stack
-//        assertTrue("SearchCallback is on stack", 
+//        assertTrue("SearchCallback is on stack",
 //                searchPage.getCallbackStack().getStack().peek() instanceof SearchCallback);
 //        // now try searching for one
 //        searchPage.setExampleModel(searchee1);
@@ -65,18 +66,26 @@ public class SearchPageTest extends ComponentTest
 //        assertEquals("got 1 back", 1, searcheeListPage.getInstances().size());
 //        searchee1 = (Searchee)searcheeListPage.getInstances().get(0);
 //        assertEquals("got searchee 1", "searchee1", searchee1.getName());
-//        
+//
 //    }
 
 	public void testGetSearchableProperties()
 	{
 		TrailsClassDescriptor classDescriptor = new TrailsClassDescriptor(Searchee.class);
-		classDescriptor.getPropertyDescriptors().add(
-			new TrailsPropertyDescriptor(Foo.class, "name", String.class));
+
+		TrailsPropertyDescriptor nameProp = new TrailsPropertyDescriptor(Foo.class, "name", String.class);
+		ObjectReferenceDescriptor namePropertyDescriptor = new ObjectReferenceDescriptor(Foo.class, nameProp);
+		nameProp.addExtension(ObjectReferenceDescriptor.class.getName(), namePropertyDescriptor);
+		classDescriptor.getPropertyDescriptors().add(nameProp);
+
 		classDescriptor.getPropertyDescriptors().add(
 			new IdentifierDescriptor(Foo.class, "id", String.class));
-		classDescriptor.getPropertyDescriptors().add(
-			new CollectionDescriptor(Foo.class, "name", Set.class));
+
+		TrailsPropertyDescriptor nameSetProp = new TrailsPropertyDescriptor(Foo.class, "name", Set.class);
+		CollectionDescriptor nameSetPropertyDescriptor = new CollectionDescriptor(Foo.class, nameSetProp);
+		nameProp.addExtension(CollectionDescriptor.class.getName(), nameSetPropertyDescriptor);
+		classDescriptor.getPropertyDescriptors().add(nameSetProp);
+
 		descriptorServiceMock.expects(atLeastOnce()).method("getClassDescriptor").with(eq(Searchee.class)).will(returnValue(classDescriptor));
 		searchPage.setTypeName(Searchee.class.getName());
 		String[] searchableProperties = searchPage.getSearchableProperties();

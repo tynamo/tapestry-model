@@ -12,11 +12,12 @@
 package org.trails.descriptor;
 
 
+
 /**
  * @author fus8882
- *         <p/>
- *         TODO To change the template for this generated type comment go to
- *         Window - Preferences - Java - Code Style - Code Templates
+ *
+ * TODO To change the template for this generated type comment go to
+ * Window - Preferences - Java - Code Style - Code Templates
  */
 public class IdentifierDescriptor extends TrailsPropertyDescriptor implements IIdentifierDescriptor
 {
@@ -45,8 +46,8 @@ public class IdentifierDescriptor extends TrailsPropertyDescriptor implements II
 	}
 
 	/* (non-Javadoc)
-		 * @see org.trails.descriptor.PropertyDescriptor#isIdentifier()
-		 */
+	 * @see org.trails.descriptor.PropertyDescriptor#isIdentifier()
+	 */
 	public boolean isIdentifier()
 	{
 		return true;
@@ -68,6 +69,7 @@ public class IdentifierDescriptor extends TrailsPropertyDescriptor implements II
 		this.generated = generated;
 	}
 
+	@Override
 	public Object clone()
 	{
 		return new IdentifierDescriptor(getBeanType(), this);

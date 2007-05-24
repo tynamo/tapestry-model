@@ -39,7 +39,7 @@ public class TrailsDescriptorServiceTest extends MockObjectTestCase
 	public void testExcluding() throws Exception
 	{
 
-		descriptorService.getDescriptorFactory().setPropertyExcludes(Arrays.asList(new String[]{"bork", "class"}));
+		descriptorService.getDescriptorFactory().setPropertyExcludes(Arrays.asList(new String[] {"bork", "class"}));
 		descriptorService.init();
 		descriptor = descriptorService.getClassDescriptor(TestBean.class);
 
@@ -55,7 +55,7 @@ public class TrailsDescriptorServiceTest extends MockObjectTestCase
 		types.add(TestBean.class);
 		descriptorService.setTypes(types);
 		Mock decoratorMock = new Mock(DescriptorDecorator.class);
-		DescriptorDecorator decorator = (DescriptorDecorator) decoratorMock.proxy();
+		DescriptorDecorator decorator = (DescriptorDecorator)decoratorMock.proxy();
 
 		TrailsClassDescriptor decoratedDescriptor = new TrailsClassDescriptor(TestBean.class);
 		decoratedDescriptor.setDisplayName("Decorated");
@@ -63,14 +63,14 @@ public class TrailsDescriptorServiceTest extends MockObjectTestCase
 		descriptorService.getDecorators().add(decorator);
 		descriptorService.init();
 		assertEquals("was decorated", "Decorated",
-			descriptorService.getClassDescriptor(TestBean.class).getDisplayName());
+				descriptorService.getClassDescriptor(TestBean.class).getDisplayName());
 		decoratorMock.verify();
 	}
 
 	public void testGetAllDescriptors() throws Exception
 	{
 		List descriptors = descriptorService.getAllDescriptors();
-		IClassDescriptor aDescriptor = (IClassDescriptor) descriptors.get(0);
+		IClassDescriptor aDescriptor = (IClassDescriptor)descriptors.get(0);
 		assertEquals("A is first", ABean.class, aDescriptor.getType());
 	}
 

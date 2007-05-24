@@ -11,23 +11,26 @@
  */
 package org.trails.descriptor;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
 import ognl.Ognl;
 import ognl.OgnlException;
-import org.trails.component.Utils;
 
+import org.apache.commons.beanutils.BeanUtils;
+import org.trails.component.Utils;
 
 /**
  * This represents all the Trails metadata for a single class.
  */
-public class TrailsClassDescriptor extends TrailsDescriptor implements IClassDescriptor
-{
+public class TrailsClassDescriptor extends TrailsDescriptor implements
+		IClassDescriptor {
 	private List<IPropertyDescriptor> propertyDescriptors = new ArrayList<IPropertyDescriptor>();
+
 	private List<IMethodDescriptor> methodDescriptors = new ArrayList<IMethodDescriptor>();
 
-	//private BeanDescriptor beanDescriptor;
+	// private BeanDescriptor beanDescriptor;
 	private boolean child;
 
 	boolean hasCyclicRelationships;
@@ -36,55 +39,77 @@ public class TrailsClassDescriptor extends TrailsDescriptor implements IClassDes
 
 	boolean allowSave = true;
 
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// ///////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Constructors
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// ///////////////////////////////////////////////////////////////////////////////////////////////////////
 	/**
-	 * This is a copy constructor.  These need to be clonable for the security aspect to be able
-	 * to copy them, so if new properties are added they should be added here too.
+	 * This is a copy constructor. These need to be clonable for the security
+	 * aspect to be able to copy them, so if new properties are added they
+	 * should be added here too.
 	 */
-	public TrailsClassDescriptor(IClassDescriptor descriptor)
-	{
+	public TrailsClassDescriptor(IClassDescriptor descriptor) {
 		super(descriptor);
 		copyPropertyDescriptorsFrom(descriptor);
 		copyMethodDescriptorsFrom(descriptor);
-//        try
-//        {
-//            bfsCache = (BFSCache<IClassDescriptor>)descriptor.getBfsCache().clone();
-//        }
-//        catch (CloneNotSupportedException e)
-//        {
-//            throw new RuntimeException(e);
-//        }
+		// try
+		// {
+		// bfsCache =
+		// (BFSCache<IClassDescriptor>)descriptor.getBfsCache().clone();
+		// }
+		// catch (CloneNotSupportedException e)
+		// {
+		// throw new RuntimeException(e);
+		// }
 	}
 
-	public TrailsClassDescriptor(Class type)
-	{
+	public TrailsClassDescriptor(Class type) {
 		super(type);
 	}
 
-	public TrailsClassDescriptor(Class type, String displayName)
-	{
+	public TrailsClassDescriptor(Class type, String displayName) {
 		super(type);
 		this.setDisplayName(displayName);
 	}
 
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////
-	// Methods
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////
-	private void copyMethodDescriptorsFrom(IClassDescriptor descriptor)
-	{
-		for (IMethodDescriptor methodDescriptor : descriptor.getMethodDescriptors())
-		{
-			getMethodDescriptors().add(IMethodDescriptor.class.cast(methodDescriptor.clone()));
+	/**
+	 * 
+	 * @param dto
+	 */
+	public TrailsClassDescriptor(TrailsClassDescriptor dto) {
+		super(dto);
+
+		try {
+			BeanUtils.copyProperties(this, dto);
+		} catch (IllegalAccessException e) {
+			LOG.error(e.getMessage());
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			LOG.error(e.getMessage());
+			e.printStackTrace();
+		} catch (Exception e) {
+			LOG.error(e.toString());
+			e.printStackTrace();
 		}
 	}
 
-	protected void copyPropertyDescriptorsFrom(IClassDescriptor descriptor)
-	{
-		for (IPropertyDescriptor iPropertyDescriptor : descriptor.getPropertyDescriptors())
-		{
-			getPropertyDescriptors().add(IPropertyDescriptor.class.cast(iPropertyDescriptor.clone()));
+	// ///////////////////////////////////////////////////////////////////////////////////////////////////////
+	// Methods
+	// ///////////////////////////////////////////////////////////////////////////////////////////////////////
+	private void copyMethodDescriptorsFrom(IClassDescriptor descriptor) {
+		for (IMethodDescriptor methodDescriptor : descriptor
+				.getMethodDescriptors()) {
+			getMethodDescriptors().add(
+					IMethodDescriptor.class.cast(methodDescriptor.clone()));
+		}
+	}
+
+	protected void copyPropertyDescriptorsFrom(IClassDescriptor descriptor) {
+		for (IPropertyDescriptor iPropertyDescriptor : descriptor
+				.getPropertyDescriptors()) {
+			getPropertyDescriptors()
+					.add(
+							IPropertyDescriptor.class.cast(iPropertyDescriptor
+									.clone()));
 		}
 	}
 
@@ -92,18 +117,14 @@ public class TrailsClassDescriptor extends TrailsDescriptor implements IClassDes
 	 * @param ognl
 	 * @return
 	 */
-	private IPropertyDescriptor findDescriptor(String ognl)
-	{
-		try
-		{
+	private IPropertyDescriptor findDescriptor(String ognl) {
+		try {
 			return (IPropertyDescriptor) Ognl.getValue(ognl, this);
-		} catch (OgnlException oe)
-		{
-			//oe.printStackTrace();
+		} catch (OgnlException oe) {
+			// oe.printStackTrace();
 
 			return null;
-		} catch (IndexOutOfBoundsException ie)
-		{
+		} catch (IndexOutOfBoundsException ie) {
 			return null;
 		}
 	}
@@ -112,66 +133,61 @@ public class TrailsClassDescriptor extends TrailsDescriptor implements IClassDes
 	 * @param string
 	 * @return
 	 */
-	public IPropertyDescriptor getPropertyDescriptor(String name)
-	{
-		return findDescriptor("propertyDescriptors.{? name == '" + name + "'}[0]");
+	public IPropertyDescriptor getPropertyDescriptor(String name) {
+		return findDescriptor("propertyDescriptors.{? name == '" + name
+				+ "'}[0]");
 	}
 
 	/**
 	 * @return
 	 */
-	public String getPluralDisplayName()
-	{
+	public String getPluralDisplayName() {
 		return Utils.pluralize(Utils.unCamelCase(getDisplayName()));
 	}
 
-	public List getPropertyDescriptors(String[] properties)
-	{
+	public List getPropertyDescriptors(String[] properties) {
 		ArrayList<IPropertyDescriptor> descriptors = new ArrayList<IPropertyDescriptor>();
-		for (String property : properties)
-		{
+		for (String property : properties) {
 			descriptors.add(getPropertyDescriptor(property));
 		}
 		return descriptors;
 	}
 
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// ///////////////////////////////////////////////////////////////////////////////////////////////////////
 	// bean getters / setters
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// ///////////////////////////////////////////////////////////////////////////////////////////////////////
 	/**
 	 * @return Returns the methodDescriptors.
 	 */
-	public List<IMethodDescriptor> getMethodDescriptors()
-	{
+	public List<IMethodDescriptor> getMethodDescriptors() {
 		return methodDescriptors;
 	}
 
 	/**
-	 * @param methodDescriptors The methodDescriptors to set.
+	 * @param methodDescriptors
+	 *            The methodDescriptors to set.
 	 */
-	public void setMethodDescriptors(List<IMethodDescriptor> methodDescriptors)
-	{
+	public void setMethodDescriptors(List<IMethodDescriptor> methodDescriptors) {
 		this.methodDescriptors = methodDescriptors;
 	}
 
 	/**
 	 * @return Returns the propertyDescriptors.
 	 */
-	public List<IPropertyDescriptor> getPropertyDescriptors()
-	{
+	public List<IPropertyDescriptor> getPropertyDescriptors() {
 		return propertyDescriptors;
 	}
 
 	/**
-	 * @param propertyDescriptors The propertyDescriptors to set.
+	 * @param propertyDescriptors
+	 *            The propertyDescriptors to set.
 	 */
-	public void setPropertyDescriptors(List<IPropertyDescriptor> propertyDescriptors)
-	{
+	public void setPropertyDescriptors(
+			List<IPropertyDescriptor> propertyDescriptors) {
 		this.propertyDescriptors = propertyDescriptors;
 	}
 
-	public IPropertyDescriptor getIdentifierDescriptor()
-	{
+	public IPropertyDescriptor getIdentifierDescriptor() {
 		String ognl = "propertyDescriptors.{? identifier}[0]";
 
 		return findDescriptor(ognl);
@@ -180,61 +196,75 @@ public class TrailsClassDescriptor extends TrailsDescriptor implements IClassDes
 	/**
 	 * @return Returns the child.
 	 */
-	public boolean isChild()
-	{
+	public boolean isChild() {
 		return child;
 	}
 
 	/**
-	 * @param child The child to set.
+	 * @param child
+	 *            The child to set.
 	 */
-	public void setChild(boolean child)
-	{
+	public void setChild(boolean child) {
 		this.child = child;
 	}
 
 	@Override
-	public Object clone()
-	{
+	public Object clone() {
 		return new TrailsClassDescriptor(this);
 	}
 
-	public boolean isAllowRemove()
-	{
+	@Override
+	public void copyFrom(IDescriptor descriptor) {
+		super.copyFrom(descriptor);
+
+		if (descriptor instanceof TrailsClassDescriptor) {
+
+			try {
+				BeanUtils.copyProperties(this,
+						(TrailsClassDescriptor) descriptor);
+				copyPropertyDescriptorsFrom((TrailsClassDescriptor) descriptor);
+				copyMethodDescriptorsFrom((TrailsClassDescriptor) descriptor);
+			} catch (IllegalAccessException e) {
+				LOG.error(e.getMessage());
+				e.printStackTrace();
+			} catch (InvocationTargetException e) {
+				LOG.error(e.getMessage());
+				e.printStackTrace();
+			} catch (Exception e) {
+				LOG.error(e.toString());
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public boolean isAllowRemove() {
 		return allowRemove;
 	}
 
-	public void setAllowRemove(boolean allowRemove)
-	{
+	public void setAllowRemove(boolean allowRemove) {
 		this.allowRemove = allowRemove;
 	}
 
-	public boolean isAllowSave()
-	{
+	public boolean isAllowSave() {
 		return allowSave;
 	}
 
-	public void setAllowSave(boolean allowSave)
-	{
+	public void setAllowSave(boolean allowSave) {
 		this.allowSave = allowSave;
 	}
 
-
-	public boolean getHasCyclicRelationships()
-	{
+	public boolean getHasCyclicRelationships() {
 		return hasCyclicRelationships;
 	}
 
-	public void setHasCyclicRelationships(boolean hasBidirectionalRelationship)
-	{
+	public void setHasCyclicRelationships(boolean hasBidirectionalRelationship) {
 		this.hasCyclicRelationships = hasBidirectionalRelationship;
 	}
 
 	/**
 	 * Added toString method to help with unit testing debugging.
 	 */
-	public String toString()
-	{
+	public String toString() {
 		return "{TrailsClassDescriptor - Type: " + getType() + "}";
 	}
 

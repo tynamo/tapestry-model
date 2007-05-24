@@ -18,6 +18,7 @@ import java.util.List;
 
 import ognl.Ognl;
 import ognl.OgnlException;
+
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.logging.Log;
@@ -48,8 +49,8 @@ import org.trails.persistence.PersistenceService;
 
 /**
  * @author Chris Nelson
- *         <p/>
- *         This component produces a editor for a ManyToOne or ManyToMany collection
+ * 
+ * This component produces a editor for a ManyToOne or ManyToMany collection
  */
 public abstract class EditCollection extends TrailsComponent
 {
@@ -90,8 +91,8 @@ public abstract class EditCollection extends TrailsComponent
 
 
 	/* (non-Javadoc)
-		 * @see org.apache.tapestry.AbstractComponent#prepareForRender(org.apache.tapestry.IRequestCycle)
-		 */
+	 * @see org.apache.tapestry.AbstractComponent#prepareForRender(org.apache.tapestry.IRequestCycle)
+	 */
 	protected void prepareForRender(IRequestCycle arg0)
 	{
 		// TODO Auto-generated method stub
@@ -114,7 +115,7 @@ public abstract class EditCollection extends TrailsComponent
 
 	public CollectionDescriptor getCollectionDescriptor()
 	{
-		return (CollectionDescriptor) getPropertyDescriptor();
+		return (CollectionDescriptor) getPropertyDescriptor().getExtension(CollectionDescriptor.class);
 	}
 
 	@InjectObject("spring:pageResolver")
@@ -127,10 +128,10 @@ public abstract class EditCollection extends TrailsComponent
 			getModel(),
 			getCollectionDescriptor());
 		getCallbackStack().push(callback);
-		EditPage editPage = (EditPage) getPageResolver().resolvePage(
-			getPage().getRequestCycle(),
-			Utils.checkForCGLIB(member.getClass()).getName(),
-			PageType.EDIT);
+		EditPage editPage = (EditPage)getPageResolver().resolvePage(
+				getPage().getRequestCycle(),
+				Utils.checkForCGLIB(member.getClass()).getName(),
+				PageType.EDIT);
 		try
 		{
 			getPersistenceService().reattach(member);
@@ -147,19 +148,19 @@ public abstract class EditCollection extends TrailsComponent
 	{
 		getCallbackStack().push(buildCallback());
 
-		EditPage editPage = (EditPage) getPageResolver().resolvePage(cycle,
-			getCollectionDescriptor().getElementType().getName(),
-			PageType.EDIT);
+		EditPage editPage = (EditPage)getPageResolver().resolvePage(cycle,
+				getCollectionDescriptor().getPropertyType().getName(),
+				PageType.EDIT);
 		try
 		{
 			// we need to do some indirection to avoid a StaleLink
 			EditCallback nextPage = new EditCallback(editPage.getPageName(),
 				buildNewMemberInstance());
 			String currentEditPageName = getPage().getRequestCycle().getPage().getPageName();
-			((EditPage) cycle.getPage(currentEditPageName)).setNextPage(nextPage);
+			((EditPage)cycle.getPage(currentEditPageName)).setNextPage(nextPage);
 			//editPage.setModel(getCollectionDescriptor().getElementType().newInstance());
 
-		} catch (Exception ex)
+		}catch (Exception ex)
 		{
 			throw new TrailsRuntimeException(ex);
 		}
@@ -170,8 +171,9 @@ public abstract class EditCollection extends TrailsComponent
 		Object object;
 		if (getCreateExpression() == null)
 		{
-			object = getCollectionDescriptor().getElementType().newInstance();
-		} else
+			object =  getCollectionDescriptor().getElementType().newInstance();
+		}
+		else
 		{
 			try
 			{
@@ -189,8 +191,7 @@ public abstract class EditCollection extends TrailsComponent
 			try
 			{
 				Ognl.setValue(getCollectionDescriptor().getInverseProperty(), object, getModel());
-			} catch (OgnlException e)
-			{
+			} catch (OgnlException e) {
 				LOG.error(e.getMessage());
 			}
 		}
@@ -211,7 +212,7 @@ public abstract class EditCollection extends TrailsComponent
 	 */
 	public void remove(IRequestCycle cycle)
 	{
-		int i = 0;
+		int i=0;
 		// TODO CN - This code stinks (I wrote it).  Isn't there a better way??
 		ArrayList deleting = new ArrayList();
 		for (Iterator iter = getCollection().iterator(); iter.hasNext();)
@@ -219,7 +220,7 @@ public abstract class EditCollection extends TrailsComponent
 
 			Object element = (Object) iter.next();
 
-			if (((Boolean) getSelected().get(i)).booleanValue())
+			if (((Boolean)getSelected().get(i)).booleanValue())
 			{
 				deleting.add(element);
 			}
@@ -262,8 +263,8 @@ public abstract class EditCollection extends TrailsComponent
 
 
 	/* (non-Javadoc)
-		 * @see java.lang.Object#equals(java.lang.Object)
-		 */
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
 	public boolean equals(Object obj)
 	{
 		// TODO Auto-generated method stub
@@ -272,8 +273,8 @@ public abstract class EditCollection extends TrailsComponent
 
 
 	/* (non-Javadoc)
-		 * @see java.lang.Object#hashCode()
-		 */
+	 * @see java.lang.Object#hashCode()
+	 */
 	public int hashCode()
 	{
 		return HashCodeBuilder.reflectionHashCode(this);
@@ -314,9 +315,9 @@ public abstract class EditCollection extends TrailsComponent
 				try
 				{
 					criteria.add(
-						Restrictions.disjunction()
-							.add(Restrictions.isNull(getCollectionDescriptor().getInverseProperty()))
-							.add(Restrictions.eq(getCollectionDescriptor().getInverseProperty() + "." + identifier, Ognl.getValue(elementDescriptor.getIdentifierDescriptor().getName(), getModel()))));
+							Restrictions.disjunction()
+									.add(Restrictions.isNull(getCollectionDescriptor().getInverseProperty()))
+									.add(Restrictions.eq(getCollectionDescriptor().getInverseProperty() + "." + identifier, Ognl.getValue(elementDescriptor.getIdentifierDescriptor().getName(), getModel()))));
 				} catch (OgnlException e)
 				{
 					LOG.error(e.getMessage());
@@ -330,7 +331,7 @@ public abstract class EditCollection extends TrailsComponent
 		} else
 		{
 			return new IdentifierSelectionModel(getPersistenceService().getAllInstances(getCollectionDescriptor().getElementType()),
-				elementDescriptor.getIdentifierDescriptor().getName());
+					elementDescriptor.getIdentifierDescriptor().getName());
 		}
 	}
 
@@ -339,12 +340,12 @@ public abstract class EditCollection extends TrailsComponent
 	 */
 	public void moveUp(IRequestCycle cycle)
 	{
-		List list = (List) getCollection();
-		for (int i = 1; i < getSelected().size(); i++)
+		List list = (List)getCollection();
+		for (int i=1; i < getSelected().size(); i++)
 		{
-			if (((Boolean) getSelected().get(i)).booleanValue())
+			if(((Boolean)getSelected().get(i)).booleanValue())
 			{
-				swap(list, i, i - 1);
+				swap(list, i, i-1);
 			}
 		}
 	}
@@ -362,12 +363,12 @@ public abstract class EditCollection extends TrailsComponent
 	 */
 	public void moveDown(IRequestCycle cycle)
 	{
-		List list = (List) getCollection();
-		for (int i = 0; i < getSelected().size() - 1; i++)
+		List list = (List)getCollection();
+		for (int i=0; i < getSelected().size() -1; i++)
 		{
-			if (((Boolean) getSelected().get(i)).booleanValue())
+			if(((Boolean)getSelected().get(i)).booleanValue())
 			{
-				swap(list, i, i + 1);
+				swap(list, i, i+1);
 			}
 		}
 	}

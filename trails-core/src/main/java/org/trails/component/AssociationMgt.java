@@ -2,6 +2,7 @@ package org.trails.component;
 
 import ognl.Ognl;
 import ognl.OgnlException;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.tapestry.IRequestCycle;
@@ -28,16 +29,16 @@ import org.trails.persistence.PersistenceService;
 import org.trails.validation.TrailsValidationDelegate;
 
 /**
- * @author kenneth.colassi nhhockeyplayer@hotmail.com
  * @OneToOne use case.
- * <p/>
+ * 
  * This guy manages the owning side user interface of a OneToOne association.
- * <p/>
+ * 
  * Owner-<>-----Association
+ * 
+ * @author kenneth.colassi nhhockeyplayer@hotmail.com
  */
 @ComponentClass(allowBody = true, allowInformalParameters = true)
-public abstract class AssociationMgt extends TrailsComponent
-{
+public abstract class AssociationMgt extends TrailsComponent {
 	protected static final Log LOG = LogFactory.getLog(AssociationMgt.class);
 
 	@Bean(lifecycle = Lifecycle.REQUEST)
@@ -87,97 +88,79 @@ public abstract class AssociationMgt extends TrailsComponent
 	@InjectObject("spring:descriptorService")
 	public abstract DescriptorService getDescriptorService();
 
-	public IClassDescriptor getClassDescriptor()
-	{
+	public IClassDescriptor getClassDescriptor() {
 		return getDescriptorService().getClassDescriptor(
-			getDescriptor().getPropertyType());
+				getDescriptor().getPropertyType());
 	}
 
-	public AssociationMgt()
-	{
+	public AssociationMgt() {
 		super();
 	}
 
-	public String getOwnerTypeName()
-	{
+	public String getOwnerTypeName() {
 		return getOwner().getClass().getName();
 	}
 
-	public Class getOwnerType()
-	{
+	public Class getOwnerType() {
 		return getOwner().getClass();
 	}
 
-	public String getAssociationTypeName()
-	{
+	public String getAssociationTypeName() {
 		return getDescriptor().getPropertyType().getCanonicalName();
 	}
 
-	public Class getAssociationType()
-	{
+	public Class getAssociationType() {
 		return getDescriptor().getPropertyType().getClass();
 	}
 
-	AssociationCallback buildCallback()
-	{
+	AssociationCallback buildCallback() {
 		AssociationCallback callback = new AssociationCallback(getPage()
-			.getRequestCycle().getPage().getPageName(), getModel(),
-			getObjectReferenceDescriptor());
+				.getRequestCycle().getPage().getPageName(), getModel(),
+				getObjectReferenceDescriptor());
 		return callback;
 	}
 
-	public void addNew(IRequestCycle cycle)
-	{
+	public void addNew(IRequestCycle cycle) {
 		getCallbackStack().push(buildCallback());
 
 		String currentEditPageName = getPage().getRequestCycle().getPage()
-			.getPageName();
+				.getPageName();
 		EditPage ownerEditPage = (EditPage) getPageResolver().resolvePage(
-			cycle, getDescriptor().getClass().getName(), PageType.EDIT);
+				cycle, getDescriptor().getClass().getName(), PageType.EDIT);
 
-		try
-		{
+		try {
 			Object newModel = buildNewMemberInstance();
 			EditCallback nextPage = new EditCallback(ownerEditPage
-				.getPageName(), newModel);
+					.getPageName(), newModel);
 
 			((EditPage) cycle.getPage(currentEditPageName))
-				.setNextPage(nextPage);
-		} catch (Exception ex)
-		{
+					.setNextPage(nextPage);
+		} catch (Exception ex) {
 			throw new TrailsRuntimeException(ex);
 		}
 	}
 
 	protected Object buildNewMemberInstance() throws InstantiationException,
-		IllegalAccessException
-	{
+			IllegalAccessException {
 		Object associationModel;
-		if (getCreateExpression() == null)
-		{
+		if (getCreateExpression() == null) {
 			associationModel = getDescriptor().getPropertyType().newInstance();
-		} else
-		{
-			try
-			{
+		} else {
+			try {
 				associationModel = Ognl.getValue(getCreateExpression(),
-					getOwner());
-			} catch (OgnlException oe)
-			{
+						getOwner());
+			} catch (OgnlException oe) {
 				oe.printStackTrace();
 				return null;
 			}
 		}
 
 		if (getObjectReferenceDescriptor().getInverseProperty() != null
-			&& getObjectReferenceDescriptor().isOneToOne())
-		{
-			try
-			{
+				&& getObjectReferenceDescriptor().isOneToOne()) {
+			try {
 				Ognl.setValue(getObjectReferenceDescriptor()
-					.getInverseProperty(), associationModel, getOwner());
-			} catch (OgnlException e)
-			{
+						.getInverseProperty(), associationModel, getOwner());
+			} catch (OgnlException e) {
 				LOG.error(e.getMessage());
 			}
 		}
@@ -185,10 +168,9 @@ public abstract class AssociationMgt extends TrailsComponent
 		return associationModel;
 	}
 
-	public void remove(IRequestCycle cycle)
-	{
+	public void remove(IRequestCycle cycle) {
 		EditPage editPage = (EditPage) getPageResolver().resolvePage(cycle,
-			getDescriptor().getClass().getName(), PageType.EDIT);
+				getDescriptor().getClass().getName(), PageType.EDIT);
 
 		AssociationCallback callback = buildCallback();
 
@@ -202,8 +184,8 @@ public abstract class AssociationMgt extends TrailsComponent
 
 	public abstract Insert getLinkInsert();
 
-	public OwningObjectReferenceDescriptor getObjectReferenceDescriptor()
-	{
-		return (OwningObjectReferenceDescriptor) getDescriptor();
+	public OwningObjectReferenceDescriptor getObjectReferenceDescriptor() {
+		return (OwningObjectReferenceDescriptor) getDescriptor().getExtension(
+				OwningObjectReferenceDescriptor.class);
 	}
 }
