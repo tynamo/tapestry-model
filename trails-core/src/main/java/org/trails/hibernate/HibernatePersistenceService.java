@@ -41,7 +41,9 @@ import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import org.springframework.transaction.annotation.Transactional;
 import org.trails.component.Utils;
+import org.trails.descriptor.CollectionDescriptor;
 import org.trails.descriptor.DescriptorService;
+import org.trails.descriptor.EnumReferenceDescriptor;
 import org.trails.descriptor.IClassDescriptor;
 import org.trails.descriptor.IPropertyDescriptor;
 import org.trails.descriptor.ObjectReferenceDescriptor;
@@ -228,23 +230,23 @@ public class HibernatePersistenceService extends HibernateDaoSupport implements
 									searchCriteria.add( Restrictions.like( propertyName, value.toString(),
 																		   MatchMode.ANYWHERE ) );
 								}
-								else if( propertyDescriptor.getExtension(ObjectReferenceDescriptor.class).isObjectReference() )
+								else if( propertyDescriptor.getExtensions().size() > 0 )
 								{
-									//'one'-end of many-to-one -> just match the identifier
-									Object identifierValue = Ognl.getValue( descriptorService
-											.getClassDescriptor( value.getClass() ).getIdentifierDescriptor().getName(),
-																			value );
-									searchCriteria.createCriteria( propertyName )
-											.add( Restrictions.idEq( identifierValue ) );
-								}
-								else if( propertyDescriptor.getExtension(OwningObjectReferenceDescriptor.class).isOwningObjectReference() )
-								{
-									//'one'-end of one-to-one -> just match the identifier
-									Object identifierValue = Ognl.getValue( descriptorService
-											.getClassDescriptor( value.getClass() ).getIdentifierDescriptor().getName(),
-																			value );
-									searchCriteria.createCriteria( propertyName )
-											.add( Restrictions.idEq( identifierValue ) );
+									/**
+									 * 'one'-end of many-to-one, one-to-one
+									 * 
+									 * Just match the identifier
+									 */
+									if ( propertyDescriptor.getExtension(EnumReferenceDescriptor.class) != null ||
+											propertyDescriptor.getExtension(ObjectReferenceDescriptor.class) != null ||
+											propertyDescriptor.getExtension(OwningObjectReferenceDescriptor.class) != null	) {
+
+										Object identifierValue = Ognl.getValue( descriptorService
+												.getClassDescriptor( value.getClass() ).getIdentifierDescriptor().getName(),
+																				value );
+										searchCriteria.createCriteria( propertyName )
+												.add( Restrictions.idEq( identifierValue ) );
+									}
 								}
 								else if( propertyClass.isPrimitive() )
 								{
