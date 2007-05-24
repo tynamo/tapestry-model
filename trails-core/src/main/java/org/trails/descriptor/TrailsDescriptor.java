@@ -50,7 +50,6 @@ public class TrailsDescriptor implements IDescriptor, Serializable {
 	public TrailsDescriptor(TrailsDescriptor dto) {
 		try {
 			BeanUtils.copyProperties(this, dto);
-			copyExtensionsFrom(dto);
 		} catch (IllegalAccessException e) {
 			LOG.error(e.getMessage());
 			e.printStackTrace();

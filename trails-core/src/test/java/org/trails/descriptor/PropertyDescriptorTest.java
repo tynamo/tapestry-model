@@ -93,7 +93,7 @@ public class PropertyDescriptorTest extends TestCase {
 
 				try {
 					BeanUtils.copyProperties(this,
-							(OwningObjectReferenceDescriptor) descriptor);
+							(ObjectReferenceDescriptor) descriptor);
 				} catch (IllegalAccessException e) {
 					LOG.error(e.getMessage());
 					e.printStackTrace();
