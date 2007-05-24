@@ -106,7 +106,13 @@ public class Person implements Serializable {
         return eRole;
     }
 
-    @PropertyDescriptor(summary = true, index = 3)
+    @Enumerated(value = EnumType.STRING)
+	@PropertyDescriptor(summary = true, index = 9)
+	public EApplicationRole getEApplicationRole() {
+		return eApplicationRole;
+	}
+
+	@PropertyDescriptor(summary = true, index = 3)
     public String getFirstName() {
         return firstName;
     }
@@ -136,12 +142,6 @@ public class Person implements Serializable {
     @PropertyDescriptor(summary = true, index = 8)
     public String getPassword() {
         return password;
-    }
-
-    @Enumerated(value = EnumType.STRING)
-    @PropertyDescriptor(summary = true, index = 9)
-    public EApplicationRole getApplicationRole() {
-        return eApplicationRole;
     }
 
     @PropertyDescriptor(hidden = true, summary = false, searchable = false)
@@ -182,7 +182,11 @@ public class Person implements Serializable {
         this.eRole = role;
     }
 
-    public void setFirstName(String firstName) {
+    public void setEApplicationRole(EApplicationRole applicationRole) {
+		eApplicationRole = applicationRole;
+	}
+
+	public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
 
@@ -204,10 +208,6 @@ public class Person implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public void setApplicationRole(EApplicationRole eApplicationRole) {
-        this.eApplicationRole = eApplicationRole;
     }
 
     public void setCreated(Long created) {

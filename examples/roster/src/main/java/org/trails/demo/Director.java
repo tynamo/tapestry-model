@@ -19,69 +19,69 @@ import java.io.Serializable;
 @Entity
 @ClassDescriptor(hasCyclicRelationships = true)
 public class Director extends Person implements Serializable {
-    private static final Log log = LogFactory.getLog(Director.class);
+	private static final Log log = LogFactory.getLog(Director.class);
 
-    private Organization organization;
+	private Organization organization;
 
-    /**
-     * Copy CTOR
-     */
-    public Director(Director dto) {
-        super(dto);
+	/**
+	 * Copy CTOR
+	 */
+	public Director(Director dto) {
+		super(dto);
 
-        try {
-            BeanUtils.copyProperties(this, dto);
-        } catch (Exception e) {
-            log.error(e.toString());
-            e.printStackTrace();
-        }
-    }
+		try {
+			BeanUtils.copyProperties(this, dto);
+		} catch (Exception e) {
+			log.error(e.toString());
+			e.printStackTrace();
+		}
+	}
 
-    public Director() {
-        setERole(ERole.USER);
-        setApplicationRole(EApplicationRole.DIRECTOR);
-    }
+	public Director() {
+		setERole(ERole.USER);
+		setEApplicationRole(EApplicationRole.DIRECTOR);
+	}
 
-    @OneToOne(mappedBy = "director")
-    @JoinTable(name = "join_table_Organization_Director",
-            joinColumns = @JoinColumn(name = "organization_fk", insertable = true, updatable = true, nullable = true),
-            inverseJoinColumns = {@JoinColumn(name = "director_fk", insertable = true, updatable = true, nullable = true)}
-    )
-    public Organization getOrganization() {
-        return organization;
-    }
+	@OneToOne(mappedBy = "director")
+	@JoinTable(name = "join_table_Organization_Director",
+			joinColumns = @JoinColumn(name = "organization_fk", insertable = true, updatable = true, nullable = true),
+			inverseJoinColumns = {@JoinColumn(name = "director_fk", insertable = true, updatable = true, nullable = true)}
+	)
+	public Organization getOrganization() {
+		return organization;
+	}
 
-    public void setOrganization(Organization organization) {
-        this.organization = organization;
-    }
+	public void setOrganization(Organization organization) {
+		this.organization = organization;
+	}
 
-    @Override
-    public Director clone() {
-        return new Director(this);
-    }
+	@Override
+	public Director clone() {
+		return new Director(this);
+	}
 
-    @Override
-    public int hashCode() {
-        final int PRIME = 31;
-        int result = 1;
-        result = PRIME * result + ((getId() == null) ? 0 : getId().hashCode());
-        return result;
-    }
+	@Override
+	public int hashCode() {
+		final int PRIME = 31;
+		int result = 1;
+		result = PRIME * result + ((getId() == null) ? 0 : getId().hashCode());
+		return result;
+	}
 
-    @Override
-    public boolean equals(Object rhs) {
-        if (this == rhs)
-            return true;
-        if (rhs == null)
-            return false;
-        if (!(rhs instanceof Director))
-            return false;
-        final Director castedObject = (Director) rhs;
-        if (getId() == null) {
-            if (castedObject.getId() != null)
-                return false;
-        } else if (!getId().equals(castedObject.getId()))
-            return false;
-        return true;
-    }
+	@Override
+	public boolean equals(Object rhs) {
+		if (this == rhs)
+			return true;
+		if (rhs == null)
+			return false;
+		if (!(rhs instanceof Director))
+			return false;
+		final Director castedObject = (Director) rhs;
+		if (getId() == null) {
+			if (castedObject.getId() != null)
+				return false;
+		} else if (!getId().equals(castedObject.getId()))
+			return false;
+		return true;
+	}
 }

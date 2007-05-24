@@ -1,14 +1,17 @@
 package org.trails.demo;
 
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.trails.descriptor.annotation.ClassDescriptor;
-
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import org.trails.descriptor.annotation.PropertyDescriptor;
 
 /**
  * A Coach belongs to an league and has a team
@@ -18,85 +21,87 @@ import javax.persistence.ManyToOne;
 @Entity
 @ClassDescriptor(hasCyclicRelationships = true, hidden = true)
 public class Officer extends Person {
-    private static final Log log = LogFactory.getLog(Officer.class);
+	private static final Log log = LogFactory.getLog(Officer.class);
 
-    protected enum EOfficer {
-        COMMISSIONER, SECRETARY, TREASURER, OFFICIALS, MEDIA, MARKETING
-    }
+	protected enum EOfficerRole {
+		COMMISSIONER, SECRETARY, TREASURER, OFFICIALS, MEDIA, MARKETING
+	}
 
-    private EOfficer    role;
+	private EOfficerRole    eOfficerRole;
 
-    private League league = null;
+	private League league = null;
 
-    /**
-     * CTOR
-     */
-    public Officer(Officer dto) {
-        super(dto);
+	/**
+	 * CTOR
+	 */
+	public Officer(Officer dto) {
+		super(dto);
 
-        try {
-            BeanUtils.copyProperties(this, dto);
-        } catch (Exception e) {
-            log.error(e.toString());
-            e.printStackTrace();
-        }
-    }
+		try {
+			BeanUtils.copyProperties(this, dto);
+		} catch (Exception e) {
+			log.error(e.toString());
+			e.printStackTrace();
+		}
+	}
 
-    public Officer() {
-        setERole(ERole.USER);
-    }
+	public Officer() {
+		setERole(ERole.USER);
+	}
 
-    public EOfficer getRole() {
-        return role;
-    }
+	@Enumerated(value = EnumType.STRING)
+	@PropertyDescriptor(summary = true)
+	public EOfficerRole getEOfficerRole() {
+		return eOfficerRole;
+	}
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "officer_league_fk", insertable = false, updatable = true, nullable = true)
-    public League getLeague() {
-        return league;
-    }
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "officer_league_fk", insertable = false, updatable = true, nullable = true)
+	public League getLeague() {
+		return league;
+	}
 
-    public void setRole(EOfficer role) {
-        this.role = role;
-    }
+	public void setEOfficerRole(EOfficerRole role) {
+		this.eOfficerRole = role;
+	}
 
-    public void setLeague(League league) {
-        this.league = league;
-    }
+	public void setLeague(League league) {
+		this.league = league;
+	}
 
-    @Override
-    public String toString() {
-        //return this.getApplicationRole().toString() + " - " + getLastName() + "," + getFirstName();
-        return getLastName() + "," + getFirstName();
-    }
+	@Override
+	public String toString() {
+		//return this.getApplicationRole().toString() + " - " + getLastName() + "," + getFirstName();
+		return getLastName() + "," + getFirstName();
+	}
 
-    @Override
-    public Officer clone() {
-        return new Officer(this);
-    }
+	@Override
+	public Officer clone() {
+		return new Officer(this);
+	}
 
-    @Override
-    public int hashCode() {
-        final int PRIME = 31;
-        int result = 1;
-        result = PRIME * result + ((getId() == null) ? 0 : getId().hashCode());
-        return result;
-    }
+	@Override
+	public int hashCode() {
+		final int PRIME = 31;
+		int result = 1;
+		result = PRIME * result + ((getId() == null) ? 0 : getId().hashCode());
+		return result;
+	}
 
-    @Override
-    public boolean equals(Object rhs) {
-        if (this == rhs)
-            return true;
-        if (rhs == null)
-            return false;
-        if (!(rhs instanceof Officer))
-            return false;
-        final Officer castedObject = (Officer) rhs;
-        if (getId() == null) {
-            if (castedObject.getId() != null)
-                return false;
-        } else if (!getId().equals(castedObject.getId()))
-            return false;
-        return true;
-    }
+	@Override
+	public boolean equals(Object rhs) {
+		if (this == rhs)
+			return true;
+		if (rhs == null)
+			return false;
+		if (!(rhs instanceof Officer))
+			return false;
+		final Officer castedObject = (Officer) rhs;
+		if (getId() == null) {
+			if (castedObject.getId() != null)
+				return false;
+		} else if (!getId().equals(castedObject.getId()))
+			return false;
+		return true;
+	}
 }
