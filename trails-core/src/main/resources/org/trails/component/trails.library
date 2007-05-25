@@ -18,11 +18,6 @@
 	<component-type type="ListAllLink" specification-path="ListAllLink.jwc"/>
 	<component-type type="NewLink" specification-path="NewLink.jwc"/>
 	<component-type type="ObjectActions" specification-path="ObjectActions.jwc"/>
-	<component-type type="SimpleSearchField" specification-path="search/SimpleSearchField.jwc"/>
-	<component-type type="NumberSearchField" specification-path="search/NumberSearchField.jwc"/>
-	<component-type type="DateSearchField" specification-path="search/DateSearchField.jwc"/>
-	<component-type type="AssociationSearchField" specification-path="search/AssociationSearchField.jwc"/>
-	<component-type type="StringSearchField" specification-path="search/StringSearchField.jwc"/>
 
 	<component-type type="BlobComponent" specification-path="blob/BlobComponent.jwc"/>
 	<component-type type="TrailsUpload" specification-path="blob/TrailsUpload.jwc"/>
@@ -32,8 +27,6 @@
 	<component-type type="AssociationSelect" specification-path="AssociationSelect.jwc"/>
 	<component-type type="AssociationMgt" specification-path="AssociationMgt.jwc"/>
 
-	<component-type type="SearchForm" specification-path="search/SearchForm.jwc"/>
-
 	<page name="Editors" specification-path="/org/trails/page/Editors.page"/>
-	<page name="SearchBlocks" specification-path="/org/trails/page/SearchBlocks.page"/>
+
 </library-specification>

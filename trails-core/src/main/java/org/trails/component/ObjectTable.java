@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.tapestry.annotations.ComponentClass;
 import org.apache.tapestry.annotations.InjectObject;
 import org.apache.tapestry.annotations.Parameter;
 import org.apache.tapestry.services.ExpressionEvaluator;
@@ -22,13 +23,19 @@ import org.apache.tapestry.util.ComponentAddress;
 import org.trails.descriptor.IPropertyDescriptor;
 import org.trails.persistence.PersistenceService;
 
-
+/**
+ * Produces a table for the list of instances
+ */
+@ComponentClass(allowBody = true, allowInformalParameters = true)
 public abstract class ObjectTable extends ClassDescriptorComponent
 {
 
 	public static final String LINK_COLUMN = "linkColumnValue";
 
+	@Parameter(required = false, defaultValue = "false", cache = true)
 	public abstract boolean isShowCollections();
+
+	public abstract void setShowCollections(boolean ShowCollections);
 
 	@InjectObject("spring:persistenceService")
 	public abstract PersistenceService getPersistenceService();
@@ -38,7 +45,24 @@ public abstract class ObjectTable extends ClassDescriptorComponent
 
 	public abstract void setInstances(List instances);
 
-	public abstract void setShowCollections(boolean ShowCollections);
+	public abstract Object getCurrentObject();
+
+	public abstract void setCurrentObject(Object currentObject);
+
+	@Parameter(cache = false, defaultValue = "currentObject")
+	public abstract Object getObject();
+
+	public abstract void setObject(Object object);
+
+	@Parameter(cache = false)
+	public abstract String getRowsClass();
+
+	public abstract void setRowsClass(String rowsClass);
+
+	@Parameter(cache = false, defaultValue = "10")
+	public abstract int getPageSize();
+
+	public abstract void setPageSize(int rowsClass);
 
 	public ComponentAddress getLinkBlockAddress(IPropertyDescriptor descriptor)
 	{

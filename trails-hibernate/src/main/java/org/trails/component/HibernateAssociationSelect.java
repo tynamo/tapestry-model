@@ -3,6 +3,8 @@ package org.trails.component;
 import org.apache.tapestry.annotations.ComponentClass;
 import org.apache.tapestry.annotations.InjectObject;
 import org.apache.tapestry.annotations.Parameter;
+import org.apache.tapestry.annotations.Asset;
+import org.apache.tapestry.IAsset;
 import org.hibernate.criterion.DetachedCriteria;
 import org.trails.persistence.HibernatePersistenceService;
 
@@ -14,6 +16,9 @@ import org.trails.persistence.HibernatePersistenceService;
 @ComponentClass(allowBody = false, allowInformalParameters = true)
 public abstract class HibernateAssociationSelect extends AssociationSelect
 {
+
+	@Asset(value = "/org/trails/component/AssociationSelect.html")
+	public abstract IAsset get$template();
 
 	/**
 	 * @todo: remove when the components reuse issue goes away

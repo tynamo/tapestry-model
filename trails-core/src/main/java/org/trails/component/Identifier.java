@@ -11,20 +11,40 @@
  */
 package org.trails.component;
 
+import org.apache.tapestry.annotations.Bean;
+import org.apache.tapestry.annotations.ComponentClass;
+import org.apache.tapestry.annotations.Lifecycle;
+import org.apache.tapestry.annotations.Parameter;
+import org.apache.tapestry.valid.IValidator;
+import org.apache.tapestry.valid.NumberValidator;
 import org.trails.descriptor.IIdentifierDescriptor;
 import org.trails.descriptor.IPropertyDescriptor;
 import org.trails.page.ModelPage;
 
+/**
+ * Displays an id property
+ */
+@ComponentClass(allowBody = true, allowInformalParameters = true)
 public abstract class Identifier extends PropertyEditor
 {
 
+	@Parameter(required = true, cache = true)
 	public abstract IPropertyDescriptor getDescriptor();
 
 	public abstract void setDescriptor(IPropertyDescriptor Descriptor);
 
+	@Parameter(required = false, defaultValue = "container.model", cache = true)
 	public abstract Object getModel();
 
 	public abstract void setModel(Object Model);
+
+	@Parameter(required = false, defaultValue = "page.validatorTranslatorService.getValidator(descriptor)")
+	public abstract IValidator getValidator();
+
+	public abstract void setValidator(IValidator validator);
+
+	@Bean(lifecycle = Lifecycle.PAGE)
+	public abstract NumberValidator getNumberValidator();
 
 	public boolean isEditable()
 	{

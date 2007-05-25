@@ -5,10 +5,6 @@
 
 	<parameter name="showSaveButton" required="no" default-value="page.classDescriptor.allowSave" cache="yes" deprecated="no"/>
 
-	<parameter name="propertyNames" required="no" cache="yes" deprecated="no"/>
-
-	<parameter name="classDescriptor" required="no" default-value="page.classDescriptor" cache="yes" deprecated="no"/>
-
 	<parameter name="buttonBarClass" required="no" default-value="literal:buttonBarClass">
 		<description>The css class of div containing all the submit buttons</description>
 	</parameter>

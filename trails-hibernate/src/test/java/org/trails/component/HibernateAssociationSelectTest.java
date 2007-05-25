@@ -12,7 +12,7 @@ import org.trails.descriptor.TrailsPropertyDescriptor;
 import org.trails.persistence.HibernatePersistenceService;
 import org.trails.testhibernate.Foo;
 
-public class AssociationSelectTest extends ComponentTest
+public class HibernateAssociationSelectTest extends ComponentTest
 {
 
 	TrailsClassDescriptor classDescriptor;

@@ -4,7 +4,10 @@ import ognl.Ognl;
 import ognl.OgnlException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.tapestry.IAsset;
 import org.apache.tapestry.IPage;
+import org.apache.tapestry.annotations.Asset;
+import org.apache.tapestry.annotations.ComponentClass;
 import org.apache.tapestry.annotations.InjectObject;
 import org.apache.tapestry.form.IPropertySelectionModel;
 import org.hibernate.NonUniqueObjectException;
@@ -20,13 +23,29 @@ import org.trails.persistence.HibernatePersistenceService;
 /**
  * This component produces a editor for a ManyToOne or ManyToMany collection
  */
+@ComponentClass(allowBody = true, allowInformalParameters = true)
 public abstract class HibernateEditCollection extends EditCollection
 {
 
+	@Asset(value = "/org/trails/component/EditCollection.html")
+	public abstract IAsset get$template();
+
 	protected static final Log LOG = LogFactory.getLog(HibernateEditCollection.class);
 
+	/**
+	 * @todo: remove when the components reuse issue goes away
+	 */
 	@InjectObject("spring:persistenceService")
-	public abstract HibernatePersistenceService getPersistenceService();
+	public abstract HibernatePersistenceService getHibernatePersistenceService();
+
+	/**
+	 * @todo: remove when the components reuse issue goes away
+	 */
+	@Override
+	public HibernatePersistenceService getPersistenceService()
+	{
+		return getHibernatePersistenceService();
+	}
 
 	public IPage edit(Object member)
 	{

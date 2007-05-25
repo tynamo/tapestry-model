@@ -5,9 +5,6 @@
 	</description>
 
 	<parameter name="model" required="yes" cache="yes" deprecated="no"/>
-	<parameter name="propertyNames" required="no" default-value="null" cache="yes" deprecated="no"/>
-	<parameter name="classDescriptor" required="no" default-value="page.classDescriptor" cache="yes" deprecated="no"/>
-
 
 	<component id="foreach" type="For" inherit-informal-parameters="no">
 		<binding name="source">propertyDescriptors</binding>

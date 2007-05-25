@@ -22,10 +22,13 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.tapestry.IAsset;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.annotations.Asset;
 import org.apache.tapestry.annotations.InjectObject;
 import org.apache.tapestry.annotations.InjectState;
+import org.apache.tapestry.annotations.Parameter;
 import org.apache.tapestry.contrib.palette.SortMode;
 import org.apache.tapestry.form.IPropertySelectionModel;
 import org.trails.TrailsRuntimeException;
@@ -43,9 +46,10 @@ import org.trails.persistence.PersistenceService;
 
 
 /**
+ * This component produces a editor for a ManyToOne or ManyToMany collection.
+ * It allows a user to edit a collection property
+ *
  * @author Chris Nelson
- *         <p/>
- *         This component produces a editor for a ManyToOne or ManyToMany collection
  */
 public abstract class EditCollection extends TrailsComponent
 {
@@ -57,30 +61,60 @@ public abstract class EditCollection extends TrailsComponent
 
 	public abstract void setCallbackStack(CallbackStack stack);
 
+	@Parameter(required = true)
 	public abstract Collection getCollection();
 
 	public abstract void setCollection(Collection Collection);
 
+	/**
+	 * The object which owns the collection being edited
+	 */
+	@Parameter(required = false, defaultValue = "page.model")
 	public abstract Object getModel();
 
 	public abstract void setModel(Object Model);
 
+	/**
+	 * Ognl expression to invoke on the model to create a new child instance
+	 */
+	@Parameter(required = false)
 	public abstract String getCreateExpression();
 
 	public abstract void setCreateExpression(String CreateExpression);
 
+	/**
+	 * The CollectionDescriptor for the collection being edited
+	 */
+	@Parameter(required = true)
 	public abstract IPropertyDescriptor getPropertyDescriptor();
 
-	public abstract void setPropertyDescriptor(
-		IPropertyDescriptor PropertyDescriptor);
+	public abstract void setPropertyDescriptor(IPropertyDescriptor PropertyDescriptor);
 
 	public abstract Object getCurrentObject();
 
 	public abstract void setCurrentObject(Object CurrentObject);
 
+	@Parameter(required = false, defaultValue = "page.descriptorService")
 	public abstract DescriptorService getDescriptorService();
 
+	@Parameter(required = false, defaultValue = "page.persistenceService")
 	public abstract PersistenceService getPersistenceService();
+
+	@Parameter(required = false, defaultValue = "not(collectionDescriptor.childRelationship)")
+	public abstract boolean getAddFromExisting();
+
+	@Parameter(required = false, defaultValue = "true")
+	public abstract boolean isAllowCreate();
+
+	public abstract int getIndex();
+
+	public abstract void setIndex(int index);
+
+	@Asset("classpath:move_up.gif")
+	public abstract IAsset getUpImage();
+
+	@Asset("classpath:move_down.gif")
+	public abstract IAsset getDownImage();
 
 	private List selected = new ArrayList();
 

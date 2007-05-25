@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.tapestry.BaseComponent;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.annotations.ComponentClass;
 import org.apache.tapestry.annotations.InjectObject;
 import org.apache.tapestry.annotations.Parameter;
 import org.apache.tapestry.form.IPropertySelectionModel;
@@ -19,6 +20,7 @@ import org.trails.persistence.PersistenceService;
  *         containing all the elements of the PropertyDescriptor's type.  If
  *         a criteria is specified, it will filter the list by it.
  */
+@ComponentClass(allowBody = true, allowInformalParameters = true)
 public abstract class AssociationSelect extends BaseComponent
 {
 	@InjectObject("spring:persistenceService")
@@ -31,10 +33,23 @@ public abstract class AssociationSelect extends BaseComponent
 
 	public abstract void setPropertySelectionModel(IPropertySelectionModel PropertySelectionModel);
 
+	@Parameter(required = true, cache = true)
+	public abstract Object getModel();
+
+	public abstract void setModel(Object bytes);
+
+	@Parameter
+	public abstract Object getValue();
+
+	public abstract void setValue(Object value);
+
+
+	@Parameter(required = true, cache = true)
 	public abstract IPropertyDescriptor getPropertyDescriptor();
 
 	public abstract void setPropertyDescriptor(IPropertyDescriptor PropertyDescriptor);
 
+	@Parameter(required = false, defaultValue = "not(propertyDescriptor.required)")
 	public abstract boolean isAllowNone();
 
 	public abstract void setAllowNone(boolean AllowNone);

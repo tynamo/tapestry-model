@@ -7,6 +7,7 @@ import ognl.Ognl;
 import ognl.OgnlException;
 import org.apache.tapestry.BaseComponent;
 import org.apache.tapestry.annotations.InjectObject;
+import org.apache.tapestry.annotations.Parameter;
 import org.apache.tapestry.components.Block;
 import org.trails.TrailsRuntimeException;
 import org.trails.descriptor.IClassDescriptor;
@@ -21,10 +22,12 @@ public abstract class ClassDescriptorComponent extends BaseComponent
 		// TODO Auto-generated constructor stub
 	}
 
+	@Parameter(required = false, defaultValue = "page.classDescriptor", cache = true)
 	public abstract IClassDescriptor getClassDescriptor();
 
 	public abstract void setClassDescriptor(IClassDescriptor ClassDescriptor);
 
+	@Parameter(required = false, defaultValue = "ognl:null", cache = true)
 	public abstract String[] getPropertyNames();
 
 	public abstract void setPropertyNames(String[] PropertyNames);
