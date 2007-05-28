@@ -38,7 +38,7 @@ public class HibernateValidationTest extends AbstractTransactionalSpringContextT
 		assertEquals("right message", "was too long.", invalidValue.getMessage());
 	}
 
-	public void testValidator() throws Exception
+	public void _testValidator() throws Exception
 	{
 		Baz baz = new Baz();
 		ClassValidator<Baz> validator = new ClassValidator<Baz>(Baz.class);

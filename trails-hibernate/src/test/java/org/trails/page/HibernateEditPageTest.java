@@ -70,6 +70,7 @@ public class HibernateEditPageTest extends ComponentTest
 	public void setUp() throws Exception
 	{
 		persistenceMock = new org.jmock.cglib.Mock(HibernatePersistenceService.class);  // @todo: remove when the components reuse issue goes away
+		delegate = new HibernateValidationDelegate();
 
 		foo.setName("foo");
 		validatorMock = new Mock(IValidationDelegate.class);
@@ -318,7 +319,7 @@ public class HibernateEditPageTest extends ComponentTest
 				"persistenceService", persistenceMock.proxy(),
 				"descriptorService", descriptorServiceMock.proxy(),
 				"callbackStack", callbackStack,
-				"hibernateValidationDelegate", new HibernateValidationDelegate(),
+				"hibernateValidationDelegate", delegate,
 				"resourceBundleMessageSource", messageSource
 			});
 		return editPage;
