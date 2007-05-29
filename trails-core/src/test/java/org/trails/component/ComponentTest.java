@@ -19,6 +19,7 @@ import org.jmock.MockObjectTestCase;
 import org.jmock.cglib.Mock;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.trails.callback.CallbackStack;
+import org.trails.component.blob.BlobDownloadService;
 import org.trails.descriptor.DescriptorService;
 import org.trails.i18n.DefaultTrailsResourceBundleMessageSource;
 import org.trails.page.EditPage;
@@ -36,6 +37,8 @@ public class ComponentTest extends MockObjectTestCase
 	protected Creator creator = new Creator();
 	protected Mock descriptorServiceMock = new Mock(DescriptorService.class);
 	protected DescriptorService descriptorService;
+	protected Mock downloadServiceMock = new Mock(BlobDownloadService.class);
+	protected BlobDownloadService downloadService;
 	protected CallbackStack callbackStack = new CallbackStack();
 	protected Mock persistenceMock = new Mock(PersistenceService.class);
 	protected TrailsValidationDelegate delegate = new TrailsValidationDelegate();
@@ -43,6 +46,7 @@ public class ComponentTest extends MockObjectTestCase
 	public void setUp() throws Exception
 	{
 		descriptorService = (DescriptorService) descriptorServiceMock.proxy();
+		downloadService = (BlobDownloadService) downloadServiceMock.proxy();
 	}
 
 	protected <T> T buildTrailsPage(Class<T> pageClass)
@@ -51,6 +55,7 @@ public class ComponentTest extends MockObjectTestCase
 			new Object[]{
 				"persistenceService", persistenceMock.proxy(),
 				"descriptorService", descriptorServiceMock.proxy(),
+				"downloadService", downloadServiceMock.proxy(),
 				"callbackStack", callbackStack
 			});
 		return page;
@@ -59,6 +64,7 @@ public class ComponentTest extends MockObjectTestCase
 	protected EditPage buildEditPage()
 	{
 		DescriptorService descriptorService = (DescriptorService) descriptorServiceMock.proxy();
+		BlobDownloadService downloadService = (BlobDownloadService) downloadServiceMock.proxy();
 		DefaultTrailsResourceBundleMessageSource messageSource = new DefaultTrailsResourceBundleMessageSource();
 		ResourceBundleMessageSource springMessageSource = new ResourceBundleMessageSource();
 		springMessageSource.setBasename("messages");
@@ -68,6 +74,7 @@ public class ComponentTest extends MockObjectTestCase
 			new Object[]{
 				"persistenceService", persistenceMock.proxy(),
 				"descriptorService", descriptorServiceMock.proxy(),
+				"downloadService", downloadServiceMock.proxy(),
 				"callbackStack", callbackStack,
 				"delegate", delegate,
 				"resourceBundleMessageSource", messageSource

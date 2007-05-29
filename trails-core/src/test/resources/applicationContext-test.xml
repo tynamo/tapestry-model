@@ -3,7 +3,7 @@
 	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	   xmlns:aop="http://www.springframework.org/schema/aop"
 	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
-                           http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
+						   http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
 
 	<aop:aspectj-autoproxy/>
 
@@ -144,6 +144,13 @@
 					</bean>
 				</entry>
 
+				<entry>
+					<key><value>supportsExtension('org.trails.descriptor.BlobDescriptorExtension')</value></key>
+					<bean class="org.apache.tapestry.util.ComponentAddress">
+						<constructor-arg index="0"><value>trails:Editors</value></constructor-arg>
+						<constructor-arg index="1"><value>blobEditor</value></constructor-arg>
+					</bean>
+				</entry>
 			</map>
 		</property>
 	</bean>
