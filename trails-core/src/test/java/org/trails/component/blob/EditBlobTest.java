@@ -40,7 +40,6 @@ import org.trails.test.UploadableMediaDelegate;
 
 public class EditBlobTest extends ComponentTest {
 	IClassDescriptor classDescriptor;
-
 	IdentifierDescriptor idDescriptor;
 
 	EditPage blobEditPage;
@@ -48,21 +47,15 @@ public class EditBlobTest extends ComponentTest {
 	UploadableMedia document;
 
 	Mock cycleMock = new Mock(IRequestCycle.class);
-
 	Mock pageMock = new Mock(IPage.class);
-
 	Mock pageResolverMock = new Mock(PageResolver.class);
-
 	Mock validatorMock = new Mock(IValidationDelegate.class);
 
 	EditCallback editCallback;
 
 	public static final String EDIT_PAGE_NAME = "BlobEdit";
-
 	public static final String DELEGATE_EDIT_PAGE_NAME = "DelegateEdit";
-
 	public static final String EDIT_CALLBACK_NAME = EDIT_PAGE_NAME + "Callback";
-
 	public static final String DELEGATEEDIT_CALLBACK_NAME = DELEGATE_EDIT_PAGE_NAME
 			+ "Callback";
 
@@ -92,8 +85,6 @@ public class EditBlobTest extends ComponentTest {
 		document.setNumBytes(0L);
 		byte[] buf = new byte[4096];
 		document.setBytes(buf);
-
-		// descriptorServiceMock.expects(atLeastOnce()).method("getClassDescriptor").with(eq(UploadableMedia.class)).will(returnValue(classDescriptor));
 	}
 
 	public void testOnFormSubmit() {
@@ -172,37 +163,6 @@ public class EditBlobTest extends ComponentTest {
 				.will(returnValue(addPage));
 		cycleMock.expects(once()).method("activate").with(same(addPage));
 		editCallback.performCallback((IRequestCycle) cycleMock.proxy());
-	}
-
-	public void testAdd() throws Exception {
-		/*
-		 * Mock cycleMock = buildCycleMock("Baz");
-		 * pageResolverMock.expects(atLeastOnce()).method("resolvePage").with(
-		 * isA(IRequestCycle.class), eq(Baz.class.getName()), eq(PageType.EDIT))
-		 * .will(returnValue(addPage));
-		 * cycleMock.expects(atLeastOnce()).method("getPage").will(returnValue(addPage));
-		 * pageMock.expects(atLeastOnce()).method("getRequestCycle").will(returnValue(cycleMock.proxy()));
-		 * buildCollectionDescriptor("bazzes", Baz.class);
-		 * 
-		 * editCollection.setCreateExpression("createBaz()");
-		 * 
-		 * editCollection.showAddPage((IRequestCycle) cycleMock.proxy());
-		 * 
-		 * assertTrue("AddToCollectionCallback on stack",
-		 * editCollection.getCallbackStack().getStack().peek() instanceof
-		 * CollectionCallback); CollectionCallback callback =
-		 * (CollectionCallback)editCollection.getCallbackStack().getStack().pop();
-		 * //assertEquals("right ognl", "bazzes.add",
-		 * callback.getAddOgnlExpression());
-		 * 
-		 * EditCallback nextPageCallback = (EditCallback)editPage.getNextPage();
-		 * assertTrue(nextPageCallback.getModel() instanceof Baz); Baz
-		 * createdBaz = (Baz)nextPageCallback.getModel(); assertEquals(foo,
-		 * createdBaz.getFoo()); assertTrue("is child",
-		 * callback.isChildRelationship()); assertEquals("right page",
-		 * callback.getPageName(), "fooPage");
-		 * //assertNotNull(editPage.getNextPage());
-		 */
 	}
 
 	public void testGetPageName() {
