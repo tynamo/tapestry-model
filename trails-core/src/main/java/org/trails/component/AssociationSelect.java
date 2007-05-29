@@ -33,7 +33,7 @@ public abstract class AssociationSelect extends BaseComponent
 
 	public abstract void setPropertySelectionModel(IPropertySelectionModel PropertySelectionModel);
 
-	@Parameter(required = true, cache = true)
+	@Parameter(required = false, defaultValue="page.model")
 	public abstract Object getModel();
 
 	public abstract void setModel(Object bytes);
@@ -44,7 +44,7 @@ public abstract class AssociationSelect extends BaseComponent
 	public abstract void setValue(Object value);
 
 
-	@Parameter(required = true, cache = true)
+	@Parameter(required = true)
 	public abstract IPropertyDescriptor getPropertyDescriptor();
 
 	public abstract void setPropertyDescriptor(IPropertyDescriptor PropertyDescriptor);
