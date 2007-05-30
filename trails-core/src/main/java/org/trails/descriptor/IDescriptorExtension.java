@@ -5,7 +5,7 @@ import java.io.Serializable;
 public interface IDescriptorExtension extends Serializable, Cloneable  {
 	public Class getBeanType();
 
-	public void setBeanType(Class propertyType);
+	public void setBeanType(Class beanType);
 
 	public Class getPropertyType();
 

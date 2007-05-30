@@ -20,6 +20,7 @@ import org.apache.tapestry.event.PageEvent;
 import org.apache.tapestry.html.BasePage;
 import org.trails.callback.CallbackStack;
 import org.trails.callback.TrailsCallback;
+import org.trails.component.blob.BlobDownloadService;
 import org.trails.descriptor.DescriptorService;
 import org.trails.i18n.ResourceBundleMessageSource;
 import org.trails.persistence.PersistenceService;
@@ -68,6 +69,14 @@ public abstract class TrailsPage extends BasePage implements PageBeginRenderList
 	 */
 	@InjectObject("spring:descriptorService")
 	public abstract DescriptorService getDescriptorService();
+
+	/**
+	 * This property is injected with the Spring descriptorService bean
+	 *
+	 * @return
+	 */
+	@InjectObject("service:trails.BlobService")
+	public abstract BlobDownloadService getDownloadService();
 
 	/**
 	 * Message source to i18n pages

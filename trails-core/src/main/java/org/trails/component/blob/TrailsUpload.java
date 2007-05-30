@@ -11,7 +11,10 @@ import org.apache.tapestry.annotations.Parameter;
 import org.apache.tapestry.request.IUploadFile;
 import org.hibernate.LazyInitializationException;
 import org.trails.descriptor.BlobDescriptorExtension;
+import org.trails.descriptor.DescriptorService;
+import org.trails.descriptor.IClassDescriptor;
 import org.trails.descriptor.IPropertyDescriptor;
+import org.trails.page.PageResolver;
 import org.trails.persistence.PersistenceService;
 
 @ComponentClass(allowBody = true, allowInformalParameters = true)
@@ -35,6 +38,21 @@ public abstract class TrailsUpload extends BaseComponent
 
 	@InjectObject("spring:persistenceService")
 	public abstract PersistenceService getPersistenceService();
+
+	@InjectObject("spring:descriptorService")
+	public abstract DescriptorService getDescriptorService();
+
+	@InjectObject("service:trails.BlobService")
+	public abstract BlobDownloadService getDownloadService();
+
+	@InjectObject("spring:pageResolver")
+	public abstract PageResolver getPageResolver();
+
+	public IClassDescriptor getClassDescriptor()
+	{
+		return getDescriptorService().getClassDescriptor(
+			getDescriptor().getPropertyType());
+	}
 
 	public BlobDescriptorExtension getBlobDescriptorExtension()
 	{

@@ -9,37 +9,41 @@ import org.apache.tapestry.annotations.InjectObject;
 import org.apache.tapestry.annotations.Parameter;
 import org.hibernate.LazyInitializationException;
 import org.trails.descriptor.BlobDescriptorExtension;
+import org.trails.descriptor.DescriptorService;
 import org.trails.descriptor.IClassDescriptor;
 import org.trails.descriptor.IPropertyDescriptor;
+import org.trails.page.PageResolver;
 import org.trails.persistence.PersistenceService;
 
 @ComponentClass(allowBody = true, allowInformalParameters = true)
 public abstract class TrailsDownload extends BaseComponent
 {
 	@InjectObject("service:trails.BlobService")
-	public abstract BlobDownloadService getBlobService();
+	public abstract BlobDownloadService getDownloadService();
 
 	@InjectObject("spring:persistenceService")
 	public abstract PersistenceService getPersistenceService();
 
+	@InjectObject("spring:descriptorService")
+	public abstract DescriptorService getDescriptorService();
+
+	@InjectObject("spring:pageResolver")
+	public abstract PageResolver getPageResolver();
+
 	@Parameter(required = true, cache = true)
 	public abstract Object getBytes();
-
 	public abstract void setBytes(Object bytes);
 
 	@Parameter(required = true, cache = true)
 	public abstract Object getModel();
-
 	public abstract void setModel(Object bytes);
 
 	@Parameter(required = false, defaultValue = "page.classDescriptor", cache = true)
 	public abstract IClassDescriptor getClassDescriptor();
-
 	public abstract void setClassDescriptor(IClassDescriptor ClassDescriptor);
 
 	@Parameter(required = true, cache = true)
 	public abstract IPropertyDescriptor getDescriptor();
-
 	public abstract void setDescriptor(IPropertyDescriptor descriptor);
 
 	public IPropertyDescriptor getIdentifierDescriptor()
@@ -89,7 +93,7 @@ public abstract class TrailsDownload extends BaseComponent
 			fileName = trailsBlob.getFileName();
 		}
 
-		return new TrailsBlobAsset(getBlobService(), getClassDescriptor()
+		return new TrailsBlobAsset(getDownloadService(), getClassDescriptor()
 			.getType().getName(), id, getDescriptor().getName(),
 			contentType, fileName);
 	}
