@@ -24,6 +24,7 @@ import org.apache.tapestry.components.Block;
 import org.apache.tapestry.valid.IValidationDelegate;
 import org.jmock.cglib.Mock;
 import org.trails.callback.CallbackStack;
+import org.trails.component.blob.BlobDownloadService;
 import org.trails.descriptor.DescriptorService;
 import org.trails.i18n.ResourceBundleMessageSource;
 import org.trails.page.EditPage;
@@ -127,6 +128,15 @@ public class ObjectEditComponentTest extends ComponentTest
 				 * @see org.trails.page.EditPage#getPropertyDescriptorService()
 				 */
 		public DescriptorService getDescriptorService()
+		{
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		/* (non-Javadoc)
+		 * @see org.trails.page.EditPage#getDownloadService()
+		 */
+		public BlobDownloadService getDownloadService()
 		{
 			// TODO Auto-generated method stub
 			return null;
