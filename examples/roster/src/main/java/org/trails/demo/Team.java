@@ -26,7 +26,7 @@ import java.util.Set;
  */
 @Entity
 @ClassDescriptor(hasCyclicRelationships=true)
-public class Team implements Serializable {
+public class Team implements Cloneable, Serializable {
 	private static final Log log = LogFactory.getLog(Team.class);
 
 	public enum ESeason {

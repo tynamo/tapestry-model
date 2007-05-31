@@ -1,24 +1,33 @@
 package org.trails.demo;
 
-import org.apache.commons.beanutils.BeanUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.trails.descriptor.annotation.ClassDescriptor;
+import java.io.Serializable;
 
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.OneToOne;
-import java.io.Serializable;
+
+import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.trails.descriptor.annotation.ClassDescriptor;
+import org.trails.security.RestrictionType;
+import org.trails.security.annotation.Restriction;
+import org.trails.security.annotation.Security;
 
 /**
  * A Director belongs to an Organization
- *
+ * 
  * @author kenneth.colassi nhhockeyplayer@hotmail.com
  */
 @Entity
+@Security(restrictions = {
+		@Restriction(restrictionType = RestrictionType.UPDATE, requiredRole = "ROLE_ANONYMOUS"),
+		@Restriction(restrictionType = RestrictionType.REMOVE, requiredRole = "ROLE_ANONYMOUS"),
+		@Restriction(restrictionType = RestrictionType.VIEW, requiredRole = "ROLE_ANONYMOUS") })
 @ClassDescriptor(hasCyclicRelationships = true)
-public class Director extends Person implements Serializable {
+public class Director extends Person implements Cloneable, Serializable
+{
 	private static final Log log = LogFactory.getLog(Director.class);
 
 	private Organization organization;
@@ -26,42 +35,47 @@ public class Director extends Person implements Serializable {
 	/**
 	 * Copy CTOR
 	 */
-	public Director(Director dto) {
+	public Director(Director dto)
+	{
 		super(dto);
 
-		try {
+		try
+		{
 			BeanUtils.copyProperties(this, dto);
-		} catch (Exception e) {
+		} catch (Exception e)
+		{
 			log.error(e.toString());
 			e.printStackTrace();
 		}
 	}
 
-	public Director() {
+	public Director()
+	{
 		setERole(ERole.USER);
 		setEApplicationRole(EApplicationRole.DIRECTOR);
 	}
 
 	@OneToOne(mappedBy = "director")
-	@JoinTable(name = "join_table_Organization_Director",
-			joinColumns = @JoinColumn(name = "organization_fk", insertable = true, updatable = true, nullable = true),
-			inverseJoinColumns = {@JoinColumn(name = "director_fk", insertable = true, updatable = true, nullable = true)}
-	)
-	public Organization getOrganization() {
+	@JoinTable(name = "join_table_Organization_Director", joinColumns = @JoinColumn(name = "organization_fk", insertable = true, updatable = true, nullable = true), inverseJoinColumns = { @JoinColumn(name = "director_fk", insertable = true, updatable = true, nullable = true) })
+	public Organization getOrganization()
+	{
 		return organization;
 	}
 
-	public void setOrganization(Organization organization) {
+	public void setOrganization(Organization organization)
+	{
 		this.organization = organization;
 	}
 
 	@Override
-	public Director clone() {
+	public Director clone()
+	{
 		return new Director(this);
 	}
 
 	@Override
-	public int hashCode() {
+	public int hashCode()
+	{
 		final int PRIME = 31;
 		int result = 1;
 		result = PRIME * result + ((getId() == null) ? 0 : getId().hashCode());
@@ -69,7 +83,8 @@ public class Director extends Person implements Serializable {
 	}
 
 	@Override
-	public boolean equals(Object rhs) {
+	public boolean equals(Object rhs)
+	{
 		if (this == rhs)
 			return true;
 		if (rhs == null)
@@ -77,7 +92,8 @@ public class Director extends Person implements Serializable {
 		if (!(rhs instanceof Director))
 			return false;
 		final Director castedObject = (Director) rhs;
-		if (getId() == null) {
+		if (getId() == null)
+		{
 			if (castedObject.getId() != null)
 				return false;
 		} else if (!getId().equals(castedObject.getId()))

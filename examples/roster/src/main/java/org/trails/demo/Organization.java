@@ -29,250 +29,250 @@ import java.util.Set;
 @Entity
 @ValidateUniqueness(property = "name")
 @ClassDescriptor(hasCyclicRelationships = true)
-public class Organization implements Serializable {
-    private static final Log log = LogFactory.getLog(Organization.class);
+public class Organization implements Cloneable, Serializable {
+	private static final Log log = LogFactory.getLog(Organization.class);
 
-    private Integer id = null;
+	private Integer id = null;
 
-    private League league = null;
+	private League league = null;
 
-    private Director director = null;
+	private Director director = null;
 
-    private Set<Coach> coaches = new HashSet<Coach>();
+	private Set<Coach> coaches = new HashSet<Coach>();
 
-    private Set<Team> teams = new HashSet<Team>();
+	private Set<Team> teams = new HashSet<Team>();
 
-    private String name;
+	private String name;
 
-    private Demographics demographics = new Demographics();
+	private Demographics demographics = new Demographics();
 
-    private Long created = new Long(GregorianCalendar.getInstance()
-            .getTimeInMillis());
+	private Long created = new Long(GregorianCalendar.getInstance()
+			.getTimeInMillis());
 
-    private Long accessed = new Long(GregorianCalendar.getInstance()
-            .getTimeInMillis());
+	private Long accessed = new Long(GregorianCalendar.getInstance()
+			.getTimeInMillis());
 
-    public Organization() {
-    }
+	public Organization() {
+	}
 
-    public Organization(Organization dto) {
-        try {
-            BeanUtils.copyProperties(this, dto);
-        } catch (Exception e) {
-            log.error(e.toString());
-            e.printStackTrace();
-        }
-    }
+	public Organization(Organization dto) {
+		try {
+			BeanUtils.copyProperties(this, dto);
+		} catch (Exception e) {
+			log.error(e.toString());
+			e.printStackTrace();
+		}
+	}
 
-    /**
-     * Accessor for id
-     *
-     * @return Integer
-     * @hibernate.id generator-class="increment" unsaved-value="-1"
-     *               type="java.lang.Integer" unique="true" insert="true"
-     */
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @PropertyDescriptor(readOnly = true, summary = true, index = 0)
-    public Integer getId() {
-        return id;
-    }
+	/**
+	 * Accessor for id
+	 *
+	 * @return Integer
+	 * @hibernate.id generator-class="increment" unsaved-value="-1"
+	 *               type="java.lang.Integer" unique="true" insert="true"
+	 */
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@PropertyDescriptor(readOnly = true, summary = true, index = 0)
+	public Integer getId() {
+		return id;
+	}
 
-    @Column(unique = true)
-    @NotNull(message = "is required")
-    @PropertyDescriptor(readOnly = false, summary = true, index = 1)
-    public String getName() {
-        return name;
-    }
+	@Column(unique = true)
+	@NotNull(message = "is required")
+	@PropertyDescriptor(readOnly = false, summary = true, index = 1)
+	public String getName() {
+		return name;
+	}
 
-    @Embedded
-    public Demographics getDemographics() {
-        return demographics;
-    }
+	@Embedded
+	public Demographics getDemographics() {
+		return demographics;
+	}
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "organization_league_fk", insertable = false, updatable = true, nullable = true)
-    public League getLeague() {
-        return league;
-    }
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "organization_league_fk", insertable = false, updatable = true, nullable = true)
+	public League getLeague() {
+		return league;
+	}
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinTable(name = "join_table_Organization_Director",
-            joinColumns = @JoinColumn(name = "director_fk", insertable = true, updatable = true, nullable = true),
-            inverseJoinColumns = {@JoinColumn(name = "organization_fk", insertable = true, updatable = true, nullable = true)}
-    )
-    @OrderBy("lastName")
-    @PropertyDescriptor(index = 2)
-    public Director getDirector() {
-        return director;
-    }
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinTable(name = "join_table_Organization_Director",
+			joinColumns = @JoinColumn(name = "director_fk", insertable = true, updatable = true, nullable = true),
+			inverseJoinColumns = {@JoinColumn(name = "organization_fk", insertable = true, updatable = true, nullable = true)}
+	)
+	@OrderBy("lastName")
+	@PropertyDescriptor(index = 2)
+	public Director getDirector() {
+		return director;
+	}
 
-    @OneToMany
-    @JoinColumn(name = "coach_organization_fk", insertable = true, updatable = true, nullable = true)
-    @Collection(child = true, inverse = "organization")
-    @PropertyDescriptor(readOnly = false, searchable = true)
-    @OrderBy("lastName")
-    public Set<Coach> getCoaches() {
-        return coaches;
-    }
+	@OneToMany
+	@JoinColumn(name = "coach_organization_fk", insertable = true, updatable = true, nullable = true)
+	@Collection(child = true, inverse = "organization")
+	@PropertyDescriptor(readOnly = false, searchable = true)
+	@OrderBy("lastName")
+	public Set<Coach> getCoaches() {
+		return coaches;
+	}
 
-    @OneToMany
-    @JoinColumn(name = "team_organization_fk", insertable = true, updatable = true, nullable = true)
-    @Collection(child = true, inverse = "organization")
-    @PropertyDescriptor(readOnly = false)
-    @OrderBy("division")
-    public Set<Team> getTeams() {
-        return teams;
-    }
+	@OneToMany
+	@JoinColumn(name = "team_organization_fk", insertable = true, updatable = true, nullable = true)
+	@Collection(child = true, inverse = "organization")
+	@PropertyDescriptor(readOnly = false)
+	@OrderBy("division")
+	public Set<Team> getTeams() {
+		return teams;
+	}
 
-    private UploadableMedia photo = new UploadableMedia();
+	private UploadableMedia photo = new UploadableMedia();
 
-    @BlobDescriptor(renderType = RenderType.IMAGE, contentDisposition = ContentDisposition.ATTACHMENT)
-    @PropertyDescriptor(summary = false, index = 3)
-    @OneToOne(cascade = CascadeType.ALL)
-    public UploadableMedia getPhoto() {
-        return photo;
-    }
+	@BlobDescriptor(renderType = RenderType.IMAGE, contentDisposition = ContentDisposition.ATTACHMENT)
+	@PropertyDescriptor(summary = false, index = 3)
+	@OneToOne(cascade = CascadeType.ALL)
+	public UploadableMedia getPhoto() {
+		return photo;
+	}
 
-    private UploadableMedia header = new UploadableMedia();
+	private UploadableMedia header = new UploadableMedia();
 
-    @BlobDescriptor(renderType = RenderType.IMAGE, contentDisposition = ContentDisposition.ATTACHMENT)
-    @PropertyDescriptor(summary = false, index = 4)
-    @OneToOne(cascade = CascadeType.ALL)
-    public UploadableMedia getHeader() {
-        return header;
-    }
+	@BlobDescriptor(renderType = RenderType.IMAGE, contentDisposition = ContentDisposition.ATTACHMENT)
+	@PropertyDescriptor(summary = false, index = 4)
+	@OneToOne(cascade = CascadeType.ALL)
+	public UploadableMedia getHeader() {
+		return header;
+	}
 
-    private UploadableMedia logo = new UploadableMedia();
+	private UploadableMedia logo = new UploadableMedia();
 
-    @BlobDescriptor(renderType = RenderType.IMAGE, contentDisposition = ContentDisposition.ATTACHMENT)
-    @PropertyDescriptor(summary = true, index = 5)
-    @OneToOne(cascade = CascadeType.ALL)
-    public UploadableMedia getLogo() {
-        return logo;
-    }
+	@BlobDescriptor(renderType = RenderType.IMAGE, contentDisposition = ContentDisposition.ATTACHMENT)
+	@PropertyDescriptor(summary = true, index = 5)
+	@OneToOne(cascade = CascadeType.ALL)
+	public UploadableMedia getLogo() {
+		return logo;
+	}
 
-    @PropertyDescriptor(hidden = true, summary = false, searchable = false)
-    public Long getCreated() {
-        return created;
-    }
+	@PropertyDescriptor(hidden = true, summary = false, searchable = false)
+	public Long getCreated() {
+		return created;
+	}
 
-    @PropertyDescriptor(hidden = true, summary = false, searchable = false)
-    public Long getAccessed() {
-        return accessed;
-    }
+	@PropertyDescriptor(hidden = true, summary = false, searchable = false)
+	public Long getAccessed() {
+		return accessed;
+	}
 
-    @Transient
-    @PropertyDescriptor(hidden = true, summary = false, searchable = false)
-    public String getCreatedAsString() {
-        Calendar cal = new GregorianCalendar();
-        cal.setTimeInMillis(created.longValue());
-        return DatePattern.sdf.format(cal.getTime());
-    }
+	@Transient
+	@PropertyDescriptor(hidden = true, summary = false, searchable = false)
+	public String getCreatedAsString() {
+		Calendar cal = new GregorianCalendar();
+		cal.setTimeInMillis(created.longValue());
+		return DatePattern.sdf.format(cal.getTime());
+	}
 
-    @Transient
-    @PropertyDescriptor(hidden = true, summary = false, searchable = false)
-    public String getAccessedAsString() {
-        Calendar cal = new GregorianCalendar();
-        cal.setTimeInMillis(accessed.longValue());
-        return DatePattern.sdf.format(cal.getTime());
-    }
+	@Transient
+	@PropertyDescriptor(hidden = true, summary = false, searchable = false)
+	public String getAccessedAsString() {
+		Calendar cal = new GregorianCalendar();
+		cal.setTimeInMillis(accessed.longValue());
+		return DatePattern.sdf.format(cal.getTime());
+	}
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public void setDemographics(Demographics demographics) {
-        this.demographics = demographics;
-    }
+	public void setDemographics(Demographics demographics) {
+		this.demographics = demographics;
+	}
 
-    public void setLeague(League league) {
-        this.league = league;
-    }
+	public void setLeague(League league) {
+		this.league = league;
+	}
 
-    public void setDirector(Director director) {
-        this.director = director;
-    }
+	public void setDirector(Director director) {
+		this.director = director;
+	}
 
-    public void setCoaches(Set<Coach> coaches) {
-        this.coaches = coaches;
-    }
+	public void setCoaches(Set<Coach> coaches) {
+		this.coaches = coaches;
+	}
 
-    public void setTeams(Set<Team> teams) {
-        this.teams = teams;
-    }
+	public void setTeams(Set<Team> teams) {
+		this.teams = teams;
+	}
 
-    public void setPhoto(UploadableMedia photo) {
-        this.photo = photo;
-    }
+	public void setPhoto(UploadableMedia photo) {
+		this.photo = photo;
+	}
 
-    public void setHeader(UploadableMedia header) {
-        this.header = header;
-    }
+	public void setHeader(UploadableMedia header) {
+		this.header = header;
+	}
 
-    public void setLogo(UploadableMedia logo) {
-        this.logo = logo;
-    }
+	public void setLogo(UploadableMedia logo) {
+		this.logo = logo;
+	}
 
-    public void setCreated(Long created) {
-        this.created = created;
-    }
+	public void setCreated(Long created) {
+		this.created = created;
+	}
 
-    public void setAccessed(Long accessed) {
-        this.accessed = accessed;
-    }
+	public void setAccessed(Long accessed) {
+		this.accessed = accessed;
+	}
 
-    @Transient
-    @PropertyDescriptor(hidden = true, summary = false, searchable = false)
-    public void setCreatedAsString(String value) throws Exception {
-        Calendar cal = new GregorianCalendar();
-        cal.setTimeInMillis(DatePattern.sdf.parse(value).getTime());
-        this.created = new Long(cal.getTimeInMillis());
-    }
+	@Transient
+	@PropertyDescriptor(hidden = true, summary = false, searchable = false)
+	public void setCreatedAsString(String value) throws Exception {
+		Calendar cal = new GregorianCalendar();
+		cal.setTimeInMillis(DatePattern.sdf.parse(value).getTime());
+		this.created = new Long(cal.getTimeInMillis());
+	}
 
-    @Transient
-    @PropertyDescriptor(hidden = true, summary = false, searchable = false)
-    public void setAccessedAsString(String value) throws Exception {
-        Calendar cal = new GregorianCalendar();
-        cal.setTimeInMillis(DatePattern.sdf.parse(value).getTime());
-        this.accessed = new Long(cal.getTimeInMillis());
-    }
+	@Transient
+	@PropertyDescriptor(hidden = true, summary = false, searchable = false)
+	public void setAccessedAsString(String value) throws Exception {
+		Calendar cal = new GregorianCalendar();
+		cal.setTimeInMillis(DatePattern.sdf.parse(value).getTime());
+		this.accessed = new Long(cal.getTimeInMillis());
+	}
 
-    public String toString() {
-        return getName();
-    }
+	public String toString() {
+		return getName();
+	}
 
-    @Override
-    public Organization clone() {
-        return new Organization(this);
-    }
+	@Override
+	public Organization clone() {
+		return new Organization(this);
+	}
 
-    @Override
-    public int hashCode() {
-        final int PRIME = 31;
-        int result = 1;
-        result = PRIME * result + ((getId() == null) ? 0 : getId().hashCode());
-        return result;
-    }
+	@Override
+	public int hashCode() {
+		final int PRIME = 31;
+		int result = 1;
+		result = PRIME * result + ((getId() == null) ? 0 : getId().hashCode());
+		return result;
+	}
 
-    @Override
-    public boolean equals(Object rhs) {
-        if (this == rhs)
-            return true;
-        if (rhs == null)
-            return false;
-        if (!(rhs instanceof Organization))
-            return false;
-        final Organization castedObject = (Organization) rhs;
-        if (getId() == null) {
-            if (castedObject.getId() != null)
-                return false;
-        } else if (!getId().equals(castedObject.getId()))
-            return false;
-        return true;
-    }
+	@Override
+	public boolean equals(Object rhs) {
+		if (this == rhs)
+			return true;
+		if (rhs == null)
+			return false;
+		if (!(rhs instanceof Organization))
+			return false;
+		final Organization castedObject = (Organization) rhs;
+		if (getId() == null) {
+			if (castedObject.getId() != null)
+				return false;
+		} else if (!getId().equals(castedObject.getId()))
+			return false;
+		return true;
+	}
 }

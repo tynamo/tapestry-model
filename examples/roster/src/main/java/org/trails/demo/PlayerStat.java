@@ -19,7 +19,7 @@ import java.util.GregorianCalendar;
  */
 @Entity
 @ClassDescriptor(hasCyclicRelationships=true, hidden = true)
-public class PlayerStat implements Serializable {
+public class PlayerStat implements Cloneable, Serializable {
 	private static final Log log = LogFactory.getLog(PlayerStat.class);
 
 	private Integer id = null;

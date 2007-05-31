@@ -11,22 +11,30 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.trails.descriptor.annotation.ClassDescriptor;
 import org.trails.descriptor.annotation.PropertyDescriptor;
+import org.trails.security.RestrictionType;
+import org.trails.security.annotation.Restriction;
+import org.trails.security.annotation.Security;
 
 /**
  * A Coach belongs to an organization and has a team
- *
- * @author kenneth.colassi        nhhockeyplayer@hotmail.com
+ * 
+ * @author kenneth.colassi nhhockeyplayer@hotmail.com
  */
 @Entity
+@Security(restrictions = {
+		@Restriction(restrictionType = RestrictionType.UPDATE, requiredRole = "ROLE_ANONYMOUS"),
+		@Restriction(restrictionType = RestrictionType.REMOVE, requiredRole = "ROLE_ANONYMOUS"),
+		@Restriction(restrictionType = RestrictionType.VIEW, requiredRole = "ROLE_ANONYMOUS") })
 @ClassDescriptor(hasCyclicRelationships = true, hidden = true)
-public class Coach extends Person {
+public class Coach extends Person
+{
 	private static final Log log = LogFactory.getLog(Coach.class);
 
 	protected enum ETeamRole {
 		HEADCOACH, ASSISTANTCOACH, MANAGER, EQUIPMENTMGR, OPERATIONS, TRAINER
 	}
 
-	private ETeamRole    eTeamRole;
+	private ETeamRole eTeamRole;
 
 	private Team team = null;
 
@@ -35,65 +43,79 @@ public class Coach extends Person {
 	/**
 	 * CTOR
 	 */
-	public Coach(Coach dto) {
+	public Coach(Coach dto)
+	{
 		super(dto);
 
-		try {
+		try
+		{
 			BeanUtils.copyProperties(this, dto);
-		} catch (Exception e) {
+		} catch (Exception e)
+		{
 			log.error(e.toString());
 			e.printStackTrace();
 		}
 	}
 
-	public Coach() {
+	public Coach()
+	{
 		setERole(ERole.USER);
 	}
 
 	@Enumerated(value = EnumType.STRING)
 	@PropertyDescriptor(summary = true)
-	public ETeamRole getETeamRole() {
+	public ETeamRole getETeamRole()
+	{
 		return eTeamRole;
 	}
 
 	@ManyToOne
 	@JoinColumn(name = "team_id")
 	@PropertyDescriptor(searchable = true, index = 1)
-	public Team getTeam() {
+	public Team getTeam()
+	{
 		return team;
 	}
 
 	@ManyToOne
 	@JoinColumn(name = "coach_organization_fk", insertable = false, updatable = true, nullable = true)
-	public Organization getOrganization() {
+	public Organization getOrganization()
+	{
 		return organization;
 	}
 
-	public void setETeamRole(ETeamRole role) {
+	public void setETeamRole(ETeamRole role)
+	{
 		this.eTeamRole = role;
 	}
 
-	public void setTeam(Team team) {
+	public void setTeam(Team team)
+	{
 		this.team = team;
 	}
 
-	public void setOrganization(Organization organization) {
+	public void setOrganization(Organization organization)
+	{
 		this.organization = organization;
 	}
 
 	@Override
-	public String toString() {
-		//return this.getApplicationRole().toString() + " - " + getLastName() + "," + getFirstName();
+	public String toString()
+	{
+		// return this.getApplicationRole().toString() + " - " + getLastName() +
+		// "," + getFirstName();
 		return getLastName() + "," + getFirstName();
 	}
 
 	@Override
-	public Coach clone() {
+	public Coach clone()
+	{
 		return new Coach(this);
 	}
 
 	@Override
-	public int hashCode() {
+	public int hashCode()
+	{
 		final int PRIME = 31;
 		int result = 1;
 		result = PRIME * result + ((getId() == null) ? 0 : getId().hashCode());
@@ -101,7 +123,8 @@ public class Coach extends Person {
 	}
 
 	@Override
-	public boolean equals(Object rhs) {
+	public boolean equals(Object rhs)
+	{
 		if (this == rhs)
 			return true;
 		if (rhs == null)
@@ -109,7 +132,8 @@ public class Coach extends Person {
 		if (!(rhs instanceof Coach))
 			return false;
 		final Coach castedObject = (Coach) rhs;
-		if (getId() == null) {
+		if (getId() == null)
+		{
 			if (castedObject.getId() != null)
 				return false;
 		} else if (!getId().equals(castedObject.getId()))
