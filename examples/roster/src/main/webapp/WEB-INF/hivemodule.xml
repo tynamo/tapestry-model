@@ -1,6 +1,6 @@
-<?xml version="1.0"?>      
+<?xml version="1.0"?>
 <module id="trails" version="1.0.0">
-	
+
 	<contribution configuration-id="tapestry.state.ApplicationObjects">
 		<state-object name="callbackStack" scope="session">
 			<create-instance class="org.trails.callback.CallbackStack"/>
@@ -8,57 +8,57 @@
 	</contribution>
 
 	<contribution configuration-id="hivemind.hibernate3.Configuration">
-		<property name="hibernate.show_sql" value="true" />
+		<property name="hibernate.show_sql" value="true"/>
 	</contribution>
-	
+
 	<implementation service-id="hivemind.hibernate3.SessionFactory">
-	 <invoke-factory service-id="hivemind.lib.SpringLookupFactory">
-	   <lookup-bean name="sessionFactory" />
-	 </invoke-factory>
+		<invoke-factory service-id="hivemind.lib.SpringLookupFactory">
+			<lookup-bean name="sessionFactory"/>
+		</invoke-factory>
 	</implementation>
-	
-    <service-point id="LocaleHolder" interface="org.apache.tapestry.services.WebRequestServicerFilter">
-        <invoke-factory>
-            <construct class="org.trails.i18n.LocaleFilter">
-                <set-object property="threadLocale" value="service:hivemind.ThreadLocale"/>
-                <set-object property="localeHolder" value="spring:localeHolder"/>
-            </construct>
-        </invoke-factory>
-    </service-point>
 
-    <contribution configuration-id="tapestry.request.WebRequestServicerPipeline">
-        <filter name="LocaleHolder" object="service:LocaleHolder"/>
-    </contribution>
-    		
-    <contribution configuration-id="tapestry.url.ServiceEncoders">
-        <page-service-encoder id="page" extension="page" service="page"/>
-    </contribution>
+	<service-point id="LocaleHolder" interface="org.apache.tapestry.services.WebRequestServicerFilter">
+		<invoke-factory>
+			<construct class="org.trails.i18n.LocaleFilter">
+				<set-object property="threadLocale" value="service:hivemind.ThreadLocale"/>
+				<set-object property="localeHolder" value="spring:localeHolder"/>
+			</construct>
+		</invoke-factory>
+	</service-point>
 
-    <contribution configuration-id="tapestry.url.ServiceEncoders">
-        <direct-service-encoder id="direct" stateless-extension="direct" stateful-extension="sdirect"/>
-    </contribution>
+	<contribution configuration-id="tapestry.request.WebRequestServicerPipeline">
+		<filter name="LocaleHolder" object="service:LocaleHolder"/>
+	</contribution>
 
-    <contribution configuration-id="tapestry.url.ServiceEncoders">
-        <asset-encoder id="asset" path="/assets"/>
-    </contribution>
+	<contribution configuration-id="tapestry.url.ServiceEncoders">
+		<page-service-encoder id="page" extension="html" service="page"/>
+	</contribution>
 
-    <contribution configuration-id="tapestry.url.ServiceEncoders">
-        <extension-encoder id="extension" extension="svc" after="*"/>
-    </contribution>
-    
-     <contribution configuration-id="tapestry.services.ApplicationServices">
-        <service name="BlobService" object="service:BlobService"/>
-    </contribution>
+	<contribution configuration-id="tapestry.url.ServiceEncoders">
+		<direct-service-encoder id="direct" stateless-extension="direct" stateful-extension="sdirect"/>
+	</contribution>
 
-    <service-point id="BlobService" interface="org.trails.component.blob.BlobDownloadService">
-        <invoke-factory>
-            <construct class="org.trails.component.blob.BlobDownloadService">
-                <set-object property="exceptionReporter" value="infrastructure:requestExceptionReporter"/>
-                <set-object property="linkFactory" value="infrastructure:linkFactory"/>
-                <set-object property="response" value="service:tapestry.globals.WebResponse"/>
-                <set-object property="persistenceService" value="spring:persistenceService"/>
-                <set-object property="descriptorService" value="spring:descriptorService"/>
-            </construct>
-        </invoke-factory>
-    </service-point>
+	<contribution configuration-id="tapestry.url.ServiceEncoders">
+		<asset-encoder id="asset" path="/assets"/>
+	</contribution>
+
+	<contribution configuration-id="tapestry.url.ServiceEncoders">
+		<extension-encoder id="extension" extension="svc" after="*"/>
+	</contribution>
+
+	<contribution configuration-id="tapestry.services.ApplicationServices">
+		<service name="BlobService" object="service:BlobService"/>
+	</contribution>
+
+	<service-point id="BlobService" interface="org.trails.component.blob.BlobDownloadService">
+		<invoke-factory>
+			<construct class="org.trails.component.blob.BlobDownloadService">
+				<set-object property="exceptionReporter" value="infrastructure:requestExceptionReporter"/>
+				<set-object property="linkFactory" value="infrastructure:linkFactory"/>
+				<set-object property="response" value="service:tapestry.globals.WebResponse"/>
+				<set-object property="persistenceService" value="spring:persistenceService"/>
+				<set-object property="descriptorService" value="spring:descriptorService"/>
+			</construct>
+		</invoke-factory>
+	</service-point>
 </module>
