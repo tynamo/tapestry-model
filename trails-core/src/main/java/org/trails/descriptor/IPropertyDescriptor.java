@@ -14,14 +14,13 @@
 package org.trails.descriptor;
 
 
-
 /**
  * @author fus8882
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
+ *         <p/>
+ *         TODO To change the template for this generated type comment go to
+ *         Window - Preferences - Java - Code Style - Code Templates
  */
-public interface IPropertyDescriptor extends Cloneable, IDescriptor
+public interface IPropertyDescriptor extends IDescriptor
 {
 	public static final int UNDEFINED_INDEX = -1;
 
@@ -52,6 +51,11 @@ public interface IPropertyDescriptor extends Cloneable, IDescriptor
 	 * @return
 	 */
 	public boolean isString();
+
+	/**
+	 * @return
+	 */
+	public boolean isObjectReference();
 
 	/**
 	 * @return Returns the required.
@@ -124,8 +128,10 @@ public interface IPropertyDescriptor extends Cloneable, IDescriptor
 	/**
 	 * Retrieve the parent ClassDescriptor for this PropertyDescriptor.  ClassDescriptor.findTraversalPath() returns a
 	 * list of IPropertyDescriptors to traverse between the classes, this provides a way to find the containing class.
+	 *
 	 * @return ClassDescriptor for parent of this property
 	 */
 	IClassDescriptor getParentClassDescriptor();
+
 	void setParentClassDescriptor(IClassDescriptor parent);
 }

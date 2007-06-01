@@ -107,11 +107,6 @@
 			<name>Howard Lewis Ship's Repository</name>
 			<url>http://howardlewisship.com/repository</url>
 		</repository>
-		<repository>
-			<id>www.carmanconsulting.com</id>
-			<name>Tapernate</name>
-			<url>http://www.carmanconsulting.com/mvn/</url>
-		</repository>
 	</repositories>
 	<pluginRepositories>
 		<pluginRepository>

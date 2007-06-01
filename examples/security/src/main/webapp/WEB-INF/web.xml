@@ -6,7 +6,7 @@
 
 
 <web-app>
-    <display-name>${artifactId}</display-name>
+    <display-name>security</display-name>
 
     <context-param>
         <param-name>contextConfigLocation</param-name>

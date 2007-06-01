@@ -2,7 +2,6 @@ package org.trails.component;
 
 import ognl.Ognl;
 import ognl.OgnlException;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.tapestry.IRequestCycle;
@@ -21,6 +20,7 @@ import org.trails.descriptor.BlockFinder;
 import org.trails.descriptor.DescriptorService;
 import org.trails.descriptor.IClassDescriptor;
 import org.trails.descriptor.IPropertyDescriptor;
+import org.trails.descriptor.ObjectReferenceDescriptor;
 import org.trails.descriptor.OwningObjectReferenceDescriptor;
 import org.trails.page.EditPage;
 import org.trails.page.PageResolver;
@@ -49,9 +49,9 @@ public abstract class AssociationMgt extends TrailsComponent {
 	public abstract void setCreateExpression(String CreateExpression);
 
 	@Parameter(required = true, cache = true)
-	public abstract IPropertyDescriptor getDescriptor();
+	public abstract ObjectReferenceDescriptor getDescriptor();
 
-	public abstract void setDescriptor(IPropertyDescriptor descriptor);
+	public abstract void setDescriptor(ObjectReferenceDescriptor descriptor);
 
 	@Parameter(required = true, cache = true)
 	public abstract Object getOwner();
@@ -114,9 +114,7 @@ public abstract class AssociationMgt extends TrailsComponent {
 	}
 
 	AssociationCallback buildCallback() {
-		AssociationCallback callback = new AssociationCallback(getPage()
-				.getRequestCycle().getPage().getPageName(), getModel(),
-				getObjectReferenceDescriptor());
+		AssociationCallback callback = new AssociationCallback(getPage().getRequestCycle().getPage().getPageName(), getModel(), getDescriptor());
 		return callback;
 	}
 
@@ -155,11 +153,10 @@ public abstract class AssociationMgt extends TrailsComponent {
 			}
 		}
 
-		if (getObjectReferenceDescriptor().getInverseProperty() != null
-				&& getObjectReferenceDescriptor().isOneToOne()) {
+		if (getOwningObjectReferenceDescriptor()!= null && getOwningObjectReferenceDescriptor().getInverseProperty() != null)
+		{
 			try {
-				Ognl.setValue(getObjectReferenceDescriptor()
-						.getInverseProperty(), associationModel, getOwner());
+				Ognl.setValue(getOwningObjectReferenceDescriptor().getInverseProperty(), associationModel, getOwner());
 			} catch (OgnlException e) {
 				LOG.error(e.getMessage());
 			}
@@ -184,8 +181,9 @@ public abstract class AssociationMgt extends TrailsComponent {
 
 	public abstract Insert getLinkInsert();
 
-	public OwningObjectReferenceDescriptor getObjectReferenceDescriptor() {
-		return (OwningObjectReferenceDescriptor) getDescriptor().getExtension(
-				OwningObjectReferenceDescriptor.class);
+
+	public OwningObjectReferenceDescriptor getOwningObjectReferenceDescriptor()
+	{
+		return getDescriptor().getExtension(OwningObjectReferenceDescriptor.class);
 	}
 }

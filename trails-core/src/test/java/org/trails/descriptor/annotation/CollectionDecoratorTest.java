@@ -1,10 +1,8 @@
 package org.trails.descriptor.annotation;
 
 import junit.framework.TestCase;
-
 import org.trails.descriptor.CollectionDescriptor;
-import org.trails.descriptor.IPropertyDescriptor;
-import org.trails.descriptor.TrailsPropertyDescriptor;
+import org.trails.test.Foo;
 
 public class CollectionDecoratorTest extends TestCase
 {
@@ -24,15 +22,12 @@ public class CollectionDecoratorTest extends TestCase
 	public void testDecorator() throws Exception
 	{
 		CollectionDescriptorAnnotationHandler decorator = new CollectionDescriptorAnnotationHandler();
-		IPropertyDescriptor collectionPropertyDescriptor = new TrailsPropertyDescriptor(Annotated.class, "stuff", Annotated.class);
-
-		CollectionDescriptor collectionDescriptor = new CollectionDescriptor(Annotated.class, collectionPropertyDescriptor, Annotated.class);
-		collectionPropertyDescriptor.addExtension(collectionDescriptor.getClass().getName(), collectionDescriptor);
+		CollectionDescriptor collectionDescriptor = new CollectionDescriptor(Foo.class, "stuff", Annotated.class);
 		collectionDescriptor.setOneToMany(true);
 		Collection collectionAnnotation = Annotated.class.getDeclaredMethod("getStuff").getAnnotation(Collection.class);
-		collectionPropertyDescriptor = decorator.decorateFromAnnotation(collectionAnnotation, collectionPropertyDescriptor);
-		assertTrue("is child", collectionPropertyDescriptor.getExtension(CollectionDescriptor.class).isChildRelationship());
-		assertEquals("Stuff is inversed by 'annotated'", "annotated", collectionPropertyDescriptor.getExtension(CollectionDescriptor.class).getInverseProperty());
+		collectionDescriptor = decorator.decorateFromAnnotation(collectionAnnotation, collectionDescriptor);
+		assertTrue("is child", collectionDescriptor.isChildRelationship());
+		assertEquals("Stuff is inversed by 'annotated'", "annotated", collectionDescriptor.getInverseProperty());
 		assertTrue(collectionDescriptor.isOneToMany());
 	}
 }

@@ -14,7 +14,6 @@ package org.trails.descriptor;
 import java.util.List;
 
 import junit.framework.TestCase;
-
 import org.trails.hibernate.EmbeddedDescriptor;
 import org.trails.test.Bar;
 import org.trails.test.BlogEntry;
@@ -23,12 +22,13 @@ import org.trails.test.Foo;
 
 /**
  * @author fus8882
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
+ *         <p/>
+ *         TODO To change the template for this generated type comment go to
+ *         Window - Preferences - Java - Code Style - Code Templates
  */
 public class TrailsClassDescriptorTest extends TestCase
 {
+	
 	IClassDescriptor classDescriptor;
 	IdentifierDescriptor idProp;
 	IPropertyDescriptor multiWordProp;
@@ -39,19 +39,16 @@ public class TrailsClassDescriptorTest extends TestCase
 		idProp = new IdentifierDescriptor(Foo.class, "id", String.class);
 
 		multiWordProp = new TrailsPropertyDescriptor(Foo.class, "multiWordProperty", String.class);
-		ObjectReferenceDescriptor multiWordPropertyDescriptor = new ObjectReferenceDescriptor(Foo.class, multiWordProp);
-		multiWordProp.addExtension(ObjectReferenceDescriptor.class.getName(), multiWordPropertyDescriptor);
-
 		classDescriptor.getPropertyDescriptors().add(idProp);
 		classDescriptor.getPropertyDescriptors().add(multiWordProp);
-		classDescriptor.getMethodDescriptors().add(new TrailsMethodDescriptor("foo", void.class, new Class[] {}));
+		classDescriptor.getMethodDescriptors().add(new TrailsMethodDescriptor("foo", void.class, new Class[]{}));
 		classDescriptor.setHasCyclicRelationships(true);
 		classDescriptor.setShortDescription("a simple foo");
 	}
 
 	public void testClone() throws Exception
 	{
-		TrailsClassDescriptor clone = (TrailsClassDescriptor)classDescriptor.clone();
+		TrailsClassDescriptor clone = (TrailsClassDescriptor) classDescriptor.clone();
 		assertEquals("still foo", Foo.class, clone.getType());
 		assertEquals("2 props", 2, clone.getPropertyDescriptors().size());
 		assertTrue("clone has id", clone.getPropertyDescriptor("id") instanceof IdentifierDescriptor);
@@ -73,12 +70,10 @@ public class TrailsClassDescriptorTest extends TestCase
 		assertEquals("right id prop", idProp,
 			classDescriptor.getIdentifierDescriptor());
 
-		EmbeddedDescriptor embeddeeDescriptor = new EmbeddedDescriptor(Foo.class, "blork", Bar.class);
-
-		classDescriptor.getPropertyDescriptors().add(embeddeeDescriptor);
+		classDescriptor.getPropertyDescriptors().add(new EmbeddedDescriptor(Foo.class, "blork", Bar.class));
 
 		assertEquals("right id prop", idProp,
-				classDescriptor.getIdentifierDescriptor());
+			classDescriptor.getIdentifierDescriptor());
 
 	}
 
@@ -88,7 +83,7 @@ public class TrailsClassDescriptorTest extends TestCase
 			classDescriptor.getPropertyDescriptor("multiWordProperty"));
 		assertNull("should return null if none found",
 			classDescriptor.getPropertyDescriptor("doesntexist"));
-		List descriptors = classDescriptor.getPropertyDescriptors(new String[] {"multiWordProperty", "id"});
+		List descriptors = classDescriptor.getPropertyDescriptors(new String[]{"multiWordProperty", "id"});
 		assertEquals("get 2 descriptors", 2, descriptors.size());
 		assertEquals("in specified order", multiWordProp, descriptors.get(0));
 	}

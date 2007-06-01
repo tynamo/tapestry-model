@@ -3,8 +3,8 @@ package org.trails.callback;
 import ognl.Ognl;
 import ognl.OgnlException;
 import org.trails.TrailsRuntimeException;
+import org.trails.descriptor.ObjectReferenceDescriptor;
 import org.trails.descriptor.OwningObjectReferenceDescriptor;
-import org.trails.page.EditPage;
 import org.trails.persistence.PersistenceService;
 
 /**
@@ -12,7 +12,7 @@ import org.trails.persistence.PersistenceService;
  */
 public class AssociationCallback extends EditCallback
 {
-	private OwningObjectReferenceDescriptor od;
+	private ObjectReferenceDescriptor od;
 
 	private boolean oneToOne;
 
@@ -20,24 +20,16 @@ public class AssociationCallback extends EditCallback
 	 * @param pageName
 	 * @param model
 	 */
-	public AssociationCallback(String pageName, Object model,
-							   OwningObjectReferenceDescriptor od)
+	public AssociationCallback(String pageName, Object model, ObjectReferenceDescriptor od)
 	{
 		super(pageName, model);
 		this.od = od;
-		this.setOneToOne(od.isOneToOne());
-	}
-
-	public AssociationCallback(String pageName, Object model, boolean modelNew,
-							   EditPage nextPage)
-	{
-		super(pageName, model, modelNew);
-		this.setOneToOne(od.isOneToOne());
+		this.setOneToOne(od.supportsExtension(OwningObjectReferenceDescriptor.class.getName()));
 	}
 
 	public void save(PersistenceService persistenceService, Object newObject)
 	{
-		executeOgnlExpression(od.findAddExpression(), newObject);
+		executeOgnlExpression(findAddExpression(), newObject);
 		persistenceService.merge(getModel());
 	}
 
@@ -45,8 +37,8 @@ public class AssociationCallback extends EditCallback
 	{
 		try
 		{
-			Ognl.setValue(od.findAddExpression(), model, null);
-			Ognl.getValue(od.findAddExpression(), model);
+			Ognl.setValue(findAddExpression(), model, null);
+			Ognl.getValue(findAddExpression(), model);
 
 			persistenceService.merge(getModel());
 			persistenceService.remove(object);
@@ -80,5 +72,10 @@ public class AssociationCallback extends EditCallback
 	public void setOneToOne(boolean oneToOne)
 	{
 		this.oneToOne = oneToOne;
+	}
+
+	private String findAddExpression()
+	{
+		return od.getName();
 	}
 }

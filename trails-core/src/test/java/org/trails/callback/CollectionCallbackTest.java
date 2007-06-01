@@ -19,8 +19,6 @@ import org.apache.tapestry.IRequestCycle;
 import org.jmock.Mock;
 import org.trails.component.ComponentTest;
 import org.trails.descriptor.CollectionDescriptor;
-import org.trails.descriptor.IPropertyDescriptor;
-import org.trails.descriptor.TrailsPropertyDescriptor;
 import org.trails.page.EditPage;
 import org.trails.persistence.PersistenceService;
 import org.trails.test.Baz;
@@ -34,30 +32,27 @@ import org.trails.test.Foo;
  */
 public class CollectionCallbackTest extends ComponentTest
 {
-	IPropertyDescriptor collectionPropertyDescriptor = new TrailsPropertyDescriptor(Foo.class, "bazzes", Set.class);
-
+	
 	CollectionCallback callBack;
 	String pageName = "fooAdd";
 	Foo foo = new Foo();
 	Baz baz = new Baz();
-	CollectionDescriptor collectionDescriptor = new CollectionDescriptor(Foo.class, collectionPropertyDescriptor );
+	CollectionDescriptor collectionDescriptor = new CollectionDescriptor(Foo.class, "bazzes", Set.class);
 
 	public void setUp() throws Exception
 	{
-		collectionPropertyDescriptor.addExtension(CollectionDescriptor.class.getName(), collectionDescriptor);
-
 		collectionDescriptor.setElementType(Baz.class);
 		callBack = new CollectionCallback(pageName, foo, collectionDescriptor);
 	}
 
 	public void testCallback()
 	{
-		EditPage addPage = (EditPage)creator.newInstance(EditPage.class);
+		EditPage addPage = (EditPage) creator.newInstance(EditPage.class);
 
 		Mock cycleMock = new Mock(IRequestCycle.class);
 		cycleMock.expects(once()).method("getPage").with(eq(pageName)).will(returnValue(addPage));
 		cycleMock.expects(once()).method("activate").with(same(addPage));
-		callBack.performCallback((IRequestCycle)cycleMock.proxy());
+		callBack.performCallback((IRequestCycle) cycleMock.proxy());
 
 
 	}
@@ -66,7 +61,7 @@ public class CollectionCallbackTest extends ComponentTest
 	{
 		persistenceMock.expects(once()).method("reload").with(eq(foo)).will(returnValue(foo));
 		EditCollectionMemberCallback editColectionMemberCallback = new EditCollectionMemberCallback(pageName, foo, collectionDescriptor);
-		editColectionMemberCallback.save((PersistenceService)persistenceMock.proxy(), baz);
+		editColectionMemberCallback.save((PersistenceService) persistenceMock.proxy(), baz);
 		assertEquals(0, foo.getBazzes().size());
 	}
 
@@ -74,7 +69,7 @@ public class CollectionCallbackTest extends ComponentTest
 	{
 		persistenceMock.expects(once()).method("save").with(eq(foo));
 		//persistenceMock.expects(once()).method("reload").with(eq(foo)).will(returnValue(foo));
-		callBack.save((PersistenceService)persistenceMock.proxy(), baz);
+		callBack.save((PersistenceService) persistenceMock.proxy(), baz);
 		assertEquals("1 baz", 1, foo.getBazzes().size());
 		assertEquals(baz, foo.getBazzes().iterator().next());
 	}
@@ -83,7 +78,7 @@ public class CollectionCallbackTest extends ComponentTest
 	{
 		persistenceMock.expects(once()).method("save").with(eq(foo));
 		foo.getBazzes().add(baz);
-		callBack.remove((PersistenceService)persistenceMock.proxy(), baz);
+		callBack.remove((PersistenceService) persistenceMock.proxy(), baz);
 		assertEquals("0 bazzes", 0, foo.getBazzes().size());
 	}
 }

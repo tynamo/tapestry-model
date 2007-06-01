@@ -20,30 +20,18 @@ import org.apache.commons.logging.LogFactory;
 import org.trails.TrailsRuntimeException;
 import org.trails.component.Utils;
 
+
 /**
  * @author fus8882
- * 
- * TODO To change the template for this generated type comment go to Window -
- * Preferences - Java - Code Style - Code Templates
+ *         <p/>
+ *         TODO To change the template for this generated type comment go to
+ *        Window - Preferences - Java - Code Style - Code Templates
  */
-public class CollectionDescriptor implements IDescriptorExtension,
-		IExpressionSupport {
-	protected static final Log LOG = LogFactory
-			.getLog(CollectionDescriptor.class);
-
-	private Class beanType;
-
-	private Class propertyType;
+public class CollectionDescriptor extends TrailsPropertyDescriptor
+{
+	protected static final Log LOG = LogFactory.getLog(CollectionDescriptor.class);
 
 	private Class elementType;
-
-	private String elementProperty;
-
-	private boolean hidden = true;
-
-	private boolean searchable = true;
-
-	private IPropertyDescriptor propertyDescriptor = null;
 
 	private boolean childRelationship = false;
 
@@ -51,207 +39,155 @@ public class CollectionDescriptor implements IDescriptorExtension,
 
 	private boolean oneToMany = false;
 
-	public CollectionDescriptor(Class beanType,
-			IPropertyDescriptor propertyDescriptor, Class elementType) {
-		this(beanType, propertyDescriptor);
-		this.elementType = elementType;
-		this.elementProperty = propertyDescriptor.getName();
+	public CollectionDescriptor(Class beanType, IPropertyDescriptor descriptor)
+	{
+		super(beanType, descriptor);
+	}
+
+	public CollectionDescriptor(Class beanType, CollectionDescriptor collectionDescriptor)
+	{
+		super(beanType, collectionDescriptor.getBeanType());
+		this.copyFrom(collectionDescriptor);
 	}
 
 	/**
-	 * 
-	 * @param beanType
-	 * @param propertyDescriptor
+	 * @param realDescriptor
 	 */
-	public CollectionDescriptor(Class beanType,
-			IPropertyDescriptor propertyDescriptor) {
-		this.beanType = beanType;
-		this.propertyType = propertyDescriptor.getPropertyType();
-		this.propertyDescriptor = propertyDescriptor;
+	public CollectionDescriptor(Class beanType, Class type)
+	{
+		super(beanType, type);
+		// TODO Auto-generated constructor stub
 	}
 
-	/**
-	 * 
-	 * @param dto
-	 */
-	public CollectionDescriptor(CollectionDescriptor dto) {
-		try {
-			BeanUtils.copyProperties(this, dto);
-		} catch (IllegalAccessException e) {
-			LOG.error(e.getMessage());
-			e.printStackTrace();
-		} catch (InvocationTargetException e) {
-			LOG.error(e.getMessage());
-			e.printStackTrace();
-		} catch (Exception e) {
-			LOG.error(e.toString());
-			e.printStackTrace();
-		}
+	public CollectionDescriptor(Class beanType, String name, Class type)
+	{
+		this(beanType, type);
+		this.setName(name);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.trails.descriptor.PropertyDescriptor#isCollection()
-	 */
-	public boolean isCollection() {
+	/* (non-Javadoc)
+		 * @see org.trails.descriptor.PropertyDescriptor#isCollection()
+		 */
+	public boolean isCollection()
+	{
 		return true;
 	}
 
-	public String getInverseProperty() {
+	/**
+	 * @return Returns the elementType.
+	 */
+	public Class getElementType()
+	{
+		return elementType;
+	}
+
+	/**
+	 * @param elementType The elementType to set.
+	 */
+	public void setElementType(Class elementType)
+	{
+		this.elementType = elementType;
+	}
+
+	public String getInverseProperty()
+	{
 		return inverseProperty;
 	}
 
-	public void setInverseProperty(String inverseProperty) {
+	public void setInverseProperty(String inverseProperty)
+	{
 		this.inverseProperty = inverseProperty;
 	}
 
 	/**
 	 * Is this a OneToMany collection? or a ManyToMany collection?
-	 * 
 	 */
-	public boolean isOneToMany() {
+	public boolean isOneToMany()
+	{
 		return oneToMany;
 	}
 
-	public void setOneToMany(boolean oneToMany) {
+	public void setOneToMany(boolean oneToMany)
+	{
 		this.oneToMany = oneToMany;
 	}
+
 
 	/**
 	 * @return Returns the childRelationship.
 	 */
-	public boolean isChildRelationship() {
+	public boolean isChildRelationship()
+	{
 		return childRelationship;
 	}
 
 	/**
-	 * @param childRelationship
-	 *            The childRelationship to set.
+	 * @param childRelationship The childRelationship to set.
 	 */
-	public void setChildRelationship(boolean childRelationship) {
+	public void setChildRelationship(boolean childRelationship)
+	{
 		this.childRelationship = childRelationship;
-		if (this.childRelationship) {
+		if (this.childRelationship)
+		{
 			setSearchable(false);
 		}
 	}
 
-	public Class getElementType() {
-		return elementType;
+	public Object clone()
+	{
+		return new CollectionDescriptor(getBeanType(), this);
 	}
 
-	public void setElementType(Class elementType) {
-		this.elementType = elementType;
+	public String findAddExpression()
+	{
+		return findExpression("add");
 	}
 
-	/**
-	 * Overrides
-	 */
-	@Override
-	public Object clone() {
-		return new CollectionDescriptor(this);
-	}
-
-	public void copyFrom(IDescriptor descriptor) {
-		LOG.debug("Cloning CollectionDescriptor");
-		try {
-			BeanUtils.copyProperties(this, (CollectionDescriptor)descriptor);
-		} catch (IllegalAccessException e) {
-			LOG.error(e.getMessage());
-			e.printStackTrace();
-		} catch (InvocationTargetException e) {
-			LOG.error(e.getMessage());
-			e.printStackTrace();
-		} catch (Exception e) {
-			LOG.error(e.toString());
-			e.printStackTrace();
-		}
+	public String findRemoveExpression()
+	{
+		return findExpression("remove");
 	}
 
 	/**
-	 * Interface Implementation
-	 */
-	public String findAddExpression() {
-		return getExpression("add");
-	}
-
-	public String findRemoveExpression() {
-		return getExpression("remove");
-	}
-
-	/**
-	 * @param method
-	 *            the method to look for, usually add or remove
+	 * @param method the method to look for, usually add or remove
 	 * @return the ogln expression to use to add or remove a member to the
-	 *         collection. Will look for a addName method where Name is the
-	 *         unqualified element class name, if there isn't one it will use
+	 *         collection.  Will look for a addName method where Name is
+	 *         the unqualified element class name, if there isn't one it will use
 	 *         the collection's add method.
 	 */
-	public String getExpression(String method) {
+	String findExpression(String method)
+	{
 		Method addMethod = null;
 
-		try {
-			addMethod = getBeanType().getMethod(
-					method + Utils.unqualify(getPropertyType().getName()),
-					new Class[] { getPropertyType() });
-		} catch (NoSuchMethodException ex) {
+		try
+		{
+			addMethod = getBeanType().getMethod(method +
+				Utils.unqualify(getElementType().getName()),
+				new Class[]{getElementType()});
+		} catch (NoSuchMethodException ex)
+		{
 			// if we don't have one...
-			return getPropertyDescriptor().getName() + "." + method;
-		} catch (Exception e) {
+			return getName() + "." + method;
+		} catch (Exception e)
+		{
 			throw new TrailsRuntimeException(e);
 		}
 
 		return addMethod.getName();
 	}
 
-	public Class getBeanType() {
-		return beanType;
-	}
-
-	public void setBeanType(Class beanType) {
-		this.beanType = beanType;
-	}
-
-	/**
-	 * @see org.trails.descriptor.PropertyDescriptor#getPropertyType()
-	 */
-	public Class getPropertyType() {
-		return propertyType;
-	}
-
-	public void setPropertyType(Class propertyType) {
-		this.propertyType = propertyType;
-	}
-
-	public boolean isSearchable() {
-		return searchable;
-	}
-
-	public void setSearchable(boolean searchable) {
-		this.searchable = searchable;
-	}
-
-	public IPropertyDescriptor getPropertyDescriptor() {
-		return propertyDescriptor;
-	}
-
-	public void setPropertyDescriptor(IPropertyDescriptor propertyDescriptor) {
-		this.propertyDescriptor = propertyDescriptor;
-	}
-
-	public String getElementProperty() {
-		return elementProperty;
-	}
-
-	public void setElementProperty(String mappingProperty) {
-		this.elementProperty = mappingProperty;
-	}
-
-	public boolean isHidden() {
-		return hidden;
-	}
-
-	public void setHidden(boolean hidden) {
-		this.hidden = hidden;
+	private void copyFrom(CollectionDescriptor collectionDescriptor)
+	{
+		LOG.debug("Clonning CollectionDescriptor");
+		try
+		{
+			BeanUtils.copyProperties(this, collectionDescriptor);
+		} catch (IllegalAccessException e)
+		{
+			LOG.error(e.getMessage());
+		} catch (InvocationTargetException e)
+		{
+			LOG.error(e.getMessage());
+		}
 	}
 }

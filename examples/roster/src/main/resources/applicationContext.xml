@@ -268,14 +268,14 @@
 				</entry>
 
 				<entry>
-				<key><value>supportsExtension('org.trails.descriptor.ObjectReferenceDescriptor')</value></key>
+				<key><value>objectReference</value></key>
 				<bean class="org.apache.tapestry.util.ComponentAddress">
 					<constructor-arg index="0"><value>trails:Editors</value></constructor-arg>
 					<constructor-arg index="1"><value>referenceEditor</value></constructor-arg>
 				</bean>
 				</entry>
 				<entry>
-				<key><value>supportsExtension('org.trails.descriptor.CollectionDescriptor')</value></key>
+				<key><value>collection</value></key>
 				<bean class="org.apache.tapestry.util.ComponentAddress">
 					<constructor-arg index="0"><value>trails:Editors</value></constructor-arg>
 					<constructor-arg index="1"><value>collectionEditor</value></constructor-arg>

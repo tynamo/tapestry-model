@@ -9,6 +9,7 @@ import org.trails.test.Gazonk;
 
 public class EnumSelectTest extends ComponentTest
 {
+	
 
 	public EnumSelectTest()
 	{
@@ -19,12 +20,10 @@ public class EnumSelectTest extends ComponentTest
 	IPropertyDescriptor associationDescriptor;
 	EnumSelect enumSelect;
 
-
 	public void setUp() throws Exception
 	{
-		IPropertyDescriptor enumPropertyDescriptor = new TrailsPropertyDescriptor(Gazonk.Origin.class, "gazonk", Gazonk.Origin.class);
 
-		EnumReferenceDescriptor enumReferenceDescriptor = new EnumReferenceDescriptor(Gazonk.Origin.class, enumPropertyDescriptor);
+		EnumReferenceDescriptor enumReferenceDescriptor = new EnumReferenceDescriptor(Gazonk.Origin.class);
 
 		classDescriptor = new TrailsClassDescriptor(Gazonk.class);
 		classDescriptor.getPropertyDescriptors().add(new IdentifierDescriptor(Gazonk.class, "id", Integer.class));
@@ -32,13 +31,15 @@ public class EnumSelectTest extends ComponentTest
 		associationDescriptor = new TrailsPropertyDescriptor(Gazonk.Origin.class, "origin", Gazonk.Origin.class);
 		associationDescriptor.addExtension(EnumReferenceDescriptor.class.getName(), enumReferenceDescriptor);
 
+
 		enumSelect = (EnumSelect) creator.newInstance(EnumSelect.class,
-				new Object[]{
-						"descriptorService", descriptorServiceMock.proxy()
-				});
+			new Object[]{
+				"descriptorService", descriptorServiceMock.proxy()
+			});
 
 		enumSelect.setPropertyDescriptor(associationDescriptor);
 		enumSelect.setAllowNone(true);
+
 	}
 
 	public void testBuildSelectionModel()

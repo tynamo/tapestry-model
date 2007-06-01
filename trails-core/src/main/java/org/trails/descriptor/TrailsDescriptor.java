@@ -120,17 +120,19 @@ public class TrailsDescriptor implements IDescriptor, Serializable {
 	}
 
 	public void copyExtensionsFrom(IDescriptor descriptor) {
-		Map<String, IDescriptorExtension> exts = ((TrailsDescriptor) descriptor)
-				.getExtensions();
+		Map<String, IDescriptorExtension> exts = ((TrailsDescriptor) descriptor).getExtensions();
 
-		for (Iterator iter = exts.entrySet().iterator(); iter.hasNext();) {
-			Map.Entry entry = (Map.Entry) iter.next();
-			String keye = (String) entry.getKey();
-			IDescriptorExtension value = (IDescriptorExtension) entry
-					.getValue();
-
-			this.addExtension(keye, (IDescriptorExtension.class.cast(value
-					.clone())));
+		for (Map.Entry<String, IDescriptorExtension> entry : exts.entrySet())
+		{
+			String keye = entry.getKey();
+			IDescriptorExtension value = entry.getValue();
+			try
+			{
+				this.addExtension(keye, (IDescriptorExtension) BeanUtils.cloneBean(value));
+			} catch (Exception e)
+			{
+				//@todo fix clone methods.
+			}
 		}
 	}
 

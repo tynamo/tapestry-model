@@ -17,7 +17,6 @@ import java.util.Set;
 
 import junit.framework.TestCase;
 import ognl.Ognl;
-
 import org.hibernate.cfg.Configuration;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
@@ -29,7 +28,6 @@ import org.trails.descriptor.DescriptorDecorator;
 import org.trails.descriptor.IClassDescriptor;
 import org.trails.descriptor.IPropertyDescriptor;
 import org.trails.descriptor.IdentifierDescriptor;
-import org.trails.descriptor.ObjectReferenceDescriptor;
 import org.trails.descriptor.TrailsClassDescriptor;
 import org.trails.descriptor.TrailsPropertyDescriptor;
 import org.trails.test.Bar;
@@ -38,16 +36,18 @@ import org.trails.test.Descendant;
 import org.trails.test.Embeddee;
 import org.trails.test.Embeddor;
 import org.trails.test.Foo;
+import org.trails.test.IBar;
 
 
 /**
  * @author fus8882
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
+ *         <p/>
+ *         TODO To change the template for this generated type comment go to
+ *         Window - Preferences - Java - Code Style - Code Templates
  */
 public class HibernateDescriptorDecoratorTest extends TestCase
 {
+	
 	ApplicationContext appContext;
 	DescriptorDecorator hibernateDescriptorDecorator;
 	IClassDescriptor classDescriptor;
@@ -55,56 +55,21 @@ public class HibernateDescriptorDecoratorTest extends TestCase
 	public void setUp()
 	{
 		appContext = new ClassPathXmlApplicationContext(
-				"applicationContext-test.xml");
+			"applicationContext-test.xml");
 		hibernateDescriptorDecorator = (DescriptorDecorator) appContext.getBean(
-				"hibernateDescriptorDecorator");
-
+			"hibernateDescriptorDecorator");
 		TrailsClassDescriptor fooDescriptor = new TrailsClassDescriptor(Foo.class);
-
 		fooDescriptor.getPropertyDescriptors().add(new TrailsPropertyDescriptor(Foo.class, "bazzes", Set.class));
-		CollectionDescriptor bazzesDescriptor = new CollectionDescriptor(Foo.class, fooDescriptor.getPropertyDescriptors().get(0));
-		fooDescriptor.getPropertyDescriptors().get(0).addExtension(CollectionDescriptor.class.getName(), bazzesDescriptor);
-
 		fooDescriptor.getPropertyDescriptors().add(new TrailsPropertyDescriptor(Foo.class, "bings", Set.class));
-		CollectionDescriptor bingsDescriptor = new CollectionDescriptor(Foo.class, fooDescriptor.getPropertyDescriptors().get(1));
-		fooDescriptor.getPropertyDescriptors().get(1).addExtension(CollectionDescriptor.class.getName(), bingsDescriptor);
-
 		fooDescriptor.getPropertyDescriptors().add(new TrailsPropertyDescriptor(Foo.class, "id", Integer.class));
-		ObjectReferenceDescriptor idDescriptor = new ObjectReferenceDescriptor(Foo.class, fooDescriptor.getPropertyDescriptor("id"));
-		fooDescriptor.getPropertyDescriptor("id").addExtension(ObjectReferenceDescriptor.class.getName(), idDescriptor);
-
 		fooDescriptor.getPropertyDescriptors().add(new TrailsPropertyDescriptor(Foo.class, "name", String.class));
-		ObjectReferenceDescriptor nameDescriptor = new ObjectReferenceDescriptor(Foo.class, fooDescriptor.getPropertyDescriptor("name"));
-		fooDescriptor.getPropertyDescriptor("name").addExtension(ObjectReferenceDescriptor.class.getName(), nameDescriptor);
-
 		fooDescriptor.getPropertyDescriptors().add(new TrailsPropertyDescriptor(Foo.class, "hidden", String.class));
-		ObjectReferenceDescriptor hiddenDescriptor = new ObjectReferenceDescriptor(Foo.class, fooDescriptor.getPropertyDescriptor("hidden"));
-		fooDescriptor.getPropertyDescriptor("hidden").addExtension(ObjectReferenceDescriptor.class.getName(), hiddenDescriptor);
-
-
 		fooDescriptor.getPropertyDescriptors().add(new TrailsPropertyDescriptor(Foo.class, "date", Date.class));
-		ObjectReferenceDescriptor dateDescriptor = new ObjectReferenceDescriptor(Foo.class, fooDescriptor.getPropertyDescriptor("date"));
-		fooDescriptor.getPropertyDescriptor("date").addExtension(ObjectReferenceDescriptor.class.getName(), dateDescriptor);
-
 		fooDescriptor.getPropertyDescriptors().add(new TrailsPropertyDescriptor(Foo.class, "readOnly", String.class));
-		ObjectReferenceDescriptor readOnlyDescriptor = new ObjectReferenceDescriptor(Foo.class, fooDescriptor.getPropertyDescriptor("readOnly"));
-		fooDescriptor.getPropertyDescriptor("readOnly").addExtension(ObjectReferenceDescriptor.class.getName(), readOnlyDescriptor);
-
 		fooDescriptor.getPropertyDescriptors().add(new TrailsPropertyDescriptor(Foo.class, "multiWordProperty", String.class));
-		ObjectReferenceDescriptor multiWordPropertyDescriptor = new ObjectReferenceDescriptor(Foo.class, fooDescriptor.getPropertyDescriptor("multiWordProperty"));
-		fooDescriptor.getPropertyDescriptor("multiWordProperty").addExtension(ObjectReferenceDescriptor.class.getName(), multiWordPropertyDescriptor);
-
 		fooDescriptor.getPropertyDescriptors().add(new TrailsPropertyDescriptor(Foo.class, "primitive", boolean.class));
-		ObjectReferenceDescriptor primitivePropertyDescriptor = new ObjectReferenceDescriptor(Foo.class, fooDescriptor.getPropertyDescriptor("primitive"));
-		fooDescriptor.getPropertyDescriptor("primitive").addExtension(ObjectReferenceDescriptor.class.getName(), primitivePropertyDescriptor);
-
-		fooDescriptor.getPropertyDescriptors().add(new TrailsPropertyDescriptor(Foo.class, "bar", Bar.class));
-		ObjectReferenceDescriptor barPropertyDescriptor = new ObjectReferenceDescriptor(Foo.class, fooDescriptor.getPropertyDescriptor("bar"));
-		fooDescriptor.getPropertyDescriptor("bar").addExtension(ObjectReferenceDescriptor.class.getName(), barPropertyDescriptor);
-
+		fooDescriptor.getPropertyDescriptors().add(new TrailsPropertyDescriptor(Foo.class, "bar", IBar.class));
 		fooDescriptor.getPropertyDescriptors().add(new TrailsPropertyDescriptor(Foo.class, "fromFormula", String.class));
-		ObjectReferenceDescriptor fromFormulaPropertyDescriptor = new ObjectReferenceDescriptor(Foo.class, fooDescriptor.getPropertyDescriptor("fromFormula"));
-		fooDescriptor.getPropertyDescriptor("fromFormula").addExtension(ObjectReferenceDescriptor.class.getName(), fromFormulaPropertyDescriptor);
 
 		classDescriptor = hibernateDescriptorDecorator.decorate(fooDescriptor);
 
@@ -112,7 +77,7 @@ public class HibernateDescriptorDecoratorTest extends TestCase
 
 	public void testNameDescriptor() throws Exception
 	{
-		IPropertyDescriptor nameDescriptor = (IPropertyDescriptor)classDescriptor.getPropertyDescriptor("name");
+		IPropertyDescriptor nameDescriptor = (IPropertyDescriptor) classDescriptor.getPropertyDescriptor("name");
 
 		assertEquals("is name", "name", nameDescriptor.getName());
 
@@ -127,14 +92,14 @@ public class HibernateDescriptorDecoratorTest extends TestCase
 
 	public void testFormulaDescriptor() throws Exception
 	{
-		IPropertyDescriptor formulaDescriptor =  classDescriptor.getPropertyDescriptor("fromFormula");
+		IPropertyDescriptor formulaDescriptor = classDescriptor.getPropertyDescriptor("fromFormula");
 		assertTrue(formulaDescriptor.isReadOnly());
 	}
 
 	public void testCollectionDescriptor() throws Exception
 	{
 
-		CollectionDescriptor bazzesDescriptor = (CollectionDescriptor) classDescriptor.getPropertyDescriptor("bazzes").getExtension(CollectionDescriptor.class);
+		CollectionDescriptor bazzesDescriptor = (CollectionDescriptor) classDescriptor.getPropertyDescriptor("bazzes");
 		assertTrue("bazzes is a collection", bazzesDescriptor.isCollection());
 		assertEquals("right element type", Baz.class,
 			bazzesDescriptor.getElementType());
@@ -183,20 +148,20 @@ public class HibernateDescriptorDecoratorTest extends TestCase
 	public void testIsObjectReference() throws Exception
 	{
 		IPropertyDescriptor propertyDescriptor = classDescriptor.getPropertyDescriptor(
-				"bar");
-		assertTrue(propertyDescriptor.getExtension(ObjectReferenceDescriptor.class).isObjectReference());
+			"bar");
+		assertTrue(propertyDescriptor.isObjectReference());
 		assertEquals("got right class", Bar.class,
 			propertyDescriptor.getPropertyType());
 
 		IPropertyDescriptor primitiveDescriptor = classDescriptor.getPropertyDescriptor(
-				"primitive");
-		assertTrue(primitiveDescriptor.getExtension(ObjectReferenceDescriptor.class).isObjectReference());
+			"primitive");
+		assertFalse(primitiveDescriptor.isObjectReference());
 	}
 
 	public void testGetMappings() throws Exception
 	{
 		LocalSessionFactoryBean lsfb = (LocalSessionFactoryBean) appContext.getBean(
-				"&sessionFactory");
+			"&sessionFactory");
 		Configuration cfg = lsfb.getConfiguration();
 		PersistentClass fooMapping = cfg.getClassMapping(Foo.class.getName());
 		Property idProp = fooMapping.getIdentifierProperty();
@@ -219,7 +184,7 @@ public class HibernateDescriptorDecoratorTest extends TestCase
 		descendantDescriptor.getPropertyDescriptors().add(new TrailsPropertyDescriptor(Foo.class, "extra", String.class));
 		descendantDescriptor.getPropertyDescriptors().add(new TrailsPropertyDescriptor(Foo.class, "id", Integer.class));
 		descendantDescriptor.getPropertyDescriptors().add(new TrailsPropertyDescriptor(Foo.class, "name", String.class));
-		IClassDescriptor decorated = (IClassDescriptor)hibernateDescriptorDecorator.decorate(descendantDescriptor);
+		IClassDescriptor decorated = (IClassDescriptor) hibernateDescriptorDecorator.decorate(descendantDescriptor);
 		assertEquals(4, decorated.getPropertyDescriptors().size());
 	}
 
@@ -227,10 +192,10 @@ public class HibernateDescriptorDecoratorTest extends TestCase
 	{
 		TrailsClassDescriptor embeddorDescriptor = new TrailsClassDescriptor(Embeddor.class);
 		embeddorDescriptor.getPropertyDescriptors().add(new TrailsPropertyDescriptor(Embeddor.class, "embeddee", Embeddee.class));
-		IClassDescriptor decorated = (IClassDescriptor)hibernateDescriptorDecorator.decorate(embeddorDescriptor);
-		IPropertyDescriptor propertyDescriptor = (IPropertyDescriptor)decorated.getPropertyDescriptors().get(0);
+		IClassDescriptor decorated = (IClassDescriptor) hibernateDescriptorDecorator.decorate(embeddorDescriptor);
+		IPropertyDescriptor propertyDescriptor = (IPropertyDescriptor) decorated.getPropertyDescriptors().get(0);
 		assertTrue(propertyDescriptor.isEmbedded());
-		EmbeddedDescriptor embeddedDescriptor = (EmbeddedDescriptor)propertyDescriptor;
+		EmbeddedDescriptor embeddedDescriptor = (EmbeddedDescriptor) propertyDescriptor;
 		assertEquals("embeddee", embeddedDescriptor.getName());
 		assertEquals("right bean type", Embeddor.class, embeddedDescriptor.getBeanType());
 		assertEquals("3 prop descriptors", 3, embeddedDescriptor.getPropertyDescriptors().size());

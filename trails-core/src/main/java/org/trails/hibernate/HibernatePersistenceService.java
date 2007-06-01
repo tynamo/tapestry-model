@@ -179,7 +179,7 @@ public class HibernatePersistenceService extends HibernateDaoSupport implements
 	@Transactional
 	public <T> T getInstance( final Class<T> type)
 	{
-		return getInstance(DetachedCriteria.forClass(type) );
+		return (T) getInstance(DetachedCriteria.forClass(type) );
 	}
 
 	@Transactional
@@ -230,25 +230,19 @@ public class HibernatePersistenceService extends HibernateDaoSupport implements
 									searchCriteria.add( Restrictions.like( propertyName, value.toString(),
 																		   MatchMode.ANYWHERE ) );
 								}
-								else if( propertyDescriptor.getExtensions().size() > 0 )
+								/**
+								 * 'one'-end of many-to-one, one-to-one
+								 *
+								 * Just match the identifier
+								 */
+								else if ((propertyDescriptor instanceof ObjectReferenceDescriptor) ||
+									propertyDescriptor.getExtension(EnumReferenceDescriptor.class) != null ||
+									propertyDescriptor.getExtension(OwningObjectReferenceDescriptor.class) != null)
 								{
-									/**
-									 * 'one'-end of many-to-one, one-to-one
-									 * 
-									 * Just match the identifier
-									 */
-									if ( propertyDescriptor.getExtension(EnumReferenceDescriptor.class) != null ||
-											propertyDescriptor.getExtension(ObjectReferenceDescriptor.class) != null ||
-											propertyDescriptor.getExtension(OwningObjectReferenceDescriptor.class) != null	) {
-
-										Object identifierValue = Ognl.getValue( descriptorService
-												.getClassDescriptor( value.getClass() ).getIdentifierDescriptor().getName(),
-																				value );
-										searchCriteria.createCriteria( propertyName )
-												.add( Restrictions.idEq( identifierValue ) );
-									}
-								}
-								else if( propertyClass.isPrimitive() )
+									Object identifierValue = Ognl.getValue(descriptorService.
+										getClassDescriptor(value.getClass()).getIdentifierDescriptor().getName(), value);
+									searchCriteria.createCriteria(propertyName).add(Restrictions.idEq(identifierValue));
+								} else if( propertyClass.isPrimitive() )
 								{
 									//primitive types: ignore zeroes in case of numeric types, ignore booleans anyway (TODO come up with something...)
 									if( !propertyClass.equals( boolean.class ) &&
