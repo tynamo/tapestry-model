@@ -31,7 +31,6 @@
 								</include>
 							</includes>
 							<excludes>
-								<exclude>**/SecurityTest.java</exclude>
 								<exclude>
 									**/FunctionalTest.java
 								</exclude>
@@ -84,15 +83,9 @@
 			<version>1.1</version>
 		</dependency>
 		<dependency>
-			<groupId>htmlunit</groupId>
-			<artifactId>htmlunit</artifactId>
-			<version>1.8</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-mock</artifactId>
-			<version>2.0.2</version>
+			<groupId>org.trailsframework</groupId>
+			<artifactId>trails-test</artifactId>
+			<version>1.1-SNAPSHOT</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>

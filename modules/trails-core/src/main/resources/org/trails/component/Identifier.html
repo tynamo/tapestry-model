@@ -1,0 +1,17 @@
+
+<span jwcid="$content$">
+	<span jwcid="editable@If" condition="ognl:editable">
+		<span jwcid="isNumeric@If" condition="ognl:descriptor.numeric">
+			<input jwcid="idNumberField@TextField" displayName="ognl:descriptor.displayName"
+				   validator="ognl:page.validatorTranslatorService.getValidator(descriptor)"
+				   translator="ognl:page.validatorTranslatorService.getTranslator(descriptor)"
+				   value="ognl:model[descriptor.name]" />
+		</span>
+		<span jwcid="isString@If" condition="ognl:descriptor.string">
+			<input jwcid="idStringField@TextField" value="ognl:model[descriptor.name]"/>
+		</span>
+    </span>
+    <span jwcid="notEditable@If" condition="ognl:not(editable)">
+        <span jwcid="idInsert@Insert" value="ognl:model[descriptor.name]"/>
+    </span>
+</span>

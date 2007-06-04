@@ -1,0 +1,66 @@
+package org.trails.component;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.hibernate.criterion.DetachedCriteria;
+import org.jmock.cglib.Mock;
+import org.trails.descriptor.IPropertyDescriptor;
+import org.trails.descriptor.IdentifierDescriptor;
+import org.trails.descriptor.TrailsClassDescriptor;
+import org.trails.descriptor.TrailsPropertyDescriptor;
+import org.trails.persistence.HibernatePersistenceService;
+import org.trails.testhibernate.Foo;
+
+public class HibernateAssociationSelectTest extends ComponentTest
+{
+
+	TrailsClassDescriptor classDescriptor;
+	IPropertyDescriptor associationDescriptor;
+	HibernateAssociationSelect associationSelect;
+
+	public void setUp() throws Exception
+	{
+
+		persistenceMock = new Mock(HibernatePersistenceService.class);  // @todo: remove when the components reuse issue goes away
+		classDescriptor = new TrailsClassDescriptor(Foo.class);
+		classDescriptor.getPropertyDescriptors().add(new IdentifierDescriptor(Foo.class, "id", Integer.class));
+		descriptorServiceMock.expects(atLeastOnce()).method("getClassDescriptor").with(eq(Foo.class)).will(returnValue(classDescriptor));
+
+		associationDescriptor = new TrailsPropertyDescriptor(Foo.class, "foo", Foo.class);
+		associationSelect = (HibernateAssociationSelect) creator.newInstance(HibernateAssociationSelect.class,
+			new Object[]{
+				"hibernatePersistenceService", persistenceMock.proxy(), // @todo: remove when the components reuse issue goes away
+				"descriptorService", descriptorServiceMock.proxy()
+			});
+		associationSelect.setPropertyDescriptor(associationDescriptor);
+		associationSelect.setAllowNone(true);
+
+	}
+
+	public void testBuildSelectionModel()
+	{
+
+		List instances = new ArrayList();
+		persistenceMock.expects(atLeastOnce()).method("getInstances").with(isA(DetachedCriteria.class)).will(returnValue(instances));
+		associationSelect.buildSelectionModel();
+		IdentifierSelectionModel selectionModel = (IdentifierSelectionModel) associationSelect.getPropertySelectionModel();
+		assertEquals(1, selectionModel.getOptionCount());
+
+		associationSelect.setAllowNone(false);
+		associationSelect.buildSelectionModel();
+		selectionModel = (IdentifierSelectionModel) associationSelect.getPropertySelectionModel();
+		assertEquals(0, selectionModel.getOptionCount());
+
+		associationSelect.setNoneLabel("Any");
+		associationSelect.buildSelectionModel();
+		selectionModel = (IdentifierSelectionModel) associationSelect.getPropertySelectionModel();
+		assertEquals("Any", selectionModel.getNoneLabel());
+
+	}
+
+	public void testGetClassDescriptor()
+	{
+		assertEquals(classDescriptor, associationSelect.getClassDescriptor());
+	}
+}

@@ -1,0 +1,52 @@
+<span jwcid="$content$">
+	<div jwcid="cannotAddFromExisting@If" condition="ognl:!addFromExisting">
+		<table>
+			<tr>
+				<td>
+					<table jwcid="any@Any">
+						<tr jwcid="foreach@For" source="ognl:collection" value="ognl:currentObject" index="ognl:index"
+							element="literal:tr">
+							<td>
+								<a jwcid="editLink@LinkSubmit" listener="listener:edit" parameters="ognl:currentObject">
+									<span jwcid="insert@Insert" value="ognl:currentObject"/>
+								</a>
+							</td>
+							<td><input jwcid="removeCheckbox@Checkbox" type="checkbox" selected="ognl:selected[index]"/>
+							</td>
+						</tr>
+					</table>
+					<!--table class="list" jwcid="@ObjectTable"
+									instances="ognl:collection"
+									classDescriptor="ognl:page.descriptorService.getClassDescriptor(propertyDescriptor.elementType)" /-->
+				</td>
+
+				<td jwcid="@If" condition="ognl:list" element="td">
+					<a jwcid="upLink@LinkSubmit" element="a"
+					   listener="listener:moveUp" disabled="ognl:page.modelNew">
+						<img jwcid="@Image"
+							 image="ognl:assets.upImage"
+							 alt="Up"/></a>
+					<br/>
+					<a jwcid="downLink@LinkSubmit" element="a"
+					   listener="listener:moveDown" disabled="ognl:page.modelNew">
+						<img jwcid="@Image"
+							 image="ognl:assets.downImage"
+							 alt="Down"/></a>
+				</td>
+			</tr>
+		</table>
+		<input jwcid="removeButton@Submit" type="button"
+			   value="ognl:getMessage(@org.trails.component.Utils@REMOVE_MESSAGE)"
+			   listener="listener:remove" disabled="ognl:page.modelNew"/>
+	</div>
+    <div jwcid="canAddFromExisting@If" condition="ognl:addFromExisting">
+		<div jwcid="palette@contrib:Palette" model="ognl:selectionModel" selected="ognl:selectedList"
+			 sort="ognl:sortMode"/>
+	</div>
+    <div jwcid="allowCreate@If" condition="ognl:allowCreate">
+		<input jwcid="addbutton@Submit" type="button"
+			   value="ognl:getMessage(@org.trails.component.Utils@ADD_NEW_MESSAGE)"
+			   listener="listener:showAddPage" disabled="ognl:page.modelNew"/>
+	</div>
+    
+</span>

@@ -5,7 +5,7 @@
 	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
                            http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
 
-	<aop:aspectj-autoproxy/>
+<aop:aspectj-autoproxy/>
 
 	<!-- ========================= GENERAL DEFINITIONS ========================= -->
 	<bean id="trailsInterceptor" class="org.trails.hibernate.TrailsInterceptor"/>
@@ -57,7 +57,7 @@
 	<bean id="transactionAttributeSource"
 		  class="org.springframework.transaction.annotation.AnnotationTransactionAttributeSource"/>
 
-	<bean id="persistenceService" class="org.trails.hibernate.HibernatePersistenceService" autowire="autodetect"/>
+	<bean id="persistenceService" class="org.trails.hibernate.HibernatePersistenceServiceImpl" autowire="autodetect"/>
 
 
 	<bean id="descriptorService" class="org.trails.descriptor.TrailsDescriptorService" init-method="init">
@@ -103,9 +103,6 @@
 		<property name="persistenceService" ref="persistenceService"/>
 	</bean>
 
-	<!-- security service bean -->
-	<bean id="securityService" class="org.trails.security.TrailsSecurityService"/>
-
 	<bean id="seedDataInitializer" class="org.trails.seeddata.SpringSeedEntityInitializer" init-method="init">
 		<property name="persistenceService" ref="persistenceService"/>
 		<property name="descriptorService" ref="descriptorService"/>
@@ -116,17 +113,13 @@
 		<property name="localeHolder" ref="localeHolder"/>
 	</bean>
 
-	<bean id="descriptorSecurity" class="org.trails.security.DescriptorSecurity" factory-method="aspectOf">
-		<property name="securityService" ref="securityService"/>
-	</bean>
-
 	<bean id="pageResolver" class="org.trails.page.DefaultPageResolver"/>
 
 	<bean id="searchBlockFinder" class="org.trails.descriptor.BaseBlockFinder">
 		<property name="defaultBlockAddress">
 			<bean class="org.apache.tapestry.util.ComponentAddress">
 				<constructor-arg index="0">
-					<value>trails:SearchBlocks</value>
+					<value>trailsHibernate:SearchBlocks</value>
 				</constructor-arg>
 				<constructor-arg index="1">
 					<value>simpleSearch</value>
@@ -141,7 +134,7 @@
 					</key>
 					<bean class="org.apache.tapestry.util.ComponentAddress">
 						<constructor-arg index="0">
-							<value>trails:SearchBlocks</value>
+							<value>trailsHibernate:SearchBlocks</value>
 						</constructor-arg>
 						<constructor-arg index="1">
 							<value>stringSearch</value>
@@ -154,7 +147,7 @@
 					</key>
 					<bean class="org.apache.tapestry.util.ComponentAddress">
 						<constructor-arg index="0">
-							<value>trails:SearchBlocks</value>
+							<value>trailsHibernate:SearchBlocks</value>
 						</constructor-arg>
 						<constructor-arg index="1">
 							<value>associationSearch</value>
@@ -167,7 +160,7 @@
 					</key>
 					<bean class="org.apache.tapestry.util.ComponentAddress">
 						<constructor-arg index="0">
-							<value>trails:SearchBlocks</value>
+							<value>trailsHibernate:SearchBlocks</value>
 						</constructor-arg>
 						<constructor-arg index="1">
 							<value>numberSearch</value>
@@ -180,7 +173,7 @@
 					</key>
 					<bean class="org.apache.tapestry.util.ComponentAddress">
 						<constructor-arg index="0">
-							<value>trails:SearchBlocks</value>
+							<value>trailsHibernate:SearchBlocks</value>
 						</constructor-arg>
 						<constructor-arg index="1">
 							<value>dateSearch</value>
@@ -315,7 +308,7 @@
 					</key>
 					<bean class="org.apache.tapestry.util.ComponentAddress">
 						<constructor-arg index="0">
-							<value>trails:Editors</value>
+							<value>trailsHibernate:Editors</value>
 						</constructor-arg>
 						<constructor-arg index="1">
 							<value>identifierEditor</value>
@@ -363,7 +356,7 @@
 					</key>
 					<bean class="org.apache.tapestry.util.ComponentAddress">
 						<constructor-arg index="0">
-							<value>trails:Editors</value>
+							<value>trailsHibernate:Editors</value>
 						</constructor-arg>
 						<constructor-arg index="1">
 							<value>referenceEditor</value>
@@ -376,7 +369,7 @@
 					</key>
 					<bean class="org.apache.tapestry.util.ComponentAddress">
 						<constructor-arg index="0">
-							<value>trails:Editors</value>
+							<value>trailsHibernate:Editors</value>
 						</constructor-arg>
 						<constructor-arg index="1">
 							<value>collectionEditor</value>

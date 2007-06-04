@@ -15,7 +15,7 @@
   <version>1.1-SNAPSHOT</version>
 
   <build>
-    <plugins>
+<!--    <plugins>
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
         <executions>
@@ -70,7 +70,7 @@
           </execution>
         </executions>
       </plugin>
-    </plugins>
+    </plugins>-->
   </build>
   <dependencies>
     <dependency>
@@ -78,6 +78,11 @@
       <artifactId>commons-logging</artifactId>
       <version>1.1</version>
     </dependency>
+		<dependency>
+			<groupId>org.trailsframework</groupId>
+			<artifactId>trails-security</artifactId>
+			<version>1.1-SNAPSHOT</version>
+		</dependency>
     <dependency>
       <groupId>htmlunit</groupId>
       <artifactId>htmlunit</artifactId>

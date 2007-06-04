@@ -26,6 +26,10 @@
 		</invoke-factory>
 	</service-point>
 
+	<contribution configuration-id="tapestry.request.WebRequestServicerPipeline">
+		<filter name="LocaleHolder" object="service:LocaleHolder"/>
+	</contribution>
+
 	<contribution configuration-id="tapestry.url.ServiceEncoders">
 		<page-service-encoder id="page" extension="html" service="page"/>
 	</contribution>

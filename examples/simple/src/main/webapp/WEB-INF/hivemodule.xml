@@ -7,6 +7,10 @@
 		</state-object>
 	</contribution>
 
+	<contribution configuration-id="hivemind.hibernate3.Configuration">
+		<property name="hibernate.show_sql" value="true" />
+	</contribution>
+	
 	<implementation service-id="hivemind.hibernate3.SessionFactory">
 	 <invoke-factory service-id="hivemind.lib.SpringLookupFactory">
 	   <lookup-bean name="sessionFactory" />
@@ -20,21 +24,13 @@
                 <set-object property="localeHolder" value="spring:localeHolder"/>
             </construct>
         </invoke-factory>
-    </service-point> 
+    </service-point>
 
     <contribution configuration-id="tapestry.request.WebRequestServicerPipeline">
         <filter name="LocaleHolder" object="service:LocaleHolder"/>
     </contribution>
-    	
-	<contribution configuration-id="hivemind.hibernate3.Configuration">
-		<property name="hibernate.show_sql" value="true" />
-	</contribution>	
-	<!--  
-	<contribution configuration-id="tapestry.data.SqueezeAdaptors">
-        <adaptor object="spring:squeezableSqueezer"/>
-    </contribution>-->
-	
-	<contribution configuration-id="tapestry.url.ServiceEncoders">
+    		
+    <contribution configuration-id="tapestry.url.ServiceEncoders">
         <page-service-encoder id="page" extension="html" service="page"/>
     </contribution>
 
@@ -49,8 +45,8 @@
     <contribution configuration-id="tapestry.url.ServiceEncoders">
         <extension-encoder id="extension" extension="svc" after="*"/>
     </contribution>
-
-    <contribution configuration-id="tapestry.services.ApplicationServices">
+    
+     <contribution configuration-id="tapestry.services.ApplicationServices">
         <service name="BlobService" object="service:BlobService"/>
     </contribution>
 
@@ -65,5 +61,4 @@
             </construct>
         </invoke-factory>
     </service-point>
-  
 </module>

@@ -1,0 +1,25 @@
+<!DOCTYPE page-specification PUBLIC "-//Apache Software Foundation//Tapestry Specification 4.0//EN" "http://jakarta.apache.org/tapestry/dtd/Tapestry_4_0.dtd">
+<page-specification class="org.trails.page.EditorBlockPage">
+
+	<property name="model"/>
+	<property name="descriptor"/>
+	<property name="editPageName"/>
+
+	<component id="editCollection" type="HibernateEditCollection" inherit-informal-parameters="no">
+		<binding name="collection">model[descriptor.name]</binding>
+		<binding name="propertyDescriptor">descriptor</binding>
+	</component>
+
+	<component id="identifier" type="HibernateIdentifier" inherit-informal-parameters="no">
+		<binding name="descriptor">descriptor</binding>
+	</component>
+
+	<component id="associationSelect" type="HibernateAssociationSelect">
+		<binding name="model">model</binding>
+		<binding name="value">model[descriptor.name]</binding>
+		<binding name="owner">model</binding>
+		<binding name="association">model[descriptor.name]</binding>
+		<binding name="propertyDescriptor">descriptor</binding>
+	</component>
+
+</page-specification>
