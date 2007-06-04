@@ -20,8 +20,17 @@ import java.util.List;
 
 import ognl.Ognl;
 import ognl.OgnlException;
-import org.hibernate.*;
-import org.hibernate.criterion.*;
+import org.hibernate.Criteria;
+import org.hibernate.EntityMode;
+import org.hibernate.HibernateException;
+import org.hibernate.LockMode;
+import org.hibernate.Session;
+import org.hibernate.criterion.CriteriaSpecification;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Expression;
+import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
 import org.hibernate.metadata.ClassMetadata;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
@@ -32,8 +41,11 @@ import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import org.springframework.transaction.annotation.Transactional;
 import org.trails.component.Utils;
 import org.trails.descriptor.DescriptorService;
+import org.trails.descriptor.EnumReferenceDescriptor;
 import org.trails.descriptor.IClassDescriptor;
 import org.trails.descriptor.IPropertyDescriptor;
+import org.trails.descriptor.ObjectReferenceDescriptor;
+import org.trails.descriptor.OwningObjectReferenceDescriptor;
 import org.trails.persistence.HibernatePersistenceService;
 import org.trails.persistence.PersistenceException;
 import org.trails.validation.ValidationException;
@@ -222,14 +234,19 @@ public class HibernatePersistenceServiceImpl extends HibernateDaoSupport impleme
 								{
 									searchCriteria.add(Restrictions.like(propertyName, value.toString(),
 										MatchMode.ANYWHERE));
-								} else if (propertyDescriptor.isObjectReference())
+								}
+								/**
+								 * 'one'-end of many-to-one, one-to-one
+								 *
+								 * Just match the identifier
+								 */
+								else if ((propertyDescriptor instanceof ObjectReferenceDescriptor) ||
+									propertyDescriptor.getExtension(EnumReferenceDescriptor.class) != null ||
+									propertyDescriptor.getExtension(OwningObjectReferenceDescriptor.class) != null)
 								{
-									//'one'-end of many-to-one -> just match the identifier
-									Object identifierValue = Ognl.getValue(descriptorService
-										.getClassDescriptor(value.getClass()).getIdentifierDescriptor().getName(),
-										value);
-									searchCriteria.createCriteria(propertyName)
-										.add(Restrictions.idEq(identifierValue));
+									Object identifierValue = Ognl.getValue(descriptorService.
+										getClassDescriptor(value.getClass()).getIdentifierDescriptor().getName(), value);
+									searchCriteria.createCriteria(propertyName).add(Restrictions.idEq(identifierValue));
 								} else if (propertyClass.isPrimitive())
 								{
 									//primitive types: ignore zeroes in case of numeric types, ignore booleans anyway (TODO come up with something...)

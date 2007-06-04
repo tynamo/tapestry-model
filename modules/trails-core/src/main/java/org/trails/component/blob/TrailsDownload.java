@@ -16,7 +16,7 @@ import org.trails.persistence.PersistenceService;
 public abstract class TrailsDownload extends BaseComponent
 {
 	@InjectObject("service:trails.BlobService")
-	public abstract BlobDownloadService getBlobService();
+	public abstract BlobDownloadService getDownloadService();
 
 	@InjectObject("spring:persistenceService")
 	public abstract PersistenceService getPersistenceService();
@@ -81,7 +81,7 @@ public abstract class TrailsDownload extends BaseComponent
 		contentType = trailsBlob.getContentType();
 		fileName = trailsBlob.getFileName();
 
-		return new TrailsBlobAsset(getBlobService(), getClassDescriptor()
+		return new TrailsBlobAsset(getDownloadService(), getClassDescriptor()
 			.getType().getName(), id, getDescriptor().getName(),
 			contentType, fileName);
 	}

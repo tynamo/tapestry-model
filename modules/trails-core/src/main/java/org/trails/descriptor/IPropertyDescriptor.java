@@ -58,12 +58,6 @@ public interface IPropertyDescriptor extends IDescriptor
 	public boolean isObjectReference();
 
 	/**
-	 * @return
-	 */
-	public boolean isOwningObjectReference();
-
-
-	/**
 	 * @return Returns the required.
 	 */
 	public boolean isRequired();

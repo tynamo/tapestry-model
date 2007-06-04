@@ -14,41 +14,82 @@
 package org.trails.descriptor;
 
 import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Hashtable;
 import java.util.Map;
 
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.trails.component.Utils;
 
 /**
  * @author fus8882
  *         <p/>
- *         TODO To change the template for this generated type comment go to
- *         Window - Preferences - Java - Code Style - Code Templates
+ *         TODO To change the template for this generated type comment go to Window -
+ *         Preferences - Java - Code Style - Code Templates
  */
 public class TrailsDescriptor implements IDescriptor, Serializable
 {
+	protected static final Log LOG = LogFactory.getLog(TrailsDescriptor.class);
 
 	private String displayName;
+
 	private String shortDescription;
+
 	protected Class type;
+
 	private boolean hidden;
+
+	Map<String, IDescriptorExtension> extensions = new Hashtable<String, IDescriptorExtension>();
+
+	/**
+	 * @param dto
+	 */
+	public TrailsDescriptor(TrailsDescriptor dto)
+	{
+		try
+		{
+			BeanUtils.copyProperties(this, dto);
+		} catch (IllegalAccessException e)
+		{
+			LOG.error(e.getMessage());
+			e.printStackTrace();
+		} catch (InvocationTargetException e)
+		{
+			LOG.error(e.getMessage());
+			e.printStackTrace();
+		} catch (Exception e)
+		{
+			LOG.error(e.toString());
+			e.printStackTrace();
+		}
+	}
 
 	public TrailsDescriptor(IDescriptor descriptor)
 	{
-		copyFrom(descriptor);
+		try
+		{
+			BeanUtils.copyProperties(this, (TrailsDescriptor) descriptor);
+			copyExtensionsFrom(descriptor);
+		} catch (IllegalAccessException e)
+		{
+			LOG.error(e.getMessage());
+			e.printStackTrace();
+		} catch (InvocationTargetException e)
+		{
+			LOG.error(e.getMessage());
+			e.printStackTrace();
+		} catch (Exception e)
+		{
+			LOG.error(e.toString());
+			e.printStackTrace();
+		}
 	}
 
 	public TrailsDescriptor(Class type)
 	{
 		this.type = type;
-	}
-
-
-	@Override
-	public Object clone()
-	{
-		return new TrailsDescriptor(this);
 	}
 
 	public String getDisplayName()
@@ -71,15 +112,48 @@ public class TrailsDescriptor implements IDescriptor, Serializable
 		this.shortDescription = shortDescription;
 	}
 
-	protected void copyFrom(IDescriptor descriptor)
+	@Override
+	public Object clone()
+	{
+		return new TrailsDescriptor(this);
+	}
+
+	public void copyFrom(IDescriptor descriptor)
 	{
 		try
 		{
-			BeanUtils.copyProperties(this, descriptor);
-		}
-		catch (Exception ex)
+			BeanUtils.copyProperties(this, (TrailsDescriptor) descriptor);
+			copyExtensionsFrom(descriptor);
+		} catch (IllegalAccessException e)
 		{
-			//ex.printStackTrace();
+			LOG.error(e.getMessage());
+			e.printStackTrace();
+		} catch (InvocationTargetException e)
+		{
+			LOG.error(e.getMessage());
+			e.printStackTrace();
+		} catch (Exception e)
+		{
+			LOG.error(e.toString());
+			e.printStackTrace();
+		}
+	}
+
+	public void copyExtensionsFrom(IDescriptor descriptor)
+	{
+		Map<String, IDescriptorExtension> exts = ((TrailsDescriptor) descriptor).getExtensions();
+
+		for (Map.Entry<String, IDescriptorExtension> entry : exts.entrySet())
+		{
+			String keye = entry.getKey();
+			IDescriptorExtension value = entry.getValue();
+			try
+			{
+				this.addExtension(keye, (IDescriptorExtension) BeanUtils.cloneBean(value));
+			} catch (Exception e)
+			{
+				//@todo fix clone methods.
+			}
 		}
 	}
 
@@ -103,39 +177,46 @@ public class TrailsDescriptor implements IDescriptor, Serializable
 		this.type = type;
 	}
 
-	Map<String, IDescriptorExtension> extensions = new Hashtable<String, IDescriptorExtension>();
-
-	public boolean supportsExtension(String extensionType)
+	/**
+	 * Keye is property name preceded by package name
+	 */
+	public boolean supportsExtension(String keye)
 	{
-		return getExtension(extensionType) != null;
+		return getExtension(keye) != null;
 	}
 
-	public IDescriptorExtension getExtension(String extentionType)
+	/**
+	 * Keye is property name preceded by package name
+	 */
+	public IDescriptorExtension getExtension(String keye)
 	{
-		return extensions.get(extentionType);
+		return extensions.get(keye);
 	}
 
-	public void addExtension(String extenstionType, IDescriptorExtension extension)
+	/**
+	 * Keye is property name preceded by package name
+	 */
+	public void addExtension(String keye, IDescriptorExtension extension)
 	{
-		extensions.put(extenstionType, extension);
+		extensions.put(keye, extension);
 	}
 
-	public void removeExtension(String extensionType)
+	/**
+	 * Keye is property name preceded by package name
+	 */
+	public void removeExtension(String keye)
 	{
-		extensions.remove(extensionType);
+		extensions.remove(keye);
 	}
-
 
 	public <E extends IDescriptorExtension> E getExtension(Class<E> extensionType)
 	{
 		return (E) extensions.get(extensionType.getName());
 	}
 
-
 	/**
 	 * This getter method is here just to allow clone(), copyFrom() and
-	 * BeanUtils.copyProperties(this, descriptor);
-	 * to work correctly
+	 * BeanUtils.copyProperties(this, descriptor); to work correctly
 	 */
 	public Map<String, IDescriptorExtension> getExtensions()
 	{
@@ -144,8 +225,7 @@ public class TrailsDescriptor implements IDescriptor, Serializable
 
 	/**
 	 * This setter method is here just to allow clone(), copyFrom() and
-	 * BeanUtils.copyProperties(this, descriptor);
-	 * to work correctly
+	 * BeanUtils.copyProperties(this, descriptor); to work correctly
 	 */
 	public void setExtensions(Map<String, IDescriptorExtension> extensions)
 	{

@@ -3,12 +3,12 @@
 	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	   xmlns:aop="http://www.springframework.org/schema/aop"
 	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
-						   http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
+                           http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
 
 	<aop:aspectj-autoproxy/>
 
 	<!-- ========================= GENERAL DEFINITIONS ========================= -->
-	<bean id="trailsInterceptor" class="org.trails.hibernate.TrailsInterceptor" />
+	<bean id="trailsInterceptor" class="org.trails.hibernate.TrailsInterceptor"/>
 
 	<bean id="hibernateProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
 		<property name="location" value="classpath:hibernate.properties"/>
@@ -57,18 +57,18 @@
 	<bean id="transactionAttributeSource"
 		  class="org.springframework.transaction.annotation.AnnotationTransactionAttributeSource"/>
 
-	<bean id="persistenceService" class="org.trails.hibernate.HibernatePersistenceService" autowire="autodetect"/>
+	<bean id="persistenceService" class="org.trails.hibernate.HibernatePersistenceServiceImpl" autowire="autodetect"/>
 
 
 	<bean id="descriptorService" class="org.trails.descriptor.TrailsDescriptorService" init-method="init">
 		<property name="types">
 			<bean id="persistenceService.allTypes" class="org.springframework.beans.factory.config.PropertyPathFactoryBean"/>
 		</property>
-		<property name="descriptorFactory" ref="descriptorFactory" />
+		<property name="descriptorFactory" ref="descriptorFactory"/>
 		<property name="decorators">
 			<list>
-				<ref local="hibernateDescriptorDecorator" />
-				<bean name="annotationDecorator" class="org.trails.descriptor.annotation.AnnotationDecorator" />
+				<ref local="hibernateDescriptorDecorator"/>
+				<bean name="annotationDecorator" class="org.trails.descriptor.annotation.AnnotationDecorator"/>
 			</list>
 		</property>
 	</bean>
@@ -93,8 +93,8 @@
 	</bean>
 
 	<bean id="hibernateDescriptorDecorator" class="org.trails.hibernate.HibernateDescriptorDecorator">
-		<property name="localSessionFactoryBean" ref="&amp;sessionFactory" />
-		<property name="descriptorFactory" ref="descriptorFactory" />
+		<property name="localSessionFactoryBean" ref="&amp;sessionFactory"/>
+		<property name="descriptorFactory" ref="descriptorFactory"/>
 	</bean>
 
 
@@ -103,61 +103,82 @@
 		<property name="persistenceService" ref="persistenceService"/>
 	</bean>
 
-	<!-- security service bean -->
-	<bean id="securityService" class="org.trails.security.TrailsSecurityService"/>
-
-   <bean id="seedDataInitializer" class="org.trails.seeddata.SpringSeedEntityInitializer" init-method="init">
-	   <property name="persistenceService" ref="persistenceService" />
-	   <property name="descriptorService" ref="descriptorService" />
-   </bean>
+	<bean id="seedDataInitializer" class="org.trails.seeddata.SpringSeedEntityInitializer" init-method="init">
+		<property name="persistenceService" ref="persistenceService"/>
+		<property name="descriptorService" ref="descriptorService"/>
+	</bean>
 
 	<bean id="descriptorInternationalizationAspect" class="org.trails.i18n.DescriptorInternationalization" factory-method="aspectOf">
 		<property name="resourceBundleMessageSource" ref="trailsMessageSource"/>
 		<property name="localeHolder" ref="localeHolder"/>
 	</bean>
 
-	<bean id="descriptorSecurity" class="org.trails.security.DescriptorSecurity" factory-method="aspectOf">
-		<property name="securityService" ref="securityService"/>
-	</bean>
-
-	<bean id="pageResolver" class="org.trails.page.DefaultPageResolver" />
+	<bean id="pageResolver" class="org.trails.page.DefaultPageResolver"/>
 
 	<bean id="searchBlockFinder" class="org.trails.descriptor.BaseBlockFinder">
 		<property name="defaultBlockAddress">
-				<bean class="org.apache.tapestry.util.ComponentAddress">
-					<constructor-arg index="0"><value>trails:SearchBlocks</value></constructor-arg>
-					<constructor-arg index="1"><value>simpleSearch</value></constructor-arg>
-				</bean>
+			<bean class="org.apache.tapestry.util.ComponentAddress">
+				<constructor-arg index="0">
+					<value>trailsHibernate:SearchBlocks</value>
+				</constructor-arg>
+				<constructor-arg index="1">
+					<value>simpleSearch</value>
+				</constructor-arg>
+			</bean>
 		</property>
 		<property name="editorMap">
 			<map>
 				<entry>
-				<key><value>string</value></key>
-				<bean class="org.apache.tapestry.util.ComponentAddress">
-					<constructor-arg index="0"><value>trails:SearchBlocks</value></constructor-arg>
-					<constructor-arg index="1"><value>stringSearch</value></constructor-arg>
-				</bean>
+					<key>
+						<value>string</value>
+					</key>
+					<bean class="org.apache.tapestry.util.ComponentAddress">
+						<constructor-arg index="0">
+							<value>trailsHibernate:SearchBlocks</value>
+						</constructor-arg>
+						<constructor-arg index="1">
+							<value>stringSearch</value>
+						</constructor-arg>
+					</bean>
 				</entry>
 				<entry>
-				<key><value>objectReference</value></key>
-				<bean class="org.apache.tapestry.util.ComponentAddress">
-					<constructor-arg index="0"><value>trails:SearchBlocks</value></constructor-arg>
-					<constructor-arg index="1"><value>associationSearch</value></constructor-arg>
-				</bean>
+					<key>
+						<value>objectReference</value>
+					</key>
+					<bean class="org.apache.tapestry.util.ComponentAddress">
+						<constructor-arg index="0">
+							<value>trailsHibernate:SearchBlocks</value>
+						</constructor-arg>
+						<constructor-arg index="1">
+							<value>associationSearch</value>
+						</constructor-arg>
+					</bean>
 				</entry>
 				<entry>
-				<key><value>numeric</value></key>
-				<bean class="org.apache.tapestry.util.ComponentAddress">
-					<constructor-arg index="0"><value>trails:SearchBlocks</value></constructor-arg>
-					<constructor-arg index="1"><value>numberSearch</value></constructor-arg>
-				</bean>
+					<key>
+						<value>numeric</value>
+					</key>
+					<bean class="org.apache.tapestry.util.ComponentAddress">
+						<constructor-arg index="0">
+							<value>trailsHibernate:SearchBlocks</value>
+						</constructor-arg>
+						<constructor-arg index="1">
+							<value>numberSearch</value>
+						</constructor-arg>
+					</bean>
 				</entry>
 				<entry>
-				<key><value>date</value></key>
-				<bean class="org.apache.tapestry.util.ComponentAddress">
-					<constructor-arg index="0"><value>trails:SearchBlocks</value></constructor-arg>
-					<constructor-arg index="1"><value>dateSearch</value></constructor-arg>
-				</bean>
+					<key>
+						<value>date</value>
+					</key>
+					<bean class="org.apache.tapestry.util.ComponentAddress">
+						<constructor-arg index="0">
+							<value>trailsHibernate:SearchBlocks</value>
+						</constructor-arg>
+						<constructor-arg index="1">
+							<value>dateSearch</value>
+						</constructor-arg>
+					</bean>
 				</entry>
 			</map>
 		</property>
@@ -165,134 +186,233 @@
 
 	<bean id="editorService" class="org.trails.descriptor.EditorBlockFinder">
 		<property name="defaultBlockAddress">
-				<bean class="org.apache.tapestry.util.ComponentAddress">
-					<constructor-arg index="0"><value>trails:Editors</value></constructor-arg>
-					<constructor-arg index="1"><value>stringEditor</value></constructor-arg>
-				</bean>
+			<bean class="org.apache.tapestry.util.ComponentAddress">
+				<constructor-arg index="0">
+					<value>trails:Editors</value>
+				</constructor-arg>
+				<constructor-arg index="1">
+					<value>stringEditor</value>
+				</constructor-arg>
+			</bean>
 		</property>
 		<property name="editorMap">
 
 			<map>
 				<entry>
-				<key><value>hidden</value></key>
-				<bean class="org.apache.tapestry.util.ComponentAddress">
-					<constructor-arg index="0"><value>trails:Editors</value></constructor-arg>
-					<constructor-arg index="1"><value>hidden</value></constructor-arg>
-				</bean>
-				</entry>
-				<entry>
-				<key><value>readOnly</value></key>
-				<bean class="org.apache.tapestry.util.ComponentAddress">
-					<constructor-arg index="0"><value>trails:Editors</value></constructor-arg>
-					<constructor-arg index="1"><value>readOnly</value></constructor-arg>
-				</bean>
-				</entry>
-				<entry>
-				<key><value>richText</value></key>
-				<bean class="org.apache.tapestry.util.ComponentAddress">
-					<constructor-arg index="0"><value>trails:Editors</value></constructor-arg>
-					<constructor-arg index="1"><value>FCKEditor</value></constructor-arg>
-				</bean>
-				</entry>
-				<entry>
-				<key><value>name.toLowerCase().endsWith('password')</value></key>
-				<bean class="org.apache.tapestry.util.ComponentAddress">
-					<constructor-arg index="0"><value>trails:Editors</value></constructor-arg>
-					<constructor-arg index="1"><value>passwordEditor</value></constructor-arg>
-				</bean>
-				</entry>
-				<entry>
-				<key><value>string and !large and !identifier</value></key>
-				<bean class="org.apache.tapestry.util.ComponentAddress">
-					<constructor-arg index="0"><value>trails:Editors</value></constructor-arg>
-					<constructor-arg index="1"><value>stringEditor</value></constructor-arg>
-				</bean>
-				</entry>
-				<entry>
-				<key><value>string and large and !identifier</value></key>
-				<bean class="org.apache.tapestry.util.ComponentAddress">
-					<constructor-arg index="0"><value>trails:Editors</value></constructor-arg>
-					<constructor-arg index="1"><value>textAreaEditor</value></constructor-arg>
-				</bean>
-				</entry>
-				<entry>
-				<key><value>date</value></key>
-				<bean class="org.apache.tapestry.util.ComponentAddress">
-					<constructor-arg index="0"><value>trails:Editors</value></constructor-arg>
-					<constructor-arg index="1"><value>dateEditor</value></constructor-arg>
-				</bean>
-				</entry>
-				<entry>
-				<key><value>numeric and !identifier</value></key>
-				<bean class="org.apache.tapestry.util.ComponentAddress">
-					<constructor-arg index="0"><value>trails:Editors</value></constructor-arg>
-					<constructor-arg index="1"><value>numberEditor</value></constructor-arg>
-				</bean>
-				</entry>
-				<entry>
-				<key><value>identifier</value></key>
-				<bean class="org.apache.tapestry.util.ComponentAddress">
-					<constructor-arg index="0"><value>trails:Editors</value></constructor-arg>
-					<constructor-arg index="1"><value>identifierEditor</value></constructor-arg>
-				</bean>
-				</entry>
-				<entry>
-				<key><value>boolean</value></key>
-				<bean class="org.apache.tapestry.util.ComponentAddress">
-					<constructor-arg index="0"><value>trails:Editors</value></constructor-arg>
-					<constructor-arg index="1"><value>booleanEditor</value></constructor-arg>
-				</bean>
-				</entry>
-				<entry>
-					<key><value>supportsExtension('org.trails.descriptor.EnumReferenceDescriptor')</value></key>
+					<key>
+						<value>hidden</value>
+					</key>
 					<bean class="org.apache.tapestry.util.ComponentAddress">
-						<constructor-arg index="0"><value>trails:Editors</value></constructor-arg>
-						<constructor-arg index="1"><value>enumEditor</value></constructor-arg>
+						<constructor-arg index="0">
+							<value>trails:Editors</value>
+						</constructor-arg>
+						<constructor-arg index="1">
+							<value>hidden</value>
+						</constructor-arg>
+					</bean>
+				</entry>
+				<entry>
+					<key>
+						<value>readOnly</value>
+					</key>
+					<bean class="org.apache.tapestry.util.ComponentAddress">
+						<constructor-arg index="0">
+							<value>trails:Editors</value>
+						</constructor-arg>
+						<constructor-arg index="1">
+							<value>readOnly</value>
+						</constructor-arg>
+					</bean>
+				</entry>
+				<entry>
+					<key>
+						<value>richText</value>
+					</key>
+					<bean class="org.apache.tapestry.util.ComponentAddress">
+						<constructor-arg index="0">
+							<value>trails:Editors</value>
+						</constructor-arg>
+						<constructor-arg index="1">
+							<value>FCKEditor</value>
+						</constructor-arg>
+					</bean>
+				</entry>
+				<entry>
+					<key>
+						<value>name.toLowerCase().endsWith('password')</value>
+					</key>
+					<bean class="org.apache.tapestry.util.ComponentAddress">
+						<constructor-arg index="0">
+							<value>trails:Editors</value>
+						</constructor-arg>
+						<constructor-arg index="1">
+							<value>passwordEditor</value>
+						</constructor-arg>
+					</bean>
+				</entry>
+				<entry>
+					<key>
+						<value>string and !large and !identifier</value>
+					</key>
+					<bean class="org.apache.tapestry.util.ComponentAddress">
+						<constructor-arg index="0">
+							<value>trails:Editors</value>
+						</constructor-arg>
+						<constructor-arg index="1">
+							<value>stringEditor</value>
+						</constructor-arg>
+					</bean>
+				</entry>
+				<entry>
+					<key>
+						<value>string and large and !identifier</value>
+					</key>
+					<bean class="org.apache.tapestry.util.ComponentAddress">
+						<constructor-arg index="0">
+							<value>trails:Editors</value>
+						</constructor-arg>
+						<constructor-arg index="1">
+							<value>textAreaEditor</value>
+						</constructor-arg>
+					</bean>
+				</entry>
+				<entry>
+					<key>
+						<value>date</value>
+					</key>
+					<bean class="org.apache.tapestry.util.ComponentAddress">
+						<constructor-arg index="0">
+							<value>trails:Editors</value>
+						</constructor-arg>
+						<constructor-arg index="1">
+							<value>dateEditor</value>
+						</constructor-arg>
+					</bean>
+				</entry>
+				<entry>
+					<key>
+						<value>numeric and !identifier</value>
+					</key>
+					<bean class="org.apache.tapestry.util.ComponentAddress">
+						<constructor-arg index="0">
+							<value>trails:Editors</value>
+						</constructor-arg>
+						<constructor-arg index="1">
+							<value>numberEditor</value>
+						</constructor-arg>
+					</bean>
+				</entry>
+				<entry>
+					<key>
+						<value>identifier</value>
+					</key>
+					<bean class="org.apache.tapestry.util.ComponentAddress">
+						<constructor-arg index="0">
+							<value>trailsHibernate:Editors</value>
+						</constructor-arg>
+						<constructor-arg index="1">
+							<value>identifierEditor</value>
+						</constructor-arg>
+					</bean>
+				</entry>
+				<entry>
+					<key>
+						<value>boolean</value>
+					</key>
+					<bean class="org.apache.tapestry.util.ComponentAddress">
+						<constructor-arg index="0">
+							<value>trails:Editors</value>
+						</constructor-arg>
+						<constructor-arg index="1">
+							<value>booleanEditor</value>
+						</constructor-arg>
+					</bean>
+				</entry>
+				<entry>
+					<key>
+						<value>supportsExtension('org.trails.descriptor.EnumReferenceDescriptor')</value>
+					</key>
+					<bean class="org.apache.tapestry.util.ComponentAddress">
+						<constructor-arg index="0">
+							<value>trails:Editors</value>
+						</constructor-arg>
+						<constructor-arg index="1">
+							<value>enumEditor</value>
+						</constructor-arg>
+					</bean>
+				</entry>
+				<entry>
+					<key>
+						<value>supportsExtension('org.trails.descriptor.BlobDescriptorExtension')</value>
+					</key>
+					<bean class="org.apache.tapestry.util.ComponentAddress">
+						<constructor-arg index="0">
+							<value>trails:Editors</value>
+						</constructor-arg>
+						<constructor-arg index="1">
+							<value>blobEditor</value>
+						</constructor-arg>
 					</bean>
 				</entry>
 
 				<entry>
-					<key><value>supportsExtension('org.trails.descriptor.BlobDescriptorExtension')</value></key>
+					<key>
+						<value>supportsExtension('org.trails.descriptor.OwningObjectReferenceDescriptor')</value>
+					</key>
 					<bean class="org.apache.tapestry.util.ComponentAddress">
-						<constructor-arg index="0"><value>trails:Editors</value></constructor-arg>
-						<constructor-arg index="1"><value>blobEditor</value></constructor-arg>
+						<constructor-arg index="0">
+							<value>trails:Editors</value>
+						</constructor-arg>
+						<constructor-arg index="1">
+							<value>owningReferenceEditor</value>
+						</constructor-arg>
 					</bean>
 				</entry>
 
 				<entry>
-					<key><value>supportsExtension('org.trails.descriptor.OwningObjectReferenceDescriptor')</value></key>
+					<key>
+						<value>objectReference</value>
+					</key>
 					<bean class="org.apache.tapestry.util.ComponentAddress">
-						<constructor-arg index="0"><value>trails:Editors</value></constructor-arg>
-						<constructor-arg index="1"><value>owningReferenceEditor</value></constructor-arg>
+						<constructor-arg index="0">
+							<value>trails:Editors</value>
+						</constructor-arg>
+						<constructor-arg index="1">
+							<value>referenceEditor</value>
+						</constructor-arg>
 					</bean>
 				</entry>
-
 				<entry>
-				<key><value>objectReference</value></key>
-				<bean class="org.apache.tapestry.util.ComponentAddress">
-					<constructor-arg index="0"><value>trails:Editors</value></constructor-arg>
-					<constructor-arg index="1"><value>referenceEditor</value></constructor-arg>
-				</bean>
+					<key>
+						<value>collection</value>
+					</key>
+					<bean class="org.apache.tapestry.util.ComponentAddress">
+						<constructor-arg index="0">
+							<value>trailsHibernate:Editors</value>
+						</constructor-arg>
+						<constructor-arg index="1">
+							<value>collectionEditor</value>
+						</constructor-arg>
+					</bean>
 				</entry>
 				<entry>
-				<key><value>collection</value></key>
-				<bean class="org.apache.tapestry.util.ComponentAddress">
-					<constructor-arg index="0"><value>trails:Editors</value></constructor-arg>
-					<constructor-arg index="1"><value>collectionEditor</value></constructor-arg>
-				</bean>
-				</entry>
-				<entry>
-				<key><value>embedded</value></key>
-				<bean class="org.apache.tapestry.util.ComponentAddress">
-					<constructor-arg index="0"><value>trails:Editors</value></constructor-arg>
-					<constructor-arg index="1"><value>embedded</value></constructor-arg>
-				</bean>
+					<key>
+						<value>embedded</value>
+					</key>
+					<bean class="org.apache.tapestry.util.ComponentAddress">
+						<constructor-arg index="0">
+							<value>trails:Editors</value>
+						</constructor-arg>
+						<constructor-arg index="1">
+							<value>embedded</value>
+						</constructor-arg>
+					</bean>
 				</entry>
 			</map>
 		</property>
 	</bean>
 
-	<bean id="localeHolder" class="org.trails.i18n.DefaultLocaleHolder" />
+	<bean id="localeHolder" class="org.trails.i18n.DefaultLocaleHolder"/>
 
-	<bean id="validatorTranslatorService" class="org.trails.validation.ValidatorTranslatorService" />
+	<bean id="validatorTranslatorService" class="org.trails.validation.ValidatorTranslatorService"/>
 </beans>

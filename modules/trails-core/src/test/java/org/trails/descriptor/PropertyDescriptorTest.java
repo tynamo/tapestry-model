@@ -11,9 +11,13 @@
  */
 package org.trails.descriptor;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Date;
 
 import junit.framework.TestCase;
+import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.trails.test.Foo;
 
 
@@ -76,6 +80,150 @@ public class PropertyDescriptorTest extends TestCase
 
 		assertTrue(descriptor2.supportsExtension(testExtension));
 		assertEquals(descriptorExtension, descriptor2.getExtension(testExtension));
+	}
+
+	public void testCloneWidthExtensions2() throws Exception
+	{
+		String testExtension = "testExtension";
+		IDescriptorExtension descriptorExtension = new IDescriptorExtension()
+		{
+			protected final Log LOG = LogFactory
+				.getLog(IDescriptorExtension.class);
+
+			private String name;
+
+			private Class propertyType;
+
+			private Class beanType;
+
+			private IPropertyDescriptor propertyDescriptor = null;
+
+			private boolean hidden = true;
+
+			private boolean searchable = true;
+
+			@Override
+			public Object clone()
+			{
+				return new Object();
+			}
+
+			public void copyFrom(IDescriptor descriptor)
+			{
+
+				try
+				{
+					BeanUtils.copyProperties(this,
+						(ObjectReferenceDescriptor) descriptor);
+				} catch (IllegalAccessException e)
+				{
+					LOG.error(e.getMessage());
+					e.printStackTrace();
+				} catch (InvocationTargetException e)
+				{
+					LOG.error(e.getMessage());
+					e.printStackTrace();
+				} catch (Exception e)
+				{
+					LOG.error(e.toString());
+					e.printStackTrace();
+				}
+			}
+
+			/**
+			 * Interface Implementation
+			 */
+
+			public String findAddExpression()
+			{
+				return getExpression("");
+			}
+
+			public String findRemoveExpression()
+			{
+				return getExpression("");
+			}
+
+			public String getExpression(String method)
+			{
+				return getName();
+			}
+
+			public String getName()
+			{
+				return name;
+			}
+
+			public void setName(String name)
+			{
+				this.name = name;
+			}
+
+			public Class getBeanType()
+			{
+				return beanType;
+			}
+
+			public void setBeanType(Class beanType)
+			{
+				this.beanType = beanType;
+			}
+
+			/**
+			 * @see org.trails.descriptor.PropertyDescriptor#getPropertyType()
+			 */
+			public Class getPropertyType()
+			{
+				return propertyType;
+			}
+
+			public void setPropertyType(Class propertyType)
+			{
+				this.propertyType = propertyType;
+			}
+
+			public boolean isSearchable()
+			{
+				return searchable;
+			}
+
+			public void setSearchable(boolean searchable)
+			{
+				this.searchable = searchable;
+			}
+
+			public boolean isHidden()
+			{
+				return hidden;
+			}
+
+			public void setHidden(boolean hidden)
+			{
+				this.hidden = hidden;
+			}
+
+			public IPropertyDescriptor getPropertyDescriptor()
+			{
+				return propertyDescriptor;
+			}
+
+			public void setPropertyDescriptor(
+				IPropertyDescriptor propertyDescriptor)
+			{
+				this.propertyDescriptor = propertyDescriptor;
+			}
+		};
+
+		TrailsPropertyDescriptor descriptor1 = new TrailsPropertyDescriptor(
+			Foo.class, "foo", String.class);
+		descriptor1.addExtension(testExtension, descriptorExtension);
+
+		TrailsPropertyDescriptor descriptor2 = (TrailsPropertyDescriptor) descriptor1
+			.clone();
+
+		assertTrue(descriptor2.supportsExtension(testExtension));
+		assertEquals(descriptorExtension, descriptor2
+			.getExtension(testExtension));
 	}
 
 }

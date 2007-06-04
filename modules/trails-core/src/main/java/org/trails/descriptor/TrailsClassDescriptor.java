@@ -11,23 +11,26 @@
  */
 package org.trails.descriptor;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
 import ognl.Ognl;
 import ognl.OgnlException;
+import org.apache.commons.beanutils.BeanUtils;
 import org.trails.component.Utils;
-
 
 /**
  * This represents all the Trails metadata for a single class.
  */
-public class TrailsClassDescriptor extends TrailsDescriptor implements IClassDescriptor
+public class TrailsClassDescriptor extends TrailsDescriptor implements
+	IClassDescriptor
 {
 	private List<IPropertyDescriptor> propertyDescriptors = new ArrayList<IPropertyDescriptor>();
+
 	private List<IMethodDescriptor> methodDescriptors = new ArrayList<IMethodDescriptor>();
 
-	//private BeanDescriptor beanDescriptor;
+	// private BeanDescriptor beanDescriptor;
 	private boolean child;
 
 	boolean hasCyclicRelationships;
@@ -36,26 +39,19 @@ public class TrailsClassDescriptor extends TrailsDescriptor implements IClassDes
 
 	boolean allowSave = true;
 
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// ///////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Constructors
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// ///////////////////////////////////////////////////////////////////////////////////////////////////////
 	/**
-	 * This is a copy constructor.  These need to be clonable for the security aspect to be able
-	 * to copy them, so if new properties are added they should be added here too.
+	 * This is a copy constructor. These need to be clonable for the security
+	 * aspect to be able to copy them, so if new properties are added they
+	 * should be added here too.
 	 */
 	public TrailsClassDescriptor(IClassDescriptor descriptor)
 	{
 		super(descriptor);
 		copyPropertyDescriptorsFrom(descriptor);
 		copyMethodDescriptorsFrom(descriptor);
-//        try
-//        {
-//            bfsCache = (BFSCache<IClassDescriptor>)descriptor.getBfsCache().clone();
-//        }
-//        catch (CloneNotSupportedException e)
-//        {
-//            throw new RuntimeException(e);
-//        }
 	}
 
 	public TrailsClassDescriptor(Class type)
@@ -69,22 +65,53 @@ public class TrailsClassDescriptor extends TrailsDescriptor implements IClassDes
 		this.setDisplayName(displayName);
 	}
 
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////
+	/**
+	 * @param dto
+	 */
+	public TrailsClassDescriptor(TrailsClassDescriptor dto)
+	{
+		super(dto);
+
+		try
+		{
+			BeanUtils.copyProperties(this, dto);
+		} catch (IllegalAccessException e)
+		{
+			LOG.error(e.getMessage());
+			e.printStackTrace();
+		} catch (InvocationTargetException e)
+		{
+			LOG.error(e.getMessage());
+			e.printStackTrace();
+		} catch (Exception e)
+		{
+			LOG.error(e.toString());
+			e.printStackTrace();
+		}
+	}
+
+	// ///////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Methods
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// ///////////////////////////////////////////////////////////////////////////////////////////////////////
 	private void copyMethodDescriptorsFrom(IClassDescriptor descriptor)
 	{
-		for (IMethodDescriptor methodDescriptor : descriptor.getMethodDescriptors())
+		for (IMethodDescriptor methodDescriptor : descriptor
+			.getMethodDescriptors())
 		{
-			getMethodDescriptors().add(IMethodDescriptor.class.cast(methodDescriptor.clone()));
+			getMethodDescriptors().add(
+				IMethodDescriptor.class.cast(methodDescriptor.clone()));
 		}
 	}
 
 	protected void copyPropertyDescriptorsFrom(IClassDescriptor descriptor)
 	{
-		for (IPropertyDescriptor iPropertyDescriptor : descriptor.getPropertyDescriptors())
+		for (IPropertyDescriptor iPropertyDescriptor : descriptor
+			.getPropertyDescriptors())
 		{
-			getPropertyDescriptors().add(IPropertyDescriptor.class.cast(iPropertyDescriptor.clone()));
+			getPropertyDescriptors()
+				.add(
+					IPropertyDescriptor.class.cast(iPropertyDescriptor
+						.clone()));
 		}
 	}
 
@@ -99,7 +126,7 @@ public class TrailsClassDescriptor extends TrailsDescriptor implements IClassDes
 			return (IPropertyDescriptor) Ognl.getValue(ognl, this);
 		} catch (OgnlException oe)
 		{
-			//oe.printStackTrace();
+			// oe.printStackTrace();
 
 			return null;
 		} catch (IndexOutOfBoundsException ie)
@@ -114,7 +141,8 @@ public class TrailsClassDescriptor extends TrailsDescriptor implements IClassDes
 	 */
 	public IPropertyDescriptor getPropertyDescriptor(String name)
 	{
-		return findDescriptor("propertyDescriptors.{? name == '" + name + "'}[0]");
+		return findDescriptor("propertyDescriptors.{? name == '" + name
+			+ "'}[0]");
 	}
 
 	/**
@@ -135,9 +163,9 @@ public class TrailsClassDescriptor extends TrailsDescriptor implements IClassDes
 		return descriptors;
 	}
 
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// ///////////////////////////////////////////////////////////////////////////////////////////////////////
 	// bean getters / setters
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// ///////////////////////////////////////////////////////////////////////////////////////////////////////
 	/**
 	 * @return Returns the methodDescriptors.
 	 */
@@ -165,7 +193,8 @@ public class TrailsClassDescriptor extends TrailsDescriptor implements IClassDes
 	/**
 	 * @param propertyDescriptors The propertyDescriptors to set.
 	 */
-	public void setPropertyDescriptors(List<IPropertyDescriptor> propertyDescriptors)
+	public void setPropertyDescriptors(
+		List<IPropertyDescriptor> propertyDescriptors)
 	{
 		this.propertyDescriptors = propertyDescriptors;
 	}
@@ -199,6 +228,36 @@ public class TrailsClassDescriptor extends TrailsDescriptor implements IClassDes
 		return new TrailsClassDescriptor(this);
 	}
 
+	@Override
+	public void copyFrom(IDescriptor descriptor)
+	{
+		super.copyFrom(descriptor);
+
+		if (descriptor instanceof TrailsClassDescriptor)
+		{
+
+			try
+			{
+				BeanUtils.copyProperties(this,
+					(TrailsClassDescriptor) descriptor);
+				copyPropertyDescriptorsFrom((TrailsClassDescriptor) descriptor);
+				copyMethodDescriptorsFrom((TrailsClassDescriptor) descriptor);
+			} catch (IllegalAccessException e)
+			{
+				LOG.error(e.getMessage());
+				e.printStackTrace();
+			} catch (InvocationTargetException e)
+			{
+				LOG.error(e.getMessage());
+				e.printStackTrace();
+			} catch (Exception e)
+			{
+				LOG.error(e.toString());
+				e.printStackTrace();
+			}
+		}
+	}
+
 	public boolean isAllowRemove()
 	{
 		return allowRemove;
@@ -218,7 +277,6 @@ public class TrailsClassDescriptor extends TrailsDescriptor implements IClassDes
 	{
 		this.allowSave = allowSave;
 	}
-
 
 	public boolean getHasCyclicRelationships()
 	{

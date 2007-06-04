@@ -4,9 +4,19 @@
 	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
             http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
 
+	<aop:aspectj-autoproxy/>
+
 	<!--
 	 - Application context definition for Trails Security Through Acegi.
  -->
+
+	<!-- security service bean -->
+	<bean id="securityService" class="org.trails.security.TrailsSecurityService"/>
+
+	<bean id="descriptorSecurity" class="org.trails.security.DescriptorSecurity"> <!--factory-method="aspectOf">-->
+		<property name="securityService" ref="securityService"/>
+	</bean>
+
 
 	<!--
 		- Authentication.
@@ -26,6 +36,7 @@
 		  class="org.acegisecurity.providers.dao.DaoAuthenticationProvider">
 		<property name="userDetailsService">
 			<ref bean="trailsUserDAO"/>
+			<!--<ref bean="inMemoryUserDetailsService" />-->
 		</property>
 	</bean>
 
