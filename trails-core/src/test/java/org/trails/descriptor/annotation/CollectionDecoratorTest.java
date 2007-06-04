@@ -21,7 +21,7 @@ public class CollectionDecoratorTest extends TestCase
 
 	public void testDecorator() throws Exception
 	{
-		CollectionDecorator decorator = new CollectionDecorator();
+		CollectionDescriptorAnnotationHandler decorator = new CollectionDescriptorAnnotationHandler();
 		CollectionDescriptor collectionDescriptor = new CollectionDescriptor(Foo.class, "stuff", Annotated.class);
 		collectionDescriptor.setOneToMany(true);
 		Collection collectionAnnotation = Annotated.class.getDeclaredMethod("getStuff").getAnnotation(Collection.class);

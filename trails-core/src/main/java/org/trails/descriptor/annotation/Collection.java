@@ -7,7 +7,7 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD, ElementType.METHOD})
-@DescriptorAnnotation(CollectionDecorator.class)
+@DescriptorAnnotation(CollectionDescriptorAnnotationHandler.class)
 public @interface Collection
 {
 

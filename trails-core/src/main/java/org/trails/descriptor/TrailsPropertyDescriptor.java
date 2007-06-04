@@ -11,24 +11,29 @@
  */
 package org.trails.descriptor;
 
-import org.apache.commons.lang.builder.EqualsBuilder;
+import java.lang.reflect.InvocationTargetException;
 
+import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.lang.builder.EqualsBuilder;
 
 /**
  * @author fus8882
  *         <p/>
- *         TODO To change the template for this generated type comment go to
- *         Window - Preferences - Java - Code Style - Code Templates
+ *         TODO To change the template for this generated type comment go to Window -
+ *         Preferences - Java - Code Style - Code Templates
  */
-public class TrailsPropertyDescriptor extends TrailsDescriptor implements IPropertyDescriptor
+public class TrailsPropertyDescriptor extends TrailsDescriptor implements
+	IPropertyDescriptor
 {
+	private Class beanType;
+
+	private String name;
+
 	private boolean searchable = true;
 
 	private boolean required;
 
 	private boolean readOnly;
-
-	private String name;
 
 	private int index = UNDEFINED_INDEX;
 
@@ -42,20 +47,36 @@ public class TrailsPropertyDescriptor extends TrailsDescriptor implements IPrope
 
 	private boolean richText;
 
-	private Class beanType;
-
 	private IClassDescriptor parentClassDescriptor;
 
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// ///////////////////////////////////////////////////////////////////////////////////////////////////////
 	// constructors
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// ///////////////////////////////////////////////////////////////////////////////////////////////////////
 	/**
 	 * It's kinda like an old-skool C++ copy constructor
 	 */
-	public TrailsPropertyDescriptor(Class beanType, IPropertyDescriptor descriptor)
+	public TrailsPropertyDescriptor(Class beanType,
+									IPropertyDescriptor descriptor)
 	{
 		this(beanType, descriptor.getPropertyType());
-		copyFrom(descriptor);
+
+		try
+		{
+			BeanUtils.copyProperties(this,
+				(TrailsPropertyDescriptor) descriptor);
+		} catch (IllegalAccessException e)
+		{
+			LOG.error(e.getMessage());
+			e.printStackTrace();
+		} catch (InvocationTargetException e)
+		{
+			LOG.error(e.getMessage());
+			e.printStackTrace();
+		} catch (Exception e)
+		{
+			LOG.error(e.toString());
+			e.printStackTrace();
+		}
 	}
 
 	public TrailsPropertyDescriptor(Class beanType, Class type)
@@ -67,13 +88,38 @@ public class TrailsPropertyDescriptor extends TrailsDescriptor implements IPrope
 	public TrailsPropertyDescriptor(Class beanType, String name, Class type)
 	{
 		this(beanType, type);
-		this.name = name;
+		this.setName(name);
 		setDisplayName(name);
 	}
 
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////
+	/**
+	 * @param dto
+	 */
+	public TrailsPropertyDescriptor(TrailsPropertyDescriptor dto)
+	{
+		super(dto);
+
+		try
+		{
+			BeanUtils.copyProperties(this, dto);
+		} catch (IllegalAccessException e)
+		{
+			LOG.error(e.getMessage());
+			e.printStackTrace();
+		} catch (InvocationTargetException e)
+		{
+			LOG.error(e.getMessage());
+			e.printStackTrace();
+		} catch (Exception e)
+		{
+			LOG.error(e.toString());
+			e.printStackTrace();
+		}
+	}
+
+	// ///////////////////////////////////////////////////////////////////////////////////////////////////////
 	// methods
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	/**
 	 * @return
@@ -88,19 +134,19 @@ public class TrailsPropertyDescriptor extends TrailsDescriptor implements IPrope
 	 */
 	public boolean isNumeric()
 	{
-		return getPropertyType().getName().endsWith("Double") ||
-			getPropertyType().getName().endsWith("Integer") ||
-			getPropertyType().getName().endsWith("Float") ||
-			getPropertyType().getName().endsWith("double") ||
-			getPropertyType().getName().endsWith("int") ||
-			getPropertyType().getName().endsWith("float") ||
-			getPropertyType().getName().endsWith("BigDecimal");
+		return getPropertyType().getName().endsWith("Double")
+			|| getPropertyType().getName().endsWith("Integer")
+			|| getPropertyType().getName().endsWith("Float")
+			|| getPropertyType().getName().endsWith("double")
+			|| getPropertyType().getName().endsWith("int")
+			|| getPropertyType().getName().endsWith("float")
+			|| getPropertyType().getName().endsWith("BigDecimal");
 	}
 
 	public boolean isBoolean()
 	{
-		return getPropertyType().getName().endsWith("boolean") ||
-			getPropertyType().getName().endsWith("Boolean");
+		return getPropertyType().getName().endsWith("boolean")
+			|| getPropertyType().getName().endsWith("Boolean");
 	}
 
 	/**
@@ -121,6 +167,10 @@ public class TrailsPropertyDescriptor extends TrailsDescriptor implements IPrope
 		return getPropertyType().getName().endsWith("String");
 	}
 
+	public boolean isObjectReference()
+	{
+		return false;
+	}
 
 	/**
 	 * @see org.trails.descriptor.IPropertyDescriptor#getParentClassDescriptor
@@ -138,10 +188,9 @@ public class TrailsPropertyDescriptor extends TrailsDescriptor implements IPrope
 		this.parentClassDescriptor = parentClassDescriptor;
 	}
 
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// ///////////////////////////////////////////////////////////////////////////////////////////////////////
 	// bean setters / getters
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+	// ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	public int getIndex()
 	{
@@ -151,22 +200,6 @@ public class TrailsPropertyDescriptor extends TrailsDescriptor implements IPrope
 	public void setIndex(int index)
 	{
 		this.index = index;
-	}
-
-	/**
-	 * @return
-	 */
-	public boolean isObjectReference()
-	{
-		return false;
-	}
-
-	/**
-	 * @return
-	 */
-	public boolean isOwningObjectReference()
-	{
-		return false;
 	}
 
 	/**
@@ -202,14 +235,6 @@ public class TrailsPropertyDescriptor extends TrailsDescriptor implements IPrope
 	}
 
 	/**
-	 * @return
-	 */
-	public String getName()
-	{
-		return name;
-	}
-
-	/**
 	 * @return Returns the identifier.
 	 */
 	public boolean isIdentifier()
@@ -225,15 +250,37 @@ public class TrailsPropertyDescriptor extends TrailsDescriptor implements IPrope
 		return false;
 	}
 
-	public void setName(String name)
-	{
-		this.name = name;
-	}
-
 	@Override
 	public Object clone()
 	{
-		return new TrailsPropertyDescriptor(beanType, this);
+		return new TrailsPropertyDescriptor(this);
+	}
+
+	@Override
+	public void copyFrom(IDescriptor descriptor)
+	{
+		super.copyFrom(descriptor);
+
+		if (descriptor instanceof TrailsPropertyDescriptor)
+		{
+			try
+			{
+				BeanUtils.copyProperties(this,
+					(TrailsPropertyDescriptor) descriptor);
+			} catch (IllegalAccessException e)
+			{
+				LOG.error(e.getMessage());
+				e.printStackTrace();
+			} catch (InvocationTargetException e)
+			{
+				LOG.error(e.getMessage());
+				e.printStackTrace();
+			} catch (Exception e)
+			{
+				LOG.error(e.toString());
+				e.printStackTrace();
+			}
+		}
 	}
 
 	public boolean equals(Object obj)
@@ -301,6 +348,11 @@ public class TrailsPropertyDescriptor extends TrailsDescriptor implements IPrope
 		this.richText = richText;
 	}
 
+	public boolean isEmbedded()
+	{
+		return false;
+	}
+
 	public Class getBeanType()
 	{
 		return beanType;
@@ -311,9 +363,13 @@ public class TrailsPropertyDescriptor extends TrailsDescriptor implements IPrope
 		this.beanType = beanType;
 	}
 
-	public boolean isEmbedded()
+	public String getName()
 	{
-		return false;
+		return name;
 	}
 
+	public void setName(String name)
+	{
+		this.name = name;
+	}
 }

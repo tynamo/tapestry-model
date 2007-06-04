@@ -58,6 +58,10 @@ public abstract class AbstractAnnotationHandler
 	 */
 	protected void setPropertiesFromAnnotation(Annotation annotation, Object target)
 	{
+		/**
+		 * !! This is how we get our properties migrated from our
+		 * annotation to our property descriptor !! 	 
+		 */		
 		for (Method annotationMethod : annotation.getClass().getMethods())
 		{
 			try

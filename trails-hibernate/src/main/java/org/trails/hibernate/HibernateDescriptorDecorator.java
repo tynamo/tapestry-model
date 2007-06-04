@@ -63,16 +63,15 @@ import org.trails.descriptor.*;
  * it's aggregated list of decorated property descriptors into it's own
  * list/cache of referenced class descriptors
  *
- * @see org.trails.descriptor.TrailsPropertyDescriptor
- * @see org.trails.descriptor.ObjectReferenceDescriptor
- * @see org.trails.descriptor.OwningObjectReferenceDescriptor
- * @see org.trails.descriptor.CollectionDescriptor
- * @see org.trails.descriptor.EmbeddedDescriptor
+ * @see TrailsPropertyDescriptor
+ * @see ObjectReferenceDescriptor
+ * @see OwningObjectReferenceDescriptor
+ * @see CollectionDescriptor
+ * @see EmbeddedDescriptor
  */
 public class HibernateDescriptorDecorator implements DescriptorDecorator
 {
-	protected static final Log LOG = LogFactory
-		.getLog(HibernateDescriptorDecorator.class);
+	protected static final Log LOG = LogFactory.getLog(HibernateDescriptorDecorator.class);
 
 	private LocalSessionFactoryBean localSessionFactoryBean;
 	private List types;
@@ -371,26 +370,22 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 	{
 		try
 		{
-			CollectionDescriptor collectionDescriptor = new CollectionDescriptor(
-				type, descriptor);
-			org.hibernate.mapping.Collection collectionMapping = findCollectionMapping(
-				type, descriptor.getName());
+			CollectionDescriptor collectionDescriptor = new CollectionDescriptor(type, descriptor);
+			org.hibernate.mapping.Collection collectionMapping = findCollectionMapping(type, descriptor.getName());
 			// It is a child relationship if it has delete-orphan specified in
 			// the mapping
-			collectionDescriptor.setChildRelationship(collectionMapping
-				.hasOrphanDelete());
+			collectionDescriptor.setChildRelationship(collectionMapping.hasOrphanDelete());
 			CollectionMetadata collectionMetaData = getSessionFactory()
 				.getCollectionMetadata(collectionMapping.getRole());
 
-			collectionDescriptor.setElementType(collectionMetaData
-				.getElementType().getReturnedClass());
+			collectionDescriptor.setElementType(collectionMetaData.getElementType().getReturnedClass());
 
 			collectionDescriptor.setOneToMany(collectionMapping.isOneToMany());
 
-			decorateOneToManyCollection(parentClassDescriptor,
-				collectionDescriptor, collectionMapping);
+			decorateOneToManyCollection(parentClassDescriptor,collectionDescriptor, collectionMapping);
 
 			return collectionDescriptor;
+
 		} catch (HibernateException e)
 		{
 			throw new TrailsRuntimeException(e);
@@ -402,94 +397,51 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 															 IClassDescriptor parentClassDescriptor)
 	{
 		Type hibernateType = mappingProperty.getType();
-		type = parentClassDescriptor.getType();
-		IPropertyDescriptor descriptorReference = descriptor;
+		Class parentClassType = parentClassDescriptor.getType();
+		IPropertyDescriptor descriptorReference =
+			new ObjectReferenceDescriptor(type, descriptor, hibernateType.getReturnedClass());
 
 		try
 		{
-			Field propertyField = type.getDeclaredField(descriptor.getName());
+			Field propertyField = parentClassType.getDeclaredField(descriptor.getName());
 			PropertyDescriptor beanPropDescriptor = (PropertyDescriptor) Ognl
-				.getValue("propertyDescriptors.{? name == '"
-					+ descriptor.getName() + "'}[0]", Introspector
-					.getBeanInfo(type));
+				.getValue("propertyDescriptors.{? name == '" + descriptor.getName() + "'}[0]",
+					Introspector.getBeanInfo(parentClassType));
 			Method readMethod = beanPropDescriptor.getReadMethod();
 			String mappedBy = "";
-			if (readMethod
-				.isAnnotationPresent(javax.persistence.OneToOne.class))
+			if (readMethod.isAnnotationPresent(javax.persistence.OneToOne.class))
 			{
-				mappedBy = readMethod.getAnnotation(
-					javax.persistence.OneToOne.class).mappedBy();
-				if ("".equals(mappedBy))
-				{
-					// http://forums.hibernate.org/viewtopic.php?t=974287&sid=12d018b08dffe07e263652190cfc4e60
-					// Caution... this does not support multiple
-					// class references across the OneToOne relationship
-					Class returnType = readMethod.getReturnType();
-					String ognlUsableProperty = "";
-					for (int i = 0; i < returnType.getDeclaredMethods().length; i++)
-					{
-						if (returnType.getDeclaredMethods()[i].getReturnType()
-							.equals(propertyField.getDeclaringClass()))
-						{
-							Method theProperty = returnType
-								.getDeclaredMethods()[i];
-							ognlUsableProperty = theProperty.getName()
-								.substring(3).toLowerCase(); // strips
-							// preceding
-							// 'get'
-							break;
-						}
-					}
-
-					descriptorReference = descriptor;
-					((OwningObjectReferenceDescriptor) descriptorReference).setOneToOne(true);
-					((OwningObjectReferenceDescriptor) descriptorReference).setInverseProperty(ognlUsableProperty);
-				} else
-				{
-					descriptorReference = descriptor;
-					((ObjectReferenceDescriptor) descriptorReference).setOneToOne(true);
-					((ObjectReferenceDescriptor) descriptorReference).setInverseProperty(mappedBy);
-				}
-			} else if (propertyField
-				.isAnnotationPresent(javax.persistence.OneToOne.class))
+				mappedBy = readMethod.getAnnotation(javax.persistence.OneToOne.class).mappedBy();
+			} else if (propertyField.isAnnotationPresent(javax.persistence.OneToOne.class))
 			{
-				mappedBy = propertyField.getAnnotation(
-					javax.persistence.OneToOne.class).mappedBy();
-				if ("".equals(mappedBy))
-				{
-					// http://forums.hibernate.org/viewtopic.php?t=974287&sid=12d018b08dffe07e263652190cfc4e60
-					// Caution... this does not support multiple
-					// class references across the OneToOne relationship
-					Class returnType = readMethod.getReturnType();
-					String ognlUsableProperty = "";
-					for (int i = 0; i < returnType.getDeclaredMethods().length; i++)
-					{
-						if (returnType.getDeclaredMethods()[i].getReturnType()
-							.equals(propertyField.getDeclaringClass()))
-						{
-							Method theProperty = returnType
-								.getDeclaredMethods()[i];
-							ognlUsableProperty = theProperty.getName()
-								.substring(3).toLowerCase(); // strips
-							// preceding
-							// 'get'
-							break;
-						}
-					}
-
-					descriptorReference = descriptor;
-					((OwningObjectReferenceDescriptor) descriptorReference).setOneToOne(true);
-					((OwningObjectReferenceDescriptor) descriptorReference).setInverseProperty(ognlUsableProperty);
-				} else
-				{
-					descriptorReference = descriptor;
-					((ObjectReferenceDescriptor) descriptorReference).setOneToOne(true);
-					((ObjectReferenceDescriptor) descriptorReference).setInverseProperty(mappedBy);
-				}
+				mappedBy = propertyField.getAnnotation(javax.persistence.OneToOne.class).mappedBy();
 			} else
 			{
-				descriptorReference = descriptor;
+				return descriptorReference;
 			}
+			if ("".equals(mappedBy))
+			{
+				// http://forums.hibernate.org/viewtopic.php?t=974287&sid=12d018b08dffe07e263652190cfc4e60
+				// Caution... this does not support multiple
+				// class references across the OneToOne relationship
+				Class returnType = readMethod.getReturnType();
+				for (int i = 0; i < returnType.getDeclaredMethods().length; i++)
+				{
+					if (returnType.getDeclaredMethods()[i].getReturnType().equals(propertyField.getDeclaringClass()))
+					{
+						Method theProperty = returnType.getDeclaredMethods()[i];
+						/* strips preceding 'get' */
+						mappedBy = theProperty.getName().substring(3).toLowerCase();
+						break;
+					}
+				}
+			}
+
+			OwningObjectReferenceDescriptor owningObjectReferenceDescriptor = new OwningObjectReferenceDescriptor();
+			owningObjectReferenceDescriptor.setInverseProperty(mappedBy);
+			descriptorReference
+				.addExtension(OwningObjectReferenceDescriptor.class.getName(), owningObjectReferenceDescriptor);
+
 		} catch (SecurityException e)
 		{
 			LOG.error(e.getMessage());

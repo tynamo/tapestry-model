@@ -11,28 +11,18 @@
  */
 package org.trails.descriptor;
 
-import java.lang.reflect.InvocationTargetException;
-
-import org.apache.commons.beanutils.BeanUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 /**
+ * This class represents a to-one association and is created by HibernateDescriptorDecorator
+ *
  * @author Chris Nelson
- *         <p/>
- *         This class represents a to-one association and is created by
- *         HibernateDescriptorDecorator
+ * @see HibernateDescriptorDecorator
  */
 public class ObjectReferenceDescriptor extends TrailsPropertyDescriptor
 {
-	protected static final Log LOG = LogFactory.getLog(ObjectReferenceDescriptor.class);
-
 	private Class actualType;
-	private String inverseProperty = null;
-	private boolean oneToOne = false;
 
-	public ObjectReferenceDescriptor(Class beanType,
-									 IPropertyDescriptor descriptor, Class actualType)
+	public ObjectReferenceDescriptor(Class beanType, IPropertyDescriptor descriptor,
+									 Class actualType)
 	{
 		this(beanType, descriptor.getPropertyType(), actualType);
 		copyFrom(descriptor);
@@ -41,27 +31,14 @@ public class ObjectReferenceDescriptor extends TrailsPropertyDescriptor
 	/**
 	 * @param realDescriptor
 	 */
-	public ObjectReferenceDescriptor(Class beanType, Class declaredType,
-									 Class actualType)
+	public ObjectReferenceDescriptor(
+		Class beanType, Class declaredType, Class actualType)
 	{
 		super(beanType, declaredType);
 		this.actualType = actualType;
 	}
 
-	/**
-	 * @param beanType
-	 * @param name
-	 * @param type
-	 */
-	public ObjectReferenceDescriptor(Class beanType, String name, Class type)
-	{
-		super(beanType, name, type);
-		this.actualType = type;
-	}
-
-	/*
-		 * (non-Javadoc)
-		 *
+	/* (non-Javadoc)
 		 * @see org.trails.descriptor.PropertyDescriptor#getPropertyType()
 		 */
 	public Class getPropertyType()
@@ -69,9 +46,7 @@ public class ObjectReferenceDescriptor extends TrailsPropertyDescriptor
 		return actualType;
 	}
 
-	/*
-		 * (non-Javadoc)
-		 *
+	/* (non-Javadoc)
 		 * @see org.trails.descriptor.PropertyDescriptor#isObjectReference()
 		 */
 	public boolean isObjectReference()
@@ -79,54 +54,8 @@ public class ObjectReferenceDescriptor extends TrailsPropertyDescriptor
 		return true;
 	}
 
-	public Class getActualType()
-	{
-		return actualType;
-	}
-
-	public void setActualType(Class actualType)
-	{
-		this.actualType = actualType;
-	}
-
-	public String getInverseProperty()
-	{
-		return inverseProperty;
-	}
-
-	public void setInverseProperty(String inverseProperty)
-	{
-		this.inverseProperty = inverseProperty;
-	}
-
-	public boolean isOneToOne()
-	{
-		return oneToOne;
-	}
-
-	public void setOneToOne(boolean oneToOne)
-	{
-		this.oneToOne = oneToOne;
-	}
-
 	public Object clone()
 	{
-		return new ObjectReferenceDescriptor(getBeanType(), this,
-			getPropertyType());
-	}
-
-	private void copyFrom(ObjectReferenceDescriptor ord)
-	{
-		LOG.debug("Cloning ObjectReferenceDescriptor");
-		try
-		{
-			BeanUtils.copyProperties(this, ord);
-		} catch (IllegalAccessException e)
-		{
-			LOG.error(e.getMessage());
-		} catch (InvocationTargetException e)
-		{
-			LOG.error(e.getMessage());
-		}
+		return new ObjectReferenceDescriptor(getBeanType(), this, getPropertyType());
 	}
 }

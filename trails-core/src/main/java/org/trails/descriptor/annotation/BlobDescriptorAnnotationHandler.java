@@ -13,7 +13,7 @@ public class BlobDescriptorAnnotationHandler extends AbstractAnnotationHandler i
 
 	public IPropertyDescriptor decorateFromAnnotation(BlobDescriptor propertyDescriptorAnno, IPropertyDescriptor descriptor)
 	{
-		BlobDescriptorExtension blobDescriptor = new BlobDescriptorExtension(descriptor.getPropertyType());
+		BlobDescriptorExtension blobDescriptor = new BlobDescriptorExtension(descriptor.getPropertyType(), descriptor);
 		setPropertiesFromAnnotation(propertyDescriptorAnno, blobDescriptor);
 		descriptor.addExtension(BlobDescriptorExtension.class.getName(), blobDescriptor);
 		return descriptor;
