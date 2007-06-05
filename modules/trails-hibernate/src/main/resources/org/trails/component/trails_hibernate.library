@@ -9,11 +9,30 @@
 	<library id="contrib" specification-path="/org/apache/tapestry/contrib/Contrib.library"/>
 
 	<component-type type="ObjectForm" specification-path="ObjectForm.jwc"/>
+	<!--	<component-type type="ObjectTable" specification-path="ObjectTable.jwc"/> -->
+	<!--	<component-type type="EditCollection" specification-path="EditCollection.jwc"/>-->
+	<component-type type="EditLink" specification-path="EditLink.jwc"/>
+	<component-type type="LocaleLink" specification-path="LocaleLink.jwc"/>
+	<!--	<component-type type="Identifier" specification-path="Identifier.jwc"/>-->
+	<component-type type="InvokeMethod" specification-path="InvokeMethod.jwc"/>
+	<component-type type="ListAllLink" specification-path="ListAllLink.jwc"/>
+	<component-type type="NewLink" specification-path="NewLink.jwc"/>
+	<component-type type="ObjectActions" specification-path="ObjectActions.jwc"/>
 
-	<component-type type="HibernateAssociationSelect" specification-path="HibernateAssociationSelect.jwc"/>
-	<component-type type="HibernateObjectTable" specification-path="HibernateObjectTable.jwc"/>
-	<component-type type="HibernateIdentifier" specification-path="HibernateIdentifier.jwc"/>
-	<component-type type="HibernateEditCollection" specification-path="HibernateEditCollection.jwc"/>
+	<component-type type="BlobComponent" specification-path="blob/BlobComponent.jwc"/>
+	<component-type type="TrailsUpload" specification-path="blob/TrailsUpload.jwc"/>
+	<component-type type="TrailsDownload" specification-path="blob/TrailsDownload.jwc"/>
+	<component-type type="MimedImage" specification-path="blob/image/MimedImage.jwc"/>
+
+	<!--	<component-type type="AssociationSelect" specification-path="AssociationSelect.jwc"/>-->
+	<component-type type="AssociationMgt" specification-path="AssociationMgt.jwc"/>
+
+	<!--	<page name="Editors" specification-path="/org/trails/page/Editors.page"/>-->
+
+	<component-type type="AssociationSelect" specification-path="HibernateAssociationSelect.jwc"/>
+	<component-type type="ObjectTable" specification-path="HibernateObjectTable.jwc"/>
+	<component-type type="Identifier" specification-path="HibernateIdentifier.jwc"/>
+	<component-type type="EditCollection" specification-path="HibernateEditCollection.jwc"/>
 
 	<component-type type="SimpleSearchField" specification-path="search/SimpleSearchField.jwc"/>
 	<component-type type="NumberSearchField" specification-path="search/NumberSearchField.jwc"/>

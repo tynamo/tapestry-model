@@ -119,7 +119,7 @@
 		<property name="defaultBlockAddress">
 			<bean class="org.apache.tapestry.util.ComponentAddress">
 				<constructor-arg index="0">
-					<value>trailsHibernate:SearchBlocks</value>
+					<value>trails:SearchBlocks</value>
 				</constructor-arg>
 				<constructor-arg index="1">
 					<value>simpleSearch</value>
@@ -134,7 +134,7 @@
 					</key>
 					<bean class="org.apache.tapestry.util.ComponentAddress">
 						<constructor-arg index="0">
-							<value>trailsHibernate:SearchBlocks</value>
+							<value>trails:SearchBlocks</value>
 						</constructor-arg>
 						<constructor-arg index="1">
 							<value>stringSearch</value>
@@ -147,7 +147,7 @@
 					</key>
 					<bean class="org.apache.tapestry.util.ComponentAddress">
 						<constructor-arg index="0">
-							<value>trailsHibernate:SearchBlocks</value>
+							<value>trails:SearchBlocks</value>
 						</constructor-arg>
 						<constructor-arg index="1">
 							<value>associationSearch</value>
@@ -160,7 +160,7 @@
 					</key>
 					<bean class="org.apache.tapestry.util.ComponentAddress">
 						<constructor-arg index="0">
-							<value>trailsHibernate:SearchBlocks</value>
+							<value>trails:SearchBlocks</value>
 						</constructor-arg>
 						<constructor-arg index="1">
 							<value>numberSearch</value>
@@ -173,7 +173,7 @@
 					</key>
 					<bean class="org.apache.tapestry.util.ComponentAddress">
 						<constructor-arg index="0">
-							<value>trailsHibernate:SearchBlocks</value>
+							<value>trails:SearchBlocks</value>
 						</constructor-arg>
 						<constructor-arg index="1">
 							<value>dateSearch</value>
@@ -308,7 +308,7 @@
 					</key>
 					<bean class="org.apache.tapestry.util.ComponentAddress">
 						<constructor-arg index="0">
-							<value>trailsHibernate:Editors</value>
+							<value>trails:Editors</value>
 						</constructor-arg>
 						<constructor-arg index="1">
 							<value>identifierEditor</value>
@@ -341,7 +341,6 @@
 						</constructor-arg>
 					</bean>
 				</entry>
-
 				<entry>
 					<key>
 						<value>supportsExtension('org.trails.descriptor.BlobDescriptorExtension')</value>
@@ -355,13 +354,28 @@
 						</constructor-arg>
 					</bean>
 				</entry>
+
+				<entry>
+					<key>
+						<value>supportsExtension('org.trails.descriptor.OwningObjectReferenceDescriptor')</value>
+					</key>
+					<bean class="org.apache.tapestry.util.ComponentAddress">
+						<constructor-arg index="0">
+							<value>trails:Editors</value>
+						</constructor-arg>
+						<constructor-arg index="1">
+							<value>owningReferenceEditor</value>
+						</constructor-arg>
+					</bean>
+				</entry>
+
 				<entry>
 					<key>
 						<value>objectReference</value>
 					</key>
 					<bean class="org.apache.tapestry.util.ComponentAddress">
 						<constructor-arg index="0">
-							<value>trailsHibernate:Editors</value>
+							<value>trails:Editors</value>
 						</constructor-arg>
 						<constructor-arg index="1">
 							<value>referenceEditor</value>
@@ -374,7 +388,7 @@
 					</key>
 					<bean class="org.apache.tapestry.util.ComponentAddress">
 						<constructor-arg index="0">
-							<value>trailsHibernate:Editors</value>
+							<value>trails:Editors</value>
 						</constructor-arg>
 						<constructor-arg index="1">
 							<value>collectionEditor</value>
