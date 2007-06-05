@@ -49,4 +49,17 @@
 		</property>
 	</bean>
 
+	<bean id="anonymous" class="org.trails.security.domain.User" lazy-init="true">
+		<property name="username" value="anonymous"/>
+		<property name="password" value="anonymous"/>
+		<property name="confirmPassword" value="anonymous"/>
+		<property name="firstName" value="Anonymous"/>
+		<property name="lastName" value="Anonymous"/>
+		<property name="roles">
+			<list>
+				<ref bean="roleAnonymous"/>
+			</list>
+		</property>
+	</bean>
+
 </beans>
