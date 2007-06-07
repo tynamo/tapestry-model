@@ -4,6 +4,7 @@ import org.apache.tapestry.annotations.Bean;
 import org.apache.tapestry.annotations.Lifecycle;
 import org.hibernate.validator.InvalidStateException;
 import org.trails.hibernate.HasAssignedIdentifier;
+import org.trails.persistence.HibernatePersistenceService;
 import org.trails.persistence.PersistenceException;
 import org.trails.validation.HibernateValidationDelegate;
 
@@ -54,5 +55,9 @@ public abstract class HibernateEditPage extends EditPage
 		{
 			return super.isModelNew(model);
 		}
+	}
+	
+	public HibernatePersistenceService getHibernatePersistenceService() {
+		return (HibernatePersistenceService)getPersistenceService();
 	}
 }
