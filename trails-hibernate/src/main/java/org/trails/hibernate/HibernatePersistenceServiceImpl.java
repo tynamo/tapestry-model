@@ -240,9 +240,9 @@ public class HibernatePersistenceServiceImpl extends HibernateDaoSupport impleme
 								 *
 								 * Just match the identifier
 								 */
-								else if ((propertyDescriptor instanceof ObjectReferenceDescriptor) ||
-									propertyDescriptor.getExtension(EnumReferenceDescriptor.class) != null ||
-									propertyDescriptor.getExtension(OwningObjectReferenceDescriptor.class) != null)
+								else if ((propertyDescriptor instanceof ObjectReferenceDescriptor) &&
+									propertyDescriptor.getExtension(EnumReferenceDescriptor.class) == null &&
+									propertyDescriptor.getExtension(OwningObjectReferenceDescriptor.class) == null)
 								{
 									Object identifierValue = Ognl.getValue(descriptorService.
 										getClassDescriptor(value.getClass()).getIdentifierDescriptor().getName(), value);

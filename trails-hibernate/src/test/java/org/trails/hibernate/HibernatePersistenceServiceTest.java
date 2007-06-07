@@ -188,7 +188,7 @@ public class HibernatePersistenceServiceTest extends AbstractTransactionalSpring
 		// the class will be cglib enhanced at this point, so don't die
 		entry = (BlogEntry)
 			persistenceService.getInstance(entry.getClass(), entry.getId());
-		List entries = persistenceService.getAllInstances(entry.getClass());
+		persistenceService.getAllInstances(entry.getClass());
 	}
 
 	public void testHibernateAnnotations() throws Exception
@@ -260,16 +260,16 @@ public class HibernatePersistenceServiceTest extends AbstractTransactionalSpring
 	public void testValidation() throws Exception
 	{
 		Baz baz = new Baz();
-		InvalidStateException invalidStateException = null;
 		try
 		{
 			persistenceService.save(baz);
 		}
-		catch (InvalidStateException ie)
+		catch (InvalidStateException e)
 		{
-			invalidStateException = ie;
+			// success
+			return;
 		}
-		assertNotNull(invalidStateException);
+		fail(InvalidStateException.class.getSimpleName() + " should have been thrown");
 	}
 
 	public void testSaveAndRemove() throws Exception
