@@ -14,6 +14,7 @@ package org.trails.hibernate;
 import javax.persistence.Transient;
 import org.trails.descriptor.annotation.PropertyDescriptor;
 import org.hibernate.type.Type;
+import java.io.Serializable;
 
 
 /**
@@ -26,19 +27,19 @@ public aspect AssignedIdentifierAspect
 {
     private boolean HasAssignedIdentifier.saved;
 
-    public boolean HasAssignedIdentifier.onInsert(Object[] state, String[] propertyNames, Type[] types)
+    public boolean HasAssignedIdentifier.onInsert(Serializable id, Object[] state, String[] propertyNames, Type[] types)
     {
         saved = true;
         return false;
     }
 
-    public boolean HasAssignedIdentifier.onUpdate(Object[] currentState, Object[] previousState, String[] propertyNames, Type[] types)
+    public boolean HasAssignedIdentifier.onUpdate(Serializable id, Object[] currentState, Object[] previousState, String[] propertyNames, Type[] types)
     {
         saved = true;
         return false;
     }
 
-    public boolean HasAssignedIdentifier.onLoad(Object[] state, String[] propertyNames, Type[] types)
+    public boolean HasAssignedIdentifier.onLoad(Serializable id, Object[] state, String[] propertyNames, Type[] types)
     {
         saved = true;
         return false;

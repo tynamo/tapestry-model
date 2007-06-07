@@ -63,7 +63,7 @@ public class TrailsInterceptor implements Interceptor, Serializable
 	{
 		if (entity instanceof Interceptable)
 		{
-			return ((Interceptable) entity).onLoad(state, propertyNames, types);
+			return ((Interceptable) entity).onLoad(id, state, propertyNames, types);
 		}
 
 		return false;
@@ -77,7 +77,7 @@ public class TrailsInterceptor implements Interceptor, Serializable
 	{
 		if (entity instanceof Interceptable)
 		{
-			return ((Interceptable) entity).onUpdate(currentState, previousState, propertyNames, types);
+			return ((Interceptable) entity).onUpdate(id, currentState, previousState, propertyNames, types);
 		}
 		return false;
 	}
@@ -90,7 +90,7 @@ public class TrailsInterceptor implements Interceptor, Serializable
 	{
 		if (entity instanceof Interceptable)
 		{
-			return ((Interceptable) entity).onInsert(state, propertyNames, types);
+			return ((Interceptable) entity).onInsert(id, state, propertyNames, types);
 		}
 
 		return false;
@@ -99,8 +99,8 @@ public class TrailsInterceptor implements Interceptor, Serializable
 	/* (non-Javadoc)
 		 * @see org.hibernate.Interceptor#onDelete(java.lang.Object, java.io.Serializable, java.lang.Object[], java.lang.String[], org.hibernate.type.Type[])
 		 */
-	public void onDelete(Object arg0, Serializable arg1, Object[] arg2,
-						 String[] arg3, Type[] arg4) throws CallbackException
+	public void onDelete(Object entity, Serializable id, Object[] state,
+						 String[] propertyNames, Type[] types) throws CallbackException
 	{
 	}
 
