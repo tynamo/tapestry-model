@@ -157,7 +157,7 @@ public class HibernateEditPageTest extends ComponentTest
 //            .with(same(Foo.class)).will(returnValue(barDescriptor));
 
 		assertTrue("is new", editPage.isModelNew());
-		((HasAssignedIdentifier) foo).onInsert(new Object[]{"myName"}, new String[]{"name"}, null);
+		((HasAssignedIdentifier) foo).onInsert(1, new Object[]{"myName"}, new String[]{"name"}, null);
 		assertFalse("not new", editPage.isModelNew());
 		Bar bar = new Bar();
 		editPage.setModel(bar);
@@ -297,7 +297,7 @@ public class HibernateEditPageTest extends ComponentTest
 		editPage.pageBeginRender(pageEvent);
 		assertEquals(1, editPage.getCallbackStack().getStack().size());
 		Foo foo2 = new Foo();
-		((HasAssignedIdentifier) foo2).onInsert(new Object[]{"myName"}, new String[]{"name"}, null);
+		((HasAssignedIdentifier) foo2).onInsert(1, new Object[]{"myName"}, new String[]{"name"}, null);
 		foo2.setId(new Integer(3));
 		editPage.setModel(foo2);
 		editPage.pageBeginRender(pageEvent);
