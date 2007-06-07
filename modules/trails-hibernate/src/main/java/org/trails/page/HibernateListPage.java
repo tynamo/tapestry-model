@@ -3,6 +3,7 @@ package org.trails.page;
 import org.apache.tapestry.IRequestCycle;
 import org.hibernate.criterion.DetachedCriteria;
 import org.trails.callback.HibernateListCallback;
+import org.trails.persistence.HibernatePersistenceService;
 
 
 public abstract class HibernateListPage extends ListPage
@@ -27,5 +28,9 @@ public abstract class HibernateListPage extends ListPage
 	public void reloadInstances()
 	{
 		// no nothing;
+	}
+	
+	public HibernatePersistenceService getHibernatePersistenceService() {
+		return (HibernatePersistenceService)getPersistenceService();
 	}
 }
