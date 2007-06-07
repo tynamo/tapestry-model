@@ -1,25 +1,29 @@
 package org.trails.demo;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 
+import org.hibernate.validator.NotNull;
 import org.trails.descriptor.annotation.PropertyDescriptor;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class Fruit
 {
+	public enum Origin
+	{
+		AFRICA, AMERICA, ASIA, EUROPE, OCEANIA
+	}
+
 	private Integer id;
 
-	public Fruit()
-	{
-		super();
-		// TODO Auto-generated constructor stub
-	}
+	private Origin origin = Origin.AMERICA;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -44,5 +48,17 @@ public class Fruit
 	public void setName(String name)
 	{
 		this.name = name;
+	}
+
+	@NotNull
+	@Enumerated(value = EnumType.STRING)
+	public Origin getOrigin()
+	{
+		return origin;
+	}
+
+	public void setOrigin(Origin origin)
+	{
+		this.origin = origin;
 	}
 }
