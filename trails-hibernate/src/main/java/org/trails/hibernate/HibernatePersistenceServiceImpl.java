@@ -41,11 +41,8 @@ import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import org.springframework.transaction.annotation.Transactional;
 import org.trails.component.Utils;
 import org.trails.descriptor.DescriptorService;
-import org.trails.descriptor.EnumReferenceDescriptor;
 import org.trails.descriptor.IClassDescriptor;
 import org.trails.descriptor.IPropertyDescriptor;
-import org.trails.descriptor.ObjectReferenceDescriptor;
-import org.trails.descriptor.OwningObjectReferenceDescriptor;
 import org.trails.persistence.HibernatePersistenceService;
 import org.trails.persistence.PersistenceException;
 import org.trails.validation.ValidationException;
@@ -240,12 +237,11 @@ public class HibernatePersistenceServiceImpl extends HibernateDaoSupport impleme
 								 *
 								 * Just match the identifier
 								 */
-								else if ((propertyDescriptor instanceof ObjectReferenceDescriptor) &&
-									propertyDescriptor.getExtension(EnumReferenceDescriptor.class) == null &&
-									propertyDescriptor.getExtension(OwningObjectReferenceDescriptor.class) == null)
+								else if (propertyDescriptor.isObjectReference())
 								{
 									Object identifierValue = Ognl.getValue(descriptorService.
-										getClassDescriptor(value.getClass()).getIdentifierDescriptor().getName(), value);
+										getClassDescriptor(value.getClass()).getIdentifierDescriptor().getName(),
+										value);
 									searchCriteria.createCriteria(propertyName).add(Restrictions.idEq(identifierValue));
 								} else if (propertyClass.isPrimitive())
 								{
