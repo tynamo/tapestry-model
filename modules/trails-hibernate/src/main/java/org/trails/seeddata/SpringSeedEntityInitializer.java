@@ -80,7 +80,7 @@ public class SpringSeedEntityInitializer implements ApplicationContextAware, See
 				if (validateUniqueness == null && id == null)
 				{
 					log.info("Entity of type " + object.getClass() + " doesn't have uniquely identifying property. Searching using the whole entity as an example " + object);
-					List objects = persistenceService.getInstances(object);
+					List objects = persistenceService.getInstances(object, classDescriptor);
 					if (objects.size() == 0) log.info("Couldn't find an existing seed entity");
 					else if (objects.size() == 1)
 					{

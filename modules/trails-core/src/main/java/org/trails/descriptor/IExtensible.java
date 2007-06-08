@@ -8,13 +8,19 @@ package org.trails.descriptor;
 public interface IExtensible
 {
 
-	public boolean supportsExtension(String extensionType);
+	public boolean supportsExtension(String key);
 
-	public void removeExtension(String extensionType);
+	public void removeExtension(String key);
 
-	public void addExtension(String extensionType, IDescriptorExtension extension);
+	public void addExtension(String key, IDescriptorExtension extension);
 
-	public IDescriptorExtension getExtension(String extentionType);
+	public boolean supportsExtension(Class extensionType);
+
+	public void removeExtension(Class extensionType);
+
+	public void addExtension(Class extensionType, IDescriptorExtension extension);
+
+	public IDescriptorExtension getExtension(String key);
 
 	public <E extends IDescriptorExtension> E getExtension(Class<E> extensionType);
 }

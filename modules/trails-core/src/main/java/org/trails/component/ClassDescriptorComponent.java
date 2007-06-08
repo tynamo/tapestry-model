@@ -11,6 +11,7 @@ import org.apache.tapestry.annotations.Parameter;
 import org.apache.tapestry.components.Block;
 import org.trails.TrailsRuntimeException;
 import org.trails.descriptor.IClassDescriptor;
+import org.trails.descriptor.IPropertyDescriptor;
 import org.trails.i18n.ResourceBundleMessageSource;
 
 public abstract class ClassDescriptorComponent extends BaseComponent
@@ -36,7 +37,7 @@ public abstract class ClassDescriptorComponent extends BaseComponent
 	 * @return
 	 * @throws OgnlException
 	 */
-	public List getPropertyDescriptors()
+	public List<IPropertyDescriptor> getPropertyDescriptors()
 	{
 		if (getPropertyNames() == null || getPropertyNames().length == 0)
 		{

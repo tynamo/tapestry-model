@@ -20,33 +20,40 @@ public class DescriptorSecurity
 {
 	private SecurityService securityService;
 
-	@Around("execution(public org.trails.descriptor.IClassDescriptor org.trails.descriptor.DescriptorService+.getClassDescriptor(Class))")
+	@Around(
+		"execution(public org.trails.descriptor.IClassDescriptor org.trails.descriptor.DescriptorService+.getClassDescriptor(Class))")
 	public Object classDescriptorSecurity(ProceedingJoinPoint pjp) throws Throwable
 	{
 		IClassDescriptor desc = (IClassDescriptor) pjp.proceed();
-		SecurityContext context = SecurityContextHolder.getContext();
-		if (context == null || context.getAuthentication() == null)
+		if (desc != null)
 		{
-			return desc;
+			SecurityContext context = SecurityContextHolder.getContext();
+			if (context == null || context.getAuthentication() == null)
+			{
+				return desc;
+			}
+			/* we have to return a copy so we don't have problems with multi-threads */
+			IClassDescriptor newDescriptor = new TrailsClassDescriptor(desc);
+			applyRestrictions(newDescriptor, context);
+			return newDescriptor;
+		} else
+		{
+			return null;
 		}
-		/* we have to return a copy so we don't have problems with multi-threads */
-		IClassDescriptor newDescriptor = new TrailsClassDescriptor(desc);
-		applyRestrictions(newDescriptor, context);
-		return newDescriptor;
 	}
 
 	@Around("execution(public java.util.List org.trails.descriptor.DescriptorService+.getAllDescriptors())")
 	public Object getAllClassDescriptorSecurity(ProceedingJoinPoint pjp) throws Throwable
 	{
 		List<IClassDescriptor> descriptors = (List<IClassDescriptor>) pjp.proceed();
-		SecurityContext context = SecurityContextHolder.getContext();
-		if (context == null || context.getAuthentication() == null)
-		{
-			return descriptors;
-		}
-
 		if (descriptors != null)
 		{
+			SecurityContext context = SecurityContextHolder.getContext();
+			if (context == null || context.getAuthentication() == null)
+			{
+				return descriptors;
+			}
+
 			List<IClassDescriptor> newDescriptors = new ArrayList<IClassDescriptor>(descriptors.size());
 			for (IClassDescriptor descriptor : descriptors)
 			{

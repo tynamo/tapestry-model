@@ -7,13 +7,15 @@
 		</state-object>
 	</contribution>
 
-	<contribution configuration-id="hivemind.hibernate3.Configuration">
-		<property name="hibernate.show_sql" value="true"/>
-	</contribution>
-
-	<implementation service-id="hivemind.hibernate3.SessionFactory">
+	<implementation service-id="trails.core.DefaultDescriptorService">
 		<invoke-factory service-id="hivemind.lib.SpringLookupFactory">
-			<lookup-bean name="sessionFactory"/>
+			<lookup-bean name="descriptorService"/>
+		</invoke-factory>
+	</implementation>
+
+	<implementation service-id="trails.core.DefaultPersistenceService">
+		<invoke-factory service-id="hivemind.lib.SpringLookupFactory">
+			<lookup-bean name="persistenceService"/>
 		</invoke-factory>
 	</implementation>
 

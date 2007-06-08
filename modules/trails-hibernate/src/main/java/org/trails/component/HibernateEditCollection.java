@@ -66,7 +66,7 @@ public abstract class HibernateEditCollection extends EditCollection
 			getPersistenceService().reattach(member);
 		} catch (NonUniqueObjectException e)
 		{
-			member = getPersistenceService().reload(member);
+//			member = getPersistenceService().reload(member); //@todo; remove it
 		}
 		editPage.setModel(member);
 		return editPage;

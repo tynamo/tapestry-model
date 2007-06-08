@@ -185,6 +185,11 @@ public class TrailsDescriptor implements IDescriptor, Serializable
 		return getExtension(keye) != null;
 	}
 
+	public boolean supportsExtension(Class extensionType)
+	{
+		return supportsExtension(extensionType.getName());
+	}
+
 	/**
 	 * Keye is property name preceded by package name
 	 */
@@ -201,12 +206,22 @@ public class TrailsDescriptor implements IDescriptor, Serializable
 		extensions.put(keye, extension);
 	}
 
+	public void addExtension(Class extensionType, IDescriptorExtension extension)
+	{
+		addExtension(extensionType.getName(), extension);
+	}
+
 	/**
 	 * Keye is property name preceded by package name
 	 */
 	public void removeExtension(String keye)
 	{
 		extensions.remove(keye);
+	}
+
+	public void removeExtension(Class extensionType)
+	{
+		removeExtension(extensionType.getName());
 	}
 
 	public <E extends IDescriptorExtension> E getExtension(Class<E> extensionType)

@@ -11,6 +11,7 @@
 	<properties>
 		<!-- Plugin dependencies don't use dependencyManagement section, specify a single log4j version here -->
 		<log4j.version>1.2.14</log4j.version>
+		<hsqldb.version>1.8.0.1</hsqldb.version>
 	</properties>
 
 	<modules>
@@ -179,12 +180,6 @@
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
-				<groupId>junit</groupId>
-				<artifactId>junit</artifactId>
-				<version>3.8.2</version>
-				<scope>test</scope>
-			</dependency>
-			<dependency>
 				<groupId>log4j</groupId>
 				<artifactId>log4j</artifactId>
 				<version>${log4j.version}</version>
@@ -300,7 +295,7 @@
 				<configuration>
 					<source>1.5</source>
 					<linksource>true</linksource>
-					<aggregate>true</aggregate>
+					<aggregate>false</aggregate>
 				</configuration>
 			</plugin>
 		</plugins>
@@ -317,6 +312,12 @@
 			<reporting>
 				<plugins>
 					<plugin>
+						<!--
+							Generates the documentation using the YDoc UML generation plugin.
+							Assumes you have the YDoc libraries locally, as well as a valid
+							YDoc license file. Config info:
+								http://docs.codehaus.org/display/TRAILS/Configuring+Maven2+settings.xml
+	  					-->
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-javadoc-plugin</artifactId>
 						<version>2.0</version>
