@@ -1,0 +1,73 @@
+<module id="trails.core" version="1.0.0">
+
+	<service-point id="DefaultDescriptorService" interface="org.trails.descriptor.DescriptorService"/>
+	<service-point id="DefaultPersistenceService" interface="org.trails.persistence.PersistenceService"/>
+
+	<!--
+		====================================================================================================================
+		Custom "squeezer" for trails-managed entities (turns squeezer service into a pipeline). Credits to James Carman.
+		====================================================================================================================
+	-->
+	<service-point id="DataSqueezerTerminator" visibility="private" interface="org.apache.tapestry.services.DataSqueezer">
+		<invoke-factory>
+			<construct class="org.apache.tapestry.util.io.DataSqueezerImpl">
+				<set-configuration property="squeezeAdaptors" configuration-id="tapestry.data.SqueezeAdaptors"/>
+			</construct>
+		</invoke-factory>
+	</service-point>
+
+	<implementation service-id="tapestry.data.DataSqueezer">
+		<invoke-factory service-id="hivemind.lib.PipelineFactory">
+			<create-pipeline filter-interface="org.trails.io.SqueezeFilter"
+							 configuration-id="DataSqueezerFilters"
+							 terminator="service:DataSqueezerTerminator"/>
+		</invoke-factory>
+	</implementation>
+
+	<service-point id="EntitySqueezeStrategy" interface="org.trails.io.SqueezeFilter">
+		<invoke-factory>
+			<construct class="org.trails.io.EntitySqueezerStrategy">
+				<set-object property="persistenceService" value="service:DefaultPersistenceService"/>
+				<set-object property="descriptorService" value="service:DefaultDescriptorService"/>
+			</construct>
+		</invoke-factory>
+	</service-point>
+
+	<configuration-point id="DataSqueezerFilters" schema-id="hivemind.lib.Pipeline">
+		Allows you to plug in your own custom data squeezers in front of the default Tapestry
+		data squeezer.
+	</configuration-point>
+
+	<contribution configuration-id="DataSqueezerFilters">
+		<filter name="EntitySqueezeStrategy" object="service:EntitySqueezeStrategy"/>
+	</contribution>
+
+	<service-point id="PropertyDescriptorSqueezeStrategy" interface="org.apache.tapestry.util.io.SqueezeAdaptor">
+		<invoke-factory>
+			<construct class="org.trails.io.PropertyDescriptorSqueezerStrategy">
+				<set-object property="descriptorService" value="service:DefaultDescriptorService"/>
+			</construct>
+		</invoke-factory>
+	</service-point>
+
+	<service-point id="ClassDescriptorSqueezeStrategy" interface="org.apache.tapestry.util.io.SqueezeAdaptor">
+		<invoke-factory>
+			<construct class="org.trails.io.ClassDescriptorSqueezerStrategy">
+				<set-object property="descriptorService" value="service:DefaultDescriptorService"/>
+			</construct>
+		</invoke-factory>
+	</service-point>
+
+	<service-point id="ClassAdaptor" interface="org.apache.tapestry.util.io.SqueezeAdaptor">
+		<invoke-factory>
+			<construct class="org.trails.io.ClassAdaptor"/>
+		</invoke-factory>
+	</service-point>
+
+	<contribution configuration-id="tapestry.data.SqueezeAdaptors">
+		<adaptor object="service:ClassAdaptor"/>
+		<adaptor object="service:PropertyDescriptorSqueezeStrategy"/>
+		<adaptor object="service:ClassDescriptorSqueezeStrategy"/>
+	</contribution>
+
+</module>

@@ -14,10 +14,14 @@ package org.trails.persistence;
 import java.io.Serializable;
 import java.util.List;
 
+import org.trails.descriptor.IClassDescriptor;
+
 public interface PersistenceService
 {
 
 	public <T> T getInstance(Class<T> type, Serializable id);
+
+	<T> T loadInstance(final Class<T> type, Serializable id);
 
 	public <T> List<T> getAllInstances(Class<T> type);
 
@@ -42,4 +46,7 @@ public interface PersistenceService
 	 */
 	public <T> T getInstance(final Class<T> type);
 
+	Serializable getIdentifier(Object data, IClassDescriptor classDescriptor);
+
+	boolean isTransient(Object data, IClassDescriptor classDescriptor);
 }

@@ -14,12 +14,13 @@ package org.trails.persistence;
 import java.util.List;
 
 import org.hibernate.criterion.DetachedCriteria;
+import org.trails.descriptor.IClassDescriptor;
 
 
 public interface HibernatePersistenceService extends PersistenceService
 {
 
-	public <T> T getInstance(DetachedCriteria criteria);
+	public Object getInstance(DetachedCriteria criteria);
 
 	public List getInstances(DetachedCriteria criteria);
 
@@ -38,9 +39,7 @@ public interface HibernatePersistenceService extends PersistenceService
 	 * @param example
 	 * @return
 	 */
-	public List getInstances(Object example);
-
-	public <T> T reload(T instance);
+	public List getInstances(Object example, IClassDescriptor classDescriptor);
 
 	public <T> T merge(T instance);
 
