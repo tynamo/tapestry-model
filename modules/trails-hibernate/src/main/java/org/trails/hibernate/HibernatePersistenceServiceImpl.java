@@ -277,8 +277,8 @@ public class HibernatePersistenceServiceImpl extends HibernateDaoSupport impleme
 							 */
 							else if (propertyDescriptor.isObjectReference())
 							{
-								reattach(value);
-								Serializable identifierValue = getIdentifier(value);
+								Serializable identifierValue = getIdentifier(value,
+									getDescriptorService().getClassDescriptor(propertyDescriptor.getBeanType()));
 								searchCriteria.createCriteria(propertyName).add(Restrictions.idEq(identifierValue));
 							} else if (propertyClass.isPrimitive())
 							{
@@ -292,17 +292,15 @@ public class HibernatePersistenceServiceImpl extends HibernateDaoSupport impleme
 								//one-to-many or many-to-many
 								CollectionDescriptor collectionDescriptor =
 									(CollectionDescriptor) propertyDescriptor;
-								String identifierName =
-									getDescriptorService().getClassDescriptor(collectionDescriptor.getElementType())
-										.getIdentifierDescriptor().getName();
+								IClassDescriptor classDescriptor = getDescriptorService().getClassDescriptor(collectionDescriptor.getElementType());
+								String identifierName = classDescriptor.getIdentifierDescriptor().getName();
 								Collection<Serializable> identifierValues = new ArrayList<Serializable>();
 								Collection associatedItems = (Collection) value;
 								if (associatedItems != null && associatedItems.size() > 0)
 								{
 									for (Object o : associatedItems)
 									{
-										reattach(o);
-										identifierValues.add(getIdentifier(o));
+										identifierValues.add(getIdentifier(o, classDescriptor));
 									}
 									//add a 'value IN collection' restriction
 									searchCriteria.createCriteria(propertyName)
