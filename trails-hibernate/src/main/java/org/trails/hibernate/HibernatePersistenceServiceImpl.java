@@ -277,6 +277,7 @@ public class HibernatePersistenceServiceImpl extends HibernateDaoSupport impleme
 							 */
 							else if (propertyDescriptor.isObjectReference())
 							{
+								reattach(value);
 								Serializable identifierValue = getIdentifier(value);
 								searchCriteria.createCriteria(propertyName).add(Restrictions.idEq(identifierValue));
 							} else if (propertyClass.isPrimitive())
@@ -300,6 +301,7 @@ public class HibernatePersistenceServiceImpl extends HibernateDaoSupport impleme
 								{
 									for (Object o : associatedItems)
 									{
+										reattach(o);
 										identifierValues.add(getIdentifier(o));
 									}
 									//add a 'value IN collection' restriction
