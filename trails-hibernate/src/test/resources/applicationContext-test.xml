@@ -178,5 +178,9 @@
 	</bean>
 
 	<bean id="localeHolder" class="org.trails.i18n.TestLocaleHolder"/>
-
+	
+	<bean id="SeedDataInitializer" class="org.trails.seeddata.SpringSeedEntityInitializer" lazy-init="true">
+		<property name="persistenceService" ref="persistenceService" />
+		<property name="descriptorService" ref="descriptorService" />
+	</bean>
 </beans>

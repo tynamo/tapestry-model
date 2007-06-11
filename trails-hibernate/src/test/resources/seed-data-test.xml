@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+
+	<!--  Seed data beans have to be declared from the smallest part to the largest composite object
+		Every bean is expected to have a @Entity and @Id
+	 -->
+
+	<bean id="foo" class="org.trails.testhibernate.Foo" lazy-init="true">
+		<property name="id" value="1"/>
+		<property name="name" value="seed foo"/>
+	</bean>
+
+	<bean id="bar" class="org.trails.testhibernate.Bar" lazy-init="true">
+		<property name="name" value="based on example"/>
+	</bean>
+
+	<bean id="wibble" class="org.trails.testhibernate.Wibble" lazy-init="true">
+		<property name="name" value="wibbling entity"/>
+		<property name="bar"><ref bean="bar"/></property>
+	</bean>
+</beans>
