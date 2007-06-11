@@ -127,7 +127,6 @@ public class SpringSeedEntityInitializer implements ApplicationContextAware, See
 					{
 						id = Ognl.getValue(identifierDescriptor.getName(), savedObject);
 						Ognl.setValue(identifierDescriptor.getName(), object, id);
-						persistenceService.reattach(object);
 					} catch (OgnlException e)
 					{
 						log.warn("Couldn't set the id of an already existing entity because of: ", e);
