@@ -148,4 +148,9 @@ public class DescriptorSecurityTest extends SecurityRestrictionTest
 			assertTrue(!classDescriptor.isHidden());
 		}
 	}
+	
+	public void tearDown() {
+		// Not to interfere with other tests
+		SecurityContextHolder.clearContext();		
+	}
 }

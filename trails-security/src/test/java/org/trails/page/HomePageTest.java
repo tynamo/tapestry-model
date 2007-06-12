@@ -136,5 +136,9 @@ public class HomePageTest extends ComponentTest
 		}
 		return false;
 	}
-
+	
+	public void tearDown() {
+		// Not to interfere with other tests
+		SecurityContextHolder.clearContext();		
+	}
 }
