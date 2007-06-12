@@ -20,10 +20,13 @@ import org.trails.descriptor.IClassDescriptor;
 public interface HibernatePersistenceService extends PersistenceService
 {
 
+	public <T> T getInstance(Class<T> type, DetachedCriteria criteria);
 	public Object getInstance(DetachedCriteria criteria);
 
+	public <T> List<T> getInstances(Class<T> type, DetachedCriteria criteria);
 	public List getInstances(DetachedCriteria criteria);
 
+	public <T> List<T> getInstances(Class<T> type, DetachedCriteria criteria, int startIndex, int maxResults);
 	public List getInstances(DetachedCriteria criteria, int startIndex, int maxResults);
 
 	public int count(DetachedCriteria criteria);

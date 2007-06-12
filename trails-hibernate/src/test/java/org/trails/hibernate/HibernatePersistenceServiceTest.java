@@ -337,7 +337,7 @@ public class HibernatePersistenceServiceTest extends AbstractTransactionalSpring
 		persistenceService.save(baz);
 		persistenceService.save(baz2);
 		DetachedCriteria criteria = DetachedCriteria.forClass(Baz.class);
-		assertEquals(1, persistenceService.getInstances(criteria, 0, 1).size());
+		assertEquals(1, persistenceService.getInstances(Baz.class, criteria, 0, 1).size());
 	}
 
 	public void testInheritance() throws Exception
