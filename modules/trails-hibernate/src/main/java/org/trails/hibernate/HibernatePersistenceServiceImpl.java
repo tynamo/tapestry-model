@@ -67,6 +67,18 @@ public class HibernatePersistenceServiceImpl extends HibernateDaoSupport impleme
 		return _descriptorService;
 	}
 
+	@Transactional
+	public <T> T getInstance(final Class<T> type, DetachedCriteria detachedCriteria) {
+		final DetachedCriteria criteria = alterCriteria(type, detachedCriteria);
+		
+		return (T) getHibernateTemplate().execute(new HibernateCallback()
+		{
+			public Object doInHibernate(Session session) throws HibernateException, SQLException
+			{
+				return criteria.getExecutableCriteria(session).uniqueResult();
+			}
+		});
+	}
 
 	/**
 	 * (non-Javadoc)
@@ -76,14 +88,8 @@ public class HibernatePersistenceServiceImpl extends HibernateDaoSupport impleme
 	@Transactional
 	public <T> T getInstance(final Class<T> type, final Serializable id)
 	{
-		return (T) getHibernateTemplate().execute(new HibernateCallback()
-		{
-			public Object doInHibernate(Session session) throws HibernateException, SQLException
-			{
-				Criteria criteria = session.createCriteria(Utils.checkForCGLIB(type)).add(Expression.idEq(id));
-				return alterCriteria(criteria).uniqueResult();
-			}
-		});
+		DetachedCriteria criteria = DetachedCriteria.forClass(Utils.checkForCGLIB(type)).add(Expression.idEq(id));
+		return getInstance(type, criteria);
 	}
 
 	public <T> T loadInstance(final Class<T> type, Serializable id)
@@ -99,19 +105,13 @@ public class HibernatePersistenceServiceImpl extends HibernateDaoSupport impleme
 	@Transactional
 	public <T> List<T> getAllInstances(final Class<T> type)
 	{
-		return (List<T>) getHibernateTemplate().execute(new HibernateCallback()
-		{
-			public Object doInHibernate(Session session) throws HibernateException, SQLException
-			{
-				Criteria criteria = session.createCriteria(Utils.checkForCGLIB(type));
-				return alterCriteria(criteria).list();
-			}
-		});
+		DetachedCriteria criteria = DetachedCriteria.forClass(Utils.checkForCGLIB(type));
+		return getHibernateTemplate().findByCriteria(alterCriteria(type,criteria) );
 	}
 
-	public <T> List<T> getInstances(Class<T> type, int startIndex, int maxResults)
+	public <T> List<T> getInstances(final Class<T> type, int startIndex, int maxResults)
 	{
-		return getInstances(DetachedCriteria.forClass(type), startIndex, maxResults);
+		return getInstances(type, DetachedCriteria.forClass(type), startIndex, maxResults);
 	}
 
 	/*
@@ -158,6 +158,12 @@ public class HibernatePersistenceServiceImpl extends HibernateDaoSupport impleme
 		return getHibernateTemplate().findByCriteria(criteria);
 	}
 
+	@Transactional
+	public <T> List<T> getInstances(Class<T> type, DetachedCriteria criteria) {
+		criteria = alterCriteria(type, criteria);
+		return getHibernateTemplate().findByCriteria(criteria);
+	}
+	
 	public List<Class> getAllTypes()
 	{
 		ArrayList<Class> allTypes = new ArrayList<Class>();
@@ -183,7 +189,7 @@ public class HibernatePersistenceServiceImpl extends HibernateDaoSupport impleme
 	@Transactional
 	public <T> T getInstance(final Class<T> type)
 	{
-		return (T) getInstance(DetachedCriteria.forClass(type));
+		return (T) getInstance(type, DetachedCriteria.forClass(type));
 	}
 
 	public Serializable getIdentifier(final Object data, final IClassDescriptor classDescriptor)
@@ -245,7 +251,8 @@ public class HibernatePersistenceServiceImpl extends HibernateDaoSupport impleme
 			public Object doInHibernate(Session session) throws HibernateException, SQLException
 			{
 				//create Criteria instance
-				Criteria searchCriteria = session.createCriteria(example.getClass());
+				DetachedCriteria searchCriteria = DetachedCriteria.forClass(Utils.checkForCGLIB(example.getClass()));
+				searchCriteria = alterCriteria(example.getClass(), searchCriteria);
 
 				//loop over the example object's PropertyDescriptors
 				for (IPropertyDescriptor propertyDescriptor : classDescriptor.getPropertyDescriptors())
@@ -311,7 +318,7 @@ public class HibernatePersistenceServiceImpl extends HibernateDaoSupport impleme
 					}
 				}
 				searchCriteria.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
-				return alterCriteria(searchCriteria).list();
+				return searchCriteria.getExecutableCriteria(session).list();
 			}
 		}, true);
 	}
@@ -335,14 +342,21 @@ public class HibernatePersistenceServiceImpl extends HibernateDaoSupport impleme
 			{
 				Criteria executableCriteria =
 					criteria.getExecutableCriteria(session).setProjection(Projections.rowCount());
-				return alterCriteria(executableCriteria).uniqueResult();
+				return executableCriteria.uniqueResult();
 			}
 		});
 		getHibernateTemplate().setExposeNativeSession(useNative);
 		return result;
 	}
 
-	public List getInstances(final DetachedCriteria criteria, final int startIndex, final int maxResults)
+	public <T> List<T> getInstances(Class<T> type, final DetachedCriteria detachedCriteria, final int startIndex, final int maxResults)
+	{
+		return getInstances(alterCriteria(type, detachedCriteria), startIndex, maxResults);
+		
+	}
+	
+	
+	public List getInstances(final DetachedCriteria detachedCriteria, final int startIndex, final int maxResults)
 	{
 		// todo hacking useNative is a result of SPR-2499 and will be removed soon
 		boolean useNative = getHibernateTemplate().isExposeNativeSession();
@@ -351,7 +365,7 @@ public class HibernatePersistenceServiceImpl extends HibernateDaoSupport impleme
 		{
 			public Object doInHibernate(Session session) throws HibernateException, SQLException
 			{
-				Criteria executableCriteria = criteria.getExecutableCriteria(session);
+				Criteria executableCriteria = detachedCriteria.getExecutableCriteria(session);
 				if (startIndex >= 0)
 				{
 					executableCriteria.setFirstResult(startIndex);
@@ -360,7 +374,7 @@ public class HibernatePersistenceServiceImpl extends HibernateDaoSupport impleme
 				{
 					executableCriteria.setMaxResults(maxResults);
 				}
-				return alterCriteria(executableCriteria).list();
+				return executableCriteria.list();
 			}
 		});
 		getHibernateTemplate().setExposeNativeSession(useNative);
@@ -373,9 +387,9 @@ public class HibernatePersistenceServiceImpl extends HibernateDaoSupport impleme
 	 * @param source The original Criteria query
 	 * @return The modified Criteria query for execution
 	 */
-	protected Criteria alterCriteria(Criteria source)
+	protected DetachedCriteria alterCriteria(Class type, DetachedCriteria detachedCriteria)
 	{
-		return source;
+		return detachedCriteria;
 	}
 
 	/**
