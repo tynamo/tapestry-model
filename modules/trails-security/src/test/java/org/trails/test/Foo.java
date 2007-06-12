@@ -18,8 +18,11 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import org.trails.security.annotation.ViewRequiresAssociation;
+
 
 @Entity
+@ViewRequiresAssociation("invalidUserAssociation")
 public class Foo
 {
 

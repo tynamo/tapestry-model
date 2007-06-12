@@ -21,6 +21,7 @@ import org.trails.descriptor.annotation.PropertyDescriptor;
 import org.trails.security.RestrictionType;
 import org.trails.security.annotation.Restriction;
 import org.trails.security.annotation.Security;
+import org.trails.security.annotation.ViewRequiresAssociation;
 import org.trails.validation.ValidateUniqueness;
 
 @Entity
@@ -29,6 +30,7 @@ import org.trails.validation.ValidateUniqueness;
 @Security(restrictions = {@Restriction(restrictionType = RestrictionType.VIEW,
 	requiredRole = "ROLE_MANAGER")})
 @ClassDescriptor(hasCyclicRelationships = true)
+@ViewRequiresAssociation
 public class User implements UserDetails, Serializable
 {
 	private static final Log log = LogFactory.getLog(User.class);

@@ -91,18 +91,12 @@ public class SecurityStartupTest extends TestCase
 			@Override
 			protected void doInTransactionWithoutResult(TransactionStatus status)
 			{
+				bootStrap.startup();
 				List roles = persistenceService.getAllInstances(Role.class);
 				List users = persistenceService.getAllInstances(User.class);
 
-				assertEquals(roles.size(), 0);
-				assertEquals(users.size(), 0);
-
-				bootStrap.startup();
-				roles = persistenceService.getAllInstances(Role.class);
-				users = persistenceService.getAllInstances(User.class);
-
-				assertEquals(roles.size(), 2);
-				assertEquals(users.size(), 2);
+				assertEquals(2, roles.size());
+				assertEquals(2, users.size());
 
 				try
 				{
