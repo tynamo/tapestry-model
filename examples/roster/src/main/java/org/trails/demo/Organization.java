@@ -119,8 +119,7 @@ public class Organization implements Cloneable, Serializable
 	}
 
 	@OneToOne(cascade = CascadeType.ALL)
-	@JoinTable(name = "join_table_Organization_Director", joinColumns = @JoinColumn(name = "director_fk", insertable = true, updatable = true, nullable = true), inverseJoinColumns =
-	{ @JoinColumn(name = "organization_fk", insertable = true, updatable = true, nullable = true) })
+	@JoinTable(name = "join_table_Organization_Director", joinColumns = @JoinColumn(name = "director_fk", insertable = true, updatable = true, nullable = true), inverseJoinColumns = { @JoinColumn(name = "organization_fk", insertable = true, updatable = true, nullable = true) })
 	@OrderBy("lastName")
 	@PropertyDescriptor(index = 2)
 	public Director getDirector()
@@ -151,7 +150,7 @@ public class Organization implements Cloneable, Serializable
 	private UploadableMedia photo = new UploadableMedia();
 
 	@BlobDescriptor(renderType = RenderType.IMAGE, contentDisposition = ContentDisposition.ATTACHMENT)
-	@PropertyDescriptor(summary = false, index = 3)
+	@PropertyDescriptor(summary = true, index = 3)
 	@OneToOne(cascade = CascadeType.ALL)
 	public UploadableMedia getPhoto()
 	{
@@ -161,7 +160,7 @@ public class Organization implements Cloneable, Serializable
 	private UploadableMedia header = new UploadableMedia();
 
 	@BlobDescriptor(renderType = RenderType.IMAGE, contentDisposition = ContentDisposition.ATTACHMENT)
-	@PropertyDescriptor(summary = false, index = 4)
+	@PropertyDescriptor(summary = true, index = 4)
 	@OneToOne(cascade = CascadeType.ALL)
 	public UploadableMedia getHeader()
 	{
