@@ -11,12 +11,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-import org.trails.security.RestrictionType;
-import org.trails.security.annotation.Restriction;
-import org.trails.security.annotation.Security;
+import org.trails.security.annotation.UpdateRequiresAssociation;
+import org.trails.security.annotation.UpdateRequiresRole;
+import org.trails.security.annotation.ViewRequiresRole;
+import org.trails.security.domain.User;
 
-@Security(restrictions = {@Restriction(restrictionType = RestrictionType.UPDATE, requiredRole = "admin"),
-@Restriction(restrictionType = RestrictionType.VIEW, requiredRole = "root")})
+@UpdateRequiresRole("admin")
+@ViewRequiresRole("root")
+@UpdateRequiresAssociation("owner")
 @Entity
 public class FooSecured
 {
@@ -24,6 +26,8 @@ public class FooSecured
 	private int id;
 	private String name;
 	private String fooField;
+	private User owner;
+	
 
 	public String getFooField()
 	{
@@ -47,7 +51,7 @@ public class FooSecured
 		this.id = id;
 	}
 
-	@Security(restrictions = {@Restriction(restrictionType = RestrictionType.VIEW, requiredRole = "admin")})
+	@ViewRequiresRole("admin")
 	public String getName()
 	{
 		return name;
@@ -58,5 +62,12 @@ public class FooSecured
 		this.name = name;
 	}
 
-
+	public User getOwner()
+  {
+      return owner;
+  }
+  public void setOwner(User owner)
+  {
+      this.owner = owner;
+  }
 }

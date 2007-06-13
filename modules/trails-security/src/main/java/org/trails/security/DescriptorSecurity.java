@@ -69,12 +69,11 @@ public class DescriptorSecurity
 
 	protected void applyRestrictions(IClassDescriptor newDescriptor, SecurityContext context)
 	{
-		List restrictions = securityService.findRestrictions(newDescriptor);
+		List<SecurityRestriction> restrictions = securityService.findRestrictions(newDescriptor);
 		if (restrictions != null)
 		{
-			for (Object restriction1 : restrictions)
+			for (SecurityRestriction restriction : restrictions)
 			{
-				SecurityRestriction restriction = (SecurityRestriction) restriction1;
 				restriction.restrict(context.getAuthentication().getAuthorities(), newDescriptor);
 			}
 		}
