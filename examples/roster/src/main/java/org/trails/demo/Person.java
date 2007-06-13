@@ -52,12 +52,12 @@ import org.trails.validation.ValidateUniqueness;
  * @author kenneth.colassi nhhockeyplayer@hotmail.com
  */
 @Entity
-@Security(restrictions =
-{ @Restriction(restrictionType = RestrictionType.UPDATE, requiredRole = "ROLE_MANAGER"),
+@Security(restrictions = { @Restriction(restrictionType = RestrictionType.UPDATE, requiredRole = "ROLE_MANAGER"),
 		@Restriction(restrictionType = RestrictionType.REMOVE, requiredRole = "ROLE_MANAGER") })
 @ValidateUniqueness(property = "emailAddress")
-@Inheritance(strategy = InheritanceType.JOINED)
-@MappedSuperclass
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+//@Inheritance(strategy = InheritanceType.JOINED)
+//@MappedSuperclass
 @ClassDescriptor(hidden = true)
 public class Person implements UserDetails, Cloneable, Serializable
 {
@@ -79,7 +79,7 @@ public class Person implements UserDetails, Cloneable, Serializable
 
 	protected String lastName;
 
-	private Demographics demographics = new Demographics();
+	protected Demographics demographics = new Demographics();
 
 	protected Date dob;
 
@@ -91,7 +91,7 @@ public class Person implements UserDetails, Cloneable, Serializable
 
 	protected EApplicationRole eApplicationRole;
 
-	private Set<Role> roles = new HashSet<Role>();
+	protected Set<Role> roles = new HashSet<Role>();
 
 	protected boolean accountNonExpired = true;
 
@@ -113,6 +113,7 @@ public class Person implements UserDetails, Cloneable, Serializable
 		try
 		{
 			BeanUtils.copyProperties(this, dto);
+			setUsername(emailAddress);
 		} catch (Exception e)
 		{
 			log.error(e.toString());
@@ -277,6 +278,7 @@ public class Person implements UserDetails, Cloneable, Serializable
 	public void setEmailAddress(String emailAddress)
 	{
 		this.emailAddress = emailAddress;
+		setUsername(emailAddress);
 	}
 
 	public void setPassword(String password)
@@ -398,14 +400,12 @@ public class Person implements UserDetails, Cloneable, Serializable
 	{
 		log.debug("Person " + getUsername() + " has roles " + roles);
 		if (roles == null || roles.size() == 0)
-			throw new UsernameNotFoundException("User has no GrantedAuthority");
+			throw new UsernameNotFoundException("Person has no GrantedAuthority");
 		return roles.toArray(new GrantedAuthority[roles.size()]);
 	}
 
 	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "join_table_person_role", joinColumns =
-	{ @JoinColumn(name = "person_fk") }, inverseJoinColumns =
-	{ @JoinColumn(name = "role_fk") })
+	@JoinTable(name = "join_table_person_role", joinColumns = { @JoinColumn(name = "person_fk") }, inverseJoinColumns = { @JoinColumn(name = "role_fk") })
 	public Set<Role> getRoles()
 	{
 		return roles;
@@ -416,6 +416,7 @@ public class Person implements UserDetails, Cloneable, Serializable
 		this.roles = roles;
 	}
 
+	@PropertyDescriptor(hidden = true)
 	public String getUsername()
 	{
 		return emailAddress;
