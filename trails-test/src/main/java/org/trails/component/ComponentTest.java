@@ -45,7 +45,7 @@ public class ComponentTest extends MockObjectTestCase
 		descriptorService = (DescriptorService) descriptorServiceMock.proxy();
 	}
 
-	protected <T> T buildTrailsPage(Class<T> pageClass)
+	public <T> T buildTrailsPage(Class<T> pageClass)
 	{
 		T page = (T) creator.newInstance(pageClass,
 			new Object[]{
