@@ -3,5 +3,6 @@
 	<property name="typeName" persist="session"/>
 	<property name="instances" persist="session"/>
 	<property name="object"/>
+	<property name="column"/>
 
 </page-specification>
