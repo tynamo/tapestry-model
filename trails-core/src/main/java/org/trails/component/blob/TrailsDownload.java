@@ -51,7 +51,7 @@ public abstract class TrailsDownload extends BaseComponent
 		return getPropertyDescriptor().getExtension(BlobDescriptorExtension.class);
 	}
 
-	public IAsset getByteArrayAsset()
+	public synchronized IAsset getByteArrayAsset()
 	{
 		String id = "";
 		try
