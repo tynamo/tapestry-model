@@ -7,7 +7,6 @@ import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.management.relation.Role;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
@@ -43,6 +42,7 @@ import org.trails.descriptor.annotation.PropertyDescriptor;
 import org.trails.security.RestrictionType;
 import org.trails.security.annotation.Restriction;
 import org.trails.security.annotation.Security;
+import org.trails.security.domain.Role;
 import org.trails.util.DatePattern;
 import org.trails.validation.ValidateUniqueness;
 
