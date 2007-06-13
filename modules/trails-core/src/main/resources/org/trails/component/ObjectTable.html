@@ -4,5 +4,13 @@
 		<div jwcid="linkColumnValue@Block">
 			<a jwcid="editLink@EditLink" model="ognl:object" href="#"><span jwcid="linkInsert@Insert" value="ognl:object[linkProperty]"/></a>
 		</div>
+
+		<div jwcid="blobColumnValue@Block">
+				<span jwcid="@TrailsDownload"
+					  propertyDescriptor="ognl:column.propertyDescriptor"
+					  model="ognl:object[column.propertyDescriptor.name]"
+					  bytes="ognl:object[column.propertyDescriptor.name]"
+					/>
+		</div>
 	</table>
 </span>
