@@ -37,9 +37,9 @@ public abstract class TrailsDownload extends BaseComponent
 	public abstract void setClassDescriptor(IClassDescriptor ClassDescriptor);
 
 	@Parameter(required = true, cache = true)
-	public abstract IPropertyDescriptor getDescriptor();
+	public abstract IPropertyDescriptor getPropertyDescriptor();
 
-	public abstract void setDescriptor(IPropertyDescriptor descriptor);
+	public abstract void setPropertyDescriptor(IPropertyDescriptor descriptor);
 
 	public IPropertyDescriptor getIdentifierDescriptor()
 	{
@@ -48,7 +48,7 @@ public abstract class TrailsDownload extends BaseComponent
 
 	public BlobDescriptorExtension getBlobDescriptorExtension()
 	{
-		return getDescriptor().getExtension(BlobDescriptorExtension.class);
+		return getPropertyDescriptor().getExtension(BlobDescriptorExtension.class);
 	}
 
 	public IAsset getByteArrayAsset()
@@ -82,7 +82,7 @@ public abstract class TrailsDownload extends BaseComponent
 		fileName = trailsBlob.getFileName();
 
 		return new TrailsBlobAsset(getDownloadService(), getClassDescriptor()
-			.getType().getName(), id, getDescriptor().getName(),
+			.getType().getName(), id, getPropertyDescriptor().getName(),
 			contentType, fileName);
 	}
 }

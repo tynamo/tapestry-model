@@ -18,8 +18,10 @@ import java.util.List;
 import org.apache.tapestry.annotations.ComponentClass;
 import org.apache.tapestry.annotations.InjectObject;
 import org.apache.tapestry.annotations.Parameter;
+import org.apache.tapestry.contrib.table.model.ITableColumn;
 import org.apache.tapestry.services.ExpressionEvaluator;
 import org.apache.tapestry.util.ComponentAddress;
+import org.trails.descriptor.BlobDescriptorExtension;
 import org.trails.descriptor.IPropertyDescriptor;
 import org.trails.persistence.PersistenceService;
 
@@ -29,8 +31,9 @@ import org.trails.persistence.PersistenceService;
 @ComponentClass(allowBody = true, allowInformalParameters = true)
 public abstract class ObjectTable extends ClassDescriptorComponent
 {
-
 	public static final String LINK_COLUMN = "linkColumnValue";
+
+	public static final String BLOB_COLUMN = "blobColumnValue";
 
 	@Parameter(required = false, defaultValue = "false", cache = true)
 	public abstract boolean isShowCollections();
@@ -54,15 +57,26 @@ public abstract class ObjectTable extends ClassDescriptorComponent
 
 	public abstract void setObject(Object object);
 
+
+	@Parameter(cache = false)
+	public abstract ITableColumn getColumn();
+
+	public abstract void setColumn(ITableColumn column);
+
 	@Parameter(cache = false)
 	public abstract String getRowsClass();
 
 	public abstract void setRowsClass(String rowsClass);
 
+	@Parameter(cache = false)
+	public abstract String getColumnsClass();
+
+	public abstract void setColumnsClass(String columnsClass);
+
 	@Parameter(cache = false, defaultValue = "10")
 	public abstract int getPageSize();
 
-	public abstract void setPageSize(int rowsClass);
+	public abstract void setPageSize(int pageSize);
 
 	public ComponentAddress getLinkBlockAddress(IPropertyDescriptor descriptor)
 	{
@@ -78,30 +92,31 @@ public abstract class ObjectTable extends ClassDescriptorComponent
 	@InjectObject("service:tapestry.ognl.ExpressionEvaluator")
 	public abstract ExpressionEvaluator getEvaluator();
 
-
-	/**
-	 * @return
-	 */
 	public List<TrailsTableColumn> getColumns()
 	{
 		ArrayList<TrailsTableColumn> columns = new ArrayList<TrailsTableColumn>();
-		for (Iterator iter = getPropertyDescriptors().iterator(); iter
-			.hasNext();)
+		for (Iterator iter = getPropertyDescriptors().iterator(); iter.hasNext();)
 		{
 			IPropertyDescriptor descriptor = (IPropertyDescriptor) iter.next();
 			if (displaying(descriptor))
 			{
 				if (getLinkProperty().equals(descriptor.getName())
-					&& (getClassDescriptor().isAllowSave() || getClassDescriptor()
-					.isAllowRemove()))
+						&& (getClassDescriptor().isAllowSave() || getClassDescriptor().isAllowRemove()))
 				{
 					/**
-					 Add a link for the edit page following these rules:
-					 a) Use the identifier descriptor if is displayable ( summary=true ).
-					 b) Use the first displayable property if the identifier property is not displayable (summary=false)
+					 * Add a link for the edit page following these rules: a)
+					 * Use the identifier descriptor if is displayable (
+					 * summary=true ). b) Use the first displayable property if
+					 * the identifier property is not displayable
+					 * (summary=false)
 					 */
 					columns.add(new TrailsTableColumn(descriptor, getEvaluator(), getLinkBlockAddress(descriptor)));
 
+				} else if (descriptor.supportsExtension(BlobDescriptorExtension.class.getName())
+						&& getBlockAddress(descriptor) == null)
+				{
+					columns.add(new TrailsTableColumn(descriptor, getEvaluator(), new ComponentAddress(
+							getComponent(BLOB_COLUMN))));
 				} else
 				{
 					columns.add(new TrailsTableColumn(descriptor, getEvaluator(), getBlockAddress(descriptor)));
@@ -141,12 +156,11 @@ public abstract class ObjectTable extends ClassDescriptorComponent
 
 	}
 
-
 	/**
-	 * Returns the name of the property to be used as link to the editor.
-	 * If the default Id property is not displayable then return the name
-	 * of the first displayable property.
-	 *
+	 * Returns the name of the property to be used as link to the editor. If the
+	 * default Id property is not displayable then return the name of the first
+	 * displayable property.
+	 * 
 	 * @return
 	 */
 	public String getLinkProperty()
@@ -160,7 +174,7 @@ public abstract class ObjectTable extends ClassDescriptorComponent
 
 	/**
 	 * Returns the first displayable property.
-	 *
+	 * 
 	 * @return
 	 */
 	protected IPropertyDescriptor getFirstDisplayableProperty()
@@ -175,8 +189,9 @@ public abstract class ObjectTable extends ClassDescriptorComponent
 			}
 		}
 
-		return null; //If we get here, that means we have no displayable descriptors
-		//TODO check if we should throw an exception instead
+		return null; // If we get here, that means we have no displayable
+		// descriptors
+		// TODO check if we should throw an exception instead
 	}
 
 	/**
@@ -194,11 +209,31 @@ public abstract class ObjectTable extends ClassDescriptorComponent
 		if (getPage().getComponents().containsKey(blockName))
 		{
 			return new ComponentAddress(getPage().getPageName(), blockName);
-		} else return null;
+		} else
+			return null;
 	}
 
 	public Object getSource()
 	{
 		return getInstances();
+	}
+
+	public IPropertyDescriptor getBlobDescriptor() throws Exception
+	{
+		IPropertyDescriptor result = null;
+
+		for (Iterator iter = getPropertyDescriptors().iterator(); iter.hasNext();)
+		{
+			IPropertyDescriptor descriptor = (IPropertyDescriptor) iter.next();
+			if (displaying(descriptor))
+			{
+				if (descriptor.supportsExtension(org.trails.descriptor.BlobDescriptorExtension.class.getName()))
+				{
+					result = descriptor;
+					break;
+				}
+			}
+		}
+		return result;
 	}
 }

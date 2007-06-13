@@ -4,9 +4,12 @@
 
 	<component id="table" inherit-informal-parameters="yes" type="contrib:Table">
 		<inherited-binding name="row" parameter-name="object"/>
+		<inherited-binding name="rowsClass" parameter-name="rowsClass"/>
+		<inherited-binding name="column" parameter-name="column"/>
+		<inherited-binding name="columnsClass" parameter-name="columnsClass"/>
+
 		<binding name="source">source</binding>
 		<binding name="columns">columns</binding>
-		<inherited-binding name="rowsClass" parameter-name="rowsClass"/>
 		<binding name="pageSize">pageSize</binding>
 	</component>
 
