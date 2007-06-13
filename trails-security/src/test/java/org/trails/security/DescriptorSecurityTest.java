@@ -34,18 +34,18 @@ public class DescriptorSecurityTest extends SecurityRestrictionTest
 		service = (DescriptorService) appContext.getBean("descriptorService");
 	}
 
-	public void testClassWithoutAnotation()
+	public void testClassWithoutAnnotation()
 	{
 		IClassDescriptor classDescriptor = service.getClassDescriptor(Foo.class);
-		checkConstraintsWithoutAnotation(classDescriptor);
+		checkConstraintsWithoutAnnotation(classDescriptor);
 	}
 
-	public void testClassWithAnotation()
+	public void testClassWithAnnotation()
 	{
 		IClassDescriptor classDescriptor;
 
 		SecurityContextImpl context = new SecurityContextImpl();
-		context.setAuthentication(autorities.adminAuthentication);
+		context.setAuthentication(authorities.adminAuthentication);
 		SecurityContextHolder.setContext(context);
 		assertNotNull(context.getAuthentication());
 
@@ -54,13 +54,13 @@ public class DescriptorSecurityTest extends SecurityRestrictionTest
 		assertTrue(classDescriptor.isAllowSave());
 		assertTrue(classDescriptor.isHidden());
 
-		context.setAuthentication(autorities.rootAuthentication);
+		context.setAuthentication(authorities.rootAuthentication);
 		classDescriptor = service.getClassDescriptor(FooSecured.class);
 		assertTrue(classDescriptor.isAllowRemove());
 		assertTrue(!classDescriptor.isAllowSave());
 		assertTrue(!classDescriptor.isHidden());
 
-		context.setAuthentication(autorities.noAdminAuthentication);
+		context.setAuthentication(authorities.noAdminAuthentication);
 
 		classDescriptor = service.getClassDescriptor(FooSecured.class);
 		assertTrue(classDescriptor.isAllowRemove());
@@ -76,7 +76,7 @@ public class DescriptorSecurityTest extends SecurityRestrictionTest
 		boolean passed = false;
 
 		SecurityContextImpl context = new SecurityContextImpl();
-		context.setAuthentication(autorities.adminAuthentication);
+		context.setAuthentication(authorities.adminAuthentication);
 		SecurityContextHolder.setContext(context);
 		assertNotNull(context.getAuthentication());
 
@@ -93,13 +93,13 @@ public class DescriptorSecurityTest extends SecurityRestrictionTest
 				assertTrue(classDescriptor.isHidden());
 			} else
 			{
-				checkConstraintsWithoutAnotation(classDescriptor);
+				checkConstraintsWithoutAnnotation(classDescriptor);
 			}
 		}
 
 		assertTrue(passed);
 		passed = false;
-		context.setAuthentication(autorities.rootAuthentication);
+		context.setAuthentication(authorities.rootAuthentication);
 		descriptors = service.getAllDescriptors();
 		i = descriptors.iterator();
 		while (i.hasNext())
@@ -113,13 +113,13 @@ public class DescriptorSecurityTest extends SecurityRestrictionTest
 				assertTrue(!classDescriptor.isHidden());
 			} else
 			{
-				checkConstraintsWithoutAnotation(classDescriptor);
+				checkConstraintsWithoutAnnotation(classDescriptor);
 			}
 		}
 
 		assertTrue(passed);
 		passed = false;
-		context.setAuthentication(autorities.noAdminAuthentication);
+		context.setAuthentication(authorities.noAdminAuthentication);
 		descriptors = service.getAllDescriptors();
 		i = descriptors.iterator();
 		while (i.hasNext())
@@ -133,13 +133,13 @@ public class DescriptorSecurityTest extends SecurityRestrictionTest
 				assertTrue(classDescriptor.isHidden());
 			} else
 			{
-				checkConstraintsWithoutAnotation(classDescriptor);
+				checkConstraintsWithoutAnnotation(classDescriptor);
 			}
 		}
 		assertTrue(passed);
 	}
 
-	private void checkConstraintsWithoutAnotation(IClassDescriptor classDescriptor)
+	private void checkConstraintsWithoutAnnotation(IClassDescriptor classDescriptor)
 	{
 		if (!classDescriptor.getType().getPackage().getName().equals("org.trails.security.domain"))
 		{

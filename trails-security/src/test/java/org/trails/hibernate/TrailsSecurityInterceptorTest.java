@@ -24,23 +24,16 @@ import org.trails.security.OwnerRequired;
 import org.trails.security.TrailsSecurityException;
 import org.trails.security.domain.Role;
 import org.trails.security.domain.User;
+import org.trails.security.test.FooSecured;
 import org.trails.test.Foo;
-import org.trails.test.SecureFoo;
 
-
-/**
- * @author fus8882
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
- */
 public class TrailsSecurityInterceptorTest extends MockObjectTestCase {
 	private TrailsSecurityInterceptor interceptor = null; 
 	public void setUp() {
 		interceptor = new TrailsSecurityInterceptor();
 	}
 	
-  public void testSelfAssociationRestrictionOnLoad() {
+  public void testSelfAssociationRestrictionOnUpdate() {
   	SecurityContext securityContext = new SecurityContextImpl();
   	GrantedAuthority[] authorities = new GrantedAuthority[]{new GrantedAuthorityImpl("ROLE_USER")};
   	Authentication authentication = new TestingAuthenticationToken("username", "password", authorities);
@@ -50,11 +43,11 @@ public class TrailsSecurityInterceptorTest extends MockObjectTestCase {
     User user = new User();
     user.setUsername("username");
 
-  	interceptor.onLoad(user, 1, new Object[]{}, new String[]{}, new Type[]{});
+  	interceptor.onFlushDirty(user, 1, new Object[]{}, new Object[]{}, new String[]{}, new Type[]{});
   	
   	user.setUsername("wrongUsername");
   	try {
-  		interceptor.onLoad(user, 1, new Object[]{}, new String[]{}, new Type[]{});
+  		interceptor.onFlushDirty(user, 1, new Object[]{}, new Object[]{}, new String[]{}, new Type[]{});
     	fail("OwnerRequired exception should have been thrown on wrong user name");
   	}
   	catch(OwnerRequired e) {
@@ -62,22 +55,22 @@ public class TrailsSecurityInterceptorTest extends MockObjectTestCase {
   	}
   }
   
-  public void testOwnershipRestrictionOnLoad() {
+  public void testOwnershipRestrictionOnInsert() {
   	SecurityContext securityContext = new SecurityContextImpl();
   	GrantedAuthority[] authorities = new GrantedAuthority[]{new GrantedAuthorityImpl("ROLE_USER")};
   	Authentication authentication = new TestingAuthenticationToken("username", "password", authorities);
   	securityContext.setAuthentication(authentication);
   	SecurityContextHolder.setContext(securityContext);
-  	SecureFoo secureFoo = new SecureFoo();
+  	FooSecured secureFoo = new FooSecured();
     User user = new User();
     user.setUsername("username");
     secureFoo.setOwner(user);
   	
-  	interceptor.onLoad(secureFoo, 1, new Object[]{}, new String[]{}, new Type[]{});
+  	interceptor.onSave(secureFoo, 1, new Object[]{}, new String[]{}, new Type[]{});
   	
     user.setUsername("differentName");
   	try {
-  		interceptor.onLoad(secureFoo, 1, new Object[]{}, new String[]{}, new Type[]{});
+  		interceptor.onSave(secureFoo, 1, new Object[]{}, new String[]{}, new Type[]{});
     	fail("OwnerRequired exception should have been thrown on non-owner");
   	}
   	catch(OwnerRequired e) {
@@ -86,15 +79,15 @@ public class TrailsSecurityInterceptorTest extends MockObjectTestCase {
   	
 		Foo foo = new Foo();
   	try {
-  		interceptor.onLoad(foo, 1, new Object[]{}, new String[]{}, new Type[]{});
-  		fail("Exception should have been because association is invalid");
+  		interceptor.onSave(foo, 1, new Object[]{}, new String[]{}, new Type[]{});
+  		fail("Exception should have been thrown because association is invalid");
   	}
   	catch(TrailsSecurityException e) {
   		// OK
   	}
   }
   
-  public void testRoleRestrictionOnLoad() {
+  public void testRoleRestrictionOnRemove() {
   	SecurityContext securityContext = new SecurityContextImpl();
   	GrantedAuthority[] authorities = new GrantedAuthority[]{new GrantedAuthorityImpl("ROLE_MANAGER")};
   	Authentication authentication = new TestingAuthenticationToken("manager", "password", authorities);

@@ -10,15 +10,13 @@ import org.hibernate.validator.Length;
 import org.hibernate.validator.NotNull;
 import org.trails.descriptor.annotation.ClassDescriptor;
 import org.trails.descriptor.annotation.PropertyDescriptor;
-import org.trails.security.RestrictionType;
-import org.trails.security.annotation.Restriction;
-import org.trails.security.annotation.Security;
+import org.trails.security.annotation.ViewRequiresRole;
 import org.trails.validation.ValidateUniqueness;
 
 @Entity
 @Table(name = "TRAILS_ROLE")
 @ValidateUniqueness(property = "name")
-@Security(restrictions = {@Restriction(restrictionType = RestrictionType.VIEW, requiredRole = "ROLE_MANAGER")})
+@ViewRequiresRole("ROLE_MANAGER")
 @ClassDescriptor(hasCyclicRelationships = true)
 public class Role implements GrantedAuthority, Serializable
 {

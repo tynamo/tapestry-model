@@ -8,7 +8,7 @@ import org.trails.test.IBar;
 
 public class SecurityRestrictionTest extends TestCase
 {
-	protected SecurityAuthorities autorities;
+	protected SecurityAuthorities authorities;
 	protected IPropertyDescriptor propertyDescriptor;
 
 	public SecurityRestrictionTest()
@@ -26,7 +26,7 @@ public class SecurityRestrictionTest extends TestCase
 	public void setUp()
 	{
 		propertyDescriptor = new TrailsPropertyDescriptor(Foo.class, "bar", IBar.class);
-		autorities = new SecurityAuthorities();
+		authorities = new SecurityAuthorities();
 	}
 
 	/**

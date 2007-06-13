@@ -20,18 +20,13 @@ import org.trails.security.RestrictionType;
 import org.trails.security.RoleRequired;
 import org.trails.security.TrailsSecurityException;
 import org.trails.security.annotation.RemoveRequiresAssociation;
-import org.trails.security.annotation.Restriction;
-import org.trails.security.annotation.Security;
+import org.trails.security.annotation.RemoveRequiresRole;
 import org.trails.security.annotation.UpdateRequiresAssociation;
-import org.trails.security.annotation.ViewRequiresAssociation;
+import org.trails.security.annotation.UpdateRequiresRole;
 
 public class TrailsSecurityInterceptor extends TrailsInterceptor {
 	private static final Log log = LogFactory.getLog(TrailsSecurityInterceptor.class);
 	
-	@Deprecated
-	/*
-	 * Deprecated in favor of the new security syntax in 1.1 
-	 */
 	private void checkRestriction(final Object entity, final RestrictionType restrictionType) {
 		log.info("Check restriction for entity : " + entity);
 		// Role-base restrictions override association based
@@ -42,26 +37,26 @@ public class TrailsSecurityInterceptor extends TrailsInterceptor {
 		if (context == null || context.getAuthentication() == null) return;
 		
 		boolean roleRestriction = false;
-		Security security = entity.getClass().getAnnotation(Security.class);
-		// View role restrictions are not checked here but with secure DetachedCriteria
-		if (security != null && !RestrictionType.VIEW.equals(restrictionType) ) {
-			Restriction[] restrictions = security.restrictions();
-			for (Restriction restriction : restrictions) {
-				if (restrictionType.equals(restriction.restrictionType()) ) {
-					GrantedAuthority[] authorities = context.getAuthentication().getAuthorities();
-					for (GrantedAuthority authority : authorities) if (restriction.requiredRole().equals(authority.getAuthority()) ) return;
-					roleRestriction = true;
-					break;
-				}
-			}
+
+		String requiredRole = null;
+		switch (restrictionType) {
+			case UPDATE : 
+				UpdateRequiresRole updateRestriction = entity.getClass().getAnnotation(UpdateRequiresRole.class );
+				if (updateRestriction != null) requiredRole = updateRestriction.value();
+			break;
+			case REMOVE : 
+				RemoveRequiresRole removeRestriction = entity.getClass().getAnnotation(RemoveRequiresRole.class );
+				if (removeRestriction != null) requiredRole = removeRestriction.value();
+			break;
+		}
+		if (requiredRole != null) {
+			GrantedAuthority[] authorities = context.getAuthentication().getAuthorities();
+			for (GrantedAuthority authority : authorities) if (requiredRole.equals(authority.getAuthority()) ) return;
+			roleRestriction = true;
 		}
 		
 		String ownerPropertyAssociation = null;
 		switch (restrictionType) {
-			case VIEW : 
-				ViewRequiresAssociation viewRestriction = entity.getClass().getAnnotation(ViewRequiresAssociation.class );
-				if (viewRestriction != null) ownerPropertyAssociation = viewRestriction.value();
-			break;
 			case UPDATE : 
 				UpdateRequiresAssociation updateRestriction = entity.getClass().getAnnotation(UpdateRequiresAssociation.class );
 				if (updateRestriction != null) ownerPropertyAssociation = updateRestriction.value();
@@ -125,23 +120,9 @@ public class TrailsSecurityInterceptor extends TrailsInterceptor {
 		catch(OgnlException e) {
 			throw new TrailsSecurityException("Could not evaluate the owner association", e);
 		}
-  	return false;
+  	return true;
   }
 
-  /* (non-Javadoc)
-   * @see org.hibernate.Interceptor#onLoad(java.lang.Object, java.io.Serializable, java.lang.Object[], java.lang.String[], org.hibernate.type.Type[])
-   */
-  public boolean onLoad(Object entity, Serializable id, Object[] state,
-      String[] propertyNames, Type[] types)
-  {
-		checkRestriction(entity, RestrictionType.VIEW);
-		/*
-		ViewRequiresAssociation ownerRestriction = entity.getClass().getAnnotation(ViewRequiresAssociation.class );
-		if (ownerRestriction != null) checkOwnershipRestriction(entity, ownerRestriction.value());
-		*/
-		return super.onLoad(entity, id, state, propertyNames, types);
-  }
-  
   /* (non-Javadoc)
    * @see org.hibernate.Interceptor#onFlushDirty(java.lang.Object, java.io.Serializable, java.lang.Object[], java.lang.Object[], java.lang.String[], org.hibernate.type.Type[])
    */

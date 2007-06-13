@@ -2,7 +2,6 @@ package org.trails.hibernate;
 
 import java.io.Serializable;
 
-import org.acegisecurity.AuthenticationCredentialsNotFoundException;
 import org.acegisecurity.context.SecurityContext;
 import org.acegisecurity.context.SecurityContextHolder;
 import org.hibernate.criterion.DetachedCriteria;

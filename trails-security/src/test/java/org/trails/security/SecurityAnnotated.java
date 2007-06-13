@@ -1,9 +1,9 @@
 package org.trails.security;
 
-import org.trails.security.annotation.Restriction;
-import org.trails.security.annotation.Security;
+import org.trails.security.annotation.UpdateRequiresRole;
+import org.trails.security.annotation.ViewRequiresRole;
 
-@Security(restrictions = {@Restriction(restrictionType = RestrictionType.UPDATE, requiredRole = "admin")})
+@UpdateRequiresRole("admin")
 public class SecurityAnnotated
 {
 	private String requiresAdmin;
@@ -14,7 +14,7 @@ public class SecurityAnnotated
 		// TODO Auto-generated constructor stub
 	}
 
-	@Security(restrictions = {@Restriction(restrictionType = RestrictionType.VIEW, requiredRole = "admin")})
+	@ViewRequiresRole("admin")
 	public String getRequiresAdmin()
 	{
 		return requiresAdmin;
