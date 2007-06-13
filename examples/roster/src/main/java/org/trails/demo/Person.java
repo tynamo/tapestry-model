@@ -7,6 +7,7 @@ import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.management.relation.Role;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
@@ -39,10 +40,6 @@ import org.trails.descriptor.BlobDescriptorExtension.RenderType;
 import org.trails.descriptor.annotation.BlobDescriptor;
 import org.trails.descriptor.annotation.ClassDescriptor;
 import org.trails.descriptor.annotation.PropertyDescriptor;
-import org.trails.security.RestrictionType;
-import org.trails.security.annotation.Restriction;
-import org.trails.security.annotation.Security;
-import org.trails.security.domain.Role;
 import org.trails.util.DatePattern;
 import org.trails.validation.ValidateUniqueness;
 
@@ -53,9 +50,8 @@ import org.trails.validation.ValidateUniqueness;
  */
 @Entity
 @Security(restrictions = {
-		@Restriction(restrictionType = RestrictionType.UPDATE, requiredRole = "ROLE_ANONYMOUS"),
-		@Restriction(restrictionType = RestrictionType.REMOVE, requiredRole = "ROLE_ANONYMOUS"),
-		@Restriction(restrictionType = RestrictionType.VIEW, requiredRole = "ROLE_ANONYMOUS") })
+		@Restriction(restrictionType = RestrictionType.UPDATE, requiredRole = "ROLE_MANAGER"),
+		@Restriction(restrictionType = RestrictionType.REMOVE, requiredRole = "ROLE_MANAGER") })
 @ValidateUniqueness(property = "emailAddress")
 @Inheritance(strategy = InheritanceType.JOINED)
 @MappedSuperclass
@@ -65,7 +61,7 @@ public class Person implements UserDetails, Cloneable, Serializable
 	private static final Log log = LogFactory.getLog(Person.class);
 
 	public enum ERole {
-		USER, ADMIN, SYSTEMADMIN
+		USER, ADMIN
 	}
 
 	public enum EApplicationRole {
@@ -90,7 +86,7 @@ public class Person implements UserDetails, Cloneable, Serializable
 
 	protected EApplicationRole eApplicationRole;
 
-	protected Set<Role> roles = new HashSet<Role>();
+	private Set<Role> roles = new HashSet<Role>();
 
 	protected boolean accountNonExpired = true;
 
@@ -397,7 +393,7 @@ public class Person implements UserDetails, Cloneable, Serializable
 	@PropertyDescriptor(hidden = true)
 	public GrantedAuthority[] getAuthorities()
 	{
-		log.debug("User " + getUsername() + " has roles " + roles);
+		log.debug("Person " + getUsername() + " has roles " + roles);
 		if (roles == null || roles.size() == 0)
 			throw new UsernameNotFoundException("User has no GrantedAuthority");
 		return roles.toArray(new GrantedAuthority[roles.size()]);

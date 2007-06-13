@@ -22,9 +22,8 @@ import org.trails.security.annotation.Security;
  */
 @Entity
 @Security(restrictions = {
-		@Restriction(restrictionType = RestrictionType.UPDATE, requiredRole = "ROLE_ANONYMOUS"),
-		@Restriction(restrictionType = RestrictionType.REMOVE, requiredRole = "ROLE_ANONYMOUS"),
-		@Restriction(restrictionType = RestrictionType.VIEW, requiredRole = "ROLE_ANONYMOUS") })
+		@Restriction(restrictionType = RestrictionType.UPDATE, requiredRole = "ROLE_MANAGER"),
+		@Restriction(restrictionType = RestrictionType.REMOVE, requiredRole = "ROLE_MANAGER") })
 @ClassDescriptor(hasCyclicRelationships = true)
 public class Director extends Person implements Cloneable, Serializable
 {

@@ -17,15 +17,14 @@ import org.trails.security.annotation.Restriction;
 import org.trails.security.annotation.Security;
 
 /**
- * A Coach belongs to an league and has a team
+ * A Officer belongs to an league
  * 
  * @author kenneth.colassi nhhockeyplayer@hotmail.com
  */
 @Entity
 @Security(restrictions = {
-		@Restriction(restrictionType = RestrictionType.UPDATE, requiredRole = "ROLE_ANONYMOUS"),
-		@Restriction(restrictionType = RestrictionType.REMOVE, requiredRole = "ROLE_ANONYMOUS"),
-		@Restriction(restrictionType = RestrictionType.VIEW, requiredRole = "ROLE_ANONYMOUS") })
+		@Restriction(restrictionType = RestrictionType.UPDATE, requiredRole = "ROLE_MANAGER"),
+		@Restriction(restrictionType = RestrictionType.REMOVE, requiredRole = "ROLE_MANAGER") })
 @ClassDescriptor(hasCyclicRelationships = true, hidden = true)
 public class Officer extends Person
 {

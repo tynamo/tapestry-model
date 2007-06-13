@@ -128,7 +128,7 @@ public class League implements Cloneable, Serializable {
 
 	private UploadableMedia photo = new UploadableMedia();
 	@BlobDescriptor(renderType = RenderType.IMAGE, contentDisposition = ContentDisposition.ATTACHMENT)
-	@PropertyDescriptor(summary = false, index = 3)
+	@PropertyDescriptor(summary = true, index = 3)
 	@OneToOne(cascade = CascadeType.ALL)
 	public UploadableMedia getPhoto() {
 		return photo;
