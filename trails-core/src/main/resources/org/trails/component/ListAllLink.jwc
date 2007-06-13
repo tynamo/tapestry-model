@@ -3,7 +3,7 @@
 	<description>Shows a link to the ListPage for a given type</description>
 	<parameter name="typeName" required="yes" cache="yes" deprecated="no"/>
 
-	<component id="link" type="ExternalLink" inherit-informal-parameters="no">
+	<component id="link" type="ExternalLink" inherit-informal-parameters="yes">
 		<binding name="page">listPageName</binding>
 		<binding name="parameters">type</binding>
 	</component>
