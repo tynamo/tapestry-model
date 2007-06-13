@@ -3,7 +3,7 @@
 	<description>Produces a link to an EditPage containing a new instance of specified type</description>
 	<parameter name="typeName" required="yes" cache="yes" deprecated="no"/>
 
-	<component id="link" type="DirectLink" inherit-informal-parameters="no">
+	<component id="link" type="DirectLink" inherit-informal-parameters="yes">
 		<binding name="listener">listeners.click</binding>
 	</component>
 	<component id="insert" type="Insert" inherit-informal-parameters="no">
