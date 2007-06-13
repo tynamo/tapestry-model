@@ -133,14 +133,9 @@
 	<!-- security service bean -->
 	<bean id="securityService" class="org.trails.security.TrailsSecurityService"/>
 
-    <bean id="SeedDataInitializer" class="org.trails.seeddata.SpringSeedEntityInitializer" lazy-init="true">
-        <property name="persistenceService" ref="persistenceService" />
-        <property name="descriptorService" ref="descriptorService" />
-    </bean>
-
-    <bean id="securityStartup" class="org.trails.security.SecurityStartup" lazy-init="true">
+	<bean id="SeedDataInitializer" class="org.trails.seeddata.SpringSeedEntityInitializer" init-method="init">
 		<property name="persistenceService" ref="persistenceService" />
-        <property name="seedDataInitializer" ref="SeedDataInitializer"/>
+		<property name="descriptorService" ref="descriptorService" />
 	</bean>
 
 	<bean id="validateUniqueAspect" class="org.trails.validation.ValidateUniqueAspect" factory-method="aspectOf">
