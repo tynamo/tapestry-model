@@ -40,11 +40,11 @@ import org.trails.descriptor.annotation.BlobDescriptor;
 import org.trails.descriptor.annotation.ClassDescriptor;
 import org.trails.descriptor.annotation.PropertyDescriptor;
 import org.trails.security.RestrictionType;
-import org.trails.security.annotation.Restriction;
-import org.trails.security.annotation.Security;
 import org.trails.security.domain.Role;
 import org.trails.util.DatePattern;
 import org.trails.validation.ValidateUniqueness;
+import org.trails.security.annotation.UpdateRequiresRole;
+import org.trails.security.annotation.RemoveRequiresRole;
 
 /**
  * A Person has a photo, eRole and application role
@@ -52,8 +52,8 @@ import org.trails.validation.ValidateUniqueness;
  * @author kenneth.colassi nhhockeyplayer@hotmail.com
  */
 @Entity
-@Security(restrictions = { @Restriction(restrictionType = RestrictionType.UPDATE, requiredRole = "ROLE_MANAGER"),
-		@Restriction(restrictionType = RestrictionType.REMOVE, requiredRole = "ROLE_MANAGER") })
+@RemoveRequiresRole("ROLE_MANAGER")
+@UpdateRequiresRole("ROLE_MANAGER")
 @ValidateUniqueness(property = "emailAddress")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 //@Inheritance(strategy = InheritanceType.JOINED)

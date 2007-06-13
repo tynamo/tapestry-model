@@ -8,8 +8,8 @@
 
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>roster</groupId>
-  <artifactId>${groupId}</artifactId>
+  <groupId>org.trailsframework.examples</groupId>
+  <artifactId>roster</artifactId>
   <packaging>war</packaging>
   <name>Classic Hibernate Roster Demo</name>
   <version>1.1-SNAPSHOT</version>

@@ -12,8 +12,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.trails.descriptor.annotation.ClassDescriptor;
 import org.trails.security.RestrictionType;
-import org.trails.security.annotation.Restriction;
-import org.trails.security.annotation.Security;
+import org.trails.security.annotation.UpdateRequiresRole;
+import org.trails.security.annotation.RemoveRequiresRole;
 
 /**
  * A Director belongs to an Organization
@@ -21,9 +21,8 @@ import org.trails.security.annotation.Security;
  * @author kenneth.colassi nhhockeyplayer@hotmail.com
  */
 @Entity
-@Security(restrictions =
-{ @Restriction(restrictionType = RestrictionType.UPDATE, requiredRole = "ROLE_MANAGER"),
-		@Restriction(restrictionType = RestrictionType.REMOVE, requiredRole = "ROLE_MANAGER") })
+@RemoveRequiresRole("ROLE_MANAGER")
+@UpdateRequiresRole("ROLE_MANAGER")
 @ClassDescriptor(hasCyclicRelationships = true)
 public class Director extends Person implements Cloneable, Serializable
 {

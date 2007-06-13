@@ -19,8 +19,8 @@ import org.trails.descriptor.annotation.ClassDescriptor;
 import org.trails.descriptor.annotation.Collection;
 import org.trails.descriptor.annotation.PropertyDescriptor;
 import org.trails.security.RestrictionType;
-import org.trails.security.annotation.Restriction;
-import org.trails.security.annotation.Security;
+import org.trails.security.annotation.UpdateRequiresRole;
+import org.trails.security.annotation.RemoveRequiresRole;
 
 /**
  * A player has a photo, team, clips and stats
@@ -28,9 +28,8 @@ import org.trails.security.annotation.Security;
  * @author kenneth.colassi nhhockeyplayer@hotmail.com
  */
 @Entity
-@Security(restrictions =
-{ @Restriction(restrictionType = RestrictionType.UPDATE, requiredRole = "ROLE_MANAGER"),
-		@Restriction(restrictionType = RestrictionType.REMOVE, requiredRole = "ROLE_MANAGER") })
+@RemoveRequiresRole("ROLE_MANAGER")
+@UpdateRequiresRole("ROLE_MANAGER")
 @ClassDescriptor(hasCyclicRelationships = true)
 public class Player extends Person
 {

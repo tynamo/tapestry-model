@@ -17,8 +17,8 @@ import org.hibernate.validator.NotNull;
 import org.trails.descriptor.annotation.Collection;
 import org.trails.descriptor.annotation.PropertyDescriptor;
 import org.trails.security.RestrictionType;
-import org.trails.security.annotation.Restriction;
-import org.trails.security.annotation.Security;
+import org.trails.security.annotation.UpdateRequiresRole;
+import org.trails.security.annotation.ViewRequiresRole;
 import org.trails.validation.ValidateUniqueness;
 
 import javax.persistence.*;
@@ -28,7 +28,7 @@ import java.util.Set;
 
 @Entity
 @ValidateUniqueness(property = "title")
-@Security(restrictions = {@Restriction(restrictionType = RestrictionType.UPDATE, requiredRole = "ROLE_MANAGER")})
+@UpdateRequiresRole("ROLE_MANAGER")
 public class Recipe
 {
     private Integer id;
@@ -65,7 +65,7 @@ public class Recipe
     }
 
     @PropertyDescriptor(index = 2)
-    @Security(restrictions = {@Restriction(restrictionType = RestrictionType.VIEW, requiredRole = "ROLE_MANAGER")})
+		@ViewRequiresRole("ROLE_MANAGER")
     public String getDescription()
     {
         return description;
