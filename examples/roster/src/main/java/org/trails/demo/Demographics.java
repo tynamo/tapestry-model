@@ -1,121 +1,153 @@
 package org.trails.demo;
 
+import java.io.Serializable;
+
+import javax.persistence.Embeddable;
+
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import javax.persistence.Embeddable;
-import java.io.Serializable;
-
 /**
  * Demographics
- *
+ * 
  * @author kenneth.colassi nhhockeyplayer@hotmail.com
  */
 @Embeddable
-public class Demographics implements Cloneable, Serializable {
+public class Demographics implements Cloneable, Serializable
+{
 	private static final Log log = LogFactory.getLog(Demographics.class);
 
 	private String address;
+
 	private String city;
+
 	private String state;
+
 	private String zip;
+
 	private String country;
+
 	private String dayPhone;
+
 	private String cellPhone;
+
 	private String website;
 
 	/**
 	 * Copy CTOR
 	 */
-	public Demographics(Demographics dto) {
-		try {
+	public Demographics(Demographics dto)
+	{
+		try
+		{
 			BeanUtils.copyProperties(this, dto);
-		} catch (Exception e) {
+		} catch (Exception e)
+		{
 			log.error(e.toString());
 			e.printStackTrace();
 		}
 	}
 
-	public Demographics() {
+	public Demographics()
+	{
 	}
 
-	public String getAddress() {
+	public String getAddress()
+	{
 		return address;
 	}
 
-	public String getCity() {
+	public String getCity()
+	{
 		return city;
 	}
 
-	public String getState() {
+	public String getState()
+	{
 		return state;
 	}
 
-	public String getZip() {
+	public String getZip()
+	{
 		return zip;
 	}
 
-	public String getCountry() {
+	public String getCountry()
+	{
 		return country;
 	}
 
-	public String getDayPhone() {
+	public String getDayPhone()
+	{
 		return dayPhone;
 	}
 
-	public String getCellPhone() {
+	public String getCellPhone()
+	{
 		return cellPhone;
 	}
 
-	public String getWebsite() {
+	public String getWebsite()
+	{
 		return website;
 	}
 
-	public void setAddress(String address) {
+	public void setAddress(String address)
+	{
 		this.address = address;
 	}
 
-	public void setCity(String city) {
+	public void setCity(String city)
+	{
 		this.city = city;
 	}
 
-	public void setState(String state) {
+	public void setState(String state)
+	{
 		this.state = state;
 	}
 
-	public void setZip(String zip) {
+	public void setZip(String zip)
+	{
 		this.zip = zip;
 	}
 
-	public void setCountry(String country) {
+	public void setCountry(String country)
+	{
 		this.country = country;
 	}
 
-	public void setDayPhone(String dayPhone) {
+	public void setDayPhone(String dayPhone)
+	{
 		this.dayPhone = dayPhone;
 	}
 
-	public void setCellPhone(String cellPhone) {
+	public void setCellPhone(String cellPhone)
+	{
 		this.cellPhone = cellPhone;
 	}
 
-	public void setWebsite(String website) {
+	public void setWebsite(String website)
+	{
 		this.website = website;
 	}
 
 	@Override
-	public String toString() {
+	public String toString()
+	{
 		return getCity() + ", " + getState();
 	}
 
 	@Override
-	public Demographics clone() {
+	public Demographics clone()
+	{
 		return new Demographics(this);
 	}
 
 	@Override
-	public int hashCode() {
+	public int hashCode()
+	{
 		final int PRIME = 31;
 		int result = 1;
 		result = PRIME * result + ((address == null) ? 0 : address.hashCode());
@@ -130,7 +162,8 @@ public class Demographics implements Cloneable, Serializable {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(Object obj)
+	{
 		if (this == obj)
 			return true;
 		if (obj == null)
@@ -138,42 +171,50 @@ public class Demographics implements Cloneable, Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		final Demographics other = (Demographics) obj;
-		if (address == null) {
+		if (address == null)
+		{
 			if (other.address != null)
 				return false;
 		} else if (!address.equals(other.address))
 			return false;
-		if (cellPhone == null) {
+		if (cellPhone == null)
+		{
 			if (other.cellPhone != null)
 				return false;
 		} else if (!cellPhone.equals(other.cellPhone))
 			return false;
-		if (city == null) {
+		if (city == null)
+		{
 			if (other.city != null)
 				return false;
 		} else if (!city.equals(other.city))
 			return false;
-		if (country == null) {
+		if (country == null)
+		{
 			if (other.country != null)
 				return false;
 		} else if (!country.equals(other.country))
 			return false;
-		if (dayPhone == null) {
+		if (dayPhone == null)
+		{
 			if (other.dayPhone != null)
 				return false;
 		} else if (!dayPhone.equals(other.dayPhone))
 			return false;
-		if (state == null) {
+		if (state == null)
+		{
 			if (other.state != null)
 				return false;
 		} else if (!state.equals(other.state))
 			return false;
-		if (website == null) {
+		if (website == null)
+		{
 			if (other.website != null)
 				return false;
 		} else if (!website.equals(other.website))
 			return false;
-		if (zip == null) {
+		if (zip == null)
+		{
 			if (other.zip != null)
 				return false;
 		} else if (!zip.equals(other.zip))

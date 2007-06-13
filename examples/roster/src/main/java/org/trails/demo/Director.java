@@ -21,8 +21,8 @@ import org.trails.security.annotation.Security;
  * @author kenneth.colassi nhhockeyplayer@hotmail.com
  */
 @Entity
-@Security(restrictions = {
-		@Restriction(restrictionType = RestrictionType.UPDATE, requiredRole = "ROLE_MANAGER"),
+@Security(restrictions =
+{ @Restriction(restrictionType = RestrictionType.UPDATE, requiredRole = "ROLE_MANAGER"),
 		@Restriction(restrictionType = RestrictionType.REMOVE, requiredRole = "ROLE_MANAGER") })
 @ClassDescriptor(hasCyclicRelationships = true)
 public class Director extends Person implements Cloneable, Serializable
@@ -55,7 +55,8 @@ public class Director extends Person implements Cloneable, Serializable
 	}
 
 	@OneToOne(mappedBy = "director")
-	@JoinTable(name = "join_table_Organization_Director", joinColumns = @JoinColumn(name = "organization_fk", insertable = true, updatable = true, nullable = true), inverseJoinColumns = { @JoinColumn(name = "director_fk", insertable = true, updatable = true, nullable = true) })
+	@JoinTable(name = "join_table_Organization_Director", joinColumns = @JoinColumn(name = "organization_fk", insertable = true, updatable = true, nullable = true), inverseJoinColumns =
+	{ @JoinColumn(name = "director_fk", insertable = true, updatable = true, nullable = true) })
 	public Organization getOrganization()
 	{
 		return organization;

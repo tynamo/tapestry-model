@@ -22,15 +22,16 @@ import org.trails.security.annotation.Security;
  * @author kenneth.colassi nhhockeyplayer@hotmail.com
  */
 @Entity
-@Security(restrictions = {
-		@Restriction(restrictionType = RestrictionType.UPDATE, requiredRole = "ROLE_MANAGER"),
+@Security(restrictions =
+{ @Restriction(restrictionType = RestrictionType.UPDATE, requiredRole = "ROLE_MANAGER"),
 		@Restriction(restrictionType = RestrictionType.REMOVE, requiredRole = "ROLE_MANAGER") })
 @ClassDescriptor(hasCyclicRelationships = true, hidden = true)
 public class Officer extends Person
 {
 	private static final Log log = LogFactory.getLog(Officer.class);
 
-	protected enum EOfficerRole {
+	protected enum EOfficerRole
+	{
 		COMMISSIONER, SECRETARY, TREASURER, OFFICIALS, MEDIA, MARKETING
 	}
 

@@ -40,6 +40,9 @@ import org.trails.descriptor.BlobDescriptorExtension.RenderType;
 import org.trails.descriptor.annotation.BlobDescriptor;
 import org.trails.descriptor.annotation.ClassDescriptor;
 import org.trails.descriptor.annotation.PropertyDescriptor;
+import org.trails.security.RestrictionType;
+import org.trails.security.annotation.Restriction;
+import org.trails.security.annotation.Security;
 import org.trails.util.DatePattern;
 import org.trails.validation.ValidateUniqueness;
 
@@ -49,8 +52,8 @@ import org.trails.validation.ValidateUniqueness;
  * @author kenneth.colassi nhhockeyplayer@hotmail.com
  */
 @Entity
-@Security(restrictions = {
-		@Restriction(restrictionType = RestrictionType.UPDATE, requiredRole = "ROLE_MANAGER"),
+@Security(restrictions =
+{ @Restriction(restrictionType = RestrictionType.UPDATE, requiredRole = "ROLE_MANAGER"),
 		@Restriction(restrictionType = RestrictionType.REMOVE, requiredRole = "ROLE_MANAGER") })
 @ValidateUniqueness(property = "emailAddress")
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -60,11 +63,13 @@ public class Person implements UserDetails, Cloneable, Serializable
 {
 	private static final Log log = LogFactory.getLog(Person.class);
 
-	public enum ERole {
+	public enum ERole
+	{
 		USER, ADMIN
 	}
 
-	public enum EApplicationRole {
+	public enum EApplicationRole
+	{
 		MANAGER, DIRECTOR, SALES, MARKETING
 	}
 
@@ -96,11 +101,9 @@ public class Person implements UserDetails, Cloneable, Serializable
 
 	protected boolean enabled = true;
 
-	protected Long created = new Long(GregorianCalendar.getInstance()
-			.getTimeInMillis());
+	protected Long created = new Long(GregorianCalendar.getInstance().getTimeInMillis());
 
-	protected Long accessed = new Long(GregorianCalendar.getInstance()
-			.getTimeInMillis());
+	protected Long accessed = new Long(GregorianCalendar.getInstance().getTimeInMillis());
 
 	/**
 	 * CTOR
@@ -400,7 +403,9 @@ public class Person implements UserDetails, Cloneable, Serializable
 	}
 
 	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "join_table_person_role", joinColumns = { @JoinColumn(name = "person_fk") }, inverseJoinColumns = { @JoinColumn(name = "role_fk") })
+	@JoinTable(name = "join_table_person_role", joinColumns =
+	{ @JoinColumn(name = "person_fk") }, inverseJoinColumns =
+	{ @JoinColumn(name = "role_fk") })
 	public Set<Role> getRoles()
 	{
 		return roles;

@@ -1,5 +1,26 @@
 package org.trails.demo;
 
+import java.io.Serializable;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.OrderBy;
+import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.Transient;
+
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -11,49 +32,49 @@ import org.trails.descriptor.annotation.Collection;
 import org.trails.descriptor.annotation.PropertyDescriptor;
 import org.trails.util.DatePattern;
 
-import javax.persistence.*;
-import java.io.Serializable;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.HashSet;
-import java.util.Set;
-
-
 /**
  * A Team has players, coaches, clips and stats
- *
- * @author kenneth.colassi    nhhockeyplayer@hotmail.com
+ * 
+ * @author kenneth.colassi nhhockeyplayer@hotmail.com
  */
 @Entity
-@ClassDescriptor(hasCyclicRelationships=true)
-public class Team implements Cloneable, Serializable {
+@ClassDescriptor(hasCyclicRelationships = true)
+public class Team implements Cloneable, Serializable
+{
 	private static final Log log = LogFactory.getLog(Team.class);
 
-	public enum ESeason {
+	public enum ESeason
+	{
 		WINTER, SPRING, SUMMER, FALL
 	}
 
-	public enum EGender {
+	public enum EGender
+	{
 		MALE, FEMALE
 	}
 
-	public enum EDivision {
+	public enum EDivision
+	{
 		I, II, III, IV
 	}
 
-	public enum ELevel {
+	public enum ELevel
+	{
 		AAA, AA, A, B, C, D
 	}
 
-	public enum EAge {
+	public enum EAge
+	{
 		U19, U18, U17, U16, U15, U14, U12, U10, U8
 	}
 
-	public enum EGroupClassification {
+	public enum EGroupClassification
+	{
 		Midget, Bantam, Peewee, Squirt, Mite
 	}
 
-	public enum ETier {
+	public enum ETier
+	{
 		I, II, III, IV
 	}
 
@@ -81,22 +102,24 @@ public class Team implements Cloneable, Serializable {
 
 	private TeamYear teamYear = null;
 
-	private Long created = new Long(GregorianCalendar.getInstance()
-			.getTimeInMillis());
+	private Long created = new Long(GregorianCalendar.getInstance().getTimeInMillis());
 
-	private Long accessed = new Long(GregorianCalendar.getInstance()
-			.getTimeInMillis());
+	private Long accessed = new Long(GregorianCalendar.getInstance().getTimeInMillis());
 
 	/**
 	 * CTOR
 	 */
-	public Team() {
+	public Team()
+	{
 	}
 
-	public Team(Team dto) {
-		try {
+	public Team(Team dto)
+	{
+		try
+		{
 			BeanUtils.copyProperties(this, dto);
-		} catch (Exception e) {
+		} catch (Exception e)
+		{
 			log.error(e.toString());
 			e.printStackTrace();
 		}
@@ -104,7 +127,7 @@ public class Team implements Cloneable, Serializable {
 
 	/**
 	 * Accessor for id
-	 *
+	 * 
 	 * @return Integer
 	 * @hibernate.id generator-class="increment" unsaved-value="-1"
 	 *               type="java.lang.Integer" unique="true" insert="true"
@@ -112,13 +135,15 @@ public class Team implements Cloneable, Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@PropertyDescriptor(readOnly = true, summary = true, index = 0)
-	public Integer getId() {
+	public Integer getId()
+	{
 		return id;
 	}
 
 	@ManyToOne
 	@JoinColumn(name = "team_organization_fk", insertable = false, updatable = true, nullable = true)
-	public Organization getOrganization() {
+	public Organization getOrganization()
+	{
 		return organization;
 	}
 
@@ -127,43 +152,50 @@ public class Team implements Cloneable, Serializable {
 	@Collection(child = false, inverse = "team")
 	@PropertyDescriptor(readOnly = false, searchable = true)
 	@OrderBy("lastName")
-	public Set<Coach> getCoaches() {
+	public Set<Coach> getCoaches()
+	{
 		return coaches;
 	}
 
 	@Enumerated(value = EnumType.STRING)
 	@PropertyDescriptor(summary = true)
-	public EGender getGender() {
+	public EGender getGender()
+	{
 		return gender;
 	}
 
 	@Enumerated(value = EnumType.STRING)
 	@PropertyDescriptor(summary = true)
-	public EDivision getDivision() {
+	public EDivision getDivision()
+	{
 		return division;
 	}
 
 	@Enumerated(value = EnumType.STRING)
 	@PropertyDescriptor(summary = true)
-	public ELevel getLevel() {
+	public ELevel getLevel()
+	{
 		return level;
 	}
 
 	@Enumerated(value = EnumType.STRING)
 	@PropertyDescriptor(summary = true)
-	public EAge getAge() {
+	public EAge getAge()
+	{
 		return age;
 	}
 
 	@Enumerated(value = EnumType.STRING)
 	@PropertyDescriptor(summary = true)
-	public EGroupClassification getGroupClassification() {
+	public EGroupClassification getGroupClassification()
+	{
 		return groupClassification;
 	}
 
 	@Enumerated(value = EnumType.STRING)
 	@PropertyDescriptor(summary = true)
-	public ETier getTier() {
+	public ETier getTier()
+	{
 		return tier;
 	}
 
@@ -172,7 +204,8 @@ public class Team implements Cloneable, Serializable {
 	@Collection(child = true, inverse = "team")
 	@PropertyDescriptor(searchable = false, readOnly = false)
 	@OrderBy("name")
-	public Set<UploadableMedia> getClips() {
+	public Set<UploadableMedia> getClips()
+	{
 		return clips;
 	}
 
@@ -181,7 +214,8 @@ public class Team implements Cloneable, Serializable {
 	@Collection(child = false, inverse = "team")
 	@PropertyDescriptor(readOnly = false, searchable = true)
 	@OrderBy("lastName")
-	public Set<Player> getPlayers() {
+	public Set<Player> getPlayers()
+	{
 		return players;
 	}
 
@@ -190,7 +224,8 @@ public class Team implements Cloneable, Serializable {
 	@BlobDescriptor(renderType = RenderType.IMAGE, contentDisposition = ContentDisposition.ATTACHMENT)
 	@PropertyDescriptor(summary = true, index = 2)
 	@OneToOne(cascade = CascadeType.ALL)
-	public UploadableMedia getPhoto() {
+	public UploadableMedia getPhoto()
+	{
 		return photo;
 	}
 
@@ -198,23 +233,27 @@ public class Team implements Cloneable, Serializable {
 	@JoinColumn(name = "team_teamyear_fk")
 	@PrimaryKeyJoinColumn
 	@PropertyDescriptor(index = 1)
-	public TeamYear getTeamYear() {
+	public TeamYear getTeamYear()
+	{
 		return teamYear;
 	}
 
 	@PropertyDescriptor(hidden = true, summary = false, searchable = false)
-	public Long getCreated() {
+	public Long getCreated()
+	{
 		return created;
 	}
 
 	@PropertyDescriptor(hidden = true, summary = false, searchable = false)
-	public Long getAccessed() {
+	public Long getAccessed()
+	{
 		return accessed;
 	}
 
 	@Transient
 	@PropertyDescriptor(hidden = true, summary = false, searchable = false)
-	public String getCreatedAsString() {
+	public String getCreatedAsString()
+	{
 		Calendar cal = new GregorianCalendar();
 		cal.setTimeInMillis(created.longValue());
 		return DatePattern.sdf.format(cal.getTime());
@@ -222,75 +261,92 @@ public class Team implements Cloneable, Serializable {
 
 	@Transient
 	@PropertyDescriptor(hidden = true, summary = false, searchable = false)
-	public String getAccessedAsString() {
+	public String getAccessedAsString()
+	{
 		Calendar cal = new GregorianCalendar();
 		cal.setTimeInMillis(accessed.longValue());
 		return DatePattern.sdf.format(cal.getTime());
 	}
 
-	public void setId(Integer id) {
+	public void setId(Integer id)
+	{
 		this.id = id;
 	}
 
-	public void setGender(EGender gender) {
+	public void setGender(EGender gender)
+	{
 		this.gender = gender;
 	}
 
-	public void setOrganization(Organization organization) {
+	public void setOrganization(Organization organization)
+	{
 		this.organization = organization;
 	}
 
-	public void setCoaches(Set<Coach> coaches) {
+	public void setCoaches(Set<Coach> coaches)
+	{
 		this.coaches = coaches;
 	}
 
-	public void setDivision(EDivision division) {
+	public void setDivision(EDivision division)
+	{
 		this.division = division;
 	}
 
-	public void setLevel(ELevel level) {
+	public void setLevel(ELevel level)
+	{
 		this.level = level;
 	}
 
-	public void setAge(EAge age) {
+	public void setAge(EAge age)
+	{
 		this.age = age;
 	}
 
-	public void setGroupClassification(EGroupClassification group) {
+	public void setGroupClassification(EGroupClassification group)
+	{
 		this.groupClassification = group;
 	}
 
-	public void setTier(ETier tier) {
+	public void setTier(ETier tier)
+	{
 		this.tier = tier;
 	}
 
-	public void setClips(Set<UploadableMedia> clips) {
+	public void setClips(Set<UploadableMedia> clips)
+	{
 		this.clips = clips;
 	}
 
-	public void setPlayers(Set<Player> players) {
+	public void setPlayers(Set<Player> players)
+	{
 		this.players = players;
 	}
 
-	public void setPhoto(UploadableMedia photo) {
+	public void setPhoto(UploadableMedia photo)
+	{
 		this.photo = photo;
 	}
 
-	public void setTeamYear(TeamYear teamYear) {
+	public void setTeamYear(TeamYear teamYear)
+	{
 		this.teamYear = teamYear;
 	}
 
-	public void setCreated(Long created) {
+	public void setCreated(Long created)
+	{
 		this.created = created;
 	}
 
-	public void setAccessed(Long accessed) {
+	public void setAccessed(Long accessed)
+	{
 		this.accessed = accessed;
 	}
 
 	@Transient
 	@PropertyDescriptor(hidden = true, summary = false, searchable = false)
-	public void setCreatedAsString(String value) throws Exception {
+	public void setCreatedAsString(String value) throws Exception
+	{
 		Calendar cal = new GregorianCalendar();
 		cal.setTimeInMillis(DatePattern.sdf.parse(value).getTime());
 		this.created = new Long(cal.getTimeInMillis());
@@ -298,30 +354,33 @@ public class Team implements Cloneable, Serializable {
 
 	@Transient
 	@PropertyDescriptor(hidden = true, summary = false, searchable = false)
-	public void setAccessedAsString(String value) throws Exception {
+	public void setAccessedAsString(String value) throws Exception
+	{
 		Calendar cal = new GregorianCalendar();
 		cal.setTimeInMillis(DatePattern.sdf.parse(value).getTime());
 		this.accessed = new Long(cal.getTimeInMillis());
 	}
 
 	@Override
-	public String toString() {
+	public String toString()
+	{
 		String result = "";
 		if (organization == null)
 			return result;
 		else
-			return getOrganization().getDemographics().getCity() + ","
-					+ getOrganization().getDemographics().getState() + " "
-					+ getGender().toString() + " " + getAge().toString();
+			return getOrganization().getDemographics().getCity() + "," + getOrganization().getDemographics().getState()
+					+ " " + getGender().toString() + " " + getAge().toString();
 	}
 
 	@Override
-	public Team clone() {
+	public Team clone()
+	{
 		return new Team(this);
 	}
 
 	@Override
-	public int hashCode() {
+	public int hashCode()
+	{
 		final int PRIME = 31;
 		int result = 1;
 		result = PRIME * result + ((getId() == null) ? 0 : getId().hashCode());
@@ -329,7 +388,8 @@ public class Team implements Cloneable, Serializable {
 	}
 
 	@Override
-	public boolean equals(Object rhs) {
+	public boolean equals(Object rhs)
+	{
 		if (this == rhs)
 			return true;
 		if (rhs == null)
@@ -337,7 +397,8 @@ public class Team implements Cloneable, Serializable {
 		if (!(rhs instanceof Team))
 			return false;
 		final Team castedObject = (Team) rhs;
-		if (getId() == null) {
+		if (getId() == null)
+		{
 			if (castedObject.getId() != null)
 				return false;
 		} else if (!getId().equals(castedObject.getId()))
