@@ -4,4 +4,6 @@
 	<property name="instances" persist="session"/>
 	<property name="object"/>
 
+	<bean name="evenOdd" class="org.apache.tapestry.bean.EvenOdd"/>
+
 </page-specification>

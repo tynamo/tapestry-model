@@ -4,10 +4,10 @@
 		<source>src/main/java/MyDomainObject.java</source>
 	</sources>
 	<resources>
-		<resource>src/main/webapp/style/default.css</resource>
-		<resource>src/main/webapp/style/displaytag.css</resource>
-		<resource>src/main/webapp/style/messages.css</resource>
 		<resource filtered="false">src/main/webapp/images/iconWarning.gif</resource>
+		<resource filtered="false">src/main/webapp/images/aquadot.jpg</resource>
+		<resource filtered="false">src/main/webapp/images/fieldbg.gif</resource>
+
 		<resource>src/main/webapp/WEB-INF/trails.application</resource>
 		<resource>src/main/webapp/WEB-INF/Border.html</resource>
 		<resource>src/main/webapp/WEB-INF/Border.jwc</resource>
@@ -25,7 +25,7 @@
 		<resource>src/main/webapp/WEB-INF/trails_pt.properties</resource>
 		<resource>src/main/webapp/WEB-INF/trails_es_AR.properties</resource>
 		<resource>src/main/webapp/WEB-INF/web.xml</resource>
-		<resource>src/main/resources/applicationContext.xml</resource>
+		<resource filtered="false">src/main/resources/applicationContext.xml</resource>
 		<resource>src/main/resources/hibernate.cfg.xml</resource>
 		<resource>src/main/resources/hibernate.properties</resource>
 		<resource>src/main/resources/log4j.properties</resource>
@@ -34,8 +34,35 @@
 		<resource>src/main/resources/messages_es_AR.properties</resource>
 		<resource>src/main/resources/messages_pt.properties</resource>
 		<resource>src/main/resources/messages_de.properties</resource>
+
+		<resource filtered="false">src/main/webapp/styles/tapestry/images/bg.jpg</resource>
+		<resource filtered="false">src/main/webapp/styles/tapestry/images/breadcrumbs.jpg</resource>
+		<resource filtered="false">src/main/webapp/styles/tapestry/images/collapsed.gif</resource>
+		<resource filtered="false">src/main/webapp/styles/tapestry/images/expanded.gif</resource>
+		<resource filtered="false">src/main/webapp/styles/tapestry/images/h3.jpg</resource>
+		<resource filtered="false">src/main/webapp/styles/tapestry/images/h5.jpg</resource>
+		<resource filtered="false">src/main/webapp/styles/tapestry/images/icon_error_sml.gif</resource>
+		<resource filtered="false">src/main/webapp/styles/tapestry/images/icon_info_sml.gif</resource>
+		<resource filtered="false">src/main/webapp/styles/tapestry/images/icon_success_sml.gif</resource>
+		<resource filtered="false">src/main/webapp/styles/tapestry/images/icon_warning_sml.gif</resource>
+		<resource filtered="false">src/main/webapp/styles/tapestry/images/trails-header94.jpg</resource>
+		<resource filtered="false">src/main/webapp/styles/tapestry/images/thbg.jpg</resource>
+		<resource filtered="false">src/main/webapp/styles/tapestry/images/add.png</resource>
+		<resource filtered="false">src/main/webapp/styles/tapestry/images/magnifier.png</resource>
+		<resource filtered="false">src/main/webapp/styles/tapestry/images/table.png</resource>
+		<resource filtered="false">src/main/webapp/styles/tapestry/tools.css</resource>
+		<resource filtered="false">src/main/webapp/styles/tapestry/theme.css</resource>
+		<resource filtered="false">src/main/webapp/styles/tapestry/layout.css</resource>
+		<resource filtered="false">src/main/webapp/styles/tapestry/typo.css</resource>
+		<resource filtered="false">src/main/webapp/styles/tapestry/layout-nav.css</resource>
+		<resource filtered="false">src/main/webapp/styles/tapestry/table.css</resource>
+		<resource filtered="false">src/main/webapp/styles/tapestry/iepatches.css</resource>
+		<resource filtered="false">src/main/webapp/styles/tapestry/forms.css</resource>
+
 	</resources>
+
 	<testSources>
 		<source>src/test/java/AppTest.java</source>
 	</testSources>
+
 </archetype>

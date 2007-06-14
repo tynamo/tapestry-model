@@ -2,4 +2,10 @@
 <component-specification class="org.trails.component.search.NumberSearchField" allow-body="yes" allow-informal-parameters="yes" deprecated="no">
 	<description>This component extends Form and renders a form to search for a domain object</description>
 
+	<component id="textField" type="TextField" inherit-informal-parameters="yes">
+		<binding name="value" value="value"/>
+		<binding name="validator" value="validatorTranslatorService.getValidator(propertyDescriptor)"/>
+		<binding name="translator" value="validatorTranslatorService.getTranslator(propertyDescriptor)"/>
+	</component>
+
 </component-specification>

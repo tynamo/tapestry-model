@@ -5,4 +5,6 @@
 	<property name="object"/>
 	<property name="column"/>
 
+	<bean name="evenOdd" class="org.apache.tapestry.bean.EvenOdd"/>
+
 </page-specification>
