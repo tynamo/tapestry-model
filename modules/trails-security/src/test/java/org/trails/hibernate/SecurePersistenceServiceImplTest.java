@@ -25,7 +25,7 @@ public class SecurePersistenceServiceImplTest extends MockableTransactionalTestC
 		seedDataInitializer.init();
 	}
 	
-	public void testSelfAssociationRestriction() {
+	public void testSelfAssociationRestrictionOnView() {
   	SecurityContext securityContext = new SecurityContextImpl();
   	GrantedAuthority[] authorities = new GrantedAuthority[]{new GrantedAuthorityImpl("ROLE_USER")};
   	Authentication authentication = new TestingAuthenticationToken("username1", "password", authorities);
@@ -48,6 +48,21 @@ public class SecurePersistenceServiceImplTest extends MockableTransactionalTestC
   	SecurityContextHolder.setContext(securityContext);
     users = persistenceService.getAllInstances(User.class);
   	assertEquals(0,users.size());
+	}
+	
+	public void testRoleRestrictionOnView() {
+		List<User> users = persistenceService.getAllInstances(User.class);
+    int numberOfUsers = users.size();
+
+		SecurityContext securityContext = new SecurityContextImpl();
+  	GrantedAuthority[] authorities = new GrantedAuthority[]{new GrantedAuthorityImpl("ROLE_MANAGER")};
+  	Authentication authentication = new TestingAuthenticationToken("username1", "password", authorities);
+  	securityContext.setAuthentication(authentication);
+  	SecurityContextHolder.setContext(securityContext);
+    users = persistenceService.getAllInstances(User.class);
+    // Requires at least one user to be seeded automatically
+    assertTrue(users.size() > 0);
+		assertEquals(numberOfUsers, users.size());
 	}
 
 	public void onTearDownAfterTransaction() {
