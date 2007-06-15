@@ -132,8 +132,14 @@ public abstract class MimedImage extends Image
 		if (contentType == null)
 		{
 			writer.attribute("src", imageAsset.buildURL());
-		} else if (contentType.equalsIgnoreCase("image/pjpeg")
-			|| contentType.equalsIgnoreCase("image/gif"))
+		} else if (contentType.equalsIgnoreCase("image/jpeg")
+				|| contentType.equalsIgnoreCase("image/pjpeg")
+				|| contentType.equalsIgnoreCase("image/tiff")
+				|| contentType.equalsIgnoreCase("image/bmp")
+				|| contentType.equalsIgnoreCase("video/mpeg")
+				|| contentType.equalsIgnoreCase("video/quicktime")
+				|| contentType.equalsIgnoreCase("video/x-msvideo")
+				|| contentType.equalsIgnoreCase("image/gif"))
 		{
 			writer.attribute("src", imageAsset.buildURL());
 		} else
