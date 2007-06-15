@@ -13,22 +13,15 @@
  */
 package org.trails.test.functional;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.Properties;
-
 import com.gargoylesoftware.htmlunit.WebClient;
-import com.gargoylesoftware.htmlunit.html.HtmlDivision;
-import com.gargoylesoftware.htmlunit.html.HtmlForm;
-import com.gargoylesoftware.htmlunit.html.HtmlInput;
-import com.gargoylesoftware.htmlunit.html.HtmlPage;
-import com.gargoylesoftware.htmlunit.html.HtmlSpan;
-import com.gargoylesoftware.htmlunit.html.HtmlSubmitInput;
-import com.gargoylesoftware.htmlunit.html.HtmlTextArea;
-import com.gargoylesoftware.htmlunit.html.HtmlTextInput;
+import com.gargoylesoftware.htmlunit.html.*;
 import com.gargoylesoftware.htmlunit.html.xpath.HtmlUnitXPath;
 import junit.framework.TestCase;
 import org.jaxen.JaxenException;
+
+import java.io.IOException;
+import java.net.URL;
+import java.util.Properties;
 
 /**
  * @author fus8882
@@ -77,15 +70,8 @@ public class FunctionalTest extends TestCase
 
 	protected String getId(String idField, HtmlPage savedCategoryPage) throws JaxenException
 	{
-		HtmlSpan span = (HtmlSpan) new HtmlUnitXPath("//span/preceding-sibling::label[contains(text(), '" + idField + "')]/following-sibling::span").selectSingleNode(savedCategoryPage);
-		return span.asText();
-	}
-
-	protected HtmlTextInput getTextInputForField(HtmlPage newProductPage, String field) throws JaxenException
-	{
-		HtmlTextInput input = (HtmlTextInput)
-			new HtmlUnitXPath("//span/preceding-sibling::label[contains(text(), '" + field + "')]/following-sibling::span/input").selectSingleNode(newProductPage);
-		return input;
+		HtmlListItem span = (HtmlListItem) new HtmlUnitXPath("//li[contains(., '" + idField + "')]").selectSingleNode(savedCategoryPage);
+		return span.asText().replaceAll(idField, "").trim();
 	}
 
 	protected void assertXPathPresent(HtmlPage page, String xpath) throws Exception
@@ -102,14 +88,20 @@ public class FunctionalTest extends TestCase
 	protected HtmlTextArea getTextAreaByName(HtmlPage page, String name) throws JaxenException
 	{
 		HtmlTextArea textArea = (HtmlTextArea)
-			new HtmlUnitXPath("//span/preceding-sibling::label[contains(text(), '" + name + "')]/following-sibling::span/textarea").selectSingleNode(page);
+			new HtmlUnitXPath("//textarea/preceding-sibling::label[contains(text(), '" + name + "')]/following-sibling::textarea").selectSingleNode(page);
 		return textArea;
 	}
 
 	protected HtmlInput getInputByName(HtmlPage page, String name) throws JaxenException
 	{
 		return (HtmlInput)
-			new HtmlUnitXPath("//span/preceding-sibling::label[contains(text(), '" + name + "')]/following-sibling::span/input").selectSingleNode(page);
+			new HtmlUnitXPath("//input/preceding-sibling::label[contains(text(), '" + name + "')]/following-sibling::input").selectSingleNode(page);
+	}
+
+	protected HtmlSelect getSelectByName(HtmlPage page, String name) throws JaxenException
+	{
+		return (HtmlSelect)
+			new HtmlUnitXPath("//select/preceding-sibling::label[contains(text(),  '" + name + "')]/following-sibling::select").selectSingleNode(page);
 	}
 
 }
