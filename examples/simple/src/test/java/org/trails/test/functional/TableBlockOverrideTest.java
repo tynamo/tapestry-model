@@ -9,7 +9,6 @@ public class TableBlockOverrideTest extends FunctionalTest
 	{
 		HtmlPage listThingsPage = clickLinkOnPage(startPage, "List Things");
 		HtmlPage newThingPage = clickLinkOnPage(listThingsPage, "New Thing");
-		System.out.println(newThingPage.asXml());
 		HtmlForm newThingForm = getFirstForm(newThingPage);
 		getInputByName(newThingPage, "Name").setValueAttribute("blah");
 		getInputByName(newThingPage, "Id").setValueAttribute("1");

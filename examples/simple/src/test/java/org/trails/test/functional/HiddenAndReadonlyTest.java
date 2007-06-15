@@ -31,7 +31,7 @@ public class HiddenAndReadonlyTest extends FunctionalTest
 		HtmlPage newThing2Page = clickLinkOnPage(listThing2sPage, "New Thing2");
 		assertNull("no hidden editor", new HtmlUnitXPath("//label[text() = 'Hidden']").selectSingleNode(newThing2Page));
 		assertXPathPresent(newThing2Page,
-			"//span/preceding-sibling::label[contains(text(), 'Read Only')]/following-sibling::span[contains(text(), 'foo')]");
+			"//li[contains(text(), 'foo')]//label[contains(text(), 'Read Only')]");
 
 	}
 }

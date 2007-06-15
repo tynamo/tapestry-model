@@ -14,8 +14,6 @@ public class CarTest extends FunctionalTest
 		HtmlPage listMakesPage = clickLinkOnPage(startPage, "List Makes");
 		HtmlPage newMakePage = clickLinkOnPage(listMakesPage, "New Make");
 
-		HtmlUnitXPath xpath = new HtmlUnitXPath("//span/preceding-sibling::label[contains(text(), 'Name')]/following-sibling::span/input");
-		List nodes = xpath.selectNodes(newMakePage);
 		getInputByName(newMakePage, "Name").setValueAttribute("Honda");
 
 		listMakesPage = clickButton(newMakePage, "Ok");
@@ -23,8 +21,7 @@ public class CarTest extends FunctionalTest
 		HtmlPage listCarsPage = clickLinkOnPage(startPage, "List Cars");
 		HtmlPage newCarPage = clickLinkOnPage(listCarsPage, "New Car");
 		getInputByName(newCarPage, "Name").setValueAttribute("Accord");
-		HtmlSelect makeSelect = (HtmlSelect) new HtmlUnitXPath("//span/preceding-sibling::label[contains(text(),  'Make')]/following-sibling::span/select")
-			.selectSingleNode(newCarPage);
+		HtmlSelect makeSelect = getSelectByName(newCarPage, "Make");
 		makeSelect.setSelectedAttribute("1", true);
 		listCarsPage = clickButton(newCarPage, "Ok");
 		startPage = clickLinkOnPage(listCarsPage, "Home");

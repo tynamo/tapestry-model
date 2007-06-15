@@ -39,12 +39,10 @@ public class EditCategoryTest extends FunctionalTest
 		HtmlSubmitInput saveButton = (HtmlSubmitInput) newCategoryForm
 			.getInputByValue("Apply");
 		newCategoryPage = (HtmlPage) saveButton.click();
-		System.out.println(newCategoryPage.asXml());
 		HtmlDivision errorDiv = getErrorDiv(newCategoryPage);
 		assertNotNull("found the error div", errorDiv);
 		newCategoryForm = getFirstForm(newCategoryPage);
-		HtmlTextArea textArea = getTextAreaByName(newCategoryPage,
-			"Description");
+		HtmlTextArea textArea = getTextAreaByName(newCategoryPage,"Description");
 		textArea.setText("a description");
 		newCategoryPage = clickButton(newCategoryForm, "Apply");
 		assertNull("error div", getErrorDiv(newCategoryPage));
@@ -116,13 +114,11 @@ public class EditCategoryTest extends FunctionalTest
 	{
 		webClient.setJavaScriptEnabled(false);
 		HtmlForm newCategoryForm = goToNewCategoryForm();
-		HtmlTextArea textArea = (HtmlTextArea) new HtmlUnitXPath(
-			"//span[contains(preceding-sibling::label, 'Description')]/textarea")
-			.selectSingleNode(newCategoryForm.getPage());
+        HtmlTextArea textArea = getTextAreaByName(newCategoryForm.getPage(), "Description");
 		textArea.setText("howdya doo");
 		HtmlPage categoryPage = clickButton(newCategoryForm, "Apply");
 		HtmlPage newProductPage = this.clickButton((HtmlForm) categoryPage.getForms().get(0), "Add New...");
-		HtmlTextInput input = getTextInputForField(newProductPage, "Name");
+		HtmlTextInput input = (HtmlTextInput) getInputByName(newProductPage, "Name");
 		input.setValueAttribute("a new product");
 
 		categoryPage = clickButton(newProductPage, "Ok");

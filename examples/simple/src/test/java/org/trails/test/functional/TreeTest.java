@@ -17,22 +17,20 @@ public class TreeTest extends FunctionalTest
 	{
 		HtmlPage listTreeNodesPage = clickLinkOnPage(startPage, "List Tree Nodes");
 		HtmlPage newTreeNodePage = clickLinkOnPage(listTreeNodesPage, "New Tree Node");
-		HtmlTextInput input = getTextInputForField(newTreeNodePage, "Name");
+		HtmlTextInput input = (HtmlTextInput) getInputByName(newTreeNodePage, "Name");
 		input.setValueAttribute("one");
 		newTreeNodePage = clickButton(newTreeNodePage, "Apply");
 		assertNotNull(getId("Id", newTreeNodePage));
 		listTreeNodesPage = clickButton(newTreeNodePage, "Ok");
 		newTreeNodePage = clickLinkOnPage(listTreeNodesPage, "New Tree Node");
-		input = getTextInputForField(newTreeNodePage, "Name");
+		input = (HtmlTextInput) getInputByName(newTreeNodePage, "Name");
 		input.setValueAttribute("two");
 		listTreeNodesPage = clickButton(newTreeNodePage, "Ok");
 		HtmlPage editTreeNodePage = clickLinkOnPage(listTreeNodesPage, "1");
-		HtmlSelect select = (HtmlSelect) new HtmlUnitXPath("//span/preceding-sibling::label[contains(text(),  'Parent')]/following-sibling::span/select")
-			.selectSingleNode(editTreeNodePage);
+		HtmlSelect select = getSelectByName(editTreeNodePage, "Parent");
 		select.setSelectedAttribute("2", true);
 		editTreeNodePage = clickButton(editTreeNodePage, "Apply");
-		select = (HtmlSelect) new HtmlUnitXPath("//span/preceding-sibling::label[contains(text(),  'Parent')]/following-sibling::span/select")
-			.selectSingleNode(editTreeNodePage);
+		select = getSelectByName(editTreeNodePage, "Parent");
 		HtmlOption option = select.getOptionByValue("2");
 		assertTrue("2 is selected", option.isSelected());
 

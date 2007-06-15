@@ -28,9 +28,9 @@ public class AssociationTest extends FunctionalTest
 		HtmlPage listCarsPage = clickLinkOnPage(startPage, "List Cars");
 		HtmlPage newCarPage = clickLinkOnPage(listCarsPage, "New Car");
 		assertXPathPresent(newCarPage,
-			"//span/preceding-sibling::label[contains(text(), 'Make')]/following-sibling::span/select/option[text() = 'Honda']");
+			"//select/preceding-sibling::label[contains(text(), 'Make')]/following-sibling::select/option[text() = 'Honda']");
 		assertXPathPresent(newCarPage,
-			"//span/preceding-sibling::label[contains(text(), 'Make')]/following-sibling::span/select/option[text() = 'Civic']");
+			"//select/preceding-sibling::label[contains(text(), 'Model')]/following-sibling::select/option[text() = 'Civic']");
 
 	}
 }
