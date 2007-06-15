@@ -63,6 +63,15 @@ public class SecurePersistenceServiceImplTest extends MockableTransactionalTestC
     // Requires at least one user to be seeded automatically
     assertTrue(users.size() > 0);
 		assertEquals(numberOfUsers, users.size());
+		
+  	authorities = new GrantedAuthority[]{new GrantedAuthorityImpl("ROLE_ROOT")};
+  	authentication = new TestingAuthenticationToken("username1", "password", authorities);
+  	securityContext.setAuthentication(authentication);
+  	SecurityContextHolder.setContext(securityContext);
+    users = persistenceService.getAllInstances(User.class);
+    assertTrue(users.size() > 0);
+		assertEquals(numberOfUsers, users.size());
+		
 	}
 
 	public void onTearDownAfterTransaction() {

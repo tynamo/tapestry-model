@@ -1,7 +1,6 @@
 package org.trails.security.annotation;
 
 import java.lang.reflect.AnnotatedElement;
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 

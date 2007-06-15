@@ -29,7 +29,7 @@ public class SecurityAnnotationHandlerTest extends TestCase
 		SecurityAnnotationHandler handler = new SecurityAnnotationHandler();
 		List classRestrictions = handler.buildClassRestrictions(SecurityAnnotated.class);
 		ClassSecurityRestriction classRestriction = (ClassSecurityRestriction) classRestrictions.get(0);
-		assertEquals("admin", classRestriction.getRequiredRole());
+		assertEquals("admin", classRestriction.getRequiredRole()[0]);
 		assertEquals(RestrictionType.UPDATE, classRestriction.getRestrictionType());
 	}
 
@@ -39,7 +39,7 @@ public class SecurityAnnotationHandlerTest extends TestCase
 		Method getter = SecurityAnnotated.class.getMethod("getRequiresAdmin", new Class[]{});
 		List restrictions = handler.buildPropertyRestrictions(getter, "requiresAdmin");
 		PropertySecurityRestriction restriction = (PropertySecurityRestriction) restrictions.get(0);
-		assertEquals("admin", restriction.getRequiredRole());
+		assertEquals("admin", restriction.getRequiredRole()[0]);
 		assertEquals("requiresAdmin", restriction.getPropertyName());
 		assertEquals(RestrictionType.VIEW, restriction.getRestrictionType());
 

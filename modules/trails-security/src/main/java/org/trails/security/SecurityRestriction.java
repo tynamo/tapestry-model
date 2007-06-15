@@ -16,18 +16,19 @@ public abstract class SecurityRestriction
 		// TODO Auto-generated constructor stub
 	}
 
-	private String requiredRole;
+	private String requiredRole[];
 
 	private RestrictionType restrictionType;
 
-	public String getRequiredRole()
+	public String[] getRequiredRole()
 	{
 		return requiredRole;
 	}
 
-	public void setRequiredRole(String requiredRole)
+	public void setRequiredRole(String[] requiredRole)
 	{
-		this.requiredRole = requiredRole;
+		if (requiredRole == null) this.requiredRole = new String[]{};
+		else this.requiredRole = requiredRole;
 	}
 
 	public RestrictionType getRestrictionType()
@@ -40,41 +41,18 @@ public abstract class SecurityRestriction
 		this.restrictionType = restrictionType;
 	}
 
-	protected boolean hasRequiredRole(GrantedAuthority[] autorities)
+	protected boolean hasRequiredRole(GrantedAuthority[] authorities)
 	{
-		for (int i = 0; i < autorities.length; i++)
-		{
-			LOG.debug("RequiredRole: " + getRequiredRole() + " - GrantedAuthority: " + autorities[i]);
-			if (autorities[i].getAuthority().equals(getRequiredRole()))
-			{
-				LOG.debug("does have required role");
-				return true;
-			}
-		}
-		LOG.debug("does NOT have required role");
+		for (GrantedAuthority authority : authorities)
+			for (String role : requiredRole) if (role.equals(authority.getAuthority()) ) return true;
 		return false;
-		/*
-					In SecurityContextHolder we don't have references to User, just to GrantedAuthorities.
-					We don't need any information stored under User, also...
-
-					List matches = (List) Ognl.getValue("authorities.{? authority == '"
-							+ getRequiredRole() + "'}", user);
-					return (matches.size() > 0);
-				}
-				catch (OgnlException oe)
-				{
-					oe.printStackTrace();
-					return false;
-				}
-				   */
-
 	}
 
 	protected abstract void applyRestriction(IClassDescriptor classDescriptor);
 
-	public void restrict(GrantedAuthority[] autorities, IClassDescriptor classDescriptor)
+	public void restrict(GrantedAuthority[] authorities, IClassDescriptor classDescriptor)
 	{
-		if (!hasRequiredRole(autorities))
+		if (!hasRequiredRole(authorities))
 		{
 			applyRestriction(classDescriptor);
 		}

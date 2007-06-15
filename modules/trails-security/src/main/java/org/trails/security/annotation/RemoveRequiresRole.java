@@ -9,5 +9,5 @@ import java.lang.annotation.Target;
 @Target({ElementType.TYPE, ElementType.METHOD})
 public @interface RemoveRequiresRole 
 {
-    String value();
+    String[] value();
 }

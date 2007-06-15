@@ -21,10 +21,10 @@ public class SecurePersistenceServiceImpl extends HibernatePersistenceServiceImp
 		// it's an internal service call 
 		if (context == null || context.getAuthentication() == null) return criteria;
 
-		// Check first if user has the role 
+		// Check first if user has permission granted by a role 
 		ViewRequiresRole viewRoleRestriction = (ViewRequiresRole)type.getAnnotation(ViewRequiresRole.class );
 		if (viewRoleRestriction != null) for (GrantedAuthority authority : context.getAuthentication().getAuthorities())
-			if (authority.getAuthority().equals(viewRoleRestriction.value()) ) return criteria;
+			for (String role : viewRoleRestriction.value()) if (authority.getAuthority().equals(role) ) return criteria;
 		
 		String currentUsername = context.getAuthentication().getName();
 		String ownerPropertyAssociation = viewRestriction.value();
