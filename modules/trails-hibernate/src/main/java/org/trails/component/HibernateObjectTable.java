@@ -37,7 +37,7 @@ public abstract class HibernateObjectTable extends ObjectTable
 	{
 		if (getInstances() == null)
 		{
-			return new HibernateTableModel(getHibernatePersistenceService(), getCriteria());
+			return new HibernateTableModel(getClassDescriptor().getType(), getHibernatePersistenceService(), getCriteria());
 		}
 		return getInstances();
 	}

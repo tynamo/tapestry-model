@@ -331,11 +331,12 @@ public class HibernatePersistenceServiceImpl extends HibernateDaoSupport impleme
 	}
 
 
-	public int count(final DetachedCriteria criteria)
+	public int count(Class type, DetachedCriteria detachedCriteria)
 	{
 		// todo hacking useNative is a result of SPR-2499 and will be removed soon
 		boolean useNative = getHibernateTemplate().isExposeNativeSession();
 		getHibernateTemplate().setExposeNativeSession(true);
+		final DetachedCriteria criteria = alterCriteria(type, detachedCriteria);
 		Integer result = (Integer) getHibernateTemplate().execute(new HibernateCallback()
 		{
 			public Object doInHibernate(Session session) throws HibernateException, SQLException

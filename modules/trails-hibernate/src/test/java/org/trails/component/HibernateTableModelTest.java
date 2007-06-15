@@ -32,7 +32,7 @@ public class HibernateTableModelTest extends MockObjectTestCase
 
 		criteria = DetachedCriteria.forClass(Foo.class);
 		persistenceServiceMock = new Mock(HibernatePersistenceService.class);
-		trailsTableModel = new HibernateTableModel((HibernatePersistenceService) persistenceServiceMock.proxy(), criteria);
+		trailsTableModel = new HibernateTableModel(Foo.class, (HibernatePersistenceService) persistenceServiceMock.proxy(), criteria);
 	}
 
 	DetachedCriteria argCriteria;
@@ -40,7 +40,7 @@ public class HibernateTableModelTest extends MockObjectTestCase
 	public void testGetCurrentPageRows() throws Exception
 	{
 		persistenceServiceMock.expects(once()).method("getInstances")
-			.with(new Constraint()
+			.with(NOT_NULL, new Constraint()
 			{
 
 				public boolean eval(Object param)
@@ -76,7 +76,7 @@ public class HibernateTableModelTest extends MockObjectTestCase
 	public void testRowCount() throws Exception
 	{
 		persistenceServiceMock.expects(once()).method("count")
-			.with(isA(DetachedCriteria.class))
+			.with(NOT_NULL, isA(DetachedCriteria.class))
 			.will(returnValue(5));
 		assertEquals(5, trailsTableModel.getRowCount());
 	}
