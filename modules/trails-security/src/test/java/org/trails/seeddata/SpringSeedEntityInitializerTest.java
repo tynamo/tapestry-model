@@ -1,11 +1,8 @@
 package org.trails.seeddata;
 
-import junit.framework.TestCase;
 import org.acegisecurity.userdetails.UserDetails;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.trails.persistence.HibernatePersistenceService;
 import org.trails.security.TrailsUserDAO;
@@ -13,27 +10,23 @@ import org.trails.security.domain.Role;
 import org.trails.security.domain.User;
 import org.trails.test.Bar;
 import org.trails.test.Foo;
+import org.trails.test.MockableTransactionalTestCase;
 
-public class SpringSeedEntityInitializerTest extends TestCase
+public class SpringSeedEntityInitializerTest extends MockableTransactionalTestCase
 {
-	private ApplicationContext applicationContext;
-	private SpringSeedEntityInitializer seedDataInitializer;
-	private HibernatePersistenceService persistenceService;
 	private TrailsUserDAO userDAO;
 	private Role roleUser;
 	private Role roleAdmin;
+	private HibernatePersistenceService persistenceService;
 
 	@Override
-	protected void setUp() throws Exception
+	public void onSetUpBeforeTransaction() throws Exception
 	{
-		applicationContext = new ClassPathXmlApplicationContext(new String[]{"applicationContext-test.xml", "seed-data-test.xml"});
-		persistenceService = (HibernatePersistenceService) applicationContext.getBean("persistenceService");
-
+		super.onSetUpBeforeTransaction();
 		userDAO = (TrailsUserDAO) applicationContext.getBean("trailsUserDAO");
-		seedDataInitializer = (SpringSeedEntityInitializer) applicationContext.getBean(SeedDataInitializer.class.getSimpleName());
 		roleUser = (Role) applicationContext.getBean("roleUser");
 		roleAdmin = (Role) applicationContext.getBean("roleAdmin");
-		seedDataInitializer.init();
+		this.persistenceService = (HibernatePersistenceService)super.persistenceService;
 	}
 
 	public void testInit()
@@ -44,7 +37,6 @@ public class SpringSeedEntityInitializerTest extends TestCase
 
 	public void testArbitraryEntitySeeded()
 	{
-		seedDataInitializer.init();
 		DetachedCriteria criteria = DetachedCriteria.forClass(Foo.class);
 		criteria.add(Restrictions.eq("name", "seed foo"));
 		Foo foo = (Foo) persistenceService.getInstance(Foo.class, criteria);
@@ -53,8 +45,6 @@ public class SpringSeedEntityInitializerTest extends TestCase
 
 	public void testSeedingEntityWithoutUniquelyIdentifyingProperty()
 	{
-		seedDataInitializer.init();
-		seedDataInitializer.init();
 		DetachedCriteria criteria = DetachedCriteria.forClass(Bar.class);
 		criteria.add(Restrictions.eq("name", "based on example"));
 		try
@@ -70,18 +60,19 @@ public class SpringSeedEntityInitializerTest extends TestCase
 
 	public void testEntityAlreadySeeded()
 	{
-		seedDataInitializer.init();
 		DetachedCriteria criteria = DetachedCriteria.forClass(User.class);
 		criteria.add(Restrictions.eq("username", "admin"));
 		User user = (User) persistenceService.getInstance(User.class, criteria);
 		user.setLastName("Changed something");
 		persistenceService.save(user);
 		// Data is not re-seeded, so it shouldn't get overwritten
+		SpringSeedEntityInitializer seedDataInitializer = (SpringSeedEntityInitializer) applicationContext.getBean(SeedDataInitializer.class.getSimpleName());
 		seedDataInitializer.init();
 		user = (User) persistenceService.getInstance(User.class, criteria);
 		assertEquals("Changed something", user.getLastName());
 	}
 
+	/*
 	public void tearDown()
 	{
 		// Clean up
@@ -98,5 +89,6 @@ public class SpringSeedEntityInitializerTest extends TestCase
 		persistenceService.remove(foo);
 		// TODO see if you can do this instead: sessionFactory.dropDatabaseSchema();
 	}
+	*/
 
 }
