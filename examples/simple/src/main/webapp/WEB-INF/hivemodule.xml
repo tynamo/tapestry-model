@@ -47,20 +47,4 @@
 	<contribution configuration-id="tapestry.url.ServiceEncoders">
 		<extension-encoder id="extension" extension="svc" after="*"/>
 	</contribution>
-
-	<contribution configuration-id="tapestry.services.ApplicationServices">
-		<service name="BlobService" object="service:BlobService"/>
-	</contribution>
-
-	<service-point id="BlobService" interface="org.trails.component.blob.BlobDownloadService">
-		<invoke-factory>
-			<construct class="org.trails.component.blob.BlobDownloadService">
-				<set-object property="exceptionReporter" value="infrastructure:requestExceptionReporter"/>
-				<set-object property="linkFactory" value="infrastructure:linkFactory"/>
-				<set-object property="response" value="service:tapestry.globals.WebResponse"/>
-				<set-object property="persistenceService" value="spring:persistenceService"/>
-				<set-object property="descriptorService" value="spring:descriptorService"/>
-			</construct>
-		</invoke-factory>
-	</service-point>
 </module>
