@@ -15,7 +15,7 @@ import org.trails.persistence.PersistenceService;
 @ComponentClass(allowBody = true, allowInformalParameters = true)
 public abstract class TrailsDownload extends BaseComponent
 {
-	@InjectObject("service:trails.BlobService")
+	@InjectObject("service:trails.core.BlobService")
 	public abstract BlobDownloadService getDownloadService();
 
 	@InjectObject("spring:persistenceService")
