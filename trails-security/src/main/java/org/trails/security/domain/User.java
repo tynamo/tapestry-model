@@ -27,7 +27,7 @@ import org.trails.validation.ValidateUniqueness;
 @Table(name = "TRAILS_USER")
 @ValidateUniqueness(property = "username")
 @ClassDescriptor(hasCyclicRelationships = true)
-@ViewRequiresRole("ROLE_MANAGER")
+@ViewRequiresRole({"ROLE_MANAGER", "ROLE_ROOT"} )
 @ViewRequiresAssociation
 @UpdateRequiresAssociation
 public class User implements UserDetails, Serializable

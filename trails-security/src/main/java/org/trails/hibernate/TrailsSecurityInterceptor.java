@@ -38,7 +38,7 @@ public class TrailsSecurityInterceptor extends TrailsInterceptor {
 		
 		boolean roleRestriction = false;
 
-		String requiredRole = null;
+		String[] requiredRole = null;
 		switch (restrictionType) {
 			case UPDATE : 
 				UpdateRequiresRole updateRestriction = entity.getClass().getAnnotation(UpdateRequiresRole.class );
@@ -51,7 +51,8 @@ public class TrailsSecurityInterceptor extends TrailsInterceptor {
 		}
 		if (requiredRole != null) {
 			GrantedAuthority[] authorities = context.getAuthentication().getAuthorities();
-			for (GrantedAuthority authority : authorities) if (requiredRole.equals(authority.getAuthority()) ) return;
+			for (GrantedAuthority authority : authorities)
+				for (String role : requiredRole) if (role.equals(authority.getAuthority()) ) return;
 			roleRestriction = true;
 		}
 		

@@ -23,7 +23,7 @@ public class ClassSecurityRestrictionTest extends SecurityRestrictionTest
 	{
 		ClassSecurityRestriction classRestriction = new ClassSecurityRestriction();
 		IClassDescriptor classDescriptor = new TrailsClassDescriptor(Foo.class);
-		classRestriction.setRequiredRole("admin");
+		classRestriction.setRequiredRole(new String[]{"admin"} );
 		classRestriction.setRestrictionType(RestrictionType.VIEW);
 		classRestriction.restrict(authorities.adminAuthority, classDescriptor);
 		assertFalse(classDescriptor.isHidden());

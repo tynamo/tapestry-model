@@ -24,7 +24,7 @@ public class PropertyRestrictionTest extends SecurityRestrictionTest
 		IClassDescriptor classDescriptor = new TrailsClassDescriptor(Foo.class, "Foo");
 		classDescriptor.getPropertyDescriptors().add(propertyDescriptor);
 		PropertySecurityRestriction restriction = new PropertySecurityRestriction();
-		restriction.setRequiredRole("admin");
+		restriction.setRequiredRole(new String[]{"admin"});
 		restriction.setRestrictionType(RestrictionType.VIEW);
 		restriction.setPropertyName("bar");
 

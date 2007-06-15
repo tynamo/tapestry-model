@@ -47,7 +47,7 @@ public class SpringSeedEntityInitializerTest extends TestCase
 		seedDataInitializer.init();
 		DetachedCriteria criteria = DetachedCriteria.forClass(Foo.class);
 		criteria.add(Restrictions.eq("name", "seed foo"));
-		Foo foo = (Foo) persistenceService.getInstance(criteria);
+		Foo foo = (Foo) persistenceService.getInstance(Foo.class, criteria);
 		assertNotNull(foo);
 	}
 
@@ -59,7 +59,7 @@ public class SpringSeedEntityInitializerTest extends TestCase
 		criteria.add(Restrictions.eq("name", "based on example"));
 		try
 		{
-			Object object = persistenceService.getInstance(criteria);
+			Object object = persistenceService.getInstance(Bar.class, criteria);
 			if (object == null) fail("Seed entity not found");
 		}
 		catch (IncorrectResultSizeDataAccessException e)
@@ -73,12 +73,12 @@ public class SpringSeedEntityInitializerTest extends TestCase
 		seedDataInitializer.init();
 		DetachedCriteria criteria = DetachedCriteria.forClass(User.class);
 		criteria.add(Restrictions.eq("username", "admin"));
-		User user = (User) persistenceService.getInstance(criteria);
+		User user = (User) persistenceService.getInstance(User.class, criteria);
 		user.setLastName("Changed something");
 		persistenceService.save(user);
 		// Data is not re-seeded, so it shouldn't get overwritten
 		seedDataInitializer.init();
-		user = (User) persistenceService.getInstance(criteria);
+		user = (User) persistenceService.getInstance(User.class, criteria);
 		assertEquals("Changed something", user.getLastName());
 	}
 

@@ -46,7 +46,7 @@ public class ObjectTableTest extends ComponentTest
 	Mock psvcMock = new Mock(HibernatePersistenceService.class);
 	Mock pageMock = new Mock(IPage.class);
 	IPage page;
-	SecurityAuthorities autorities;
+	SecurityAuthorities authorities;
 	IClassDescriptor fooSecuredDescriptor;
 	IdentifierDescriptor idSecured;
 	IPropertyDescriptor nameSecured;
@@ -56,7 +56,7 @@ public class ObjectTableTest extends ComponentTest
 	public void setUp() throws Exception
 	{
 
-		autorities = new SecurityAuthorities();
+		authorities = new SecurityAuthorities();
 
 		page = (IPage) pageMock.proxy();
 		objectTable = (HibernateObjectTable) creator.newInstance(HibernateObjectTable.class, new Object[]{

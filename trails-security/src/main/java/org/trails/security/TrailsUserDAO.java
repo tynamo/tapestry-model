@@ -29,6 +29,6 @@ public class TrailsUserDAO implements UserDetailsService
 	{
 		DetachedCriteria criteria = DetachedCriteria.forClass(UserDetails.class);
 		criteria.add(Restrictions.eq("username", username));
-		return (UserDetails) persistenceService.getInstance(criteria);
+		return persistenceService.getInstance(UserDetails.class, criteria);
 	}
 }
