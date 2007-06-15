@@ -21,15 +21,10 @@ public interface HibernatePersistenceService extends PersistenceService
 {
 
 	public <T> T getInstance(Class<T> type, DetachedCriteria criteria);
-	public Object getInstance(DetachedCriteria criteria);
-
 	public <T> List<T> getInstances(Class<T> type, DetachedCriteria criteria);
-	public List getInstances(DetachedCriteria criteria);
-
 	public <T> List<T> getInstances(Class<T> type, DetachedCriteria criteria, int startIndex, int maxResults);
-	public List getInstances(DetachedCriteria criteria, int startIndex, int maxResults);
 
-	public int count(DetachedCriteria criteria);
+	public int count(Class type, DetachedCriteria criteria);
 
 	/**
 	 * @param model to attach to the current persistence session
@@ -42,7 +37,7 @@ public interface HibernatePersistenceService extends PersistenceService
 	 * @param example
 	 * @return
 	 */
-	public List getInstances(Object example, IClassDescriptor classDescriptor);
+	public <T> List<T> getInstances(T example, IClassDescriptor classDescriptor);
 
 	public <T> T merge(T instance);
 

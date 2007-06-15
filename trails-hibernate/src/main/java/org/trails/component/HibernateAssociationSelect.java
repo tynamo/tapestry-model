@@ -42,7 +42,7 @@ public abstract class HibernateAssociationSelect extends AssociationSelect
 	{
 		DetachedCriteria criteria = getCriteria() != null ? getCriteria() : DetachedCriteria.forClass(getClassDescriptor().getType());
 		IdentifierSelectionModel selectionModel = new IdentifierSelectionModel(
-			getPersistenceService().getInstances(criteria),
+			getPersistenceService().getInstances(getClassDescriptor().getType(), criteria),
 			getClassDescriptor().getIdentifierDescriptor().getName(),
 			isAllowNone());
 		selectionModel.setNoneLabel(getNoneLabel());

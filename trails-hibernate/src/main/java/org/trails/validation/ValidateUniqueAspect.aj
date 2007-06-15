@@ -61,7 +61,7 @@ public aspect ValidateUniqueAspect
             {
                 criteria.add(Restrictions.not(Restrictions.idEq(idValue)));
             }
-            if (getPersistenceService().getInstances(criteria).size() > 0)
+            if (getPersistenceService().getInstances(savee.getClass(), criteria).size() > 0)
             {
                 throw new UniquenessException(descriptor.getPropertyDescriptor(propertyName));
             }

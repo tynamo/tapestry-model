@@ -96,7 +96,7 @@ public aspect CheckForOrphansAspect
 			{
 				DetachedCriteria criteria = DetachedCriteria.forClass(orphanClass);
 				criteria.add(Restrictions.eq(propertyDescriptor.getName(), removee));
-				List instances = getPersistenceService().getInstances(criteria);
+				List instances = getPersistenceService().getInstances(orphanClass, criteria);
 				if (instances.size() > 0)
 				{
 					String defaultMessage = "This " + removeeDescriptor.getDisplayName() +

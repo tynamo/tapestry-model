@@ -14,11 +14,13 @@ public class HibernateTableModel implements IBasicTableModel
 
 	private HibernatePersistenceService persistenceService;
 
+	private Class entityType;
 	private DetachedCriteria criteria;
 
-	public HibernateTableModel(HibernatePersistenceService persistenceService, DetachedCriteria criteria)
+	public HibernateTableModel(Class entityType, HibernatePersistenceService persistenceService, DetachedCriteria criteria)
 	{
 		super();
+		this.entityType = entityType;
 		this.persistenceService = persistenceService;
 		this.criteria = criteria;
 	}
@@ -53,13 +55,13 @@ public class HibernateTableModel implements IBasicTableModel
 			String sortProperty = trailsTableColumn.getPropertyDescriptor().getName();
 			clonedCriteria.addOrder(asc ? Order.asc(sortProperty) : Order.desc(sortProperty));
 		}
-		return getPersistenceService().getInstances(clonedCriteria, startIndex, maxResults).iterator();
+		return getPersistenceService().getInstances(entityType, clonedCriteria, startIndex, maxResults).iterator();
 	}
 
 	public int getRowCount()
 	{
 		// doing a count alters the criteria
 		DetachedCriteria clonedCriteria = (DetachedCriteria) SerializationUtils.clone(getCriteria());
-		return getPersistenceService().count(clonedCriteria);
+		return getPersistenceService().count(entityType, clonedCriteria);
 	}
 }

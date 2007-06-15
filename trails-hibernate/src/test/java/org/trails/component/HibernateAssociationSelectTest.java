@@ -42,7 +42,7 @@ public class HibernateAssociationSelectTest extends ComponentTest
 	{
 
 		List instances = new ArrayList();
-		persistenceMock.expects(atLeastOnce()).method("getInstances").with(isA(DetachedCriteria.class)).will(returnValue(instances));
+		persistenceMock.expects(atLeastOnce()).method("getInstances").with(NOT_NULL, isA(DetachedCriteria.class)).will(returnValue(instances));
 		associationSelect.buildSelectionModel();
 		IdentifierSelectionModel selectionModel = (IdentifierSelectionModel) associationSelect.getPropertySelectionModel();
 		assertEquals(1, selectionModel.getOptionCount());

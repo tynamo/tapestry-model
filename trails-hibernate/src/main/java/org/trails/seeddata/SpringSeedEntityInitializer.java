@@ -109,7 +109,7 @@ public class SpringSeedEntityInitializer implements ApplicationContextAware, See
 						}
 					} else criteria.add(Restrictions.eq(propertyName, id));
 
-					savedObject = persistenceService.getInstance(criteria);
+					savedObject = persistenceService.getInstance(object.getClass(), criteria);
 				}
 
 				if (savedObject != null)

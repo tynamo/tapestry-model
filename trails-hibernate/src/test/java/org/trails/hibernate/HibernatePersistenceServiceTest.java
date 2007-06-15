@@ -98,7 +98,7 @@ public class HibernatePersistenceServiceTest extends AbstractTransactionalSpring
 
 		DetachedCriteria criteria = DetachedCriteria.forClass(Foo.class);
 		criteria.add(Restrictions.eq("name", "the foo"));
-		assertEquals("Got 1", 1, persistenceService.getInstances(criteria).size());
+		assertEquals("Got 1", 1, persistenceService.getInstances(Foo.class, criteria).size());
 
 	}
 
@@ -115,7 +115,7 @@ public class HibernatePersistenceServiceTest extends AbstractTransactionalSpring
 
 		DetachedCriteria criteria = DetachedCriteria.forClass(Foo.class);
 		criteria.add(Restrictions.eq("name", "the foo"));
-		assertNotNull(persistenceService.getInstance(criteria));
+		assertNotNull(persistenceService.getInstance(Foo.class, criteria));
 
 		Foo foo2 = new Foo();
 		foo2.setId(2);
@@ -124,7 +124,7 @@ public class HibernatePersistenceServiceTest extends AbstractTransactionalSpring
 		persistenceService.save(foo2);
 		try
 		{
-			persistenceService.getInstance(criteria);
+			persistenceService.getInstance(Foo.class, criteria);
 		}
 		catch (IncorrectResultSizeDataAccessException e)
 		{
@@ -146,7 +146,7 @@ public class HibernatePersistenceServiceTest extends AbstractTransactionalSpring
 		wibble.setBar(bar);
 		DetachedCriteria criteria = DetachedCriteria.forClass(Wibble.class);
 		criteria.add(Restrictions.eq("bar", bar));
-		List list = persistenceService.getInstances(criteria);
+		List list = persistenceService.getInstances(Foo.class, criteria);
 		assertEquals(1, list.size());
 	}
 
@@ -325,7 +325,7 @@ public class HibernatePersistenceServiceTest extends AbstractTransactionalSpring
 		persistenceService.save(baz);
 		persistenceService.save(baz2);
 		DetachedCriteria criteria = DetachedCriteria.forClass(Baz.class);
-		assertEquals(2, persistenceService.count(criteria));
+		assertEquals(2, persistenceService.count(Baz.class, criteria));
 	}
 
 	public void testGetInstancesWithLimit() throws Exception
