@@ -1,13 +1,5 @@
 package org.trails.hibernate;
 
-import java.io.File;
-import java.io.PrintWriter;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
 import com.sun.mirror.apt.AnnotationProcessor;
 import com.sun.mirror.apt.AnnotationProcessorEnvironment;
 import com.sun.mirror.apt.AnnotationProcessorFactory;
@@ -15,6 +7,8 @@ import com.sun.mirror.declaration.AnnotationTypeDeclaration;
 import com.sun.mirror.declaration.ClassDeclaration;
 import com.sun.mirror.declaration.Declaration;
 import com.sun.mirror.util.SimpleDeclarationVisitor;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.io.OutputFormat;
@@ -22,9 +16,14 @@ import org.dom4j.io.SAXReader;
 import org.dom4j.io.XMLWriter;
 import org.hibernate.util.DTDEntityResolver;
 
-public class HibernateAnnotationProcessorFactory implements
-	AnnotationProcessorFactory
+import java.io.File;
+import java.io.PrintWriter;
+import java.util.*;
+
+public class HibernateAnnotationProcessorFactory implements AnnotationProcessorFactory
 {
+	private static final Log LOG = LogFactory.getLog(HibernateAnnotationProcessorFactory.class);
+
 	public static final String TRAILS_PACKAGE = "org.trails";
 
 	public static final String configFileOption = "configFile";
@@ -73,7 +72,7 @@ public class HibernateAnnotationProcessorFactory implements
 		{
 			String configTemplateFilePath = getOptionValue(configFileOption);
 
-			System.out.println(configTemplateFilePath);
+			LOG.info(configTemplateFilePath);
 			try
 			{
 				SAXReader reader = new SAXReader();
@@ -105,7 +104,7 @@ public class HibernateAnnotationProcessorFactory implements
 
 				for (AnnotationTypeDeclaration annotationTypeDecl : annotationTypeDeclarations)
 				{
-					System.out.println(annotationTypeDecl);
+					LOG.info(annotationTypeDecl);
 					for (Declaration declaration : env
 						.getDeclarationsAnnotatedWith(annotationTypeDecl))
 					{
@@ -114,7 +113,7 @@ public class HibernateAnnotationProcessorFactory implements
 							public void visitClassDeclaration(
 								ClassDeclaration classDeclaration)
 							{
-								System.out.println(classDeclaration
+								LOG.info(classDeclaration
 									.getQualifiedName());
 								sessionFactoryElement.addElement("mapping")
 									.setAttributeValue(
@@ -127,7 +126,7 @@ public class HibernateAnnotationProcessorFactory implements
 					sessionFactoryElement.elements().addAll(listenerElements);
 				}
 				String filename = getOptionValue(destFileOption);
-				System.out.println("Creating destFile: " + filename);
+				LOG.info("Creating destFile: " + filename);
 				File f = new File(filename);
 				f.getParentFile().mkdirs();
 

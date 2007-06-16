@@ -217,23 +217,4 @@ public abstract class ObjectTable extends ClassDescriptorComponent
 	{
 		return getInstances();
 	}
-
-	public IPropertyDescriptor getBlobDescriptor() throws Exception
-	{
-		IPropertyDescriptor result = null;
-
-		for (Iterator iter = getPropertyDescriptors().iterator(); iter.hasNext();)
-		{
-			IPropertyDescriptor descriptor = (IPropertyDescriptor) iter.next();
-			if (displaying(descriptor))
-			{
-				if (descriptor.supportsExtension(org.trails.descriptor.BlobDescriptorExtension.class.getName()))
-				{
-					result = descriptor;
-					break;
-				}
-			}
-		}
-		return result;
-	}
 }
