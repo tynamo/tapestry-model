@@ -204,6 +204,27 @@ div.clear hr {
     margin-bottom: 3px;
 }
 
+blockquote {
+	border-left-width: 1px;
+	border-left-style: solid;
+	border-left-color: #3c78b5;
+}
+
+#ulayout {
+	width: 100% !important;
+}
+
+#umain {
+	width: 100% !important;
+}
+
+#umain .content {
+	border: none;
+}
+
+
+/* confluence patches */
+
 table.infoMacro td, table.warningMacro td, table.tipMacro td, table.noteMacro td, table.sectionMacro td {
     border: none !important;
     padding-top: 15px !important;
@@ -246,4 +267,3 @@ table.infoMacro td, table.warningMacro td, table.tipMacro td, table.noteMacro td
     margin: 16px 0px 16px 0px !important;
     padding: 0px !important;
 }
-
