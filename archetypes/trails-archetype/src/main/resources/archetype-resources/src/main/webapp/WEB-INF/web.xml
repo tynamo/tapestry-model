@@ -79,10 +79,6 @@
 		<servlet-name>trails</servlet-name>
 		<url-pattern>/app</url-pattern>
 	</servlet-mapping>
-	<servlet-mapping>
-		<servlet-name>trails</servlet-name>
-		<url-pattern>/app</url-pattern>
-	</servlet-mapping>
 
 	<servlet-mapping>
 		<servlet-name>trails</servlet-name>
