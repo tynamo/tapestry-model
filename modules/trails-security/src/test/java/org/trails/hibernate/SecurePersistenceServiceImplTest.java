@@ -9,6 +9,8 @@ import org.acegisecurity.context.SecurityContext;
 import org.acegisecurity.context.SecurityContextHolder;
 import org.acegisecurity.context.SecurityContextImpl;
 import org.acegisecurity.providers.TestingAuthenticationToken;
+import org.trails.security.EntitySecurityException;
+import org.trails.security.domain.Role;
 import org.trails.security.domain.User;
 import org.trails.seeddata.SeedDataInitializer;
 import org.trails.seeddata.SpringSeedEntityInitializer;
@@ -49,6 +51,24 @@ public class SecurePersistenceServiceImplTest extends MockableTransactionalTestC
     users = persistenceService.getAllInstances(User.class);
   	assertEquals(0,users.size());
 	}
+
+	public void testNoSuitableRoleAndNoAssocationOnView() {
+  	SecurityContext securityContext = new SecurityContextImpl();
+  	GrantedAuthority[] authorities = new GrantedAuthority[]{new GrantedAuthorityImpl("ROLE_USER")};
+  	Authentication authentication = new TestingAuthenticationToken("username1", "password", authorities);
+  	securityContext.setAuthentication(authentication);
+  	SecurityContextHolder.setContext(securityContext);
+  	
+    try {
+    	persistenceService.getAllInstances(Role.class);
+    }
+    catch (EntitySecurityException e) {
+    	// Success
+    	return;
+    }
+    fail("Security exception should have been thrown");
+	}
+	
 	
 	public void testRoleRestrictionOnView() {
 		List<User> users = persistenceService.getAllInstances(User.class);
