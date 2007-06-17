@@ -40,6 +40,7 @@ public class FunctionalTest extends TestCase
 		Properties testProperties = new Properties();
 		testProperties.load(this.getClass().getResourceAsStream("/functionaltest.properties"));
 		webClient = new WebClient();
+		setUpWebClient(webClient);
 		startPage = (HtmlPage) webClient.getPage(new URL(testProperties.getProperty("test.url")));
 	}
 
@@ -102,6 +103,16 @@ public class FunctionalTest extends TestCase
 	{
 		return (HtmlSelect)
 			new HtmlUnitXPath("//select/preceding-sibling::label[contains(text(),  '" + name + "')]/following-sibling::select").selectSingleNode(page);
+	}
+
+	/**
+	 * Hook method which is called during setup phase, before the first request.
+	 * It allows subclasses to modify the webClient, such as for disabling javascript
+	 *
+	 * @param webClient
+	 */
+	protected void setUpWebClient(WebClient webClient)
+	{
 	}
 
 }
