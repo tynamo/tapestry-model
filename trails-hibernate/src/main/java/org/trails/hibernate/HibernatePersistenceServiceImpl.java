@@ -106,7 +106,7 @@ public class HibernatePersistenceServiceImpl extends HibernateDaoSupport impleme
 	public <T> List<T> getAllInstances(final Class<T> type)
 	{
 		DetachedCriteria criteria = DetachedCriteria.forClass(Utils.checkForCGLIB(type));
-		return getHibernateTemplate().findByCriteria(alterCriteria(type,criteria) );
+		return getInstances(type, criteria);
 	}
 
 	public <T> List<T> getInstances(final Class<T> type, int startIndex, int maxResults)
@@ -146,21 +146,10 @@ public class HibernatePersistenceServiceImpl extends HibernateDaoSupport impleme
 		getHibernateTemplate().delete(getHibernateTemplate().merge(instance));
 	}
 
-	/*
-		 * (non-Javadoc)
-		 *
-		 * @see org.trails.persistence.PersistenceService#getInstances(org.trails.persistence.Query)
-		 */
-	@Transactional
-	public List getInstances(final DetachedCriteria criteria)
-	{
-		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-		return getHibernateTemplate().findByCriteria(criteria);
-	}
-
 	@Transactional
 	public <T> List<T> getInstances(Class<T> type, DetachedCriteria criteria) {
 		criteria = alterCriteria(type, criteria);
+		criteria.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 		return getHibernateTemplate().findByCriteria(criteria);
 	}
 	
@@ -227,20 +216,6 @@ public class HibernatePersistenceServiceImpl extends HibernateDaoSupport impleme
 		{
 			return true;
 		}
-	}
-
-	@Transactional
-	public Object getInstance(final DetachedCriteria criteria)
-	{
-		Object result = getHibernateTemplate().execute(new HibernateCallback()
-		{
-			public Object doInHibernate(Session session) throws HibernateException, SQLException
-			{
-				Criteria executableCriteria = criteria.getExecutableCriteria(session);
-				return executableCriteria.uniqueResult();
-			}
-		});
-		return result;
 	}
 
 	@Transactional
@@ -336,6 +311,7 @@ public class HibernatePersistenceServiceImpl extends HibernateDaoSupport impleme
 		// todo hacking useNative is a result of SPR-2499 and will be removed soon
 		boolean useNative = getHibernateTemplate().isExposeNativeSession();
 		getHibernateTemplate().setExposeNativeSession(true);
+		detachedCriteria.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 		final DetachedCriteria criteria = alterCriteria(type, detachedCriteria);
 		Integer result = (Integer) getHibernateTemplate().execute(new HibernateCallback()
 		{
@@ -359,6 +335,7 @@ public class HibernatePersistenceServiceImpl extends HibernateDaoSupport impleme
 	
 	public List getInstances(final DetachedCriteria detachedCriteria, final int startIndex, final int maxResults)
 	{
+		detachedCriteria.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 		// todo hacking useNative is a result of SPR-2499 and will be removed soon
 		boolean useNative = getHibernateTemplate().isExposeNativeSession();
 		getHibernateTemplate().setExposeNativeSession(true);
