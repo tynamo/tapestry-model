@@ -57,7 +57,7 @@
 	<bean id="transactionAttributeSource"
 		  class="org.springframework.transaction.annotation.AnnotationTransactionAttributeSource"/>
 
-	<bean id="persistenceService" class="org.trails.hibernate.HibernatePersistenceServiceImpl" autowire="autodetect"/>
+	<bean id="persistenceService" class="org.trails.hibernate.SecurePersistenceServiceImpl" autowire="autodetect"/>
 
 
 	<bean id="descriptorService" class="org.trails.descriptor.TrailsDescriptorService" init-method="init">
