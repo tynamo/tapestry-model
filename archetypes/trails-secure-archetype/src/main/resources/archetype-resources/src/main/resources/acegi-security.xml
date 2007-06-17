@@ -70,14 +70,14 @@
 	<bean id="authenticationProcessingFilter"
 		  class="org.acegisecurity.ui.webapp.AuthenticationProcessingFilter">
 		<property name="authenticationManager" ref="authenticationManager"/>
-		<property name="authenticationFailureUrl" value="/Login.html?login_error=1"/>
-		<property name="defaultTargetUrl" value="/Home.html"/>
+		<property name="authenticationFailureUrl" value="/Login.page?login_error=1"/>
+		<property name="defaultTargetUrl" value="/Home.page"/>
 		<property name="filterProcessesUrl" value="/j_acegi_security_check"/>
 	</bean>
 
 	<bean id="authenticationProcessingFilterEntryPoint"
 		  class="org.acegisecurity.ui.webapp.AuthenticationProcessingFilterEntryPoint">
-		<property name="loginFormUrl" value="/Login.html"/>
+		<property name="loginFormUrl" value="/Login.page"/>
 		<property name="forceHttps" value="false"/>
 	</bean>
 

@@ -71,7 +71,7 @@
 
     <filter-mapping>
         <filter-name>hibernateFilter</filter-name>
-        <url-pattern>*.html</url-pattern>
+        <url-pattern>*.page</url-pattern>
     </filter-mapping>
 
     <filter-mapping>
@@ -110,7 +110,7 @@
 
     <servlet-mapping>
         <servlet-name>trails</servlet-name>
-        <url-pattern>*.html</url-pattern>
+        <url-pattern>*.page</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>
