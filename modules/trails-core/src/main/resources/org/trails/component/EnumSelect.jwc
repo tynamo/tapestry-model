@@ -9,7 +9,7 @@
 
 	<property name="propertySelectionModel"/>
 
-	<component id="select" type="PropertySelection">
+	<component id="select" type="PropertySelection" inherit-informal-parameters="yes">
 		<binding name="model">propertySelectionModel</binding>
 		<binding name="value">value</binding>
 	</component>

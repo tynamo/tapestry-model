@@ -222,6 +222,30 @@ blockquote {
 	border: none;
 }
 
+.imageHolder img {
+	margin: 5px;
+}
+
+.blogSurtitle {
+background-color: #ffffff;
+background-image: url(img/gradient2.png);
+background-repeat: repeat-x;
+background-attachment: scroll;
+padding: 3px;
+border: 1px solid;
+border-top-color: #dddddd;
+border-right-color: #888888;
+border-bottom-color: #888888;
+border-left-color: #dddddd;
+}
+
+.blogHeading {
+	margin: 20px 0 15px 0;
+}
+
+#upage_title {
+	margin-bottom: 50px;
+}
 
 /* confluence patches */
 
