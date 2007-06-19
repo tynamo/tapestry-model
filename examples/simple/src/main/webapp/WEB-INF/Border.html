@@ -31,6 +31,7 @@
 			<div class="wrapper">
 				<h2 class="accessibility">Navigation</h2>
 				<ul id="primary-nav" class="menuList">
+					<li class="pad">&nbsp;</li>
 					<li class="selected">
 						<a href="#" jwcid="@PageLink" page="Home"><span jwcid="@Insert"
 																		value="message:org.trails.i18n.home">Home</span></a>
@@ -38,13 +39,17 @@
 					<span jwcid="@If" condition="ognl:navBlock">
 						 <span jwcid="@RenderBlock" block="ognl:page.components[navBlock]"/>
 					</span>
-					<div align="right">
-						[ <span jwcid="@trails:LocaleLink" linkText="portuguese" language="pt"
-								imageAsset="asset:brFlag"/> |
-						<span jwcid="@trails:LocaleLink" linkText="english" language="en" imageAsset="asset:usFlag"/> |
+					<li class="pad right">&nbsp;</li>
+					<li class="right">
+						<span jwcid="@trails:LocaleLink" linkText="portuguese" language="pt" imageAsset="asset:brFlag"/>
+					</li>
+					<li class="right">
+						<span jwcid="@trails:LocaleLink" linkText="english" language="en" imageAsset="asset:usFlag"/>
+					</li>
+					<li class="right">
 						<span jwcid="@trails:LocaleLink" linkText="argentino" language="es" country="AR"
-							  imageAsset="asset:arFlag"/> ]
-					</div>
+							  imageAsset="asset:arFlag"/>
+					</li>
 				</ul>
 			</div>
 		</div>
