@@ -1,17 +1,19 @@
 package org.trails.component;
 
-import java.util.List;
-
 import org.apache.tapestry.BaseComponent;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.annotations.Component;
 import org.apache.tapestry.annotations.ComponentClass;
 import org.apache.tapestry.annotations.InjectObject;
 import org.apache.tapestry.annotations.Parameter;
 import org.apache.tapestry.form.IPropertySelectionModel;
+import org.apache.tapestry.form.PropertySelection;
 import org.trails.descriptor.DescriptorService;
 import org.trails.descriptor.IClassDescriptor;
 import org.trails.descriptor.IPropertyDescriptor;
 import org.trails.persistence.PersistenceService;
+
+import java.util.List;
 
 /**
  * @author Chris Nelson
@@ -62,6 +64,10 @@ public abstract class AssociationSelect extends BaseComponent
 	public abstract List getInstances();
 
 	public abstract void setInstances(List instances);
+
+	@Component(type = "PropertySelection", inheritInformalParameters = true,
+				bindings = {"value=model[propertyDescriptor.name]", "model=propertySelectionModel"})
+	public abstract PropertySelection getPropertySelection();
 
 	public AssociationSelect()
 	{
