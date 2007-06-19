@@ -30,12 +30,6 @@
 			<url>http://jroller.com/page/ccnelson</url>
 		</developer>
 		<developer>
-			<id>topping</id>
-			<name>Brian Topping</name>
-			<email>topping@N05PAMcodehaus.org</email>
-			<url>http://blogs.codehaus.org/people/topping/</url>
-		</developer>
-		<developer>
 			<id>ascandroli</id>
 			<name>Alejandro Scandroli</name>
 			<email>ascandroli@codehaus.org</email>

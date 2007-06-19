@@ -1,0 +1,13 @@
+/* patches for Internet Explorer */
+
+* html div#main {
+	height:350px;
+}
+
+* html .table {
+	width:99% !important;
+}
+
+* html form ul {
+	width:99% !important;
+}

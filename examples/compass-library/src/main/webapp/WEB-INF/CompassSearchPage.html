@@ -1,0 +1,43 @@
+<span jwcid="@Border">
+	<br/>
+	<div width=100%>
+		<form jwcid="@Form">
+			<ul>
+				<li>
+					<b>Trails & Compass:</b>&nbsp;<input jwcid=@TextField size=41 maxlength=2048
+												  value="ognl:query"/>&nbsp;
+					<input jwcid=@Submit listener="ognl:listeners.search" value="message:org.trails.i18n.search"
+						   type="submit"/> <a href="http://lucene.apache.org/java/docs/queryparsersyntax.html">[help]</a>
+				</li>
+			</ul>
+		</form>
+	</div>
+
+
+	<span jwcid="@If" condition="ognl:query">
+		<div class="right">
+			<font size=-1><b><span jwcid="@Insert" value="ognl:resultsLength"/></b> results for <b>
+				<span jwcid="@Insert" value="ognl:query"/></b>
+							<span jwcid="@If" condition="ognl:searchTime">
+								<b></b>. (<b><span jwcid="@Insert" value="ognl:searchTime"/></b> ms.)&nbsp;
+							</span>
+			</font>
+		</div>
+	</span>
+
+	<br/>
+	<span jwcid="@If" condition="ognl:results">
+	<div jwcid="@For" source="ognl:classesList" value="ognl:classIterator">
+		<h1><a href="#" jwcid="@trails:ListAllLink" typeName="ognl:classIterator.name">
+			<span jwcid="@Insert" value="ognl:getClassDescriptor(classIterator).pluralDisplayName"/></a>
+		</h1>
+		<table class="table contribTable" jwcid="@trails:ObjectTable" instances="ognl:getInstances(classIterator)"
+			   rowsClass="ognl:beans.evenOdd.next"
+			   object="ognl:object" classDescriptor="ognl:getClassDescriptor(classIterator)"/>
+		<br/>
+		<br/>
+	</div>
+    </span>
+</span>
+
+

@@ -13,6 +13,7 @@
 		<module>recipe</module>
 		<module>roster</module>
 		<module>security</module>
+		<module>compass-library</module>
 	</modules>
 
 
