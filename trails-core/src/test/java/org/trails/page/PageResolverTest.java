@@ -21,9 +21,9 @@ public class PageResolverTest extends MockObjectTestCase
 		cycleMock.expects(once()).method("getPage").with(eq("DefaultEdit")).will(returnValue(defaultEditPage));
 
 		assertEquals(fooSearchPage,
-			pageResolver.resolvePage((IRequestCycle) cycleMock.proxy(), Foo.class.getName(), TrailsPage.PageType.SEARCH));
+			pageResolver.resolvePage((IRequestCycle) cycleMock.proxy(), Foo.class.getName(), TrailsPage.PageType.Search));
 		assertEquals(defaultEditPage,
-			pageResolver.resolvePage((IRequestCycle) cycleMock.proxy(), Foo.class.getName(), TrailsPage.PageType.EDIT));
+			pageResolver.resolvePage((IRequestCycle) cycleMock.proxy(), Foo.class.getName(), TrailsPage.PageType.Edit));
 
 	}
 }

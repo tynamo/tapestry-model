@@ -48,7 +48,7 @@ public abstract class EditLink extends Link
 		return getPageResolver().resolvePage(
 			getPage().getRequestCycle(),
 			getModel().getClass().getName(),
-			TrailsPage.PageType.EDIT).getPageName();
+			TrailsPage.PageType.Edit).getPageName();
 	}
 
 }

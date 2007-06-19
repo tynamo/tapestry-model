@@ -47,7 +47,7 @@ public abstract class ClassDescriptorComponent extends BaseComponent
 			}
 			catch (OgnlException oe)
 			{
-				throw new TrailsRuntimeException(oe);
+				throw new TrailsRuntimeException(oe, getClassDescriptor().getType());
 			}
 		} else
 		{

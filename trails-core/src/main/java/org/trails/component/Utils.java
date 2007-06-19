@@ -39,7 +39,7 @@ public class Utils
 			return Class.forName(className);
 		} catch (ClassNotFoundException e)
 		{
-			throw new TrailsRuntimeException(e);
+			throw new TrailsRuntimeException(e, null);
 		}
 	}
 

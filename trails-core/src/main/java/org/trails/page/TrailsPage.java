@@ -24,21 +24,10 @@ import org.trails.descriptor.DescriptorService;
 import org.trails.i18n.ResourceBundleMessageSource;
 import org.trails.persistence.PersistenceService;
 
-/**
- * @author fus8882
- *         <p/>
- *         TODO To change the template for this generated type comment go to Window -
- *         Preferences - Java - Code Style - Code Templates
- */
 public abstract class TrailsPage extends BasePage implements PageBeginRenderListener
 {
 
-	public enum PageType
-	{
-		SEARCH, EDIT, LIST, VIEW
-	}
-
-	;
+	public enum PageType {Search, Edit, List, View, Exception}
 
 	public void pushCallback()
 	{

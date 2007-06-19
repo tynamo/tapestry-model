@@ -42,7 +42,7 @@ public class SearchLinkTest extends ComponentTest
 		pageResolverMock.expects(once()).method("resolvePage").with(
 			isA(IRequestCycle.class),
 			eq(Foo.class.getName()),
-			eq(TrailsPage.PageType.SEARCH)).will(returnValue(searchPage));
+			eq(TrailsPage.PageType.Search)).will(returnValue(searchPage));
 		cycleMock.expects(once()).method("activate").with(eq(searchPage));
 		searchLink.click((IRequestCycle) cycleMock.proxy());
 		assertNotNull(searchPage.getTypeName());

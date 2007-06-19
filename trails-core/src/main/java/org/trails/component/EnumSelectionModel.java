@@ -60,7 +60,7 @@ public class EnumSelectionModel extends IdentifierSelectionModel
 			}
 		} catch (Exception e)
 		{
-			throw new TrailsRuntimeException(e);
+			throw new TrailsRuntimeException(e, type);
 		}
 	}
 

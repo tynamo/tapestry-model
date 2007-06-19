@@ -2,9 +2,9 @@ package org.trails.io;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.services.DataSqueezer;
 import org.apache.tapestry.util.io.SqueezeAdaptor;
+import org.trails.TrailsRuntimeException;
 
 /**
  * Squeezes a {@link Class}
@@ -52,7 +52,7 @@ public class ClassAdaptor implements SqueezeAdaptor
 
 		} catch (ClassNotFoundException cnfe)
 		{
-			throw new ApplicationRuntimeException("decode-failure", cnfe);
+			throw new TrailsRuntimeException("decode-failure", cnfe);
 		}
 	}
 }

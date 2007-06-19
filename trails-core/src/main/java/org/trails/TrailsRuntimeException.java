@@ -8,9 +8,12 @@ package org.trails;
 public class TrailsRuntimeException extends RuntimeException
 {
 
-	public TrailsRuntimeException()
+	private Class entityType;
+
+	public TrailsRuntimeException(Exception e, Class entityType)
 	{
 		super();
+		this.entityType = entityType;
 		// TODO Auto-generated constructor stub
 	}
 
@@ -30,6 +33,10 @@ public class TrailsRuntimeException extends RuntimeException
 	{
 		super(cause);
 		// TODO Auto-generated constructor stub
+	}
+
+	public Class getEntityType() {
+		return entityType;
 	}
 
 }

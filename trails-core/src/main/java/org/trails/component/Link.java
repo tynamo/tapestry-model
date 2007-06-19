@@ -23,7 +23,7 @@ import org.trails.page.PageResolver;
  */
 public abstract class Link extends TrailsComponent
 {
-	@InjectObject("spring:pageResolver")
+	@InjectObject("service:trails.core.PageResolver")
 	public abstract PageResolver getPageResolver();
 
 	public abstract String getTypeName();

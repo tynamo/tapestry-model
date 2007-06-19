@@ -75,7 +75,7 @@ public abstract class AssociationMgt extends TrailsComponent
 	@InjectState("callbackStack")
 	public abstract CallbackStack getCallbackStack();
 
-	@InjectObject("spring:pageResolver")
+	@InjectObject("service:trails.core.PageResolver")
 	public abstract PageResolver getPageResolver();
 
 	@InjectObject("spring:persistenceService")
@@ -131,7 +131,7 @@ public abstract class AssociationMgt extends TrailsComponent
 		String currentEditPageName = getPage().getRequestCycle().getPage()
 			.getPageName();
 		EditPage ownerEditPage = (EditPage) getPageResolver().resolvePage(
-			cycle, getDescriptor().getClass().getName(), PageType.EDIT);
+			cycle, getDescriptor().getClass().getName(), PageType.Edit);
 
 		try
 		{
@@ -143,7 +143,7 @@ public abstract class AssociationMgt extends TrailsComponent
 				.setNextPage(nextPage);
 		} catch (Exception ex)
 		{
-			throw new TrailsRuntimeException(ex);
+			throw new TrailsRuntimeException(ex, getDescriptor().getClass().getClass() );
 		}
 	}
 
@@ -184,7 +184,7 @@ public abstract class AssociationMgt extends TrailsComponent
 	public void remove(IRequestCycle cycle)
 	{
 		EditPage editPage = (EditPage) getPageResolver().resolvePage(cycle,
-			getDescriptor().getClass().getName(), PageType.EDIT);
+			getDescriptor().getClass().getName(), PageType.Edit);
 
 		AssociationCallback callback = buildCallback();
 

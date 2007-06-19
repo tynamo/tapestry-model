@@ -61,7 +61,7 @@ public class NewLinkTest extends ComponentTest
 //                editPage));
 		cycleMock.expects(atLeastOnce()).method("activate").with(same(editPage));
 		pageResolverMock.expects(once()).method("resolvePage")
-			.with(isA(IRequestCycle.class), eq(Foo.class.getName()), eq(TrailsPage.PageType.EDIT))
+			.with(isA(IRequestCycle.class), eq(Foo.class.getName()), eq(TrailsPage.PageType.Edit))
 			.will(returnValue(editPage));
 		//newLink = (NewLink) creator.newInstance(NewLink.class);
 		newLink.setTypeName(Foo.class.getName());

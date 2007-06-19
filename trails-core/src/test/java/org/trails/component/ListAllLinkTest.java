@@ -66,7 +66,7 @@ public class ListAllLinkTest extends ComponentTest
 		Mock pageResolverMock = new Mock(PageResolver.class);
 		Mock cycleMock = new Mock(IRequestCycle.class);
 		pageResolverMock.expects(once()).method("resolvePage")
-			.with(isA(IRequestCycle.class), eq(Foo.class.getName()), eq(TrailsPage.PageType.LIST))
+			.with(isA(IRequestCycle.class), eq(Foo.class.getName()), eq(TrailsPage.PageType.List))
 			.will(returnValue(pageMock.proxy()));
 		pageMock.expects(once()).method("getPageName").will(returnValue("FooList"));
 		pageMock.expects(once()).method("getRequestCycle").will(returnValue(cycleMock.proxy()));

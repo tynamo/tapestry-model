@@ -33,7 +33,7 @@ public class EditLinkTest extends ComponentTest
 		Mock pageResolverMock = new Mock(PageResolver.class);
 		Mock cycleMock = new Mock(IRequestCycle.class);
 		pageResolverMock.expects(once()).method("resolvePage")
-			.with(isA(IRequestCycle.class), eq(Foo.class.getName()), eq(TrailsPage.PageType.EDIT))
+			.with(isA(IRequestCycle.class), eq(Foo.class.getName()), eq(TrailsPage.PageType.Edit))
 			.will(returnValue(pageMock.proxy()));
 		pageMock.expects(once()).method("getPageName").will(returnValue("FooEdit"));
 		pageMock.expects(once()).method("getRequestCycle").will(returnValue(cycleMock.proxy()));

@@ -85,4 +85,25 @@
 			</construct>
 		</invoke-factory>
 	</service-point>
-</module>
+
+	<service-point id="ApplicationExceptionPresenter" interface="org.apache.tapestry.error.ExceptionPresenter">
+		<invoke-factory>
+			<construct class="org.trails.exception.ApplicationExceptionPresenterImpl">
+				<set-object property="exceptionPageName" value="infrastructure:exceptionPageName"/>
+				<set-object property="requestExceptionReporter" value="infrastructure:requestExceptionReporter"/>
+				<set-object property="responseRenderer" value="infrastructure:responseRenderer"/>
+				<set-object property="pageResolver" value="service:trails.core.PageResolver"/>
+			</construct>
+		</invoke-factory>
+	</service-point>
+	
+	<contribution configuration-id="tapestry.InfrastructureOverrides">
+		<property name="exceptionPresenter" object="service:ApplicationExceptionPresenter"/>
+	</contribution>
+	
+	<service-point id="PageResolver" interface="org.trails.page.PageResolver">
+		<invoke-factory>
+			<construct class="org.trails.page.DefaultPageResolver"/>
+		</invoke-factory>
+	</service-point>
+=</module>

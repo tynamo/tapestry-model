@@ -66,7 +66,7 @@ public class CollectionCallback extends EditCallback
 			Ognl.getValue(ognlExpression + "(#member)", context, model);
 		} catch (OgnlException e)
 		{
-			throw new TrailsRuntimeException(e);
+			throw new TrailsRuntimeException(e, model.getClass());
 		}
 	}
 
