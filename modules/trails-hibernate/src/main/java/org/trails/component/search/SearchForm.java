@@ -18,7 +18,7 @@ import org.trails.page.TrailsPage.PageType;
 public abstract class SearchForm extends ClassDescriptorComponent implements PageBeginRenderListener
 {
 
-	@InjectObject("spring:pageResolver")
+	@InjectObject("service:trails.core.PageResolver")
 	public abstract PageResolver getPageResolver();
 
 	@InjectObject("spring:searchBlockFinder")
@@ -41,7 +41,7 @@ public abstract class SearchForm extends ClassDescriptorComponent implements Pag
 	{
 		HibernateListPage listPage = (HibernateListPage) getPageResolver().resolvePage(cycle,
 			getClassDescriptor().getType().getName(),
-			PageType.LIST);
+			PageType.List);
 		listPage.setCriteria(getCriteria());
 		cycle.activate(listPage);
 	}

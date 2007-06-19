@@ -149,7 +149,7 @@ public abstract class EditCollection extends TrailsComponent
 		return (CollectionDescriptor) getPropertyDescriptor();
 	}
 
-	@InjectObject("spring:pageResolver")
+	@InjectObject("service:trails.core.PageResolver")
 	public abstract PageResolver getPageResolver();
 
 	public IPage edit(Object member)
@@ -162,7 +162,7 @@ public abstract class EditCollection extends TrailsComponent
 		EditPage editPage = (EditPage) getPageResolver().resolvePage(
 			getPage().getRequestCycle(),
 			Utils.checkForCGLIB(member.getClass()).getName(),
-			PageType.EDIT);
+			PageType.Edit);
 
 		editPage.setModel(member);
 		return editPage;
@@ -175,7 +175,7 @@ public abstract class EditCollection extends TrailsComponent
 
 		EditPage editPage = (EditPage) getPageResolver().resolvePage(cycle,
 			getCollectionDescriptor().getElementType().getName(),
-			PageType.EDIT);
+			PageType.Edit);
 		try
 		{
 			// we need to do some indirection to avoid a StaleLink
@@ -187,7 +187,7 @@ public abstract class EditCollection extends TrailsComponent
 
 		} catch (Exception ex)
 		{
-			throw new TrailsRuntimeException(ex);
+			throw new TrailsRuntimeException(ex, getCollectionDescriptor().getElementType() );
 		}
 	}
 

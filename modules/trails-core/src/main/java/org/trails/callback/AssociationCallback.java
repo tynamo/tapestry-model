@@ -44,7 +44,7 @@ public class AssociationCallback extends EditCallback
 			persistenceService.remove(object);
 		} catch (OgnlException e)
 		{
-			throw new TrailsRuntimeException(e);
+			throw new TrailsRuntimeException(e, getModel().getClass());
 		}
 	}
 
@@ -60,7 +60,7 @@ public class AssociationCallback extends EditCallback
 			Ognl.getValue(ognlExpression, model);
 		} catch (OgnlException e)
 		{
-			throw new TrailsRuntimeException(e);
+			throw new TrailsRuntimeException(e, model.getClass());
 		}
 	}
 

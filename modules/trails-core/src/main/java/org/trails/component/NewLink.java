@@ -35,18 +35,18 @@ public abstract class NewLink extends AbstractTypeNavigationLink
 	{
 
 		PageResolver pageResolver = getPageResolver();
-		EditPage page = (EditPage) pageResolver.resolvePage(cycle, getTypeName(), TrailsPage.PageType.EDIT);
+		EditPage page = (EditPage) pageResolver.resolvePage(cycle, getTypeName(), TrailsPage.PageType.Edit);
 
-		try
-		{
-			Class clazz = Class.forName(getTypeName());
+		Class clazz = null;
+		try {
+			clazz = Class.forName(getTypeName());
 			Constructor constructor = clazz.getDeclaredConstructor();
 			constructor.setAccessible(true);
 			page.setModel(constructor.newInstance());
 			cycle.activate(page);
 		} catch (Exception ex)
 		{
-			throw new TrailsRuntimeException(ex);
+			throw new TrailsRuntimeException(ex, clazz);
 		}
 	}
 

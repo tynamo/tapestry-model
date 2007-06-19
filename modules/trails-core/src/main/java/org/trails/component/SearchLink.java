@@ -25,7 +25,7 @@ public abstract class SearchLink extends AbstractTypeNavigationLink
 	public void click(IRequestCycle cycle)
 	{
 		PageResolver pageResolver = getPageResolver();
-		SearchPage searchPage = (SearchPage) pageResolver.resolvePage(cycle, getTypeName(), TrailsPage.PageType.SEARCH);
+		SearchPage searchPage = (SearchPage) pageResolver.resolvePage(cycle, getTypeName(), TrailsPage.PageType.Search);
 		searchPage.setTypeName(getTypeName());
 		cycle.activate(searchPage);
 	}

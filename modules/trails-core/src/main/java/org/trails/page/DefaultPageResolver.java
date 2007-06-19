@@ -22,6 +22,8 @@ public class DefaultPageResolver implements PageResolver
 
 	public IPage resolvePage(IRequestCycle cycle, String className, PageType pageType)
 	{
+		if (className == null || "".equals(className)) return cycle.getPage(getDefaultPrefix() + getPostFix(pageType));
+		
 		String pageName = Utils.unqualify(className) + getPostFix(pageType);
 		IPage page = null;
 		try
@@ -49,10 +51,7 @@ public class DefaultPageResolver implements PageResolver
 	public DefaultPageResolver()
 	{
 		postFixMap = new HashMap<TrailsPage.PageType, String>();
-		postFixMap.put(TrailsPage.PageType.EDIT, "Edit");
-		postFixMap.put(TrailsPage.PageType.SEARCH, "Search");
-		postFixMap.put(TrailsPage.PageType.LIST, "List");
-		postFixMap.put(TrailsPage.PageType.VIEW, "View");
+		for (PageType pageType : PageType.values()) postFixMap.put(pageType, pageType.name());
 	}
 
 	public String getDefaultPrefix()

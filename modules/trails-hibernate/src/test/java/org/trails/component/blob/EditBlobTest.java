@@ -171,7 +171,7 @@ public class EditBlobTest extends ComponentTest {
 		Mock cycleMock = new Mock(IRequestCycle.class);
 		pageResolverMock.expects(once()).method("resolvePage").with(
 				isA(IRequestCycle.class), eq(UploadableMedia.class.getName()),
-				eq(TrailsPage.PageType.EDIT)).will(
+				eq(TrailsPage.PageType.Edit)).will(
 				returnValue(pageMock.proxy()));
 		pageMock.expects(once()).method("getPageName").will(
 				returnValue(EDIT_PAGE_NAME));
@@ -218,7 +218,7 @@ public class EditBlobTest extends ComponentTest {
 		Mock pageResolverMock = new Mock(PageResolver.class);
 		pageResolverMock.expects(atLeastOnce()).method("resolvePage").with(
 				isA(IRequestCycle.class), eq(UploadableMedia.class.getName()),
-				eq(PageType.EDIT)).will(returnValue(blobEditPage));
+				eq(PageType.Edit)).will(returnValue(blobEditPage));
 
 		Mock cycleMock = new Mock(IRequestCycle.class);
 		cycleMock.expects(once()).method("getPage").with(
@@ -273,7 +273,7 @@ public class EditBlobTest extends ComponentTest {
 		Mock pageResolverMock = new Mock(PageResolver.class);
 		pageResolverMock.expects(atLeastOnce()).method("resolvePage").with(
 				isA(IRequestCycle.class), eq(UploadableMedia.class.getName()),
-				eq(PageType.EDIT)).will(returnValue(blobEditPage));
+				eq(PageType.Edit)).will(returnValue(blobEditPage));
 
 		Mock cycleMock = new Mock(IRequestCycle.class);
 
@@ -296,7 +296,7 @@ public class EditBlobTest extends ComponentTest {
 
 		pageResolverMock.expects(atLeastOnce()).method("resolvePage").with(
 		isA(IRequestCycle.class), eq(UploadableMediaDelegate.class.getName()),
-		eq(PageType.EDIT)).will(returnValue(delegateEditPage));
+		eq(PageType.Edit)).will(returnValue(delegateEditPage));
 
 		cycleMock.expects(once()).method("getPage").with(
 		eq(blobEditPage.getPageName())).will(returnValue(blobEditPage));

@@ -46,7 +46,7 @@ public abstract class InvokeMethod extends TrailsComponent
 				new Object[]{});
 		} catch (Exception e)
 		{
-			throw new TrailsRuntimeException(e);
+			throw new TrailsRuntimeException(e, getModel().getClass());
 		}
 
 		if (getListener() != null)
