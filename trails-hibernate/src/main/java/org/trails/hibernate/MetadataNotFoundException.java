@@ -5,12 +5,6 @@ import org.trails.TrailsRuntimeException;
 public class MetadataNotFoundException extends TrailsRuntimeException
 {
 
-	public MetadataNotFoundException()
-	{
-		super();
-		// TODO Auto-generated constructor stub
-	}
-
 	public MetadataNotFoundException(String message)
 	{
 		super(message);
