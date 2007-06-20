@@ -4,11 +4,12 @@
 		<src>images/trails-header94.jpg</src>
 		<href>http://www.trailsframework.org/</href>
 	</bannerLeft>
-	<skin>
-		<groupId>org.apache.tapestry</groupId>
-		<artifactId>maven-skin</artifactId>
-		<version>1.1</version>
-	</skin>
+  <skin>
+    <groupId>org.trailsframework</groupId>
+    <artifactId>codehaus-unity-skin</artifactId>
+    <version>1.0-SNAPSHOT</version>
+  </skin>
+	
 
 	<publishDate format="dd MMM yyyy"/>
 

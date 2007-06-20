@@ -15,6 +15,7 @@
 	</properties>
 
 	<modules>
+		<module>codehaus-unity-skin</module>
 		<module>modules</module>
 		<module>examples</module>
 		<module>archetypes</module>
@@ -153,11 +154,11 @@
 		</notifiers>
 	</ciManagement>
 
-
 	<distributionManagement>
 		<site>
 			<id>trails-site</id>
-			<url>dav:https://dav.codehaus.org/trails/site/</url>
+			<!-- Note the url. Only static files deployed in /constant/ can be decorated by Unity -->
+			<url>dav:https://dav.codehaus.org/trails/constant/site/</url>
 		</site>
 		<repository>
 			<id>trails-release</id>
