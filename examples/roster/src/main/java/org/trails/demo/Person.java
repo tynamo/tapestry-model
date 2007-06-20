@@ -45,6 +45,7 @@ import org.trails.util.DatePattern;
 import org.trails.validation.ValidateUniqueness;
 import org.trails.security.annotation.UpdateRequiresRole;
 import org.trails.security.annotation.RemoveRequiresRole;
+import org.trails.security.annotation.ViewRequiresRole;
 
 /**
  * A Person has a photo, eRole and application role
@@ -52,8 +53,9 @@ import org.trails.security.annotation.RemoveRequiresRole;
  * @author kenneth.colassi nhhockeyplayer@hotmail.com
  */
 @Entity
-@RemoveRequiresRole("ROLE_MANAGER")
-@UpdateRequiresRole("ROLE_MANAGER")
+@RemoveRequiresRole("ROLE_USER")
+@UpdateRequiresRole("ROLE_USER")
+@ViewRequiresRole("ROLE_USER")
 @ValidateUniqueness(property = "emailAddress")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 //@Inheritance(strategy = InheritanceType.JOINED)

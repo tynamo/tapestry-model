@@ -7,6 +7,9 @@ import javax.persistence.Embeddable;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.trails.security.annotation.RemoveRequiresRole;
+import org.trails.security.annotation.UpdateRequiresRole;
+import org.trails.security.annotation.ViewRequiresRole;
 
 /**
  * Demographics
@@ -14,6 +17,9 @@ import org.apache.commons.logging.LogFactory;
  * @author kenneth.colassi nhhockeyplayer@hotmail.com
  */
 @Embeddable
+@RemoveRequiresRole("ROLE_USER")
+@UpdateRequiresRole("ROLE_USER")
+@ViewRequiresRole("ROLE_USER")
 public class Demographics implements Cloneable, Serializable
 {
 	private static final Log log = LogFactory.getLog(Demographics.class);

@@ -15,9 +15,9 @@
 		<property name="description" value="Manager role"/>
 	</bean>
 
-	<bean id="roleAnonymous" class="org.trails.security.domain.Role" lazy-init="true">
-		<property name="name" value="ROLE_ANONYMOUS"/>
-		<property name="description" value="Anonymous role"/>
+	<bean id="roleAdmin" class="org.trails.security.domain.Role" lazy-init="true">
+		<property name="name" value="ROLE_ADMIN"/>
+		<property name="description" value="Administration role"/>
 	</bean>
 
 	<bean id="user" class="org.trails.security.domain.User" lazy-init="true">
@@ -29,7 +29,6 @@
 		<property name="roles">
 			<list>
 				<ref bean="roleUser"/>
-				<ref bean="roleAnonymous"/>
 			</list>
 		</property>
 	</bean>
@@ -44,20 +43,21 @@
 			<list>
 				<ref bean="roleUser"/>
 				<ref bean="roleManager"/>
-				<ref bean="roleAnonymous"/>
+				<ref bean="roleAdmin"/>
 			</list>
 		</property>
 	</bean>
 
-	<bean id="anonymous" class="org.trails.security.domain.User" lazy-init="true">
-		<property name="username" value="anonymous"/>
-		<property name="password" value="anonymous"/>
-		<property name="confirmPassword" value="anonymous"/>
-		<property name="firstName" value="Anonymous"/>
-		<property name="lastName" value="Anonymous"/>
+	<bean id="mgr" class="org.trails.security.domain.User" lazy-init="true">
+		<property name="username" value="mgr"/>
+		<property name="password" value="mgr"/>
+		<property name="confirmPassword" value="mgr"/>
+		<property name="firstName" value="Manager"/>
+		<property name="lastName" value="Manager"/>
 		<property name="roles">
 			<list>
-				<ref bean="roleAnonymous"/>
+				<ref bean="roleUser"/>
+				<ref bean="roleManager"/>
 			</list>
 		</property>
 	</bean>

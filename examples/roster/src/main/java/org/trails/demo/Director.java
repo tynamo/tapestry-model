@@ -14,6 +14,7 @@ import org.trails.descriptor.annotation.ClassDescriptor;
 import org.trails.security.RestrictionType;
 import org.trails.security.annotation.UpdateRequiresRole;
 import org.trails.security.annotation.RemoveRequiresRole;
+import org.trails.security.annotation.ViewRequiresRole;
 
 /**
  * A Director belongs to an Organization
@@ -21,8 +22,9 @@ import org.trails.security.annotation.RemoveRequiresRole;
  * @author kenneth.colassi nhhockeyplayer@hotmail.com
  */
 @Entity
-@RemoveRequiresRole("ROLE_MANAGER")
-@UpdateRequiresRole("ROLE_MANAGER")
+@RemoveRequiresRole("ROLE_USER")
+@UpdateRequiresRole("ROLE_USER")
+@ViewRequiresRole("ROLE_USER")
 @ClassDescriptor(hasCyclicRelationships = true)
 public class Director extends Person implements Cloneable, Serializable
 {
