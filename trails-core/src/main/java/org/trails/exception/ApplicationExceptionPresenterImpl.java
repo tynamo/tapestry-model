@@ -22,15 +22,14 @@ public class ApplicationExceptionPresenterImpl extends ExceptionPresenterImpl {
 	private PageResolver pageResolver;
 	
 	public void presentException(IRequestCycle cycle, Throwable throwable) {
-		System.out.println("Hello world for exception " + throwable.getCause().getClass() );
-		if (throwable != null && !(throwable.getCause() instanceof TrailsRuntimeException)) {
+		if (throwable.getCause() == null || !(throwable.getCause() instanceof TrailsRuntimeException)) {
 			super.presentException(cycle, throwable);
 			return;
 		}
 		TrailsRuntimeException trailsRuntimeException = (TrailsRuntimeException)throwable.getCause();
 
 		log.warn("Handling Trails specific exception caused by: " + throwable.getCause().getMessage() );
-		
+		log.debug("The problem was caused by: ", throwable.getCause());
 		String className = trailsRuntimeException.getEntityType() == null ?
 				"" : trailsRuntimeException.getEntityType().getName();
 		IPage iPage = pageResolver.resolvePage(
