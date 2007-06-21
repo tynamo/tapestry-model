@@ -44,6 +44,16 @@
 						<a jwcid="@ServiceLink" service="ognl:@org.apache.tapestry.Tapestry@RESTART_SERVICE"><span
 								jwcid="@Insert" value="message:logout">logout</span></a>
 					</li>
+					<span jwcid="@If" condition="ognl:currentUser">
+						<li class="pad right">&nbsp;</li>
+						<li class="right">
+						  <a href="#" jwcid="@trails:EditLink" model="ognl:currentUser">Edit my profile</a>
+						</li>
+					</span>
+					<li class="pad right">&nbsp;</li>
+					<li class="right">
+					  <a href="/external.svc?page=DefaultEdit&sp=HIBRN8%3ADorg.trails.security.domain.User%3A2">Try to edit Admin's profile</a>
+					</li>
 				</ul>
 			</div>
 		</div>

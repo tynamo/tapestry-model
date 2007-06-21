@@ -56,7 +56,7 @@
 				PATTERN_TYPE_APACHE_ANT
 				/images/**=#NONE#
 				/style/**=#NONE#
-				/**=httpSessionContextIntegrationFilter,authenticationProcessingFilter,anonymousProcessingFilter,exceptionTranslationFilter,filterInvocationInterceptor
+				/**=httpSessionContextIntegrationFilter,authenticationProcessingFilter,remoteUserFilter,anonymousProcessingFilter,exceptionTranslationFilter,filterInvocationInterceptor
 			</value>
 		</property>
 	</bean>
@@ -80,7 +80,8 @@
 		<property name="loginFormUrl" value="/Login.page"/>
 		<property name="forceHttps" value="false"/>
 	</bean>
-
+	
+	<bean id="remoteUserFilter" class="org.acegisecurity.wrapper.SecurityContextHolderAwareRequestFilter"/>	
 
 	<bean id="anonymousProcessingFilter"
 		  class="org.acegisecurity.providers.anonymous.AnonymousProcessingFilter">
