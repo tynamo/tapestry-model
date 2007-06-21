@@ -6,8 +6,6 @@ import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.error.ExceptionPresenterImpl;
 import org.trails.TrailsRuntimeException;
-import org.trails.page.EditPage;
-import org.trails.page.ExceptionPage;
 import org.trails.page.PageResolver;
 import org.trails.page.TrailsPage.PageType;
 
@@ -21,6 +19,8 @@ public class ApplicationExceptionPresenterImpl extends ExceptionPresenterImpl {
 	private static final Log log = LogFactory.getLog(ApplicationExceptionPresenterImpl.class);
 	private PageResolver pageResolver;
 	
+	public enum DefaultPage{UnknownEntity};
+	
 	public void presentException(IRequestCycle cycle, Throwable throwable) {
 		if (throwable.getCause() == null || !(throwable.getCause() instanceof TrailsRuntimeException)) {
 			super.presentException(cycle, throwable);
@@ -28,12 +28,17 @@ public class ApplicationExceptionPresenterImpl extends ExceptionPresenterImpl {
 		}
 		TrailsRuntimeException trailsRuntimeException = (TrailsRuntimeException)throwable.getCause();
 
-		log.warn("Handling Trails specific exception caused by: " + throwable.getCause().getMessage() );
+		String className = null;
+		if (trailsRuntimeException.getEntityType() == null) {
+			log.warn("Trails specific exception happened while handling unknown entity, caused by: " + throwable.getCause().getMessage() );
+			className = DefaultPage.UnknownEntity.name();
+		}
+		else  {
+			log.warn("Trails specific exception happened while handling entity type " + trailsRuntimeException.getEntityType().getName() + ", caused by: " + throwable.getCause().getMessage() );
+			className = trailsRuntimeException.getEntityType().getSimpleName();
+		}
 		log.debug("The problem was caused by: ", throwable.getCause());
-		String className = trailsRuntimeException.getEntityType() == null ?
-				"" : trailsRuntimeException.getEntityType().getName();
-		IPage iPage = pageResolver.resolvePage(
-				cycle, className, PageType.Exception);
+		IPage iPage = pageResolver.resolvePage(cycle, className, PageType.Exception);
 		
 		setExceptionPageName(iPage.getPageName());
 		super.presentException(cycle, throwable.getCause() );

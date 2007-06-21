@@ -113,8 +113,6 @@
 		<property name="localeHolder" ref="localeHolder"/>
 	</bean>
 
-	<bean id="pageResolver" class="org.trails.page.DefaultPageResolver"/>
-
 	<bean id="searchBlockFinder" class="org.trails.descriptor.BaseBlockFinder">
 		<property name="defaultBlockAddress">
 			<bean class="org.apache.tapestry.util.ComponentAddress">
