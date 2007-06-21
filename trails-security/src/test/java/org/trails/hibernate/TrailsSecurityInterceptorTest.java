@@ -20,7 +20,7 @@ import org.acegisecurity.context.SecurityContextImpl;
 import org.acegisecurity.providers.TestingAuthenticationToken;
 import org.hibernate.type.Type;
 import org.jmock.MockObjectTestCase;
-import org.trails.security.OwnerRequired;
+import org.trails.security.EntityModificationInterception;
 import org.trails.security.TrailsSecurityException;
 import org.trails.security.domain.Role;
 import org.trails.security.domain.User;
@@ -50,7 +50,7 @@ public class TrailsSecurityInterceptorTest extends MockObjectTestCase {
   		interceptor.onFlushDirty(user, 1, new Object[]{}, new Object[]{}, new String[]{}, new Type[]{});
     	fail("OwnerRequired exception should have been thrown on wrong user name");
   	}
-  	catch(OwnerRequired e) {
+  	catch(EntityModificationInterception e) {
   		// OK
   	}
   }
@@ -73,7 +73,7 @@ public class TrailsSecurityInterceptorTest extends MockObjectTestCase {
   		interceptor.onSave(secureFoo, 1, new Object[]{}, new String[]{}, new Type[]{});
     	fail("OwnerRequired exception should have been thrown on non-owner");
   	}
-  	catch(OwnerRequired e) {
+  	catch(EntityModificationInterception e) {
   		// OK
   	}
   	

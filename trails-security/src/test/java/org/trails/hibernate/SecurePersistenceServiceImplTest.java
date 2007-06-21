@@ -9,7 +9,7 @@ import org.acegisecurity.context.SecurityContext;
 import org.acegisecurity.context.SecurityContextHolder;
 import org.acegisecurity.context.SecurityContextImpl;
 import org.acegisecurity.providers.TestingAuthenticationToken;
-import org.trails.security.EntitySecurityException;
+import org.trails.security.EntityModificationInterception;
 import org.trails.security.domain.Role;
 import org.trails.security.domain.User;
 import org.trails.seeddata.SeedDataInitializer;
@@ -59,14 +59,8 @@ public class SecurePersistenceServiceImplTest extends MockableTransactionalTestC
   	securityContext.setAuthentication(authentication);
   	SecurityContextHolder.setContext(securityContext);
   	
-    try {
-    	persistenceService.getAllInstances(Role.class);
-    }
-    catch (EntitySecurityException e) {
-    	// Success
-    	return;
-    }
-    fail("Security exception should have been thrown");
+  	List<Role> roles = persistenceService.getAllInstances(Role.class);
+  	assertEquals(0,roles.size());
 	}
 	
 	
