@@ -4,6 +4,7 @@ import ognl.Ognl;
 import ognl.OgnlException;
 import org.trails.TrailsRuntimeException;
 import org.trails.descriptor.IClassDescriptor;
+import org.trails.exception.EmptyModelException;
 
 /**
  * A page which has a model object.
@@ -35,6 +36,7 @@ public abstract class ModelPage extends TrailsPage
 
 	public IClassDescriptor getClassDescriptor()
 	{
+		if (getModel() == null) throw new EmptyModelException("Model does not exist");
 		return getDescriptorService().getClassDescriptor(getModel().getClass());
 	}
 
