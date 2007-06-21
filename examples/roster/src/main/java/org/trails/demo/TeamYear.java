@@ -17,6 +17,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.trails.descriptor.annotation.ClassDescriptor;
 import org.trails.descriptor.annotation.PropertyDescriptor;
+import org.trails.security.annotation.RemoveRequiresRole;
+import org.trails.security.annotation.UpdateRequiresRole;
 import org.trails.util.DatePattern;
 
 /**
@@ -24,7 +26,9 @@ import org.trails.util.DatePattern;
  * @author kenneth.colassi nhhockeyplayer@hotmail.com
  */
 @Entity
-@ClassDescriptor(hasCyclicRelationships = true, hidden = true)
+@RemoveRequiresRole({"ROLE_ADMIN"})
+@UpdateRequiresRole({"ROLE_ADMIN"})
+@ClassDescriptor(hasCyclicRelationships = true, hidden = false)
 public class TeamYear implements Cloneable, Serializable
 {
 	private static final Log log = LogFactory.getLog(TeamYear.class);

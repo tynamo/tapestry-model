@@ -134,8 +134,8 @@
 				/**/*.png=ROLE_ANONYMOUS,ROLE_USER
 				/**/*.ico=ROLE_ANONYMOUS,ROLE_USER
 				/styles/**=ROLE_ANONYMOUS,ROLE_USER
-				/admin/**=ROLE_MANAGER
-				/**=ROLE_USER
+				/admin/**=ROLE_MANAGER,ROLE_ADMIN
+				/**=ROLE_ANONYMOUS,ROLE_MANAGER,ROLE_ADMIN
 			</value>
 		</property>
 	</bean>

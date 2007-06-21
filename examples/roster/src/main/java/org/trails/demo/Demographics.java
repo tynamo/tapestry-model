@@ -17,9 +17,9 @@ import org.trails.security.annotation.ViewRequiresRole;
  * @author kenneth.colassi nhhockeyplayer@hotmail.com
  */
 @Embeddable
-@RemoveRequiresRole("ROLE_USER")
-@UpdateRequiresRole("ROLE_USER")
-@ViewRequiresRole("ROLE_USER")
+@RemoveRequiresRole({"ROLE_ADMIN", "ROLE_MANAGER"})
+@UpdateRequiresRole({"ROLE_ADMIN", "ROLE_MANAGER"})
+@ViewRequiresRole({"ROLE_ADMIN", "ROLE_MANAGER", "ROLE_USER"})
 public class Demographics implements Cloneable, Serializable
 {
 	private static final Log log = LogFactory.getLog(Demographics.class);

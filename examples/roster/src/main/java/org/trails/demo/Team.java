@@ -30,6 +30,8 @@ import org.trails.descriptor.annotation.BlobDescriptor;
 import org.trails.descriptor.annotation.ClassDescriptor;
 import org.trails.descriptor.annotation.Collection;
 import org.trails.descriptor.annotation.PropertyDescriptor;
+import org.trails.security.annotation.RemoveRequiresRole;
+import org.trails.security.annotation.UpdateRequiresRole;
 import org.trails.util.DatePattern;
 
 /**
@@ -38,6 +40,8 @@ import org.trails.util.DatePattern;
  * @author kenneth.colassi nhhockeyplayer@hotmail.com
  */
 @Entity
+@RemoveRequiresRole({"ROLE_ADMIN", "ROLE_MANAGER"})
+@UpdateRequiresRole({"ROLE_ADMIN", "ROLE_MANAGER"})
 @ClassDescriptor(hasCyclicRelationships = true)
 public class Team implements Cloneable, Serializable
 {

@@ -36,10 +36,16 @@
 						<a href="#" jwcid="@PageLink" page="Home"><span jwcid="@Insert"
 																		value="message:org.trails.i18n.home">Home</span></a>
 					</li>
+					<li class="selected">
+						<a href="#" jwcid="@PageLink" page="Login"><span jwcid="@Insert"
+																		value="message:org.trails.login.title">Login</span></a>
+					</li>
 					<span jwcid="@If" condition="ognl:navBlock">
 						 <span jwcid="@RenderBlock" block="ognl:page.components[navBlock]"/>
 					</span>
+
 					<li class="pad right">&nbsp;</li>
+
 					<li class="right">
 						<a jwcid="@ServiceLink" service="ognl:@org.apache.tapestry.Tapestry@RESTART_SERVICE"><span
 								jwcid="@Insert" value="message:logout">logout</span></a>
@@ -54,9 +60,7 @@
 			<div></div>
 		</div>
 	<span class="left">Powered by Trails 1.1-SNAPSHOT
-<!--
-		| Logged in as:  Alejandro Scandroli
--->
+
 	</span>
 	<span class="right" style="margin-right: 10px;">
 		© 2004-2007 <a href="http://www.trailsframework.org/">Trails Framework</a>

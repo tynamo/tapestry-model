@@ -23,9 +23,9 @@ import org.trails.security.annotation.ViewRequiresRole;
  * @author kenneth.colassi nhhockeyplayer@hotmail.com
  */
 @Entity
-@RemoveRequiresRole("ROLE_USER")
-@UpdateRequiresRole("ROLE_USER")
-@ViewRequiresRole("ROLE_USER")
+@RemoveRequiresRole({"ROLE_ADMIN", "ROLE_MANAGER"})
+@UpdateRequiresRole({"ROLE_ADMIN", "ROLE_MANAGER"})
+@ViewRequiresRole({"ROLE_ADMIN", "ROLE_MANAGER", "ROLE_USER"})
 @ClassDescriptor(hasCyclicRelationships = true, hidden = true)
 public class Officer extends Person
 {

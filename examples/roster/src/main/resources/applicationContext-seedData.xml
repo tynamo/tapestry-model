@@ -48,9 +48,9 @@
 		</property>
 	</bean>
 
-	<bean id="mgr" class="org.trails.security.domain.User" lazy-init="true">
-		<property name="username" value="mgr"/>
-		<property name="password" value="mgr"/>
+	<bean id="manager" class="org.trails.security.domain.User" lazy-init="true">
+		<property name="username" value="manager"/>
+		<property name="password" value="manager"/>
 		<property name="confirmPassword" value="mgr"/>
 		<property name="firstName" value="Manager"/>
 		<property name="lastName" value="Manager"/>
