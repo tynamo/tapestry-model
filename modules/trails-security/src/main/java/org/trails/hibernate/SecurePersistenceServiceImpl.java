@@ -8,7 +8,7 @@ import org.acegisecurity.context.SecurityContextHolder;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.SimpleExpression;
-import org.trails.security.EntitySecurityException;
+import org.trails.security.EntityModificationInterception;
 import org.trails.security.annotation.ViewRequiresAssociation;
 import org.trails.security.annotation.ViewRequiresRole;
 
@@ -32,7 +32,16 @@ public class SecurePersistenceServiceImpl extends HibernatePersistenceServiceImp
 		if (viewRestriction == null) {
 			// At this point we know the user should have no access to the entities, because there's
 			// a role restriction but user doesn't have a suitable role and there's no association
-			throw new EntitySecurityException(null, "No suitable role or association");
+			// We can throw an exception here, but it wouldn't be consistent with how assiative restriction
+			// is handled (just returns a query with no results) and would change the semantics
+			// throw new EntitySecurityException(null, "No suitable role or association");
+			
+			// We should do:
+			//criteria.setMaxResults(0);
+			// but DetachedCriteria doesn't support setMaxResults() 
+			// http://opensource.atlassian.com/projects/hibernate/browse/HHH-912
+			// Ugly HACK instead
+			return criteria.add(Restrictions.idEq(null) );
 		}
 		
 		String currentUsername = context.getAuthentication().getName();

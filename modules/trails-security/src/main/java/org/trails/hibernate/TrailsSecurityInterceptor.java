@@ -15,9 +15,8 @@ import org.apache.commons.logging.LogFactory;
 import org.hibernate.CallbackException;
 import org.hibernate.Transaction;
 import org.hibernate.type.Type;
-import org.trails.security.OwnerRequired;
+import org.trails.security.EntityModificationInterception;
 import org.trails.security.RestrictionType;
-import org.trails.security.RoleRequired;
 import org.trails.security.TrailsSecurityException;
 import org.trails.security.annotation.RemoveRequiresAssociation;
 import org.trails.security.annotation.RemoveRequiresRole;
@@ -72,7 +71,7 @@ public class TrailsSecurityInterceptor extends TrailsInterceptor {
 		
 		// Note that because we place no restriction if no annotations are specified, but check the ownership restriction
 		// only after role restriction, we need to delay throwing an exception if the role isn't available
-		if (roleRestriction) throw new RoleRequired(entity, "Authenticated user does not have a required role or ownership");
+		if (roleRestriction) throw new EntityModificationInterception(entity, "Authenticated user does not have a required role or ownership");
 		
 	}
 	
@@ -90,11 +89,11 @@ public class TrailsSecurityInterceptor extends TrailsInterceptor {
 				if (!(entity instanceof UserDetails) ) throw new TrailsSecurityException("Entity is not of type UserDetails"); 
 				UserDetails userDetails = (UserDetails)entity;
 				if (currentUserName.equals(userDetails.getUsername()) ) return true;
-				else throw new OwnerRequired(entity, "Entity does not represent the authenticated user");
+				else throw new EntityModificationInterception(entity, "Entity does not represent the authenticated user");
 			}
 			
 			Object value = Ognl.getValue(associatedProperty, entity);
-			if (value == null) throw new OwnerRequired(entity, "Associated owner property is null"); 
+			if (value == null) throw new EntityModificationInterception(entity, "Associated owner property is null"); 
 				
 			if (value instanceof Iterable) {
 				try {
@@ -110,12 +109,12 @@ public class TrailsSecurityInterceptor extends TrailsInterceptor {
 					throw new TrailsSecurityException("Associated collection doesn't contain UserDetails objects");
 				}
 				
-				if (value != null) throw new OwnerRequired(entity, "Authenticated user is not in the owners collection");
+				if (value != null) throw new EntityModificationInterception(entity, "Authenticated user is not in the owners collection");
 			}
 			else {
 				if (!(value instanceof UserDetails) ) throw new TrailsSecurityException("Associate property is not of type UserDetails");
 				UserDetails userDetails = (UserDetails)value;
-				if (!currentUserName.equals(userDetails.getUsername()) ) throw new OwnerRequired(entity, "Authenticated user is not the owner");
+				if (!currentUserName.equals(userDetails.getUsername()) ) throw new EntityModificationInterception(entity, "Authenticated user is not the owner");
 			}
 		}
 		catch(OgnlException e) {
