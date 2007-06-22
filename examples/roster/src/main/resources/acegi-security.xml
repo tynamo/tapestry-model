@@ -81,6 +81,7 @@
 		<property name="forceHttps" value="false"/>
 	</bean>
 
+	<bean id="remoteUserFilter" class="org.acegisecurity.wrapper.SecurityContextHolderAwareRequestFilter"/>
 
 	<bean id="anonymousProcessingFilter"
 		  class="org.acegisecurity.providers.anonymous.AnonymousProcessingFilter">
@@ -135,7 +136,7 @@
 				/**/*.ico=ROLE_ANONYMOUS,ROLE_USER
 				/styles/**=ROLE_ANONYMOUS,ROLE_USER
 				/admin/**=ROLE_MANAGER,ROLE_ADMIN
-				/**=ROLE_ANONYMOUS,ROLE_MANAGER,ROLE_ADMIN
+				/**=ROLE_ANONYMOUS,ROLE_USER,ROLE_MANAGER,ROLE_ADMIN
 			</value>
 		</property>
 	</bean>

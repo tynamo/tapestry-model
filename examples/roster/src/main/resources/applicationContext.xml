@@ -3,7 +3,7 @@
 	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	   xmlns:aop="http://www.springframework.org/schema/aop"
 	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
-                           http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
+						   http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
 
 	<aop:aspectj-autoproxy/>
 
@@ -57,7 +57,7 @@
 	<bean id="transactionAttributeSource"
 		  class="org.springframework.transaction.annotation.AnnotationTransactionAttributeSource"/>
 
-	<bean id="persistenceService" class="org.trails.hibernate.HibernatePersistenceServiceImpl" autowire="autodetect"/>
+	<bean id="persistenceService" class="org.trails.hibernate.SecurePersistenceServiceImpl" autowire="autodetect"/>
 
 
 	<bean id="descriptorService" class="org.trails.descriptor.TrailsDescriptorService" init-method="init">

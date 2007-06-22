@@ -33,23 +33,31 @@
 				<ul id="primary-nav" class="menuList">
 					<li class="pad">&nbsp;</li>
 					<li class="selected">
-						<a href="#" jwcid="@PageLink" page="Home"><span jwcid="@Insert"
-																		value="message:org.trails.i18n.home">Home</span></a>
+						<a href="#" jwcid="@PageLink" page="Home">
+							<span jwcid="@Insert" value="message:org.trails.i18n.home">Home</span></a>
 					</li>
+
 					<li class="selected">
-						<a href="#" jwcid="@PageLink" page="Login"><span jwcid="@Insert"
-																		value="message:org.trails.login.title">Login</span></a>
+						<a href="#" jwcid="@PageLink" page="Login">
+							<span jwcid="@Insert" value="message:org.trails.login.title">Login</span></a>
 					</li>
+
 					<span jwcid="@If" condition="ognl:navBlock">
 						 <span jwcid="@RenderBlock" block="ognl:page.components[navBlock]"/>
 					</span>
-
 					<li class="pad right">&nbsp;</li>
-
-					<li class="right">
-						<a jwcid="@ServiceLink" service="ognl:@org.apache.tapestry.Tapestry@RESTART_SERVICE"><span
-								jwcid="@Insert" value="message:logout">logout</span></a>
+					<li class="left">
+						<a jwcid="@ServiceLink" service="ognl:@org.apache.tapestry.Tapestry@RESTART_SERVICE">
+								<span jwcid="@Insert" value="message:org.trails.i18n.logout">logout</span></a>
 					</li>
+				<span jwcid="@If" condition="ognl:currentUser">
+					<li class="pad right">&nbsp;</li>
+					<li class="right">
+					  <a href="#" jwcid="@trails:EditLink" model="ognl:currentUser">
+							<span jwcid="@Insert" value="message:org.trails.i18n.editUserProfile">Edit User Profile</span></a>
+					</li>
+				</span>
+					<li class="pad right">&nbsp;</li>
 				</ul>
 			</div>
 		</div>

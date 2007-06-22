@@ -10,6 +10,7 @@
 	<parameter name="subBlock"/>
 
 	<inject property="descriptorService" object="spring:descriptorService" />
+	<inject property="currentUser" type="state" object="currentUser"/>
 	<property name="descriptor"/>
 
 </component-specification>
