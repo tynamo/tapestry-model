@@ -34,7 +34,7 @@ h3 {
     border-bottom: 1px solid #ccc;
     font-weight: bold;
     font-size: 14px;
-    background-image: url( ../images/h3.jpg );
+    background-image: url(/images/h3.jpg );
     background-repeat: no-repeat;
     background-position: left bottom;
 }
@@ -48,6 +48,36 @@ p {
     line-height: 1.3em;
     font-size: 12px;
     color: #000;
+}
+
+#utop {
+  border-bottom: none;
+}
+
+#ulayout table#utop_nav {
+    margin-top: 0;
+    height: 13px;
+    font-size: x-small;
+    background-image: url(/images/breadcrumbs.jpg);
+    padding: 5px 10px 14px 20px;
+    background-repeat: repeat-x;
+    font-weight: normal;
+    border:none !important;
+}
+
+#utop_nav a {
+    font-size: x-small;
+    text-decoration: none;
+    color: #49635a;
+}
+
+#utop_nav #ubreadcrumbs a {
+    color: #333333;
+}
+
+
+#utop_nav td {
+    padding: 4px 15px 13px 15px;
 }
 
 #uleft {
@@ -66,12 +96,12 @@ p {
 }
 
 #uleft h1 {
-    font-size: smaller;
+    font-size: smaller !important;
     border-bottom: 1px solid #aaaaaa;
-    padding-top: 2px;
-    padding-left: 9px;
+    padding-top: 2px !important;;
+    padding-left: 9px !important;
     color: #49635a;
-    background-image: url( ../images/h5.jpg );
+    background-image: url(/images/h5.jpg );
     background-repeat: no-repeat;
     background-position: left bottom;
 }
@@ -192,11 +222,11 @@ div.clear hr {
 }
 
 #uleft li.expanded {
-    background-image: url( ../images/expanded.gif );
+    background-image: url(/images/expanded.gif );
 }
 
 #uleft li.collapsed {
-    background-image: url( ../images/collapsed.gif );
+    background-image: url(/images/collapsed.gif );
 }
 
 #uleft img {
@@ -228,7 +258,7 @@ blockquote {
 
 .blogSurtitle {
 background-color: #ffffff;
-background-image: url(img/gradient2.png);
+background-image: url(/images/gradient2.png);
 background-repeat: repeat-x;
 background-attachment: scroll;
 padding: 3px;
