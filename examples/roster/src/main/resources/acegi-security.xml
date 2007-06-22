@@ -56,7 +56,7 @@
 				PATTERN_TYPE_APACHE_ANT
 				/images/**=#NONE#
 				/style/**=#NONE#
-				/**=httpSessionContextIntegrationFilter,authenticationProcessingFilter,anonymousProcessingFilter,exceptionTranslationFilter,filterInvocationInterceptor
+				/**=httpSessionContextIntegrationFilter,authenticationProcessingFilter,remoteUserFilter,anonymousProcessingFilter,exceptionTranslationFilter,filterInvocationInterceptor
 			</value>
 		</property>
 	</bean>
