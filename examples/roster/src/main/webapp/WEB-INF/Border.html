@@ -54,7 +54,8 @@
 					<li class="pad right">&nbsp;</li>
 					<li class="right">
 					  <a href="#" jwcid="@trails:EditLink" model="ognl:currentUser">
-							<span jwcid="@Insert" value="message:org.trails.i18n.editUserProfile">Edit User Profile</span></a>
+							<span jwcid="@Insert" value="ognl:messages.format('org.trails.i18n.loggedInAs', currentUser)">Edit User Profile</span>
+					  </a>
 					</li>
 				</span>
 					<li class="pad right">&nbsp;</li>
