@@ -68,4 +68,11 @@ public class UtilsTest extends TestCase
 		assertEquals(Foo.class, Utils.checkForCGLIB(enb.createClass()));
 		assertEquals(Foo.class, Utils.checkForCGLIB(enbCB.create().getClass()));
 	}
+
+	public void testUnCamelCase()
+	{
+		assertEquals("Born On Date", Utils.unCamelCase("bornOnDate"));
+		assertEquals("Born On Date", Utils.unCamelCase("born On Date"));
+//		assertEquals("BOD", Utils.unCamelCase("BOD")); //@note: should this work?
+	}
 }

@@ -21,6 +21,7 @@ import org.apache.tapestry.web.WebResponse;
 import org.trails.descriptor.BlobDescriptorExtension;
 import org.trails.descriptor.DescriptorService;
 import org.trails.persistence.PersistenceService;
+import org.trails.component.Utils;
 
 public class BlobDownloadService implements IEngineService {
 
@@ -100,14 +101,14 @@ public class BlobDownloadService implements IEngineService {
 
 			try {
 				BlobDescriptorExtension blobDescriptor = getDescriptorService()
-						.getClassDescriptor(Class.forName(entityName))
+						.getClassDescriptor(Utils.getClassForName(entityName))
 						.getPropertyDescriptor(bytesProp).getExtension(
 								BlobDescriptorExtension.class);
 
 				if (blobDescriptor != null && blobID != null
 						&& !"".equals(blobID)) {
 					Object model = getPersistenceService().getInstance(
-							Class.forName(entityName), Integer.valueOf(blobID));
+							Utils.getClassForName(entityName), Integer.valueOf(blobID));
 					if (model != null) {
 						byte[] bytes = new byte[0];
 
@@ -177,8 +178,6 @@ public class BlobDownloadService implements IEngineService {
 					// muted kwc - throw new TrailsRuntimeException(errorText);
 				}
 
-			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
 			} catch (OgnlException e) {
 				e.printStackTrace();
 			}

@@ -8,6 +8,7 @@ import ognl.OgnlException;
 import org.apache.tapestry.annotations.Persist;
 import org.trails.TrailsRuntimeException;
 import org.trails.callback.SearchCallback;
+import org.trails.component.Utils;
 import org.trails.descriptor.IClassDescriptor;
 
 public abstract class SearchPage extends TrailsPage
@@ -31,14 +32,7 @@ public abstract class SearchPage extends TrailsPage
 
 	public IClassDescriptor getClassDescriptor()
 	{
-		try
-		{
-			return getDescriptorService().getClassDescriptor(Class.forName(getTypeName()));
-		}
-		catch (ClassNotFoundException e)
-		{
-			throw new TrailsRuntimeException(e);
-		}
+		return getDescriptorService().getClassDescriptor(Utils.getClassForName((getTypeName())));
 	}
 
 	public String[] getSearchableProperties()

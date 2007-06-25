@@ -121,15 +121,15 @@ public class Utils
 	{
 		if (name != null)
 		{
-			ArrayList words = new ArrayList();
+			ArrayList<String> words = new ArrayList<String>();
 			Perl5Util perl = new Perl5Util();
 			while (perl.match("/(\\w+?)([A-Z].*)/", name))
 			{
 				String word = perl.group(1);
 				name = perl.group(2);
-				words.add(StringUtils.capitalise(word));
+				words.add(StringUtils.capitalize(word));
 			}
-			words.add(StringUtils.capitalise(name));
+			words.add(StringUtils.capitalize(name));
 			return StringUtils.join(words.iterator(), " ");
 		}
 		return null;
