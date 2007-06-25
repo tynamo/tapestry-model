@@ -325,7 +325,7 @@ public class Person implements UserDetails, Cloneable, Serializable
 	@Override
 	public String toString()
 	{
-		return getLastName() + ", " + getFirstName();
+		return getFirstName() + " " + getLastName() + " [" + getUsername() + "]";
 	}
 
 	@Override

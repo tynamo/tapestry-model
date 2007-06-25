@@ -100,14 +100,6 @@ public class Coach extends Person
 	}
 
 	@Override
-	public String toString()
-	{
-		// return this.getApplicationRole().toString() + " - " + getLastName() +
-		// "," + getFirstName();
-		return getLastName() + "," + getFirstName();
-	}
-
-	@Override
 	public Coach clone()
 	{
 		return new Coach(this);

@@ -87,14 +87,6 @@ public class Officer extends Person
 	}
 
 	@Override
-	public String toString()
-	{
-		// return this.getApplicationRole().toString() + " - " + getLastName() +
-		// "," + getFirstName();
-		return getLastName() + "," + getFirstName();
-	}
-
-	@Override
 	public Officer clone()
 	{
 		return new Officer(this);
