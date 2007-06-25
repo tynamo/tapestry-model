@@ -39,7 +39,7 @@ public abstract class NewLink extends AbstractTypeNavigationLink
 
 		Class clazz = null;
 		try {
-			clazz = Class.forName(getTypeName());
+			clazz = Utils.getClassForName(getTypeName()); //@todo: this should be abstracted to a Utils.newInstance(String);
 			Constructor constructor = clazz.getDeclaredConstructor();
 			constructor.setAccessible(true);
 			page.setModel(constructor.newInstance());

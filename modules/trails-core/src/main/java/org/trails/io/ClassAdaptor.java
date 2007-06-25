@@ -5,6 +5,7 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.tapestry.services.DataSqueezer;
 import org.apache.tapestry.util.io.SqueezeAdaptor;
 import org.trails.TrailsRuntimeException;
+import org.trails.component.Utils;
 
 /**
  * Squeezes a {@link Class}
@@ -48,9 +49,9 @@ public class ClassAdaptor implements SqueezeAdaptor
 
 		try
 		{
-			return Class.forName(className);
+			return Utils.getClassForName(className);
 
-		} catch (ClassNotFoundException cnfe)
+		} catch (TrailsRuntimeException cnfe)
 		{
 			throw new TrailsRuntimeException("decode-failure", cnfe);
 		}

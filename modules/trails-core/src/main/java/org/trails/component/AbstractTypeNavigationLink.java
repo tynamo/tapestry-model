@@ -41,13 +41,7 @@ public abstract class AbstractTypeNavigationLink extends Link
 	 */
 	public Class getType()
 	{
-		try
-		{
-			return Class.forName(getTypeName());
-		} catch (ClassNotFoundException ce)
-		{
-			throw new TrailsRuntimeException(ce, null);
-		}
+		return Utils.getClassForName(getTypeName());
 	}
 
 	/**
