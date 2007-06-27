@@ -16,6 +16,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.trails.descriptor.IClassDescriptor;
 import org.trails.descriptor.IPropertyDescriptor;
+import org.trails.descriptor.ReflectionDescriptorFactory;
 import org.trails.descriptor.TrailsClassDescriptor;
 import org.trails.descriptor.TrailsPropertyDescriptor;
 import org.trails.servlet.TrailsApplicationServlet;
@@ -38,15 +39,15 @@ public class DescriptorInternationalizationTest extends TestCase
 	protected void setUp() throws Exception
 	{
 		// appContext will initialize the aspect
-		appContext = new ClassPathXmlApplicationContext(
-			"applicationContext-test.xml");
+		appContext = new ClassPathXmlApplicationContext("applicationContext-test.xml");
 		oldLocaleHolder = (LocaleHolder) appContext.getBean("localeHolder");
 
-		classDescriptor = new TrailsClassDescriptor(Foo.class);
+		ReflectionDescriptorFactory descriptorFactory = new ReflectionDescriptorFactory();
+		classDescriptor = descriptorFactory.buildClassDescriptor(Foo.class);
 		propertyDescriptor = new TrailsPropertyDescriptor(Foo.class, Bar.class);
 		classDescriptor.setDisplayName("Foo");
 		propertyDescriptor.setName("number");
-		propertyDescriptor.setDisplayName("number");
+		propertyDescriptor.setDisplayName("Number");
 		TrailsApplicationServlet.setCurrentLocale(null);
 		localeHolderMock = new Mock(LocaleHolder.class);
 		DescriptorInternationalization.aspectOf().setLocaleHolder(

@@ -1,5 +1,6 @@
 package org.trails.descriptor;
 
+import java.beans.BeanDescriptor;
 import java.beans.BeanInfo;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
@@ -10,6 +11,7 @@ import java.util.List;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.trails.component.Utils;
 
 /**
  * Generate descriptors using reflection on the underlying class.
@@ -36,6 +38,13 @@ public class ReflectionDescriptorFactory implements DescriptorFactory
 		{
 			IClassDescriptor descriptor = new TrailsClassDescriptor(type);
 			BeanInfo beanInfo = Introspector.getBeanInfo(type);
+			BeanDescriptor beanDescriptor = beanInfo.getBeanDescriptor();
+			// Note there's various places and ways to uncamelcase the display name. However
+			// we don't want to un-camelcase the possibly customized displayName
+			// Also, because Introspector uses static methods, it's less clean to replace it 
+			// with a custom implementation. Proxy doesn't scale well and an aspect would 
+			// only work if it's run. So decided to deal with uncamelcasing displayname here
+			beanDescriptor.setDisplayName(Utils.unCamelCase(beanDescriptor.getDisplayName()) );
 			BeanUtils.copyProperties(descriptor, beanInfo.getBeanDescriptor());
 			descriptor.setPropertyDescriptors(buildPropertyDescriptors(type,beanInfo, descriptor));
 			return descriptor;
@@ -76,6 +85,8 @@ public class ReflectionDescriptorFactory implements DescriptorFactory
 		{
 			if (!isExcluded(beanPropDescriptor.getName(), getPropertyExcludes()))
 			{
+				beanPropDescriptor.setDisplayName(Utils.unCamelCase(beanPropDescriptor.getDisplayName()) );
+				
 				TrailsPropertyDescriptor propDescriptor;
 				Class<?> propertyType = beanPropDescriptor.getPropertyType();
 				propDescriptor = new TrailsPropertyDescriptor(beanType,propertyType);

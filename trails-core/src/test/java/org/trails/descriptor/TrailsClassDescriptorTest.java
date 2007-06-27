@@ -95,8 +95,8 @@ public class TrailsClassDescriptorTest extends TestCase
 
 	public void testDisplayName() throws Exception
 	{
-		classDescriptor = new TrailsClassDescriptor(BlogEntry.class);
-		classDescriptor.setDisplayName("BlogEntry");
+		ReflectionDescriptorFactory descriptorFactory = new ReflectionDescriptorFactory();
+		IClassDescriptor classDescriptor = descriptorFactory.buildClassDescriptor(BlogEntry.class);
 		assertEquals("Blog Entry", classDescriptor.getDisplayName());
 	}
 

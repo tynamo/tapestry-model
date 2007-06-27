@@ -82,14 +82,13 @@ public class HibernateValidationDelegateTest extends ComponentTest
 		delegate.recordFieldInputValue("foodly");
 
 		TrailsClassDescriptor descriptor = new TrailsClassDescriptor(Baz.class, "Baz");
-		descriptor.getPropertyDescriptors().add(new TrailsPropertyDescriptor(Foo.class, "description", String.class));
-		InvalidValue invalidValue = new InvalidValue("is too long", Baz.class, "description", "blarg", new Baz());
+		descriptor.getPropertyDescriptors().add(new TrailsPropertyDescriptor(Foo.class, "Description", String.class));
+		InvalidValue invalidValue = new InvalidValue("is too long", Baz.class, "Description", "blarg", new Baz());
 		InvalidStateException invalidStateException = new InvalidStateException(new InvalidValue[]{invalidValue});
 
 		delegate.record(descriptor, invalidStateException);
 		assertTrue(delegate.getHasErrors());
-		IFieldTracking fieldTracking = (IFieldTracking)
-			delegate.getFieldTracking("Description");
+		IFieldTracking fieldTracking = (IFieldTracking)delegate.getFieldTracking("Description");
 		assertTrue(fieldTracking.isInError());
 		assertEquals("right field tracking", "foo", fieldTracking.getFieldName());
 		RenderString renderString = (RenderString) fieldTracking.getErrorRenderer();

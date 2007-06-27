@@ -15,7 +15,7 @@ public class PropertyDescriptorDecoratorTest extends TestCase
 		PropertyDescriptorAnnotationHandler decorator = new PropertyDescriptorAnnotationHandler();
 		TrailsClassDescriptor descriptor = new TrailsClassDescriptor(Annotated.class);
 		IPropertyDescriptor fieldPropDescriptor = new TrailsPropertyDescriptor(Foo.class, "notBloppity", String.class);
-		IPropertyDescriptor hiddenDescriptor = new TrailsPropertyDescriptor(Foo.class, "hidden", String.class);
+		IPropertyDescriptor hiddenDescriptor = new TrailsPropertyDescriptor(Foo.class, "Hidden", String.class);
 		IPropertyDescriptor dateDescriptor = new TrailsPropertyDescriptor(Foo.class, "date", Date.class);
 		descriptor.getPropertyDescriptors().add(fieldPropDescriptor);
 		descriptor.getPropertyDescriptors().add(hiddenDescriptor);

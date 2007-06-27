@@ -132,9 +132,9 @@ public class EditBlobTest extends ComponentTest {
 				UploadableMedia.class, collectionPropertyDescriptor);
 
 		IClassDescriptor doc1 = new TrailsClassDescriptor(
-				UploadableMedia.class, "doc1");
+				UploadableMedia.class, "Doc1");
 		IClassDescriptor doc2 = new TrailsClassDescriptor(
-				UploadableMedia.class, "doc2");
+				UploadableMedia.class, "Doc2");
 
 		descriptorServiceMock.expects(atLeastOnce()).method(
 				"getClassDescriptor").with(eq(UploadableMedia.class)).will(

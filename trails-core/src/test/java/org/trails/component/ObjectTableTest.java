@@ -25,6 +25,7 @@ import org.trails.descriptor.CollectionDescriptor;
 import org.trails.descriptor.IClassDescriptor;
 import org.trails.descriptor.IPropertyDescriptor;
 import org.trails.descriptor.IdentifierDescriptor;
+import org.trails.descriptor.ReflectionDescriptorFactory;
 import org.trails.descriptor.TrailsClassDescriptor;
 import org.trails.descriptor.TrailsPropertyDescriptor;
 import org.trails.persistence.PersistenceService;
@@ -62,10 +63,11 @@ public class ObjectTableTest extends ComponentTest
 		objectTable.setPage(page);
 		objectTable.setContainer(page);
 
-		IClassDescriptor classDescriptor = new TrailsClassDescriptor(Foo.class);
+		ReflectionDescriptorFactory descriptorFactory = new ReflectionDescriptorFactory();
+		IClassDescriptor classDescriptor = descriptorFactory.buildClassDescriptor(Foo.class);
+		
 		List propertyDescriptors = new ArrayList();
-		IdentifierDescriptor idProp = new IdentifierDescriptor(Foo.class,
-			"id", Integer.class);
+		IdentifierDescriptor idProp = new IdentifierDescriptor(Foo.class, classDescriptor.getPropertyDescriptor("id") );
 
 		IPropertyDescriptor multiWordProp = new TrailsPropertyDescriptor(Foo.class, "multiWordProperty", String.class);
 

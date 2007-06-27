@@ -105,7 +105,7 @@ public class NewLinkTest extends ComponentTest
 	public void testGetLinkText() throws Exception
 	{
 		newLink.setTypeName(BlogEntry.class.getName());
-		IClassDescriptor descriptor = new TrailsClassDescriptor(BlogEntry.class, "BlogEntry");
+		IClassDescriptor descriptor = new TrailsClassDescriptor(BlogEntry.class, "Blog Entry");
 		descriptorServiceMock.expects(once()).method("getClassDescriptor").will(returnValue(descriptor));
 		assertEquals("New Blog Entry", newLink.getLinkText());
 	}
