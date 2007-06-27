@@ -26,6 +26,7 @@ import org.trails.descriptor.CollectionDescriptor;
 import org.trails.descriptor.IClassDescriptor;
 import org.trails.descriptor.IPropertyDescriptor;
 import org.trails.descriptor.IdentifierDescriptor;
+import org.trails.descriptor.ReflectionDescriptorFactory;
 import org.trails.descriptor.TrailsClassDescriptor;
 import org.trails.descriptor.TrailsPropertyDescriptor;
 import org.trails.persistence.HibernatePersistenceService;
@@ -72,12 +73,15 @@ public class ObjectTableTest extends ComponentTest
 		objectTable.setPage(page);
 		objectTable.setContainer(page);
 
-		IClassDescriptor classDescriptor = new TrailsClassDescriptor(Foo.class);
-		fooSecuredDescriptor = new TrailsClassDescriptor(FooSecured.class);
+		ReflectionDescriptorFactory descriptorFactory = new ReflectionDescriptorFactory();
+		IClassDescriptor classDescriptor = descriptorFactory.buildClassDescriptor(Foo.class);
+		//IClassDescriptor classDescriptor = new TrailsClassDescriptor(Foo.class);
+		//fooSecuredDescriptor = new TrailsClassDescriptor(FooSecured.class);
+		fooSecuredDescriptor = descriptorFactory.buildClassDescriptor(FooSecured.class);
 		List propertyDescriptors = new ArrayList();
 		List fooSecuredPropertyDescriptors = new ArrayList();
-		IdentifierDescriptor idProp = new IdentifierDescriptor(Foo.class,
-			"id", Integer.class);
+		IdentifierDescriptor idProp = new IdentifierDescriptor(Foo.class, classDescriptor.getPropertyDescriptor("id") );
+		//IdentifierDescriptor idProp = new IdentifierDescriptor(Foo.class,"id", Integer.class);
 
 		IPropertyDescriptor multiWordProp = new TrailsPropertyDescriptor(Foo.class, "multiWordProperty", String.class);
 
@@ -91,8 +95,10 @@ public class ObjectTableTest extends ComponentTest
 		CollectionDescriptor bazzesDesriptor = new CollectionDescriptor(Foo.class, Set.class);
 		bazzesDesriptor.setName("bazzes");
 
-		idSecured = new IdentifierDescriptor(FooSecured.class, "id", Integer.class);
-		nameSecured = new TrailsPropertyDescriptor(FooSecured.class, "name", String.class);
+		idSecured = new IdentifierDescriptor(FooSecured.class, classDescriptor.getPropertyDescriptor("id") );
+		//idSecured = new IdentifierDescriptor(FooSecured.class, "id", Integer.class);
+		nameSecured = new IdentifierDescriptor(FooSecured.class, classDescriptor.getPropertyDescriptor("name") );
+		//nameSecured = new TrailsPropertyDescriptor(FooSecured.class, "name", String.class);
 		fooFieldSecured = new TrailsPropertyDescriptor(FooSecured.class, "Foo Field", String.class);
 
 		propertyDescriptors.add(idProp);

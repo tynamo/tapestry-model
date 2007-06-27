@@ -21,7 +21,7 @@ public class UniquenessExceptionTest extends TestCase
 
 	public void testMessage()
 	{
-		TrailsPropertyDescriptor descriptor = new TrailsPropertyDescriptor(Foo.class, "howdy", String.class);
+		TrailsPropertyDescriptor descriptor = new TrailsPropertyDescriptor(Foo.class, "Howdy", String.class);
 		UniquenessException exception = new UniquenessException(descriptor);
 		assertEquals("Howdy must be unique.", exception.getMessage());
 	}

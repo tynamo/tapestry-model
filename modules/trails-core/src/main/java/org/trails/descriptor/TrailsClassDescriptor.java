@@ -150,7 +150,7 @@ public class TrailsClassDescriptor extends TrailsDescriptor implements
 	 */
 	public String getPluralDisplayName()
 	{
-		return Utils.pluralize(Utils.unCamelCase(getDisplayName()));
+		return Utils.pluralize(getDisplayName() );
 	}
 
 	public List<IPropertyDescriptor> getPropertyDescriptors(String[] properties)

@@ -94,7 +94,7 @@ public class TrailsDescriptor implements IDescriptor, Serializable
 
 	public String getDisplayName()
 	{
-		return Utils.unCamelCase(displayName);
+		return displayName;
 	}
 
 	public void setDisplayName(String displayName)

@@ -11,7 +11,10 @@
  */
 package org.trails.descriptor;
 
+import java.beans.BeanInfo;
+import java.beans.Introspector;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.Date;
 
 import junit.framework.TestCase;
@@ -45,10 +48,15 @@ public class PropertyDescriptorTest extends TestCase
 
 	public void testDisplayName() throws Exception
 	{
-		IPropertyDescriptor propertyDescriptor = new TrailsPropertyDescriptor(Foo.class, String.class);
+		ReflectionDescriptorFactory descriptorFactory = new ReflectionDescriptorFactory();
+		IClassDescriptor classDescriptor = descriptorFactory.buildClassDescriptor(Foo.class);
+		IPropertyDescriptor propertyDescriptor = classDescriptor.getPropertyDescriptor("multiWordProperty");
+		// By default, unCamelCase class and property names
+		assertEquals("display name", "Multi Word Property", propertyDescriptor.getDisplayName());
+		
+		// If you set display name afterwards, it should keep whatever is set, even camel cased
 		propertyDescriptor.setDisplayName("multiWordProperty");
-		assertEquals("display name", "Multi Word Property",
-			propertyDescriptor.getDisplayName());
+		assertEquals("display name", "multiWordProperty", propertyDescriptor.getDisplayName());
 	}
 
 	public void testIsDate() throws Exception

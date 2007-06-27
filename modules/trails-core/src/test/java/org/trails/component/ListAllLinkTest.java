@@ -52,9 +52,7 @@ public class ListAllLinkTest extends ComponentTest
 
 	public void testGetLinkText() throws Exception
 	{
-
-		//listLink.setDescriptorService(descriptorService);
-		IClassDescriptor descriptor = new TrailsClassDescriptor(BlogEntry.class, "BlogEntry");
+		IClassDescriptor descriptor = new TrailsClassDescriptor(BlogEntry.class, "Blog Entry");
 		descriptorServiceMock.expects(once()).method("getClassDescriptor").will(returnValue(descriptor));
 		assertEquals("List Blog Entries", listLink.getLinkText());
 
