@@ -1,5 +1,7 @@
 package org.trails.descriptor;
 
+import java.util.Map;
+
 /**
  * Implementation of the "Extension Object Pattern (Erich Gamma)"
  * Participant: Subject.
@@ -23,4 +25,6 @@ public interface IExtensible
 	public IDescriptorExtension getExtension(String key);
 
 	public <E extends IDescriptorExtension> E getExtension(Class<E> extensionType);
+
+    Map<String, IDescriptorExtension> getExtensions();
 }
