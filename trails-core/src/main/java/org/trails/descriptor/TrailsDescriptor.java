@@ -70,7 +70,7 @@ public class TrailsDescriptor implements IDescriptor, Serializable
 	{
 		try
 		{
-			BeanUtils.copyProperties(this, (TrailsDescriptor) descriptor);
+			BeanUtils.copyProperties(this, descriptor);
 			copyExtensionsFrom(descriptor);
 		} catch (IllegalAccessException e)
 		{
@@ -122,7 +122,7 @@ public class TrailsDescriptor implements IDescriptor, Serializable
 	{
 		try
 		{
-			BeanUtils.copyProperties(this, (TrailsDescriptor) descriptor);
+			BeanUtils.copyProperties(this, descriptor);
 			copyExtensionsFrom(descriptor);
 		} catch (IllegalAccessException e)
 		{
@@ -141,7 +141,7 @@ public class TrailsDescriptor implements IDescriptor, Serializable
 
 	public void copyExtensionsFrom(IDescriptor descriptor)
 	{
-		Map<String, IDescriptorExtension> exts = ((TrailsDescriptor) descriptor).getExtensions();
+		Map<String, IDescriptorExtension> exts = descriptor.getExtensions();
 
 		for (Map.Entry<String, IDescriptorExtension> entry : exts.entrySet())
 		{
