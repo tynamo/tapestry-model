@@ -388,3 +388,7 @@ li>input.button, li>button, input.button>input.button, button>button {
     text-align: left;
     padding: 0px;
 }
+
+table.editCollection a {
+	font-size: 1.6em;
+}
