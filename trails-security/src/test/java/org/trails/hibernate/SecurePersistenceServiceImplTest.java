@@ -9,21 +9,19 @@ import org.acegisecurity.context.SecurityContext;
 import org.acegisecurity.context.SecurityContextHolder;
 import org.acegisecurity.context.SecurityContextImpl;
 import org.acegisecurity.providers.TestingAuthenticationToken;
-import org.trails.security.EntityModificationInterception;
 import org.trails.security.domain.Role;
 import org.trails.security.domain.User;
 import org.trails.seeddata.SeedDataInitializer;
-import org.trails.seeddata.SpringSeedEntityInitializer;
 import org.trails.test.MockableTransactionalTestCase;
 
 public class SecurePersistenceServiceImplTest extends MockableTransactionalTestCase {
-	private SpringSeedEntityInitializer seedDataInitializer;
+	private SeedDataInitializer seedDataInitializer;
 
 	@Override
 	public void onSetUpBeforeTransaction() throws Exception
 	{
 		super.onSetUpBeforeTransaction();
-		seedDataInitializer = (SpringSeedEntityInitializer) applicationContext.getBean(SeedDataInitializer.class.getSimpleName());
+		seedDataInitializer = (SeedDataInitializer) applicationContext.getBean(SeedDataInitializer.class.getSimpleName());
 		seedDataInitializer.init();
 	}
 	

@@ -66,7 +66,7 @@ public class SpringSeedEntityInitializerTest extends MockableTransactionalTestCa
 		user.setLastName("Changed something");
 		persistenceService.save(user);
 		// Data is not re-seeded, so it shouldn't get overwritten
-		SpringSeedEntityInitializer seedDataInitializer = (SpringSeedEntityInitializer) applicationContext.getBean(SeedDataInitializer.class.getSimpleName());
+		SeedDataInitializer seedDataInitializer = (SeedDataInitializer) applicationContext.getBean(SeedDataInitializer.class.getSimpleName());
 		seedDataInitializer.init();
 		user = (User) persistenceService.getInstance(User.class, criteria);
 		assertEquals("Changed something", user.getLastName());
