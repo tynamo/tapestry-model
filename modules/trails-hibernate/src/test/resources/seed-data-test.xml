@@ -20,4 +20,21 @@
 		<property name="name" value="wibbling entity"/>
 		<property name="bar"><ref bean="bar"/></property>
 	</bean>
+	
+	<!--  -->
+	<bean id="bar1" class="org.trails.testhibernate.Bar" lazy-init="true">
+		<property name="name" value="element1"/>
+	</bean>
+	<bean id="bar2" class="org.trails.testhibernate.Bar" lazy-init="true">
+		<property name="name" value="element2"/>
+	</bean>
+	<bean id="barCollector" class="org.trails.testhibernate.BarCollector" lazy-init="true">
+		<property name="name" value="barCollector1"/>
+		<property name="bars">
+			<list>
+				<ref bean="bar1"/>
+				<ref bean="bar2"/>
+			</list>
+		</property>		
+	</bean>
 </beans>

@@ -13,6 +13,7 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.transaction.annotation.Transactional;
 import org.trails.descriptor.DescriptorService;
 import org.trails.descriptor.IClassDescriptor;
 import org.trails.descriptor.IPropertyDescriptor;
@@ -47,6 +48,7 @@ public class SpringSeedEntityInitializer implements ApplicationContextAware, See
 	/* (non-Javadoc)
 		 * @see org.trails.seeddata.SeedDataInitializer#init()
 		 */
+	@Transactional
 	public void init()
 	{
 		String[] beanNames = applicationContext.getBeanDefinitionNames();

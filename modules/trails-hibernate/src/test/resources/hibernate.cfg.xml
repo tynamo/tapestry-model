@@ -12,6 +12,7 @@
 		<mapping class="org.trails.testhibernate.Searchee"/>
 		<mapping class="org.trails.testhibernate.BlogEntry"/>
 		<mapping class="org.trails.testhibernate.Bar"/>
+		<mapping class="org.trails.testhibernate.BarCollector"/>
 		<mapping class="org.trails.testhibernate.Wibble"/>
 
 	</session-factory>

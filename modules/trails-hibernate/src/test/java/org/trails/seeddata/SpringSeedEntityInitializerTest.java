@@ -9,7 +9,7 @@ import org.trails.persistence.HibernatePersistenceService;
 public class SpringSeedEntityInitializerTest extends TestCase
 {
 	private ApplicationContext applicationContext;
-	private SpringSeedEntityInitializer seedDataInitializer;
+	private SeedDataInitializer seedDataInitializer;
 	private HibernatePersistenceService persistenceService;
 
 	@Override
@@ -17,7 +17,7 @@ public class SpringSeedEntityInitializerTest extends TestCase
 	{
 		applicationContext = new ClassPathXmlApplicationContext(new String[]{"applicationContext-test.xml", "seed-data-test.xml"});
 		persistenceService = (HibernatePersistenceService) applicationContext.getBean("persistenceService");
-		seedDataInitializer = (SpringSeedEntityInitializer) applicationContext.getBean(SeedDataInitializer.class.getSimpleName());
+		seedDataInitializer = (SeedDataInitializer) applicationContext.getBean(SeedDataInitializer.class.getSimpleName());
 	}
 	
 	public void testInit() {
