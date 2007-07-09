@@ -1,6 +1,7 @@
 package org.trails.callback;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.callback.ICallback;
 
@@ -15,8 +16,8 @@ public class TrailsCallback implements ICallback
 
 	public void performCallback(IRequestCycle cycle)
 	{
+		Defense.notNull(cycle, "cycle");
 		cycle.activate(cycle.getPage(getPageName()));
-
 	}
 
 	public String getPageName()
