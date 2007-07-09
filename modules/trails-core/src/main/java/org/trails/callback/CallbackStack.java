@@ -2,17 +2,19 @@ package org.trails.callback;
 
 import java.util.Stack;
 
+import org.apache.tapestry.callback.ICallback;
+
 public class CallbackStack
 {
 
-	private Stack<TrailsCallback> stack = new Stack<TrailsCallback>();
+	private Stack<ICallback> stack = new Stack<ICallback>();
 
-	public Stack<TrailsCallback> getStack()
+	public Stack<ICallback> getStack()
 	{
 		return stack;
 	}
 
-	public void setStack(Stack<TrailsCallback> stack)
+	public void setStack(Stack<ICallback> stack)
 	{
 		this.stack = stack;
 	}
@@ -32,12 +34,26 @@ public class CallbackStack
 		getStack().push(callback);
 	}
 
+	/**
+	 * If this callback is equals to the previous callback,
+	 * pop it off before we push this one on.
+	 *
+	 * @param callback
+	 */
+	public void push(ICallback callback)
+	{
+		if (!getStack().empty() && (callback.equals(getStack().peek())))
+		{
+			getStack().pop();
+		}
+		getStack().push(callback);
+	}
 
 	/**
 	 * @return the callback of the previous page, assumes the current page will
 	 *         be at the top of the stack
 	 */
-	public TrailsCallback popPreviousCallback()
+	public ICallback popPreviousCallback()
 	{
 		if (getStack().size() > 1)
 		{
@@ -46,7 +62,7 @@ public class CallbackStack
 		} else return null;
 	}
 
-	public TrailsCallback getPreviousCallback()
+	public ICallback getPreviousCallback()
 	{
 		if (getStack().size() > 1)
 		{
