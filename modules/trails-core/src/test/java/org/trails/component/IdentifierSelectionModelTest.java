@@ -17,12 +17,6 @@ import junit.framework.TestCase;
 import org.trails.test.Foo;
 
 
-/**
- * @author fus8882
- *         <p/>
- *         TODO To change the template for this generated type comment go to
- *         Window - Preferences - Java - Code Style - Code Templates
- */
 public class IdentifierSelectionModelTest extends TestCase
 {
 	IdentifierSelectionModel selectionModel;
@@ -34,7 +28,7 @@ public class IdentifierSelectionModelTest extends TestCase
 	public void testGetValue() throws Exception
 	{
 		assertEquals("right value", "2", selectionModel.getValue(1));
-		assertEquals("none value", IdentifierSelectionModel.DEFAULT_NONE_VALUE,
+		assertEquals("none value", AbstractPropertySelectionModel.DEFAULT_NONE_VALUE,
 			nullableSelectionModel.getValue(0));
 		assertEquals("1 value", "1",
 			nullableSelectionModel.getValue(1));
@@ -42,10 +36,10 @@ public class IdentifierSelectionModelTest extends TestCase
 
 	public void testSetAllowNone() throws Exception
 	{
-		nullableSelectionModel.setAllowNone(foos, true);
+		nullableSelectionModel = new IdentifierSelectionModel(foos, "id", true);
 		assertEquals(3, nullableSelectionModel.getOptionCount());
-		nullableSelectionModel.setAllowNone(foos, true);
-		assertEquals(3, nullableSelectionModel.getOptionCount());
+		nullableSelectionModel = new IdentifierSelectionModel(foos, "id", false);
+		assertEquals(2, nullableSelectionModel.getOptionCount());
 	}
 
 	public void testNoneLabelValue() throws Exception
@@ -57,7 +51,7 @@ public class IdentifierSelectionModelTest extends TestCase
 	public void testGetLabel() throws Exception
 	{
 		assertEquals("right label", "mom", selectionModel.getLabel(1));
-		assertEquals("none value", IdentifierSelectionModel.DEFAULT_NONE_LABEL,
+		assertEquals("none value", AbstractPropertySelectionModel.DEFAULT_NONE_LABEL,
 			nullableSelectionModel.getLabel(0));
 		assertEquals("none value", "howdy",
 			nullableSelectionModel.getLabel(1));
@@ -69,7 +63,7 @@ public class IdentifierSelectionModelTest extends TestCase
 		Foo foo = (Foo) selectionModel.translateValue("2");
 		assertEquals("got right foo", foo, foos.get(1));
 		assertEquals("should be null", null, nullableSelectionModel.translateValue(
-			IdentifierSelectionModel.DEFAULT_NONE_VALUE));
+			AbstractPropertySelectionModel.DEFAULT_NONE_VALUE));
 		assertEquals("correct foo", foo, nullableSelectionModel.translateValue("2"));
 		assertEquals("translate foo by label property", foo, labelSelectionModel.translateValue("2"));
 		assertNull("dont blow an exception", selectionModel.translateValue(null));
@@ -82,9 +76,6 @@ public class IdentifierSelectionModelTest extends TestCase
 		assertEquals(3, nullableSelectionModel.getOptionCount());
 	}
 
-	/**
-	 *
-	 */
 	public void setUp()
 	{
 		Foo foo = new Foo();

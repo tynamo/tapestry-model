@@ -5,6 +5,7 @@ import org.apache.tapestry.annotations.InjectObject;
 import org.apache.tapestry.annotations.Parameter;
 import org.apache.tapestry.annotations.Asset;
 import org.apache.tapestry.IAsset;
+import org.apache.tapestry.form.IPropertySelectionModel;
 import org.hibernate.criterion.DetachedCriteria;
 import org.trails.persistence.HibernatePersistenceService;
 
@@ -38,7 +39,8 @@ public abstract class HibernateAssociationSelect extends AssociationSelect
 	@Parameter(required = false)
 	public abstract DetachedCriteria getCriteria();
 
-	public void buildSelectionModel()
+	@Override
+	protected IPropertySelectionModel buildSelectionModel()
 	{
 		DetachedCriteria criteria = getCriteria() != null ? getCriteria() : DetachedCriteria.forClass(getClassDescriptor().getType());
 		IdentifierSelectionModel selectionModel = new IdentifierSelectionModel(
@@ -46,6 +48,6 @@ public abstract class HibernateAssociationSelect extends AssociationSelect
 			getClassDescriptor().getIdentifierDescriptor().getName(),
 			isAllowNone());
 		selectionModel.setNoneLabel(getNoneLabel());
-		setPropertySelectionModel(selectionModel);
+		return selectionModel;
 	}
 }
