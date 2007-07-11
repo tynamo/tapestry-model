@@ -31,10 +31,7 @@ public class EnumSelectTest extends ComponentTest
 		associationDescriptor.addExtension(EnumReferenceDescriptor.class.getName(), enumReferenceDescriptor);
 
 
-		enumSelect = (EnumSelect) creator.newInstance(EnumSelect.class,
-			new Object[]{
-				"descriptorService", descriptorServiceMock.proxy()
-			});
+		enumSelect = (EnumSelect) creator.newInstance(EnumSelect.class);
 
 		enumSelect.setPropertyDescriptor(associationDescriptor);
 		enumSelect.setAllowNone(true);
@@ -43,19 +40,19 @@ public class EnumSelectTest extends ComponentTest
 
 	public void testBuildSelectionModel()
 	{
-		enumSelect.buildSelectionModel();
-		EnumSelectionModel selectionModel = (EnumSelectionModel) enumSelect.getPropertySelectionModel();
+		enumSelect.resetSelectionModel();
+		EnumPropertySelectionModel selectionModel = (EnumPropertySelectionModel) enumSelect.getPropertySelectionModel();
 		assertEquals(6, selectionModel.getOptionCount());
 
 		enumSelect.setAllowNone(false);
-		enumSelect.buildSelectionModel();
-		selectionModel = (EnumSelectionModel) enumSelect.getPropertySelectionModel();
+		enumSelect.resetSelectionModel();
+		selectionModel = (EnumPropertySelectionModel) enumSelect.getPropertySelectionModel();
 		assertEquals(5, selectionModel.getOptionCount());
 
 		enumSelect.setNoneLabel("Any");
-		enumSelect.buildSelectionModel();
+		enumSelect.resetSelectionModel();
 
-		selectionModel = (EnumSelectionModel) enumSelect.getPropertySelectionModel();
+		selectionModel = (EnumPropertySelectionModel) enumSelect.getPropertySelectionModel();
 		assertEquals("Any", selectionModel.getNoneLabel());
 
 	}
