@@ -19,12 +19,6 @@ import org.trails.page.TrailsPage;
 import org.trails.test.Foo;
 
 
-/**
- * @author fus8882
- *         <p/>
- *         TODO To change the template for this generated type comment go to
- *         Window - Preferences - Java - Code Style - Code Templates
- */
 public class EditLinkTest extends ComponentTest
 {
 	public void testGetPageName()
@@ -33,7 +27,7 @@ public class EditLinkTest extends ComponentTest
 		Mock pageResolverMock = new Mock(PageResolver.class);
 		Mock cycleMock = new Mock(IRequestCycle.class);
 		pageResolverMock.expects(once()).method("resolvePage")
-			.with(isA(IRequestCycle.class), eq(Foo.class.getName()), eq(TrailsPage.PageType.Edit))
+			.with(isA(IRequestCycle.class), eq(Foo.class), eq(TrailsPage.PageType.Edit))
 			.will(returnValue(pageMock.proxy()));
 		pageMock.expects(once()).method("getPageName").will(returnValue("FooEdit"));
 		pageMock.expects(once()).method("getRequestCycle").will(returnValue(cycleMock.proxy()));

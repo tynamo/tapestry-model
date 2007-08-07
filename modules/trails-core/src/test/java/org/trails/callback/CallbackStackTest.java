@@ -1,9 +1,9 @@
 package org.trails.callback;
 
-import org.jmock.MockObjectTestCase;
+import junit.framework.TestCase;
 import org.trails.test.Foo;
 
-public class CallbackStackTest extends MockObjectTestCase
+public class CallbackStackTest extends TestCase
 {
 
 	public void testPush()
@@ -31,7 +31,7 @@ public class CallbackStackTest extends MockObjectTestCase
 	{
 		CallbackStack callbackStack = new CallbackStack();
 		EditCallback callback = new EditCallback("FooEdit", new Foo());
-		ListCallback listCallback = new ListCallback("ListEdit", Foo.class.getName(), Foo.class);
+		ListCallback listCallback = new ListCallback("ListEdit", Foo.class);
 		callbackStack.push(callback);
 		callbackStack.push(listCallback);
 		assertEquals(callback, callbackStack.getPreviousCallback());

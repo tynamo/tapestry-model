@@ -1,7 +1,7 @@
 package org.trails.component;
 
 import org.apache.tapestry.IRequestCycle;
-import org.jmock.cglib.Mock;
+import org.jmock.Mock;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.trails.descriptor.DescriptorService;
 import org.trails.i18n.DefaultTrailsResourceBundleMessageSource;
@@ -12,12 +12,6 @@ import org.trails.test.Foo;
 
 public class SearchLinkTest extends ComponentTest
 {
-
-	public SearchLinkTest()
-	{
-		super();
-		// TODO Auto-generated constructor stub
-	}
 
 	public void testClick()
 	{
@@ -36,16 +30,16 @@ public class SearchLinkTest extends ComponentTest
 			new Object[]{"descriptorService", descriptorServiceMock.proxy(),
 				"resourceBundleMessageSource", messageSource,
 				"pageResolver", pageResolverMock.proxy()});
-		searchLink.setTypeName(Foo.class.getName());
+		searchLink.setType(Foo.class);
 
 		// Pretend Foo has a custom page
 		pageResolverMock.expects(once()).method("resolvePage").with(
 			isA(IRequestCycle.class),
-			eq(Foo.class.getName()),
+			eq(Foo.class),
 			eq(TrailsPage.PageType.Search)).will(returnValue(searchPage));
 		cycleMock.expects(once()).method("activate").with(eq(searchPage));
 		searchLink.click((IRequestCycle) cycleMock.proxy());
-		assertNotNull(searchPage.getTypeName());
-		assertEquals(Foo.class.getName(), searchPage.getTypeName());
+		assertNotNull(searchPage.getType());
+		assertEquals(Foo.class, searchPage.getType());
 	}
 }

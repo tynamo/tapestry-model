@@ -2,7 +2,7 @@
 		"http://jakarta.apache.org/tapestry/dtd/Tapestry_4_0.dtd">
 <page-specification class="org.trails.demo.NoteListPage">
 
-	<property name="typeName" persist="session"/>
+	<property name="type" persist="session"/>
 	<property name="instances" persist="session"/>
 	<property name="object"/>
 

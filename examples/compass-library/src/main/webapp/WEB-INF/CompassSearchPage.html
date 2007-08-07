@@ -28,7 +28,7 @@
 	<br/>
 	<span jwcid="@If" condition="ognl:results">
 	<div jwcid="@For" source="ognl:classesList" value="ognl:classIterator">
-		<h1><a href="#" jwcid="@trails:ListAllLink" typeName="ognl:classIterator.name">
+		<h1><a href="#" jwcid="@trails:ListAllLink" type="ognl:classIterator">
 			<span jwcid="@Insert" value="ognl:getClassDescriptor(classIterator).pluralDisplayName"/></a>
 		</h1>
 		<table class="table contribTable" jwcid="@trails:ObjectTable" instances="ognl:getInstances(classIterator)"

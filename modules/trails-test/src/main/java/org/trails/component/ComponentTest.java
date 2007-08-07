@@ -16,7 +16,7 @@ package org.trails.component;
 
 import org.apache.tapestry.test.Creator;
 import org.jmock.MockObjectTestCase;
-import org.jmock.cglib.Mock;
+import org.jmock.Mock;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.trails.callback.CallbackStack;
 import org.trails.descriptor.DescriptorService;

@@ -9,9 +9,17 @@
 	<packaging>pom</packaging>
 	<version>1.1-SNAPSHOT</version>
 	<properties>
-		<!-- Plugin dependencies don't use dependencyManagement section, specify a single log4j version here -->
+		<!-- Plugin dependencies and extensions don't use dependencyManagement section, specify a single version here. 
+		BUT don't just abuse this section, it's a hack. -->
 		<log4j.version>1.2.14</log4j.version>
-		<hsqldb.version>1.8.0.1</hsqldb.version>
+		<hsqldb.version>1.8.0.7</hsqldb.version>
+
+		<tapestry.version>4.1.2</tapestry.version>
+		<!-- kaosko 2007-08-07: there's some issue with the latest OGNL snapshot from Aug 3 
+		<ognl.version>2.7.1-SNAPSHOT</ognl.version>
+		-->
+		<ognl.version>2.7.1-20070723.185910-9</ognl.version>
+		<spring.version>2.0.6</spring.version>
 	</properties>
 
 	<modules>
@@ -179,6 +187,16 @@
 				<artifactId>log4j</artifactId>
 				<version>${log4j.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>hsqldb</groupId>
+				<artifactId>hsqldb</artifactId>
+				<version>${hsqldb.version}</version>
+			</dependency>
+		<dependency>
+			<groupId>ognl</groupId>
+			<artifactId>ognl</artifactId>
+			<version>${ognl.version}</version>
+		</dependency>
 		</dependencies>
 	</dependencyManagement>
 

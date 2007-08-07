@@ -37,7 +37,7 @@ public class ListCallbackTest extends ComponentTest
 		List<Foo> foos = new ArrayList<Foo>();
 //        persistenceMock.expects(once()).method("getAllInstances").with(eq(Foo.class)).will(returnValue(foos));
 
-		ListCallback callBack = new ListCallback(pageName, Foo.class.getName(), Foo.class);
+		ListCallback callBack = new ListCallback(pageName, Foo.class);
 		callBack.performCallback((IRequestCycle) cycleMock.proxy());
 		assertEquals(Foo.class, listPage.getType());
 //        assertEquals(foos, listPage.getInstances()); //@todo: should we reloadInstances or not?
@@ -47,10 +47,10 @@ public class ListCallbackTest extends ComponentTest
 	public void testShouldReplace()
 	{
 
-		ListCallback callBack = new ListCallback("FooList", Foo.class.getName(), Foo.class);
-		ListCallback callBack2 = new ListCallback("FooList", Foo.class.getName(), Foo.class);
+		ListCallback callBack = new ListCallback("FooList", Foo.class);
+		ListCallback callBack2 = new ListCallback("FooList", Foo.class);
 		assertTrue(callBack2.shouldReplace(callBack));
-		callBack2 = new ListCallback("Blork", Foo.class.getName(), Foo.class);
+		callBack2 = new ListCallback("Blork", Foo.class);
 		assertFalse(callBack2.shouldReplace(callBack));
 		EditCallback editCallback = new EditCallback("FooEdit", new Foo());
 		assertFalse(editCallback.shouldReplace(callBack2));

@@ -24,7 +24,7 @@ public abstract class HibernateListPage extends ListPage
 
 	public void pushCallback()
 	{
-		getCallbackStack().push(new HibernateListCallback(getPageName(), getTypeName(), getType(), getCriteria()));
+		getCallbackStack().push(new HibernateListCallback(getPageName(), getType(), getCriteria()));
 	}
 
 	public void reloadInstances()

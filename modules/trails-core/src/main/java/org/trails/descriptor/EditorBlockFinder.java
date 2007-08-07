@@ -2,6 +2,7 @@ package org.trails.descriptor;
 
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.components.Block;
+import org.trails.page.IEditorBlockPage;
 
 
 public class EditorBlockFinder extends BaseBlockFinder
@@ -17,7 +18,7 @@ public class EditorBlockFinder extends BaseBlockFinder
 	{
 
 		Block block = super.findBlock(cycle, descriptor);
-		block.getPage().setProperty("model", cycle.getPage().getProperty("model"));
+		((IEditorBlockPage) block.getPage()).setModel(((IEditorBlockPage) cycle.getPage()).getModel());
 		return block;
 	}
 

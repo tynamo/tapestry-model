@@ -6,6 +6,7 @@ import org.apache.tapestry.annotations.Parameter;
 import org.apache.tapestry.components.Block;
 import org.apache.tapestry.event.PageBeginRenderListener;
 import org.apache.tapestry.event.PageEvent;
+import org.apache.hivemind.util.PropertyUtils;
 import org.hibernate.criterion.DetachedCriteria;
 import org.trails.component.ClassDescriptorComponent;
 import org.trails.descriptor.BlockFinder;
@@ -40,7 +41,7 @@ public abstract class SearchForm extends ClassDescriptorComponent implements Pag
 	public void search(IRequestCycle cycle)
 	{
 		HibernateListPage listPage = (HibernateListPage) getPageResolver().resolvePage(cycle,
-			getClassDescriptor().getType().getName(),
+			getClassDescriptor().getType(),
 			PageType.List);
 		listPage.setCriteria(getCriteria());
 		cycle.activate(listPage);
@@ -49,7 +50,7 @@ public abstract class SearchForm extends ClassDescriptorComponent implements Pag
 	public Block getBlock()
 	{
 		Block searchBlock = getBlockFinder().findBlock(getPage().getRequestCycle(), getPropertyDescriptor());
-		searchBlock.getPage().setProperty("criteria", getCriteria());
+		PropertyUtils.write(searchBlock.getPage(), "criteria", getCriteria());
 		return searchBlock;
 	}
 

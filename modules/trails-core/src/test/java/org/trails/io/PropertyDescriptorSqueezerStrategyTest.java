@@ -4,7 +4,7 @@ import java.util.Date;
 
 import org.apache.tapestry.services.DataSqueezer;
 import org.jmock.MockObjectTestCase;
-import org.jmock.cglib.Mock;
+import org.jmock.Mock;
 import org.trails.descriptor.DescriptorService;
 import org.trails.descriptor.IPropertyDescriptor;
 import org.trails.descriptor.TrailsClassDescriptor;

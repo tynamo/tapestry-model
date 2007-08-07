@@ -1,6 +1,5 @@
 package org.trails.demo;
 
-import net.sf.tacos.ajax.AjaxWebRequest;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.annotations.Persist;
 import org.apache.tapestry.event.PageBeginRenderListener;
@@ -39,8 +38,9 @@ public abstract class NoteListPage extends HibernateListPage implements PageBegi
 
 	private void addStatusResponse(IRequestCycle iRequestCycle, String messagge)
 	{
-		AjaxWebRequest ajax = (AjaxWebRequest) iRequestCycle.getAttribute(AjaxWebRequest.AJAX_REQUEST);
+/*		AjaxWebRequest ajax = (AjaxWebRequest) iRequestCycle.getAttribute(AjaxWebRequest.AJAX_REQUEST);
 		if (ajax != null) ajax.addStatusResponse(messagge);
+*/
 	}
 
 }

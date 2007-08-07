@@ -39,17 +39,12 @@ public abstract class ListPage extends TrailsPage implements IExternalPage, Page
 	{
 		Class instanceClass = (Class) args[0];
 		setType(instanceClass);
-		setTypeName(instanceClass.getName());
 		reloadInstances();
 	}
 
 	public abstract List getInstances();
 
 	public abstract void setInstances(List Instances);
-
-	public abstract String getTypeName();
-
-	public abstract void setTypeName(String typeName);
 
 	public abstract TrailsTableColumn getColumn();
 
@@ -61,12 +56,12 @@ public abstract class ListPage extends TrailsPage implements IExternalPage, Page
 
 	public IClassDescriptor getClassDescriptor()
 	{
-		return getDescriptorService().getClassDescriptor(Utils.getClassForName(getTypeName()));
+		return getDescriptorService().getClassDescriptor(getType());
 	}
 
 	public void pushCallback()
 	{
-		getCallbackStack().push(new ListCallback(getPageName(), getTypeName(), getType()));
+		getCallbackStack().push(new ListCallback(getPageName(), getType()));
 	}
 
 	private void loadInstances(Class clazz)

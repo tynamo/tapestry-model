@@ -29,24 +29,20 @@ public abstract class NewLink extends AbstractTypeNavigationLink
 {
 	public static String SUFFIX = "Edit";
 
-	public abstract String getTypeName();
-
 	public void click(IRequestCycle cycle)
 	{
 
 		PageResolver pageResolver = getPageResolver();
-		EditPage page = (EditPage) pageResolver.resolvePage(cycle, getTypeName(), TrailsPage.PageType.Edit);
+		EditPage page = (EditPage) pageResolver.resolvePage(cycle, getType(), TrailsPage.PageType.Edit);
 
-		Class clazz = null;
 		try {
-			clazz = Utils.getClassForName(getTypeName()); //@todo: this should be abstracted to a Utils.newInstance(String);
-			Constructor constructor = clazz.getDeclaredConstructor();
+			Constructor constructor = getType().getDeclaredConstructor();
 			constructor.setAccessible(true);
 			page.setModel(constructor.newInstance());
 			cycle.activate(page);
 		} catch (Exception ex)
 		{
-			throw new TrailsRuntimeException(ex, clazz);
+			throw new TrailsRuntimeException(ex, getType());
 		}
 	}
 

@@ -3,24 +3,19 @@ package org.trails.descriptor;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.components.Block;
 import org.apache.tapestry.test.Creator;
 import org.apache.tapestry.util.ComponentAddress;
-import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
+import org.jmock.Expectations;
+import org.jmock.integration.junit3.MockObjectTestCase;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.trails.page.IEditorBlockPage;
 import org.trails.test.Foo;
 
 public class TrailsBlockFinderTest extends MockObjectTestCase
 {
-	public TrailsBlockFinderTest()
-	{
-		super();
-		// TODO Auto-generated constructor stub
-	}
 
 	IPropertyDescriptor descriptor;
 	IPropertyDescriptor stringDescriptor;
@@ -62,32 +57,37 @@ public class TrailsBlockFinderTest extends MockObjectTestCase
 
 	public void testFindBlock()
 	{
+
 		Creator creator = new Creator();
-		Map pageComponents = new HashMap();
-		Mock pageMock = new Mock(IPage.class);
-		Mock cycleMock = new Mock(IRequestCycle.class);
 
-		Block overrriddenBlock = (Block) creator.newInstance(Block.class, new Object[]{"page", pageMock.proxy()});
-		overrriddenBlock.setContainer((IPage) pageMock.proxy());
-		Block block = (Block) creator.newInstance(Block.class, new Object[]{"page", pageMock.proxy()});
-		block.setContainer((IPage) pageMock.proxy());
+		final IEditorBlockPage page = mock(IEditorBlockPage.class);
+		final IRequestCycle cycle = mock(IRequestCycle.class);
+		final Foo model = new Foo();
+
+		final Block overrriddenBlock = (Block) creator.newInstance(Block.class, new Object[]{"page", page, "container", page});
+
+		final Block block = (Block) creator.newInstance(Block.class, new Object[]{"page", page, "container", page});
+
+		final Map pageComponents = new HashMap();
 		pageComponents.put("overridden", overrriddenBlock);
-		pageMock.expects(atLeastOnce()).method("getComponents").will(returnValue(pageComponents));
-		pageMock.expects(atLeastOnce()).method("getComponent").with(eq("overridden")).will(returnValue(overrriddenBlock));
 
-		cycleMock.expects(atLeastOnce()).method("getPage").with(eq("trails:Editors")).will(returnValue(pageMock.proxy()));
-		cycleMock.expects(atLeastOnce()).method("getPage").withNoArguments().will(returnValue(pageMock.proxy()));
-		pageMock.expects(atLeastOnce()).method("getRequestCycle").will(returnValue(cycleMock.proxy()));
-		pageMock.expects(atLeastOnce()).method("getNestedComponent").with(eq("stringEditor")).will(returnValue(block));
-		pageMock.expects(atLeastOnce()).method("setProperty");
-		pageMock.expects(atLeastOnce()).method("getPageName").will(returnValue("trails:Editors"));
-		Foo model = new Foo();
-		pageMock.expects(atLeastOnce()).method("getProperty").with(eq("model")).will(returnValue(model));
+		checking(new Expectations() {{
 
-		assertEquals(overrriddenBlock, editorService.findBlock((IRequestCycle) cycleMock.proxy(), overriddenDescriptor));
+			atLeast(1).of(page).getComponents(); will(returnValue(pageComponents));
+			atLeast(1).of(page).getComponent("overridden"); will(returnValue(overrriddenBlock));
 
-		assertEquals(block, editorService.findBlock((IRequestCycle) cycleMock.proxy(), stringDescriptor));
 
+			atLeast(1).of(page).setModel(model);
+			atLeast(1).of(page).getModel(); will(returnValue(model));
+			one(page).setDescriptor(stringDescriptor);
+			one(page).getNestedComponent("stringEditor"); will(returnValue(block));
+
+			atLeast(1).of(cycle).getPage(); will(returnValue(page));
+			atLeast(1).of(cycle).getPage("trails:Editors"); will(returnValue(page));
+		}});
+
+		assertEquals(overrriddenBlock, editorService.findBlock(cycle, overriddenDescriptor));
+		assertEquals(block, editorService.findBlock(cycle, stringDescriptor));
 	}
 
 	public void testFromSpring()

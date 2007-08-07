@@ -9,12 +9,6 @@ import org.trails.test.Foo;
 public class SearchCallbackTest extends ComponentTest
 {
 
-	public SearchCallbackTest()
-	{
-		super();
-		// TODO Auto-generated constructor stub
-	}
-
 	String pageName = "FooSearch";
 
 	public void testPerformCallback()
@@ -25,9 +19,9 @@ public class SearchCallbackTest extends ComponentTest
 		cycleMock.expects(once()).method("getPage").with(eq(pageName)).will(returnValue(searchPage));
 		cycleMock.expects(once()).method("activate").with(same(searchPage));
 
-		SearchCallback callBack = new SearchCallback(pageName, Foo.class.getName());
+		SearchCallback callBack = new SearchCallback(pageName, Foo.class);
 		callBack.performCallback((IRequestCycle) cycleMock.proxy());
-		assertEquals(Foo.class.getName(), searchPage.getTypeName());
+		assertEquals(Foo.class, searchPage.getType());
 		cycleMock.verify();
 	}
 

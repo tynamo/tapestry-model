@@ -28,17 +28,18 @@ public class ApplicationExceptionPresenterImpl extends ExceptionPresenterImpl {
 		}
 		TrailsRuntimeException trailsRuntimeException = (TrailsRuntimeException)throwable.getCause();
 
-		String className = null;
-		if (trailsRuntimeException.getEntityType() == null) {
-			log.warn("Trails specific exception happened while handling unknown entity, caused by: " + throwable.getCause().getMessage() );
-			className = DefaultPage.UnknownEntity.name();
-		}
-		else  {
-			log.warn("Trails specific exception happened while handling entity type " + trailsRuntimeException.getEntityType().getName() + ", caused by: " + throwable.getCause().getMessage() );
-			className = trailsRuntimeException.getEntityType().getSimpleName();
+		if (log.isWarnEnabled())
+		{
+			if (trailsRuntimeException.getEntityType() == null)
+			{
+				log.warn("Trails specific exception happened while handling unknown entity, caused by: " + throwable.getCause().getMessage());
+			} else
+			{
+				log.warn("Trails specific exception happened while handling entity type " + trailsRuntimeException.getEntityType().getName() + ", caused by: " + throwable.getCause().getMessage());
+			}
 		}
 		log.debug("The problem was caused by: ", throwable.getCause());
-		IPage iPage = pageResolver.resolvePage(cycle, className, PageType.Exception);
+		IPage iPage = pageResolver.resolvePage(cycle, trailsRuntimeException.getEntityType(), PageType.Exception);
 		
 		setExceptionPageName(iPage.getPageName());
 		super.presentException(cycle, throwable.getCause() );

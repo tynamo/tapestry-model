@@ -59,7 +59,7 @@ public class SearchPageTest extends ComponentTest
 		classDescriptor.getPropertyDescriptors().add(new IdentifierDescriptor(Foo.class, "id", String.class));
 		classDescriptor.getPropertyDescriptors().add(new CollectionDescriptor(Foo.class, "name", Set.class));
 		descriptorServiceMock.expects(atLeastOnce()).method("getClassDescriptor").with(eq(Searchee.class)).will(returnValue(classDescriptor));
-		searchPage.setTypeName(Searchee.class.getName());
+		searchPage.setType(Searchee.class);
 		String[] searchableProperties = searchPage.getSearchableProperties();
 		assertEquals("should only be 2 search properties", 2, searchableProperties.length);
 		assertEquals("name", searchableProperties[0]);

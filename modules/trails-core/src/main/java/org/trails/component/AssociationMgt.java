@@ -130,8 +130,7 @@ public abstract class AssociationMgt extends TrailsComponent
 
 		String currentEditPageName = getPage().getRequestCycle().getPage()
 			.getPageName();
-		EditPage ownerEditPage = (EditPage) getPageResolver().resolvePage(
-			cycle, getDescriptor().getClass().getName(), PageType.Edit);
+		EditPage ownerEditPage = (EditPage) getPageResolver().resolvePage(cycle, getDescriptor().getClass(), PageType.Edit);
 
 		try
 		{
@@ -183,8 +182,7 @@ public abstract class AssociationMgt extends TrailsComponent
 
 	public void remove(IRequestCycle cycle)
 	{
-		EditPage editPage = (EditPage) getPageResolver().resolvePage(cycle,
-			getDescriptor().getClass().getName(), PageType.Edit);
+		EditPage editPage = (EditPage) getPageResolver().resolvePage(cycle, getDescriptor().getClass(), PageType.Edit);
 
 		AssociationCallback callback = buildCallback();
 

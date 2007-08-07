@@ -133,5 +133,8 @@
         <url-pattern>*.svc</url-pattern>
     </servlet-mapping>
 
-
+    <!--  Make session timeout short for trying out remember me -->
+    <session-config>
+      <session-timeout>10</session-timeout> 
+    </session-config>
 </web-app>

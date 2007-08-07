@@ -45,12 +45,6 @@ import org.trails.validation.ValidationException;
 import org.trails.persistence.HibernatePersistenceService;
 
 
-/**
- * @author fus8882
- *         <p/>
- *         TODO To change the template for this generated type comment go to
- *         Window - Preferences - Java - Code Style - Code Templates
- */
 public class HibernateEditPageTest extends ComponentTest
 {
 	Mock cycleMock = new Mock(IRequestCycle.class);
@@ -61,7 +55,7 @@ public class HibernateEditPageTest extends ComponentTest
 	Foo foo = new Foo();
 	IdentifierDescriptor idDescriptor;
 	Mock validatorMock;
-	HibernateListCallback listCallBack = new HibernateListCallback("FooList", Foo.class.getName(), Foo.class, DetachedCriteria.forClass(Foo.class));
+	HibernateListCallback listCallBack = new HibernateListCallback("FooList", Foo.class, DetachedCriteria.forClass(Foo.class));
 	HibernateListPage listPage;
 	EditCallback editCallback;
 	CollectionDescriptor bazzesDescriptor = new CollectionDescriptor(Foo.class, "bazzes", Set.class);
@@ -69,7 +63,7 @@ public class HibernateEditPageTest extends ComponentTest
 
 	public void setUp() throws Exception
 	{
-		persistenceMock = new org.jmock.cglib.Mock(HibernatePersistenceService.class);  // @todo: remove when the components reuse issue goes away
+		persistenceMock = new Mock(HibernatePersistenceService.class);  // @todo: remove when the components reuse issue goes away
 		delegate = new HibernateValidationDelegate();
 
 		foo.setName("foo");

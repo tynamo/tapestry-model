@@ -21,12 +21,6 @@ import org.trails.TrailsRuntimeException;
 import org.trails.component.Utils;
 
 
-/**
- * @author fus8882
- *         <p/>
- *         TODO To change the template for this generated type comment go to
- *         Window - Preferences - Java - Code Style - Code Templates
- */
 public class CollectionDescriptor extends TrailsPropertyDescriptor
 {
 	protected static final Log LOG = LogFactory.getLog(CollectionDescriptor.class);
@@ -161,9 +155,7 @@ public class CollectionDescriptor extends TrailsPropertyDescriptor
 
 		try
 		{
-			addMethod = getBeanType().getMethod(method +
-				Utils.unqualify(getElementType().getName()),
-				new Class[]{getElementType()});
+			addMethod = getBeanType().getMethod(method + getElementType().getSimpleName(), new Class[]{getElementType()});
 		} catch (NoSuchMethodException ex)
 		{
 			// if we don't have one...

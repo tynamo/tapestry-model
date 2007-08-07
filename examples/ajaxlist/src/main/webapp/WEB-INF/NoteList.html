@@ -3,11 +3,11 @@
 		<ul id="local">
 			<div jwcid="@If" condition="ognl:classDescriptor.allowSave">
 				<li>
-					<a class="newlink" href="#" jwcid="@trails:NewLink" typeName="ognl:typeName"></a>
+					<a class="newlink" href="#" jwcid="@trails:NewLink" type="ognl:type"></a>
 				</li>
 			</div>
 			<li>
-				<a class="searchlink" href="#" jwcid="@trails:SearchLink" typeName="ognl:typeName"></a>
+				<a class="searchlink" href="#" jwcid="@trails:SearchLink" type="ognl:type"></a>
 			</li>
 		</ul>
 	</span>
@@ -35,7 +35,8 @@
 				<div jwcid="@trails:EditProperties" model="ognl:note"
 					 propertyNames="ognl:new java.lang.String[] {'note'}"/>
 				<li class="buttonBar bottom">
-					<input jwcid="@tacos:AjaxSubmit"
+					<!--<input jwcid="@tacos:AjaxSubmit"-->
+					<input jwcid="@Submit" async="true"
 						   value="Add Note"
 						   statusElement="status"
 						   effects="template:{highlight:{notes:'[255,255,184], 500, 500'}}"

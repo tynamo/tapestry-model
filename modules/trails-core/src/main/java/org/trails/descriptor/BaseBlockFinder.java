@@ -8,6 +8,7 @@ import ognl.OgnlException;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.components.Block;
 import org.apache.tapestry.util.ComponentAddress;
+import org.trails.page.IEditorBlockPage;
 
 public class BaseBlockFinder implements BlockFinder
 {
@@ -73,7 +74,7 @@ public class BaseBlockFinder implements BlockFinder
 			// block
 			ComponentAddress blockAddress = findBlockAddress(descriptor);
 			Block block = (Block) blockAddress.findComponent(cycle);
-			block.getPage().setProperty("descriptor", descriptor);
+			((IEditorBlockPage) block.getPage()).setDescriptor(descriptor);
 			return block;
 		}
 	}

@@ -3,9 +3,9 @@
 <h1><span key="org.trails.welcome">Welcome to Trails and Compass</span></h1>
 
 <ul class="glassList">
-<div class="glassList" jwcid="@Foreach" source="ognl:allDescriptors" value="ognl:descriptor" >
+<div class="glassList" jwcid="@For" source="ognl:allDescriptors" value="ognl:descriptor" >
 	<li>
-    	<a href="#" jwcid="@trails:ListAllLink" typeName="ognl:descriptor.type.name" />
+    	<a href="#" jwcid="@trails:ListAllLink" type="ognl:descriptor.type" />
     </li>
 </div>
     <li></li>

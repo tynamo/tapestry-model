@@ -19,7 +19,7 @@ import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.annotations.InjectObject;
-import org.trails.TrailsRuntimeException;
+import org.apache.tapestry.annotations.Parameter;
 import org.trails.descriptor.DescriptorService;
 import org.trails.descriptor.IClassDescriptor;
 import org.trails.i18n.ResourceBundleMessageSource;
@@ -34,15 +34,13 @@ public abstract class AbstractTypeNavigationLink extends Link
 	@InjectObject("spring:descriptorService")
 	public abstract DescriptorService getDescriptorService();
 
-	public abstract void setTypeName(String typeName);
-
 	/**
 	 * @return Class object that this link targets.
 	 */
-	public Class getType()
-	{
-		return Utils.getClassForName(getTypeName());
-	}
+	@Parameter(required = true)
+	public abstract Class getType();
+
+	public abstract void setType(Class type);
 
 	/**
 	 * @return the class descriptor for the class that this link targets

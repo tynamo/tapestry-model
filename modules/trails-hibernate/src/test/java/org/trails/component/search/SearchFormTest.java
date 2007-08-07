@@ -4,7 +4,7 @@ import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.event.PageEvent;
 import org.hibernate.criterion.DetachedCriteria;
-import org.jmock.cglib.Mock;
+import org.jmock.Mock;
 import org.trails.component.ComponentTest;
 import org.trails.descriptor.IClassDescriptor;
 import org.trails.descriptor.IPropertyDescriptor;
@@ -57,7 +57,7 @@ public class SearchFormTest extends ComponentTest
 		searchForm.setCriteria(DetachedCriteria.forClass(Foo.class));
 		pageResolverMock.expects(once()).method("resolvePage").with(
 			isA(IRequestCycle.class),
-			eq(Foo.class.getName()),
+			eq(Foo.class),
 			eq(PageType.List)).will(returnValue(listPage));
 		cycleMock.expects(once()).method("activate").with(eq(listPage));
 		searchForm.search((IRequestCycle) cycleMock.proxy());

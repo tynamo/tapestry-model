@@ -161,7 +161,7 @@ public abstract class EditCollection extends TrailsComponent
 		getCallbackStack().push(callback);
 		EditPage editPage = (EditPage) getPageResolver().resolvePage(
 			getPage().getRequestCycle(),
-			Utils.checkForCGLIB(member.getClass()).getName(),
+			Utils.checkForCGLIB(member.getClass()),
 			PageType.Edit);
 
 		editPage.setModel(member);
@@ -174,7 +174,7 @@ public abstract class EditCollection extends TrailsComponent
 		getCallbackStack().push(buildCallback());
 
 		EditPage editPage = (EditPage) getPageResolver().resolvePage(cycle,
-			getCollectionDescriptor().getElementType().getName(),
+			getCollectionDescriptor().getElementType(),
 			PageType.Edit);
 		try
 		{

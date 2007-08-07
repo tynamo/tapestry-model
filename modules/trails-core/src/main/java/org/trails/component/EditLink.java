@@ -13,31 +13,8 @@ package org.trails.component;
 
 import org.trails.page.TrailsPage;
 
-/*
- * Created on Sep 23, 2004
- *
- * TODO To change the template for this generated file go to
- * Window - Preferences - Java - Code Style - Code Templates
- */
-
-/**
- * @author fus8882
- *         <p/>
- *         TODO To change the template for this generated type comment go to Window -
- *         Preferences - Java - Code Style - Code Templates
- */
 public abstract class EditLink extends Link
 {
-
-	public String getTypeName()
-	{
-		return getModel().getClass().getName();
-	}
-
-	// so we don't get enhanced
-	public void setTypeName()
-	{
-	}
 
 	public abstract Object getModel();
 
@@ -45,10 +22,7 @@ public abstract class EditLink extends Link
 
 	public String getEditPageName()
 	{
-		return getPageResolver().resolvePage(
-			getPage().getRequestCycle(),
-			getModel().getClass().getName(),
-			TrailsPage.PageType.Edit).getPageName();
+		return getPageResolver().resolvePage(getPage().getRequestCycle(), Utils.checkForCGLIB(getModel().getClass()), TrailsPage.PageType.Edit).getPageName();
 	}
 
 }

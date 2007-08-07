@@ -7,6 +7,6 @@ import org.trails.page.TrailsPage.PageType;
 public interface PageResolver
 {
 
-	public IPage resolvePage(IRequestCycle cycle, String className, PageType edit);
+	public IPage resolvePage(IRequestCycle cycle, Class type, PageType edit);
 
 }

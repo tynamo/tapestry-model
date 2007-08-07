@@ -21,7 +21,7 @@
 				<div class="glassList" jwcid="@Foreach" source="ognl:descriptorService.allDescriptors.{? not hidden}"
 					 value="ognl:descriptor">
 					<li>
-						<a href="#" jwcid="@trails:ListAllLink" typeName="ognl:descriptor.type.name"/>
+						<a href="#" jwcid="@trails:ListAllLink" type="ognl:descriptor.type"/>
 					</li>
 				</div>
 			</ul>

@@ -14,7 +14,6 @@ package org.trails.component;
 import java.util.List;
 
 import ognl.Ognl;
-import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.trails.TrailsRuntimeException;
 
@@ -47,7 +46,7 @@ public class IdentifierSelectionModel extends AbstractPropertySelectionModel
 				return DEFAULT_NONE_VALUE;
 			} else
 			{
-				return BeanUtils.getProperty(instances.get(index), idProperty);
+				return Ognl.getValue(idProperty,instances.get(index)).toString();
 			}
 		} catch (Exception e)
 		{
