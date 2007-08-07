@@ -6,11 +6,15 @@
 		</div>
 
 		<div jwcid="blobColumnValue@Block">
+			<!-- render if the descriptor supports and actually has a blob -->
+			<span jwcid="@If" condition="ognl:column.propertyDescriptor.supportsExtension(@org.trails.descriptor.BlobDescriptorExtension@class)">
 				<span jwcid="@TrailsDownload"
 					  propertyDescriptor="ognl:column.propertyDescriptor"
 					  model="ognl:object"	
 					  bytes="ognl:object[column.propertyDescriptor.name]"
 					/>
+
+			</span>
 		</div>
 	</table>
 </span>
