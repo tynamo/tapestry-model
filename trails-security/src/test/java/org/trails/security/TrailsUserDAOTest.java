@@ -43,7 +43,7 @@ public class TrailsUserDAOTest extends
 		role2.setDescription("two");
 		role = persistenceService.save(role);
 		role2 = persistenceService.save(role2);
-		user.setUsername("user");
+		user.setUsername("username");
 		user.setFirstName("what");
 		user.setLastName("blah");
 		user.setPassword("user");
@@ -51,7 +51,7 @@ public class TrailsUserDAOTest extends
 		user.getRoles().add(role);
 		user.getRoles().add(role2);
 		persistenceService.save(user);
-		assertNotNull(trailsUserDAO.loadUserByUsername("user"));
+		assertNotNull(trailsUserDAO.loadUserByUsername("username"));
 	}
 
 	public TrailsUserDAO getTrailsUserDAO()
