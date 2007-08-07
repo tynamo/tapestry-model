@@ -15,24 +15,9 @@ import org.apache.tapestry.annotations.InjectObject;
 import org.trails.page.PageResolver;
 
 
-/**
- * @author fus8882
- *         <p/>
- *         TODO To change the template for this generated type comment go to
- *         Window - Preferences - Java - Code Style - Code Templates
- */
 public abstract class Link extends TrailsComponent
 {
 	@InjectObject("service:trails.core.PageResolver")
 	public abstract PageResolver getPageResolver();
-
-	public abstract String getTypeName();
-
-	public String getUnqualifiedTypeName()
-	{
-		return Utils.unqualify(getTypeName());
-	}
-
-	//public abstract void setTypeName(String typeName);
 
 }

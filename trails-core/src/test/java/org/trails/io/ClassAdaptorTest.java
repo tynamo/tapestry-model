@@ -2,7 +2,7 @@ package org.trails.io;
 
 import org.apache.tapestry.services.DataSqueezer;
 import org.jmock.MockObjectTestCase;
-import org.jmock.cglib.Mock;
+import org.jmock.Mock;
 
 
 public class ClassAdaptorTest extends MockObjectTestCase

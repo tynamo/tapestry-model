@@ -1,0 +1,16 @@
+<module id="trails.security" version="1.0.0">
+	<service-point id="LogoutService" interface="org.apache.tapestry.engine.IEngineService">
+		<invoke-factory>
+			<construct class="org.trails.security.LogoutService">
+				<set-object 	property="linkFactory" value="infrastructure:linkFactory"/>
+				<set-object property="persistenceService" value="spring:persistenceService"/>
+				<set-service property="restartService" service-id="tapestry.services.Restart"/>
+				<set-service property="response" service-id="tapestry.globals.HttpServletResponse" />				
+			</construct>
+		</invoke-factory>
+	</service-point>
+
+	<contribution configuration-id="tapestry.services.FactoryServices">
+		<service name="logout" object="service:LogoutService" />
+	</contribution>
+</module>

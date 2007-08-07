@@ -49,7 +49,7 @@ public abstract class AbstractPropertySelection extends BaseComponent
 
 
 	@Component(type = "PropertySelection", inheritInformalParameters = true,
-		bindings = {"value=model[propertyDescriptor.name]", "model=propertySelectionModel"})
+		bindings = {"value=model[#this.propertyDescriptor.name]", "model=propertySelectionModel"})
 	public abstract PropertySelection getPropertySelection();
 
 	protected abstract IPropertySelectionModel buildSelectionModel();

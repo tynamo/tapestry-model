@@ -45,7 +45,7 @@ public class EditPageTest extends ComponentTest
 	Foo foo = new Foo();
 	IdentifierDescriptor idDescriptor;
 	Mock validatorMock;
-	ListCallback listCallBack = new ListCallback("FooList", Foo.class.getName(), Foo.class);
+	ListCallback listCallBack = new ListCallback("FooList", Foo.class);
 	ListPage listPage;
 	EditCallback editCallback;
 	CollectionDescriptor bazzesDescriptor = new CollectionDescriptor(Foo.class, "bazzes", Set.class);

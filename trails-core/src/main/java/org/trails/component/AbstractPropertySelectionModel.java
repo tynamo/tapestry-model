@@ -92,4 +92,9 @@ public abstract class AbstractPropertySelectionModel implements IPropertySelecti
 			throw new TrailsRuntimeException(e);
 		}
 	}
+
+	public boolean isDisabled(int i)
+	{
+		return false;
+	}
 }

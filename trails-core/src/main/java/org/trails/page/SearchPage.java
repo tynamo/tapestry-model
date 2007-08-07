@@ -8,31 +8,26 @@ import ognl.OgnlException;
 import org.apache.tapestry.annotations.Persist;
 import org.trails.TrailsRuntimeException;
 import org.trails.callback.SearchCallback;
-import org.trails.component.Utils;
 import org.trails.descriptor.IClassDescriptor;
 
 public abstract class SearchPage extends TrailsPage
 {
 
-	public SearchPage()
-	{
-		super();
-	}
-
 	@Persist
-	public abstract String getTypeName();
+	public abstract Class getType();
 
-	public abstract void setTypeName(String TypeName);
+	public abstract void setType(Class type);
+
 
 	@Override
 	public void pushCallback()
 	{
-		getCallbackStack().push(new SearchCallback(getPageName(), getTypeName()));
+		getCallbackStack().push(new SearchCallback(getPageName(), getType()));
 	}
 
 	public IClassDescriptor getClassDescriptor()
 	{
-		return getDescriptorService().getClassDescriptor(Utils.getClassForName((getTypeName())));
+		return getDescriptorService().getClassDescriptor(getType());
 	}
 
 	public String[] getSearchableProperties()

@@ -13,7 +13,18 @@
 		<version>1.1-SNAPSHOT</version>
 	</parent>
 
+	<repositories>
+		<!-- Needed for OGNL snapshots -->
+		<repository>
+			<id>opencomponentry.snapshots</id>
+			<url>http://opencomponentry.com/repository/m2-snapshot-repo/</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
 	<build>
+
 		<plugins>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
@@ -58,12 +69,12 @@
 						<dependency>
 							<groupId>org.springframework</groupId>
 							<artifactId>spring-beans</artifactId>
-							<version>2.0.2</version>
+							<version>${spring.version}</version>
 						</dependency>
 						<dependency>
-							<groupId>tapestry</groupId>
+							<groupId>org.apache.tapestry</groupId>
 							<artifactId>tapestry-contrib</artifactId>
-							<version>4.0.2</version>
+							<version>${tapestry.version}</version>
 						</dependency>
 					</dependencies>
 				</plugin>
@@ -90,7 +101,7 @@
 		<dependency>
 			<groupId>commons-lang</groupId>
 			<artifactId>commons-lang</artifactId>
-			<version>2.1</version>
+			<version>2.2</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-logging</groupId>
@@ -106,20 +117,17 @@
 		<dependency>
 			<groupId>jmock</groupId>
 			<artifactId>jmock</artifactId>
-			<version>1.0.1</version>
-			<scope>test</scope>
+			<version>1.2.0</version>
 		</dependency>
 		<dependency>
 			<groupId>jmock</groupId>
 			<artifactId>jmock-cglib</artifactId>
-			<version>1.0.1</version>
-			<scope>test</scope>
-			<exclusions>
-				<exclusion>
-					<groupId>cglib</groupId>
-					<artifactId>cglib-full</artifactId>
-				</exclusion>
-			</exclusions>
+			<version>1.2.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jmock</groupId>
+			<artifactId>jmock-junit3</artifactId>
+			<version>2.1.0</version>
 		</dependency>
 		<dependency>
 			<groupId>cglib</groupId>
@@ -144,50 +152,66 @@
 			<version>${log4j.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>ognl</groupId>
-			<artifactId>ognl</artifactId>
-			<version>2.6.7</version>
-		</dependency>
-		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-aop</artifactId>
-			<version>2.0.2</version>
+			<version>${spring.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
-			<version>2.0.2</version>
+			<version>${spring.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-web</artifactId>
-			<version>2.0.2</version>
+			<version>${spring.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-mock</artifactId>
-			<version>2.0.2</version>
+			<version>${spring.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>tapestry</groupId>
-			<artifactId>tapestry</artifactId>
-			<version>4.0.2</version>
+			<groupId>ognl</groupId>
+			<artifactId>ognl</artifactId>
+			<version>${ognl.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>tapestry</groupId>
+			<groupId>org.apache.tapestry</groupId>
+			<artifactId>tapestry-framework</artifactId>
+			<version>${tapestry.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>ognl</groupId>
+					<artifactId>ognl</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.tapestry</groupId>
 			<artifactId>tapestry-annotations</artifactId>
-			<version>4.0.2</version>
+			<version>${tapestry.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>tapestry</groupId>
+			<groupId>org.apache.tapestry</groupId>
 			<artifactId>tapestry-contrib</artifactId>
-			<version>4.0.2</version>
+			<version>${tapestry.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.javaforge.tapestry</groupId>
 			<artifactId>tapestry-spring</artifactId>
 			<version>1.0.0</version>
+			<exclusions>
+				<exclusion>
+					<groupId>tapestry</groupId>
+					<artifactId>tapestry</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>tapestry</groupId>
+					<artifactId>tapestry-annotations</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 	</dependencies>
 

@@ -9,11 +9,6 @@ public abstract class SearchLink extends AbstractTypeNavigationLink
 {
 	public static final String POSTFIX = "Search";
 
-	public SearchLink()
-	{
-		super();
-	}
-
 	/**
 	 * Finds the search page for the type specified by the typeName
 	 * component parameter and forwards to it, setting the example model
@@ -25,8 +20,8 @@ public abstract class SearchLink extends AbstractTypeNavigationLink
 	public void click(IRequestCycle cycle)
 	{
 		PageResolver pageResolver = getPageResolver();
-		SearchPage searchPage = (SearchPage) pageResolver.resolvePage(cycle, getTypeName(), TrailsPage.PageType.Search);
-		searchPage.setTypeName(getTypeName());
+		SearchPage searchPage = (SearchPage) pageResolver.resolvePage(cycle, getType(), TrailsPage.PageType.Search);
+		searchPage.setType(getType());
 		cycle.activate(searchPage);
 	}
 

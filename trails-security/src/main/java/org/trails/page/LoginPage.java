@@ -14,11 +14,13 @@ public abstract class LoginPage extends BasePage {
 
 	public abstract String getPassword();
 
+	public abstract boolean getRememberMe();
+	
 	public void login(IRequestCycle cycle) throws RedirectException {
 
 		LOG.debug("User " + getUsername() + " is attempting login.");
 
-		String acegiUrl = cycle.getAbsoluteURL("/j_acegi_security_check?j_username=" + getUsername() + "&j_password=" + getPassword());
+		String acegiUrl = cycle.getAbsoluteURL("/j_acegi_security_check?j_username=" + getUsername() + "&j_password=" + getPassword() + "&j_rememberme=" + getRememberMe());
 
 		throw new RedirectException(acegiUrl);
 	}

@@ -12,6 +12,7 @@
 package org.trails.persistence;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
 
 import org.trails.descriptor.IClassDescriptor;
@@ -36,6 +37,7 @@ public interface PersistenceService
 	public <T> T save(T instance);
 
 	public void remove(Object instance);
+	public void removeAll(Collection collection);
 
 	/**
 	 * A convenience method for getting a singleton instance of specific type

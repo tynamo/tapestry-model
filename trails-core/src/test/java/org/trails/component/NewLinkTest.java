@@ -29,12 +29,6 @@ import org.trails.test.BlogEntry;
 import org.trails.test.Foo;
 
 
-/**
- * @author fus8882
- *         <p/>
- *         TODO To change the template for this generated type comment go to
- *         Window - Preferences - Java - Code Style - Code Templates
- */
 public class NewLinkTest extends ComponentTest
 {
 	NewLink newLink;
@@ -46,7 +40,7 @@ public class NewLinkTest extends ComponentTest
 	public void testClick()
 	{
 		ListPage listPage = buildTrailsPage(ListPage.class);
-		listPage.setTypeName(Foo.class.getName());
+		listPage.setType(Foo.class);
 		listPage.setPageName("list");
 
 		buildNewLink(listPage);
@@ -61,10 +55,10 @@ public class NewLinkTest extends ComponentTest
 //                editPage));
 		cycleMock.expects(atLeastOnce()).method("activate").with(same(editPage));
 		pageResolverMock.expects(once()).method("resolvePage")
-			.with(isA(IRequestCycle.class), eq(Foo.class.getName()), eq(TrailsPage.PageType.Edit))
+			.with(isA(IRequestCycle.class), eq(Foo.class), eq(TrailsPage.PageType.Edit))
 			.will(returnValue(editPage));
 		//newLink = (NewLink) creator.newInstance(NewLink.class);
-		newLink.setTypeName(Foo.class.getName());
+		newLink.setType(Foo.class);
 		newLink.setPage(listPage);
 		newLink.click((IRequestCycle) cycleMock.proxy());
 	}
@@ -104,7 +98,7 @@ public class NewLinkTest extends ComponentTest
 
 	public void testGetLinkText() throws Exception
 	{
-		newLink.setTypeName(BlogEntry.class.getName());
+		newLink.setType(BlogEntry.class);
 		IClassDescriptor descriptor = new TrailsClassDescriptor(BlogEntry.class, "Blog Entry");
 		descriptorServiceMock.expects(once()).method("getClassDescriptor").will(returnValue(descriptor));
 		assertEquals("New Blog Entry", newLink.getLinkText());

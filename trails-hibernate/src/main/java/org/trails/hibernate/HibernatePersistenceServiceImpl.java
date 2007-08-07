@@ -140,6 +140,12 @@ public class HibernatePersistenceServiceImpl extends HibernateDaoSupport impleme
 	}
 
 	@Transactional
+	public void removeAll(Collection collection)
+	{
+		getHibernateTemplate().deleteAll(collection);
+	}
+
+	@Transactional
 	public void remove(Object instance)
 	{
 		// merge first to avoid NonUniqueObjectException

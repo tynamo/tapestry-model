@@ -20,12 +20,6 @@ import org.trails.component.ComponentTest;
 import org.trails.page.HibernateListPage;
 import org.trails.testhibernate.Foo;
 
-/**
- * @author fus8882
- *         <p/>
- *         TODO To change the template for this generated type comment go to
- *         Window - Preferences - Java - Code Style - Code Templates
- */
 public class ListCallbackTest extends ComponentTest
 {
 
@@ -41,7 +35,7 @@ public class ListCallbackTest extends ComponentTest
 		cycleMock.expects(once()).method("getPage").with(eq(pageName)).will(returnValue(listPage));
 		cycleMock.expects(once()).method("activate").with(same(listPage));
 
-		HibernateListCallback callBack = new HibernateListCallback(pageName, Foo.class.getName(), Foo.class, criteria);
+		HibernateListCallback callBack = new HibernateListCallback(pageName, Foo.class, criteria);
 		callBack.performCallback((IRequestCycle) cycleMock.proxy());
 		assertEquals(criteria, listPage.getCriteria());
 		cycleMock.verify();
@@ -49,10 +43,10 @@ public class ListCallbackTest extends ComponentTest
 
 	public void testShouldReplace()
 	{
-		HibernateListCallback callBack = new HibernateListCallback("FooList", Foo.class.getName(), Foo.class, criteria);
-		HibernateListCallback callBack2 = new HibernateListCallback("FooList", Foo.class.getName(), Foo.class, criteria);
+		HibernateListCallback callBack = new HibernateListCallback("FooList", Foo.class, criteria);
+		HibernateListCallback callBack2 = new HibernateListCallback("FooList", Foo.class, criteria);
 		assertTrue(callBack2.shouldReplace(callBack));
-		callBack2 = new HibernateListCallback("Blork", Foo.class.getName(), Foo.class, criteria);
+		callBack2 = new HibernateListCallback("Blork", Foo.class, criteria);
 		assertFalse(callBack2.shouldReplace(callBack));
 		EditCallback editCallback = new EditCallback("FooEdit", new Foo());
 		assertFalse(editCallback.shouldReplace(callBack2));

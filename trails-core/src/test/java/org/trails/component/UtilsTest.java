@@ -17,20 +17,16 @@ import junit.framework.TestCase;
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
+import org.trails.test.Baz;
 import org.trails.test.Foo;
 
 
-/**
- * @author fus8882
- *         <p/>
- *         TODO To change the template for this generated type comment go to
- *         Window - Preferences - Java - Code Style - Code Templates
- */
 public class UtilsTest extends TestCase
 {
 	public void testUnqualify()
 	{
 		assertEquals("Foo", Utils.unqualify(Foo.class.getName()));
+		assertEquals(Baz.class.getSimpleName(), Utils.unqualify(Baz.class.getName()));
 	}
 
 	public void testPluralize()

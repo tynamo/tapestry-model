@@ -13,14 +13,17 @@ package org.trails.component;
 
 
 import org.apache.hivemind.Messages;
-import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.test.Creator;
 import org.apache.tapestry.components.Block;
 import org.apache.tapestry.util.ComponentAddress;
 import org.jmock.Mock;
+import org.jmock.Expectations;
+import org.jmock.integration.junit3.MockObjectTestCase;
 import org.trails.descriptor.BlockFinder;
 import org.trails.descriptor.IPropertyDescriptor;
 import org.trails.descriptor.TrailsPropertyDescriptor;
+import org.trails.page.IEditorBlockPage;
 import org.trails.test.Foo;
 
 
@@ -30,33 +33,44 @@ import org.trails.test.Foo;
  *         TODO To change the template for this generated type comment go to
  *         Window - Preferences - Java - Code Style - Code Templates
  */
-public class PropertyEditorTest extends ComponentTest
+public class PropertyEditorTest extends MockObjectTestCase
 {
 
 	PropertyEditor propertyEditor;
 	IPropertyDescriptor descriptor;
-	Mock editSvcMock;
-	Mock messagesMock;
+	BlockFinder blockFinder;
+	Messages messages;
+	Foo model;
+
+	Creator creator = new Creator();
 
 	public void setUp() throws Exception
 	{
-		messagesMock = new Mock(Messages.class);
-		editSvcMock = new Mock(BlockFinder.class);
+		messages = mock(Messages.class);
+		blockFinder = mock(BlockFinder.class);
+
 		propertyEditor = (PropertyEditor) creator.newInstance(PropertyEditor.class,
-			new Object[]{"blockFinder", editSvcMock.proxy(),
-				"messages", messagesMock.proxy()});
+			new Object[]{"blockFinder", blockFinder, "messages", messages});
+
 		descriptor = new TrailsPropertyDescriptor(Foo.class, "number", Double.class);
 		propertyEditor.setDescriptor(descriptor);
+		model = new Foo();
+		propertyEditor.setModel(model);
 	}
 
 	public void testGetEditorAddress()
 	{
-		ComponentAddress componentAddress = new ComponentAddress("page", "block");
-		IPropertyDescriptor descriptor2 = new TrailsPropertyDescriptor(Foo.class, "stuff", String.class);
-		editSvcMock.expects(atLeastOnce()).method("findBlockAddress")
-			.with(eq(descriptor)).will(returnValue(componentAddress));
-		editSvcMock.expects(atLeastOnce()).method("findBlockAddress")
-			.with(eq(descriptor2)).will(returnValue(null));
+		final ComponentAddress componentAddress = new ComponentAddress("page", "block");
+		final IPropertyDescriptor descriptor2 = new TrailsPropertyDescriptor(Foo.class, "stuff", String.class);
+
+		checking(new Expectations()
+		{
+			{
+				atLeast(1).of(blockFinder).findBlockAddress(descriptor); will(returnValue(componentAddress));
+				atLeast(1).of(blockFinder).findBlockAddress(descriptor2); will(returnValue(null));
+			}
+		});
+
 		assertEquals(componentAddress, propertyEditor.getEditorAddress());
 
 		propertyEditor.setDescriptor(descriptor2);
@@ -65,21 +79,30 @@ public class PropertyEditorTest extends ComponentTest
 
 	public void testGetBlock() throws Exception
 	{
+		final String pageName = "whatever";
 
-		Mock pageMock = new Mock(IPage.class);
-		Mock cycleMock = new Mock(IRequestCycle.class);
-		Block block = (Block) creator.newInstance(Block.class, new Object[]{"page", pageMock.proxy()});
-		cycleMock.expects(atLeastOnce()).method("getPage").with(eq("page")).will(returnValue(pageMock.proxy()));
-		pageMock.expects(atLeastOnce()).method("getRequestCycle").will(returnValue(cycleMock.proxy()));
-		pageMock.expects(atLeastOnce()).method("getNestedComponent").with(eq("block")).will(returnValue(block));
-		pageMock.expects(atLeastOnce()).method("setProperty");
-		pageMock.expects(atLeastOnce()).method("getPageName").will(returnValue("whatever"));
-		propertyEditor.setPage((IPage) pageMock.proxy());
+		final IEditorBlockPage page = mock(IEditorBlockPage.class);
+		final IRequestCycle cycle = mock(IRequestCycle.class);
+		final ComponentAddress componentAddress = new ComponentAddress(pageName, "block");
+		final Block block = (Block) creator.newInstance(Block.class, new Object[]{"page", page, "container", page});
 
-		ComponentAddress componentAddress = new ComponentAddress("page", "block");
-		editSvcMock.expects(atLeastOnce()).method("findBlockAddress")
-			.with(eq(descriptor)).will(returnValue(componentAddress));
+		checking(new Expectations()
+		{
+			{
+				atLeast(1).of(page).getRequestCycle(); will(returnValue(cycle));
+				atLeast(1).of(cycle).getPage(pageName); will(returnValue(page));
+				atLeast(1).of(page).getPageName(); will(returnValue(pageName));
+				atLeast(1).of(page).getNestedComponent("block"); will(returnValue(block));
 
+				atLeast(1).of(page).setModel(model);
+				atLeast(1).of(page).setDescriptor(descriptor);
+				atLeast(1).of(page).setEditPageName(pageName);
+
+				atLeast(1).of(blockFinder).findBlockAddress(descriptor); will(returnValue(componentAddress));
+			}
+		});
+
+		propertyEditor.setPage(page);
 		assertEquals(block, propertyEditor.getBlock());
 	}
 

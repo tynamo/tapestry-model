@@ -64,15 +64,10 @@ public class ListPageTest extends ComponentTest
 
 	public void testPushCallback()
 	{
-		listPage.setTypeName(Foo.class.getName());
 		listPage.setType(Foo.class);
 		listPage.pushCallback();
 		ListCallback listCallback = (ListCallback) listPage.getCallbackStack().getStack().pop();
 
 		assertEquals(PAGE_NAME, listCallback.getPageName());
-/*
-        assertEquals(Foo.class.getName(), listCallback.getTypeName());
-        assertEquals(criteria, listCallback.getCriteria());
-*/
 	}
 }

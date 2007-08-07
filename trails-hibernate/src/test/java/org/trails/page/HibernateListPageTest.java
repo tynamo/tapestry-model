@@ -57,7 +57,7 @@ public class HibernateListPageTest extends ComponentTest {
 
     public void testPushCallback() {
         DetachedCriteria criteria = DetachedCriteria.forClass(Foo.class);
-        listPage.setTypeName(Foo.class.getName());
+        listPage.setType(Foo.class);
         listPage.setCriteria(criteria);
         listPage.pushCallback();
         ListCallback listCallback = (ListCallback) listPage.getCallbackStack().getStack().pop();

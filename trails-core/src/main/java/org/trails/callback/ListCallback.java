@@ -24,14 +24,11 @@ import org.trails.page.ListPage;
 public class ListCallback extends TrailsCallback
 {
 
-	private String typeName;
-
 	private Class clazz;
 
-	public ListCallback(String pageName, String typeName, Class clazz)
+	public ListCallback(String pageName, Class clazz)
 	{
 		super(pageName);
-		this.typeName = typeName;
 		this.clazz = clazz;
 	}
 
@@ -49,7 +46,6 @@ public class ListCallback extends TrailsCallback
 
 	protected void preparePageForCycleActivate(ListPage listPage)
 	{
-		listPage.setTypeName(typeName);
 		listPage.setType(clazz);
 //        listPage.reloadInstances(); //@todo: mmmm do we really need to reloadtheInstances?
 	}

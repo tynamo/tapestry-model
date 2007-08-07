@@ -19,10 +19,11 @@ import java.util.Map;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.record.PropertyChangeObserver;
 import org.apache.tapestry.callback.ICallback;
 import org.apache.tapestry.components.Block;
 import org.apache.tapestry.valid.IValidationDelegate;
-import org.jmock.cglib.Mock;
+import org.jmock.Mock;
 import org.trails.callback.CallbackStack;
 import org.trails.descriptor.DescriptorService;
 import org.trails.i18n.ResourceBundleMessageSource;
@@ -113,6 +114,8 @@ public class ObjectEditComponentTest extends ComponentTest
 		private TrailsValidationDelegate delegate = new TrailsValidationDelegate();
 
 		private Map components;
+
+		private String clientId;
 
 		/* (non-Javadoc)
 				 * @see org.trails.page.EditPage#getPersistenceService()
@@ -247,5 +250,19 @@ public class ObjectEditComponentTest extends ComponentTest
 			return null;
 		}
 
+		public String getClientId()
+		{
+			return clientId;
+		}
+
+		public void setClientId(String clientId)
+		{
+			this.clientId = clientId;
+		}
+
+		public PropertyChangeObserver getPropertyChangeObserver()
+		{
+			return null;
+		}
 	}
 }

@@ -10,9 +10,9 @@ public class HibernateListCallback extends ListCallback
 
 	private DetachedCriteria criteria;
 
-	public HibernateListCallback(String pageName, String typeName, Class clazz, DetachedCriteria criteria)
+	public HibernateListCallback(String pageName, Class clazz, DetachedCriteria criteria)
 	{
-		super(pageName, typeName, clazz);
+		super(pageName, clazz);
 		this.criteria = criteria;
 	}
 

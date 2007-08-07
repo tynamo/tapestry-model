@@ -45,7 +45,7 @@ public abstract class ListAllLink extends AbstractTypeNavigationLink
 	public String getListPageName()
 	{
 		IRequestCycle cycle = getPage().getRequestCycle();
-		IPage iPage = getPageResolver().resolvePage(cycle, getTypeName(), TrailsPage.PageType.List);
+		IPage iPage = getPageResolver().resolvePage(cycle, getType(), TrailsPage.PageType.List);
 
 		return iPage.getPageName();
 	}

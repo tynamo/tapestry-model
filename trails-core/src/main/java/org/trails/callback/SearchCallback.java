@@ -4,19 +4,19 @@ import org.apache.tapestry.IRequestCycle;
 import org.trails.page.SearchPage;
 
 /**
+ * Return Control to a search page.
+ *
  * @author Chris Nelson
- *         <p/>
- *         Return Control to a search page.
  */
 public class SearchCallback extends TrailsCallback
 {
 
-	private String typeName;
+	private Class type;
 
-	public SearchCallback(String name, String typeName)
+	public SearchCallback(String name, Class type)
 	{
 		super(name);
-		this.typeName = typeName;
+		this.type = type;
 	}
 
 	public SearchCallback(String name)
@@ -27,7 +27,7 @@ public class SearchCallback extends TrailsCallback
 	public void performCallback(IRequestCycle cycle)
 	{
 		SearchPage searchPage = (SearchPage) cycle.getPage(getPageName());
-		searchPage.setTypeName(typeName);
+		searchPage.setType(type);
 		cycle.activate(searchPage);
 	}
 

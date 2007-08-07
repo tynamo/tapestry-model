@@ -13,7 +13,7 @@ package org.trails.component;
 
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
-import org.jmock.cglib.Mock;
+import org.jmock.Mock;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.trails.descriptor.DescriptorService;
 import org.trails.descriptor.IClassDescriptor;
@@ -24,13 +24,6 @@ import org.trails.page.TrailsPage;
 import org.trails.test.BlogEntry;
 import org.trails.test.Foo;
 
-
-/**
- * @author fus8882
- *         <p/>
- *         TODO To change the template for this generated type comment go to
- *         Window - Preferences - Java - Code Style - Code Templates
- */
 public class ListAllLinkTest extends ComponentTest
 {
 	ListAllLink listLink;
@@ -46,7 +39,7 @@ public class ListAllLinkTest extends ComponentTest
 		listLink = (ListAllLink) creator.newInstance(ListAllLink.class,
 			new Object[]{"descriptorService", descriptorService,
 				"resourceBundleMessageSource", messageSource});
-		listLink.setTypeName(Foo.class.getName());
+		listLink.setType(Foo.class);
 
 	}
 
@@ -64,13 +57,13 @@ public class ListAllLinkTest extends ComponentTest
 		Mock pageResolverMock = new Mock(PageResolver.class);
 		Mock cycleMock = new Mock(IRequestCycle.class);
 		pageResolverMock.expects(once()).method("resolvePage")
-			.with(isA(IRequestCycle.class), eq(Foo.class.getName()), eq(TrailsPage.PageType.List))
+			.with(isA(IRequestCycle.class), eq(Foo.class), eq(TrailsPage.PageType.List))
 			.will(returnValue(pageMock.proxy()));
 		pageMock.expects(once()).method("getPageName").will(returnValue("FooList"));
 		pageMock.expects(once()).method("getRequestCycle").will(returnValue(cycleMock.proxy()));
 		ListAllLink listAllLink = (ListAllLink) creator.newInstance(ListAllLink.class, new Object[]{"pageResolver", pageResolverMock.proxy()});
 		listAllLink.setPage((IPage) pageMock.proxy());
-		listAllLink.setTypeName(Foo.class.getName());
+		listAllLink.setType(Foo.class);
 		assertEquals("FooList", listAllLink.getListPageName());
 	}
 }

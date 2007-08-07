@@ -6,13 +6,11 @@ package org.trails.i18n;
 import java.util.Locale;
 
 import org.springframework.context.NoSuchMessageException;
-import org.trails.component.Utils;
 import org.trails.descriptor.IClassDescriptor;
 import org.trails.descriptor.IDescriptor;
 import org.trails.descriptor.IPropertyDescriptor;
 
-public class DefaultTrailsResourceBundleMessageSource implements
-	ResourceBundleMessageSource
+public class DefaultTrailsResourceBundleMessageSource implements ResourceBundleMessageSource
 {
 
 	private org.springframework.context.support.ResourceBundleMessageSource messageSource;
@@ -81,7 +79,7 @@ public class DefaultTrailsResourceBundleMessageSource implements
 		{
 			IClassDescriptor clazz = (IClassDescriptor) descriptor;
 			fullName = clazz.getType().getName();
-			shortName = Utils.unqualify(fullName);
+			shortName = clazz.getType().getSimpleName();
 		} else
 		{
 			return defaultMessage;
@@ -96,7 +94,7 @@ public class DefaultTrailsResourceBundleMessageSource implements
 			return defaultMessage;
 
 		String fullName = clazz.getType().getName() + "__plural";
-		String shortName = Utils.unqualify(clazz.getType().getName()) + "__plural";
+		String shortName = clazz.getType().getSimpleName() + "__plural";
 
 		return selectDisplayName(fullName, shortName, defaultMessage, locale);
 	}
