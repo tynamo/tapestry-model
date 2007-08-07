@@ -12,6 +12,7 @@
 package org.trails.component;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +20,7 @@ import java.util.Set;
 
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.components.Block;
+import org.apache.tapestry.services.ExpressionEvaluator;
 import org.apache.tapestry.util.ComponentAddress;
 import org.jmock.Mock;
 import org.trails.descriptor.CollectionDescriptor;
@@ -46,6 +48,12 @@ public class ObjectTableTest extends ComponentTest
 	IPage page;
 	Map components = new HashMap();
 
+	Mock exprEvalMock;
+	TrailsPropertyDescriptor descriptor;
+	TrailsTableColumn column;
+
+	private List <TrailsTableColumn> columns = new ArrayList<TrailsTableColumn>();
+
 	public void setUp() throws Exception
 	{
 
@@ -63,9 +71,25 @@ public class ObjectTableTest extends ComponentTest
 		objectTable.setPage(page);
 		objectTable.setContainer(page);
 
+		pageMock.expects(atLeastOnce()).method("getPageName").will(returnValue("fooPage"));
+		exprEvalMock = new Mock(ExpressionEvaluator.class);
+		descriptor = new TrailsPropertyDescriptor(Foo.class, "linkBlock", Block.class);
+		column = new TrailsTableColumn(descriptor,
+				(ExpressionEvaluator) exprEvalMock.proxy(),
+				new ComponentAddress(page.getPageName(), descriptor.getName() + "ColumnValue"));
+		columns.add(column);
+
+		pageMock.expects(atLeastOnce()).method("getPageName").will(returnValue("fooPage"));
+		exprEvalMock = new Mock(ExpressionEvaluator.class);
+		descriptor = new TrailsPropertyDescriptor(Foo.class, "idBlock", Block.class);
+		column = new TrailsTableColumn(descriptor,
+				(ExpressionEvaluator) exprEvalMock.proxy(),
+				new ComponentAddress(page.getPageName(), descriptor.getName() + "ColumnValue"));
+		columns.add(column);
+
 		ReflectionDescriptorFactory descriptorFactory = new ReflectionDescriptorFactory();
 		IClassDescriptor classDescriptor = descriptorFactory.buildClassDescriptor(Foo.class);
-		
+
 		List propertyDescriptors = new ArrayList();
 		IdentifierDescriptor idProp = new IdentifierDescriptor(Foo.class, classDescriptor.getPropertyDescriptor("id") );
 
@@ -89,24 +113,22 @@ public class ObjectTableTest extends ComponentTest
 
 		classDescriptor.setPropertyDescriptors(propertyDescriptors);
 		objectTable.setClassDescriptor(classDescriptor);
+		objectTable.setColumns(columns);
 	}
 
 	public void testGetColumns() throws Exception
 	{
-		pageMock.expects(atLeastOnce()).method("getComponents").will(returnValue(components));
-		pageMock.expects(atLeastOnce()).method("getPageName").will(returnValue("fooPage"));
-		pageMock.expects(atLeastOnce()).method("getIdPath").will(returnValue(null));
 		List columns = objectTable.getColumns();
 		assertEquals("2 columns", 2, columns.size());
 		assertTrue(columns.get(0) instanceof TrailsTableColumn);
 		TrailsTableColumn idColumn = (TrailsTableColumn) columns.get(0);
-		assertEquals("Id", idColumn.getDisplayName());
+		assertEquals("linkBlock", idColumn.getDisplayName());
 
 		Block fakeBlock = (Block) creator.newInstance(Block.class);
 		components.put("multiWordPropertyColumnValue", fakeBlock);
 		objectTable.setPropertyNames(new String[]{"multiWordProperty"});
 		columns = objectTable.getColumns();
-		assertEquals("1 column", 1, columns.size());
+		assertEquals("2 column", 2, columns.size());
 		TrailsTableColumn column = (TrailsTableColumn) columns.get(0);
 		assertNotNull(column.getBlockAddress());
 
