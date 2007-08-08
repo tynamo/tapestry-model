@@ -36,7 +36,7 @@ public abstract class ObjectTable extends ClassDescriptorComponent
 
 	public static final String BLOB_COLUMN = "blobColumnValue";
 
-	private List <TrailsTableColumn> columns = new ArrayList<TrailsTableColumn>();
+	protected List <TrailsTableColumn> columns = new ArrayList<TrailsTableColumn>();
 
 	@Parameter(required = false, defaultValue = "false", cache = true)
 	public abstract boolean isShowCollections();
@@ -103,13 +103,13 @@ public abstract class ObjectTable extends ClassDescriptorComponent
 	@Override
 	protected void prepareForRender(IRequestCycle cycle)
 	{
-		columns = createColumns();
+		createColumns();
 		super.prepareForRender(cycle);
 	}
 
-	private List<TrailsTableColumn> createColumns()
+	public void createColumns()
 	{
-		ArrayList<TrailsTableColumn> columns = new ArrayList<TrailsTableColumn>();
+		columns = new ArrayList<TrailsTableColumn>();
 		for (Iterator iter = getPropertyDescriptors().iterator(); iter.hasNext();)
 		{
 			IPropertyDescriptor descriptor = (IPropertyDescriptor) iter.next();
@@ -136,11 +136,8 @@ public abstract class ObjectTable extends ClassDescriptorComponent
 				{
 					columns.add(new TrailsTableColumn(descriptor, getEvaluator(), getBlockAddress(descriptor)));
 				}
-
 			}
 		}
-
-		return columns;
 	}
 
 	/**
