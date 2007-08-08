@@ -3,7 +3,7 @@ package org.trails.page;
 import org.hibernate.criterion.DetachedCriteria;
 import org.trails.descriptor.IPropertyDescriptor;
 
-public abstract class SearchBlockPage extends TrailsPage
+public abstract class SearchBlockPage extends TrailsPage implements IEditorBlockPage
 {
 
 

@@ -112,6 +112,7 @@ public class EditCollectionTest extends ComponentTest
 			isA(IRequestCycle.class), eq(Baz.class), eq(PageType.Edit))
 			.will(returnValue(editPage));
 		cycleMock.expects(atLeastOnce()).method("getPage").will(returnValue(editPage));
+		cycleMock.expects(atLeastOnce()).method("activate");
 		pageMock.expects(atLeastOnce()).method("getRequestCycle").will(returnValue(cycleMock.proxy()));
 		buildCollectionDescriptor("bazzes", Baz.class);
 

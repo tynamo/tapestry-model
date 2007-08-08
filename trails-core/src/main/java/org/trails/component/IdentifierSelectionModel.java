@@ -78,4 +78,9 @@ public class IdentifierSelectionModel extends AbstractPropertySelectionModel
 		}
 	}
 
+
+	public boolean isDisabled(int i)
+	{
+		return false; 
+	}
 }
