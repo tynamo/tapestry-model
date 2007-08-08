@@ -13,6 +13,8 @@
  */
 package org.trails.callback;
 
+import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.callback.ICallback;
 import org.trails.page.EditPage;
@@ -48,9 +50,17 @@ public class EditCallback extends TrailsCallback
 		 */
 	public void performCallback(IRequestCycle cycle)
 	{
-		EditPage editPage = (EditPage) cycle.getPage(getPageName());
-		editPage.setModel(model);
-		cycle.activate(editPage);
+		Defense.notNull(cycle, "cycle");
+		try
+		{
+			EditPage editPage = (EditPage) cycle.getPage(getPageName());
+			editPage.setModel(model);
+			cycle.activate(editPage);
+		}
+		catch (ClassCastException ex)
+		{
+			throw new ApplicationRuntimeException(ex);
+		}
 	}
 
 	public Object getModel()

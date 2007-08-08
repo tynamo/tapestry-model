@@ -5,7 +5,7 @@
 	<component id="textField" type="TextField" inherit-informal-parameters="yes">
 		<binding name="value" value="value"/>
 		<binding name="validator" value="validatorTranslatorService.getValidator(propertyDescriptor)"/>
-		<binding name="translator" value="validatorTranslatorService.getTranslator(propertyDescriptor)"/>
+		<binding name="translator" value="translator"/>
 	</component>
 
 </component-specification>

@@ -8,7 +8,12 @@
 	<packaging>war</packaging>
 	<version>${version}</version>
 	<name>A simple trails project</name>
-	<url>https://trails.dev.java.net/</url>
+	<url>http://www.trailsframework.org/</url>
+
+	<properties>
+		<log4j.version>1.2.14</log4j.version>
+		<hsqldb.version>1.8.0.7</hsqldb.version>
+	</properties>
 
 	<build>
 		<finalName>${artifactId}</finalName>
@@ -16,7 +21,7 @@
 			<extension>
 				<groupId>hsqldb</groupId>
 				<artifactId>hsqldb</artifactId>
-				<version>1.8.0.1</version>
+				<version>${hsqldb.version}</version>
 			</extension>
 		</extensions>
 		<plugins>
@@ -30,6 +35,10 @@
 						<aspectLibrary>
 							<groupId>org.trailsframework</groupId>
 							<artifactId>trails-core</artifactId>
+						</aspectLibrary>
+						<aspectLibrary>
+							<groupId>org.trailsframework</groupId>
+							<artifactId>trails-hibernate</artifactId>
 						</aspectLibrary>
 					</aspectLibraries>
 				</configuration>
@@ -130,7 +139,7 @@
 						<dependency>
 							<groupId>log4j</groupId>
 							<artifactId>log4j</artifactId>
-							<version>1.2.9</version>
+							<version>${log4j.version}</version>
 						</dependency>
 					</dependencies>
 				</configuration>
@@ -179,7 +188,7 @@
 		<dependency>
 			<groupId>hsqldb</groupId>
 			<artifactId>hsqldb</artifactId>
-			<version>1.8.0.1</version>
+			<version>${hsqldb.version}</version>
 		</dependency>
 	</dependencies>
 

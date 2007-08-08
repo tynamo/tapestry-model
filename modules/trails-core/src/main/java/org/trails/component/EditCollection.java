@@ -183,6 +183,7 @@ public abstract class EditCollection extends TrailsComponent
 				buildNewMemberInstance());
 			String currentEditPageName = getPage().getRequestCycle().getPage().getPageName();
 			((EditPage) cycle.getPage(currentEditPageName)).setNextPage(nextPage);
+			nextPage.performCallback(cycle);
 			//editPage.setModel(getCollectionDescriptor().getElementType().newInstance());
 
 		} catch (Exception ex)

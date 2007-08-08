@@ -8,6 +8,7 @@
 	<artifactId>trails</artifactId>
 	<packaging>pom</packaging>
 	<version>1.1-SNAPSHOT</version>
+
 	<properties>
 		<!-- Plugin dependencies and extensions don't use dependencyManagement section, specify a single version here. 
 		BUT don't just abuse this section, it's a hack. -->
@@ -95,6 +96,13 @@
 			<id>trails.codehaus.org</id>
 			<name>Trails Repository</name>
 			<url>http://trails.codehaus.org/repository</url>
+		</repository>
+		<repository>
+			<id>apache.snapshots</id>
+			<url>http://people.apache.org/repo/m2-snapshot-repository</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
 		</repository>
 		<!-- Don't use snapshots unless absolutely necessary
 				<repository>

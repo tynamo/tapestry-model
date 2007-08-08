@@ -113,6 +113,11 @@ public class FunctionalTest extends TestCase
 	 */
 	protected void setUpWebClient(WebClient webClient)
 	{
+		/**
+		 * momentarily disabling javascript for all the functional test cases
+		 * until we add the dojo toolkit
+		 */
+		webClient.setJavaScriptEnabled(false);
 	}
 
 }

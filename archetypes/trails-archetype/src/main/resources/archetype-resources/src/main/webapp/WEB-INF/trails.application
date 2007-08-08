@@ -14,5 +14,6 @@
 	<library id="tacos" specification-path="/net/sf/tacos/Tacos.library"/>
 
 	<meta key="org.apache.tapestry.accepted-locales" value="en,es_AR,pt"/>
+	<meta key="org.apache.tapestry.renderTags" value="false"/>
 
 </application>

@@ -12,7 +12,7 @@ import org.trails.validation.ValidatorTranslatorService;
  *
  * @author Chris Nelson
  */
-public abstract class EditorBlockPage extends ModelPage
+public abstract class EditorBlockPage extends ModelPage implements IEditorBlockPage
 {
 	@Override
 	public void pushCallback()
@@ -21,6 +21,9 @@ public abstract class EditorBlockPage extends ModelPage
 		getCallbackStack().push(callback);
 	}
 
+	@InjectObject("spring:validatorTranslatorService")
+	public abstract ValidatorTranslatorService getValidatorTranslatorService();
+
 	public abstract IPropertyDescriptor getDescriptor();
 
 	public abstract void setDescriptor(IPropertyDescriptor Descriptor);
@@ -28,7 +31,4 @@ public abstract class EditorBlockPage extends ModelPage
 	public abstract String getEditPageName();
 
 	public abstract void setEditPageName(String EditPageName);
-
-	@InjectObject("spring:validatorTranslatorService")
-	public abstract ValidatorTranslatorService getValidatorTranslatorService();
 }

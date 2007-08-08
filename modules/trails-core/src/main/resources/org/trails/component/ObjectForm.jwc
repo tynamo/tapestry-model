@@ -10,7 +10,7 @@
 
 	<component id="form" type="Form" inherit-informal-parameters="no">
 		<binding name="delegate">delegate</binding>
-		<binding name="listener">ognl:page.listeners.onFormSubmit</binding>
+		<binding name="cancel" value="ognl:page.listeners.cancel"/>
 	</component>
 	<component id="objectActions" type="ObjectActions" inherit-informal-parameters="no">
 		<binding name="model">model</binding>
