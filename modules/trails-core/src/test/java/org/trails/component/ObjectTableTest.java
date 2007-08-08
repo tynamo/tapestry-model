@@ -87,7 +87,6 @@ public class ObjectTableTest extends ComponentTest
 
 		classDescriptor.setPropertyDescriptors(propertyDescriptors);
 		objectTable.setClassDescriptor(classDescriptor);
-		// objectTable.setColumns(columns);
 
 		pageMock.expects(atLeastOnce()).method("getComponents").will(returnValue(components));
 		pageMock.expects(atLeastOnce()).method("getPageName").will(returnValue("fooPage"));
@@ -110,7 +109,6 @@ public class ObjectTableTest extends ComponentTest
 		assertEquals("2 column", 2, columns.size());
 		TrailsTableColumn column = (TrailsTableColumn) columns.get(0);
 		assertNotNull(column.getBlockAddress());
-
 	}
 
 	public void testGetBlockAddress() throws Exception
