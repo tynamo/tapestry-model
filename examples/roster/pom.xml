@@ -1,9 +1,9 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
   <parent>
-    <artifactId>examples</artifactId>
-    <groupId>org.trailsframework</groupId>
-    <version>1.1-SNAPSHOT</version>
+	<artifactId>examples</artifactId>
+	<groupId>org.trailsframework</groupId>
+	<version>1.1-SNAPSHOT</version>
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
@@ -14,86 +14,91 @@
   <name>Trails Example - Classic Hibernate Roster Demo</name>
 
   <build>
-<!--    <plugins>
-      <plugin>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>surefire-it</id>
-            <phase>integration-test</phase>
-            <goals>
-              <goal>test</goal>
-            </goals>
-            <configuration>
-              <includes>
-                <include>
-                  **/*Test.java
-                </include>
-              </includes>
-            </configuration>
-          </execution>
-        </executions>
-        <configuration>
-          <includes>
-            <include>**/*Test.java</include>
-          </includes>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.codehaus.cargo</groupId>
-        <artifactId>cargo-maven2-plugin</artifactId>
-        <version>0.2</version>
-        <configuration>
-          <wait>false</wait>
-          <container>
-            <containerId>tomcat5x</containerId>
-            <zipUrlInstaller>
-              <url>http://apache.org/dist/tomcat/tomcat-5/v5.5.23/bin/apache-tomcat-5.5.23.zip</url>
-            </zipUrlInstaller>
-          </container>
-        </configuration>
-        <executions>
-          <execution>
-            <id>start-container</id>
-            <phase>pre-integration-test</phase>
-            <goals>
-              <goal>start</goal>
-            </goals>
-          </execution>
-          <execution>
-            <id>stop-container</id>
-            <phase>post-integration-test</phase>
-            <goals>
-              <goal>stop</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>-->
+    <plugins>
+	  <plugin>
+		<artifactId>maven-surefire-plugin</artifactId>
+		<executions>
+		  <execution>
+			<id>surefire-it</id>
+			<phase>integration-test</phase>
+			<goals>
+			  <goal>test</goal>
+			</goals>
+			<configuration>
+			  <includes>
+				<include>
+				  **/*Test.java
+				</include>
+			  </includes>
+			</configuration>
+		  </execution>
+		</executions>
+		<configuration>
+		  <includes>
+			<include>**/*Test.java</include>
+		  </includes>
+		</configuration>
+	  </plugin>
+	  <plugin>
+		<groupId>org.codehaus.cargo</groupId>
+		<artifactId>cargo-maven2-plugin</artifactId>
+		<version>0.2</version>
+		<configuration>
+		  <wait>false</wait>
+		  <container>
+			<containerId>tomcat5x</containerId>
+			<zipUrlInstaller>
+			  <url>http://apache.org/dist/tomcat/tomcat-5/v5.5.23/bin/apache-tomcat-5.5.23.zip</url>
+			</zipUrlInstaller>
+		  </container>
+		</configuration>
+		<executions>
+		  <execution>
+			<id>start-container</id>
+			<phase>pre-integration-test</phase>
+			<goals>
+			  <goal>start</goal>
+			</goals>
+		  </execution>
+		  <execution>
+			<id>stop-container</id>
+			<phase>post-integration-test</phase>
+			<goals>
+			  <goal>stop</goal>
+			</goals>
+		  </execution>
+		</executions>
+	  </plugin>
+	</plugins>
   </build>
   <dependencies>
-    <dependency>
-      <groupId>commons-logging</groupId>
-      <artifactId>commons-logging</artifactId>
-      <version>1.1</version>
-    </dependency>
+	<dependency>
+	  <groupId>commons-logging</groupId>
+	  <artifactId>commons-logging</artifactId>
+	  <version>1.1</version>
+	</dependency>
 		<dependency>
 			<groupId>org.trailsframework</groupId>
 			<artifactId>trails-security</artifactId>
 			<version>1.1-SNAPSHOT</version>
 		</dependency>
-    <dependency>
-      <groupId>htmlunit</groupId>
-      <artifactId>htmlunit</artifactId>
-      <version>1.8</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
+	<dependency>
+	  <groupId>htmlunit</groupId>
+	  <artifactId>htmlunit</artifactId>
+	  <version>1.8</version>
+	  <scope>test</scope>
+	</dependency>
+	<dependency>
 			<groupId>org.trailsframework</groupId>
 			<artifactId>trails-test</artifactId>
 			<version>1.1-SNAPSHOT</version>
-      <scope>test</scope>
-    </dependency>
+	  <scope>test</scope>
+	</dependency>
+	<dependency>
+		<groupId>ognl</groupId>
+		<artifactId>ognl</artifactId>
+		<version>${ognl.version}</version>
+	</dependency>
   </dependencies>
 
 </project>

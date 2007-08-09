@@ -28,16 +28,32 @@
 			<list>
 				<ref bean="daoAuthenticationProvider"/>
 				<ref local="anonymousAuthenticationProvider"/>
+				<ref local="rememberMeAuthenticationProvider"/>
 			</list>
 		</property>
 	</bean>
 
 	<bean id="daoAuthenticationProvider"
 		  class="org.acegisecurity.providers.dao.DaoAuthenticationProvider">
-		<property name="userDetailsService">
-			<ref bean="trailsUserDAO"/>
-		</property>
+		<property name="userDetailsService"><ref bean="trailsUserDAO"/></property>
+		<property name="passwordEncoder"><ref local="passwordEncoder" /></property>
 	</bean>
+
+	<bean id="rememberMeProcessingFilter" class="org.trails.security.RememberMeProcessingFilter">
+	  <property name="rememberMeServices"><ref local="rememberMeServices"/></property>
+	  <property name="authenticationManager"><ref bean="authenticationManager"/></property>
+	</bean>
+
+	<bean id="rememberMeServices" class="org.trails.security.RollingCookieRememberMeServices">
+	  <property name="persistenceService"><ref bean="persistenceService"/></property>
+	</bean>
+
+	<bean id="rememberMeAuthenticationProvider" class="org.trails.security.ExpiringKeyAuthenticationProvider">
+	  <property name="persistenceService"><ref bean="persistenceService"/></property>
+		<property name="userDetailsService"><ref bean="trailsUserDAO"/></property>
+	</bean>
+
+	<bean id="passwordEncoder" class="org.trails.security.password.DefaultPasswordEncoder" />
 
 	<bean id="trailsUserDAO"
 		  class="org.trails.security.TrailsUserDAO">
@@ -56,7 +72,7 @@
 				PATTERN_TYPE_APACHE_ANT
 				/images/**=#NONE#
 				/style/**=#NONE#
-				/**=httpSessionContextIntegrationFilter,authenticationProcessingFilter,remoteUserFilter,anonymousProcessingFilter,exceptionTranslationFilter,filterInvocationInterceptor
+				/**=httpSessionContextIntegrationFilter,authenticationProcessingFilter,rememberMeProcessingFilter,remoteUserFilter,anonymousProcessingFilter,exceptionTranslationFilter,filterInvocationInterceptor
 			</value>
 		</property>
 	</bean>
@@ -73,6 +89,7 @@
 		<property name="authenticationFailureUrl" value="/Login.page?login_error=1"/>
 		<property name="defaultTargetUrl" value="/Home.page"/>
 		<property name="filterProcessesUrl" value="/j_acegi_security_check"/>
+		<property name="rememberMeServices"><ref local="rememberMeServices"/></property>
 	</bean>
 
 	<bean id="authenticationProcessingFilterEntryPoint"

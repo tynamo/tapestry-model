@@ -3,7 +3,7 @@
  * $Id: User.java,v 1.1 2006/01/16 11:43:37 alejandroscandroli Exp $
  */
 
-package org.trails.security.domain;
+package org.trails.demo;
 
 import java.io.Serializable;
 import java.util.HashSet;

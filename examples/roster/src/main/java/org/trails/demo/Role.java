@@ -1,4 +1,4 @@
-package org.trails.security.domain;
+package org.trails.demo;
 
 import java.io.Serializable;
 import java.util.HashSet;
