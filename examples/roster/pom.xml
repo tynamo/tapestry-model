@@ -14,7 +14,8 @@
   <name>Trails Example - Classic Hibernate Roster Demo</name>
 
   <build>
-    <plugins>
+
+	<plugins>
 	  <plugin>
 		<artifactId>maven-surefire-plugin</artifactId>
 		<executions>
@@ -71,34 +72,29 @@
 	  </plugin>
 	</plugins>
   </build>
-  <dependencies>
-	<dependency>
-	  <groupId>commons-logging</groupId>
-	  <artifactId>commons-logging</artifactId>
-	  <version>1.1</version>
-	</dependency>
+
+	<dependencies>
+		<dependency>
+			<groupId>commons-logging</groupId>
+			<artifactId>commons-logging</artifactId>
+			<version>1.1</version>
+		</dependency>
 		<dependency>
 			<groupId>org.trailsframework</groupId>
 			<artifactId>trails-security</artifactId>
 			<version>1.1-SNAPSHOT</version>
 		</dependency>
-	<dependency>
-	  <groupId>htmlunit</groupId>
-	  <artifactId>htmlunit</artifactId>
-	  <version>1.8</version>
-	  <scope>test</scope>
-	</dependency>
-	<dependency>
+		<dependency>
 			<groupId>org.trailsframework</groupId>
 			<artifactId>trails-test</artifactId>
 			<version>1.1-SNAPSHOT</version>
-	  <scope>test</scope>
-	</dependency>
-	<dependency>
-		<groupId>ognl</groupId>
-		<artifactId>ognl</artifactId>
-		<version>${ognl.version}</version>
-	</dependency>
-  </dependencies>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>ognl</groupId>
+			<artifactId>ognl</artifactId>
+			<version>${ognl.version}</version>
+		</dependency>
+	</dependencies>
 
 </project>
