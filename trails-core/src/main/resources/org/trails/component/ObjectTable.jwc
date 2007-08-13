@@ -7,14 +7,12 @@
 		<inherited-binding name="rowsClass" parameter-name="rowsClass"/>
 		<inherited-binding name="column" parameter-name="column"/>
 		<inherited-binding name="columnsClass" parameter-name="columnsClass"/>
-		<inherited-binding name="index" parameter-name="index"/>
 
 		<binding name="source">source</binding>
 		<binding name="columns">columns</binding>
 		<binding name="pageSize">pageSize</binding>
 
 		<binding name="column">column</binding>
-		<binding name="index">index</binding>
 	</component>
 
 </component-specification>

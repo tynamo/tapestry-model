@@ -43,7 +43,7 @@ public abstract class HibernateObjectTable extends ObjectTable
 		return getInstances();
 	}
 
-	@Parameter(cache = true)
+	@Parameter(cache = true, required = false)
 	public abstract int getIndex();
 
 	public abstract void setIndex(int index);
