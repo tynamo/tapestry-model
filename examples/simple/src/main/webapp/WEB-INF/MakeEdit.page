@@ -5,6 +5,7 @@
 	<property name="nextPage"/>
 
 	<property name="delegator"/>
+	<property name="column"/>	
 
 	<bean name="evenOdd" class="org.apache.tapestry.bean.EvenOdd"/>
 
