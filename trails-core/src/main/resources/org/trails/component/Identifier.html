@@ -4,15 +4,15 @@
 			<input jwcid="idNumberField@TextField" displayName="ognl:descriptor.displayName"
 				   validator="ognl:page.validatorTranslatorService.getValidator(descriptor)"
 				   translator="ognl:page.validatorTranslatorService.getTranslator(descriptor)"
-				   value="ognl:model[descriptor.name]"
+				   value="ognl:model[#this.descriptor.name]"
 				   class="text medium"/>
 		</span>
 		<span jwcid="isString@If" condition="ognl:descriptor.isString()"> <!-- ognl issue -->
-			<input jwcid="idStringField@TextField" value="ognl:model[descriptor.name]"
+			<input jwcid="idStringField@TextField" value="ognl:model[#this.descriptor.name]"
 				   class="text medium"/>
 		</span>
 	</span>
 	<span jwcid="notEditable@If" condition="ognl:not(editable)">
-		<span jwcid="idInsert@Insert" value="ognl:model[descriptor.name]"/>
+		<span jwcid="idInsert@Insert" value="ognl:model[#this.descriptor.name]"/>
 	</span>
 </span>
