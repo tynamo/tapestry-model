@@ -3,6 +3,7 @@
 	<property name="type" persist="session"/>
 	<property name="instances" persist="session"/>
 	<property name="object"/>
+	<property name="column"/>
 
 	<bean name="evenOdd" class="org.apache.tapestry.bean.EvenOdd"/>
 
