@@ -107,7 +107,7 @@ public abstract class ObjectTable extends ClassDescriptorComponent
 		super.prepareForRender(cycle);
 	}
 
-	public void createColumns()
+	protected void createColumns()
 	{
 		columns = new ArrayList<TrailsTableColumn>();
 		for (Iterator iter = getPropertyDescriptors().iterator(); iter.hasNext();)
