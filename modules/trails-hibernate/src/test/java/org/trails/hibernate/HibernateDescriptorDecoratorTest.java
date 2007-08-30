@@ -203,4 +203,14 @@ public class HibernateDescriptorDecoratorTest extends TestCase
 		assertEquals("right bean type", Embeddor.class, embeddedDescriptor.getBeanType());
 		assertEquals("3 prop descriptors", 3, embeddedDescriptor.getPropertyDescriptors().size());
 	}
+
+	public void testTransient() throws Exception
+	{
+		TrailsClassDescriptor descriptor = new TrailsClassDescriptor(Bar.class);
+		descriptor.getPropertyDescriptors().add(new TrailsPropertyDescriptor(Bar.class, "name", String.class));
+		descriptor.getPropertyDescriptors().add(new TrailsPropertyDescriptor(Bar.class, "transientProperty", String.class));
+		IClassDescriptor decorated = (IClassDescriptor) hibernateDescriptorDecorator.decorate(descriptor);
+		assertFalse(decorated.getPropertyDescriptor("transientProperty").isSearchable());
+		assertTrue(decorated.getPropertyDescriptor("name").isSearchable());
+	}
 }
