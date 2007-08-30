@@ -1,7 +1,7 @@
 <span jwcid="$content$">
     <form jwcid="@Form">
 		<ul class="glasslist">
-			<div jwcid="@For" source="ognl:classDescriptor.propertyDescriptors" value="ognl:propertyDescriptor">
+			<div jwcid="@For" source="ognl:classDescriptor.propertyDescriptors.{? searchable}" value="ognl:propertyDescriptor">
 				<div jwcid="@RenderBlock" block="ognl:block"/>
 			</div>
 			<li class="buttonBar bottom">
