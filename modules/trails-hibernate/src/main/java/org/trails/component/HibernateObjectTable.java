@@ -5,7 +5,6 @@ import org.apache.tapestry.annotations.Asset;
 import org.apache.tapestry.annotations.ComponentClass;
 import org.apache.tapestry.annotations.InjectObject;
 import org.apache.tapestry.annotations.Parameter;
-import org.apache.tapestry.contrib.table.model.ITableColumn;
 import org.hibernate.criterion.DetachedCriteria;
 import org.trails.persistence.HibernatePersistenceService;
 
@@ -28,7 +27,6 @@ public abstract class HibernateObjectTable extends ObjectTable
 		return getHibernatePersistenceService();
 	}
 
-
 	@Parameter
 	public abstract DetachedCriteria getCriteria();
 
@@ -42,14 +40,4 @@ public abstract class HibernateObjectTable extends ObjectTable
 		}
 		return getInstances();
 	}
-
-	@Parameter(cache = true, required = false)
-	public abstract int getIndex();
-
-	public abstract void setIndex(int index);
-
-	@Parameter(cache = false)
-	public abstract ITableColumn getColumn();
-
-	public abstract void setColumn(ITableColumn column);
 }
