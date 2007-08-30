@@ -47,8 +47,6 @@ public class TrailsPropertyDescriptor extends TrailsDescriptor implements
 
 	private boolean richText;
 
-	private IClassDescriptor parentClassDescriptor;
-
 	// ///////////////////////////////////////////////////////////////////////////////////////////////////////
 	// constructors
 	// ///////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -170,22 +168,6 @@ public class TrailsPropertyDescriptor extends TrailsDescriptor implements
 	public boolean isObjectReference()
 	{
 		return false;
-	}
-
-	/**
-	 * @see org.trails.descriptor.IPropertyDescriptor#getParentClassDescriptor
-	 */
-	public IClassDescriptor getParentClassDescriptor()
-	{
-		return parentClassDescriptor;
-	}
-
-	/**
-	 * @see org.trails.descriptor.IPropertyDescriptor#setParentClassDescriptor
-	 */
-	public void setParentClassDescriptor(IClassDescriptor parentClassDescriptor)
-	{
-		this.parentClassDescriptor = parentClassDescriptor;
 	}
 
 	// ///////////////////////////////////////////////////////////////////////////////////////////////////////

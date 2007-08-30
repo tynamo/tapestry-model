@@ -125,13 +125,4 @@ public interface IPropertyDescriptor extends IDescriptor
 
 	public void setBeanType(Class beanType);
 
-	/**
-	 * Retrieve the parent ClassDescriptor for this PropertyDescriptor.  ClassDescriptor.findTraversalPath() returns a
-	 * list of IPropertyDescriptors to traverse between the classes, this provides a way to find the containing class.
-	 *
-	 * @return ClassDescriptor for parent of this property
-	 */
-	IClassDescriptor getParentClassDescriptor();
-
-	void setParentClassDescriptor(IClassDescriptor parent);
 }
