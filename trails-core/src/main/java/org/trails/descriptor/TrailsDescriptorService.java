@@ -44,11 +44,6 @@ public class TrailsDescriptorService implements DescriptorService
 		for (IClassDescriptor iClassDescriptor : descriptors.values())
 		{
 			findChildren(iClassDescriptor);
-			// set up the property parents, could be avoided if there was a proper symbol table
-			for (IPropertyDescriptor iPropertyDescriptor : iClassDescriptor.getPropertyDescriptors())
-			{
-				iPropertyDescriptor.setParentClassDescriptor(descriptors.get(iPropertyDescriptor.getPropertyType()));
-			}
 		}
 	}
 

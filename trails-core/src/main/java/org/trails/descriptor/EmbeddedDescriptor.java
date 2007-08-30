@@ -135,17 +135,6 @@ public class EmbeddedDescriptor extends TrailsClassDescriptor implements IProper
 		return false;
 	}
 
-
-	public IClassDescriptor getParentClassDescriptor()
-	{
-		return null;//To change body of implemented methods use File | Settings | File Templates.
-	}
-
-	public void setParentClassDescriptor(IClassDescriptor parent)
-	{
-		//To change body of implemented methods use File | Settings | File Templates.
-	}
-
 	@Override
 	public Object clone()
 	{
