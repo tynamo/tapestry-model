@@ -21,11 +21,19 @@ import org.apache.tapestry.html.BasePage;
 import org.trails.callback.CallbackStack;
 import org.trails.callback.TrailsCallback;
 import org.trails.descriptor.DescriptorService;
+import org.trails.descriptor.IClassDescriptor;
 import org.trails.i18n.ResourceBundleMessageSource;
 import org.trails.persistence.PersistenceService;
 
 public abstract class TrailsPage extends BasePage implements PageBeginRenderListener
 {
+
+	/**
+	 * This method is a patch for TRAILS-86
+	 * It provides a common superclass to avoid CCE when using compiled OGNL expresions.
+	 * @return
+	 */
+	public abstract IClassDescriptor getClassDescriptor();
 
 	public enum PageType {Search, Edit, List, View, Exception}
 
