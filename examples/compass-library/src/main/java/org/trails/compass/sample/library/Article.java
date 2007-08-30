@@ -93,7 +93,7 @@ public class Article
 	}
 
 	@SearchableProperty
-	@Length(max = 250)
+	@Length(max = 350)
 	@PropertyDescriptor(index = 3)
 	public String getSummary()
 	{
