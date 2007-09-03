@@ -13,12 +13,12 @@ package org.trails.descriptor;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.List;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.trails.TrailsRuntimeException;
-import org.trails.component.Utils;
 
 
 public class CollectionDescriptor extends TrailsPropertyDescriptor
@@ -44,9 +44,6 @@ public class CollectionDescriptor extends TrailsPropertyDescriptor
 		this.copyFrom(collectionDescriptor);
 	}
 
-	/**
-	 * @param realDescriptor
-	 */
 	public CollectionDescriptor(Class beanType, Class type)
 	{
 		super(beanType, type);
@@ -134,7 +131,21 @@ public class CollectionDescriptor extends TrailsPropertyDescriptor
 
 	public String findAddExpression()
 	{
-		return findExpression("add");
+		final String method = "add";
+
+		/**
+		 * Awful patch for TRAILS-78 bug.
+		 * It evaluates if the object is in the list before adding it.
+		 * If it is already there then do nothing else add it.
+		 * eg: "bazzes.contains(#member) ? bazzes.size() : bazzes.add" 
+		 *
+		 */
+		if (isChildRelationship() && List.class.isAssignableFrom(getType())) {
+			return findExpression(method, getName() + ".contains(#member) ? " + getName() + ".size() : " + getName() + "." + method);
+		} else {
+			return findExpression(method);
+		}
+
 	}
 
 	public String findRemoveExpression()
@@ -149,7 +160,7 @@ public class CollectionDescriptor extends TrailsPropertyDescriptor
 	 *         the unqualified element class name, if there isn't one it will use
 	 *         the collection's add method.
 	 */
-	String findExpression(String method)
+	private String findExpression(String method, String defaultValue)
 	{
 		Method addMethod = null;
 
@@ -159,13 +170,18 @@ public class CollectionDescriptor extends TrailsPropertyDescriptor
 		} catch (NoSuchMethodException ex)
 		{
 			// if we don't have one...
-			return getName() + "." + method;
+			return defaultValue;
 		} catch (Exception e)
 		{
 			throw new TrailsRuntimeException(e);
 		}
 
 		return addMethod.getName();
+	}
+
+	String findExpression(String method)
+	{
+		return findExpression(method, getName() + "." + method);
 	}
 
 	private void copyFrom(CollectionDescriptor collectionDescriptor)

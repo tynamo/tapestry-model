@@ -13,6 +13,7 @@
  */
 package org.trails.callback;
 
+import java.util.List;
 import java.util.Set;
 
 import org.apache.tapestry.IRequestCycle;
@@ -22,6 +23,7 @@ import org.trails.descriptor.CollectionDescriptor;
 import org.trails.page.EditPage;
 import org.trails.persistence.PersistenceService;
 import org.trails.test.Baz;
+import org.trails.test.Bing;
 import org.trails.test.Foo;
 
 public class CollectionCallbackTest extends ComponentTest
@@ -58,6 +60,24 @@ public class CollectionCallbackTest extends ComponentTest
 		callBack.save((PersistenceService) persistenceMock.proxy(), baz);
 		assertEquals("1 baz", 1, foo.getBazzes().size());
 		assertEquals(baz, foo.getBazzes().iterator().next());
+	}
+
+		public void testSaveIndexedList() throws Exception
+	{
+		CollectionDescriptor bingsCollectionDescriptor = new CollectionDescriptor(Foo.class, "bings", List.class);
+		bingsCollectionDescriptor.setChildRelationship(true);
+		bingsCollectionDescriptor.setElementType(Bing.class);
+		CollectionCallback bingCallBack = new CollectionCallback(pageName, foo, bingsCollectionDescriptor);
+		Bing bing = new Bing();
+
+		persistenceMock.expects(atLeastOnce()).method("save").with(eq(foo));
+		bingCallBack.save((PersistenceService) persistenceMock.proxy(), bing);
+
+		assertEquals("1 bing", 1, foo.getBings().size());
+		assertEquals(bing, foo.getBings().iterator().next());
+
+		bingCallBack.save((PersistenceService) persistenceMock.proxy(), bing);
+		assertEquals("if I'm saving the same object it should still be only one bing.", 1, foo.getBings().size());
 	}
 
 	public void testRemove() throws Exception
