@@ -130,14 +130,14 @@ public class Foo
 		this.bings = bings;
 	}
 
-	public void addBing(Bing bing)
+	public void addBaz(Baz baz)
 	{
-		getBings().add(bing);
+		getBazzes().add(baz);
 	}
 
-	public void removeBing(Bing bing)
+	public void removeBaz(Baz baz)
 	{
-		getBings().remove(bing);
+		getBazzes().remove(baz);
 	}
 
 	/**
