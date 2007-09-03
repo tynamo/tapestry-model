@@ -1,5 +1,7 @@
 package org.trails.component;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.tapestry.annotations.ComponentClass;
 import org.apache.tapestry.annotations.InjectObject;
 import org.apache.tapestry.form.IPropertySelectionModel;
@@ -16,6 +18,8 @@ import org.trails.persistence.PersistenceService;
 @ComponentClass(allowBody = false, allowInformalParameters = true)
 public abstract class AssociationSelect extends AbstractPropertySelection
 {
+	private static final Log LOG = LogFactory.getLog(AssociationSelect.class);
+
 	@InjectObject("spring:persistenceService")
 	public abstract PersistenceService getPersistenceService();
 
@@ -28,8 +32,13 @@ public abstract class AssociationSelect extends AbstractPropertySelection
 	}
 
 	@Override
-	protected IPropertySelectionModel buildSelectionModel()
+	public IPropertySelectionModel buildSelectionModel()
 	{
+		if (LOG.isDebugEnabled())
+		{
+			LOG.debug("Building propertySelectionModel for " + getClassDescriptor().getDisplayName());
+		}
+
 		IdentifierSelectionModel selectionModel;
 		if (getInstances() != null)
 		{

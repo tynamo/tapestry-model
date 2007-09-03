@@ -12,7 +12,7 @@ public abstract class EnumSelect extends AbstractPropertySelection
 {
 
 	@Override
-	protected IPropertySelectionModel buildSelectionModel()
+	public IPropertySelectionModel buildSelectionModel()
 	{
 		EnumPropertySelectionModel selectionModel = new EnumPropertySelectionModel(getPropertyDescriptor().getExtension(EnumReferenceDescriptor.class).getPropertyType(), isAllowNone());
 		selectionModel.setNoneLabel(getNoneLabel());

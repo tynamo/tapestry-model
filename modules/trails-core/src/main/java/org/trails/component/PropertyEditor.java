@@ -13,6 +13,7 @@ package org.trails.component;
 
 import org.apache.tapestry.annotations.InjectObject;
 import org.apache.tapestry.components.Block;
+import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.util.ComponentAddress;
 import org.trails.descriptor.BlockFinder;
 import org.trails.descriptor.IPropertyDescriptor;
@@ -24,7 +25,7 @@ import org.trails.page.IEditorBlockPage;
  *         TODO To change the template for this generated type comment go to
  *         Window - Preferences - Java - Code Style - Code Templates
  */
-public abstract class PropertyEditor extends TrailsComponent
+public abstract class PropertyEditor extends TrailsComponent implements IFormComponent
 {
 	public abstract IPropertyDescriptor getDescriptor();
 
