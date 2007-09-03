@@ -40,20 +40,16 @@ public class EnumSelectTest extends ComponentTest
 
 	public void testBuildSelectionModel()
 	{
-		enumSelect.resetSelectionModel();
-		EnumPropertySelectionModel selectionModel = (EnumPropertySelectionModel) enumSelect.getPropertySelectionModel();
+		EnumPropertySelectionModel selectionModel = (EnumPropertySelectionModel) enumSelect.buildSelectionModel();
 		assertEquals(6, selectionModel.getOptionCount());
 
 		enumSelect.setAllowNone(false);
-		enumSelect.resetSelectionModel();
-		selectionModel = (EnumPropertySelectionModel) enumSelect.getPropertySelectionModel();
+		selectionModel = (EnumPropertySelectionModel) enumSelect.buildSelectionModel();
 		assertEquals(5, selectionModel.getOptionCount());
 
 		enumSelect.setNoneLabel("Any");
-		enumSelect.resetSelectionModel();
 
-		selectionModel = (EnumPropertySelectionModel) enumSelect.getPropertySelectionModel();
+		selectionModel = (EnumPropertySelectionModel) enumSelect.buildSelectionModel();
 		assertEquals("Any", selectionModel.getNoneLabel());
-
 	}
 }

@@ -17,10 +17,7 @@
 	</component>
 
 	<component id="associationSelect" type="HibernateAssociationSelect">
-		<binding name="model">model</binding>
 		<binding name="value">model[#this.descriptor.name]</binding>
-		<binding name="owner">model</binding>
-		<binding name="association">model[#this.descriptor.name]</binding>
 		<binding name="propertyDescriptor">descriptor</binding>
 	</component>
 

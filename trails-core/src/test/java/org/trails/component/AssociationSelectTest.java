@@ -41,20 +41,16 @@ public class AssociationSelectTest extends ComponentTest
 
 		persistenceMock.expects(atLeastOnce()).method("getAllInstances").with(eq(Foo.class)).will(returnValue(instances));
 
-		associationSelect.resetSelectionModel();
-		AbstractPropertySelectionModel selectionModel = (AbstractPropertySelectionModel) associationSelect.getPropertySelectionModel();
+		AbstractPropertySelectionModel selectionModel = (AbstractPropertySelectionModel) associationSelect.buildSelectionModel();
 		assertEquals(1, selectionModel.getOptionCount());
 
 		associationSelect.setAllowNone(false);
-		associationSelect.resetSelectionModel();
-		selectionModel = (AbstractPropertySelectionModel) associationSelect.getPropertySelectionModel();
+		selectionModel = (AbstractPropertySelectionModel) associationSelect.buildSelectionModel();
 		assertEquals(0, selectionModel.getOptionCount());
 
 		associationSelect.setNoneLabel("Any");
-		associationSelect.resetSelectionModel();
-		selectionModel = (AbstractPropertySelectionModel) associationSelect.getPropertySelectionModel();
+		selectionModel = (AbstractPropertySelectionModel) associationSelect.buildSelectionModel();
 		assertEquals("Any", selectionModel.getNoneLabel());
-
 	}
 
 	public void testGetClassDescriptor()

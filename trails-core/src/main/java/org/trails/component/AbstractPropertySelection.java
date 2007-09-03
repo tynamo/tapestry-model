@@ -2,20 +2,35 @@ package org.trails.component;
 
 import java.util.List;
 
-import org.apache.tapestry.BaseComponent;
-import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.annotations.Component;
+import org.apache.tapestry.annotations.InjectObject;
 import org.apache.tapestry.annotations.Parameter;
+import org.apache.tapestry.form.IOptionRenderer;
 import org.apache.tapestry.form.IPropertySelectionModel;
 import org.apache.tapestry.form.PropertySelection;
+import org.apache.tapestry.form.ValidatableFieldSupport;
 import org.trails.descriptor.IPropertyDescriptor;
 
-public abstract class AbstractPropertySelection extends BaseComponent
+/**
+ * A base class for building trails-aware PropertySelection components
+ * Notice that this class uses the PropertySelection render mechanism,
+ * that means that derivative classes can't make use of HTML templates.
+  */
+public abstract class AbstractPropertySelection extends PropertySelection
 {
 
-	public abstract IPropertySelectionModel getPropertySelectionModel();
+	@Parameter(defaultValue = "buildSelectionModel()")
+	public abstract IPropertySelectionModel getModel();
 
-	public abstract void setPropertySelectionModel(IPropertySelectionModel PropertySelectionModel);
+	public abstract void setModel(IPropertySelectionModel PropertySelectionModel);
+
+	@InjectObject("service:tapestry.form.ValidatableFieldSupport")
+	public abstract ValidatableFieldSupport getValidatableFieldSupport();
+
+	@Parameter(cache = false, defaultValue = "ognl:@org.apache.tapestry.form.DefaultOptionRenderer@DEFAULT_INSTANCE")
+	public abstract IOptionRenderer getOptionRenderer();
+
+	@Parameter(name = "id", defaultValue = "id")
+	public abstract String getIdParameter();
 
 	@Parameter(required = true)
 	public abstract IPropertyDescriptor getPropertyDescriptor();
@@ -42,27 +57,6 @@ public abstract class AbstractPropertySelection extends BaseComponent
 
 	public abstract void setValue(Object value);
 
-	@Parameter(required = false, defaultValue = "page.model")
-	public abstract Object getModel();
+	public abstract IPropertySelectionModel buildSelectionModel();
 
-	public abstract void setModel(Object bytes);
-
-
-	@Component(type = "PropertySelection", inheritInformalParameters = true,
-		bindings = {"value=model[#this.propertyDescriptor.name]", "model=propertySelectionModel"})
-	public abstract PropertySelection getPropertySelection();
-
-	protected abstract IPropertySelectionModel buildSelectionModel();
-
-	@Override
-	protected void prepareForRender(IRequestCycle cycle)
-	{
-		super.prepareForRender(cycle);
-		resetSelectionModel();
-	}
-
-	public void resetSelectionModel()
-	{
-		setPropertySelectionModel(buildSelectionModel());
-	}
 }
