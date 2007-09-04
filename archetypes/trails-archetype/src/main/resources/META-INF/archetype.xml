@@ -4,7 +4,7 @@
 		<source>src/main/java/MyDomainObject.java</source>
 	</sources>
 	<resources>
-		<resource filtered="false">src/main/webapp/images/iconWarning.gif</resource>
+		<resource filtered="false">src/main/webapp/images/bullet_error.png</resource>
 		<resource filtered="false">src/main/webapp/images/aquadot.jpg</resource>
 		<resource filtered="false">src/main/webapp/images/fieldbg.gif</resource>
 
@@ -35,29 +35,29 @@
 		<resource>src/main/resources/messages_pt.properties</resource>
 		<resource>src/main/resources/messages_de.properties</resource>
 
-		<resource filtered="false">src/main/webapp/styles/tapestry/images/bg.jpg</resource>
-		<resource filtered="false">src/main/webapp/styles/tapestry/images/breadcrumbs.jpg</resource>
-		<resource filtered="false">src/main/webapp/styles/tapestry/images/collapsed.gif</resource>
-		<resource filtered="false">src/main/webapp/styles/tapestry/images/expanded.gif</resource>
-		<resource filtered="false">src/main/webapp/styles/tapestry/images/h3.jpg</resource>
-		<resource filtered="false">src/main/webapp/styles/tapestry/images/h5.jpg</resource>
-		<resource filtered="false">src/main/webapp/styles/tapestry/images/icon_error_sml.gif</resource>
-		<resource filtered="false">src/main/webapp/styles/tapestry/images/icon_info_sml.gif</resource>
-		<resource filtered="false">src/main/webapp/styles/tapestry/images/icon_success_sml.gif</resource>
-		<resource filtered="false">src/main/webapp/styles/tapestry/images/icon_warning_sml.gif</resource>
-		<resource filtered="false">src/main/webapp/styles/tapestry/images/trails-header94.jpg</resource>
-		<resource filtered="false">src/main/webapp/styles/tapestry/images/thbg.jpg</resource>
-		<resource filtered="false">src/main/webapp/styles/tapestry/images/add.png</resource>
-		<resource filtered="false">src/main/webapp/styles/tapestry/images/magnifier.png</resource>
-		<resource filtered="false">src/main/webapp/styles/tapestry/images/table.png</resource>
-		<resource filtered="false">src/main/webapp/styles/tapestry/tools.css</resource>
-		<resource filtered="false">src/main/webapp/styles/tapestry/theme.css</resource>
-		<resource filtered="false">src/main/webapp/styles/tapestry/layout.css</resource>
-		<resource filtered="false">src/main/webapp/styles/tapestry/typo.css</resource>
-		<resource filtered="false">src/main/webapp/styles/tapestry/layout-nav.css</resource>
-		<resource filtered="false">src/main/webapp/styles/tapestry/table.css</resource>
-		<resource filtered="false">src/main/webapp/styles/tapestry/iepatches.css</resource>
-		<resource filtered="false">src/main/webapp/styles/tapestry/forms.css</resource>
+		<resource filtered="false">src/main/webapp/styles/tapestryskin/images/bg.jpg</resource>
+		<resource filtered="false">src/main/webapp/styles/tapestryskin/images/breadcrumbs.jpg</resource>
+		<resource filtered="false">src/main/webapp/styles/tapestryskin/images/collapsed.gif</resource>
+		<resource filtered="false">src/main/webapp/styles/tapestryskin/images/expanded.gif</resource>
+		<resource filtered="false">src/main/webapp/styles/tapestryskin/images/h3.jpg</resource>
+		<resource filtered="false">src/main/webapp/styles/tapestryskin/images/h5.jpg</resource>
+		<resource filtered="false">src/main/webapp/styles/tapestryskin/images/icon_error_sml.gif</resource>
+		<resource filtered="false">src/main/webapp/styles/tapestryskin/images/icon_info_sml.gif</resource>
+		<resource filtered="false">src/main/webapp/styles/tapestryskin/images/icon_success_sml.gif</resource>
+		<resource filtered="false">src/main/webapp/styles/tapestryskin/images/icon_warning_sml.gif</resource>
+		<resource filtered="false">src/main/webapp/styles/tapestryskin/images/trails-header94.jpg</resource>
+		<resource filtered="false">src/main/webapp/styles/tapestryskin/images/thbg.jpg</resource>
+		<resource filtered="false">src/main/webapp/styles/tapestryskin/images/add.png</resource>
+		<resource filtered="false">src/main/webapp/styles/tapestryskin/images/magnifier.png</resource>
+		<resource filtered="false">src/main/webapp/styles/tapestryskin/images/table.png</resource>
+		<resource filtered="false">src/main/webapp/styles/tapestryskin/tools.css</resource>
+		<resource filtered="false">src/main/webapp/styles/tapestryskin/theme.css</resource>
+		<resource filtered="false">src/main/webapp/styles/tapestryskin/layout.css</resource>
+		<resource filtered="false">src/main/webapp/styles/tapestryskin/typo.css</resource>
+		<resource filtered="false">src/main/webapp/styles/tapestryskin/layout-nav.css</resource>
+		<resource filtered="false">src/main/webapp/styles/tapestryskin/table.css</resource>
+		<resource filtered="false">src/main/webapp/styles/tapestryskin/iepatches.css</resource>
+		<resource filtered="false">src/main/webapp/styles/tapestryskin/forms.css</resource>
 
 	</resources>
 
