@@ -3,19 +3,15 @@
 	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
-	<!-- seed entities for security. Note that cyclic relationships need to be set using saved entities
-	(i.e. in the latter entity), otherwise it will fail -->
-	<bean id="roleUser" class="org.trails.security.domain.Role" lazy-init="true">
+	<bean id="roleUser" class="sample.Role">
 		<property name="name" value="ROLE_USER"/>
-		<property name="description" value="User role"/>
 	</bean>
 
-	<bean id="roleManager" class="org.trails.security.domain.Role" lazy-init="true">
+	<bean id="roleManager" class="sample.Role">
 		<property name="name" value="ROLE_MANAGER"/>
-		<property name="description" value="Manager role"/>
 	</bean>
 
-	<bean id="user" class="org.trails.security.domain.User" lazy-init="true">
+	<bean id="user" class="sample.User">
 		<property name="username" value="user"/>
 		<property name="password" value="user"/>
 		<property name="confirmPassword" value="user"/>
@@ -28,7 +24,7 @@
 		</property>
 	</bean>
 
-	<bean id="admin" class="org.trails.security.domain.User" lazy-init="true">
+	<bean id="admin" class="sample.User">
 		<property name="username" value="admin"/>
 		<property name="password" value="admin"/>
 		<property name="confirmPassword" value="admin"/>
