@@ -1,15 +1,14 @@
 <archetype>
 	<id>trails-secure-archetype</id>
 	<sources>
-		<source>src/main/java/sample/User.java</source>
-		<source>src/main/java/sample/Role.java</source>
+		<source>src/main/java/User.java</source>
+		<source>src/main/java/Role.java</source>
 	</sources>
 	<allowPartial>true</allowPartial>
 	<resources>
 		<resource>pom.xml</resource>
 		<resource>src/main/resources/acegi-security.xml</resource>
 		<resource>src/main/resources/applicationContext-seedData.xml</resource>
-		<resource>src/main/resources/hibernate.cfg.xml</resource>
 		<resource>src/main/webapp/WEB-INF/web.xml</resource>
 		<resource>src/main/webapp/WEB-INF/Border.html</resource>
 		<resource>src/main/webapp/WEB-INF/Border.jwc</resource>
