@@ -34,28 +34,25 @@ public abstract class CompassPage extends TrailsPage {
 
         HashMap<Class, List> hashResults = new HashMap<Class, List>();
 
-        CompassSearchResults results = getCompassSearchService().performSearch(getQuery());
-//        List instances = new ArrayList();
-        for (int i = 0; i < results.getHits().length; i++) {
-            CompassHit compassHit = results.getHits()[i];
-/*
-            if (compassHit.getData().getClass().isAssignableFrom(getClassDescriptor().getType())) {
-                instances.add(compassHit.getData());
-            }
-*/
-            List classList = hashResults.get(compassHit.getData().getClass());
-            if (classList == null) {
-                classList = new ArrayList();
-                hashResults.put(compassHit.getData().getClass(), classList);
-            }
+		if (getQuery() != null && !"".equals(getQuery()))
+		{
+			CompassSearchResults results = getCompassSearchService().performSearch(getQuery());
+			for (int i = 0; i < results.getHits().length; i++) {
+				CompassHit compassHit = results.getHits()[i];
+				List classList = hashResults.get(compassHit.getData().getClass());
+				if (classList == null) {
+					classList = new ArrayList();
+					hashResults.put(compassHit.getData().getClass(), classList);
+				}
 
-            classList.add(compassHit.getData());
-        }
+				classList.add(compassHit.getData());
+			}
 
-        setSearchTime(results.getSearchTime());
-        setResults(hashResults);
-        setResultsLength(results.getHits().length);
-    }
+			setSearchTime(results.getSearchTime());
+			setResults(hashResults);
+			setResultsLength(results.getHits().length);
+		}
+	}
 
 
     public Set<Class> getClassesList() {
