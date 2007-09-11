@@ -2,16 +2,4 @@
 		"http://jakarta.apache.org/tapestry/dtd/Tapestry_4_0.dtd">
 <page-specification class="org.trails.compass.CompassPage">
 
-	<property name="type" persist="session"/>
-
-	<bean name="evenOdd" class="org.apache.tapestry.bean.EvenOdd"/>
-
-	<property name="results"/>
-	<property name="object"/>
-	<property name="query" persist="session"/>
-	<property name="searchTime"/>
-	<property name="resultsLength"/>
-
-	<property name="classIterator"/>
-
 </page-specification>
