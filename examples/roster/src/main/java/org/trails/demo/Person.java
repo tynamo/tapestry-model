@@ -165,14 +165,12 @@ public class Person implements UserDetails, Cloneable, Serializable
 	}
 
 	@PropertyDescriptor(summary = true, index = 3)
-	@NotNull
 	public String getFirstName()
 	{
 		return firstName;
 	}
 
 	@PropertyDescriptor(summary = true, index = 4)
-	@NotNull
 	public String getLastName()
 	{
 		return lastName;

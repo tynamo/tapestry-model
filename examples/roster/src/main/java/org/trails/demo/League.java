@@ -114,7 +114,7 @@ public class League implements Cloneable, Serializable
 	@JoinColumn(name = "officer_league_fk", insertable = true, updatable = true, nullable = true)
 	@Collection(child = true, inverse = "league")
 	@PropertyDescriptor(readOnly = false, searchable = true)
-	@OrderBy("lastName")
+	//@OrderBy("lastName")
 	public Set<Officer> getOfficers()
 	{
 		return officers;

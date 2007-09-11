@@ -124,7 +124,7 @@ public class Organization implements Cloneable, Serializable
 
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinTable(name = "join_table_Organization_Director", joinColumns = @JoinColumn(name = "director_fk", insertable = true, updatable = true, nullable = true), inverseJoinColumns = { @JoinColumn(name = "organization_fk", insertable = true, updatable = true, nullable = true) })
-	@OrderBy("lastName")
+	//@OrderBy("lastName")
 	@PropertyDescriptor(index = 2)
 	public Director getDirector()
 	{
@@ -135,7 +135,7 @@ public class Organization implements Cloneable, Serializable
 	@JoinColumn(name = "coach_organization_fk", insertable = true, updatable = true, nullable = true)
 	@Collection(child = true, inverse = "organization")
 	@PropertyDescriptor(readOnly = false, searchable = true)
-	@OrderBy("lastName")
+	//@OrderBy("lastName")
 	public Set<Coach> getCoaches()
 	{
 		return coaches;

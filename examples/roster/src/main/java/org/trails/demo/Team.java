@@ -155,7 +155,7 @@ public class Team implements Cloneable, Serializable
 	@JoinColumn(name = "team_id")
 	@Collection(child = false, inverse = "team")
 	@PropertyDescriptor(readOnly = false, searchable = true)
-	@OrderBy("lastName")
+	//@OrderBy("lastName")
 	public Set<Coach> getCoaches()
 	{
 		return coaches;
@@ -217,7 +217,7 @@ public class Team implements Cloneable, Serializable
 	@JoinColumn(name = "player_team_fk")
 	@Collection(child = false, inverse = "team")
 	@PropertyDescriptor(readOnly = false, searchable = true)
-	@OrderBy("lastName")
+	//@OrderBy("lastName")
 	public Set<Player> getPlayers()
 	{
 		return players;
