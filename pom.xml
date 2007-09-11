@@ -14,12 +14,10 @@
 		BUT don't just abuse this section, it's a hack. -->
 		<log4j.version>1.2.14</log4j.version>
 		<hsqldb.version>1.8.0.7</hsqldb.version>
-
-		<tapestry.version>4.1.2</tapestry.version>
-		<!-- kaosko 2007-08-07: there's some issue with the latest OGNL snapshot from Aug 3 
+		<tapestry.version>4.1.3-SNAPSHOT</tapestry.version>
+		<!-- kaosko 2007-08-07: there's some issue with the latest OGNL snapshot from Aug 3 -->
 		<ognl.version>2.7.1-SNAPSHOT</ognl.version>
-		-->
-		<ognl.version>2.7.1-20070723.185910-9</ognl.version>
+<!--		<ognl.version>2.7.1-20070723.185910-9</ognl.version>-->
 		<spring.version>2.0.6</spring.version>
 	</properties>
 

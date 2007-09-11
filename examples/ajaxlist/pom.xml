@@ -18,9 +18,18 @@
 			<artifactId>tacos-core</artifactId>
 			<version>4.1.1-SNAPSHOT</version>
 			<exclusions>
+				<!-- it depends on tapestry 4.1.2 -->
 				<exclusion>
-					<groupId>ognl</groupId>
-					<artifactId>ognl</artifactId>
+					<groupId>org.apache.tapestry</groupId>
+					<artifactId>tapestry-framework</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.apache.tapestry</groupId>
+					<artifactId>tapestry-annotations</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.apache.tapestry</groupId>
+					<artifactId>tapestry-contrib</artifactId>
 				</exclusion>
 			</exclusions>
 		</dependency>
