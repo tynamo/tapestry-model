@@ -3,7 +3,18 @@ package org.trails.demo;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
-import javax.persistence.*;
+
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.persistence.Version;
 
 import org.acegisecurity.GrantedAuthority;
 import org.hibernate.validator.Length;
@@ -22,11 +33,14 @@ public class Role implements GrantedAuthority, Serializable
 {
 
 	private Integer id;
-	private String name;
-	private String description;
-	private Integer version;
-	private Set<User> users = new HashSet<User>();
 
+	private String name;
+
+	private String description;
+
+	private Integer version;
+
+	private Set<User> users = new HashSet<User>();
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -44,7 +58,7 @@ public class Role implements GrantedAuthority, Serializable
 	@PropertyDescriptor(index = 1)
 	@Length(min = 1, max = 20)
 	@NotNull
-//    @Id @GeneratedValue(strategy = GenerationType.NONE)
+	// @Id @GeneratedValue(strategy = GenerationType.NONE)
 	public String getName()
 	{
 		return this.name;
@@ -68,15 +82,11 @@ public class Role implements GrantedAuthority, Serializable
 	}
 
 	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(
-		name = "user_role",
-		joinColumns = {@JoinColumn(name = "role_ID")},
-		inverseJoinColumns = {@JoinColumn(name = "user_ID")})
+	@JoinTable(name = "user_role", joinColumns = { @JoinColumn(name = "role_ID") }, inverseJoinColumns = { @JoinColumn(name = "user_ID") })
 	public Set<User> getUsers()
 	{
 		return users;
 	}
-
 
 	public void setUsers(Set<User> users)
 	{
@@ -97,12 +107,15 @@ public class Role implements GrantedAuthority, Serializable
 
 	public boolean equals(Object o)
 	{
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
+			return false;
 
 		final Role role = (Role) o;
 
-		if (id != null ? !id.equals(role.id) : role.id != null) return false;
+		if (id != null ? !id.equals(role.id) : role.id != null)
+			return false;
 
 		return true;
 	}
