@@ -40,8 +40,8 @@ import org.trails.util.DatePattern;
  * @author kenneth.colassi nhhockeyplayer@hotmail.com
  */
 @Entity
-@RemoveRequiresRole({"ROLE_ADMIN", "ROLE_MANAGER"})
-@UpdateRequiresRole({"ROLE_ADMIN", "ROLE_MANAGER"})
+@RemoveRequiresRole( { "ROLE_ADMIN", "ROLE_MANAGER" })
+@UpdateRequiresRole( { "ROLE_ADMIN", "ROLE_MANAGER" })
 @ClassDescriptor(hasCyclicRelationships = true)
 public class Team implements Cloneable, Serializable
 {
@@ -372,8 +372,7 @@ public class Team implements Cloneable, Serializable
 		if (organization == null)
 			return result;
 		else
-			return getOrganization().getDemographics().getCity() + "," + getOrganization().getDemographics().getState()
-					+ " " + getGender().toString() + " " + getAge().toString();
+			return getOrganization().getName();
 	}
 
 	@Override
