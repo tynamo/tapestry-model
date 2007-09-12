@@ -3,7 +3,6 @@ package org.trails.page;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.PageNotFoundException;
@@ -32,24 +31,7 @@ public class DefaultPageResolver implements PageResolver
 
 		} catch (PageNotFoundException ae)
 		{
-
 			page = cycle.getPage(getDefaultPrefix() + getPostFix(pageType));
-
-		}
-		/**
-		 * This is necessary till TAPESTRY-1616 is fixed
-		 * http://issues.apache.org/jira/browse/TAPESTRY-1616
-		 * Tap 4.1.2 PageNotFoundException not caught
-		 */
-		catch (ApplicationRuntimeException arte)
-		{
-			if (arte.getCause() instanceof PageNotFoundException)
-			{
-				page = cycle.getPage(getDefaultPrefix() + getPostFix(pageType));
-			} else
-			{
-				throw arte;
-			}
 		}
 		return page;
 	}
