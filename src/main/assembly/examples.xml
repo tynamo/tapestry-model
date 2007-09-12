@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE assembly PUBLIC "-//APACHE//DTD Assembly V1.2//EN" "http://maven.apache.org/xsd/assembly-1.0.0.xsd">
+<assembly>
+	<id>examples</id>
+	<formats>
+		<format>tar.gz</format>
+		<format>zip</format>
+	</formats>
+	<includeBaseDirectory>false</includeBaseDirectory>
+	<moduleSets>
+		<moduleSet>
+			<includes>
+				<include>org.trailsframework.examples:simple</include>
+				<include>org.trailsframework.examples:recipe</include>
+				<include>org.trailsframework.examples:security</include>
+				<include>org.trailsframework.examples:ajaxlist</include>
+				<include>org.trailsframework.examples:compass-library</include>
+			</includes>
+
+			<binaries>
+				<includeDependencies>false</includeDependencies>
+				<unpack>false</unpack>
+			</binaries>
+
+		</moduleSet>
+	</moduleSets>
+</assembly>

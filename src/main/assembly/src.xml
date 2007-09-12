@@ -1,21 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE assembly PUBLIC "-//APACHE//DTD Assembly V1.2//EN" "http://maven.apache.org/xsd/assembly-1.0.0.xsd">
 <assembly>
 	<id>src</id>
 	<formats>
 		<format>tar.gz</format>
-		<format>tar.bz2</format>
 		<format>zip</format>
 	</formats>
-	<fileSets>
-		<fileSet>
+	<includeBaseDirectory>true</includeBaseDirectory>
+	<moduleSets>
+		<moduleSet>
 			<includes>
-				<!--include>README*</include>
-						<include>LICENSE*</include>
-						<include>NOTICE*</include-->
-				<include>pom.xml</include>
+				<include>org.trailsframework:trails-core</include>
+				<include>org.trailsframework:trails-hibernate</include>
+				<include>org.trailsframework:trails-test</include>
+				<include>org.trailsframework:trails-security</include>
 			</includes>
-		</fileSet>
-		<fileSet>
-			<directory>src</directory>
-		</fileSet>
-	</fileSets>
+			<sources/>
+		</moduleSet>
+	</moduleSets>
 </assembly>
