@@ -175,13 +175,11 @@
 			<version>${spring.version}</version>
 			<scope>test</scope>
 		</dependency>
-<!--
 		<dependency>
 			<groupId>ognl</groupId>
 			<artifactId>ognl</artifactId>
 			<version>${ognl.version}</version>
 		</dependency>
--->
 		<dependency>
 			<groupId>org.apache.tapestry</groupId>
 			<artifactId>tapestry-framework</artifactId>
