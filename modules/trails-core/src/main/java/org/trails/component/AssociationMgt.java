@@ -14,11 +14,9 @@ import org.apache.tapestry.annotations.InjectState;
 import org.apache.tapestry.annotations.Lifecycle;
 import org.apache.tapestry.annotations.Parameter;
 import org.apache.tapestry.callback.ICallback;
-import org.apache.tapestry.components.Insert;
 import org.trails.TrailsRuntimeException;
 import org.trails.callback.AssociationCallback;
 import org.trails.callback.CallbackStack;
-import org.trails.callback.CollectionCallback;
 import org.trails.callback.EditCallback;
 import org.trails.descriptor.BlockFinder;
 import org.trails.descriptor.DescriptorService;
@@ -34,11 +32,8 @@ import org.trails.validation.TrailsValidationDelegate;
 
 /**
  * @author kenneth.colassi nhhockeyplayer@hotmail.com
- * @OneToOne use case.
- * <p/>
- * This guy manages the owning side user interface of a OneToOne association.
- * <p/>
- * Owner-<>-----Association
+ * @OneToOne use case. <p/> This guy manages the owning side user interface of a
+ *           OneToOne association. <p/> Owner-<>-----Association
  */
 @ComponentClass(allowBody = true, allowInformalParameters = true)
 public abstract class AssociationMgt extends TrailsComponent
@@ -79,6 +74,7 @@ public abstract class AssociationMgt extends TrailsComponent
 
 	@InjectState("callbackStack")
 	public abstract CallbackStack getCallbackStack();
+
 	public abstract void setCallbackStack(CallbackStack stack);
 
 	@InjectObject("service:trails.core.PageResolver")
@@ -95,8 +91,7 @@ public abstract class AssociationMgt extends TrailsComponent
 
 	public IClassDescriptor getClassDescriptor()
 	{
-		return getDescriptorService().getClassDescriptor(
-			getDescriptor().getPropertyType());
+		return getDescriptorService().getClassDescriptor(getDescriptor().getPropertyType());
 	}
 
 	public AssociationMgt()
@@ -126,7 +121,8 @@ public abstract class AssociationMgt extends TrailsComponent
 
 	AssociationCallback buildCallback()
 	{
-		AssociationCallback callback = new AssociationCallback(getPage().getRequestCycle().getPage().getPageName(), getModel(), getDescriptor());
+		AssociationCallback callback = new AssociationCallback(getPage().getRequestCycle().getPage().getPageName(),
+				getModel(), getDescriptor());
 		return callback;
 	}
 
@@ -134,61 +130,55 @@ public abstract class AssociationMgt extends TrailsComponent
 	{
 		getCallbackStack().push(buildCallback());
 
-		String currentEditPageName = getPage().getRequestCycle().getPage()
-			.getPageName();
-		EditPage ownerEditPage = (EditPage) getPageResolver().resolvePage(cycle, getDescriptor().getClass(), PageType.Edit);
+		String currentEditPageName = getPage().getRequestCycle().getPage().getPageName();
+		EditPage ownerEditPage = (EditPage) getPageResolver().resolvePage(cycle, getDescriptor().getClass(),
+				PageType.Edit);
 
 		try
 		{
 			Object newModel = buildNewMemberInstance();
-			EditCallback nextPage = new EditCallback(ownerEditPage
-				.getPageName(), newModel);
+			EditCallback nextPage = new EditCallback(ownerEditPage.getPageName(), newModel);
 
-			((EditPage) cycle.getPage(currentEditPageName))
-				.setNextPage(nextPage);
+			((EditPage) cycle.getPage(currentEditPageName)).setNextPage(nextPage);
 			nextPage.performCallback(cycle);
 		} catch (Exception ex)
 		{
-			throw new TrailsRuntimeException(ex, getDescriptor().getClass().getClass() );
+			throw new TrailsRuntimeException(ex, getDescriptor().getClass().getClass());
 		}
 	}
 
-	public void remove(IRequestCycle cycle) {
-		getCallbackStack().push(buildCallback());
+	public void remove(IRequestCycle cycle)
+	{
+		/**
+		 * This is a direct hit on the same page. No need to setup callbackstack.
+		 */
+		EditPage editPage = (EditPage) getPageResolver().resolvePage(cycle, getDescriptor().getClass(), PageType.Edit);
 
-		EditPage editPage = (EditPage) getPageResolver().resolvePage(cycle,
-				getDescriptor().getClass(), PageType.Edit);
-		try {
-			getPersistenceService().remove(getAssociation());
-			editPage.setModel(getPersistenceService().save(editPage.getModel()));
-			cycle.activate(editPage);
-		} catch (PersistenceException pe) {
-			getDelegate().record(pe);
-			return;
-		}
+		AssociationCallback callback = buildCallback();
 
-		ICallback callback = editPage.getCallbackStack().popPreviousCallback();
-		callback.performCallback(cycle);
+		callback.remove(getPersistenceService(), getAssociation());
+		cycle.activate(editPage);
+
+		EditCallback nextPage = new EditCallback(editPage.getPageName(), getModel());
+
+		String currentEditPageName = getPage().getRequestCycle().getPage().getPageName();
+		((EditPage) cycle.getPage(currentEditPageName)).setNextPage(nextPage);
+		nextPage.performCallback(cycle);
 	}
 
 	public IPage edit(Object member)
 	{
-		AssociationCallback callback = new AssociationCallback(
-			getPage().getRequestCycle().getPage().getPageName(),
-			getModel(),
-			getDescriptor());
+		AssociationCallback callback = new AssociationCallback(getPage().getRequestCycle().getPage().getPageName(),
+				getModel(), getDescriptor());
 		getCallbackStack().push(callback);
-		EditPage editPage = (EditPage) getPageResolver().resolvePage(
-			getPage().getRequestCycle(),
-			Utils.checkForCGLIB(member.getClass()),
-			PageType.Edit);
+		EditPage editPage = (EditPage) getPageResolver().resolvePage(getPage().getRequestCycle(),
+				Utils.checkForCGLIB(member.getClass()), PageType.Edit);
 
 		editPage.setModel(member);
 		return editPage;
 	}
 
-	protected Object buildNewMemberInstance() throws InstantiationException,
-		IllegalAccessException
+	protected Object buildNewMemberInstance() throws InstantiationException, IllegalAccessException
 	{
 		Object associationModel;
 		if (getCreateExpression() == null)
@@ -198,8 +188,7 @@ public abstract class AssociationMgt extends TrailsComponent
 		{
 			try
 			{
-				associationModel = Ognl.getValue(getCreateExpression(),
-					getOwner());
+				associationModel = Ognl.getValue(getCreateExpression(), getOwner());
 			} catch (OgnlException oe)
 			{
 				oe.printStackTrace();
@@ -207,7 +196,8 @@ public abstract class AssociationMgt extends TrailsComponent
 			}
 		}
 
-		if (getOwningObjectReferenceDescriptor() != null && getOwningObjectReferenceDescriptor().getInverseProperty() != null)
+		if (getOwningObjectReferenceDescriptor() != null
+				&& getOwningObjectReferenceDescriptor().getInverseProperty() != null)
 		{
 			try
 			{
