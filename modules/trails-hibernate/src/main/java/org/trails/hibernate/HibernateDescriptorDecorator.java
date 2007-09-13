@@ -24,6 +24,7 @@ import java.util.List;
 
 import ognl.Ognl;
 import ognl.OgnlException;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.HibernateException;
@@ -41,7 +42,17 @@ import org.hibernate.type.ComponentType;
 import org.hibernate.type.Type;
 import org.springframework.orm.hibernate3.LocalSessionFactoryBean;
 import org.trails.TrailsRuntimeException;
-import org.trails.descriptor.*;
+import org.trails.descriptor.CollectionDescriptor;
+import org.trails.descriptor.DescriptorDecorator;
+import org.trails.descriptor.DescriptorFactory;
+import org.trails.descriptor.EmbeddedDescriptor;
+import org.trails.descriptor.EnumReferenceDescriptor;
+import org.trails.descriptor.IClassDescriptor;
+import org.trails.descriptor.IPropertyDescriptor;
+import org.trails.descriptor.IdentifierDescriptor;
+import org.trails.descriptor.ObjectReferenceDescriptor;
+import org.trails.descriptor.OwningObjectReferenceDescriptor;
+import org.trails.descriptor.TrailsPropertyDescriptor;
 
 /**
  * This decorator will add metadata information. It will replace simple
@@ -398,7 +409,7 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 	{
 		Type hibernateType = mappingProperty.getType();
 		Class parentClassType = parentClassDescriptor.getType();
-		IPropertyDescriptor descriptorReference =
+		ObjectReferenceDescriptor descriptorReference =
 			new ObjectReferenceDescriptor(type, descriptor, hibernateType.getReturnedClass());
 
 		try
@@ -408,18 +419,22 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 				.getValue("propertyDescriptors.{? name == '" + descriptor.getName() + "'}[0]",
 					Introspector.getBeanInfo(parentClassType));
 			Method readMethod = beanPropDescriptor.getReadMethod();
-			String mappedBy = "";
+
+			// Start by checking for and retrieving mappedBy attribute inside the annotation
+			String inverseProperty = "";
 			if (readMethod.isAnnotationPresent(javax.persistence.OneToOne.class))
 			{
-				mappedBy = readMethod.getAnnotation(javax.persistence.OneToOne.class).mappedBy();
+				inverseProperty = readMethod.getAnnotation(javax.persistence.OneToOne.class).mappedBy();
 			} else if (propertyField.isAnnotationPresent(javax.persistence.OneToOne.class))
 			{
-				mappedBy = propertyField.getAnnotation(javax.persistence.OneToOne.class).mappedBy();
+				inverseProperty = propertyField.getAnnotation(javax.persistence.OneToOne.class).mappedBy();
 			} else
 			{
+				// If there is none then just return the ObjectReferenceDescriptor
 				return descriptorReference;
 			}
-			if ("".equals(mappedBy))
+
+			if ("".equals(inverseProperty))
 			{
 				// http://forums.hibernate.org/viewtopic.php?t=974287&sid=12d018b08dffe07e263652190cfc4e60
 				// Caution... this does not support multiple
@@ -431,17 +446,74 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 					{
 						Method theProperty = returnType.getDeclaredMethods()[i];
 						/* strips preceding 'get' */
-						mappedBy = theProperty.getName().substring(3).toLowerCase();
+						inverseProperty = theProperty.getName().substring(3).toLowerCase();
 						break;
 					}
 				}
 			}
 
-			OwningObjectReferenceDescriptor owningObjectReferenceDescriptor = new OwningObjectReferenceDescriptor();
-			owningObjectReferenceDescriptor.setInverseProperty(mappedBy);
-			descriptorReference
-				.addExtension(OwningObjectReferenceDescriptor.class.getName(), owningObjectReferenceDescriptor);
+			/**
+			 * Check identity owner/association
+			 */
+			if (readMethod.isAnnotationPresent(org.trails.descriptor.annotation.HardOneToOne.class))
+			{
+				OwningObjectReferenceDescriptor owningObjectReferenceDescriptor = new OwningObjectReferenceDescriptor();
 
+				org.trails.descriptor.annotation.HardOneToOne.Identity identity = readMethod.getAnnotation(
+						org.trails.descriptor.annotation.HardOneToOne.class).identity();
+
+				if (identity == org.trails.descriptor.annotation.HardOneToOne.Identity.OWNER)
+				{
+					inverseProperty = descriptor.getName();
+					if (inverseProperty.equals(""))
+					{
+						// find inverse property for ognl usage
+
+						// http://forums.hibernate.org/viewtopic.php?t=974287&sid=12d018b08dffe07e263652190cfc4e60
+						// Caution... this does not support multiple
+						// class references across the OneToOne relationship
+						Class returnType = readMethod.getReturnType();
+						for (int i = 0; i < returnType.getDeclaredMethods().length; i++)
+						{
+							if (returnType.getDeclaredMethods()[i].getReturnType().equals(
+									propertyField.getDeclaringClass()))
+							{
+								Method theProperty = returnType.getDeclaredMethods()[i];
+								/* strips preceding 'get' */
+								inverseProperty = theProperty.getName().substring(3).toLowerCase();
+								break;
+							}
+						}
+					}
+
+					owningObjectReferenceDescriptor.setInverseProperty(inverseProperty);
+
+					descriptorReference.addExtension(OwningObjectReferenceDescriptor.class.getName(),
+							owningObjectReferenceDescriptor);
+				} else if (identity == org.trails.descriptor.annotation.HardOneToOne.Identity.ASSOCIATION) {
+					if (inverseProperty.equals(""))
+					{
+						// find inverse property for ognl usage
+
+						// http://forums.hibernate.org/viewtopic.php?t=974287&sid=12d018b08dffe07e263652190cfc4e60
+						// Caution... this does not support multiple
+						// class references across the OneToOne relationship
+						Class returnType = readMethod.getReturnType();
+						for (int i = 0; i < returnType.getDeclaredMethods().length; i++)
+						{
+							if (returnType.getDeclaredMethods()[i].getReturnType().equals(
+									propertyField.getDeclaringClass()))
+							{
+								Method theProperty = returnType.getDeclaredMethods()[i];
+								/* strips preceding 'get' */
+								inverseProperty = theProperty.getName().substring(3).toLowerCase();
+								break;
+							}
+						}
+					}
+					descriptorReference.setInverseProperty(inverseProperty);
+				}
+			}
 		} catch (SecurityException e)
 		{
 			LOG.error(e.getMessage());
