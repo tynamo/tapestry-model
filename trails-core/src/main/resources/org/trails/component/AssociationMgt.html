@@ -1,16 +1,17 @@
 <span jwcid="$content$">
-    <tr>
+	<tr>
 		<td>
-            <span jwcid="@If" condition="ognl:not(page.isModelNew())">
-            <span jwcid="@If" condition="ognl:association">
-               <a href="#" jwcid="editLink" model="association"><span jwcid="linkInsert"/></a>
-            </span>
-            </span>
+			<span jwcid="@If" condition="ognl:not(page.isModelNew())">
+			<span jwcid="@If" condition="ognl:association">
+				<a jwcid="editLink@LinkSubmit" listener="listener:edit" parameters="ognl:association">
+					<span jwcid="insert@Insert" value="ognl:association"/>
+				</a>
+			</span>
+			</span>
 		</td>
 	</tr>
-    <tr>
-		<td><br>
-
+	<tr>
+		<td>
 			<div jwcid="@If" condition="ognl:association">
 				<input jwcid="removeButton" type="button"
 					   value="ognl:getMessage(@org.trails.component.Utils@REMOVE_MESSAGE)"/>

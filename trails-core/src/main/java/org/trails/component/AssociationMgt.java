@@ -2,8 +2,10 @@ package org.trails.component;
 
 import ognl.Ognl;
 import ognl.OgnlException;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.annotations.Bean;
 import org.apache.tapestry.annotations.ComponentClass;
@@ -11,10 +13,12 @@ import org.apache.tapestry.annotations.InjectObject;
 import org.apache.tapestry.annotations.InjectState;
 import org.apache.tapestry.annotations.Lifecycle;
 import org.apache.tapestry.annotations.Parameter;
+import org.apache.tapestry.callback.ICallback;
 import org.apache.tapestry.components.Insert;
 import org.trails.TrailsRuntimeException;
 import org.trails.callback.AssociationCallback;
 import org.trails.callback.CallbackStack;
+import org.trails.callback.CollectionCallback;
 import org.trails.callback.EditCallback;
 import org.trails.descriptor.BlockFinder;
 import org.trails.descriptor.DescriptorService;
@@ -24,6 +28,7 @@ import org.trails.descriptor.OwningObjectReferenceDescriptor;
 import org.trails.page.EditPage;
 import org.trails.page.PageResolver;
 import org.trails.page.TrailsPage.PageType;
+import org.trails.persistence.PersistenceException;
 import org.trails.persistence.PersistenceService;
 import org.trails.validation.TrailsValidationDelegate;
 
@@ -74,6 +79,7 @@ public abstract class AssociationMgt extends TrailsComponent
 
 	@InjectState("callbackStack")
 	public abstract CallbackStack getCallbackStack();
+	public abstract void setCallbackStack(CallbackStack stack);
 
 	@InjectObject("service:trails.core.PageResolver")
 	public abstract PageResolver getPageResolver();
@@ -140,10 +146,45 @@ public abstract class AssociationMgt extends TrailsComponent
 
 			((EditPage) cycle.getPage(currentEditPageName))
 				.setNextPage(nextPage);
+			nextPage.performCallback(cycle);
 		} catch (Exception ex)
 		{
 			throw new TrailsRuntimeException(ex, getDescriptor().getClass().getClass() );
 		}
+	}
+
+	public void remove(IRequestCycle cycle) {
+		getCallbackStack().push(buildCallback());
+
+		EditPage editPage = (EditPage) getPageResolver().resolvePage(cycle,
+				getDescriptor().getClass(), PageType.Edit);
+		try {
+			getPersistenceService().remove(getAssociation());
+			editPage.setModel(getPersistenceService().save(editPage.getModel()));
+			cycle.activate(editPage);
+		} catch (PersistenceException pe) {
+			getDelegate().record(pe);
+			return;
+		}
+
+		ICallback callback = editPage.getCallbackStack().popPreviousCallback();
+		callback.performCallback(cycle);
+	}
+
+	public IPage edit(Object member)
+	{
+		AssociationCallback callback = new AssociationCallback(
+			getPage().getRequestCycle().getPage().getPageName(),
+			getModel(),
+			getDescriptor());
+		getCallbackStack().push(callback);
+		EditPage editPage = (EditPage) getPageResolver().resolvePage(
+			getPage().getRequestCycle(),
+			Utils.checkForCGLIB(member.getClass()),
+			PageType.Edit);
+
+		editPage.setModel(member);
+		return editPage;
 	}
 
 	protected Object buildNewMemberInstance() throws InstantiationException,
@@ -179,23 +220,6 @@ public abstract class AssociationMgt extends TrailsComponent
 
 		return associationModel;
 	}
-
-	public void remove(IRequestCycle cycle)
-	{
-		EditPage editPage = (EditPage) getPageResolver().resolvePage(cycle, getDescriptor().getClass(), PageType.Edit);
-
-		AssociationCallback callback = buildCallback();
-
-		callback.remove(getPersistenceService(), getAssociation());
-		cycle.activate(editPage);
-
-		callback.performCallback(cycle);
-	}
-
-	public abstract EditLink getEditLink();
-
-	public abstract Insert getLinkInsert();
-
 
 	public OwningObjectReferenceDescriptor getOwningObjectReferenceDescriptor()
 	{
