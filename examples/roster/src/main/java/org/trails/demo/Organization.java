@@ -31,7 +31,9 @@ import org.trails.descriptor.BlobDescriptorExtension.RenderType;
 import org.trails.descriptor.annotation.BlobDescriptor;
 import org.trails.descriptor.annotation.ClassDescriptor;
 import org.trails.descriptor.annotation.Collection;
+import org.trails.descriptor.annotation.HardOneToOne;
 import org.trails.descriptor.annotation.PropertyDescriptor;
+import org.trails.descriptor.annotation.HardOneToOne.Identity;
 import org.trails.security.annotation.RemoveRequiresRole;
 import org.trails.security.annotation.UpdateRequiresRole;
 import org.trails.util.DatePattern;
@@ -122,7 +124,8 @@ public class Organization implements Cloneable, Serializable
 		return league;
 	}
 
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.REFRESH)
+	@HardOneToOne(identity = Identity.OWNER)
 	@JoinTable(name = "join_table_Organization_Director", joinColumns = @JoinColumn(name = "director_fk", insertable = true, updatable = true, nullable = true), inverseJoinColumns = { @JoinColumn(name = "organization_fk", insertable = true, updatable = true, nullable = true) })
 	//@OrderBy("lastName")
 	@PropertyDescriptor(index = 2)
