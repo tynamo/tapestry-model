@@ -53,7 +53,6 @@ public class AssociationCallback extends EditCallback
 	 */
 	private void executeOgnlExpression(String ognlExpression, Object newObject)
 	{
-
 		try
 		{
 			Ognl.setValue(ognlExpression, model, newObject);

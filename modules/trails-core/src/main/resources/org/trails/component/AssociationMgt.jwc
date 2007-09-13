@@ -22,13 +22,6 @@
 		<binding name="disabled">page.isModelNew()</binding>
 	</component>
 
-	<component id="editLink" type="EditLink">
-		<binding name="model">value</binding>
-	</component>
-	<component id="linkInsert" type="Insert">
-		<binding name="value">value</binding>
-	</component>
-
 	<parameter name="createExpression" required="no">
 		<description>Ognl expression to invoke on the model to create a new association instance</description>
 	</parameter>
