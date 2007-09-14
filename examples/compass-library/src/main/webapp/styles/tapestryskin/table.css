@@ -146,3 +146,7 @@ TABLE.tapestry-palette TH
    width: 60px;
  }
 
+.editCollection tbody td, tbody th {
+	font-size: 85%;
+	padding: 0 10px;
+}
