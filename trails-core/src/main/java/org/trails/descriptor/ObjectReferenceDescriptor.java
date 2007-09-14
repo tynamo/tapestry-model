@@ -21,8 +21,6 @@ public class ObjectReferenceDescriptor extends TrailsPropertyDescriptor
 {
 	private Class actualType;
 
-	private String inverseProperty = null;
-
 	public ObjectReferenceDescriptor(Class beanType, IPropertyDescriptor descriptor,
 									 Class actualType)
 	{
@@ -59,15 +57,5 @@ public class ObjectReferenceDescriptor extends TrailsPropertyDescriptor
 	public Object clone()
 	{
 		return new ObjectReferenceDescriptor(getBeanType(), this, getPropertyType());
-	}
-
-	public String getInverseProperty()
-	{
-		return inverseProperty;
-	}
-
-	public void setInverseProperty(String inverseProperty)
-	{
-		this.inverseProperty = inverseProperty;
 	}
 }
