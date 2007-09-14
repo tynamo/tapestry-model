@@ -124,7 +124,9 @@ public class HibernatePersistenceServiceImpl extends HibernateDaoSupport impleme
 	{
 		try
 		{
-			if (!getDescriptorService().getClassDescriptor(instance.getClass()).getHasCyclicRelationships())
+			IClassDescriptor iClassDescriptor = getDescriptorService().getClassDescriptor(instance.getClass());
+			/* check isTransient to avoid merging on entities not persisted yet. TRAILS-33 */
+			if (!iClassDescriptor.getHasCyclicRelationships() || isTransient(instance, iClassDescriptor))
 			{
 				getHibernateTemplate().saveOrUpdate(instance);
 			} else
@@ -368,7 +370,7 @@ public class HibernatePersistenceServiceImpl extends HibernateDaoSupport impleme
 	/**
 	 * This hook allows subclasses to modify the query criteria, such as for security
 	 *
-	 * @param source The original Criteria query
+	 * @param detachedCriteria The original Criteria query
 	 * @return The modified Criteria query for execution
 	 */
 	protected DetachedCriteria alterCriteria(Class type, DetachedCriteria detachedCriteria)
