@@ -5,6 +5,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Car
@@ -19,6 +20,8 @@ public class Car
 	private Integer id;
 
 	private String name;
+
+	private Person owner;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -68,5 +71,14 @@ public class Car
 		this.model = model;
 	}
 
+	@OneToOne
+	public Person getOwner()
+	{
+		return owner;
+	}
 
+	public void setOwner(Person owner)
+	{
+		this.owner = owner;
+	}
 }

@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 
@@ -15,6 +16,8 @@ public class Person
 	private Integer id;
 
 	private String name;
+
+	private Car car;
 
 	public Person()
 	{
@@ -57,12 +60,21 @@ public class Person
 		this.name = name;
 	}
 
+	@OneToOne(mappedBy = "owner")
+	public Car getCar()
+	{
+		return car;
+	}
+
+	public void setCar(Car car)
+	{
+		this.car = car;
+	}
+
 	@Override
 	public boolean equals(Object obj)
 	{
 		// TODO Auto-generated method stub
 		return EqualsBuilder.reflectionEquals(this, obj);
 	}
-
-
 }
