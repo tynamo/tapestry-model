@@ -1,4 +1,4 @@
-<!DOCTYPE component-specification PUBLIC "-//Apache Software Foundation//Tapestry Specification 4.0//EN" "http://jakarta.apache.org/tapestry/dtd/Tapestry_4_0.dtd">
+<!DOCTYPE component-specification PUBLIC "-//Apache Software Foundation//Tapestry Specification 4.1//EN" "http://jakarta.apache.org/tapestry/dtd/Tapestry_4_1.dtd">
 <component-specification class="org.trails.component.InvokeMethod" allow-body="yes" allow-informal-parameters="yes" deprecated="no">
 	<description>Produces a method which invokes specified method</description>
 	<parameter name="model" required="no" default-value="page.model" cache="yes" deprecated="no"/>
