@@ -123,7 +123,6 @@ div#nav {
 	position: absolute;
 	top: 0;
 	left: 0;
-	float: left;
 	width: 100%;
 	display: block;
 	height: 13px;
@@ -141,14 +140,9 @@ div#nav ul {
 
 div#nav li {
 	background-image: none;
-	float: left;
 	display: inline;
 	list-style: none;
 	margin: 0 10px 0 10px;
-}
-
-div#nav li.right {
-	float: right;
 }
 
 div#nav li.last {
@@ -174,19 +168,15 @@ div#nav .selected a {
 ul#primary-nav, ul#primary-nav ul {
 	margin: 0;
 	padding: 0;
-	background: #fff; /* IE6 Bug */
 	font-size: 100%;
 }
 	ul#primary-nav li {
-		position: relative;
-		list-style: none;
+	/*	position: relative; */
+ 		list-style: none;
 	}
 		ul#primary-nav li a {
-			display: block;
 			text-decoration: none;
 			color: #777;
-
-			text-align: center;
 			white-space: nowrap;
 		}
 	/* Fix IE. Hide from IE Mac \*/
@@ -195,6 +185,14 @@ ul#primary-nav, ul#primary-nav ul {
 		* html ul#primary-nav ul { width: 149px; }
 		* html ul#primary-nav ul li { width: 149px; }
 	/* End */
+
+
+ul.locales {
+	float: right;
+	display: block;
+	margin-top: -3px;
+	white-space: nowrap;
+}
 
 /**
  * Icons from: Silk icon set 1.3
