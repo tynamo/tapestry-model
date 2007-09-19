@@ -396,13 +396,13 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 
 			// Start by checking for and retrieving mappedBy attribute inside
 			// the annotation
-			String mappedBy = "";
+			String inverseProperty = "";
 			if (readMethod.isAnnotationPresent(javax.persistence.OneToOne.class))
 			{
-				mappedBy = readMethod.getAnnotation(javax.persistence.OneToOne.class).mappedBy();
+				inverseProperty = readMethod.getAnnotation(javax.persistence.OneToOne.class).mappedBy();
 			} else if (propertyField.isAnnotationPresent(javax.persistence.OneToOne.class))
 			{
-				mappedBy = propertyField.getAnnotation(javax.persistence.OneToOne.class).mappedBy();
+				inverseProperty = propertyField.getAnnotation(javax.persistence.OneToOne.class).mappedBy();
 			} else
 			{
 				// If there is none then just return the
@@ -410,43 +410,63 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 				return descriptorReference;
 			}
 
-			if (readMethod.isAnnotationPresent(javax.persistence.OneToOne.class) ||
-					propertyField.isAnnotationPresent(javax.persistence.OneToOne.class))
+			if ("".equals(inverseProperty))
 			{
-				if ("".equals(mappedBy))
+				// http://forums.hibernate.org/viewtopic.php?t=974287&sid=12d018b08dffe07e263652190cfc4e60
+				// Caution... this does not support multiple
+				// class references across the OneToOne relationship
+				Class returnType = readMethod.getReturnType();
+				for (int i = 0; i < returnType.getDeclaredMethods().length; i++)
 				{
-					/**
-					 * We enocuntered an OWNER. Drill into reflection and get
-					 * inverse
-					 */
-					mappedBy = descriptor.getName();
-					// http://forums.hibernate.org/viewtopic.php?t=974287&sid=12d018b08dffe07e263652190cfc4e60
-					// Caution... this does not support multiple
-					// class references across the OneToOne relationship
-					Class returnType = readMethod.getReturnType();
-					for (int i = 0; i < returnType.getDeclaredMethods().length; i++)
+					if (returnType.getDeclaredMethods()[i].getReturnType().equals(propertyField.getDeclaringClass()))
 					{
-						if (returnType.getDeclaredMethods()[i].getReturnType().equals(propertyField.getDeclaringClass()))
+						Method theProperty = returnType.getDeclaredMethods()[i];
+						/* strips preceding 'get' */
+						inverseProperty = theProperty.getName().substring(3).toLowerCase();
+						break;
+					}
+				}
+			}
+
+			/**
+			 * Check identity owner/association
+			 */
+			if (readMethod.isAnnotationPresent(org.trails.descriptor.annotation.HardOneToOne.class))
+			{
+				OwningObjectReferenceDescriptor owningObjectReferenceDescriptor = new OwningObjectReferenceDescriptor();
+
+				org.trails.descriptor.annotation.HardOneToOne.Identity identity = readMethod.getAnnotation(
+						org.trails.descriptor.annotation.HardOneToOne.class).identity();
+
+				if (identity == org.trails.descriptor.annotation.HardOneToOne.Identity.OWNER)
+				{
+					inverseProperty = descriptor.getName();
+					if (inverseProperty.equals(""))
+					{
+						// find inverse property for ognl usage
+
+						// http://forums.hibernate.org/viewtopic.php?t=974287&sid=12d018b08dffe07e263652190cfc4e60
+						// Caution... this does not support multiple
+						// class references across the OneToOne relationship
+						Class returnType = readMethod.getReturnType();
+						for (int i = 0; i < returnType.getDeclaredMethods().length; i++)
 						{
-							Method theProperty = returnType.getDeclaredMethods()[i];
-							/* strips preceding 'get' */
-							mappedBy = theProperty.getName().substring(3).toLowerCase();
-							break;
+							if (returnType.getDeclaredMethods()[i].getReturnType().equals(
+									propertyField.getDeclaringClass()))
+							{
+								Method theProperty = returnType.getDeclaredMethods()[i];
+								/* strips preceding 'get' */
+								inverseProperty = theProperty.getName().substring(3).toLowerCase();
+								break;
+							}
 						}
 					}
-					OwningObjectReferenceDescriptor owningObjectReferenceDescriptor = new OwningObjectReferenceDescriptor();
 
-					owningObjectReferenceDescriptor.setInverseProperty(mappedBy);
+					owningObjectReferenceDescriptor.setInverseProperty(inverseProperty);
 
 					descriptorReference.addExtension(OwningObjectReferenceDescriptor.class.getName(),
 							owningObjectReferenceDescriptor);
 				}
-				/**
-				 * Alternate else case omitted...
-				 * else...We encountered an ASSOCIATION. 
-				 * Use the propertyName as inverse from the descriptor
-				 * or just use the mappedBy attribute from the hibernate annotation
-				 */					
 			}
 		} catch (SecurityException e)
 		{
