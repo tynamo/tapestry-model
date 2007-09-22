@@ -53,6 +53,7 @@
 			</zipUrlInstaller>
 		  </container>
 		</configuration>
+<!-- Commented out until there are tests to execute
 		<executions>
 		  <execution>
 			<id>start-container</id>
@@ -69,6 +70,7 @@
 			</goals>
 		  </execution>
 		</executions>
+-->
 	  </plugin>
 	</plugins>
   </build>
