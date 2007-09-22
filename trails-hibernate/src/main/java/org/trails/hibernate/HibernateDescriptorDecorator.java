@@ -428,46 +428,6 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 				}
 			}
 
-			/**
-			 * Check identity owner/association
-			 */
-			if (readMethod.isAnnotationPresent(org.trails.descriptor.annotation.HardOneToOne.class))
-			{
-				OwningObjectReferenceDescriptor owningObjectReferenceDescriptor = new OwningObjectReferenceDescriptor();
-
-				org.trails.descriptor.annotation.HardOneToOne.Identity identity = readMethod.getAnnotation(
-						org.trails.descriptor.annotation.HardOneToOne.class).identity();
-
-				if (identity == org.trails.descriptor.annotation.HardOneToOne.Identity.OWNER)
-				{
-					inverseProperty = descriptor.getName();
-					if (inverseProperty.equals(""))
-					{
-						// find inverse property for ognl usage
-
-						// http://forums.hibernate.org/viewtopic.php?t=974287&sid=12d018b08dffe07e263652190cfc4e60
-						// Caution... this does not support multiple
-						// class references across the OneToOne relationship
-						Class returnType = readMethod.getReturnType();
-						for (int i = 0; i < returnType.getDeclaredMethods().length; i++)
-						{
-							if (returnType.getDeclaredMethods()[i].getReturnType().equals(
-									propertyField.getDeclaringClass()))
-							{
-								Method theProperty = returnType.getDeclaredMethods()[i];
-								/* strips preceding 'get' */
-								inverseProperty = theProperty.getName().substring(3).toLowerCase();
-								break;
-							}
-						}
-					}
-
-					owningObjectReferenceDescriptor.setInverseProperty(inverseProperty);
-
-					descriptorReference.addExtension(OwningObjectReferenceDescriptor.class.getName(),
-							owningObjectReferenceDescriptor);
-				}
-			}
 		} catch (SecurityException e)
 		{
 			LOG.error(e.getMessage());
