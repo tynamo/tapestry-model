@@ -11,8 +11,8 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.trails.descriptor.annotation.ClassDescriptor;
-// import org.trails.descriptor.annotation.HardOneToOne;
-// import org.trails.descriptor.annotation.HardOneToOne.Identity;
+import org.trails.descriptor.annotation.HardOneToOne;
+import org.trails.descriptor.annotation.HardOneToOne.Identity;
 import org.trails.security.annotation.RemoveRequiresRole;
 import org.trails.security.annotation.UpdateRequiresRole;
 import org.trails.security.annotation.ViewRequiresRole;
@@ -57,7 +57,7 @@ public class Director extends Person implements Cloneable, Serializable
 	}
 
 	@OneToOne(mappedBy = "director")
-//	@HardOneToOne(identity = Identity.ASSOCIATION)
+	@HardOneToOne(identity = Identity.ASSOCIATION)
 	@JoinTable(name = "join_table_Organization_Director", joinColumns = @JoinColumn(name = "organization_fk", insertable = true, updatable = true, nullable = true), inverseJoinColumns =
 	{ @JoinColumn(name = "director_fk", insertable = true, updatable = true, nullable = true) })
 	public Organization getOrganization()
