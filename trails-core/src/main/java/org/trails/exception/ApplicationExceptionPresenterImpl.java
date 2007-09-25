@@ -1,5 +1,7 @@
 package org.trails.exception;
 
+import java.io.IOException;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.tapestry.IPage;
@@ -19,8 +21,6 @@ public class ApplicationExceptionPresenterImpl extends ExceptionPresenterImpl {
 	private static final Log log = LogFactory.getLog(ApplicationExceptionPresenterImpl.class);
 	private PageResolver pageResolver;
 	
-	public enum DefaultPage{UnknownEntity};
-	
 	public void presentException(IRequestCycle cycle, Throwable throwable) {
 		if (throwable.getCause() == null || !(throwable.getCause() instanceof TrailsRuntimeException)) {
 			super.presentException(cycle, throwable);
@@ -39,10 +39,14 @@ public class ApplicationExceptionPresenterImpl extends ExceptionPresenterImpl {
 			}
 		}
 		log.debug("The problem was caused by: ", throwable.getCause());
-		IPage iPage = pageResolver.resolvePage(cycle, trailsRuntimeException.getEntityType(), PageType.Exception);
-		
-		setExceptionPageName(iPage.getPageName());
-		super.presentException(cycle, throwable.getCause() );
+		IPage page = pageResolver.resolvePage(cycle, trailsRuntimeException.getEntityType(), PageType.Exception);
+		cycle.activate(page);
+		try {
+			cycle.getResponseBuilder().renderResponse(cycle);
+		} catch (IOException e) {
+			log.error("Couldn't render a Trails specific error page because of : ", e);
+			super.presentException(cycle, throwable);
+		}
 	}
 
 	public void setPageResolver(PageResolver pageResolver) {
