@@ -186,7 +186,7 @@ public class CollectionDescriptor extends TrailsPropertyDescriptor
 
 	private void copyFrom(CollectionDescriptor collectionDescriptor)
 	{
-		LOG.debug("Clonning CollectionDescriptor");
+		LOG.debug("Cloning CollectionDescriptor");
 		try
 		{
 			BeanUtils.copyProperties(this, collectionDescriptor);
