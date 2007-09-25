@@ -97,13 +97,9 @@
 		</invoke-factory>
 	</service-point>
 	
-	<contribution configuration-id="tapestry.InfrastructureOverrides">
-		<property name="exceptionPresenter" object="service:ApplicationExceptionPresenter"/>
-	</contribution>
-	
 	<service-point id="PageResolver" interface="org.trails.page.PageResolver">
 		<invoke-factory>
 			<construct class="org.trails.page.DefaultPageResolver"/>
 		</invoke-factory>
 	</service-point>
-=</module>
+</module>
