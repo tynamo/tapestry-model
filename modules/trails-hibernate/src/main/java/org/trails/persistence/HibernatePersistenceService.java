@@ -42,5 +42,8 @@ public interface HibernatePersistenceService extends PersistenceService
 	public <T> T merge(T instance);
 
 	public <T> T saveOrUpdate(T instance);
-
+	
+	public List find(String queryString);
+	public List find(String queryString, Object value);
+	public List find(String queryString, Object[] values);
 }

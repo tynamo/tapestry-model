@@ -11,6 +11,7 @@ import org.hibernate.criterion.Restrictions;
 import org.trails.descriptor.DescriptorService;
 import org.trails.descriptor.IClassDescriptor;
 import org.trails.persistence.HibernatePersistenceService;
+import java.util.List;
 
 public aspect ValidateUniqueAspect
 {
@@ -54,14 +55,24 @@ public aspect ValidateUniqueAspect
         {
             String propertyName = validateUniqueness.property();
             Object value = PropertyUtils.getProperty(savee, propertyName);
-            criteria.add(Restrictions.eq(propertyName, value));
             String idPropertyName = descriptor.getIdentifierDescriptor().getName();
             Object idValue = PropertyUtils.getProperty(savee, idPropertyName);
-            if (idValue != null)
-            {
-                criteria.add(Restrictions.not(Restrictions.idEq(idValue)));
+            
+            // Note that neither this or the previous Criteria-based implementation works
+            // if the unique property is an entity. You could implement this as well similarly
+            // as is done evaluating <Operation>RequiresAssociation with an entity
+            // See SecurePersistenceServiceImpl for example
+            String queryString = "select count(*) from " + savee.getClass().getName() 
+            + " where " + propertyName + " = ?"; 
+            
+            List result;
+            if (idValue != null) {
+            	queryString += " and " + idPropertyName + " != ?";
+            	result = getPersistenceService().find(queryString, new Object[]{value, idValue});
             }
-            if (getPersistenceService().getInstances(savee.getClass(), criteria).size() > 0)
+            else result = getPersistenceService().find(queryString, value);
+            
+            if ((Long)result.get(0) > 0)
             {
                 throw new UniquenessException(descriptor.getPropertyDescriptor(propertyName));
             }

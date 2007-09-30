@@ -1,5 +1,7 @@
 package org.trails.validation;
 
+import java.util.List;
+
 import org.springframework.test.AbstractTransactionalSpringContextTests;
 import org.trails.persistence.HibernatePersistenceService;
 import org.trails.testhibernate.Baz;
@@ -28,6 +30,22 @@ public class ValidateUniquenessTest extends AbstractTransactionalSpringContextTe
 
 	HibernatePersistenceService persistenceService;
 
+	public void testUniquenessQuery() {
+		Baz baz = new Baz();
+		baz.setDescription("one");
+		persistenceService.save(baz);
+		Baz baz2 = new Baz();
+		baz2.setDescription("second");
+		persistenceService.save(baz2);
+
+		Object[] values = {baz.getDescription(), baz2.getId()};
+		// Should refect the query used in ValidateUniqueAspect.aj
+		List result = persistenceService.find("select count(*) from " 
+        + baz.getClass().getName() + " where description " 
+        + " = ? and id " + " != ?", values);
+		assertTrue((Long)result.get(0) == 1);
+	}
+	
 	public void testUniqueness() throws Exception
 	{
 
@@ -49,7 +67,7 @@ public class ValidateUniquenessTest extends AbstractTransactionalSpringContextTe
 		assertNotNull(caught);
 		assertEquals("right message", "Description must be unique.",
 			caught.getMessage());
-	}
+	}	
 
 	public void testUniquenessWithNonString() throws Exception
 	{
