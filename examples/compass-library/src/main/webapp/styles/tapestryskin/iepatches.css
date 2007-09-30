@@ -11,3 +11,11 @@
 * html form ul {
 	width:99% !important;
 }
+
+* html ul.locales {
+	margin-top: -3px !important;
+}
+
+* html div#content {
+	min-width: 770px !important;
+}

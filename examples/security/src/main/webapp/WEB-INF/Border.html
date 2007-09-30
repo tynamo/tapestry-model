@@ -39,21 +39,24 @@
 					<span jwcid="@If" condition="ognl:navBlock">
 						 <span jwcid="@RenderBlock" block="ognl:page.components[navBlock]"/>
 					</span>
-					<li class="pad right">&nbsp;</li>
-					<li class="right">
-						<a jwcid="@ServiceLink" service="logout"><span
-								jwcid="@Insert" value="message:logout">logout</span></a>
-					</li>
+				</ul>
+				<ul class="locales">
 					<span jwcid="@If" condition="ognl:currentUser">
-						<li class="pad right">&nbsp;</li>
-						<li class="right">
-						  <a href="#" jwcid="@trails:EditLink" model="ognl:currentUser">Edit my profile</a>
+						<li>
+							<a href="#" jwcid="@trails:EditLink" model="ognl:currentUser">Edit my profile</a>
 						</li>
 					</span>
-					<li class="pad right">&nbsp;</li>
-					<li class="right">
-					  <a href="/external.svc?page=DefaultEdit&sp=HIBRN8%3ADorg.trails.demo.User%3A2">Try to edit Admin's profile</a>
+					<li>&nbsp;</li>
+					<li>
+						<a href="/external.svc?page=DefaultEdit&sp=HIBRN8%3ADorg.trails.demo.User%3A2">Try to edit
+							Admin's profile</a>
 					</li>
+					<li>&nbsp;</li>
+					<li>
+						<a jwcid="@ServiceLink" service="logout"><span
+							jwcid="@Insert" value="message:logout">logout</span></a>
+					</li>
+					<li>&nbsp;</li>
 				</ul>
 			</div>
 		</div>

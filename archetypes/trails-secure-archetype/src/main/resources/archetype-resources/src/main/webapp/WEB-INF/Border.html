@@ -39,11 +39,13 @@
 					<span jwcid="@If" condition="ognl:navBlock">
 						 <span jwcid="@RenderBlock" block="ognl:page.components[navBlock]"/>
 					</span>
-					<li class="pad right">&nbsp;</li>
-					<li class="right">
-						<a jwcid="@ServiceLink" service="ognl:@org.apache.tapestry.Tapestry@RESTART_SERVICE"><span
-								jwcid="@Insert" value="message:logout">logout</span></a>
+				</ul>
+				<ul class="locales">
+					<li>
+						<a jwcid="@ServiceLink" service="logout"><span
+							jwcid="@Insert" value="message:logout">logout</span></a>
 					</li>
+					<li>&nbsp;</li>
 				</ul>
 			</div>
 		</div>

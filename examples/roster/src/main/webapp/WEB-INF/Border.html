@@ -45,20 +45,21 @@
 					<span jwcid="@If" condition="ognl:navBlock">
 						 <span jwcid="@RenderBlock" block="ognl:page.components[navBlock]"/>
 					</span>
-					<li class="pad right">&nbsp;</li>
-					<li class="left">
-						<a jwcid="@ServiceLink" service="ognl:@org.apache.tapestry.Tapestry@RESTART_SERVICE">
-								<span jwcid="@Insert" value="message:org.trails.i18n.logout">logout</span></a>
+				</ul>
+				<ul class="locales">
+					<span jwcid="@If" condition="ognl:currentUser">
+						<li>
+							<a href="#" jwcid="@trails:EditLink" model="ognl:currentUser">
+								<span jwcid="@Insert" value="ognl:messages.format('org.trails.i18n.loggedInAs', currentUser)">Edit User Profile</span>
+							</a>
+						</li>
+					</span>
+					<li>&nbsp;</li>
+					<li>
+						<a jwcid="@ServiceLink" service="logout"><span
+							jwcid="@Insert" value="message:logout">logout</span></a>
 					</li>
-				<span jwcid="@If" condition="ognl:currentUser">
-					<li class="pad right">&nbsp;</li>
-					<li class="right">
-					  <a href="#" jwcid="@trails:EditLink" model="ognl:currentUser">
-							<span jwcid="@Insert" value="ognl:messages.format('org.trails.i18n.loggedInAs', currentUser)">Edit User Profile</span>
-					  </a>
-					</li>
-				</span>
-					<li class="pad right">&nbsp;</li>
+					<li>&nbsp;</li>
 				</ul>
 			</div>
 		</div>

@@ -142,7 +142,6 @@ div#nav li {
 	background-image: none;
 	display: inline;
 	list-style: none;
-	margin: 0 10px 0 10px;
 }
 
 div#nav li.last {
@@ -190,7 +189,7 @@ ul#primary-nav, ul#primary-nav ul {
 ul.locales {
 	float: right;
 	display: block;
-	margin-top: -3px;
+	margin-top: -15px;
 	white-space: nowrap;
 }
 

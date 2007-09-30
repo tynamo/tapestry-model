@@ -116,12 +116,6 @@ table a:active {
 
 TABLE.tapestry-palette TH
  {
-/*
-   font-size: 9pt;
-   font-weight: bold;
-   color: white;
-   background-color: #330066;
-*/
    text-align: center;
  }
 
@@ -146,7 +140,50 @@ TABLE.tapestry-palette TH
    width: 60px;
  }
 
-.editCollection tbody td, tbody th {
+.editCollection tbody td {
 	font-size: 85%;
 	padding: 0 10px;
+}
+
+
+table.calendarContainer td {
+	margin: 0;
+	padding: 0;
+}
+
+table.calendarContainer tr {
+	font-size: 1.1em;
+}
+
+table.calendarBodyContainer tr {
+	font-size: 1.3em;
+}
+
+
+div.calendar {
+	width:340px;
+	padding:0 !important;
+}
+
+
+div.calendarHeader tbody td, div.calendarHeader tbody th {
+	margin: 0;
+	padding:0;
+}
+
+div.calendarFooter * {
+	margin: auto !important;
+}
+
+div.calendarFooter button {
+	width:100%;
+}
+
+div.calendar th {
+	background:none !important;
+}
+
+div.calendarBody * {
+	padding:5px !important;
+	margin: auto !important;
 }
