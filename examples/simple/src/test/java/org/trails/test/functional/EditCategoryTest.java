@@ -21,6 +21,7 @@ import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.gargoylesoftware.htmlunit.html.HtmlSubmitInput;
 import com.gargoylesoftware.htmlunit.html.HtmlTextArea;
 import com.gargoylesoftware.htmlunit.html.HtmlTextInput;
+import com.gargoylesoftware.htmlunit.html.HtmlInput;
 import com.gargoylesoftware.htmlunit.html.xpath.HtmlUnitXPath;
 import org.jaxen.JaxenException;
 
@@ -58,9 +59,22 @@ public class EditCategoryTest extends FunctionalTest
 		getInputByName(newCatalogPage, "Name").setValueAttribute("new catalog");
 		newCatalogPage = clickButton(newCatalogPage, "Apply");
 		assertNotNull("error div", getErrorDiv(newCatalogPage));
-		getInputByName(newCatalogPage, "Name").setValueAttribute("newcatalog");
+		HtmlInput nameInput = getInputInErrorByName(newCatalogPage, "Name");
+		assertNotNull("name input label", nameInput);
+		nameInput.setValueAttribute("newspacecatalog");
 		newCatalogPage = clickButton(newCatalogPage, "Apply");
 		assertNull("no error div", getErrorDiv(newCatalogPage));
+	}
+
+	/**
+	 * It matches:
+	 * <li><font color="red"><label for="stringField" class="desc">Name</label></font>
+	 *
+	 */
+	protected HtmlInput getInputInErrorByName(HtmlPage page, String name) throws JaxenException
+	{
+		return (HtmlInput)
+			new HtmlUnitXPath("//input/preceding-sibling::font[label[contains(text(), '" + name + "')]]/following-sibling::input").selectSingleNode(page);
 	}
 
 	private HtmlForm goToNewCategoryForm() throws Exception

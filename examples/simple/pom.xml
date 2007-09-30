@@ -25,10 +25,6 @@
 							<goal>test</goal>
 						</goals>
 						<configuration>
-							<!-- Dojo's Javascript causes HtmlUnit 1.11 to fail with:
-							 Exception class=[org.mozilla.javascript.EvaluatorException]
-							 must ignore failures for now -->
-							<testFailureIgnore>true</testFailureIgnore>
 							<includes>
 								<include>
 									**/functional/*Test.java

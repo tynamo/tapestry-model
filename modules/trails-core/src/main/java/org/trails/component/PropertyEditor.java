@@ -25,7 +25,7 @@ import org.trails.page.IEditorBlockPage;
  *         TODO To change the template for this generated type comment go to
  *         Window - Preferences - Java - Code Style - Code Templates
  */
-public abstract class PropertyEditor extends TrailsComponent implements IFormComponent
+public abstract class PropertyEditor extends TrailsComponent
 {
 	public abstract IPropertyDescriptor getDescriptor();
 
