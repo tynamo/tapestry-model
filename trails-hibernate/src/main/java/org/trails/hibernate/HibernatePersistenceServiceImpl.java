@@ -96,7 +96,18 @@ public class HibernatePersistenceServiceImpl extends HibernateDaoSupport impleme
 	{
 		return (T) getHibernateTemplate().load(type, id);
 	}
+	
+	public List find(String queryString) {
+		return getHibernateTemplate().find(queryString);
+	}
+	public List find(String queryString, Object value) {
+		return getHibernateTemplate().find(queryString, value);
+	}
+	public List find(String queryString, Object[] values) {
+		return getHibernateTemplate().find(queryString, values);
+	}
 
+	
 	/*
 		 * (non-Javadoc)
 		 *
