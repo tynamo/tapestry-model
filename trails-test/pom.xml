@@ -8,14 +8,14 @@
 	<parent>
 		<artifactId>modules</artifactId>
 		<groupId>org.trailsframework</groupId>
-		<version>1.1</version>
+		<version>1.2-SNAPSHOT</version>
 	</parent>
 
 	<dependencies>
 		<dependency>
 			<artifactId>trails-core</artifactId>
 			<groupId>org.trailsframework</groupId>
-			<version>1.1</version>
+			<version>1.2-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>jmock</groupId>
