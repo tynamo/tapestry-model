@@ -12,6 +12,7 @@ import org.trails.descriptor.DescriptorService;
 import org.trails.descriptor.IClassDescriptor;
 import org.trails.persistence.HibernatePersistenceService;
 import java.util.List;
+import org.trails.component.Utils;
 
 public aspect ValidateUniqueAspect
 {
@@ -62,7 +63,7 @@ public aspect ValidateUniqueAspect
             // if the unique property is an entity. You could implement this as well similarly
             // as is done evaluating <Operation>RequiresAssociation with an entity
             // See SecurePersistenceServiceImpl for example
-            String queryString = "select count(*) from " + savee.getClass().getName() 
+            String queryString = "select count(*) from " + Utils.checkForCGLIB(savee.getClass()).getName() 
             + " where " + propertyName + " = ?"; 
             
             List result;
