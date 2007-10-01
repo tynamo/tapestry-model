@@ -44,6 +44,13 @@ public class ValidateUniquenessTest extends AbstractTransactionalSpringContextTe
         + baz.getClass().getName() + " where description " 
         + " = ? and id " + " != ?", values);
 		assertTrue((Long)result.get(0) == 1);
+
+		Object[] values2 = {baz.getDescription(), baz.getId()};
+		result = persistenceService.find("select count(*) from " 
+        + baz.getClass().getName() + " where description " 
+        + " = ? and id " + " != ?", values2);
+		assertTrue((Long)result.get(0) == 0);
+
 	}
 	
 	public void testUniqueness() throws Exception
