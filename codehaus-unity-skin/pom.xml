@@ -4,11 +4,11 @@
 <parent>
 	<groupId>org.trailsframework</groupId>
 	<artifactId>trails</artifactId>
-	<version>1.1</version>
+	<version>1.2-SNAPSHOT</version>
 </parent>
 <groupId>org.trailsframework</groupId>
 <artifactId>codehaus-unity-skin</artifactId>
-<version>1.0</version>
+<version>1.1-SNAPSHOT</version>
 <name>Codehaus Unity Integration Site Skin</name>
 <description>Bare bones sking producing only divs to be decorated by Codehaus Unity</description>
 </project>
