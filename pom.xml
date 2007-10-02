@@ -7,7 +7,7 @@
 	<groupId>org.trailsframework</groupId>
 	<artifactId>trails</artifactId>
 	<packaging>pom</packaging>
-	<version>1.2-SNAPSHOT</version>
+	<version>1.1.1</version>
 
 	<properties>
 		<!-- Plugin dependencies and extensions don't use dependencyManagement section, specify a single version here. 
@@ -80,9 +80,9 @@
 		</mailingList>
 	</mailingLists>
 	<scm>
-		<connection>scm:svn:http://svn.codehaus.org/trails/trunk/trails</connection>
-		<developerConnection>scm:svn:https://svn.codehaus.org/trails/trunk/trails</developerConnection>
-		<url>http://svn.trails.codehaus.org/trails/trunk/trails</url>
+		<connection>scm:svn:http://svn.codehaus.org/trails/tags/trails-1.1.1</connection>
+		<developerConnection>scm:svn:https://svn.codehaus.org/trails/tags/trails-1.1.1</developerConnection>
+		<url>http://svn.trails.codehaus.org/trails/tags/trails-1.1.1</url>
 	</scm>
 
 	<prerequisites>
