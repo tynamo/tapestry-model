@@ -161,7 +161,7 @@
 		<dependency>
 			<groupId>org.trailsframework</groupId>
 			<artifactId>trails-hibernate</artifactId>
-			<version>1.1-SNAPSHOT</version>
+			<version>${pom.version}</version>
 			<exclusions>
 				<exclusion>
 					<groupId>javax.servlet</groupId>
