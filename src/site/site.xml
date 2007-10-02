@@ -7,7 +7,7 @@
   <skin>
     <groupId>org.trailsframework</groupId>
     <artifactId>codehaus-unity-skin</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0</version>
   </skin>
 	
 
