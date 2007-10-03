@@ -1,9 +1,4 @@
 /* NAV */
-div#main {
-	top: 25;
-	left: 10;
-}
-
 div#content {
 	position: relative;
 	padding: 0;
@@ -65,10 +60,11 @@ div#sub h2 {
 
 div#navcolumn {
 	position: absolute;
-	top: 42;
-	left: 10;
+	top: 0;
+	left: 0;
 	float: left;
 	width: 180px;
+	margin: 40px 0 20px 0;
 	padding: 0;
 	display: inline;
 
