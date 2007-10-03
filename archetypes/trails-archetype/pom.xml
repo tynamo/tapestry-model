@@ -10,17 +10,4 @@
 		<groupId>org.trailsframework</groupId>
 		<version>1.2-SNAPSHOT</version>
 	</parent>
-	
-	<build>
-		<resources>
-			<resource>
-				<directory>src/main/resources/archetype-resources</directory>
-				<filtering>false</filtering>
-			</resource>
-			<resource>
-				<directory>src/main/resources/archetype-filtered-resources</directory>
-				<filtering>true</filtering>
-			</resource>
-		</resources>
-	</build>	
 </project>

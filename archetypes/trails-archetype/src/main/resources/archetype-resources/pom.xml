@@ -7,7 +7,7 @@
 	<artifactId>${artifactId}</artifactId>
 	<packaging>war</packaging>
 	<version>${version}</version>
-	<name>A simple and secure trails project</name>
+	<name>A simple trails project</name>
 	<url>http://www.trailsframework.org/</url>
 
 	<properties>
@@ -99,7 +99,7 @@
 			<plugin>
 				<groupId>org.mortbay.jetty</groupId>
 				<artifactId>maven-jetty-plugin</artifactId>
-				<version>6.1.0</version>
+				<version>6.1.1</version>
 				<configuration>
 					<contextPath>/</contextPath>
 					<scanTargets>
@@ -160,8 +160,8 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.trailsframework</groupId>
-			<artifactId>trails-security</artifactId>
-			<version>${pom.version}</version>
+			<artifactId>trails-hibernate</artifactId>
+			<version>1.1.1</version>
 			<exclusions>
 				<exclusion>
 					<groupId>javax.servlet</groupId>
@@ -169,15 +169,6 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-
-		<!-- ascandroli 2007-05-30: This dependency isn't working as a transitive dependency, so we need it here to
-		avoid duplicated log library exception. I don't know exactly why -->
-		<dependency>
-			<groupId>commons-logging</groupId>
-			<artifactId>commons-logging</artifactId>
-			<version>1.1</version>
-		</dependency>
-
 		<dependency>
 			<!-- kaosko 2006-09-06: Apt plugin may silently fail if Jaxen isn't declared. The reason's a bit unclear, but my best guess
 			it's because of different versions of apt plugin posted as the same version (which is wrong for non-snapshots) -->
