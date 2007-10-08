@@ -129,6 +129,7 @@
 				/Login*=ROLE_ANONYMOUS
 				/restart.svc*=ROLE_ANONYMOUS,ROLE_USER
 				/assets/**/Form.js=ROLE_ANONYMOUS,ROLE_USER
+				/assets/static/**/*.js=ROLE_ANONYMOUS,ROLE_USER
 				/**/*.gif=ROLE_ANONYMOUS,ROLE_USER
 				/**/*.jpg=ROLE_ANONYMOUS,ROLE_USER
 				/**/*.png=ROLE_ANONYMOUS,ROLE_USER
