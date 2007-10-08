@@ -88,17 +88,33 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 
 	private int largeColumnLength = 100;
 
+	private boolean ignoreNonHibernateTypes = false;
+
 	public IClassDescriptor decorate(IClassDescriptor descriptor)
 	{
 		ArrayList<IPropertyDescriptor> decoratedPropertyDescriptors = new ArrayList<IPropertyDescriptor>();
+
+		Class type = descriptor.getType();
+		ClassMetadata classMetaData = null;
+
+		try
+		{
+			classMetaData = findMetadata(type);
+		} catch (MetadataNotFoundException e)
+		{
+			if (ignoreNonHibernateTypes) {
+				return descriptor;
+			} else {
+				throw new TrailsRuntimeException(e);
+			}
+		}
+
 		for (IPropertyDescriptor propertyDescriptor : descriptor.getPropertyDescriptors())
 		{
-			Class type = descriptor.getType();
-
-			IPropertyDescriptor descriptorReference;
 			try
 			{
-				ClassMetadata classMetaData = findMetadata(type);
+				IPropertyDescriptor descriptorReference;
+
 				if (propertyDescriptor.getName().equals(getIdentifierProperty(type)))
 				{
 					descriptorReference = createIdentifierDescriptor(type, propertyDescriptor);
@@ -116,11 +132,12 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 							descriptor);
 				}
 
+				decoratedPropertyDescriptors.add(descriptorReference);
+
 			} catch (HibernateException e)
 			{
 				throw new TrailsRuntimeException(e);
 			}
-			decoratedPropertyDescriptors.add(descriptorReference);
 		}
 		descriptor.setPropertyDescriptors(decoratedPropertyDescriptors);
 		return descriptor;
@@ -603,4 +620,8 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 		this.descriptorFactory = descriptorFactory;
 	}
 
+	public void setIgnoreNonHibernateTypes(boolean ignoreNonHibernateTypes)
+	{
+		this.ignoreNonHibernateTypes = ignoreNonHibernateTypes;
+	}
 }
