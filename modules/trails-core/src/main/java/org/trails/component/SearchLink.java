@@ -2,8 +2,8 @@ package org.trails.component;
 
 import org.apache.tapestry.IRequestCycle;
 import org.trails.page.PageResolver;
+import org.trails.page.PageType;
 import org.trails.page.SearchPage;
-import org.trails.page.TrailsPage;
 
 public abstract class SearchLink extends AbstractTypeNavigationLink
 {
@@ -20,7 +20,7 @@ public abstract class SearchLink extends AbstractTypeNavigationLink
 	public void click(IRequestCycle cycle)
 	{
 		PageResolver pageResolver = getPageResolver();
-		SearchPage searchPage = (SearchPage) pageResolver.resolvePage(cycle, getType(), TrailsPage.PageType.Search);
+		SearchPage searchPage = (SearchPage) pageResolver.resolvePage(cycle, getType(), PageType.Search);
 		searchPage.setType(getType());
 		cycle.activate(searchPage);
 	}

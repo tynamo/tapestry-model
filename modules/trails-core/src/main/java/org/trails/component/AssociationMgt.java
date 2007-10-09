@@ -25,7 +25,7 @@ import org.trails.descriptor.ObjectReferenceDescriptor;
 import org.trails.descriptor.OwningObjectReferenceDescriptor;
 import org.trails.page.EditPage;
 import org.trails.page.PageResolver;
-import org.trails.page.TrailsPage.PageType;
+import org.trails.page.PageType;
 import org.trails.persistence.PersistenceException;
 import org.trails.persistence.PersistenceService;
 import org.trails.validation.TrailsValidationDelegate;

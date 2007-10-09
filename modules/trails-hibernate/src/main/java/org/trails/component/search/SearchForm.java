@@ -14,7 +14,7 @@ import org.trails.descriptor.IClassDescriptor;
 import org.trails.descriptor.IPropertyDescriptor;
 import org.trails.page.HibernateListPage;
 import org.trails.page.PageResolver;
-import org.trails.page.TrailsPage.PageType;
+import org.trails.page.PageType;
 
 public abstract class SearchForm extends ClassDescriptorComponent implements PageBeginRenderListener
 {

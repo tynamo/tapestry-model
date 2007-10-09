@@ -17,7 +17,7 @@ import org.apache.tapestry.IRequestCycle;
 import org.trails.TrailsRuntimeException;
 import org.trails.page.EditPage;
 import org.trails.page.PageResolver;
-import org.trails.page.TrailsPage;
+import org.trails.page.PageType;
 
 /**
  * Render a link allowing a new entity of the parameterized type to be created.
@@ -33,7 +33,7 @@ public abstract class NewLink extends AbstractTypeNavigationLink
 	{
 
 		PageResolver pageResolver = getPageResolver();
-		EditPage page = (EditPage) pageResolver.resolvePage(cycle, getType(), TrailsPage.PageType.Edit);
+		EditPage page = (EditPage) pageResolver.resolvePage(cycle, getType(), PageType.Edit);
 
 		try {
 			Constructor constructor = getType().getDeclaredConstructor();

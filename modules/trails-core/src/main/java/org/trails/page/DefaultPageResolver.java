@@ -6,15 +6,15 @@ import java.util.Map;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.PageNotFoundException;
-import org.trails.page.TrailsPage.PageType;
+import org.trails.page.PageType;
 
 public class DefaultPageResolver implements PageResolver
 {
 	private String defaultPrefix = "Default";
 
-	private Map<TrailsPage.PageType, String> postFixMap;
+	private Map<PageType, String> postFixMap;
 
-	public String getPostFix(TrailsPage.PageType pageType)
+	public String getPostFix(PageType pageType)
 	{
 		return getPostFixMap().get(pageType);
 	}
@@ -36,19 +36,19 @@ public class DefaultPageResolver implements PageResolver
 		return page;
 	}
 
-	public Map<TrailsPage.PageType, String> getPostFixMap()
+	public Map<PageType, String> getPostFixMap()
 	{
 		return postFixMap;
 	}
 
-	public void setPostFixMap(Map<TrailsPage.PageType, String> postFixMap)
+	public void setPostFixMap(Map<PageType, String> postFixMap)
 	{
 		this.postFixMap = postFixMap;
 	}
 
 	public DefaultPageResolver()
 	{
-		postFixMap = new HashMap<TrailsPage.PageType, String>();
+		postFixMap = new HashMap<PageType, String>();
 		for (PageType pageType : PageType.values()) postFixMap.put(pageType, pageType.name());
 	}
 

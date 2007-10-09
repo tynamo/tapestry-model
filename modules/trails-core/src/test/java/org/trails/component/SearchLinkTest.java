@@ -6,8 +6,8 @@ import org.springframework.context.support.ResourceBundleMessageSource;
 import org.trails.descriptor.DescriptorService;
 import org.trails.i18n.DefaultTrailsResourceBundleMessageSource;
 import org.trails.page.PageResolver;
+import org.trails.page.PageType;
 import org.trails.page.SearchPage;
-import org.trails.page.TrailsPage;
 import org.trails.test.Foo;
 
 public class SearchLinkTest extends ComponentTest
@@ -36,7 +36,7 @@ public class SearchLinkTest extends ComponentTest
 		pageResolverMock.expects(once()).method("resolvePage").with(
 			isA(IRequestCycle.class),
 			eq(Foo.class),
-			eq(TrailsPage.PageType.Search)).will(returnValue(searchPage));
+			eq(PageType.Search)).will(returnValue(searchPage));
 		cycleMock.expects(once()).method("activate").with(eq(searchPage));
 		searchLink.click((IRequestCycle) cycleMock.proxy());
 		assertNotNull(searchPage.getType());

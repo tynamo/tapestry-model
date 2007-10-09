@@ -9,7 +9,7 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.error.ExceptionPresenterImpl;
 import org.trails.TrailsRuntimeException;
 import org.trails.page.PageResolver;
-import org.trails.page.TrailsPage.PageType;
+import org.trails.page.PageType;
 
 /* kaosko 2007-06-18:
  * I would have really liked to implement the exception presenter only as a handler in pipeline

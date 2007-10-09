@@ -20,7 +20,7 @@ import org.trails.descriptor.IClassDescriptor;
 import org.trails.descriptor.TrailsClassDescriptor;
 import org.trails.i18n.DefaultTrailsResourceBundleMessageSource;
 import org.trails.page.PageResolver;
-import org.trails.page.TrailsPage;
+import org.trails.page.PageType;
 import org.trails.test.BlogEntry;
 import org.trails.test.Foo;
 
@@ -57,7 +57,7 @@ public class ListAllLinkTest extends ComponentTest
 		Mock pageResolverMock = new Mock(PageResolver.class);
 		Mock cycleMock = new Mock(IRequestCycle.class);
 		pageResolverMock.expects(once()).method("resolvePage")
-			.with(isA(IRequestCycle.class), eq(Foo.class), eq(TrailsPage.PageType.List))
+			.with(isA(IRequestCycle.class), eq(Foo.class), eq(PageType.List))
 			.will(returnValue(pageMock.proxy()));
 		pageMock.expects(once()).method("getPageName").will(returnValue("FooList"));
 		pageMock.expects(once()).method("getRequestCycle").will(returnValue(cycleMock.proxy()));

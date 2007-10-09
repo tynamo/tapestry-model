@@ -11,7 +11,7 @@
  */
 package org.trails.component;
 
-import org.trails.page.TrailsPage;
+import org.trails.page.PageType;
 
 public abstract class EditLink extends Link
 {
@@ -22,7 +22,7 @@ public abstract class EditLink extends Link
 
 	public String getEditPageName()
 	{
-		return getPageResolver().resolvePage(getPage().getRequestCycle(), Utils.checkForCGLIB(getModel().getClass()), TrailsPage.PageType.Edit).getPageName();
+		return getPageResolver().resolvePage(getPage().getRequestCycle(), Utils.checkForCGLIB(getModel().getClass()), PageType.Edit).getPageName();
 	}
 
 }

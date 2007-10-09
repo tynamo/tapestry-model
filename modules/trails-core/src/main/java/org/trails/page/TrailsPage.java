@@ -35,8 +35,6 @@ public abstract class TrailsPage extends BasePage implements PageBeginRenderList
 	 */
 	public abstract IClassDescriptor getClassDescriptor();
 
-	public enum PageType {Search, Edit, List, View, Exception}
-
 	public void pushCallback()
 	{
 		getCallbackStack().push(new TrailsCallback(getPageName()));

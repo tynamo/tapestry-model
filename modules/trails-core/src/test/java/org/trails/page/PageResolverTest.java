@@ -29,9 +29,9 @@ public class PageResolverTest extends MockObjectTestCase
 			}
 		});
 
-		assertEquals(fooSearchPage, pageResolver.resolvePage(cycle, Foo.class, TrailsPage.PageType.Search));
-		assertEquals(defaultEditPage, pageResolver.resolvePage(cycle, Foo.class, TrailsPage.PageType.Edit));
-		assertEquals(defaultListPage, pageResolver.resolvePage(cycle, Foo.class, TrailsPage.PageType.List));
+		assertEquals(fooSearchPage, pageResolver.resolvePage(cycle, Foo.class, PageType.Search));
+		assertEquals(defaultEditPage, pageResolver.resolvePage(cycle, Foo.class, PageType.Edit));
+		assertEquals(defaultListPage, pageResolver.resolvePage(cycle, Foo.class, PageType.List));
 
 	}
 }
