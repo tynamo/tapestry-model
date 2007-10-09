@@ -24,7 +24,7 @@ public interface DescriptorService
 {
 	public IClassDescriptor getClassDescriptor(Class type);
 
-	public List getAllDescriptors();
+	public List<IClassDescriptor> getAllDescriptors();
 
 	public void setDecorators(List<DescriptorDecorator> decorators);
 

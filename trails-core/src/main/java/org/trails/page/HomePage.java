@@ -5,7 +5,6 @@
 package org.trails.page;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.tapestry.IExternalPage;
@@ -20,15 +19,13 @@ public abstract class HomePage extends TrailsPage implements IExternalPage
 		getCallbackStack().getStack().clear();
 	}
 
-	public List getAllDescriptors()
+	public List<IClassDescriptor> getAllDescriptors()
 	{
-		List descriptors = getDescriptorService().getAllDescriptors();
-		List result = new ArrayList(descriptors.size());
+		List<IClassDescriptor> descriptors = getDescriptorService().getAllDescriptors();
+		List<IClassDescriptor> result = new ArrayList<IClassDescriptor>(descriptors.size());
 
-		Iterator i = descriptors.iterator();
-		while (i.hasNext())
+		for (IClassDescriptor descriptor : descriptors)
 		{
-			IClassDescriptor descriptor = (IClassDescriptor) i.next();
 			if (!descriptor.isHidden())
 			{
 				result.add(descriptor);
