@@ -45,4 +45,6 @@
 	<page name="Editors" specification-path="/org/trails/page/HibernateEditors.page"/>
 	<page name="SearchBlocks" specification-path="/org/trails/page/SearchBlocks.page"/>
 
+	<component-type type="InsertI18N" specification-path="InsertI18N.jwc"/>
+
 </library-specification>
