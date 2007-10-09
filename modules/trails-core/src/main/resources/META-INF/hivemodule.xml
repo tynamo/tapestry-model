@@ -29,6 +29,8 @@
 			<construct class="org.trails.io.EntitySqueezerStrategy">
 				<set-object property="persistenceService" value="service:DefaultPersistenceService"/>
 				<set-object property="descriptorService" value="service:DefaultDescriptorService"/>
+				<set property="delimiter" value=":"/>
+				<set property="prefix" value="HIBRN8:"/>
 			</construct>
 		</invoke-factory>
 	</service-point>
