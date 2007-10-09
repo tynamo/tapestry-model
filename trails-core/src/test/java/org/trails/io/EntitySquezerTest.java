@@ -26,6 +26,8 @@ public class EntitySquezerTest extends MockObjectTestCase
 		nextDataSqueezer = new Mock(DataSqueezer.class);
 		entitySqueezeStrategy.setDescriptorService((DescriptorService) descriptorServiceMock.proxy());
 		entitySqueezeStrategy.setPersistenceService((PersistenceService) persistenceServiceMock.proxy());
+		entitySqueezeStrategy.setPrefix("HIBRN8:");
+		entitySqueezeStrategy.setDelimiter(":");
 
 		foo.setId(identifier);
 		foo.setName("FooFoo");
