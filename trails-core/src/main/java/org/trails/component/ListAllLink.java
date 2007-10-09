@@ -13,7 +13,7 @@ package org.trails.component;
 
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
-import org.trails.page.TrailsPage;
+import org.trails.page.PageType;
 
 /**
  * ListAllLink renders a single link that has a target of the List page for a given object.  It is abstract because
@@ -38,14 +38,14 @@ public abstract class ListAllLink extends AbstractTypeNavigationLink
 	}
 
 	/**
-	 * For the page type TrailsPage.PageType.LIST, try to get the name of the page.  Called by ListAllLink.jwc
+	 * For the page type PageType.LIST, try to get the name of the page.  Called by ListAllLink.jwc
 	 *
 	 * @return Name of the page
 	 */
 	public String getListPageName()
 	{
 		IRequestCycle cycle = getPage().getRequestCycle();
-		IPage iPage = getPageResolver().resolvePage(cycle, getType(), TrailsPage.PageType.List);
+		IPage iPage = getPageResolver().resolvePage(cycle, getType(), PageType.List);
 
 		return iPage.getPageName();
 	}

@@ -34,7 +34,7 @@ import org.trails.descriptor.TrailsPropertyDescriptor;
 import org.trails.page.EditPage;
 import org.trails.page.PageResolver;
 import org.trails.page.TrailsPage;
-import org.trails.page.TrailsPage.PageType;
+import org.trails.page.PageType;
 import org.trails.testhibernate.UploadableMedia;
 import org.trails.testhibernate.UploadableMediaDelegate;
 
@@ -171,7 +171,7 @@ public class EditBlobTest extends ComponentTest {
 		Mock cycleMock = new Mock(IRequestCycle.class);
 		pageResolverMock.expects(once()).method("resolvePage").with(
 				isA(IRequestCycle.class), eq(UploadableMedia.class),
-				eq(TrailsPage.PageType.Edit)).will(
+				eq(PageType.Edit)).will(
 				returnValue(pageMock.proxy()));
 		pageMock.expects(once()).method("getPageName").will(
 				returnValue(EDIT_PAGE_NAME));

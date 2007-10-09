@@ -41,7 +41,7 @@ import org.trails.descriptor.IClassDescriptor;
 import org.trails.descriptor.IPropertyDescriptor;
 import org.trails.page.EditPage;
 import org.trails.page.PageResolver;
-import org.trails.page.TrailsPage.PageType;
+import org.trails.page.PageType;
 import org.trails.persistence.PersistenceService;
 
 

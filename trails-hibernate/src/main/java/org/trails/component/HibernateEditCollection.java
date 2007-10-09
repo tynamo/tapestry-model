@@ -16,7 +16,7 @@ import org.hibernate.criterion.Restrictions;
 import org.trails.callback.CollectionCallback;
 import org.trails.descriptor.IClassDescriptor;
 import org.trails.page.EditPage;
-import org.trails.page.TrailsPage.PageType;
+import org.trails.page.PageType;
 import org.trails.persistence.HibernatePersistenceService;
 
 

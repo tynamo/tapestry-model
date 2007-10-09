@@ -24,6 +24,7 @@ import org.trails.page.EditPage;
 import org.trails.page.HomePage;
 import org.trails.page.ListPage;
 import org.trails.page.PageResolver;
+import org.trails.page.PageType;
 import org.trails.page.TrailsPage;
 import org.trails.test.BlogEntry;
 import org.trails.test.Foo;
@@ -55,7 +56,7 @@ public class NewLinkTest extends ComponentTest
 //                editPage));
 		cycleMock.expects(atLeastOnce()).method("activate").with(same(editPage));
 		pageResolverMock.expects(once()).method("resolvePage")
-			.with(isA(IRequestCycle.class), eq(Foo.class), eq(TrailsPage.PageType.Edit))
+			.with(isA(IRequestCycle.class), eq(Foo.class), eq(PageType.Edit))
 			.will(returnValue(editPage));
 		//newLink = (NewLink) creator.newInstance(NewLink.class);
 		newLink.setType(Foo.class);

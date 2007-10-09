@@ -32,7 +32,7 @@ import org.trails.descriptor.TrailsClassDescriptor;
 import org.trails.page.EditPage;
 import org.trails.page.EditorBlockPage;
 import org.trails.page.PageResolver;
-import org.trails.page.TrailsPage.PageType;
+import org.trails.page.PageType;
 import org.trails.test.Baz;
 import org.trails.test.Bing;
 import org.trails.test.Foo;

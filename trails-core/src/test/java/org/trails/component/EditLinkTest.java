@@ -15,7 +15,7 @@ import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.jmock.Mock;
 import org.trails.page.PageResolver;
-import org.trails.page.TrailsPage;
+import org.trails.page.PageType;
 import org.trails.test.Foo;
 
 
@@ -27,7 +27,7 @@ public class EditLinkTest extends ComponentTest
 		Mock pageResolverMock = new Mock(PageResolver.class);
 		Mock cycleMock = new Mock(IRequestCycle.class);
 		pageResolverMock.expects(once()).method("resolvePage")
-			.with(isA(IRequestCycle.class), eq(Foo.class), eq(TrailsPage.PageType.Edit))
+			.with(isA(IRequestCycle.class), eq(Foo.class), eq(PageType.Edit))
 			.will(returnValue(pageMock.proxy()));
 		pageMock.expects(once()).method("getPageName").will(returnValue("FooEdit"));
 		pageMock.expects(once()).method("getRequestCycle").will(returnValue(cycleMock.proxy()));
