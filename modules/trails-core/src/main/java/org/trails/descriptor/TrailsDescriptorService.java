@@ -47,7 +47,7 @@ public class TrailsDescriptorService implements DescriptorService
 		}
 	}
 
-	public List getAllDescriptors()
+	public List<IClassDescriptor> getAllDescriptors()
 	{
 		List<IClassDescriptor> allDescriptors = new ArrayList<IClassDescriptor>(descriptors.values());
 		Collections.sort(allDescriptors, new Comparator<IClassDescriptor>()
