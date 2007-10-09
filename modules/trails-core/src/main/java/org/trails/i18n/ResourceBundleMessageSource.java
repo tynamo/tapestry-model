@@ -15,6 +15,8 @@ import org.trails.descriptor.IDescriptor;
 public interface ResourceBundleMessageSource
 {
 
+	Object[] EMPTY_ARGUMENTS = new Object[]{};
+
 	/**
 	 * Return a internationalized message.
 	 *

@@ -27,6 +27,8 @@
 	<component-type type="AssociationSelect" specification-path="AssociationSelect.jwc"/>
 	<component-type type="AssociationMgt" specification-path="AssociationMgt.jwc"/>
 
+	<component-type type="InsertI18N" specification-path="InsertI18N.jwc"/>
+
 	<page name="Editors" specification-path="/org/trails/page/Editors.page"/>
 
 </library-specification>
