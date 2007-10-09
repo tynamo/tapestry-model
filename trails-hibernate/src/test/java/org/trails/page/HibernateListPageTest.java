@@ -22,46 +22,51 @@ import org.trails.testhibernate.Foo;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HibernateListPageTest extends ComponentTest {
+public class HibernateListPageTest extends ComponentTest
+{
 
-    public static final String PAGE_NAME = "fooList";
-    HibernateListPage listPage;
-    Mock cycleMock;
+	public static final String PAGE_NAME = "fooList";
+	HibernateListPage listPage;
+	Mock cycleMock;
 
-    List stuff = new ArrayList();
+	List stuff = new ArrayList();
 
-    public void setUp() {
+	public void setUp()
+	{
 
-        listPage = (HibernateListPage) buildTrailsPage(HibernateListPage.class);
-        listPage.setPageName(PAGE_NAME);
+		listPage = (HibernateListPage) buildTrailsPage(HibernateListPage.class);
+		listPage.setPageName(PAGE_NAME);
 
-        cycleMock = new Mock(IRequestCycle.class);
-        listPage.attach(null, (IRequestCycle) cycleMock.proxy());
+		cycleMock = new Mock(IRequestCycle.class);
+		listPage.attach(null, (IRequestCycle) cycleMock.proxy());
 
-    }
+	}
 
-    public void testPageBeginRender() throws Exception {
+	public void testPageBeginRender() throws Exception
+	{
 
-        PageEvent pageEvent = new PageEvent(listPage, (IRequestCycle) cycleMock.proxy());
-        listPage.setCriteria(DetachedCriteria.forClass(Foo.class));
-        listPage.pageBeginRender(pageEvent);
-        assertEquals(1, listPage.getCallbackStack().getStack().size());
-    }
+		PageEvent pageEvent = new PageEvent(listPage, (IRequestCycle) cycleMock.proxy());
+		listPage.setCriteria(DetachedCriteria.forClass(Foo.class));
+		listPage.pageBeginRender(pageEvent);
+		assertEquals(1, listPage.getCallbackStack().getStack().size());
+	}
 
-    public void testExternalPage() {
-        listPage.activateExternalPage(new Object[]{Foo.class},
-                (IRequestCycle) cycleMock.proxy());
-        assertNotNull(listPage.getCriteria());
-    }
+	public void testExternalPage()
+	{
+		listPage.activateExternalPage(new Object[]{Foo.class},
+			(IRequestCycle) cycleMock.proxy());
+		assertNotNull(listPage.getCriteria());
+	}
 
 
-    public void testPushCallback() {
-        DetachedCriteria criteria = DetachedCriteria.forClass(Foo.class);
-        listPage.setType(Foo.class);
-        listPage.setCriteria(criteria);
-        listPage.pushCallback();
-        ListCallback listCallback = (ListCallback) listPage.getCallbackStack().getStack().pop();
+	public void testPushCallback()
+	{
+		DetachedCriteria criteria = DetachedCriteria.forClass(Foo.class);
+		listPage.setType(Foo.class);
+		listPage.setCriteria(criteria);
+		listPage.pushCallback();
+		ListCallback listCallback = (ListCallback) listPage.getCallbackStack().getStack().pop();
 
-        assertEquals(PAGE_NAME, listCallback.getPageName());
-    }
+		assertEquals(PAGE_NAME, listCallback.getPageName());
+	}
 }
