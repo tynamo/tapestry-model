@@ -67,7 +67,24 @@ public class HibernatePersistenceServiceImpl extends HibernateDaoSupport impleme
 		return _descriptorService;
 	}
 
-	@Transactional
+	/**
+	 * https://trails.dev.java.net/servlets/ReadMsg?listName=users&msgNo=1226
+	 *
+	 * Very often I find myself writing:
+	 * <code>
+	 * Object example = new Object();
+	 * example.setProperty(uniqueValue);
+	 * List objects = ((TrailsPage)getPage()).getPersistenceService().getInstances(example);
+	 * (MyObject)objects.get(0);
+	 </code>
+	 when, in fact, I know that the single property I populated my example object with should be unique, and thus only
+	 one object should be returned
+	 
+	 * @param type The type to use to check for security restrictions.
+	 * @param detachedCriteria
+	 * @return
+	 */
+    @Transactional
 	public <T> T getInstance(final Class<T> type, DetachedCriteria detachedCriteria) {
 		final DetachedCriteria criteria = alterCriteria(type, detachedCriteria);
 		
