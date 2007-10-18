@@ -12,35 +12,11 @@
 package org.trails.component;
 
 import org.apache.tapestry.annotations.InjectObject;
-import org.apache.tapestry.components.Block;
 import org.trails.descriptor.BlockFinder;
-import org.trails.descriptor.IPropertyDescriptor;
 
-/*
- * Created on Sep 30, 2004
- *
- * TODO To change the template for this generated file go to
- * Window - Preferences - Java - Code Style - Code Templates
- */
-
-/**
- * @author fus8882
- *         <p/>
- *         TODO To change the template for this generated type comment go to Window -
- *         Preferences - Java - Code Style - Code Templates
- */
-public abstract class EditProperties extends ObjectEditComponent
+@Deprecated
+public abstract class EditProperties extends RenderProperties
 {
 	@InjectObject("spring:editorService")
 	public abstract BlockFinder getBlockFinder();
-
-	/**
-	 * @return Returns the current property.
-	 */
-	public abstract IPropertyDescriptor getProperty();
-
-	public Block getBlock()
-	{
-		return getBlockFinder().findBlock(getPage().getRequestCycle(), getProperty());
-	}
 }

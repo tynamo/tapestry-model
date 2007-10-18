@@ -20,7 +20,7 @@ import org.trails.page.ModelPage;
 /**
  * @author fus8882
  */
-public abstract class ObjectActions extends ObjectEditComponent
+public abstract class ObjectActions extends AbstractObjectRenderComponent
 {
 	public abstract MethodDescriptor getMethodDescriptor();
 
@@ -29,13 +29,7 @@ public abstract class ObjectActions extends ObjectEditComponent
 	public boolean isShowRemoveButton()
 	{
 		ModelPage page = (ModelPage) getPage();
-		if (page != null && page instanceof ModelPage)
-		{
-			return page.getClassDescriptor().isAllowRemove() && !page.isModelNew();
-		} else
-		{
-			return false;
-		}
+		return page != null && page.getClassDescriptor().isAllowRemove() && !page.isModelNew();
 	}
 
 }
