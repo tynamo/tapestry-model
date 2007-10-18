@@ -11,9 +11,9 @@
  */
 package org.trails.component;
 
-import org.apache.tapestry.annotations.InjectObject;
+import org.apache.tapestry.annotations.ComponentClass;
+import org.apache.tapestry.annotations.Parameter;
 import org.apache.tapestry.components.Block;
-import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.util.ComponentAddress;
 import org.trails.descriptor.BlockFinder;
 import org.trails.descriptor.IPropertyDescriptor;
@@ -35,7 +35,6 @@ public abstract class PropertyEditor extends TrailsComponent
 
 	public abstract void setModel(Object model);
 
-	@InjectObject("spring:editorService")
 	public abstract BlockFinder getBlockFinder();
 
 	public Block getBlock()

@@ -34,6 +34,6 @@ public class EditLinkTest extends ComponentTest
 		EditLink editLink = (EditLink) creator.newInstance(EditLink.class, new Object[]{"pageResolver", pageResolverMock.proxy()});
 		editLink.setPage((IPage) pageMock.proxy());
 		editLink.setModel(new Foo());
-		assertEquals("FooEdit", editLink.getEditPageName());
+		assertEquals("FooEdit", editLink.getModelPageName());
 	}
 }

@@ -13,16 +13,13 @@ package org.trails.component;
 
 import org.trails.page.PageType;
 
-public abstract class EditLink extends Link
+/**
+ * This component displays a link to the EditPage for an object
+ */
+public abstract class EditLink extends AbstractModelNavigationLink
 {
-
-	public abstract Object getModel();
-
-	public abstract void setModel(Object model);
-
-	public String getEditPageName()
+	public PageType getPageType()
 	{
-		return getPageResolver().resolvePage(getPage().getRequestCycle(), Utils.checkForCGLIB(getModel().getClass()), PageType.Edit).getPageName();
+		return PageType.Edit;
 	}
-
 }

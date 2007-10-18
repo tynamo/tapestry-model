@@ -14,7 +14,6 @@ package org.trails.component;
 import org.apache.tapestry.annotations.InjectObject;
 import org.trails.descriptor.BlockFinder;
 
-@Deprecated
 public abstract class EditProperties extends RenderProperties
 {
 	@InjectObject("spring:editorService")
