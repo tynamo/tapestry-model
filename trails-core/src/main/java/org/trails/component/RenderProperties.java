@@ -24,15 +24,16 @@ public abstract class RenderProperties extends AbstractObjectRenderComponent
 	@Asset(value = "/org/trails/component/RenderProperties.html")
 	public abstract IAsset get$template();
 
-	@Parameter
+	@Parameter(required = true)
 	public abstract BlockFinder getBlockFinder();
 
-	@Parameter
+	@Parameter(defaultValue = "page.model")
 	public abstract Object getModel();
 
 
 	/**
-	 * It's used by the @For component
+	 * It's used as the @For component "value" parameter.
+	 * It's updated with the current IPropertyDescriptor on each iteration.
 	 *
 	 * @return Returns the current property.
 	 */
