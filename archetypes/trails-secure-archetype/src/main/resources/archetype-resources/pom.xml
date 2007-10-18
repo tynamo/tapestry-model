@@ -162,22 +162,7 @@
 			<groupId>org.trailsframework</groupId>
 			<artifactId>trails-security</artifactId>
 			<version>1.2-SNAPSHOT</version>
-			<exclusions>
-				<exclusion>
-					<groupId>javax.servlet</groupId>
-					<artifactId>servlet-api</artifactId>
-				</exclusion>
-			</exclusions>
 		</dependency>
-
-		<!-- ascandroli 2007-05-30: This dependency isn't working as a transitive dependency, so we need it here to
-		avoid duplicated log library exception. I don't know exactly why -->
-		<dependency>
-			<groupId>commons-logging</groupId>
-			<artifactId>commons-logging</artifactId>
-			<version>1.1</version>
-		</dependency>
-
 		<dependency>
 			<!-- kaosko 2006-09-06: Apt plugin may silently fail if Jaxen isn't declared. The reason's a bit unclear, but my best guess
 			it's because of different versions of apt plugin posted as the same version (which is wrong for non-snapshots) -->

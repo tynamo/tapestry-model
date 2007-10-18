@@ -26,10 +26,6 @@
 					<groupId>lucene</groupId>
 					<artifactId>lucene</artifactId>
 				</exclusion>
-				<exclusion>
-					<groupId>javax.servlet</groupId>
-					<artifactId>servlet-api</artifactId>
-				</exclusion>
 			</exclusions>
 		</dependency>
 		<dependency>
