@@ -43,7 +43,7 @@ public class ObjectEditComponentTest extends ComponentTest
 
 
 	Mock pageMock;
-	ObjectEditComponent editComponent;
+	AbstractObjectRenderComponent editComponent;
 	Mock cycleMock;
 	HashMap thisPageComponents = new HashMap();
 	HashMap fooComponents = new HashMap();
@@ -66,7 +66,7 @@ public class ObjectEditComponentTest extends ComponentTest
 
 	public void setUp()
 	{
-		editComponent = (ObjectEditComponent) creator.newInstance(ObjectEditComponent.class);
+		editComponent = (AbstractObjectRenderComponent) creator.newInstance(AbstractObjectRenderComponent.class);
 		editComponent.setModel(new Foo());
 		fooEditPage = new MockFooEditPage();
 		fooEditPage.setComponents(fooComponents);

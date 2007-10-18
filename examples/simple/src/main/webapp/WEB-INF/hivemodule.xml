@@ -48,10 +48,4 @@
 		<extension-encoder id="extension" extension="svc" after="*"/>
 	</contribution>
 	
-	<contribution configuration-id="tapestry.InfrastructureOverrides">
-		<property name="exceptionPresenter" object="service:trails.core.ApplicationExceptionPresenter"/>
-	</contribution>
-	<contribution configuration-id="tapestry.InfrastructureOverrides">
-		<property name="exceptionPageName" value="DefaultException"/>
-	</contribution>	
 </module>
