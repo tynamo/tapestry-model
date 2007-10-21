@@ -31,22 +31,26 @@ public class LogoutService implements IEngineService {
 
 	public void service(IRequestCycle cycle) throws IOException {
 		String username = cycle.getInfrastructure().getRequest().getRemoteUser();
-		if (username == null) return;
-		Cookie cookie = new Cookie("remembermetoken", "" );
-		cookie.setPath("/");
-		cookie.setMaxAge(0);
-		response.addCookie(cookie);
-		
-		// Hmm.. now this requires two queries, is there any way to delete all with criteria api 
-		// without obtaining a collection?
-		try {
-			DetachedCriteria detachedCriteria = DetachedCriteria.forClass(ExpiringKey.class);
-			detachedCriteria.add(Restrictions.eq("name", username) );
-			List<ExpiringKey> credentials = persistenceService.getInstances(ExpiringKey.class, detachedCriteria );
-			if (credentials.size() > 0) persistenceService.removeAll(credentials);
-		} 
-		catch (Exception e) {
-			log.warn("Couldn't clean up persistent credentials because of: " + e.getMessage() );
+		if (username != null)
+		{
+			Cookie cookie = new Cookie("remembermetoken", "");
+			cookie.setPath("/");
+			cookie.setMaxAge(0);
+			response.addCookie(cookie);
+
+			// Hmm.. now this requires two queries, is there any way to delete all with criteria api
+			// without obtaining a collection?
+			try
+			{
+				DetachedCriteria detachedCriteria = DetachedCriteria.forClass(ExpiringKey.class);
+				detachedCriteria.add(Restrictions.eq("name", username));
+				List<ExpiringKey> credentials = persistenceService.getInstances(ExpiringKey.class, detachedCriteria);
+				if (credentials.size() > 0) persistenceService.removeAll(credentials);
+			}
+			catch (Exception e)
+			{
+				log.warn("Couldn't clean up persistent credentials because of: " + e.getMessage());
+			}
 		}
 			
 		restartService.service(cycle);
