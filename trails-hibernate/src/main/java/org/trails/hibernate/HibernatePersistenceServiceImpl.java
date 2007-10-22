@@ -69,25 +69,21 @@ public class HibernatePersistenceServiceImpl extends HibernateDaoSupport impleme
 
 	/**
 	 * https://trails.dev.java.net/servlets/ReadMsg?listName=users&msgNo=1226
+	 * <p/>
+	 * Very often I find myself writing: <code> Object example = new Object(); example.setProperty(uniqueValue); List
+	 * objects = ((TrailsPage)getPage()).getPersistenceService().getInstances(example); (MyObject)objects.get(0); </code>
+	 * when, in fact, I know that the single property I populated my example object with should be unique, and thus only
+	 * one object should be returned
 	 *
-	 * Very often I find myself writing:
-	 * <code>
-	 * Object example = new Object();
-	 * example.setProperty(uniqueValue);
-	 * List objects = ((TrailsPage)getPage()).getPersistenceService().getInstances(example);
-	 * (MyObject)objects.get(0);
-	 </code>
-	 when, in fact, I know that the single property I populated my example object with should be unique, and thus only
-	 one object should be returned
-	 
-	 * @param type The type to use to check for security restrictions.
+	 * @param type			 The type to use to check for security restrictions.
 	 * @param detachedCriteria
 	 * @return
 	 */
-    @Transactional
-	public <T> T getInstance(final Class<T> type, DetachedCriteria detachedCriteria) {
+	@Transactional
+	public <T> T getInstance(final Class<T> type, DetachedCriteria detachedCriteria)
+	{
 		final DetachedCriteria criteria = alterCriteria(type, detachedCriteria);
-		
+
 		return (T) getHibernateTemplate().execute(new HibernateCallback()
 		{
 			public Object doInHibernate(Session session) throws HibernateException, SQLException
@@ -109,27 +105,77 @@ public class HibernatePersistenceServiceImpl extends HibernateDaoSupport impleme
 		return getInstance(type, criteria);
 	}
 
+
+	/**
+	 * <strong>Description copied from:</strong> {@link org.springframework.orm.hibernate3.HibernateTemplate#load(Class,java.io.Serializable)}
+	 * and {@link org.hibernate.Session#load(Class,java.io.Serializable)}
+	 * <p/>
+	 * Return the persistent instance of the given entity class with the given identifier, assuming that the instance
+	 * exists, throwing an exception if not found.
+	 * <p/>
+	 * You should not use this method to determine if an instance exists (use get() instead). Use this only to retrieve an
+	 * instance that you assume exists, where non-existence would be an actual error.
+	 * <p/>
+	 * <p>This method is a thin wrapper around {@link org.hibernate.Session#load(Class,java.io.Serializable)} for
+	 * convenience. For an explanation of the exact semantics of this method, please do refer to the Hibernate API
+	 * documentation in the first instance.
+	 *
+	 * @param type a persistent class
+	 * @param id   the identifier of the persistent instance
+	 * @return the persistent instance
+	 * @see org.springframework.orm.hibernate3.HibernateTemplate#load(Class,java.io.Serializable)
+	 * @see org.hibernate.Session#load(Class,java.io.Serializable)
+	 */
+	@Transactional
 	public <T> T loadInstance(final Class<T> type, Serializable id)
 	{
 		return (T) getHibernateTemplate().load(type, id);
 	}
-	
-	public List find(String queryString) {
+
+	/**
+	 * Execute an HQL query.
+	 *
+	 * @param queryString a query expressed in Hibernate's query language
+	 * @return a List containing the results of the query execution
+	 * @see org.springframework.orm.hibernate3.HibernateTemplate#find(String)
+	 */
+	public List find(String queryString)
+	{
 		return getHibernateTemplate().find(queryString);
 	}
-	public List find(String queryString, Object value) {
+
+	/**
+	 * Execute an HQL query, binding one value to a "?" parameter in the query string.
+	 *
+	 * @param queryString a query expressed in Hibernate's query language
+	 * @param value	   the query parameter
+	 * @return a List containing the results of the query execution
+	 * @see org.springframework.orm.hibernate3.HibernateTemplate#find(String,Object)
+	 */
+	public List find(String queryString, Object value)
+	{
 		return getHibernateTemplate().find(queryString, value);
 	}
-	public List find(String queryString, Object[] values) {
+
+	/**
+	 * Execute an HQL query, binding a number of values to "?" parameters in the query string.
+	 *
+	 * @param queryString a query expressed in Hibernate's query language
+	 * @param values	  the query parameters
+	 * @return a List containing the results of the query execution
+	 * @see org.springframework.orm.hibernate3.HibernateTemplate#find(String,Object[])
+	 */
+	public List find(String queryString, Object[] values)
+	{
 		return getHibernateTemplate().find(queryString, values);
 	}
 
-	
-	/*
-		 * (non-Javadoc)
-		 *
-		 * @see org.blah.service.IPersistenceService#getAllInstances(java.lang.Class)
-		 */
+
+	/**
+	 * (non-Javadoc)
+	 *
+	 * @see org.trails.persistence.PersistenceService#getAllInstances(java.lang.Class)
+	 */
 	@Transactional
 	public <T> List<T> getAllInstances(final Class<T> type)
 	{
@@ -142,11 +188,11 @@ public class HibernatePersistenceServiceImpl extends HibernateDaoSupport impleme
 		return getInstances(type, DetachedCriteria.forClass(type), startIndex, maxResults);
 	}
 
-	/*
-		 * (non-Javadoc)
-		 *
-		 * @see org.blah.service.IPersistenceService#save(java.lang.Object)
-		 */
+	/**
+	 * (non-Javadoc)
+	 *
+	 * @see org.trails.persistence.PersistenceService#save(java.lang.Object)
+	 */
 	@Transactional
 	public <T> T save(T instance) throws ValidationException
 	{
@@ -183,12 +229,18 @@ public class HibernatePersistenceServiceImpl extends HibernateDaoSupport impleme
 	}
 
 	@Transactional
-	public <T> List<T> getInstances(Class<T> type, DetachedCriteria criteria) {
+	public <T> List<T> getInstances(Class<T> type, DetachedCriteria criteria)
+	{
 		criteria = alterCriteria(type, criteria);
 		criteria.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 		return getHibernateTemplate().findByCriteria(criteria);
 	}
-	
+
+	/**
+	 * (non-Javadoc)
+	 *
+	 * @see org.trails.persistence.PersistenceService#getAllTypes()
+	 */
 	public List<Class> getAllTypes()
 	{
 		ArrayList<Class> allTypes = new ArrayList<Class>();
@@ -365,10 +417,8 @@ public class HibernatePersistenceServiceImpl extends HibernateDaoSupport impleme
 	public <T> List<T> getInstances(Class<T> type, final DetachedCriteria detachedCriteria, final int startIndex, final int maxResults)
 	{
 		return getInstances(alterCriteria(type, detachedCriteria), startIndex, maxResults);
-		
 	}
-	
-	
+
 	public List getInstances(final DetachedCriteria detachedCriteria, final int startIndex, final int maxResults)
 	{
 		detachedCriteria.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
