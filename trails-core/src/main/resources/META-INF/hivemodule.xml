@@ -1,7 +1,9 @@
 <module id="trails.core" version="1.0.0">
 
-	<service-point id="DefaultDescriptorService" interface="org.trails.descriptor.DescriptorService"/>
-	<service-point id="DefaultPersistenceService" interface="org.trails.persistence.PersistenceService"/>
+	<service-point id="DescriptorService" interface="org.trails.descriptor.DescriptorService"/>
+	<service-point id="PersistenceService" interface="org.trails.persistence.PersistenceService"/>
+	<service-point id="EditorService" interface="org.trails.descriptor.BlockFinder"/>
+	<service-point id="ViewerService" interface="org.trails.descriptor.BlockFinder"/>
 
 	<!--
 		====================================================================================================================
@@ -27,8 +29,8 @@
 	<service-point id="EntitySqueezeStrategy" interface="org.trails.io.SqueezeFilter">
 		<invoke-factory>
 			<construct class="org.trails.io.EntitySqueezerStrategy">
-				<set-object property="persistenceService" value="service:DefaultPersistenceService"/>
-				<set-object property="descriptorService" value="service:DefaultDescriptorService"/>
+				<set-object property="persistenceService" value="service:PersistenceService"/>
+				<set-object property="descriptorService" value="service:DescriptorService"/>
 				<set property="delimiter" value=":"/>
 				<set property="prefix" value="HIBRN8:"/>
 			</construct>
@@ -47,7 +49,7 @@
 	<service-point id="PropertyDescriptorSqueezeStrategy" interface="org.apache.tapestry.util.io.SqueezeAdaptor">
 		<invoke-factory>
 			<construct class="org.trails.io.PropertyDescriptorSqueezerStrategy">
-				<set-object property="descriptorService" value="service:DefaultDescriptorService"/>
+				<set-object property="descriptorService" value="service:DescriptorService"/>
 			</construct>
 		</invoke-factory>
 	</service-point>
@@ -55,7 +57,7 @@
 	<service-point id="ClassDescriptorSqueezeStrategy" interface="org.apache.tapestry.util.io.SqueezeAdaptor">
 		<invoke-factory>
 			<construct class="org.trails.io.ClassDescriptorSqueezerStrategy">
-				<set-object property="descriptorService" value="service:DefaultDescriptorService"/>
+				<set-object property="descriptorService" value="service:DescriptorService"/>
 			</construct>
 		</invoke-factory>
 	</service-point>

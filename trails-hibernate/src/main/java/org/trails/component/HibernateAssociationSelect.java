@@ -22,7 +22,7 @@ public abstract class HibernateAssociationSelect extends AssociationSelect
 	/**
 	 * @todo: remove when the components reuse issue goes away
 	 */
-	@InjectObject("spring:persistenceService")
+	@InjectObject("service:trails.hibernate.PersistenceService")
 	public abstract HibernatePersistenceService getHibernatePersistenceService();
 
 	/**

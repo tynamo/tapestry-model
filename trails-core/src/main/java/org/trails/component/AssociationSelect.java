@@ -20,10 +20,10 @@ public abstract class AssociationSelect extends AbstractPropertySelection
 {
 	private static final Log LOG = LogFactory.getLog(AssociationSelect.class);
 
-	@InjectObject("spring:persistenceService")
+	@InjectObject("service:trails.core.PersistenceService")
 	public abstract PersistenceService getPersistenceService();
 
-	@InjectObject("spring:descriptorService")
+	@InjectObject("service:trails.core.DescriptorService")
 	public abstract DescriptorService getDescriptorService();
 
 	public IClassDescriptor getClassDescriptor()

@@ -32,7 +32,7 @@ public abstract class TrailsUpload extends BaseComponent
 
 	public abstract void setModel(Object bytes);
 
-	@InjectObject("spring:persistenceService")
+	@InjectObject("service:trails.core.PersistenceService")
 	public abstract PersistenceService getPersistenceService();
 
 	public BlobDescriptorExtension getBlobDescriptorExtension()

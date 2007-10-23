@@ -5,6 +5,6 @@ import org.trails.descriptor.BlockFinder;
 
 public abstract class ViewProperties extends RenderProperties
 {
-	@InjectObject("spring:viewerService")
+	@InjectObject("service:trails.core.ViewerService")
 	public abstract BlockFinder getBlockFinder();
 }

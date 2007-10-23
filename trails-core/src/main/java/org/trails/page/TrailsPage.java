@@ -53,7 +53,7 @@ public abstract class TrailsPage extends BasePage implements PageBeginRenderList
 	 *
 	 * @return
 	 */
-	@InjectObject("spring:persistenceService")
+	@InjectObject("service:trails.core.PersistenceService")
 	public abstract PersistenceService getPersistenceService();
 
 	/**
@@ -61,7 +61,7 @@ public abstract class TrailsPage extends BasePage implements PageBeginRenderList
 	 *
 	 * @return
 	 */
-	@InjectObject("spring:descriptorService")
+	@InjectObject("service:trails.core.DescriptorService")
 	public abstract DescriptorService getDescriptorService();
 
 	/**
