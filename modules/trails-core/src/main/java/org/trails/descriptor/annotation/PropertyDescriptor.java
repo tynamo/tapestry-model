@@ -17,7 +17,7 @@ public @interface PropertyDescriptor
 	public static final String DEFAULT_format = "no_format";
 
 	/**
-	 * Specifies if a property should appear list page.
+	 * Specifies if a property should appear on the list page.
 	 *
 	 * @return
 	 */

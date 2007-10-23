@@ -36,7 +36,7 @@ public abstract class MimedImage extends Image
 	@InjectObject("service:tapestry.asset.ClasspathAssetFactory")
 	public abstract AssetFactory getClasspathAssetFactory();
 
-	@InjectObject("spring:persistenceService")
+	@InjectObject("service:trails.core.PersistenceService")
 	public abstract PersistenceService getPersistenceService();
 
 	@Parameter(required = true)

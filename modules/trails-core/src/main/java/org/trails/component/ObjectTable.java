@@ -14,15 +14,17 @@ package org.trails.component;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.annotations.Component;
 import org.apache.tapestry.annotations.ComponentClass;
 import org.apache.tapestry.annotations.InjectObject;
 import org.apache.tapestry.annotations.Parameter;
+import org.apache.tapestry.contrib.table.components.Table;
 import org.apache.tapestry.contrib.table.model.ITableColumn;
 import org.apache.tapestry.services.ExpressionEvaluator;
 import org.apache.tapestry.util.ComponentAddress;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.trails.descriptor.BlobDescriptorExtension;
 import org.trails.descriptor.IPropertyDescriptor;
 import org.trails.persistence.PersistenceService;
@@ -46,7 +48,7 @@ public abstract class ObjectTable extends ClassDescriptorComponent
 
 	public abstract void setShowCollections(boolean ShowCollections);
 
-	@InjectObject("spring:persistenceService")
+	@InjectObject("service:trails.core.PersistenceService")
 	public abstract PersistenceService getPersistenceService();
 
 	@Parameter
@@ -257,4 +259,22 @@ public abstract class ObjectTable extends ClassDescriptorComponent
 	{
 		this.columns = columns;
 	}
+
+/** // there is still issues with inherited binding.
+ 
+	@Component(id = "table", type = "contrib:Table", inheritInformalParameters = true,
+		bindings = {"row=object",
+			"rowsClass=rowsClass",
+			"column=column",
+			"columnsClass=columnsClass",
+			"index=index",
+			"source=source",
+			"columns=columns",
+			"pageSize=pageSize",
+			"initialSortColumn=initialSortColumn",
+			"initialSortOrder=initialSortOrder",
+			"persist=persist"})
+	public abstract Table getTable();
+**/
+
 }

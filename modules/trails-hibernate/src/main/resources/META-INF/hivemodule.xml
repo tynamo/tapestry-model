@@ -1,0 +1,5 @@
+<module id="trails.hibernate" version="1.0.0">
+
+	<service-point id="PersistenceService" interface="org.trails.persistence.HibernatePersistenceService"/>
+
+</module>

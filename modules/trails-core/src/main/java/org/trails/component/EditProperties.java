@@ -16,6 +16,6 @@ import org.trails.descriptor.BlockFinder;
 
 public abstract class EditProperties extends RenderProperties
 {
-	@InjectObject("spring:editorService")
+	@InjectObject("service:trails.core.EditorService")
 	public abstract BlockFinder getBlockFinder();
 }

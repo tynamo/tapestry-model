@@ -7,15 +7,33 @@
 		</state-object>
 	</contribution>
 
-	<implementation service-id="trails.core.DefaultDescriptorService">
+	<implementation service-id="trails.core.DescriptorService">
 		<invoke-factory service-id="hivemind.lib.SpringLookupFactory">
 			<lookup-bean name="descriptorService"/>
 		</invoke-factory>
 	</implementation>
 
-	<implementation service-id="trails.core.DefaultPersistenceService">
+	<implementation service-id="trails.core.PersistenceService">
 		<invoke-factory service-id="hivemind.lib.SpringLookupFactory">
 			<lookup-bean name="persistenceService"/>
+		</invoke-factory>
+	</implementation>
+
+	<implementation service-id="trails.hibernate.PersistenceService">
+		<invoke-factory service-id="hivemind.lib.SpringLookupFactory">
+			<lookup-bean name="persistenceService"/>
+		</invoke-factory>
+	</implementation>
+
+	<implementation service-id="trails.core.EditorService">
+		<invoke-factory service-id="hivemind.lib.SpringLookupFactory">
+			<lookup-bean name="editorService"/>
+		</invoke-factory>
+	</implementation>
+
+	<implementation service-id="trails.core.ViewerService">
+		<invoke-factory service-id="hivemind.lib.SpringLookupFactory">
+			<lookup-bean name="viewerService"/>
 		</invoke-factory>
 	</implementation>
 

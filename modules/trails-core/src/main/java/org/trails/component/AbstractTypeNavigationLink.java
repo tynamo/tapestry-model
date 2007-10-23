@@ -31,7 +31,7 @@ import org.trails.i18n.ResourceBundleMessageSource;
  */
 public abstract class AbstractTypeNavigationLink extends Link
 {
-	@InjectObject("spring:descriptorService")
+	@InjectObject("service:trails.core.DescriptorService")
 	public abstract DescriptorService getDescriptorService();
 
 	/**

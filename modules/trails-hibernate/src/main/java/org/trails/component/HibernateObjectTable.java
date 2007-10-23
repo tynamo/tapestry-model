@@ -15,7 +15,7 @@ public abstract class HibernateObjectTable extends ObjectTable
 	@Asset(value = "/org/trails/component/ObjectTable.html")
 	public abstract IAsset get$template();
 
-	@InjectObject("spring:persistenceService")
+	@InjectObject("service:trails.hibernate.PersistenceService")
 	public abstract HibernatePersistenceService getHibernatePersistenceService();
 
 	/**

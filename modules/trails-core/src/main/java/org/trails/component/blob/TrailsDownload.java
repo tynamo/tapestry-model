@@ -18,7 +18,7 @@ public abstract class TrailsDownload extends BaseComponent
 	@InjectObject("service:trails.core.BlobService")
 	public abstract BlobDownloadService getDownloadService();
 
-	@InjectObject("spring:persistenceService")
+	@InjectObject("service:trails.core.PersistenceService")
 	public abstract PersistenceService getPersistenceService();
 
 	@Parameter(required = true, cache = true)

@@ -80,13 +80,13 @@ public abstract class AssociationMgt extends TrailsComponent
 	@InjectObject("service:trails.core.PageResolver")
 	public abstract PageResolver getPageResolver();
 
-	@InjectObject("spring:persistenceService")
+	@InjectObject("service:trails.core.PersistenceService")
 	public abstract PersistenceService getPersistenceService();
 
-	@InjectObject("spring:editorService")
+	@InjectObject("service:trails.core.EditorService")
 	public abstract BlockFinder getBlockFinder();
 
-	@InjectObject("spring:descriptorService")
+	@InjectObject("service:trails.core.DescriptorService")
 	public abstract DescriptorService getDescriptorService();
 
 	public IClassDescriptor getClassDescriptor()
