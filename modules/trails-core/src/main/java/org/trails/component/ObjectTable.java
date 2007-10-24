@@ -165,7 +165,7 @@ public abstract class ObjectTable extends ClassDescriptorComponent
 	 * @param descriptor
 	 * @return
 	 */
-	private boolean displaying(IPropertyDescriptor descriptor)
+	protected boolean displaying(IPropertyDescriptor descriptor)
 	{
 		if (descriptor.isHidden() || !descriptor.isSummary())
 		{
