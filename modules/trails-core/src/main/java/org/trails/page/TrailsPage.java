@@ -22,7 +22,7 @@ import org.trails.callback.CallbackStack;
 import org.trails.callback.TrailsCallback;
 import org.trails.descriptor.DescriptorService;
 import org.trails.descriptor.IClassDescriptor;
-import org.trails.i18n.ResourceBundleMessageSource;
+import org.trails.i18n.TrailsMessageSource;
 import org.trails.persistence.PersistenceService;
 
 public abstract class TrailsPage extends BasePage implements PageBeginRenderListener
@@ -70,7 +70,7 @@ public abstract class TrailsPage extends BasePage implements PageBeginRenderList
 	 * @return
 	 */
 	@InjectObject("service:trails.core.MessageSource")
-	public abstract ResourceBundleMessageSource getResourceBundleMessageSource();
+	public abstract TrailsMessageSource getResourceBundleMessageSource();
 
 	public void pageBeginRender(PageEvent event)
 	{

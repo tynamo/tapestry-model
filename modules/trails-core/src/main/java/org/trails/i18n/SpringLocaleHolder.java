@@ -4,7 +4,7 @@ import java.util.Locale;
 
 import org.trails.servlet.TrailsApplicationServlet;
 
-public class DefaultLocaleHolder implements LocaleHolder
+public class SpringLocaleHolder implements LocaleHolder
 {
 	public Locale getLocale()
 	{

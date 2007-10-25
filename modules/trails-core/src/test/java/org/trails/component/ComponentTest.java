@@ -22,7 +22,7 @@ import org.jmock.MockObjectTestCase;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.trails.callback.CallbackStack;
 import org.trails.descriptor.DescriptorService;
-import org.trails.i18n.DefaultTrailsResourceBundleMessageSource;
+import org.trails.i18n.SpringMessageSource;
 import org.trails.i18n.DescriptorInternationalization;
 import org.trails.i18n.TestLocaleHolder;
 import org.trails.page.EditPage;
@@ -45,7 +45,7 @@ public class ComponentTest extends MockObjectTestCase
 		localeHolder.setLocale(Locale.ENGLISH);
 
 		/** sometime the aspect weaves classes that it shouldn't weave **/
-		DescriptorInternationalization.aspectOf().setResourceBundleMessageSource(null);
+		DescriptorInternationalization.aspectOf().setTrailsMessageSource(null);
 	}
 
 	public <T> T buildTrailsPage(Class<T> pageClass)
@@ -62,7 +62,7 @@ public class ComponentTest extends MockObjectTestCase
 	protected EditPage buildEditPage()
 	{
 		DescriptorService descriptorService = (DescriptorService) descriptorServiceMock.proxy();
-		DefaultTrailsResourceBundleMessageSource messageSource = new DefaultTrailsResourceBundleMessageSource();
+		SpringMessageSource messageSource = new SpringMessageSource();
 		ResourceBundleMessageSource springMessageSource = new ResourceBundleMessageSource();
 		springMessageSource.setBasename("messages");
 		messageSource.setLocaleHolder(localeHolder);
@@ -83,6 +83,6 @@ public class ComponentTest extends MockObjectTestCase
 	{
 		localeHolder.setLocale(Locale.ENGLISH);
 		/** sometime the aspect weaves classes that it shouldn't weave **/
-		DescriptorInternationalization.aspectOf().setResourceBundleMessageSource(null);
+		DescriptorInternationalization.aspectOf().setTrailsMessageSource(null);
 	}
 }

@@ -13,7 +13,7 @@ package org.trails.component;
 
 import org.apache.tapestry.BaseComponent;
 import org.apache.tapestry.annotations.InjectObject;
-import org.trails.i18n.ResourceBundleMessageSource;
+import org.trails.i18n.TrailsMessageSource;
 
 
 /**
@@ -27,7 +27,7 @@ public abstract class TrailsComponent extends BaseComponent
 	public static String DEFAULT = "Default";
 
 	/**
-	 * Return the Spring ResourceBundleMessageSource. This is used to implement
+	 * Return the Spring TrailsMessageSource. This is used to implement
 	 * i18n in all Trails components, accessing a i18n properties file in the
 	 * application instead of accessing the property file located in org.trais.component package.
 	 * By doing this, someone who would need i18n wouldn't need to change the property
@@ -36,7 +36,7 @@ public abstract class TrailsComponent extends BaseComponent
 	 * @return
 	 */
 	@InjectObject("service:trails.core.MessageSource")
-	public abstract ResourceBundleMessageSource getResourceBundleMessageSource();
+	public abstract TrailsMessageSource getResourceBundleMessageSource();
 
 	/**
 	 * This method will lookup for a message in Trails resource bundle

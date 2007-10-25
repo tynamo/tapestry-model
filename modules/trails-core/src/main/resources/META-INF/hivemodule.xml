@@ -4,7 +4,7 @@
 	<service-point id="PersistenceService" interface="org.trails.persistence.PersistenceService"/>
 	<service-point id="EditorService" interface="org.trails.descriptor.BlockFinder"/>
 	<service-point id="ViewerService" interface="org.trails.descriptor.BlockFinder"/>
-	<service-point id="MessageSource" interface="org.trails.i18n.ResourceBundleMessageSource"/>
+	<service-point id="MessageSource" interface="org.trails.i18n.TrailsMessageSource"/>
 
 	<!--
 		====================================================================================================================

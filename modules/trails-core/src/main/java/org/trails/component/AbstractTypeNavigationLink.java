@@ -22,7 +22,7 @@ import org.apache.tapestry.annotations.InjectObject;
 import org.apache.tapestry.annotations.Parameter;
 import org.trails.descriptor.DescriptorService;
 import org.trails.descriptor.IClassDescriptor;
-import org.trails.i18n.ResourceBundleMessageSource;
+import org.trails.i18n.TrailsMessageSource;
 
 /**
  * Common functionality for ListAllLink, NewLink, SearchLink
@@ -70,7 +70,7 @@ public abstract class AbstractTypeNavigationLink extends Link
 		}
 
 		Object[] params = new Object[]{displayName};
-		ResourceBundleMessageSource messageSource = getResourceBundleMessageSource();
+		TrailsMessageSource messageSource = getResourceBundleMessageSource();
 		return messageSource.getMessageWithDefaultValue(bundleKey, params, defaultMessage);
 	}
 }

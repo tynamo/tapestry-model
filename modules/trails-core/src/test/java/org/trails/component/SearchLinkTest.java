@@ -4,7 +4,7 @@ import org.apache.tapestry.IRequestCycle;
 import org.jmock.Mock;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.trails.descriptor.DescriptorService;
-import org.trails.i18n.DefaultTrailsResourceBundleMessageSource;
+import org.trails.i18n.SpringMessageSource;
 import org.trails.page.PageResolver;
 import org.trails.page.PageType;
 import org.trails.page.SearchPage;
@@ -16,7 +16,7 @@ public class SearchLinkTest extends ComponentTest
 	public void testClick()
 	{
 		DescriptorService descriptorService = (DescriptorService) descriptorServiceMock.proxy();
-		DefaultTrailsResourceBundleMessageSource messageSource = new DefaultTrailsResourceBundleMessageSource();
+		SpringMessageSource messageSource = new SpringMessageSource();
 		ResourceBundleMessageSource springMessageSource = new ResourceBundleMessageSource();
 		springMessageSource.setBasename("messages");
 		messageSource.setMessageSource(springMessageSource);

@@ -14,7 +14,7 @@ import org.trails.servlet.TrailsApplicationServlet;
   */
 public aspect DescriptorInternationalization {
 
-	private ResourceBundleMessageSource messageSource;
+	private TrailsMessageSource messageSource;
 
 	pointcut internationalizeDisplayName(IDescriptor descriptor) : execution(* IDescriptor.getDisplayName())
 									&& this(descriptor)
@@ -40,7 +40,7 @@ public aspect DescriptorInternationalization {
 	}
 
 	/* setters for ioc attributes */
-	public void setResourceBundleMessageSource(ResourceBundleMessageSource source) {
+	public void setTrailsMessageSource(TrailsMessageSource source) {
 		this.messageSource = source;
 	}
 }

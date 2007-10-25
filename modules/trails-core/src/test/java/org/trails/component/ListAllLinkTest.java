@@ -18,7 +18,7 @@ import org.springframework.context.support.ResourceBundleMessageSource;
 import org.trails.descriptor.DescriptorService;
 import org.trails.descriptor.IClassDescriptor;
 import org.trails.descriptor.TrailsClassDescriptor;
-import org.trails.i18n.DefaultTrailsResourceBundleMessageSource;
+import org.trails.i18n.SpringMessageSource;
 import org.trails.i18n.TestLocaleHolder;
 import org.trails.page.PageResolver;
 import org.trails.page.PageType;
@@ -33,7 +33,7 @@ public class ListAllLinkTest extends ComponentTest
 	{
 
 		DescriptorService descriptorService = (DescriptorService) descriptorServiceMock.proxy();
-		DefaultTrailsResourceBundleMessageSource messageSource = new DefaultTrailsResourceBundleMessageSource();
+		SpringMessageSource messageSource = new SpringMessageSource();
 		ResourceBundleMessageSource springMessageSource = new ResourceBundleMessageSource();
 		springMessageSource.setBasename("messages");
 		messageSource.setMessageSource(springMessageSource);

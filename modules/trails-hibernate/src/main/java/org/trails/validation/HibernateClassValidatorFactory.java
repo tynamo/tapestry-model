@@ -15,13 +15,13 @@ import org.hibernate.validator.MessageInterpolator;
 import org.hibernate.validator.Validator;
 import org.trails.component.Utils;
 import org.trails.i18n.LocaleHolder;
-import org.trails.i18n.ResourceBundleMessageSource;
+import org.trails.i18n.TrailsMessageSource;
 
 public class HibernateClassValidatorFactory
 {
 	private static Map classValidator = new HashMap();
 	private TrailsMessageInterpolator messageInterpolator = new TrailsMessageInterpolator();
-	ResourceBundleMessageSource messageSource;
+	TrailsMessageSource messageSource;
 	LocaleHolder localeHolder;
 
 	public void validateEntity(Object entity)
@@ -60,7 +60,7 @@ public class HibernateClassValidatorFactory
 	}
 
 
-	public void setMessageSource(ResourceBundleMessageSource messageSource)
+	public void setMessageSource(TrailsMessageSource messageSource)
 	{
 		this.messageSource = messageSource;
 	}
