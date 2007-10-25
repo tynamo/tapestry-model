@@ -13,11 +13,6 @@
  */
 package org.trails.component;
 
-import java.util.Locale;
-
-import org.apache.tapestry.IComponent;
-import org.apache.tapestry.IEngine;
-import org.apache.tapestry.IPage;
 import org.apache.tapestry.annotations.InjectObject;
 import org.apache.tapestry.annotations.Parameter;
 import org.trails.descriptor.DescriptorService;
@@ -52,23 +47,6 @@ public abstract class AbstractTypeNavigationLink extends Link
 
 	protected String generateLinkText(String displayName, String bundleKey, String defaultMessage)
 	{
-		Locale locale = null;
-		IComponent container = getContainer();
-
-		// attempt to find the locale or accept null
-		if (container != null)
-		{
-			IPage page = container.getPage();
-			if (page != null)
-			{
-				IEngine engine = page.getEngine();
-				if (engine != null)
-				{
-					locale = engine.getLocale();
-				}
-			}
-		}
-
 		Object[] params = new Object[]{displayName};
 		TrailsMessageSource messageSource = getResourceBundleMessageSource();
 		return messageSource.getMessageWithDefaultValue(bundleKey, params, defaultMessage);

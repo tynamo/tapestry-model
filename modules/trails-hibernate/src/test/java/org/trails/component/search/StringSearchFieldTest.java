@@ -4,7 +4,7 @@
 package org.trails.component.search;
 
 import org.hibernate.criterion.DetachedCriteria;
-import org.trails.component.ComponentTest;
+import org.trails.component.HibernateComponentTest;
 import org.trails.descriptor.IPropertyDescriptor;
 import org.trails.descriptor.TrailsPropertyDescriptor;
 import org.trails.testhibernate.Foo;
@@ -12,7 +12,7 @@ import org.trails.testhibernate.Foo;
 /**
  * @author cnelson
  */
-public class StringSearchFieldTest extends ComponentTest
+public class StringSearchFieldTest extends HibernateComponentTest
 {
 	public void testAddCriterion() throws Exception
 	{

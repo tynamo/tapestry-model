@@ -2,9 +2,7 @@ package org.trails.component;
 
 import org.apache.tapestry.IRequestCycle;
 import org.jmock.Mock;
-import org.springframework.context.support.ResourceBundleMessageSource;
 import org.trails.descriptor.DescriptorService;
-import org.trails.i18n.SpringMessageSource;
 import org.trails.page.PageResolver;
 import org.trails.page.PageType;
 import org.trails.page.SearchPage;
@@ -16,10 +14,6 @@ public class SearchLinkTest extends ComponentTest
 	public void testClick()
 	{
 		DescriptorService descriptorService = (DescriptorService) descriptorServiceMock.proxy();
-		SpringMessageSource messageSource = new SpringMessageSource();
-		ResourceBundleMessageSource springMessageSource = new ResourceBundleMessageSource();
-		springMessageSource.setBasename("messages");
-		messageSource.setMessageSource(springMessageSource);
 
 		Mock cycleMock = new Mock(IRequestCycle.class);
 		Mock pageResolverMock = new Mock(PageResolver.class);
@@ -28,7 +22,7 @@ public class SearchLinkTest extends ComponentTest
 		SearchPage searchPage = buildTrailsPage(SearchPage.class);
 		SearchLink searchLink = (SearchLink) creator.newInstance(SearchLink.class,
 			new Object[]{"descriptorService", descriptorServiceMock.proxy(),
-				"resourceBundleMessageSource", messageSource,
+				"resourceBundleMessageSource", getNewTrailsMessageSource(),
 				"pageResolver", pageResolverMock.proxy()});
 		searchLink.setType(Foo.class);
 

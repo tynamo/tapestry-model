@@ -9,8 +9,6 @@ import org.apache.tapestry.test.Creator;
 import org.apache.tapestry.util.ComponentAddress;
 import org.jmock.Expectations;
 import org.jmock.integration.junit3.MockObjectTestCase;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.trails.page.IEditorBlockPage;
 import org.trails.test.Foo;
 
@@ -89,21 +87,4 @@ public class TrailsBlockFinderTest extends MockObjectTestCase
 		assertEquals(overrriddenBlock, editorService.findBlock(cycle, overriddenDescriptor));
 		assertEquals(block, editorService.findBlock(cycle, stringDescriptor));
 	}
-
-	public void testFromSpring()
-	{
-		ApplicationContext appContext = new ClassPathXmlApplicationContext(
-			"applicationContext-test.xml");
-		BlockFinder editorService = (BlockFinder) appContext.getBean("editorService");
-		IPropertyDescriptor stringDescriptor = new TrailsPropertyDescriptor(Foo.class, "string", String.class);
-		assertNotNull(editorService.findBlockAddress(stringDescriptor));
-		assertTrue(editorService.findBlockAddress(stringDescriptor) instanceof ComponentAddress);
-		stringDescriptor.setReadOnly(true);
-		ComponentAddress editorAddress = editorService.findBlockAddress(stringDescriptor);
-		assertEquals("readOnly", editorAddress.getIdPath());
-		IPropertyDescriptor passwordDescriptor = new TrailsPropertyDescriptor(Foo.class, "password", String.class);
-		editorAddress = editorService.findBlockAddress(passwordDescriptor);
-		assertEquals("passwordEditor", editorAddress.getIdPath());
-	}
-
 }

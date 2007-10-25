@@ -11,18 +11,7 @@
 		<version>1.2-SNAPSHOT</version>
 	</parent>
 
-	<repositories>
-		<!-- Needed for OGNL snapshots -->
-		<repository>
-			<id>opencomponentry.snapshots</id>
-			<url>http://opencomponentry.com/repository/m2-snapshot-repo/</url>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</repository>
-	</repositories>
 	<build>
-
 		<plugins>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
@@ -61,11 +50,13 @@
 							<artifactId>log4j</artifactId>
 							<version>${log4j.version}</version>
 						</dependency>
+<!--
 						<dependency>
 							<groupId>org.springframework</groupId>
 							<artifactId>spring-beans</artifactId>
 							<version>${spring.version}</version>
 						</dependency>
+-->
 						<dependency>
 							<groupId>org.apache.tapestry</groupId>
 							<artifactId>tapestry-contrib</artifactId>
@@ -167,27 +158,7 @@
 			<artifactId>log4j</artifactId>
 			<version>${log4j.version}</version>
 		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-aop</artifactId>
-			<version>${spring.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-context</artifactId>
-			<version>${spring.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-web</artifactId>
-			<version>${spring.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-mock</artifactId>
-			<version>${spring.version}</version>
-			<scope>test</scope>
-		</dependency>
+
 		<dependency>
 			<groupId>ognl</groupId>
 			<artifactId>ognl</artifactId>
@@ -207,21 +178,6 @@
 			<groupId>org.apache.tapestry</groupId>
 			<artifactId>tapestry-contrib</artifactId>
 			<version>${tapestry.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.javaforge.tapestry</groupId>
-			<artifactId>tapestry-spring</artifactId>
-			<version>1.0.0</version>
-			<exclusions>
-				<exclusion>
-					<groupId>tapestry</groupId>
-					<artifactId>tapestry</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>tapestry</groupId>
-					<artifactId>tapestry-annotations</artifactId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 	</dependencies>
 	

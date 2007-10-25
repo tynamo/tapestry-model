@@ -16,15 +16,21 @@ package org.trails.component;
 
 import java.util.Locale;
 
+import org.apache.hivemind.Messages;
+import org.apache.hivemind.impl.DefaultClassResolver;
+import org.apache.hivemind.impl.MessageFinderImpl;
+import org.apache.hivemind.impl.ModuleMessages;
+import org.apache.hivemind.service.ThreadLocale;
+import org.apache.hivemind.service.impl.ThreadLocaleImpl;
+import org.apache.hivemind.util.ClasspathResource;
 import org.apache.tapestry.test.Creator;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
-import org.springframework.context.support.ResourceBundleMessageSource;
 import org.trails.callback.CallbackStack;
 import org.trails.descriptor.DescriptorService;
-import org.trails.i18n.SpringMessageSource;
 import org.trails.i18n.DescriptorInternationalization;
-import org.trails.i18n.TestLocaleHolder;
+import org.trails.i18n.HiveMindMessageSource;
+import org.trails.i18n.TrailsMessageSource;
 import org.trails.page.EditPage;
 import org.trails.persistence.PersistenceService;
 import org.trails.validation.TrailsValidationDelegate;
@@ -37,12 +43,12 @@ public class ComponentTest extends MockObjectTestCase
 	protected CallbackStack callbackStack = new CallbackStack();
 	protected Mock persistenceMock = new Mock(PersistenceService.class);
 	protected TrailsValidationDelegate delegate = new TrailsValidationDelegate();
-	protected TestLocaleHolder localeHolder = new TestLocaleHolder();
+	protected ThreadLocale threadLocale = 	new ThreadLocaleImpl(Locale.ENGLISH);
 
 	protected void setUp() throws Exception
 	{
 		descriptorService = (DescriptorService) descriptorServiceMock.proxy();
-		localeHolder.setLocale(Locale.ENGLISH);
+		threadLocale.setLocale(Locale.ENGLISH);
 
 		/** sometime the aspect weaves classes that it shouldn't weave **/
 		DescriptorInternationalization.aspectOf().setTrailsMessageSource(null);
@@ -62,11 +68,7 @@ public class ComponentTest extends MockObjectTestCase
 	protected EditPage buildEditPage()
 	{
 		DescriptorService descriptorService = (DescriptorService) descriptorServiceMock.proxy();
-		SpringMessageSource messageSource = new SpringMessageSource();
-		ResourceBundleMessageSource springMessageSource = new ResourceBundleMessageSource();
-		springMessageSource.setBasename("messages");
-		messageSource.setLocaleHolder(localeHolder);
-		messageSource.setMessageSource(springMessageSource);
+		TrailsMessageSource messageSource = getNewTrailsMessageSource();
 
 		EditPage editPage = (EditPage) creator.newInstance(EditPage.class,
 			new Object[]{
@@ -79,9 +81,17 @@ public class ComponentTest extends MockObjectTestCase
 		return editPage;
 	}
 
+	public TrailsMessageSource getNewTrailsMessageSource() {
+		HiveMindMessageSource messageSource = new HiveMindMessageSource();
+		Messages hivemindMessages =
+			new ModuleMessages(new MessageFinderImpl(new ClasspathResource(new DefaultClassResolver(),"messagestest.properties")), threadLocale);
+		messageSource.setMessageSource(hivemindMessages);
+		return  messageSource;
+	}
+
 	protected void tearDown() throws Exception
 	{
-		localeHolder.setLocale(Locale.ENGLISH);
+		threadLocale.setLocale(Locale.ENGLISH);
 		/** sometime the aspect weaves classes that it shouldn't weave **/
 		DescriptorInternationalization.aspectOf().setTrailsMessageSource(null);
 	}
