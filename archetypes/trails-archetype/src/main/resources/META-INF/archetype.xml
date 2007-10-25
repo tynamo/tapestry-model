@@ -13,6 +13,8 @@
 		<resource>src/main/webapp/WEB-INF/Border.jwc</resource>
 		<resource>src/main/webapp/WEB-INF/DefaultEdit.html</resource>
 		<resource>src/main/webapp/WEB-INF/DefaultEdit.page</resource>
+		<resource>src/main/webapp/WEB-INF/DefaultView.html</resource>
+		<resource>src/main/webapp/WEB-INF/DefaultView.page</resource>
 		<resource>src/main/webapp/WEB-INF/DefaultException.html</resource>
 		<resource>src/main/webapp/WEB-INF/DefaultException.page</resource>
 		<resource>src/main/webapp/WEB-INF/DefaultList.html</resource>

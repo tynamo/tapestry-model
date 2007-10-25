@@ -1,0 +1,27 @@
+<span jwcid="@Border" subBlock="subBlock">
+    <span jwcid="subBlock@Block">
+		<ul id="local">
+			<li>
+				<a class="listlink" href="#" jwcid="@trails:ListAllLink" type="ognl:classDescriptor.type"/>
+			</li>
+			<li>
+				<a jwcid="editLink@trails:EditLink" model="ognl:model" href="#">
+					<span jwcid="@trails:InsertI18N"
+						  bundleKey="org.trails.i18n.edit"
+						  defaultMessage="[TRAILS][ORG.TRAILS.I18N.EDIT]"
+						  params="ognl:classDescriptor.displayName"/>
+				</a>
+			</li>
+		</ul>
+	</span>
+
+	<h1>
+		<span jwcid="@trails:InsertI18N" bundleKey="org.trails.i18n.edit"
+			  defaultMessage="[TRAILS][ORG.TRAILS.I18N.EDIT]" params="ognl:classDescriptor.displayName"/>
+	</h1>
+
+	<ul class="glasslist">
+		<span jwcid="@trails:ViewProperties"/>
+	</ul>
+
+</span>

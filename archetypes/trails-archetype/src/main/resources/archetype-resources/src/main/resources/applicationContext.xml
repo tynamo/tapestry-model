@@ -412,6 +412,36 @@
 		</property>
 	</bean>
 
+	<bean id="viewerService" class="org.trails.descriptor.EditorBlockFinder">
+		<property name="defaultBlockAddress">
+			<bean class="org.apache.tapestry.util.ComponentAddress">
+				<constructor-arg index="0">
+					<value>trails:Viewers</value>
+				</constructor-arg>
+				<constructor-arg index="1">
+					<value>stringViewer</value>
+				</constructor-arg>
+			</bean>
+		</property>
+		<property name="editorMap">
+			<map>
+				<entry>
+					<key>
+						<value>hidden</value>
+					</key>
+					<bean class="org.apache.tapestry.util.ComponentAddress">
+						<constructor-arg index="0">
+							<value>trails:Viewers</value>
+						</constructor-arg>
+						<constructor-arg index="1">
+							<value>hidden</value>
+						</constructor-arg>
+					</bean>
+				</entry>
+			</map>
+		</property>
+	</bean>
+
 	<bean id="hibernateValidationAspect" class="org.trails.validation.HibernateValidationAspect" factory-method="aspectOf">
 		<property name="hibernateClassValidatorFactory" ref="hibernateClassValidatorFactory"/>
 	</bean>
