@@ -23,7 +23,7 @@ public class SecurityRestrictionTest extends TestCase
 		// TODO Auto-generated constructor stub
 	}
 
-	public void setUp()
+	protected void setUp() throws Exception
 	{
 		propertyDescriptor = new TrailsPropertyDescriptor(Foo.class, "bar", IBar.class);
 		authorities = new SecurityAuthorities();

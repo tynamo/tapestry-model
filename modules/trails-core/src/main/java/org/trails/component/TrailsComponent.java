@@ -35,7 +35,7 @@ public abstract class TrailsComponent extends BaseComponent
 	 *
 	 * @return
 	 */
-	@InjectObject("spring:trailsMessageSource")
+	@InjectObject("service:trails.core.MessageSource")
 	public abstract ResourceBundleMessageSource getResourceBundleMessageSource();
 
 	/**
@@ -46,9 +46,7 @@ public abstract class TrailsComponent extends BaseComponent
 	 */
 	public String getMessage(String key)
 	{
-		return getResourceBundleMessageSource().getMessageWithDefaultValue(key,
-			getContainer().getPage().getLocale(),
-			"[TRAILS][" + key.toUpperCase() + "]");
+		return getResourceBundleMessageSource().getMessageWithDefaultValue(key, "[TRAILS][" + key.toUpperCase() + "]");
 	}
 
 }

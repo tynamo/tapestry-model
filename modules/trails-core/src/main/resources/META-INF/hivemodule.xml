@@ -4,6 +4,7 @@
 	<service-point id="PersistenceService" interface="org.trails.persistence.PersistenceService"/>
 	<service-point id="EditorService" interface="org.trails.descriptor.BlockFinder"/>
 	<service-point id="ViewerService" interface="org.trails.descriptor.BlockFinder"/>
+	<service-point id="MessageSource" interface="org.trails.i18n.ResourceBundleMessageSource"/>
 
 	<!--
 		====================================================================================================================
@@ -106,4 +107,11 @@
 			<construct class="org.trails.page.DefaultPageResolver"/>
 		</invoke-factory>
 	</service-point>
+
+	<service-point id="ValidatorTranslatorService" interface="org.trails.validation.ValidatorTranslatorService">
+		<invoke-factory>
+			<construct class="org.trails.validation.ValidatorTranslatorService"/>
+		</invoke-factory>
+	</service-point>
+
 </module>

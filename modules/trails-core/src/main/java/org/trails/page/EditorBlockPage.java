@@ -21,7 +21,7 @@ public abstract class EditorBlockPage extends ModelPage implements IEditorBlockP
 		getCallbackStack().push(callback);
 	}
 
-	@InjectObject("spring:validatorTranslatorService")
+	@InjectObject("service:trails.core.ValidatorTranslatorService")
 	public abstract ValidatorTranslatorService getValidatorTranslatorService();
 
 	public abstract IPropertyDescriptor getDescriptor();

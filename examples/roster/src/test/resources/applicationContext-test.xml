@@ -22,6 +22,7 @@
 
 	<bean id="trailsMessageSource" class="org.trails.i18n.DefaultTrailsResourceBundleMessageSource">
 		<property name="messageSource" ref="messageSource"/>
+		<property name="localeHolder" ref="localeHolder"/>
 	</bean>
 	
 
@@ -155,7 +156,6 @@
 		
 	<bean id="descriptorInternationalizationAspect" class="org.trails.i18n.DescriptorInternationalization" factory-method="aspectOf">
 		<property name="resourceBundleMessageSource" ref="trailsMessageSource"/>
-		<property name="localeHolder" ref="localeHolder"/>
 	</bean>
 
 	<bean id="localeHolder" class="org.trails.i18n.TestLocaleHolder" />

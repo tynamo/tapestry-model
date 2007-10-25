@@ -161,14 +161,12 @@ public abstract class EditPage extends ModelPage implements IExternalPage
 		Object[] params = new Object[]{getClassDescriptor().getDisplayName()};
 		if (cameFromCollection() && isModelNew())
 		{
-			return getResourceBundleMessageSource().getMessageWithDefaultValue(
-				"org.trails.i18n.add", params, getLocale(),
-				"[TRAILS][ORG.TRAILS.I18N.ADD]");
+			return getResourceBundleMessageSource()
+				.getMessageWithDefaultValue("org.trails.i18n.add", params, "[TRAILS][ORG.TRAILS.I18N.ADD]");
 		} else
 		{
-			return getResourceBundleMessageSource().getMessageWithDefaultValue(
-				"org.trails.i18n.edit", params, getLocale(),
-				"[TRAILS][ORG.TRAILS.I18N.EDIT]");
+			return getResourceBundleMessageSource()
+				.getMessageWithDefaultValue("org.trails.i18n.edit", params, "[TRAILS][ORG.TRAILS.I18N.EDIT]");
 		}
 	}
 

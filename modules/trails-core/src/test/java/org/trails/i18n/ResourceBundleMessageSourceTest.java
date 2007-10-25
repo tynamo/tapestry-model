@@ -9,6 +9,7 @@ import java.util.Locale;
 import junit.framework.TestCase;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.trails.descriptor.IClassDescriptor;
+import org.trails.descriptor.IDescriptor;
 import org.trails.descriptor.IPropertyDescriptor;
 import org.trails.descriptor.TrailsClassDescriptor;
 import org.trails.descriptor.TrailsPropertyDescriptor;
@@ -20,6 +21,7 @@ public class ResourceBundleMessageSourceTest extends TestCase
 {
 
 	private DefaultTrailsResourceBundleMessageSource messageSource;
+	private TestLocaleHolder localeHolder;
 	private IClassDescriptor classDescriptor;
 	private IClassDescriptor secondClassDescriptor;
 	private IClassDescriptor thirdClassDescriptor;
@@ -32,10 +34,12 @@ public class ResourceBundleMessageSourceTest extends TestCase
 	@Override
 	protected void setUp() throws Exception
 	{
+		localeHolder = new TestLocaleHolder();
 		messageSource = new DefaultTrailsResourceBundleMessageSource();
 		ResourceBundleMessageSource springMessageSource = new ResourceBundleMessageSource();
 		springMessageSource.setBasename("messagestest");
 		messageSource.setMessageSource(springMessageSource);
+		messageSource.setLocaleHolder(localeHolder);
 
 		classDescriptor = new TrailsClassDescriptor(Foo.class);
 		secondClassDescriptor = new TrailsClassDescriptor(Bar.class);
@@ -49,84 +53,47 @@ public class ResourceBundleMessageSourceTest extends TestCase
 
 	}
 
+	private void displayNameTest(IDescriptor descriptor, Locale locale, String key, String expectedResult)
+	{
+		localeHolder.setLocale(locale);
+		assertEquals(messageSource.getDisplayName(descriptor, key), expectedResult);
+	}
+
+	private void pluralDisplayNameTest(IClassDescriptor descriptor, Locale locale, String key, String expectedResult)
+	{
+		localeHolder.setLocale(locale);
+		assertEquals(messageSource.getPluralDislayName(descriptor, key), expectedResult);
+	}
+
 	public void testGetDisplayName()
 	{
-		String value;
-
-		value = messageSource.getDisplayName(numberPropertyDescriptor, pt, "Default");
-		assertEquals(value, "i18n ptnumber");
-
-		value = messageSource.getDisplayName(numberPropertyDescriptor, ptBR, "Default");
-		assertEquals(value, "i18n ptnumber");
-
-		value = messageSource.getDisplayName(numberPropertyDescriptor, en, "Default");
-		assertEquals(value, "i18n number");
-
-		value = messageSource.getDisplayName(namePropertyDescriptor, en, "Default");
-		assertEquals(value, "i18n name");
-
-		value = messageSource.getDisplayName(namePropertyDescriptor, pt, "Default");
-		assertEquals(value, "i18n ptname");
-
-		value = messageSource.getDisplayName(namePropertyDescriptor, ptBR, "Default");
-		assertEquals(value, "i18n ptname");
-
-		value = messageSource.getDisplayName(classDescriptor, pt, "Default");
-		assertEquals(value, "i18n ptFoo");
-
-		value = messageSource.getDisplayName(classDescriptor, ptBR, "Default");
-		assertEquals(value, "i18n ptFoo");
-
-		value = messageSource.getDisplayName(classDescriptor, en, "Default");
-		assertEquals(value, "i18n Foo");
-
-		value = messageSource.getDisplayName(secondClassDescriptor, pt, "Default");
-		assertEquals(value, "i18n ptBar");
-
-		value = messageSource.getDisplayName(secondClassDescriptor, ptBR, "Default");
-		assertEquals(value, "i18n ptBar");
-
-		value = messageSource.getDisplayName(secondClassDescriptor, en, "Default");
-		assertEquals(value, "i18n Bar");
-
-		value = messageSource.getDisplayName(thirdClassDescriptor, pt, "Default");
-		assertEquals(value, "Default");
-
-		value = messageSource.getDisplayName(thirdClassDescriptor, ptBR, "Default");
-		assertEquals(value, "Default");
-
-		value = messageSource.getDisplayName(thirdClassDescriptor, en, "Default");
-		assertEquals(value, "Default");
-
+		displayNameTest(numberPropertyDescriptor, pt, "Default", "i18n ptnumber");
+		displayNameTest(numberPropertyDescriptor, ptBR, "Default", "i18n ptnumber");
+		displayNameTest(numberPropertyDescriptor, en, "Default", "i18n number");
+		displayNameTest(namePropertyDescriptor, en, "Default", "i18n name");
+		displayNameTest(namePropertyDescriptor, pt, "Default", "i18n ptname");
+		displayNameTest(namePropertyDescriptor, ptBR, "Default", "i18n ptname");
+		displayNameTest(classDescriptor, pt, "Default", "i18n ptFoo");
+		displayNameTest(classDescriptor, ptBR, "Default", "i18n ptFoo");
+		displayNameTest(classDescriptor, en, "Default", "i18n Foo");
+		displayNameTest(secondClassDescriptor, pt, "Default", "i18n ptBar");
+		displayNameTest(secondClassDescriptor, ptBR, "Default", "i18n ptBar");
+		displayNameTest(secondClassDescriptor, en, "Default", "i18n Bar");
+		displayNameTest(thirdClassDescriptor, pt, "Default", "Default");
+		displayNameTest(thirdClassDescriptor, ptBR, "Default", "Default");
+		displayNameTest(thirdClassDescriptor, en, "Default", "Default");
 	}
 
 	public void testGetPluralDisplayName()
 	{
-		String value;
-
-		value = messageSource.getPluralDislayName(classDescriptor, pt, "Default");
-		assertEquals(value, "i18n ptFoo Plural");
-
-		value = messageSource.getPluralDislayName(classDescriptor, ptBR, "Default");
-		assertEquals(value, "i18n ptFoo Plural");
-
-		value = messageSource.getPluralDislayName(classDescriptor, en, "Default");
-		assertEquals(value, "i18n Foo Plural");
-
-		value = messageSource.getPluralDislayName(secondClassDescriptor, pt, "Default");
-		assertEquals(value, "i18n ptBar Plural");
-
-		value = messageSource.getPluralDislayName(secondClassDescriptor, ptBR, "Default");
-		assertEquals(value, "i18n ptBar Plural");
-
-		value = messageSource.getPluralDislayName(secondClassDescriptor, en, "Default");
-		assertEquals(value, "i18n Bar Plural");
-
-		value = messageSource.getPluralDislayName(thirdClassDescriptor, pt, "Default");
-		assertEquals(value, "Default");
-
-		value = messageSource.getPluralDislayName(thirdClassDescriptor, ptBR, "Default");
-		assertEquals(value, "Default");
+		pluralDisplayNameTest(classDescriptor, pt, "Default", "i18n ptFoo Plural");
+		pluralDisplayNameTest(classDescriptor, ptBR, "Default", "i18n ptFoo Plural");
+		pluralDisplayNameTest(classDescriptor, en, "Default", "i18n Foo Plural");
+		pluralDisplayNameTest(secondClassDescriptor, pt, "Default", "i18n ptBar Plural");
+		pluralDisplayNameTest(secondClassDescriptor, ptBR, "Default", "i18n ptBar Plural");
+		pluralDisplayNameTest(secondClassDescriptor, en, "Default", "i18n Bar Plural");
+		pluralDisplayNameTest(thirdClassDescriptor, pt, "Default", "Default");
+		pluralDisplayNameTest(thirdClassDescriptor, ptBR, "Default", "Default");
 	}
 
 	public void testGetMessage()

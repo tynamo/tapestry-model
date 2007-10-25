@@ -9,7 +9,6 @@ import java.util.Locale;
 import org.apache.tapestry.BaseComponent;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.PageRedirectException;
-import org.trails.servlet.TrailsApplicationServlet;
 
 public abstract class LocaleLink extends BaseComponent
 {
@@ -24,7 +23,6 @@ public abstract class LocaleLink extends BaseComponent
 	{
 		Locale locale = new Locale(getLanguage(), getCountry());
 		getPage().getEngine().setLocale(locale);
-		TrailsApplicationServlet.setCurrentLocale(locale);
 		cycle.cleanup();
 		throw new PageRedirectException(getPage());
 	}

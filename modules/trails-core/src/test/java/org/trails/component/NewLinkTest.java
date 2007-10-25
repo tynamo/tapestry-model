@@ -20,6 +20,7 @@ import org.trails.descriptor.DescriptorService;
 import org.trails.descriptor.IClassDescriptor;
 import org.trails.descriptor.TrailsClassDescriptor;
 import org.trails.i18n.DefaultTrailsResourceBundleMessageSource;
+import org.trails.i18n.TestLocaleHolder;
 import org.trails.page.EditPage;
 import org.trails.page.HomePage;
 import org.trails.page.ListPage;
@@ -84,6 +85,7 @@ public class NewLinkTest extends ComponentTest
 		ResourceBundleMessageSource springMessageSource = new ResourceBundleMessageSource();
 		springMessageSource.setBasename("messages");
 		messageSource.setMessageSource(springMessageSource);
+		messageSource.setLocaleHolder(new TestLocaleHolder());
 		editPage = buildTrailsPage(EditPage.class);
 		pageResolverMock = new Mock(PageResolver.class);
 

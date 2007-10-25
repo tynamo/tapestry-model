@@ -71,6 +71,6 @@ public abstract class AbstractTypeNavigationLink extends Link
 
 		Object[] params = new Object[]{displayName};
 		ResourceBundleMessageSource messageSource = getResourceBundleMessageSource();
-		return messageSource.getMessageWithDefaultValue(bundleKey, params, locale, defaultMessage);
+		return messageSource.getMessageWithDefaultValue(bundleKey, params, defaultMessage);
 	}
 }

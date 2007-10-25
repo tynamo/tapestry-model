@@ -4,77 +4,31 @@
  */
 package org.trails.validation;
 
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-import java.util.ResourceBundle;
 
 import org.hibernate.validator.ClassValidator;
 import org.hibernate.validator.InvalidStateException;
 import org.hibernate.validator.InvalidValue;
+import org.hibernate.validator.MessageInterpolator;
+import org.hibernate.validator.Validator;
 import org.trails.component.Utils;
-import org.trails.servlet.TrailsApplicationServlet;
+import org.trails.i18n.LocaleHolder;
+import org.trails.i18n.ResourceBundleMessageSource;
 
 public class HibernateClassValidatorFactory
 {
-
 	private static Map classValidator = new HashMap();
-
-	/**
-	 * This inner class doesn't return exceptions when some key is searched in
-	 * the bundle. This is nice so we don't have exceptions thrown in the screen
-	 * by hibernate ClassValidator. Instead, we will have a
-	 * [TRAILS][KEY-IN-UPPER] string returned.
-	 *
-	 * @author Eduardo Fernandes Piva (eduardo@gwe.com.br)
-	 */
-	private class MyBundle extends ResourceBundle
-	{
-
-		private ResourceBundle parentBundle;
-
-		public MyBundle(ResourceBundle bundle)
-		{
-			this.parentBundle = bundle;
-		}
-
-		@Override
-		protected Object handleGetObject(String key)
-		{
-			try
-			{
-				return parentBundle.getObject(key);
-			} catch (Exception e)
-			{
-				return "[TRAILS][" + key.toUpperCase() + "]";
-			}
-		}
-
-		@Override
-		public Enumeration<String> getKeys()
-		{
-			return parentBundle.getKeys();
-		}
-
-	}
-
-	private static final HibernateClassValidatorFactory singleton = new HibernateClassValidatorFactory();
-
-	private HibernateClassValidatorFactory()
-	{
-	}
-
-	public static HibernateClassValidatorFactory getSingleton()
-	{
-		return singleton;
-	}
+	private TrailsMessageInterpolator messageInterpolator = new TrailsMessageInterpolator();
+	ResourceBundleMessageSource messageSource;
+	LocaleHolder localeHolder;
 
 	public void validateEntity(Object entity)
 	{
-		Locale locale = TrailsApplicationServlet.getCurrentLocale();
+		Locale locale = localeHolder.getLocale();
 
-		String key = entity.getClass().toString() + "locale:" + locale;
+		String key = Utils.checkForCGLIB(entity.getClass()).toString() + "locale:" + locale;
 		ClassValidator validator = (ClassValidator) classValidator.get(key);
 		if (validator == null)
 		{
@@ -98,14 +52,34 @@ public class HibernateClassValidatorFactory
 			validator = new ClassValidator(entityClass);
 		} else
 		{
-			ResourceBundle bundle = ResourceBundle.getBundle("messages", locale);
-			ResourceBundle myBundle = new MyBundle(bundle);
-			validator = new ClassValidator(entityClass, myBundle);
+			validator = new ClassValidator(entityClass, messageInterpolator);
 		}
 
 		classValidator.put(key, validator);
 		return validator;
 	}
 
+
+	public void setMessageSource(ResourceBundleMessageSource messageSource)
+	{
+		this.messageSource = messageSource;
+	}
+
+	public void setLocaleHolder(LocaleHolder localeHolder)
+	{
+		this.localeHolder = localeHolder;
+	}
+
+	/**
+	 * This inner class doesn't return exceptions when some key is searched in the bundle. This is nice so we don't have
+	 * exceptions thrown in the screen by hibernate ClassValidator.
+	 */
+	private class TrailsMessageInterpolator implements MessageInterpolator
+	{
+		public String interpolate(String key, Validator validator, MessageInterpolator messageInterpolator)
+		{
+			return messageSource.getMessageWithDefaultValue(key, new Object[]{validator}, key);
+		}
+	}
 
 }

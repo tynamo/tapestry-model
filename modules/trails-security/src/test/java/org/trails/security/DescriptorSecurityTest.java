@@ -14,7 +14,6 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.trails.descriptor.DescriptorService;
 import org.trails.descriptor.IClassDescriptor;
 import org.trails.security.test.FooSecured;
-import org.trails.servlet.TrailsApplicationServlet;
 import org.trails.test.Foo;
 
 public class DescriptorSecurityTest extends SecurityRestrictionTest
@@ -24,13 +23,12 @@ public class DescriptorSecurityTest extends SecurityRestrictionTest
 	private DescriptorService service;
 
 	@Override
-	public void setUp()
+	protected void setUp() throws java.lang.Exception
 	{
 		// appContext will initialize the aspect
 		super.setUp();
 		appContext = new ClassPathXmlApplicationContext(
 			"applicationContext-test.xml");
-		TrailsApplicationServlet.setCurrentLocale(null);
 		service = (DescriptorService) appContext.getBean("descriptorService");
 	}
 
@@ -148,9 +146,10 @@ public class DescriptorSecurityTest extends SecurityRestrictionTest
 			assertTrue(!classDescriptor.isHidden());
 		}
 	}
-	
-	public void tearDown() {
-		// Not to interfere with other tests
-		SecurityContextHolder.clearContext();		
+
+	protected void tearDown() throws Exception
+	{
+		super.tearDown();
+		SecurityContextHolder.clearContext();
 	}
 }

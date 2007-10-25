@@ -22,6 +22,7 @@
 
 	<bean id="trailsMessageSource" class="org.trails.i18n.DefaultTrailsResourceBundleMessageSource">
 		<property name="messageSource" ref="messageSource"/>
+		<property name="localeHolder" ref="localeHolder"/>
 	</bean>
 
 
@@ -174,6 +175,14 @@
 
 	<bean id="descriptorInternationalizationAspect" class="org.trails.i18n.DescriptorInternationalization" factory-method="aspectOf">
 		<property name="resourceBundleMessageSource" ref="trailsMessageSource"/>
+	</bean>
+
+	<bean id="hibernateValidationAspect" class="org.trails.validation.HibernateValidationAspect" factory-method="aspectOf">
+		<property name="hibernateClassValidatorFactory" ref="hibernateClassValidatorFactory"/>
+	</bean>
+
+	<bean id="hibernateClassValidatorFactory"  class="org.trails.validation.HibernateClassValidatorFactory">
+		<property name="messageSource" ref="trailsMessageSource"/>
 		<property name="localeHolder" ref="localeHolder"/>
 	</bean>
 

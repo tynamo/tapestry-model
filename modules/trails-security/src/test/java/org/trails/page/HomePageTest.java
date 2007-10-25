@@ -18,7 +18,6 @@ import org.trails.descriptor.IClassDescriptor;
 import org.trails.persistence.PersistenceService;
 import org.trails.security.SecurityAuthorities;
 import org.trails.security.test.FooSecured;
-import org.trails.servlet.TrailsApplicationServlet;
 
 /**
  * @author Eduardo Fernandes Piva (eduardo@gwe.com.br)
@@ -34,13 +33,13 @@ public class HomePageTest extends ComponentTest
 	private Creator creator = new Creator();
 
 	@Override
-	public void setUp()
+	protected void setUp() throws Exception
 	{
+		super.setUp();
 		// appContext will initialize the aspect
 		autorities = new SecurityAuthorities();
-		appContext = new ClassPathXmlApplicationContext(
-			"applicationContext-test.xml");
-		TrailsApplicationServlet.setCurrentLocale(null);
+		appContext = new ClassPathXmlApplicationContext("applicationContext-test.xml");
+
 		service = (DescriptorService) appContext.getBean("descriptorService");
 		persistenceService = (PersistenceService) appContext.getBean("persistenceService");
 		home = buildHomePage();
@@ -136,9 +135,11 @@ public class HomePageTest extends ComponentTest
 		}
 		return false;
 	}
-	
-	public void tearDown() {
+
+	protected void tearDown() throws Exception
+	{
+		super.tearDown();
 		// Not to interfere with other tests
-		SecurityContextHolder.clearContext();		
+		SecurityContextHolder.clearContext();
 	}
 }

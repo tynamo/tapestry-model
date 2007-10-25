@@ -14,6 +14,8 @@
 package org.trails.component;
 
 
+import java.util.Locale;
+
 import org.apache.tapestry.test.Creator;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
@@ -21,16 +23,12 @@ import org.springframework.context.support.ResourceBundleMessageSource;
 import org.trails.callback.CallbackStack;
 import org.trails.descriptor.DescriptorService;
 import org.trails.i18n.DefaultTrailsResourceBundleMessageSource;
+import org.trails.i18n.DescriptorInternationalization;
+import org.trails.i18n.TestLocaleHolder;
 import org.trails.page.EditPage;
 import org.trails.persistence.PersistenceService;
 import org.trails.validation.TrailsValidationDelegate;
 
-/**
- * @author fus8882
- *         <p/>
- *         TODO To change the template for this generated type comment go to
- *         Window - Preferences - Java - Code Style - Code Templates
- */
 public class ComponentTest extends MockObjectTestCase
 {
 	protected Creator creator = new Creator();
@@ -39,13 +37,18 @@ public class ComponentTest extends MockObjectTestCase
 	protected CallbackStack callbackStack = new CallbackStack();
 	protected Mock persistenceMock = new Mock(PersistenceService.class);
 	protected TrailsValidationDelegate delegate = new TrailsValidationDelegate();
+	protected TestLocaleHolder localeHolder = new TestLocaleHolder();
 
-	public void setUp() throws Exception
+	protected void setUp() throws Exception
 	{
 		descriptorService = (DescriptorService) descriptorServiceMock.proxy();
+		localeHolder.setLocale(Locale.ENGLISH);
+
+		/** sometime the aspect weaves classes that it shouldn't weave **/
+		DescriptorInternationalization.aspectOf().setResourceBundleMessageSource(null);
 	}
 
-	protected <T> T buildTrailsPage(Class<T> pageClass)
+	public <T> T buildTrailsPage(Class<T> pageClass)
 	{
 		T page = (T) creator.newInstance(pageClass,
 			new Object[]{
@@ -62,6 +65,7 @@ public class ComponentTest extends MockObjectTestCase
 		DefaultTrailsResourceBundleMessageSource messageSource = new DefaultTrailsResourceBundleMessageSource();
 		ResourceBundleMessageSource springMessageSource = new ResourceBundleMessageSource();
 		springMessageSource.setBasename("messages");
+		messageSource.setLocaleHolder(localeHolder);
 		messageSource.setMessageSource(springMessageSource);
 
 		EditPage editPage = (EditPage) creator.newInstance(EditPage.class,
@@ -75,4 +79,10 @@ public class ComponentTest extends MockObjectTestCase
 		return editPage;
 	}
 
+	protected void tearDown() throws Exception
+	{
+		localeHolder.setLocale(Locale.ENGLISH);
+		/** sometime the aspect weaves classes that it shouldn't weave **/
+		DescriptorInternationalization.aspectOf().setResourceBundleMessageSource(null);
+	}
 }

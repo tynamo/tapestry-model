@@ -37,32 +37,22 @@
 		</invoke-factory>
 	</implementation>
 
-	<service-point id="LocaleHolder" interface="org.apache.tapestry.services.WebRequestServicerFilter">
-		<invoke-factory>
-			<construct class="org.trails.i18n.LocaleFilter">
-				<set-object property="threadLocale" value="service:hivemind.ThreadLocale"/>
-				<set-object property="localeHolder" value="spring:localeHolder"/>
-			</construct>
+	<implementation service-id="trails.core.MessageSource">
+		<invoke-factory service-id="hivemind.lib.SpringLookupFactory">
+			<lookup-bean name="trailsMessageSource"/>
 		</invoke-factory>
-	</service-point>
-
-	<contribution configuration-id="tapestry.request.WebRequestServicerPipeline">
-		<filter name="LocaleHolder" object="service:LocaleHolder"/>
-	</contribution>
+	</implementation>
 
 	<contribution configuration-id="tapestry.url.ServiceEncoders">
 		<page-service-encoder id="page" extension="page" service="page"/>
-	</contribution>
-
-	<contribution configuration-id="tapestry.url.ServiceEncoders">
 		<direct-service-encoder id="direct" stateless-extension="direct" stateful-extension="sdirect"/>
-	</contribution>
-
-	<contribution configuration-id="tapestry.url.ServiceEncoders">
 		<asset-encoder id="asset" path="/assets"/>
-	</contribution>
-
-	<contribution configuration-id="tapestry.url.ServiceEncoders">
 		<extension-encoder id="extension" extension="svc" after="*"/>
 	</contribution>
+
+	<contribution configuration-id="tapestry.InfrastructureOverrides">
+		<property name="exceptionPresenter" object="service:trails.core.ApplicationExceptionPresenter"/>
+		<property name="exceptionPageName" value="DefaultException"/>
+	</contribution>
+
 </module>
