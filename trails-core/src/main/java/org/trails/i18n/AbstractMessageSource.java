@@ -6,7 +6,7 @@ import org.trails.descriptor.IClassDescriptor;
 import org.trails.descriptor.IDescriptor;
 import org.trails.descriptor.IPropertyDescriptor;
 
-public abstract class AbstractResourceBundleMessageSource implements ResourceBundleMessageSource
+public abstract class AbstractMessageSource implements TrailsMessageSource
 {
 
 	public String getMessageWithDefaultValue(String key, String defaultMessage)

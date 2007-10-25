@@ -9,7 +9,7 @@ import org.apache.tapestry.annotations.InjectObject;
 import org.apache.tapestry.annotations.Parameter;
 import org.apache.tapestry.components.Insert;
 import org.apache.tapestry.components.InsertMode;
-import org.trails.i18n.ResourceBundleMessageSource;
+import org.trails.i18n.TrailsMessageSource;
 
 /**
  * Used to insert some text (from a parameter) into the HTML.
@@ -19,7 +19,7 @@ import org.trails.i18n.ResourceBundleMessageSource;
 public abstract class InsertI18N extends Insert
 {
 	/**
-	 * Return the Spring ResourceBundleMessageSource. This is used to implement
+	 * Return the Spring TrailsMessageSource. This is used to implement
 	 * i18n in all Trails components, accessing a i18n properties file in the
 	 * application instead of accessing the property file located in org.trais.component package.
 	 * By doing this, someone who would need i18n wouldn't need to change the property
@@ -28,7 +28,7 @@ public abstract class InsertI18N extends Insert
 	 * @return
 	 */
 	@InjectObject("service:trails.core.MessageSource")
-	public abstract ResourceBundleMessageSource getResourceBundleMessageSource();
+	public abstract TrailsMessageSource getResourceBundleMessageSource();
 
 	@Parameter(required = true)
 	public abstract String getBundleKey();
@@ -81,10 +81,10 @@ public abstract class InsertI18N extends Insert
 	{
 		if (getDefaultMessage() != null)
 		{
-			return getResourceBundleMessageSource().getMessageWithDefaultValue(getBundleKey(), getParams() != null ? constructServiceParameters(getParams()) : ResourceBundleMessageSource.EMPTY_ARGUMENTS, getLocale(), getDefaultMessage());
+			return getResourceBundleMessageSource().getMessageWithDefaultValue(getBundleKey(), getParams() != null ? constructServiceParameters(getParams()) : TrailsMessageSource.EMPTY_ARGUMENTS, getLocale(), getDefaultMessage());
 		} else
 		{
-			return getResourceBundleMessageSource().getMessage(getBundleKey(), getParams() != null ? constructServiceParameters(getParams()) : ResourceBundleMessageSource.EMPTY_ARGUMENTS, getLocale());
+			return getResourceBundleMessageSource().getMessage(getBundleKey(), getParams() != null ? constructServiceParameters(getParams()) : TrailsMessageSource.EMPTY_ARGUMENTS, getLocale());
 		}
 	}
 

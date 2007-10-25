@@ -19,7 +19,7 @@ import org.trails.callback.TrailsCallback;
 import org.trails.descriptor.DescriptorService;
 import org.trails.descriptor.IClassDescriptor;
 import org.trails.descriptor.TrailsClassDescriptor;
-import org.trails.i18n.DefaultTrailsResourceBundleMessageSource;
+import org.trails.i18n.SpringMessageSource;
 import org.trails.i18n.TestLocaleHolder;
 import org.trails.page.EditPage;
 import org.trails.page.HomePage;
@@ -81,7 +81,7 @@ public class NewLinkTest extends ComponentTest
 	{
 		super.setUp();
 		DescriptorService descriptorService = (DescriptorService) descriptorServiceMock.proxy();
-		DefaultTrailsResourceBundleMessageSource messageSource = new DefaultTrailsResourceBundleMessageSource();
+		SpringMessageSource messageSource = new SpringMessageSource();
 		ResourceBundleMessageSource springMessageSource = new ResourceBundleMessageSource();
 		springMessageSource.setBasename("messages");
 		messageSource.setMessageSource(springMessageSource);

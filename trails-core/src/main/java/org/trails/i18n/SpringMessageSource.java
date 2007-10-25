@@ -8,7 +8,7 @@ import java.util.Locale;
 import org.springframework.context.MessageSource;
 import org.springframework.context.NoSuchMessageException;
 
-public class DefaultTrailsResourceBundleMessageSource extends AbstractResourceBundleMessageSource
+public class SpringMessageSource extends AbstractMessageSource
 {
 
 	LocaleHolder localeHolder;

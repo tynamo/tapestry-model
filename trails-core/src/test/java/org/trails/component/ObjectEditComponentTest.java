@@ -26,7 +26,7 @@ import org.apache.tapestry.valid.IValidationDelegate;
 import org.jmock.Mock;
 import org.trails.callback.CallbackStack;
 import org.trails.descriptor.DescriptorService;
-import org.trails.i18n.ResourceBundleMessageSource;
+import org.trails.i18n.TrailsMessageSource;
 import org.trails.page.EditPage;
 import org.trails.persistence.PersistenceService;
 import org.trails.test.Foo;
@@ -244,7 +244,7 @@ public class ObjectEditComponentTest extends ComponentTest
 		}
 
 		@Override
-		public ResourceBundleMessageSource getResourceBundleMessageSource()
+		public TrailsMessageSource getResourceBundleMessageSource()
 		{
 			// TODO Auto-generated method stub
 			return null;

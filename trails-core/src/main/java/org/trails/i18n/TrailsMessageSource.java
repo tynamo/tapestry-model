@@ -12,7 +12,7 @@ import org.trails.descriptor.IDescriptor;
 /**
  * Interface used to imlement i18n in Trails pages and components.
  */
-public interface ResourceBundleMessageSource
+public interface TrailsMessageSource
 {
 
 	Object[] EMPTY_ARGUMENTS = new Object[]{};

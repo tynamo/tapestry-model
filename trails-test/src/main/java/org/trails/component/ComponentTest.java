@@ -21,7 +21,7 @@ import org.jmock.MockObjectTestCase;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.trails.callback.CallbackStack;
 import org.trails.descriptor.DescriptorService;
-import org.trails.i18n.DefaultTrailsResourceBundleMessageSource;
+import org.trails.i18n.SpringMessageSource;
 import org.trails.i18n.TestLocaleHolder;
 import org.trails.page.EditPage;
 import org.trails.persistence.PersistenceService;
@@ -58,7 +58,7 @@ public class ComponentTest extends MockObjectTestCase
 	protected EditPage buildEditPage()
 	{
 		DescriptorService descriptorService = (DescriptorService) descriptorServiceMock.proxy();
-		DefaultTrailsResourceBundleMessageSource messageSource = new DefaultTrailsResourceBundleMessageSource();
+		SpringMessageSource messageSource = new SpringMessageSource();
 		ResourceBundleMessageSource springMessageSource = new ResourceBundleMessageSource();
 		springMessageSource.setBasename("messages");
 		messageSource.setLocaleHolder(localeHolder);

@@ -7,6 +7,6 @@ public class TestUtils
 
 	public static void cleanDescriptorInternationalizationAspect()
 	{
-		DescriptorInternationalization.aspectOf().setResourceBundleMessageSource(null);
+		DescriptorInternationalization.aspectOf().setTrailsMessageSource(null);
 	}
 }

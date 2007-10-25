@@ -29,7 +29,7 @@ public class DescriptorInternationalizationTest extends TestCase
 	protected void setUp() throws Exception
 	{
 		localeHolder = new TestLocaleHolder();
-		DefaultTrailsResourceBundleMessageSource messageSource = new DefaultTrailsResourceBundleMessageSource();
+		SpringMessageSource messageSource = new SpringMessageSource();
 		ResourceBundleMessageSource springMessageSource = new ResourceBundleMessageSource();
 		springMessageSource.setBasename("messagestest");
 		messageSource.setMessageSource(springMessageSource);
@@ -42,7 +42,7 @@ public class DescriptorInternationalizationTest extends TestCase
 		propertyDescriptor.setName("number");
 		propertyDescriptor.setDisplayName("Number");
 
-		DescriptorInternationalization.aspectOf().setResourceBundleMessageSource(messageSource);
+		DescriptorInternationalization.aspectOf().setTrailsMessageSource(messageSource);
 	}
 
 	public void testGetMethodDisplayName()
@@ -106,6 +106,6 @@ public class DescriptorInternationalizationTest extends TestCase
 	protected void tearDown() throws Exception
 	{
 		super.tearDown();
-		DescriptorInternationalization.aspectOf().setResourceBundleMessageSource(null);
+		DescriptorInternationalization.aspectOf().setTrailsMessageSource(null);
 	}
 }

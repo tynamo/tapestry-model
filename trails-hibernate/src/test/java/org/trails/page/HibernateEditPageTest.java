@@ -35,7 +35,7 @@ import org.trails.descriptor.IdentifierDescriptor;
 import org.trails.descriptor.TrailsClassDescriptor;
 import org.trails.descriptor.TrailsPropertyDescriptor;
 import org.trails.hibernate.HasAssignedIdentifier;
-import org.trails.i18n.DefaultTrailsResourceBundleMessageSource;
+import org.trails.i18n.SpringMessageSource;
 import org.trails.testhibernate.Bar;
 import org.trails.testhibernate.Baz;
 import org.trails.testhibernate.Foo;
@@ -43,7 +43,6 @@ import org.trails.validation.HibernateValidationDelegate;
 import org.trails.validation.OrphanException;
 import org.trails.validation.ValidationException;
 import org.trails.persistence.HibernatePersistenceService;
-import org.trails.test.TestUtils;
 
 
 public class HibernateEditPageTest extends ComponentTest
@@ -306,7 +305,7 @@ public class HibernateEditPageTest extends ComponentTest
 	protected HibernateEditPage buildEditPage()
 	{
 		DescriptorService descriptorService = (DescriptorService) descriptorServiceMock.proxy();
-		DefaultTrailsResourceBundleMessageSource messageSource = new DefaultTrailsResourceBundleMessageSource();
+		SpringMessageSource messageSource = new SpringMessageSource();
 		ResourceBundleMessageSource springMessageSource = new ResourceBundleMessageSource();
 		springMessageSource.setBasename("messagestest");
 		messageSource.setLocaleHolder(localeHolder);
