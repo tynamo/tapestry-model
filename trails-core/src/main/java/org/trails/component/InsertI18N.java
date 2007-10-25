@@ -27,7 +27,7 @@ public abstract class InsertI18N extends Insert
 	 *
 	 * @return
 	 */
-	@InjectObject("spring:trailsMessageSource")
+	@InjectObject("service:trails.core.MessageSource")
 	public abstract ResourceBundleMessageSource getResourceBundleMessageSource();
 
 	@Parameter(required = true)

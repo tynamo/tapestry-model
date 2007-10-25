@@ -2,20 +2,28 @@ package org.trails.i18n;
 
 import java.util.Locale;
 
-import org.apache.hivemind.service.ThreadLocale;
 
 public class TestLocaleHolder implements LocaleHolder
 {
 
+	Locale locale = Locale.ENGLISH;
+
+	public TestLocaleHolder()
+	{
+	}
+
+	public TestLocaleHolder(Locale locale)
+	{
+		this.locale = locale;
+	}
+
 	public Locale getLocale()
 	{
-		return null;
+		return locale;
 	}
 
-	public void setThreadLocale(ThreadLocale threadLocale)
+	public void setLocale(Locale locale)
 	{
-		// TODO Auto-generated method stub
-
+		this.locale = locale;
 	}
-
 }

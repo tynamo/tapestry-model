@@ -1,8 +1,9 @@
 package org.trails.validation;
 
-import org.springframework.test.AbstractTransactionalSpringContextTests;
 import org.springframework.test.AbstractDependencyInjectionSpringContextTests;
+import org.springframework.test.AbstractTransactionalSpringContextTests;
 import org.trails.persistence.HibernatePersistenceService;
+import org.trails.test.TestUtils;
 import org.trails.testhibernate.Bar;
 import org.trails.testhibernate.Baz;
 import org.trails.testhibernate.Foo;
@@ -51,6 +52,7 @@ public class AssertNoOrphansTest extends
 		bar = persistenceService.save(bar);
 		wibble.setBar(bar);
 		wibble = persistenceService.save(wibble);
+		TestUtils.cleanDescriptorInternationalizationAspect();
 	}
 
 	public void testAssertNoOrphans() throws Exception

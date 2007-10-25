@@ -43,6 +43,7 @@ import org.trails.validation.HibernateValidationDelegate;
 import org.trails.validation.OrphanException;
 import org.trails.validation.ValidationException;
 import org.trails.persistence.HibernatePersistenceService;
+import org.trails.test.TestUtils;
 
 
 public class HibernateEditPageTest extends ComponentTest
@@ -61,8 +62,10 @@ public class HibernateEditPageTest extends ComponentTest
 	CollectionDescriptor bazzesDescriptor = new CollectionDescriptor(Foo.class, "bazzes", Set.class);
 
 
-	public void setUp() throws Exception
+	protected void setUp() throws Exception
 	{
+		super.setUp();
+
 		persistenceMock = new Mock(HibernatePersistenceService.class);  // @todo: remove when the components reuse issue goes away
 		delegate = new HibernateValidationDelegate();
 
@@ -306,6 +309,7 @@ public class HibernateEditPageTest extends ComponentTest
 		DefaultTrailsResourceBundleMessageSource messageSource = new DefaultTrailsResourceBundleMessageSource();
 		ResourceBundleMessageSource springMessageSource = new ResourceBundleMessageSource();
 		springMessageSource.setBasename("messagestest");
+		messageSource.setLocaleHolder(localeHolder);
 		messageSource.setMessageSource(springMessageSource);
 
 		HibernateEditPage editPage = (HibernateEditPage) creator.newInstance(HibernateEditPage.class,

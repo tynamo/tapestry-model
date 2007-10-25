@@ -26,7 +26,7 @@ public abstract class SimpleSearchField extends BaseComponent
 
 	public abstract void setPropertyDescriptor(IPropertyDescriptor PropertyDescriptor);
 
-	@InjectObject("spring:validatorTranslatorService")
+	@InjectObject("service:trails.core.ValidatorTranslatorService")
 	public abstract ValidatorTranslatorService getValidatorTranslatorService();
 
 	public void buildCriterion()

@@ -7,19 +7,11 @@ package org.trails.i18n;
 import java.util.Locale;
 
 import junit.framework.TestCase;
-import org.jmock.Mock;
-import org.jmock.core.Stub;
-import org.jmock.core.matcher.InvokeAtLeastOnceMatcher;
-import org.jmock.core.stub.ReturnStub;
-import org.jmock.core.stub.StubSequence;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.context.support.ResourceBundleMessageSource;
 import org.trails.descriptor.IClassDescriptor;
 import org.trails.descriptor.IPropertyDescriptor;
 import org.trails.descriptor.ReflectionDescriptorFactory;
-import org.trails.descriptor.TrailsClassDescriptor;
 import org.trails.descriptor.TrailsPropertyDescriptor;
-import org.trails.servlet.TrailsApplicationServlet;
 import org.trails.test.Bar;
 import org.trails.test.Foo;
 
@@ -31,16 +23,17 @@ public class DescriptorInternationalizationTest extends TestCase
 	private Locale pt = new Locale("pt");
 	private Locale ptBR = new Locale("pt", "BR");
 	private Locale en = Locale.ENGLISH;
-	private ApplicationContext appContext;
-
-	private LocaleHolder oldLocaleHolder;
+	private TestLocaleHolder localeHolder;
 
 	@Override
 	protected void setUp() throws Exception
 	{
-		// appContext will initialize the aspect
-		appContext = new ClassPathXmlApplicationContext("applicationContext-test.xml");
-		oldLocaleHolder = (LocaleHolder) appContext.getBean("localeHolder");
+		localeHolder = new TestLocaleHolder();
+		DefaultTrailsResourceBundleMessageSource messageSource = new DefaultTrailsResourceBundleMessageSource();
+		ResourceBundleMessageSource springMessageSource = new ResourceBundleMessageSource();
+		springMessageSource.setBasename("messagestest");
+		messageSource.setMessageSource(springMessageSource);
+		messageSource.setLocaleHolder(localeHolder);
 
 		ReflectionDescriptorFactory descriptorFactory = new ReflectionDescriptorFactory();
 		classDescriptor = descriptorFactory.buildClassDescriptor(Foo.class);
@@ -48,82 +41,71 @@ public class DescriptorInternationalizationTest extends TestCase
 		classDescriptor.setDisplayName("Foo");
 		propertyDescriptor.setName("number");
 		propertyDescriptor.setDisplayName("Number");
-		TrailsApplicationServlet.setCurrentLocale(null);
-		localeHolderMock = new Mock(LocaleHolder.class);
-		DescriptorInternationalization.aspectOf().setLocaleHolder(
-			(LocaleHolder) localeHolderMock.proxy());
-		localeHolderMock.expects(new InvokeAtLeastOnceMatcher()).method("getLocale")
-			.will(new StubSequence(new Stub[]{
-				new ReturnStub(null),
-				new ReturnStub(en),
-				new ReturnStub(pt),
-				new ReturnStub(ptBR)
-			}));
-	}
 
-	Mock localeHolderMock;
+		DescriptorInternationalization.aspectOf().setResourceBundleMessageSource(messageSource);
+	}
 
 	public void testGetMethodDisplayName()
 	{
 
+		localeHolder.setLocale(null);
 		String displayName = propertyDescriptor.getDisplayName();
-		assertEquals(displayName, "Number");
+		assertEquals("Number", displayName);
 
-		TrailsApplicationServlet.setCurrentLocale(en);
+		localeHolder.setLocale(en);
 		displayName = propertyDescriptor.getDisplayName();
-		assertEquals(displayName, "i18n number");
+		assertEquals("i18n number", displayName);
 
-		TrailsApplicationServlet.setCurrentLocale(pt);
+		localeHolder.setLocale(pt);
 		displayName = propertyDescriptor.getDisplayName();
-		assertEquals(displayName, "i18n ptnumber");
+		assertEquals("i18n ptnumber", displayName);
 
-		TrailsApplicationServlet.setCurrentLocale(ptBR);
+		localeHolder.setLocale(ptBR);
 		displayName = propertyDescriptor.getDisplayName();
-		assertEquals(displayName, "i18n ptnumber");
+		assertEquals("i18n ptnumber", displayName);
 	}
 
 	public void testGetClassDisplayName()
 	{
+		localeHolder.setLocale(null);
 		String displayName = classDescriptor.getDisplayName();
-		assertEquals(displayName, "Foo");
+		assertEquals("Foo", displayName);
 
-		TrailsApplicationServlet.setCurrentLocale(en);
+		localeHolder.setLocale(en);
 		displayName = classDescriptor.getDisplayName();
-		assertEquals(displayName, "i18n Foo");
+		assertEquals("i18n Foo", displayName);
 
-		TrailsApplicationServlet.setCurrentLocale(pt);
+		localeHolder.setLocale(pt);
 		displayName = classDescriptor.getDisplayName();
-		assertEquals(displayName, "i18n ptFoo");
+		assertEquals("i18n ptFoo", displayName);
 
-		TrailsApplicationServlet.setCurrentLocale(ptBR);
+		localeHolder.setLocale(ptBR);
 		displayName = classDescriptor.getDisplayName();
-		assertEquals(displayName, "i18n ptFoo");
+		assertEquals("i18n ptFoo", displayName);
 	}
 
 	public void testGetClassPluralDisplayName()
 	{
+		localeHolder.setLocale(null);
 		String displayName = classDescriptor.getPluralDisplayName();
-		assertEquals(displayName, "Foos");
+		assertEquals("Foos", displayName);
 
-		TrailsApplicationServlet.setCurrentLocale(en);
+		localeHolder.setLocale(en);
 		displayName = classDescriptor.getPluralDisplayName();
-		assertEquals(displayName, "i18n Foo Plural");
+		assertEquals("i18n Foo Plural", displayName);
 
-		TrailsApplicationServlet.setCurrentLocale(pt);
+		localeHolder.setLocale(pt);
 		displayName = classDescriptor.getPluralDisplayName();
-		assertEquals(displayName, "i18n ptFoo Plural");
+		assertEquals("i18n ptFoo Plural", displayName);
 
-		TrailsApplicationServlet.setCurrentLocale(ptBR);
+		localeHolder.setLocale(ptBR);
 		displayName = classDescriptor.getPluralDisplayName();
-		assertEquals(displayName, "i18n ptFoo Plural");
+		assertEquals("i18n ptFoo Plural", displayName);
 	}
 
-	@Override
 	protected void tearDown() throws Exception
 	{
-		TrailsApplicationServlet.setCurrentLocale(null);
-		DescriptorInternationalization.aspectOf().setLocaleHolder(oldLocaleHolder);
+		super.tearDown();
+		DescriptorInternationalization.aspectOf().setResourceBundleMessageSource(null);
 	}
-
-
 }

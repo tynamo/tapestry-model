@@ -19,6 +19,7 @@ import org.trails.descriptor.DescriptorService;
 import org.trails.descriptor.IClassDescriptor;
 import org.trails.descriptor.TrailsClassDescriptor;
 import org.trails.i18n.DefaultTrailsResourceBundleMessageSource;
+import org.trails.i18n.TestLocaleHolder;
 import org.trails.page.PageResolver;
 import org.trails.page.PageType;
 import org.trails.test.BlogEntry;
@@ -36,6 +37,7 @@ public class ListAllLinkTest extends ComponentTest
 		ResourceBundleMessageSource springMessageSource = new ResourceBundleMessageSource();
 		springMessageSource.setBasename("messages");
 		messageSource.setMessageSource(springMessageSource);
+		messageSource.setLocaleHolder(new TestLocaleHolder());
 		listLink = (ListAllLink) creator.newInstance(ListAllLink.class,
 			new Object[]{"descriptorService", descriptorService,
 				"resourceBundleMessageSource", messageSource});

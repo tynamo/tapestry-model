@@ -49,7 +49,7 @@ public abstract class TrailsPage extends BasePage implements PageBeginRenderList
 	public abstract CallbackStack getCallbackStack();
 
 	/**
-	 * This property is injected with the Spring persistenceService bean
+	 * This property is injected with the persistenceService bean
 	 *
 	 * @return
 	 */
@@ -57,7 +57,7 @@ public abstract class TrailsPage extends BasePage implements PageBeginRenderList
 	public abstract PersistenceService getPersistenceService();
 
 	/**
-	 * This property is injected with the Spring descriptorService bean
+	 * This property is injected with the descriptorService bean
 	 *
 	 * @return
 	 */
@@ -69,7 +69,7 @@ public abstract class TrailsPage extends BasePage implements PageBeginRenderList
 	 *
 	 * @return
 	 */
-	@InjectObject("spring:trailsMessageSource")
+	@InjectObject("service:trails.core.MessageSource")
 	public abstract ResourceBundleMessageSource getResourceBundleMessageSource();
 
 	public void pageBeginRender(PageEvent event)
