@@ -13,9 +13,9 @@ import org.trails.descriptor.IDescriptor;
 import org.trails.descriptor.IPropertyDescriptor;
 import org.trails.descriptor.TrailsClassDescriptor;
 import org.trails.descriptor.TrailsPropertyDescriptor;
-import org.trails.test.Bar;
-import org.trails.test.Foo;
-import org.trails.test.TestTest;
+import org.trails.testhibernate.Bar;
+import org.trails.testhibernate.Foo;
+import org.trails.testhibernate.BarCollector;
 
 public class SpringMessageSourceTest extends TestCase
 {
@@ -43,7 +43,7 @@ public class SpringMessageSourceTest extends TestCase
 
 		classDescriptor = new TrailsClassDescriptor(Foo.class);
 		secondClassDescriptor = new TrailsClassDescriptor(Bar.class);
-		thirdClassDescriptor = new TrailsClassDescriptor(TestTest.class);
+		thirdClassDescriptor = new TrailsClassDescriptor(BarCollector.class);
 		numberPropertyDescriptor = new TrailsPropertyDescriptor(Foo.class, Bar.class);
 		namePropertyDescriptor = new TrailsPropertyDescriptor(Foo.class, Bar.class);
 		numberPropertyDescriptor.setName("number");
@@ -56,13 +56,13 @@ public class SpringMessageSourceTest extends TestCase
 	private void displayNameTest(IDescriptor descriptor, Locale locale, String key, String expectedResult)
 	{
 		localeHolder.setLocale(locale);
-		assertEquals(messageSource.getDisplayName(descriptor, key), expectedResult);
+		assertEquals(expectedResult, messageSource.getDisplayName(descriptor, key));
 	}
 
 	private void pluralDisplayNameTest(IClassDescriptor descriptor, Locale locale, String key, String expectedResult)
 	{
 		localeHolder.setLocale(locale);
-		assertEquals(messageSource.getPluralDislayName(descriptor, key), expectedResult);
+		assertEquals(expectedResult, messageSource.getPluralDislayName(descriptor, key));
 	}
 
 	public void testGetDisplayName()

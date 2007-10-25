@@ -18,7 +18,6 @@ public abstract class MockableTransactionalTestCase extends AbstractTransactiona
 	protected PersistenceService persistenceService;
 
 	private MockObjectTestCase mockDelegate = new MockObjectTestCase() {};
-	private ComponentTest componentTestDelegate = new ComponentTest(){};
 
 	protected Mock cycleMock = mock(IRequestCycle.class);
 	protected Mock infrastructureMock = mock(Infrastructure.class);
@@ -37,10 +36,13 @@ public abstract class MockableTransactionalTestCase extends AbstractTransactiona
 		verify();
 	}
 
-	// Operations delegation to componentTestDelegate
-	protected <T> T buildTrailsPage(Class<T> pageClass) {
-		return componentTestDelegate.buildTrailsPage(pageClass);
 
+	/**
+	 * Operations delegation to componentTestDelegate
+	 */
+	protected <T> T buildTrailsPage(Class<T> pageClass)
+	{
+		return getComponentTest().buildTrailsPage(pageClass);
 	}
 
 	// Operations delegating to mockDelegate 
@@ -73,5 +75,14 @@ public abstract class MockableTransactionalTestCase extends AbstractTransactiona
 	public IsEqual eq(long operand) {return mockDelegate.eq(operand);}
 	public IsEqual eq(float operand) {return mockDelegate.eq(operand);}
 	public IsEqual eq(double operand) {return mockDelegate.eq(operand);}
-	
+
+
+	/**
+	 * Little hook to override the default ComponentTest delegate.
+	 *
+	 * @return
+	 */
+	protected ComponentTest getComponentTest() {
+		return new ComponentTest(){};
+	}
 }

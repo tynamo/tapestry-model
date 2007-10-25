@@ -1,12 +1,12 @@
 package org.trails.component.search;
 
 import org.hibernate.criterion.DetachedCriteria;
-import org.trails.component.ComponentTest;
+import org.trails.component.HibernateComponentTest;
 import org.trails.descriptor.IPropertyDescriptor;
 import org.trails.descriptor.TrailsPropertyDescriptor;
 import org.trails.testhibernate.Foo;
 
-public class SimpleSearchFieldTest extends ComponentTest
+public class SimpleSearchFieldTest extends HibernateComponentTest
 {
 	public void testAddCriterion() throws Exception
 	{

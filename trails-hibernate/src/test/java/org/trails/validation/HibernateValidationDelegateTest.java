@@ -7,7 +7,7 @@ import org.apache.tapestry.valid.RenderString;
 import org.hibernate.validator.InvalidStateException;
 import org.hibernate.validator.InvalidValue;
 import org.jmock.Mock;
-import org.trails.component.ComponentTest;
+import org.trails.component.HibernateComponentTest;
 import org.trails.descriptor.IClassDescriptor;
 import org.trails.descriptor.ReflectionDescriptorFactory;
 import org.trails.descriptor.TrailsClassDescriptor;
@@ -15,7 +15,7 @@ import org.trails.descriptor.TrailsPropertyDescriptor;
 import org.trails.testhibernate.Baz;
 import org.trails.testhibernate.Foo;
 
-public class HibernateValidationDelegateTest extends ComponentTest
+public class HibernateValidationDelegateTest extends HibernateComponentTest
 {
 
 	Mock componentMock;

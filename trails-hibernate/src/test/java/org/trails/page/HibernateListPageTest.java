@@ -11,18 +11,18 @@
  */
 package org.trails.page;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.event.PageEvent;
 import org.hibernate.criterion.DetachedCriteria;
 import org.jmock.Mock;
 import org.trails.callback.ListCallback;
-import org.trails.component.ComponentTest;
+import org.trails.component.HibernateComponentTest;
 import org.trails.testhibernate.Foo;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class HibernateListPageTest extends ComponentTest
+public class HibernateListPageTest extends HibernateComponentTest
 {
 
 	public static final String PAGE_NAME = "fooList";

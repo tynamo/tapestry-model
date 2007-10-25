@@ -23,29 +23,26 @@ import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.validator.InvalidStateException;
 import org.hibernate.validator.InvalidValue;
 import org.jmock.Mock;
-import org.springframework.context.support.ResourceBundleMessageSource;
 import org.trails.callback.CollectionCallback;
 import org.trails.callback.EditCallback;
 import org.trails.callback.HibernateListCallback;
-import org.trails.component.ComponentTest;
+import org.trails.component.HibernateComponentTest;
 import org.trails.descriptor.CollectionDescriptor;
-import org.trails.descriptor.DescriptorService;
 import org.trails.descriptor.IClassDescriptor;
 import org.trails.descriptor.IdentifierDescriptor;
 import org.trails.descriptor.TrailsClassDescriptor;
 import org.trails.descriptor.TrailsPropertyDescriptor;
 import org.trails.hibernate.HasAssignedIdentifier;
-import org.trails.i18n.SpringMessageSource;
+import org.trails.persistence.HibernatePersistenceService;
 import org.trails.testhibernate.Bar;
 import org.trails.testhibernate.Baz;
 import org.trails.testhibernate.Foo;
 import org.trails.validation.HibernateValidationDelegate;
 import org.trails.validation.OrphanException;
 import org.trails.validation.ValidationException;
-import org.trails.persistence.HibernatePersistenceService;
 
 
-public class HibernateEditPageTest extends ComponentTest
+public class HibernateEditPageTest extends HibernateComponentTest
 {
 	Mock cycleMock = new Mock(IRequestCycle.class);
 	Baz baz = new Baz();
@@ -301,25 +298,4 @@ public class HibernateEditPageTest extends ComponentTest
 		assertEquals(foo2, poppedCallback.getModel());
 		assertTrue(editPage.getCallbackStack().getStack().isEmpty());
 	}
-
-	protected HibernateEditPage buildEditPage()
-	{
-		DescriptorService descriptorService = (DescriptorService) descriptorServiceMock.proxy();
-		SpringMessageSource messageSource = new SpringMessageSource();
-		ResourceBundleMessageSource springMessageSource = new ResourceBundleMessageSource();
-		springMessageSource.setBasename("messagestest");
-		messageSource.setLocaleHolder(localeHolder);
-		messageSource.setMessageSource(springMessageSource);
-
-		HibernateEditPage editPage = (HibernateEditPage) creator.newInstance(HibernateEditPage.class,
-			new Object[]{
-				"persistenceService", persistenceMock.proxy(),
-				"descriptorService", descriptorServiceMock.proxy(),
-				"callbackStack", callbackStack,
-				"hibernateValidationDelegate", delegate,
-				"resourceBundleMessageSource", messageSource
-			});
-		return editPage;
-	}
-
 }

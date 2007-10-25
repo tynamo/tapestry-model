@@ -1,10 +1,10 @@
 package org.trails.component.search;
 
-import org.trails.component.ComponentTest;
+import org.trails.component.HibernateComponentTest;
 import org.trails.descriptor.TrailsPropertyDescriptor;
 import org.trails.testhibernate.Foo;
 
-public class NumberSearchFieldTest extends ComponentTest
+public class NumberSearchFieldTest extends HibernateComponentTest
 {
 	/*
 	 * Created test method otherwise the build failes...

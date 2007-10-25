@@ -25,7 +25,7 @@ import org.trails.testhibernate.Foo;
  *         TODO To change the template for this generated type comment go to
  *         Window - Preferences - Java - Code Style - Code Templates
  */
-public class HibernateIdentifierTest extends ComponentTest
+public class HibernateIdentifierTest extends HibernateComponentTest
 {
 	public void testIsEditable() throws Exception
 	{

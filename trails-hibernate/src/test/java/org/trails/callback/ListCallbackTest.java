@@ -16,11 +16,11 @@ package org.trails.callback;
 import org.apache.tapestry.IRequestCycle;
 import org.hibernate.criterion.DetachedCriteria;
 import org.jmock.Mock;
-import org.trails.component.ComponentTest;
+import org.trails.component.HibernateComponentTest;
 import org.trails.page.HibernateListPage;
 import org.trails.testhibernate.Foo;
 
-public class ListCallbackTest extends ComponentTest
+public class ListCallbackTest extends HibernateComponentTest
 {
 
 	DetachedCriteria criteria = DetachedCriteria.forClass(Foo.class);

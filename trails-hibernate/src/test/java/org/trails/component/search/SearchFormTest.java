@@ -5,7 +5,7 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.event.PageEvent;
 import org.hibernate.criterion.DetachedCriteria;
 import org.jmock.Mock;
-import org.trails.component.ComponentTest;
+import org.trails.component.HibernateComponentTest;
 import org.trails.descriptor.IClassDescriptor;
 import org.trails.descriptor.IPropertyDescriptor;
 import org.trails.descriptor.TrailsClassDescriptor;
@@ -15,7 +15,7 @@ import org.trails.page.PageResolver;
 import org.trails.page.PageType;
 import org.trails.testhibernate.Foo;
 
-public class SearchFormTest extends ComponentTest
+public class SearchFormTest extends HibernateComponentTest
 {
 	SearchForm searchForm;
 	Mock pageResolverMock;

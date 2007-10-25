@@ -14,12 +14,10 @@ package org.trails.component;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.jmock.Mock;
-import org.springframework.context.support.ResourceBundleMessageSource;
 import org.trails.descriptor.DescriptorService;
 import org.trails.descriptor.IClassDescriptor;
 import org.trails.descriptor.TrailsClassDescriptor;
-import org.trails.i18n.SpringMessageSource;
-import org.trails.i18n.TestLocaleHolder;
+import org.trails.i18n.TrailsMessageSource;
 import org.trails.page.PageResolver;
 import org.trails.page.PageType;
 import org.trails.test.BlogEntry;
@@ -33,11 +31,8 @@ public class ListAllLinkTest extends ComponentTest
 	{
 
 		DescriptorService descriptorService = (DescriptorService) descriptorServiceMock.proxy();
-		SpringMessageSource messageSource = new SpringMessageSource();
-		ResourceBundleMessageSource springMessageSource = new ResourceBundleMessageSource();
-		springMessageSource.setBasename("messages");
-		messageSource.setMessageSource(springMessageSource);
-		messageSource.setLocaleHolder(new TestLocaleHolder());
+		TrailsMessageSource messageSource = getNewTrailsMessageSource();
+
 		listLink = (ListAllLink) creator.newInstance(ListAllLink.class,
 			new Object[]{"descriptorService", descriptorService,
 				"resourceBundleMessageSource", messageSource});
@@ -49,7 +44,7 @@ public class ListAllLinkTest extends ComponentTest
 	{
 		IClassDescriptor descriptor = new TrailsClassDescriptor(BlogEntry.class, "Blog Entry");
 		descriptorServiceMock.expects(once()).method("getClassDescriptor").will(returnValue(descriptor));
-		assertEquals("List Blog Entries", listLink.getLinkText());
+			assertEquals("List Blog Entries", listLink.getLinkText());
 
 	}
 
