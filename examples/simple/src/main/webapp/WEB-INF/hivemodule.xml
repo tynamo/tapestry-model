@@ -45,18 +45,14 @@
 
 	<contribution configuration-id="tapestry.url.ServiceEncoders">
 		<page-service-encoder id="page" extension="page" service="page"/>
-	</contribution>
-
-	<contribution configuration-id="tapestry.url.ServiceEncoders">
 		<direct-service-encoder id="direct" stateless-extension="direct" stateful-extension="sdirect"/>
-	</contribution>
-
-	<contribution configuration-id="tapestry.url.ServiceEncoders">
 		<asset-encoder id="asset" path="/assets"/>
+		<extension-encoder id="extension" extension="svc" after="*"/>
 	</contribution>
 
-	<contribution configuration-id="tapestry.url.ServiceEncoders">
-		<extension-encoder id="extension" extension="svc" after="*"/>
+	<contribution configuration-id="tapestry.InfrastructureOverrides">
+		<property name="exceptionPresenter" object="service:trails.core.ApplicationExceptionPresenter"/>
+		<property name="exceptionPageName" value="DefaultException"/>
 	</contribution>
 
 </module>

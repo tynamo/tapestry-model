@@ -436,6 +436,19 @@
 						</constructor-arg>
 					</bean>
 				</entry>
+				<entry>
+					<key>
+						<value>richText</value>
+					</key>
+					<bean class="org.apache.tapestry.util.ComponentAddress">
+						<constructor-arg index="0">
+							<value>trails:Viewers</value>
+						</constructor-arg>
+						<constructor-arg index="1">
+							<value>htmlTextViewer</value>
+						</constructor-arg>
+					</bean>
+				</entry>
 			</map>
 		</property>
 	</bean>
