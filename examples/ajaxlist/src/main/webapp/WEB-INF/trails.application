@@ -10,6 +10,8 @@
 	<description></description>
 
 	<library id="trails" specification-path="/org/trails/component/trails_hibernate.library"/>
+	<library id="trailsCore" specification-path="/org/trails/component/trails.library"/>
+
 	<library id="contrib" specification-path="/org/apache/tapestry/contrib/Contrib.library"/>
 	<library id="tacos" specification-path="/net/sf/tacos/Tacos.library"/>
 	<library id="dojo" specification-path="/net/sf/tacos/Dojo.library"/>
