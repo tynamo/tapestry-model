@@ -13,11 +13,8 @@ import org.apache.tapestry.annotations.InjectObject;
 import org.apache.tapestry.annotations.InjectState;
 import org.apache.tapestry.annotations.Lifecycle;
 import org.apache.tapestry.annotations.Parameter;
-import org.apache.tapestry.callback.ICallback;
 import org.trails.TrailsRuntimeException;
-import org.trails.callback.AssociationCallback;
 import org.trails.callback.CallbackStack;
-import org.trails.callback.EditCallback;
 import org.trails.descriptor.BlockFinder;
 import org.trails.descriptor.DescriptorService;
 import org.trails.descriptor.IClassDescriptor;
@@ -38,6 +35,7 @@ import org.trails.validation.TrailsValidationDelegate;
 @ComponentClass(allowBody = true, allowInformalParameters = true)
 public abstract class AssociationMgt extends TrailsComponent
 {
+/*
 	protected static final Log LOG = LogFactory.getLog(AssociationMgt.class);
 
 	@Bean(lifecycle = Lifecycle.REQUEST)
@@ -149,9 +147,9 @@ public abstract class AssociationMgt extends TrailsComponent
 
 	public void remove(IRequestCycle cycle)
 	{
-		/**
+		*//**
 		 * This is a direct hit on the same page. No need to setup callbackstack.
-		 */
+		 *//*
 		EditPage editPage = (EditPage) getPageResolver().resolvePage(cycle, getDescriptor().getClass(), PageType.Edit);
 
 		AssociationCallback callback = buildCallback();
@@ -215,4 +213,5 @@ public abstract class AssociationMgt extends TrailsComponent
 	{
 		return getDescriptor().getExtension(OwningObjectReferenceDescriptor.class);
 	}
+	*/
 }

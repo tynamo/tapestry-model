@@ -13,6 +13,7 @@
  */
 package org.trails.test.functional;
 
+import com.gargoylesoftware.htmlunit.ElementNotFoundException;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.*;
 import com.gargoylesoftware.htmlunit.html.xpath.HtmlUnitXPath;
@@ -51,7 +52,15 @@ public class FunctionalTest extends TestCase
 
 	protected HtmlPage clickButton(HtmlForm form, String buttonValue) throws IOException
 	{
-		return (HtmlPage) ((HtmlSubmitInput) form.getInputByValue(buttonValue)).click();
+		ClickableElement button = null;
+		try
+		{
+			button = ((HtmlSubmitInput) form.getInputByValue(buttonValue));
+		} catch (ElementNotFoundException e)
+		{
+			button = (HtmlButton) form.getButtonByName(buttonValue);
+		}
+		return (HtmlPage) button.click();
 	}
 
 	protected HtmlPage clickButton(HtmlPage page, String buttonValue) throws IOException
@@ -89,20 +98,20 @@ public class FunctionalTest extends TestCase
 	protected HtmlTextArea getTextAreaByName(HtmlPage page, String name) throws JaxenException
 	{
 		HtmlTextArea textArea = (HtmlTextArea)
-			new HtmlUnitXPath("//textarea/preceding-sibling::label[contains(text(), '" + name + "')]/following-sibling::textarea").selectSingleNode(page);
+				new HtmlUnitXPath("//textarea/preceding-sibling::label[contains(text(), '" + name + "')]/following-sibling::textarea").selectSingleNode(page);
 		return textArea;
 	}
 
 	protected HtmlInput getInputByName(HtmlPage page, String name) throws JaxenException
 	{
 		return (HtmlInput)
-			new HtmlUnitXPath("//input/preceding-sibling::label[contains(text(), '" + name + "')]/following-sibling::input").selectSingleNode(page);
+				new HtmlUnitXPath("//input/preceding-sibling::label[contains(text(), '" + name + "')]/following-sibling::input").selectSingleNode(page);
 	}
 
 	protected HtmlSelect getSelectByName(HtmlPage page, String name) throws JaxenException
 	{
 		return (HtmlSelect)
-			new HtmlUnitXPath("//select/preceding-sibling::label[contains(text(),  '" + name + "')]/following-sibling::select").selectSingleNode(page);
+				new HtmlUnitXPath("//select/preceding-sibling::label[contains(text(),  '" + name + "')]/following-sibling::select").selectSingleNode(page);
 	}
 
 	/**

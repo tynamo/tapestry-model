@@ -41,11 +41,9 @@ public class EntitySquezerTest extends MockObjectTestCase
 		persistenceServiceMock.expects(once()).method("getIdentifier").with(eq(foo), eq(descriptor))
 			.will(returnValue(identifier));
 
-		nextDataSqueezer.expects(once()).method("squeeze").with(eq(Foo.class))
-			.will(returnValue("Dorg.trails.test.Foo"));
 		nextDataSqueezer.expects(once()).method("squeeze").with(eq(identifier)).will(returnValue("32456"));
 
-		assertEquals("HIBRN8:Dorg.trails.test.Foo:32456",
+		assertEquals("HIBRN8:org.trails.test.Foo:32456",
 			entitySqueezeStrategy.squeeze(foo, (DataSqueezer) nextDataSqueezer.proxy()));
 
 	}
@@ -55,12 +53,9 @@ public class EntitySquezerTest extends MockObjectTestCase
 		persistenceServiceMock.expects(once()).method("loadInstance").with(eq(Foo.class), eq(identifier))
 			.will(returnValue(foo));
 
-		nextDataSqueezer.expects(once()).method("unsqueeze").with(eq("Dorg.trails.test.Foo"))
-			.will(returnValue(Foo.class));
-
 		nextDataSqueezer.expects(once()).method("unsqueeze").with(eq("32456")).will(returnValue(identifier));
 
-		assertSame(foo, entitySqueezeStrategy.unsqueeze("HIBRN8:Dorg.trails.test.Foo:32456",
+		assertSame(foo, entitySqueezeStrategy.unsqueeze("HIBRN8:org.trails.test.Foo:32456",
 			(DataSqueezer) nextDataSqueezer.proxy()));
 	}
 

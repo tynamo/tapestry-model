@@ -3,7 +3,6 @@
 
 	<property name="model"/>
 	<property name="descriptor"/>
-	<property name="editPageName"/>
 
 	<!-- Hibernate Editors -->
 

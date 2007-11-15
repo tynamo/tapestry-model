@@ -31,17 +31,8 @@ public abstract class Identifier extends PropertyEditor
 	@Parameter(required = true, cache = true)
 	public abstract IPropertyDescriptor getDescriptor();
 
-	public abstract void setDescriptor(IPropertyDescriptor Descriptor);
-
-	@Parameter(required = false, defaultValue = "container.model", cache = true)
-	public abstract Object getModel();
-
-	public abstract void setModel(Object Model);
-
 	@Parameter(required = false, defaultValue = "page.validatorTranslatorService.getValidator(descriptor)")
 	public abstract IValidator getValidator();
-
-	public abstract void setValidator(IValidator validator);
 
 	@Bean(lifecycle = Lifecycle.PAGE)
 	public abstract NumberValidator getNumberValidator();

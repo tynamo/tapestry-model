@@ -26,7 +26,7 @@ public class TrailsInterceptorTest extends MockObjectTestCase
 	public void testIsUnsaved()
 	{
 		Foo foo = new Foo();
-		Interceptable interceptable = (Interceptable) foo;
+		HasAssignedIdentifier interceptable = (HasAssignedIdentifier) foo;
 		assertFalse("not saved", interceptable.isSaved());
 		interceptable.onInsert(1, new Object[]{"myName"}, new String[]{"name"}, null);
 		assertTrue("saved", interceptable.isSaved());

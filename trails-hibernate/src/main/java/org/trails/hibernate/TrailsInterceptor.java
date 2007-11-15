@@ -17,201 +17,69 @@
  */
 package org.trails.hibernate;
 
-import java.io.Serializable;
-import java.util.Iterator;
-
 import org.hibernate.CallbackException;
-import org.hibernate.EntityMode;
+import org.hibernate.EmptyInterceptor;
 import org.hibernate.Interceptor;
-import org.hibernate.Transaction;
 import org.hibernate.type.Type;
+
+import java.io.Serializable;
 
 
 /**
- * <b>Created:<b> Apr 27, 2004<br><br>
- * <p/>
- * <b>Description:</b><br>
- * Class required by Hibernate when you have an object with composite primary key.
- * The isUnsaved() method is what we're interested in here.
- * <p/>
- * <br>
- * <d>Revision History:</b><br>
- * ----------------------------------------------------------------------------------<br>
- * Version            Date            Author        Comments<br>
- * ----------------------------------------------------------------------------------<br>
- * 1.0                Apr 27, 2004    CRD3036        Initial Version.
- * <br> <br>
- *
- * @author CRD3036
- * @version 1.0
+ * Class required by Hibernate when you have an object with composite primary key. The isUnsaved() method is what we're
+ * interested in here.
  */
-public class TrailsInterceptor implements Interceptor, Serializable
+public class TrailsInterceptor extends EmptyInterceptor implements Interceptor, Serializable
 {
+
 	/**
+	 * (non-Javadoc)
 	 *
+	 * @see org.hibernate.Interceptor#onLoad(java.lang.Object, java.io.Serializable, java.lang.Object[],
+	 *	  java.lang.String[], org.hibernate.type.Type[])
 	 */
-	public TrailsInterceptor()
+	public boolean onLoad(Object entity, Serializable id, Object[] state, String[] propertyNames, Type[] types)
 	{
-		super();
+		return entity instanceof Interceptable && ((Interceptable) entity).onLoad(id, state, propertyNames, types);
 	}
 
-	/* (non-Javadoc)
-		 * @see org.hibernate.Interceptor#onLoad(java.lang.Object, java.io.Serializable, java.lang.Object[], java.lang.String[], org.hibernate.type.Type[])
-		 */
-	public boolean onLoad(Object entity, Serializable id, Object[] state,
-						  String[] propertyNames, Type[] types)
-	{
-		if (entity instanceof Interceptable)
-		{
-			return ((Interceptable) entity).onLoad(id, state, propertyNames, types);
-		}
-
-		return false;
-	}
-
-	/* (non-Javadoc)
-		 * @see org.hibernate.Interceptor#onFlushDirty(java.lang.Object, java.io.Serializable, java.lang.Object[], java.lang.Object[], java.lang.String[], org.hibernate.type.Type[])
-		 */
+	/**
+	 * (non-Javadoc)
+	 *
+	 * @see org.hibernate.Interceptor#onFlushDirty(java.lang.Object, java.io.Serializable, java.lang.Object[],
+	 *	  java.lang.Object[], java.lang.String[], org.hibernate.type.Type[])
+	 */
 	public boolean onFlushDirty(Object entity, Serializable id, Object[] currentState,
 								Object[] previousState, String[] propertyNames, Type[] types) throws CallbackException
 	{
-		if (entity instanceof Interceptable)
+		return entity instanceof Interceptable && ((Interceptable) entity).onUpdate(id, currentState, previousState, propertyNames, types);
+	}
+
+	/**
+	 * (non-Javadoc)
+	 *
+	 * @see org.hibernate.Interceptor#onSave(java.lang.Object, java.io.Serializable, java.lang.Object[],
+	 *	  java.lang.String[], org.hibernate.type.Type[])
+	 */
+	public boolean onSave(Object entity, Serializable id, Object[] state, String[] propertyNames, Type[] types)
+			throws CallbackException
+	{
+		return entity instanceof Interceptable && ((Interceptable) entity).onInsert(id, state, propertyNames, types);
+	}
+
+	/**
+	 * (non-Javadoc)
+	 *
+	 * @see org.hibernate.Interceptor#isTransient(java.lang.Object)
+	 */
+	public Boolean isTransient(Object arg0)
+	{
+		if (arg0 instanceof HasAssignedIdentifier)
 		{
-			return ((Interceptable) entity).onUpdate(id, currentState, previousState, propertyNames, types);
-		}
-		return false;
-	}
-
-	/* (non-Javadoc)
-		 * @see org.hibernate.Interceptor#onSave(java.lang.Object, java.io.Serializable, java.lang.Object[], java.lang.String[], org.hibernate.type.Type[])
-		 */
-	public boolean onSave(Object entity, Serializable id, Object[] state,
-						  String[] propertyNames, Type[] types) throws CallbackException
-	{
-		if (entity instanceof Interceptable)
-		{
-			return ((Interceptable) entity).onInsert(id, state, propertyNames, types);
-		}
-
-		return false;
-	}
-
-	/* (non-Javadoc)
-		 * @see org.hibernate.Interceptor#onDelete(java.lang.Object, java.io.Serializable, java.lang.Object[], java.lang.String[], org.hibernate.type.Type[])
-		 */
-	public void onDelete(Object entity, Serializable id, Object[] state,
-						 String[] propertyNames, Type[] types) throws CallbackException
-	{
-	}
-
-	/* (non-Javadoc)
-		 * @see org.hibernate.Interceptor#preFlush(java.util.Iterator)
-		 */
-	public void preFlush(Iterator arg0) throws CallbackException
-	{
-	}
-
-	/* (non-Javadoc)
-		 * @see org.hibernate.Interceptor#postFlush(java.util.Iterator)
-		 */
-	public void postFlush(Iterator arg0) throws CallbackException
-	{
-	}
-
-	/* (non-Javadoc)
-		 * @see org.hibernate.Interceptor#isUnsaved(java.lang.Object)
-		 */
-	public Boolean isUnsaved(Object arg0)
-	{
-		if (arg0 instanceof Interceptable)
-		{
-			return new Boolean((!((Interceptable) arg0).isSaved()));
+			return !((HasAssignedIdentifier) arg0).isSaved();
 		} else
 		{
 			return null;
 		}
-	}
-
-	/* (non-Javadoc)
-		 * @see org.hibernate.Interceptor#findDirty(java.lang.Object, java.io.Serializable, java.lang.Object[], java.lang.Object[], java.lang.String[], org.hibernate.type.Type[])
-		 */
-	public int[] findDirty(Object arg0, Serializable arg1, Object[] arg2,
-						   Object[] arg3, String[] arg4, Type[] arg5)
-	{
-		return null;
-	}
-
-	/* (non-Javadoc)
-		 * @see org.hibernate.Interceptor#instantiate(java.lang.Class, java.io.Serializable)
-		 */
-	public Object instantiate(Class arg0, Serializable arg1)
-		throws CallbackException
-	{
-		return null;
-	}
-
-	public Boolean isTransient(Object arg0)
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public Object instantiate(String arg0, EntityMode arg1, Serializable arg2) throws CallbackException
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public String getEntityName(Object arg0) throws CallbackException
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public Object getEntity(String arg0, Serializable arg1) throws CallbackException
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public void afterTransactionBegin(Transaction arg0)
-	{
-		// TODO Auto-generated method stub
-
-	}
-
-	public void beforeTransactionCompletion(Transaction arg0)
-	{
-		// TODO Auto-generated method stub
-
-	}
-
-	public void afterTransactionCompletion(Transaction arg0)
-	{
-		// TODO Auto-generated method stub
-
-	}
-
-	public void onCollectionRecreate(Object arg0, Serializable arg1) throws CallbackException
-	{
-		// TODO Auto-generated method stub
-
-	}
-
-	public void onCollectionRemove(Object arg0, Serializable arg1) throws CallbackException
-	{
-		// TODO Auto-generated method stub
-
-	}
-
-	public void onCollectionUpdate(Object arg0, Serializable arg1) throws CallbackException
-	{
-		// TODO Auto-generated method stub
-
-	}
-
-	public String onPrepareStatement(String statement)
-	{
-		return statement;
 	}
 }

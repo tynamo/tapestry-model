@@ -2,4 +2,19 @@
 
 	<service-point id="PersistenceService" interface="org.trails.persistence.HibernatePersistenceService"/>
 
+	<service-point id="ReattachReattachPropertyPersistenceStrategy"
+				   interface="org.apache.tapestry.record.PropertyPersistenceStrategy">
+		<invoke-factory>
+			<construct class="org.trails.record.ReattachReattachPropertyPersistenceStrategy">
+				<set-object property="request" value="infrastructure:request"/>
+				<set-object property="applicationId" value="infrastructure:applicationId"/>
+				<set-object property="persistenceService" value="service:PersistenceService"/>
+			</construct>
+		</invoke-factory>
+	</service-point>
+
+	<contribution configuration-id="tapestry.persist.PersistenceStrategy">
+		<strategy name="reattach-reattach" object="service:ReattachReattachPropertyPersistenceStrategy"/>
+	</contribution>
+
 </module>

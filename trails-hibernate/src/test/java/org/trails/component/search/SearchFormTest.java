@@ -25,7 +25,7 @@ public class SearchFormTest extends HibernateComponentTest
 	{
 		pageResolverMock = new Mock(PageResolver.class);
 		searchForm = (SearchForm) creator.newInstance(SearchForm.class,
-			new Object[]{"pageResolver", pageResolverMock.proxy()});
+				new Object[]{"pageResolver", pageResolverMock.proxy()});
 		IClassDescriptor fooDescriptor = new TrailsClassDescriptor(Foo.class, "Foo");
 		searchForm.setClassDescriptor(fooDescriptor);
 		IPropertyDescriptor namePropDescriptor = new TrailsPropertyDescriptor(Foo.class, "name", String.class);
@@ -56,9 +56,9 @@ public class SearchFormTest extends HibernateComponentTest
 		HibernateListPage listPage = (HibernateListPage) creator.newInstance(HibernateListPage.class);
 		searchForm.setCriteria(DetachedCriteria.forClass(Foo.class));
 		pageResolverMock.expects(once()).method("resolvePage").with(
-			isA(IRequestCycle.class),
-			eq(Foo.class),
-			eq(PageType.List)).will(returnValue(listPage));
+				isA(IRequestCycle.class),
+				eq(Foo.class),
+				eq(PageType.LIST)).will(returnValue(listPage));
 		cycleMock.expects(once()).method("activate").with(eq(listPage));
 		searchForm.search((IRequestCycle) cycleMock.proxy());
 		assertNotNull(listPage.getCriteria());

@@ -30,6 +30,10 @@ public abstract class RenderProperties extends AbstractObjectRenderComponent
 	@Parameter(defaultValue = "page.model")
 	public abstract Object getModel();
 
+	@Parameter(defaultValue = "page.modelNew")
+	public abstract boolean isModelNew();
+
+	public abstract void setModelNew(boolean modelNew);
 
 	/**
 	 * It's used as the @For component "value" parameter.

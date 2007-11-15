@@ -5,6 +5,7 @@
 	<service-point id="EditorService" interface="org.trails.descriptor.BlockFinder"/>
 	<service-point id="ViewerService" interface="org.trails.descriptor.BlockFinder"/>
 	<service-point id="MessageSource" interface="org.trails.i18n.TrailsMessageSource"/>
+	<service-point id="AddNewLinkRenderer" interface="org.apache.tapestry.link.ILinkRenderer"/>
 
 	<!--
 		====================================================================================================================
@@ -32,11 +33,23 @@
 			<construct class="org.trails.io.EntitySqueezerStrategy">
 				<set-object property="persistenceService" value="service:PersistenceService"/>
 				<set-object property="descriptorService" value="service:DescriptorService"/>
+				<set-object property="entityNameAbbreviator" value="service:EntityNameAbbreviator"/>
 				<set property="delimiter" value=":"/>
 				<set property="prefix" value="HIBRN8:"/>
 			</construct>
 		</invoke-factory>
 	</service-point>
+
+	<service-point id="PagesEncoder" interface="org.apache.tapestry.engine.ServiceEncoder">
+		<invoke-factory>
+			<construct class="org.trails.engine.encoders.PagesEncoder">
+				<set property="path" value="/trails"/>
+				<set property="entitySqzrDelimiter" value=":"/>
+				<set property="entitySqzrPrefix" value="HIBRN8:"/>
+			</construct>
+		</invoke-factory>
+	</service-point>
+
 
 	<configuration-point id="DataSqueezerFilters" schema-id="hivemind.lib.Pipeline">
 		Allows you to plug in your own custom data squeezers in front of the default Tapestry
@@ -59,6 +72,7 @@
 		<invoke-factory>
 			<construct class="org.trails.io.ClassDescriptorSqueezerStrategy">
 				<set-object property="descriptorService" value="service:DescriptorService"/>
+				<set-object property="entityNameAbbreviator" value="service:EntityNameAbbreviator"/>
 			</construct>
 		</invoke-factory>
 	</service-point>
@@ -101,16 +115,38 @@
 			</construct>
 		</invoke-factory>
 	</service-point>
-	
+
 	<service-point id="PageResolver" interface="org.trails.page.PageResolver">
 		<invoke-factory>
 			<construct class="org.trails.page.DefaultPageResolver"/>
 		</invoke-factory>
 	</service-point>
 
+	<service-point id="TrailsPagesService" interface="org.apache.tapestry.engine.IEngineService">
+		<invoke-factory>
+			<construct class="org.trails.engine.TrailsPagesService">
+				<set-object property="responseRenderer" value="infrastructure:responseRenderer"/>
+				<set-object property="linkFactory" value="infrastructure:linkFactory"/>
+				<set-object property="dataSqueezer" value="service:tapestry.data.DataSqueezer"/>
+			</construct>
+		</invoke-factory>
+	</service-point>
+
+	<contribution configuration-id="tapestry.services.FactoryServices">
+		<service name="trailsPagesService" object="service:TrailsPagesService"/>
+	</contribution>
+
 	<service-point id="ValidatorTranslatorService" interface="org.trails.validation.ValidatorTranslatorService">
 		<invoke-factory>
 			<construct class="org.trails.validation.ValidatorTranslatorService"/>
+		</invoke-factory>
+	</service-point>
+
+	<service-point id="EntityNameAbbreviator" interface="org.trails.engine.encoders.abbreviator.EntityNameAbbreviator">
+		<invoke-factory>
+			<construct class="org.trails.engine.encoders.abbreviator.DefaultAbbreviator">
+				<set-object property="descriptorService" value="service:DescriptorService"/>
+			</construct>
 		</invoke-factory>
 	</service-point>
 

@@ -45,7 +45,7 @@ public class CallbackStackAdaptor implements SqueezeAdaptor
 
 		StringBuilder builder = new StringBuilder();
 
-		for (ICallback callback : stack.getStack())
+		for (ICallback callback : stack)
 		{
 			builder.append(squeezer.squeeze(callback)).append(DELIMITER);
 		}
@@ -65,7 +65,7 @@ public class CallbackStackAdaptor implements SqueezeAdaptor
 
 			for (String s : values)
 			{
-				stack.getStack().add((ICallback) squeezer.unsqueeze(s));
+				stack.add((ICallback) squeezer.unsqueeze(s));
 			}
 		}
 

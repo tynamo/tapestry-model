@@ -49,7 +49,10 @@ public class DefaultPageResolver implements PageResolver
 	public DefaultPageResolver()
 	{
 		postFixMap = new HashMap<PageType, String>();
-		for (PageType pageType : PageType.values()) postFixMap.put(pageType, pageType.name());
+		for (PageType pageType : PageType.values())
+		{
+			postFixMap.put(pageType, pageType.toString());
+		}
 	}
 
 	public String getDefaultPrefix()

@@ -11,11 +11,6 @@
  */
 package org.trails.component;
 
-import java.beans.IntrospectionException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Set;
-
 import ognl.Ognl;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
@@ -23,19 +18,20 @@ import org.apache.tapestry.contrib.palette.SortMode;
 import org.apache.tapestry.form.IPropertySelectionModel;
 import org.jmock.Mock;
 import org.trails.callback.CallbackStack;
-import org.trails.callback.CollectionCallback;
-import org.trails.callback.EditCallback;
 import org.trails.descriptor.CollectionDescriptor;
 import org.trails.descriptor.IClassDescriptor;
 import org.trails.descriptor.IdentifierDescriptor;
 import org.trails.descriptor.TrailsClassDescriptor;
 import org.trails.page.EditPage;
-import org.trails.page.EditorBlockPage;
 import org.trails.page.PageResolver;
-import org.trails.page.PageType;
 import org.trails.test.Baz;
 import org.trails.test.Bing;
 import org.trails.test.Foo;
+
+import java.beans.IntrospectionException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Set;
 
 
 public class EditCollectionTest extends ComponentTest
@@ -55,17 +51,15 @@ public class EditCollectionTest extends ComponentTest
 	Mock pageMock = new Mock(IPage.class);
 	Mock pageResolverMock = new Mock(PageResolver.class);
 
-	public static final String EDIT_PAGE_NAME = "fooEditPage";
-
 	public void setUp()
 	{
 		editCollection = (EditCollection) creator.newInstance(EditCollection.class,
-			new Object[]{
-				"persistenceService", persistenceMock.proxy(),
-				"descriptorService", descriptorServiceMock.proxy(),
-				"callbackStack", callbackStack,
-				"pageResolver", pageResolverMock.proxy()
-			});
+				new Object[]{
+						"persistenceService", persistenceMock.proxy(),
+						"descriptorService", descriptorServiceMock.proxy(),
+						"callbackStack", callbackStack,
+						"pageResolver", pageResolverMock.proxy()
+				});
 		editPage = buildTrailsPage(EditPage.class);
 
 		foo = new Foo();
@@ -87,11 +81,7 @@ public class EditCollectionTest extends ComponentTest
 		editPage.setModel(foo);
 		editPage.setPageName("fooPage");
 
-
-		EditorBlockPage editorBlockPage = (EditorBlockPage) creator.newInstance(EditorBlockPage.class,
-			new Object[]{"model", foo, "editPageName", EDIT_PAGE_NAME});
 		addPage = (EditPage) creator.newInstance(EditPage.class);
-
 
 		editCollection.setCallbackStack(new CallbackStack());
 		editCollection.setPage((IPage) pageMock.proxy());
@@ -105,56 +95,11 @@ public class EditCollectionTest extends ComponentTest
 		Ognl.getValue("collectionDescriptor.childRelationship", editCollection);
 	}
 
-	public void testAdd() throws Exception
-	{
-		Mock cycleMock = buildCycleMock("Baz");
-		pageResolverMock.expects(atLeastOnce()).method("resolvePage").with(
-			isA(IRequestCycle.class), eq(Baz.class), eq(PageType.Edit))
-			.will(returnValue(editPage));
-		cycleMock.expects(atLeastOnce()).method("getPage").will(returnValue(editPage));
-		cycleMock.expects(atLeastOnce()).method("activate");
-		pageMock.expects(atLeastOnce()).method("getRequestCycle").will(returnValue(cycleMock.proxy()));
-		buildCollectionDescriptor("bazzes", Baz.class);
-
-		editCollection.setCreateExpression("createBaz()");
-
-		editCollection.showAddPage((IRequestCycle) cycleMock.proxy());
-
-		assertTrue("AddToCollectionCallback on stack",
-			editCollection.getCallbackStack().getStack().peek() instanceof CollectionCallback);
-		CollectionCallback callback = (CollectionCallback) editCollection.getCallbackStack().getStack().pop();
-		//assertEquals("right ognl", "bazzes.add", callback.getAddOgnlExpression());
-
-		EditCallback nextPageCallback = (EditCallback) editPage.getNextPage();
-		assertTrue(nextPageCallback.getModel() instanceof Baz);
-		Baz createdBaz = (Baz) nextPageCallback.getModel();
-		assertEquals(foo, createdBaz.getFoo());
-		assertTrue("is child", callback.isChildRelationship());
-		assertEquals("right page", callback.getPageName(), "fooPage");
-		//assertNotNull(editPage.getNextPage());
-	}
-
-	public void testEdit() throws Exception
-	{
-		Mock cycleMock = new Mock(IRequestCycle.class);
-		pageResolverMock.expects(atLeastOnce()).method("resolvePage").with(
-			isA(IRequestCycle.class), eq(Baz.class), eq(PageType.Edit))
-			.will(returnValue(editPage));
-		buildCollectionDescriptor("bazzes", Baz.class);
-		cycleMock.expects(atLeastOnce()).method("getPage").will(returnValue(editPage));
-		pageMock.expects(atLeastOnce()).method("getRequestCycle").will(returnValue(cycleMock.proxy()));
-		Baz baz = new Baz();
-		EditPage page = (EditPage) editCollection.edit(baz);
-		assertEquals(baz, page.getModel());
-		CollectionCallback callback = (CollectionCallback) editCollection.getCallbackStack().getStack().pop();
-		assertNotNull(callback);
-	}
-
 	/**
 	 * @throws IntrospectionException
 	 */
 	private void buildCollectionDescriptor(String property, Class elementType)
-		throws IntrospectionException
+			throws IntrospectionException
 	{
 		CollectionDescriptor collectionDescriptor = new CollectionDescriptor(Foo.class, Set.class);
 		collectionDescriptor.setName(property);
@@ -174,10 +119,10 @@ public class EditCollectionTest extends ComponentTest
 		// lets say Foo_addBaz has custom page
 		Mock cycleMock = new Mock(IRequestCycle.class);
 		cycleMock.expects(once()).method("getPage").with(eq(
-			element + "Edit")).will(returnValue(addPage));
+				element + "Edit")).will(returnValue(addPage));
 		cycleMock.expects(atLeastOnce()).method("activate").with(same(addPage));
 		cycleMock.expects(atLeastOnce()).method("getPage").with(eq("fooEditPage")).will(
-			returnValue(editPage));
+				returnValue(editPage));
 
 		return cycleMock;
 	}
@@ -254,7 +199,7 @@ public class EditCollectionTest extends ComponentTest
 		IClassDescriptor classDescriptor = new TrailsClassDescriptor(Bing.class);
 		classDescriptor.getPropertyDescriptors().add(new IdentifierDescriptor(Foo.class, Bing.class));
 		descriptorServiceMock.expects(once()).method("getClassDescriptor")
-			.with(eq(Bing.class)).will(returnValue(classDescriptor));
+				.with(eq(Bing.class)).will(returnValue(classDescriptor));
 
 		IPropertySelectionModel selectionModel = editCollection.getSelectionModel();
 		assertEquals("has 1", 1, selectionModel.getOptionCount());

@@ -22,26 +22,8 @@ import java.io.Serializable;
 import org.hibernate.type.Type;
 
 
-/**
- * <b>Created:<b> Jun 17, 2004<br><br>
- * <p/>
- * <b>Description:</b><br>
- * <p/>
- * <br>
- * <d>Revision History:</b><br>
- * ----------------------------------------------------------------------------------<br>
- * Version            Date            Author        Comments<br>
- * ----------------------------------------------------------------------------------<br>
- * 1.0                Jun 17, 2004            CRD3036        Initial Version.
- * <br> <br>
- *
- * @author CRD3036
- * @version 1.0
- */
 public interface Interceptable
 {
-	public boolean isSaved();
-
 	public boolean onLoad(Serializable id, Object[] state, String[] propertyNames, Type[] types);
 
 	public boolean onInsert(Serializable id, Object[] state, String[] propertyNames, Type[] types);

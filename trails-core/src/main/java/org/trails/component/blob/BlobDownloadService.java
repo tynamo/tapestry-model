@@ -101,14 +101,14 @@ public class BlobDownloadService implements IEngineService {
 
 			try {
 				BlobDescriptorExtension blobDescriptor = getDescriptorService()
-						.getClassDescriptor(Utils.getClassForName(entityName))
+						.getClassDescriptor(Utils.classForName(entityName))
 						.getPropertyDescriptor(bytesProp).getExtension(
 								BlobDescriptorExtension.class);
 
 				if (blobDescriptor != null && blobID != null
 						&& !"".equals(blobID)) {
 					Object model = getPersistenceService().getInstance(
-							Utils.getClassForName(entityName), Integer.valueOf(blobID));
+							Utils.classForName(entityName), Integer.valueOf(blobID));
 					if (model != null) {
 						byte[] bytes = new byte[0];
 
