@@ -2,8 +2,10 @@
 		"http://jakarta.apache.org/tapestry/dtd/Tapestry_4_1.dtd">
 <page-specification class="org.trails.demo.NoteListPage">
 
-	<property name="type" persist="session"/>
 	<property name="instances" persist="session"/>
+	<property name="criteria" persist="session"/>
+	<property name="classDescriptor" persist="session"/>
+
 	<property name="object"/>
 
 	<bean name="evenOdd" class="org.apache.tapestry.bean.EvenOdd"/>

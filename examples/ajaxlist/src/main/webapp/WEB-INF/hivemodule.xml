@@ -1,12 +1,6 @@
 <?xml version="1.0"?>
 <module id="trails" version="1.0.0">
 
-	<contribution configuration-id="tapestry.state.ApplicationObjects">
-		<state-object name="callbackStack" scope="session">
-			<create-instance class="org.trails.callback.CallbackStack"/>
-		</state-object>
-	</contribution>
-
 	<implementation service-id="trails.core.DescriptorService">
 		<invoke-factory service-id="hivemind.lib.SpringLookupFactory">
 			<lookup-bean name="descriptorService"/>
@@ -45,9 +39,27 @@
 
 	<contribution configuration-id="tapestry.url.ServiceEncoders">
 		<page-service-encoder id="page" extension="page" service="page"/>
+		<page-service-encoder id="external" extension="ext" service="external"/>
 		<direct-service-encoder id="direct" stateless-extension="direct" stateful-extension="sdirect"/>
 		<asset-encoder id="asset" path="/assets"/>
+		<encoder id="trails" before="extension" object="service:trails.core.PagesEncoder"/>
 		<extension-encoder id="extension" extension="svc" after="*"/>
 	</contribution>
+
+	<contribution configuration-id="tapestry.persist.PersistenceStrategy">
+		<strategy name="trails-entity" object="service:trails.hibernate.ReattachReattachPropertyPersistenceStrategy"/>
+	</contribution>
+
+	<contribution configuration-id="tapestry.state.ApplicationObjects">
+		<state-object name="callbackStack" scope="session">
+			<create-instance class="org.trails.callback.CallbackStack"/>
+		</state-object>
+	</contribution>
+
+	<implementation service-id="trails.core.AddNewLinkRenderer">
+		<invoke-factory>
+			<construct class="org.apache.tapestry.contrib.link.ButtonLinkRenderer"/>
+		</invoke-factory>
+	</implementation>
 
 </module>

@@ -33,8 +33,7 @@
 	<div jwcid="@Any" id="note_form">
 		<form jwcid="@tacos:AjaxForm" updateComponents="ognl:{'notes', 'note_form'}" listener="listener:addNote">
 			<ul>
-				<div jwcid="@trails:EditProperties" model="ognl:note"
-					 propertyNames="ognl:new java.lang.String[] {'note'}"/>
+				<div jwcid="@trails:EditProperties" model="ognl:note" modelNew="ognl:true" propertyNames="ognl:new java.lang.String[] {'note'}"/>
 				<li class="buttonBar bottom">
 					<!--<input jwcid="@tacos:AjaxSubmit"-->
 					<input jwcid="@Submit" async="true"

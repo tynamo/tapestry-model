@@ -69,7 +69,13 @@
         <url-pattern>/app</url-pattern>
     </filter-mapping>
 
-    <filter-mapping>
+	<filter-mapping>
+		<filter-name>hibernateFilter</filter-name>
+		<url-pattern>/trails/*</url-pattern>
+	</filter-mapping>
+
+
+	<filter-mapping>
         <filter-name>hibernateFilter</filter-name>
         <url-pattern>*.page</url-pattern>
     </filter-mapping>
@@ -93,7 +99,7 @@
         <filter-name>hibernateFilter</filter-name>
         <url-pattern>*.svc</url-pattern>
     </filter-mapping>
-    
+
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
@@ -102,11 +108,15 @@
         <servlet-class>org.trails.servlet.TrailsApplicationServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
-    
     <servlet-mapping>
         <servlet-name>trails</servlet-name>
         <url-pattern>/app</url-pattern>
     </servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>trails</servlet-name>
+		<url-pattern>/trails/*</url-pattern>
+	</servlet-mapping>
 
     <servlet-mapping>
         <servlet-name>trails</servlet-name>
@@ -135,6 +145,6 @@
 
     <!--  Make session timeout short for trying out remember me -->
     <session-config>
-      <session-timeout>10</session-timeout> 
+      <session-timeout>10</session-timeout>
     </session-config>
 </web-app>
