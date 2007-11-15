@@ -8,11 +8,6 @@ public class ServiceConstants
 	 */
 	public static final String SERVICE = org.apache.tapestry.services.ServiceConstants.SERVICE;
 
-	/**
-	 * The name of the page to activate when processing the service.
-	 */
-	public static final String PAGE = org.apache.tapestry.services.ServiceConstants.PAGE;
-
 	public static final String MODEL = "model";
 	public static final String PAERNT_MODEL = "parentModel";
 	public static final String PAGE_TYPE = "pageType";

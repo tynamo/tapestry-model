@@ -21,7 +21,5 @@ public interface BlockFinder
 	 */
 	public Block findBlock(IRequestCycle cycle, IPropertyDescriptor descriptor);
 
-	public void setDefaultBlockAddress(ComponentAddress defaultEditor);
-
 	public ComponentAddress getDefaultBlockAddress();
 }

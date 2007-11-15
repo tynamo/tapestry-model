@@ -11,136 +11,69 @@
  */
 package org.trails.page;
 
-import java.util.ArrayList;
-import java.util.Set;
-
-import org.apache.tapestry.IExternalPage;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.callback.ICallback;
-import org.apache.tapestry.event.PageEvent;
-import org.apache.tapestry.valid.IValidationDelegate;
+import org.apache.tapestry.RedirectException;
 import org.jmock.Mock;
-import org.trails.callback.CollectionCallback;
-import org.trails.callback.EditCallback;
-import org.trails.callback.ListCallback;
+import org.trails.callback.UrlCallback;
 import org.trails.component.ComponentTest;
 import org.trails.descriptor.CollectionDescriptor;
 import org.trails.descriptor.IClassDescriptor;
-import org.trails.descriptor.IdentifierDescriptor;
 import org.trails.descriptor.TrailsClassDescriptor;
 import org.trails.persistence.PersistenceException;
-import org.trails.test.Bar;
 import org.trails.test.Baz;
 import org.trails.test.Foo;
 import org.trails.validation.ValidationException;
 
+import java.util.Set;
+
 public class EditPageTest extends ComponentTest
 {
 
+	private static final String CALLBACK_URL = "http://home";
 	Mock cycleMock = new Mock(IRequestCycle.class);
-	Baz baz = new Baz();
-	IClassDescriptor descriptor = new TrailsClassDescriptor(Bar.class);
-	EditPage editPage;
-	EditPage bazEditPage;
-	Foo foo = new Foo();
-	IdentifierDescriptor idDescriptor;
-	Mock validatorMock;
-	ListCallback listCallBack = new ListCallback("FooList", Foo.class);
-	ListPage listPage;
-	EditCallback editCallback;
-	CollectionDescriptor bazzesDescriptor = new CollectionDescriptor(Foo.class, "bazzes", Set.class);
 
+	Baz baz = new Baz();
+	Foo foo = new Foo();
+
+	EditPage fooEditPage;
+	EditPage bazEditPage;
+
+	final UrlCallback callback = new UrlCallback(CALLBACK_URL);
+
+	CollectionDescriptor bazzesDescriptor = new CollectionDescriptor(Foo.class, "bazzes", Set.class);
+	IClassDescriptor fooDescriptor = new TrailsClassDescriptor(Foo.class, "Foo");
+	IClassDescriptor bazDescriptor = new TrailsClassDescriptor(Baz.class, "Baz");
 
 	public void setUp() throws Exception
 	{
 		foo.setName("foo");
-		validatorMock = new Mock(IValidationDelegate.class);
-		listPage = buildTrailsPage(ListPage.class);
-		editPage = buildEditPage();
-		editPage.setModel(foo);
 
-		idDescriptor = new IdentifierDescriptor(Foo.class, "id", Foo.class);
-		descriptor.getPropertyDescriptors().add(idDescriptor);
-		descriptorServiceMock.expects(atLeastOnce()).method("getClassDescriptor").withAnyArguments().will(returnValue(descriptor));
+		fooEditPage = buildEditPage();
+		fooEditPage.setClassDescriptor(fooDescriptor);
+		fooEditPage.setModel(foo);
 
 		bazzesDescriptor.setElementType(Baz.class);
 
-		// attach the visit to the page
-
-		// we came from a list page
-		editPage.getCallbackStack().push(listCallBack);
-		PageEvent fakePageEvent = new PageEvent(editPage, (IRequestCycle) cycleMock.proxy());
-		editPage.pageBeginRender(fakePageEvent);
-
 		bazEditPage = buildEditPage();
 		bazEditPage.setModel(baz);
-	}
 
-	public void testOnFormSubmit()
-	{
-		Mock callbackMock = new Mock(ICallback.class);
-		callbackMock.expects(once()).method("performCallback").with(isA(IRequestCycle.class));
-		editPage.setNextPage((ICallback) callbackMock.proxy());
-		editPage.onFormSubmit((IRequestCycle) cycleMock.proxy());
-		callbackMock.verify();
-	}
+		callbackStack.clear();
+		callbackStack.push(callback);
+		callbackStack.push(new UrlCallback("editPageCallback"));
 
-	public void testActivateExternalPage() throws Exception
-	{
-		editPage.setModel(null);
-		IExternalPage externalEditPage = (IExternalPage) editPage;
-		externalEditPage.activateExternalPage(new Object[]{foo}, (IRequestCycle) cycleMock.proxy());
-		assertEquals(foo, editPage.getModel());
-	}
-
-	public void testGetPropertyDescriptors()
-	{
-		descriptorServiceMock.expects(once()).method("getClassDescriptor")
-			.with(same(Foo.class)).will(returnValue(descriptor));
-
-		assertEquals("got descriptors", descriptor,
-			editPage.getClassDescriptor());
-		descriptorServiceMock.verify();
+		bazEditPage.setAssociationDescriptor(bazzesDescriptor);
+		bazEditPage.setParent(foo);
 	}
 
 	public void testGetTitle() throws Exception
 	{
-		IClassDescriptor fooDescriptor = new TrailsClassDescriptor(Foo.class, "Foo");
-		IClassDescriptor bazDescriptor = new TrailsClassDescriptor(Baz.class, "Baz");
 
-		descriptorServiceMock.expects(once()).method("getClassDescriptor").with(eq(Foo.class))
-			.will(returnValue(fooDescriptor));
-		descriptorServiceMock.expects(atLeastOnce()).method("getClassDescriptor").with(eq(Baz.class))
-			.will(returnValue(bazDescriptor));
-		assertEquals("Edit Foo", editPage.getTitle());
-		CollectionCallback bazCallback = new CollectionCallback("fooPage", foo, bazzesDescriptor);
-		bazEditPage.getCallbackStack().push(bazCallback);
-		EditCallback newCallback = new EditCallback("fooPage", foo);
-		bazEditPage.getCallbackStack().push(newCallback);
-		assertFalse(newCallback.equals(bazCallback));
-		bazDescriptor.getPropertyDescriptors().add(new IdentifierDescriptor(Foo.class, "id", Baz.class));
+		bazEditPage.setClassDescriptor(bazDescriptor);
+		bazEditPage.setModelNew(true);
+		bazEditPage.setParent(new Foo());
+
+		assertEquals("Edit Foo", fooEditPage.getTitle());
 		assertEquals("Add Baz", bazEditPage.getTitle());
-	}
-
-	public void testIsNew() throws Exception
-	{
-
-		IClassDescriptor barDescriptor = new TrailsClassDescriptor(Bar.class);
-		IdentifierDescriptor barIdDescriptor = new IdentifierDescriptor(Bar.class, "id", Integer.class);
-		barDescriptor.getPropertyDescriptors().add(barIdDescriptor);
-		idDescriptor.setGenerated(false);
-
-		descriptorServiceMock.expects(atLeastOnce()).method("getClassDescriptor").with(same(Bar.class)).will(returnValue(barDescriptor));
-
-		assertTrue("is new", editPage.isModelNew());
-		((Foo) editPage.getModel()).setId(1);
-		assertFalse("not new", editPage.isModelNew());
-
-		Bar bar = new Bar();
-		editPage.setModel(bar);
-		assertTrue("is new", editPage.isModelNew());
-		bar.setId(1);
-		assertFalse("not new", editPage.isModelNew());
 	}
 
 	public void testSave()
@@ -148,85 +81,87 @@ public class EditPageTest extends ComponentTest
 		Foo foo2 = new Foo();
 		foo2.setName("foo2");
 		persistenceMock.expects(once()).method("save").with(same(foo)).will(returnValue(foo2));
-		editPage.save((IRequestCycle) cycleMock.proxy());
-		assertEquals(foo2, editPage.getModel());
+		pageServiceMock.expects(once()).method("getLink");
+		fooEditPage.save((IRequestCycle) cycleMock.proxy());
+		assertEquals(foo2, fooEditPage.getModel());
 	}
 
 	public void testSaveWithException()
 	{
 		persistenceMock.expects(atLeastOnce()).method("save").with(same(foo)).will(
-			throwException(new ValidationException("error")));
-		editPage.save((IRequestCycle) cycleMock.proxy());
+				throwException(new ValidationException("error")));
+		fooEditPage.save((IRequestCycle) cycleMock.proxy());
 		assertTrue("delegate has errors", delegate.getHasErrors());
 
 	}
 
-/*
-    public void testSaveWithInvalidStateException() throws Exception {
-        descriptorServiceMock.expects(once()).method("getClassDescriptor")
-                .with(same(Foo.class)).will(returnValue(descriptor));
-        descriptor.getPropertyDescriptors().add(new TrailsPropertyDescriptor(Foo.class, "description", String.class));
-        InvalidValue invalidValue = new InvalidValue("is too long", Bar.class, "description", "blarg", new Baz());
-        InvalidStateException invalidStateException = new InvalidStateException(new InvalidValue[]{invalidValue});
-
-        persistenceMock.expects(once()).method("save").with(same(foo)).will(throwException(invalidStateException));
-        editPage.save((IRequestCycle) cycleMock.proxy());
-        assertTrue("delegate has errors", delegate.getHasErrors());
-
-    }
-*/
-
-
 	public void testSaveAndReturn()
 	{
-
-		cycleMock.expects(once()).method("getPage").with(eq("FooList")).will(returnValue(listPage));
-		cycleMock.expects(once()).method("activate").with(eq(listPage));
 		persistenceMock.expects(once()).method("save").with(same(foo));
-		editPage.saveAndReturn((IRequestCycle) cycleMock.proxy());
-		cycleMock.verify();
+
+		try
+		{
+			fooEditPage.saveAndReturn((IRequestCycle) cycleMock.proxy());
+			fail();
+
+		} catch (RedirectException e)
+		{
+			assertEquals(CALLBACK_URL, e.getRedirectLocation());
+		}
 		persistenceMock.verify();
 	}
 
 	public void testCancel()
 	{
-		cycleMock.expects(once()).method("getPage").with(eq("FooList")).will(returnValue(listPage));
-		cycleMock.expects(once()).method("activate").with(eq(listPage));
 		persistenceMock.expects(never());
-		editPage.cancel((IRequestCycle) cycleMock.proxy());
-		cycleMock.verify();
+		try
+		{
+			fooEditPage.cancel((IRequestCycle) cycleMock.proxy());
+			fail();
+
+		} catch (RedirectException e)
+		{
+			assertEquals(CALLBACK_URL, e.getRedirectLocation());
+		}
 		persistenceMock.verify();
 	}
 
-//    public void testAddToChildCollection()
-//    {
-//
-//        //persistenceMock.expects(once()).method("save").with(eq(baz));
-//        makeBazCallback(true);
-//        bazEditPage.saveAndReturn((IRequestCycle)cycleMock.proxy());
-//        assertEquals("1 baz", 1, foo.getBazzes().size());
-//    }
-
-	public void testAddToNonChildCollection()
+	public void testAddToChildCollection()
 	{
-
+		bazzesDescriptor.setChildRelationship(true);
 		persistenceMock.expects(once()).method("save").with(eq(baz));
 		persistenceMock.expects(once()).method("save").with(eq(foo));
-		makeBazCallback(bazEditPage, false);
-		bazEditPage.saveAndReturn((IRequestCycle) cycleMock.proxy());
+
+		try
+		{
+			bazEditPage.saveAndReturn((IRequestCycle) cycleMock.proxy());
+			fail();
+
+		} catch (RedirectException e)
+		{
+			assertEquals(CALLBACK_URL, e.getRedirectLocation());
+		}
+
 		assertEquals("1 baz", 1, foo.getBazzes().size());
 	}
 
-	private void makeBazCallback(EditPage editPage, boolean isChild)
+	public void testAddToNonChildCollection()
 	{
+		bazzesDescriptor.setChildRelationship(false);
+		persistenceMock.expects(once()).method("save").with(eq(baz));
+		persistenceMock.expects(once()).method("save").with(eq(foo));
 
-		CollectionCallback bazCallback = new CollectionCallback("fooPage", foo, bazzesDescriptor);
-		bazCallback.setChildRelationship(isChild);
-		editPage.getCallbackStack().push(bazCallback);
-		editPage.getCallbackStack().push(new EditCallback("fooPage", new Foo()));
-		cycleMock.expects(once()).method("getPage").with(eq("fooPage")).will(returnValue(editPage));
-		cycleMock.expects(once()).method("activate").with(eq(editPage));
+		try
+		{
+			bazEditPage.saveAndReturn((IRequestCycle) cycleMock.proxy());
+			fail();
 
+		} catch (RedirectException e)
+		{
+			assertEquals(CALLBACK_URL, e.getRedirectLocation());
+		}
+
+		assertEquals("1 baz", 1, foo.getBazzes().size());
 	}
 
 	public void testRemoveFrom()
@@ -235,53 +170,43 @@ public class EditPageTest extends ComponentTest
 
 		persistenceMock.expects(once()).method("remove").with(eq(baz));
 		persistenceMock.expects(once()).method("save").with(eq(foo));
-		makeBazCallback(bazEditPage, true);
-		bazEditPage.remove((IRequestCycle) cycleMock.proxy());
+
+		try
+		{
+
+			bazEditPage.remove((IRequestCycle) cycleMock.proxy());
+			fail();
+
+		} catch (RedirectException e)
+		{
+			assertEquals(CALLBACK_URL, e.getRedirectLocation());
+		}
+
 		assertEquals("no bazzes", 0, foo.getBazzes().size());
 	}
 
 	public void testRemove()
 	{
-
-		Mock cycleMock = new Mock(IRequestCycle.class);
-
-		// Pretend Foo has a custom page
-		ArrayList instances = new ArrayList();
-		cycleMock.expects(once()).method("getPage").with(eq("FooList")).will(returnValue(
-			listPage));
 		persistenceMock.expects(once()).method("remove").with(same(foo));
-		cycleMock.expects(atLeastOnce()).method("activate").with(same(listPage));
 
-		editPage.remove((IRequestCycle) cycleMock.proxy());
+		try
+		{
+			assertNotNull(fooEditPage.remove((IRequestCycle) cycleMock.proxy()));
+			fail();
 
-		cycleMock.verify();
+		} catch (RedirectException e)
+		{
+			assertEquals(CALLBACK_URL, e.getRedirectLocation());
+		}
+
 		persistenceMock.verify();
-
-
 	}
 
 	public void testRemoveWithException() throws Exception
 	{
-		persistenceMock.expects(once()).method("remove").with(same(foo)).will(throwException(new PersistenceException()));
-		editPage.remove((IRequestCycle) cycleMock.proxy());
-		assertTrue(editPage.getDelegate().getHasErrors());
+		persistenceMock.expects(once()).method("remove").with(same(foo))
+				.will(throwException(new PersistenceException()));
+		fooEditPage.remove((IRequestCycle) cycleMock.proxy());
+		assertTrue(fooEditPage.getDelegate().getHasErrors());
 	}
-
-	public void testPageBeginRender() throws Exception
-	{
-		editPage.getCallbackStack().getStack().clear();
-		PageEvent pageEvent = new PageEvent(editPage, (IRequestCycle) cycleMock.proxy());
-		editPage.pageBeginRender(pageEvent);
-		assertEquals(1, editPage.getCallbackStack().getStack().size());
-		Foo foo2 = new Foo();
-//        ((HasAssignedIdentifier) foo2).onInsert(new Object[]{"myName"}, new String[]{"name"}, null);
-		foo2.setId(3);
-		editPage.setModel(foo2);
-		editPage.pageBeginRender(pageEvent);
-		EditCallback poppedCallback = (EditCallback) editPage.getCallbackStack().getStack().pop();
-		assertEquals(foo2, poppedCallback.getModel());
-		assertTrue(editPage.getCallbackStack().getStack().isEmpty());
-	}
-
-
 }

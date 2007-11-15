@@ -24,9 +24,7 @@ public class ClassDescriptorSqueezerStrategyTest extends MockObjectTestCase
 
 	public void testSqueeze()
 	{
-		nextDataSqueezer.expects(once()).method("squeeze").with(eq(Foo.class))
-			.will(returnValue("Dorg.trails.test.Foo"));
-		assertEquals("YDorg.trails.test.Foo",
+		assertEquals("Yorg.trails.test.Foo",
 			classDescriptorSqueezeStrategy.squeeze((DataSqueezer) nextDataSqueezer.proxy(), descriptor));
 
 	}
@@ -37,12 +35,9 @@ public class ClassDescriptorSqueezerStrategyTest extends MockObjectTestCase
 		descriptorServiceMock.expects(once()).method("getClassDescriptor").with(eq(Foo.class))
 			.will(returnValue(descriptor));
 
-		nextDataSqueezer.expects(once()).method("unsqueeze").with(eq("Dorg.trails.test.Foo"))
-			.will(returnValue(Foo.class));
-
 		assertSame(descriptor,
 			classDescriptorSqueezeStrategy.unsqueeze((DataSqueezer) nextDataSqueezer.proxy(),
-				"YDorg.trails.test.Foo"));
+				"Yorg.trails.test.Foo"));
 	}
 
 }

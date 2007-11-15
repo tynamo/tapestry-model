@@ -11,13 +11,15 @@
 	<component-type type="ObjectForm" specification-path="ObjectForm.jwc"/>
 	<!--	<component-type type="ObjectTable" specification-path="ObjectTable.jwc"/> -->
 	<!--	<component-type type="EditCollection" specification-path="EditCollection.jwc"/>-->
-	<component-type type="EditLink" specification-path="EditLink.jwc"/>
-	<component-type type="ViewLink" specification-path="ViewLink.jwc"/>
-	<component-type type="LocaleLink" specification-path="LocaleLink.jwc"/>
+	<component-type type="EditLink" specification-path="/org/trails/link/EditLink.jwc"/>
+	<component-type type="LocaleLink" specification-path="/org/trails/link/LocaleLink.jwc"/>
+	<component-type type="ViewLink" specification-path="/org/trails/link/ViewLink.jwc"/>
 	<!--	<component-type type="Identifier" specification-path="Identifier.jwc"/>-->
 	<component-type type="InvokeMethod" specification-path="InvokeMethod.jwc"/>
-	<component-type type="ListAllLink" specification-path="ListAllLink.jwc"/>
-	<component-type type="NewLink" specification-path="NewLink.jwc"/>
+	<component-type type="ListAllLink" specification-path="/org/trails/link/ListAllLink.jwc"/>
+	<component-type type="NewLink" specification-path="/org/trails/link/NewLink.jwc"/>
+	<component-type type="TrailsLink" specification-path="/org/trails/link/TrailsLink.jwc"/>
+	<component-type type="AbstractTypeNavigationLink" specification-path="/org/trails/link/AbstractTypeNavigationLink.jwc"/>
 	<component-type type="ObjectActions" specification-path="ObjectActions.jwc"/>
 
 	<component-type type="BlobComponent" specification-path="blob/BlobComponent.jwc"/>
@@ -46,6 +48,8 @@
 
 	<page name="Editors" specification-path="/org/trails/page/HibernateEditors.page"/>
 	<page name="SearchBlocks" specification-path="/org/trails/page/SearchBlocks.page"/>
+
+	<component-type type="SearchLink" specification-path="/org/trails/link/SearchLink.jwc"/>
 
 	<component-type type="InsertI18N" specification-path="InsertI18N.jwc"/>
 

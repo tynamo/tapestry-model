@@ -11,38 +11,28 @@
  */
 package org.trails.component;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-
-import ognl.Ognl;
-import ognl.OgnlException;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.tapestry.IAsset;
-import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.annotations.Asset;
 import org.apache.tapestry.annotations.InjectObject;
-import org.apache.tapestry.annotations.InjectState;
 import org.apache.tapestry.annotations.Parameter;
 import org.apache.tapestry.contrib.palette.SortMode;
 import org.apache.tapestry.form.IPropertySelectionModel;
-import org.trails.TrailsRuntimeException;
+import org.apache.tapestry.link.ILinkRenderer;
 import org.trails.callback.CallbackStack;
-import org.trails.callback.CollectionCallback;
-import org.trails.callback.EditCallback;
 import org.trails.descriptor.CollectionDescriptor;
 import org.trails.descriptor.DescriptorService;
 import org.trails.descriptor.IClassDescriptor;
 import org.trails.descriptor.IPropertyDescriptor;
-import org.trails.page.EditPage;
 import org.trails.page.PageResolver;
-import org.trails.page.PageType;
 import org.trails.persistence.PersistenceService;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 
 
 /**
@@ -56,7 +46,7 @@ public abstract class EditCollection extends TrailsComponent
 
 	protected static final Log LOG = LogFactory.getLog(EditCollection.class);
 
-	@InjectState("callbackStack")
+	@Parameter
 	public abstract CallbackStack getCallbackStack();
 
 	public abstract void setCallbackStack(CallbackStack stack);
@@ -118,6 +108,14 @@ public abstract class EditCollection extends TrailsComponent
 
 	private List selected = new ArrayList();
 
+	/**
+	 * 
+	 * org.apache.tapestry.contrib.link.ButtonLinkRenderer
+	 * @return
+	 */
+	@InjectObject(value = "service:trails.core.AddNewLinkRenderer")
+	public abstract ILinkRenderer getRenderer();
+
 
 	/**
 	 * (non-Javadoc)
@@ -151,87 +149,6 @@ public abstract class EditCollection extends TrailsComponent
 
 	@InjectObject("service:trails.core.PageResolver")
 	public abstract PageResolver getPageResolver();
-
-	public IPage edit(Object member)
-	{
-		CollectionCallback callback = new CollectionCallback(
-			getPage().getRequestCycle().getPage().getPageName(),
-			getModel(),
-			getCollectionDescriptor());
-		getCallbackStack().push(callback);
-		EditPage editPage = (EditPage) getPageResolver().resolvePage(
-			getPage().getRequestCycle(),
-			Utils.checkForCGLIB(member.getClass()),
-			PageType.Edit);
-
-		editPage.setModel(member);
-		return editPage;
-	}
-
-
-	public void showAddPage(IRequestCycle cycle)
-	{
-		getCallbackStack().push(buildCallback());
-
-		EditPage editPage = (EditPage) getPageResolver().resolvePage(cycle,
-			getCollectionDescriptor().getElementType(),
-			PageType.Edit);
-		try
-		{
-			// we need to do some indirection to avoid a StaleLink
-			EditCallback nextPage = new EditCallback(editPage.getPageName(),
-				buildNewMemberInstance());
-			String currentEditPageName = getPage().getRequestCycle().getPage().getPageName();
-			((EditPage) cycle.getPage(currentEditPageName)).setNextPage(nextPage);
-			nextPage.performCallback(cycle);
-			//editPage.setModel(getCollectionDescriptor().getElementType().newInstance());
-
-		} catch (Exception ex)
-		{
-			throw new TrailsRuntimeException(ex, getCollectionDescriptor().getElementType() );
-		}
-	}
-
-	protected Object buildNewMemberInstance() throws InstantiationException, IllegalAccessException
-	{
-		Object object;
-		if (getCreateExpression() == null)
-		{
-			object = getCollectionDescriptor().getElementType().newInstance();
-		} else
-		{
-			try
-			{
-				object = Ognl.getValue(getCreateExpression(), getModel());
-			}
-			catch (OgnlException oe)
-			{
-				oe.printStackTrace();
-				return null;
-			}
-		}
-
-		if (getCollectionDescriptor().getInverseProperty() != null && getCollectionDescriptor().isOneToMany())
-		{
-			try
-			{
-				Ognl.setValue(getCollectionDescriptor().getInverseProperty(), object, getModel());
-			} catch (OgnlException e)
-			{
-				LOG.error(e.getMessage());
-			}
-		}
-
-		return object;
-	}
-
-	CollectionCallback buildCallback()
-	{
-		CollectionCallback callback = new CollectionCallback(
-			getPage().getRequestCycle().getPage().getPageName(), getModel(), getCollectionDescriptor());
-		callback.setChildRelationship(getCollectionDescriptor().isChildRelationship());
-		return callback;
-	}
 
 	/**
 	 * @param cycle
@@ -285,29 +202,6 @@ public abstract class EditCollection extends TrailsComponent
 	public void setSelected(List toBeDeleted)
 	{
 		this.selected = toBeDeleted;
-	}
-
-
-	/**
-	 * (non-Javadoc)
-	 *
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
-	public boolean equals(Object obj)
-	{
-		// TODO Auto-generated method stub
-		return EqualsBuilder.reflectionEquals(this, obj);
-	}
-
-
-	/**
-	 * (non-Javadoc)
-	 *
-	 * @see java.lang.Object#hashCode()
-	 */
-	public int hashCode()
-	{
-		return HashCodeBuilder.reflectionHashCode(this);
 	}
 
 	/**

@@ -42,7 +42,13 @@
         <url-pattern>/app</url-pattern>
     </filter-mapping>
 
-    <filter-mapping>
+	<filter-mapping>
+		<filter-name>hibernateFilter</filter-name>
+		<url-pattern>/trails/*</url-pattern>
+	</filter-mapping>
+
+
+	<filter-mapping>
         <filter-name>hibernateFilter</filter-name>
         <url-pattern>*.page</url-pattern>
     </filter-mapping>
@@ -80,7 +86,13 @@
         <url-pattern>/app</url-pattern>
     </servlet-mapping>
 
-    <servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>trails</servlet-name>
+		<url-pattern>/trails/*</url-pattern>
+	</servlet-mapping>
+
+
+	<servlet-mapping>
         <servlet-name>trails</servlet-name>
         <url-pattern>*.page</url-pattern>
     </servlet-mapping>

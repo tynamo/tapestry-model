@@ -5,12 +5,6 @@ import com.gargoylesoftware.htmlunit.html.HtmlPage;
 public class IntegerFieldTest extends FunctionalTest
 {
 
-	public IntegerFieldTest()
-	{
-		super();
-		// TODO Auto-generated constructor stub
-	}
-
 	public void testIntegerFields() throws Exception
 	{
 		HtmlPage listThingsPage = clickLinkOnPage(startPage, "List Things");

@@ -11,36 +11,23 @@
  */
 package org.trails.page;
 
-import java.util.List;
-
-import org.apache.tapestry.IExternalPage;
-import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.event.PageBeginRenderListener;
-import org.trails.TrailsRuntimeException;
-import org.trails.callback.ListCallback;
+import org.trails.callback.UrlCallback;
 import org.trails.component.TrailsTableColumn;
-import org.trails.component.Utils;
-import org.trails.descriptor.IClassDescriptor;
+import org.trails.engine.TrailsPagesServiceParameter;
+
+import java.util.List;
 
 /**
  * List all the instances of a type
- * 
+ *
  * @author Chris Nelson
  */
-public abstract class ListPage extends TrailsPage implements IExternalPage, PageBeginRenderListener
+public abstract class ListPage extends TrailsPage
 {
 
-	/**
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.tapestry.IExternalPage#activateExternalPage(java.lang.Object[],org.apache.tapestry.IRequestCycle)
-	 */
-	public void activateExternalPage(Object[] args, IRequestCycle cycle)
-	{
-		Class instanceClass = (Class) args[0];
-		setType(instanceClass);
-		reloadInstances();
-	}
+	public abstract Object getObject();
+
+	public abstract void setObject(Object object);
 
 	public abstract List getInstances();
 
@@ -50,27 +37,12 @@ public abstract class ListPage extends TrailsPage implements IExternalPage, Page
 
 	public abstract void setColumn(TrailsTableColumn column);
 
-	public abstract Class getType();
-
-	public abstract void setType(Class type);
-
-	public IClassDescriptor getClassDescriptor()
-	{
-		return getDescriptorService().getClassDescriptor(getType());
-	}
 
 	public void pushCallback()
 	{
-		getCallbackStack().push(new ListCallback(getPageName(), getType()));
-	}
-
-	private void loadInstances(Class clazz)
-	{
-		setInstances(getPersistenceService().getAllInstances(clazz));
-	}
-
-	public void reloadInstances()
-	{
-		loadInstances(getType());
+		if (getCallbackStack() != null)
+		{
+			getCallbackStack().clear();
+		}
 	}
 }

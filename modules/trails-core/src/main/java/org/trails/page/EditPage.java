@@ -11,35 +11,48 @@
  */
 package org.trails.page;
 
-import org.apache.tapestry.IExternalPage;
+import ognl.Ognl;
+import ognl.OgnlException;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.annotations.Bean;
 import org.apache.tapestry.annotations.Lifecycle;
 import org.apache.tapestry.callback.ICallback;
-import org.trails.callback.AssociationCallback;
-import org.trails.callback.CollectionCallback;
-import org.trails.callback.EditCallback;
+import org.apache.tapestry.engine.ILink;
+import org.trails.TrailsRuntimeException;
+import org.trails.callback.UrlCallback;
+import org.trails.descriptor.CollectionDescriptor;
+import org.trails.engine.TrailsPagesServiceParameter;
 import org.trails.persistence.PersistenceException;
 import org.trails.validation.TrailsValidationDelegate;
+
+import java.util.HashMap;
 
 /**
  * @author Chris Nelson
  *         <p/>
  *         This page will edit an instance contained in the model property
  */
-public abstract class EditPage extends ModelPage implements IExternalPage
+public abstract class EditPage extends ModelPage
 {
+
+	private static final Log LOG = LogFactory.getLog(EditPage.class);
+
 	@Bean(lifecycle = Lifecycle.REQUEST)
 	public abstract TrailsValidationDelegate getDelegate();
 
-	public void activateExternalPage(Object[] parameters, IRequestCycle cycle)
-	{
-		setModel(parameters[0]);
-	}
+	public abstract CollectionDescriptor getAssociationDescriptor();
+
+	public abstract void setAssociationDescriptor(CollectionDescriptor associationDescriptor);
+
+	public abstract Object getParent();
+
+	public abstract void setParent(Object parent);
 
 	/**
-	 * This property allows components to change the page during the middle of
-	 * the rewind without causing a StaleLinkException
+	 * This property allows components to change the page during the middle of the rewind without causing a
+	 * StaleLinkException
 	 *
 	 * @return
 	 */
@@ -47,22 +60,35 @@ public abstract class EditPage extends ModelPage implements IExternalPage
 
 	public abstract void setNextPage(ICallback NextPage);
 
-	public void save(IRequestCycle cycle)
+	public ILink save(IRequestCycle cycle)
 	{
-		save();
-
+		if (save())
+		{
+			if (getCallbackStack() != null && !getCallbackStack().isEmpty())
+			{
+				// When saving objects with assigned IDs, we need to removed the last element of the stack.
+				getCallbackStack().pop();
+			}
+			return getTrailsPagesService()
+					.getLink(false, new TrailsPagesServiceParameter(PageType.EDIT, getClassDescriptor(), getModel(), getAssociationDescriptor(), getParent()));
+		}
+		return null;
 	}
 
-	/*
-		 * To avoid duplicate callbacks on the stack, we need to replace the top
-		 * callback if it has an unsaved model object. (non-Javadoc)
-		 *
-		 * @see org.trails.page.TrailsPage#pushCallback()
-		 */
+	private ILink defaultCallback()
+	{
+		return getTrailsPagesService()
+				.getLink(false, new TrailsPagesServiceParameter(PageType.LIST, getClassDescriptor()));
+	}
+
 	public void pushCallback()
 	{
-		getCallbackStack().push(
-			new EditCallback(getPageName(), getModel(), isModelNew()));
+		UrlCallback callback = new UrlCallback(getTrailsPagesService()
+				.getLink(false, new TrailsPagesServiceParameter(PageType.EDIT, getClassDescriptor(), getModel(), getAssociationDescriptor(), getParent())).getURL());
+		if (getCallbackStack() != null && (getCallbackStack().isEmpty() || !getCallbackStack().peek().equals(callback)))
+		{
+			getCallbackStack().push(callback);
+		}
 	}
 
 	protected boolean save()
@@ -87,70 +113,67 @@ public abstract class EditPage extends ModelPage implements IExternalPage
 		return false;
 	}
 
-	public void cancel(IRequestCycle cycle)
+	public ILink cancel(IRequestCycle cycle)
 	{
-		ICallback callback = (ICallback) getCallbackStack()
-			.popPreviousCallback();
-		callback.performCallback(cycle);
+		return goBack(cycle);
 	}
 
-	/*
-		 * This is here so that if a component needs to go to a new page it won't do
-		 * so in the middle of a rewind and generate a StaleLink
-		 */
-	public void onFormSubmit(IRequestCycle cycle)
+	public ILink goBack(IRequestCycle cycle)
 	{
-		if (getNextPage() != null)
+
+		if (getCallbackStack() != null)
 		{
-			getNextPage().performCallback(cycle);
+			ICallback callback = getCallbackStack().popPreviousCallback();
+			if (callback != null)
+			{
+				callback.performCallback(cycle);
+			}
 		}
+		return defaultCallback();
 	}
 
 	/**
 	 * @param cycle
 	 */
-	public void saveAndReturn(IRequestCycle cycle)
+	public ILink saveAndReturn(IRequestCycle cycle)
 	{
 		if (save())
 		{
-			ICallback callback = getCallbackStack().popPreviousCallback();
-			if (callback instanceof CollectionCallback)
+			if (cameFromCollection())
 			{
-				((CollectionCallback) callback).save(getPersistenceService(),
-					getModel());
-			} else if (callback instanceof AssociationCallback)
-			{
-				((AssociationCallback) callback).save(getPersistenceService(),
-					getModel());
+				executeOgnlExpression(getAssociationDescriptor().findAddExpression(), getModel(), getParent());
+				getPersistenceService().save(getParent());
 			}
-
-			callback.performCallback(cycle);
+			return goBack(cycle);
 		}
+		return null;
 	}
 
-	public void remove(IRequestCycle cycle)
+	public ILink remove(IRequestCycle cycle)
 	{
 
 		try
 		{
 			getPersistenceService().remove(getModel());
+
+			if (cameFromCollection())
+			{
+				executeOgnlExpression(getAssociationDescriptor().findRemoveExpression(), getModel(), getParent());
+				getPersistenceService().save(getParent());
+			}
+
 		} catch (PersistenceException pe)
 		{
 			getDelegate().record(pe);
-			return;
+			return null;
+
+		} catch (Exception e)
+		{
+			getDelegate().record(e);
+			return null;
 		}
 
-		ICallback callback = getCallbackStack().popPreviousCallback();
-		if (callback instanceof CollectionCallback)
-		{
-			((CollectionCallback) callback).remove(getPersistenceService(),
-				getModel());
-		} else if (callback instanceof AssociationCallback)
-		{
-			((AssociationCallback) callback).remove(getPersistenceService(),
-				getModel());
-		}
-		callback.performCallback(cycle);
+		return goBack(cycle);
 	}
 
 	/**
@@ -162,28 +185,30 @@ public abstract class EditPage extends ModelPage implements IExternalPage
 		if (cameFromCollection() && isModelNew())
 		{
 			return getResourceBundleMessageSource()
-				.getMessageWithDefaultValue("org.trails.i18n.add", params, "[TRAILS][ORG.TRAILS.I18N.ADD]");
+					.getMessageWithDefaultValue("org.trails.i18n.add", params, "[TRAILS][ORG.TRAILS.I18N.ADD]");
 		} else
 		{
 			return getResourceBundleMessageSource()
-				.getMessageWithDefaultValue("org.trails.i18n.edit", params, "[TRAILS][ORG.TRAILS.I18N.EDIT]");
+					.getMessageWithDefaultValue("org.trails.i18n.edit", params, "[TRAILS][ORG.TRAILS.I18N.EDIT]");
 		}
 	}
 
 	public boolean cameFromCollection()
 	{
-
-		return getCallbackStack().getPreviousCallback() instanceof CollectionCallback;
+		return getParent() != null;
 	}
 
-	public boolean cameFromChildCollection()
+	private void executeOgnlExpression(String ognlExpression, Object newObject, Object model)
 	{
+		HashMap context = new HashMap();
+		context.put("member", newObject);
 
-		if (getCallbackStack().getPreviousCallback() instanceof CollectionCallback)
+		try
 		{
-			return ((CollectionCallback) getCallbackStack()
-				.getPreviousCallback()).isChildRelationship();
-		} else
-			return false;
+			Ognl.getValue(ognlExpression + "(#member)", context, model);
+		} catch (OgnlException e)
+		{
+			throw new TrailsRuntimeException(e, model.getClass());
+		}
 	}
 }

@@ -42,7 +42,8 @@ public abstract class SearchForm extends ClassDescriptorComponent implements Pag
 	{
 		HibernateListPage listPage = (HibernateListPage) getPageResolver().resolvePage(cycle,
 			getClassDescriptor().getType(),
-			PageType.List);
+			PageType.LIST);
+		listPage.setClassDescriptor(getClassDescriptor());
 		listPage.setCriteria(getCriteria());
 		cycle.activate(listPage);
 	}

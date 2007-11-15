@@ -23,10 +23,10 @@ public class ObjectActionsTest extends ComponentTest
 	public void setUp() throws Exception
 	{
 		objectActions = (ObjectActions) creator.newInstance(ObjectActions.class);
-		editPage = buildEditPage();
 		descriptor = new TrailsClassDescriptor(Foo.class);
 		descriptor.getPropertyDescriptors().add(new IdentifierDescriptor(Foo.class, "id", Integer.class));
-		descriptorServiceMock.expects(atLeastOnce()).method("getClassDescriptor").withAnyArguments().will(returnValue(descriptor));
+		editPage = buildEditPage();
+		editPage.setClassDescriptor(descriptor);
 		objectActions.setPage(editPage);
 	}
 
@@ -46,6 +46,7 @@ public class ObjectActionsTest extends ComponentTest
 
 		foo.setId(null);
 		editPage.setModel(foo);
+		editPage.setModelNew(true);
 
 		descriptor.setAllowRemove(true);
 		assertTrue(!objectActions.isShowRemoveButton());

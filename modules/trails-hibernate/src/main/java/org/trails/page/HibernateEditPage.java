@@ -3,7 +3,6 @@ package org.trails.page;
 import org.apache.tapestry.annotations.Bean;
 import org.apache.tapestry.annotations.Lifecycle;
 import org.hibernate.validator.InvalidStateException;
-import org.trails.hibernate.HasAssignedIdentifier;
 import org.trails.persistence.HibernatePersistenceService;
 import org.trails.persistence.PersistenceException;
 import org.trails.validation.HibernateValidationDelegate;
@@ -45,18 +44,6 @@ public abstract class HibernateEditPage extends EditPage
 		return false;
 	}
 
-	@Override
-	protected boolean isModelNew(Object model)
-	{
-		if (model instanceof HasAssignedIdentifier)
-		{
-			return !((HasAssignedIdentifier) getModel()).isSaved();
-		} else
-		{
-			return super.isModelNew(model);
-		}
-	}
-	
 	public HibernatePersistenceService getHibernatePersistenceService() {
 		return (HibernatePersistenceService)getPersistenceService();
 	}

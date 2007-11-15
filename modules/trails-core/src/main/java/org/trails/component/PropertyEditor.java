@@ -11,41 +11,42 @@
  */
 package org.trails.component;
 
+import org.apache.tapestry.BaseComponent;
+import org.apache.tapestry.annotations.Component;
 import org.apache.tapestry.annotations.ComponentClass;
 import org.apache.tapestry.annotations.Parameter;
 import org.apache.tapestry.components.Block;
+import org.apache.tapestry.components.RenderBlock;
 import org.apache.tapestry.util.ComponentAddress;
 import org.trails.descriptor.BlockFinder;
 import org.trails.descriptor.IPropertyDescriptor;
 import org.trails.page.IEditorBlockPage;
 
-/**
- * @author fus8882
- *         <p/>
- *         TODO To change the template for this generated type comment go to
- *         Window - Preferences - Java - Code Style - Code Templates
- */
-public abstract class PropertyEditor extends TrailsComponent
+@ComponentClass(allowBody = true, allowInformalParameters = true)
+public abstract class PropertyEditor extends BaseComponent
 {
+
+	@Parameter(defaultValue = "container.property")
 	public abstract IPropertyDescriptor getDescriptor();
 
-	public abstract void setDescriptor(IPropertyDescriptor Descriptor);
-
+	@Parameter(defaultValue = "container.model")
 	public abstract Object getModel();
 
-	public abstract void setModel(Object model);
+	@Parameter(defaultValue = "container.modelNew")
+	public abstract boolean isModelNew();
 
+	@Parameter(defaultValue = "container.blockFinder")
 	public abstract BlockFinder getBlockFinder();
 
 	public Block getBlock()
 	{
 
 		Block editorBlock = (Block)
-			getEditorAddress().findComponent(getPage().getRequestCycle());
+				getEditorAddress().findComponent(getPage().getRequestCycle());
 
 		((IEditorBlockPage) editorBlock.getPage()).setModel(getModel());
+		((IEditorBlockPage) editorBlock.getPage()).setModelNew(isModelNew());
 		((IEditorBlockPage) editorBlock.getPage()).setDescriptor(getDescriptor());
-		((IEditorBlockPage) editorBlock.getPage()).setEditPageName(getPage().getPageName());
 
 		return editorBlock;
 	}
@@ -55,4 +56,8 @@ public abstract class PropertyEditor extends TrailsComponent
 
 		return getBlockFinder().findBlockAddress(getDescriptor());
 	}
+
+	@Component(bindings = "block=ognl:block")
+	public abstract RenderBlock getRenderBlock();
+
 }

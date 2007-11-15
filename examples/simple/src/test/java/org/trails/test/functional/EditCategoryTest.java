@@ -13,17 +13,12 @@
  */
 package org.trails.test.functional;
 
-import java.io.IOException;
-
-import com.gargoylesoftware.htmlunit.html.HtmlDivision;
-import com.gargoylesoftware.htmlunit.html.HtmlForm;
-import com.gargoylesoftware.htmlunit.html.HtmlPage;
-import com.gargoylesoftware.htmlunit.html.HtmlSubmitInput;
-import com.gargoylesoftware.htmlunit.html.HtmlTextArea;
-import com.gargoylesoftware.htmlunit.html.HtmlTextInput;
-import com.gargoylesoftware.htmlunit.html.HtmlInput;
+import com.gargoylesoftware.htmlunit.html.*;
 import com.gargoylesoftware.htmlunit.html.xpath.HtmlUnitXPath;
+import com.gargoylesoftware.htmlunit.ElementNotFoundException;
 import org.jaxen.JaxenException;
+
+import java.io.IOException;
 
 /**
  * @author fus8882
@@ -93,9 +88,7 @@ public class EditCategoryTest extends FunctionalTest
 		getInputByName(newCatalogPage, "Name").setValueAttribute("newcatalog");
 		newCatalogPage = clickButton(newCatalogPage, "Apply");
 
-		HtmlPage newCategoryPage = this.clickButton(newCatalogPage,
-			"Add New...");
-		return newCategoryPage;
+		return clickLinkOnPage(newCatalogPage,"Add New...");
 	}
 
 	public void testOverrideOnAddToCollectionPage() throws Exception
@@ -108,20 +101,21 @@ public class EditCategoryTest extends FunctionalTest
 	public void testAddNewDisabled() throws Exception
 	{
 		HtmlPage listCatalogsPage = clickLinkOnPage(startPage, "List Catalogs");
-		HtmlPage newCatalogPage = clickLinkOnPage(listCatalogsPage,
-			"New Catalog");
-		HtmlSubmitInput addButton = (HtmlSubmitInput) new HtmlUnitXPath(
-			"//input[@type='submit' and @value='Add New...']")
-			.selectSingleNode(newCatalogPage);
-		assertTrue(addButton.isDisabled());
-		getInputByName(newCatalogPage, "Name")
-			.setValueAttribute("newercatalog");
+		HtmlPage newCatalogPage = clickLinkOnPage(listCatalogsPage, "New Catalog");
+//		HtmlSubmitInput addButton = (HtmlSubmitInput) new HtmlUnitXPath("//input[@type='submit' and @value='Add New...']").selectSingleNode(newCatalogPage);
+		HtmlAnchor addLink = null;
+		try
+		{
+			addLink = newCatalogPage.getFirstAnchorByText("Add New...");
+		} catch (ElementNotFoundException e)
+		{
+			assertNotNull(e);  // assertTrue(addButton.isDisabled());
+		}
+		getInputByName(newCatalogPage, "Name").setValueAttribute("newercatalog");
 		newCatalogPage = clickButton(newCatalogPage, "Apply");
-		addButton = (HtmlSubmitInput) new HtmlUnitXPath(
-			"//input[@type='submit' and @value='Add New...']")
-			.selectSingleNode(newCatalogPage);
-		assertFalse(addButton.isDisabled());
-
+//		addButton = (HtmlSubmitInput) new HtmlUnitXPath("//input[@type='submit' and @value='Add New...']").selectSingleNode(newCatalogPage);
+		addLink = newCatalogPage.getFirstAnchorByText("Add New...");
+		assertNotNull(addLink); // assertFalse(addButton.isDisabled());
 	}
 
 	public void testAddProductToCategory() throws Exception
@@ -131,7 +125,7 @@ public class EditCategoryTest extends FunctionalTest
         HtmlTextArea textArea = getTextAreaByName(newCategoryForm.getPage(), "Description");
 		textArea.setText("howdya doo");
 		HtmlPage categoryPage = clickButton(newCategoryForm, "Apply");
-		HtmlPage newProductPage = this.clickButton((HtmlForm) categoryPage.getForms().get(0), "Add New...");
+		HtmlPage newProductPage = clickLinkOnPage(categoryPage, "Add New...");
 		HtmlTextInput input = (HtmlTextInput) getInputByName(newProductPage, "Name");
 		input.setValueAttribute("a new product");
 

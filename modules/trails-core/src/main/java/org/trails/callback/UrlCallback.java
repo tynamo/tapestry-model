@@ -29,4 +29,21 @@ public class UrlCallback implements ICallback
 	{
 		throw new RedirectException(url);
 	}
+
+	public boolean equals(Object o)
+	{
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		UrlCallback that = (UrlCallback) o;
+
+		if (!url.equals(that.url)) return false;
+
+		return true;
+	}
+
+	public int hashCode()
+	{
+		return url.hashCode();
+	}
 }

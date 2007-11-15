@@ -1,6 +1,13 @@
 <!DOCTYPE page-specification PUBLIC "-//Apache Software Foundation//Tapestry Specification 4.1//EN" "http://jakarta.apache.org/tapestry/dtd/Tapestry_4_1.dtd">
 <page-specification class="org.trails.page.HibernateEditPage">
-	<property name="model" persist="session"/>
+
+	<property name="model" persist="trails-form"/>
+	<property name="modelNew" persist="trails-form"/>
+	<property name="classDescriptor" persist="trails-form"/>
+
+	<property name="parent" persist="trails-entity"/>
+	<property name="associationDescriptor" persist="trails-form"/>
+
 	<property name="nextPage"/>
 
 	<property name="delegator"/>

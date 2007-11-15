@@ -1,0 +1,4 @@
+<!DOCTYPE component-specification PUBLIC "-//Apache Software Foundation//Tapestry Specification 4.1//EN" "http://jakarta.apache.org/tapestry/dtd/Tapestry_4_1.dtd">
+<component-specification class="org.trails.link.EditLink" allow-body="yes" allow-informal-parameters="yes" deprecated="no">
+	<description>This component displays a link to the EditPage for an object</description>
+</component-specification>

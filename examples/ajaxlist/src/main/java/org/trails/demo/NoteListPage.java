@@ -32,7 +32,7 @@ public abstract class NoteListPage extends HibernateListPage implements PageBegi
 
 	public void pageBeginRender(PageEvent event)
 	{
-		super.pageBeginRender(event);
+//		super.pageBeginRender(event);
 		setNote(new Note());
 	}
 

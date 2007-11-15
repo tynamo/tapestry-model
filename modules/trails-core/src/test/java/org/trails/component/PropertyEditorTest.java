@@ -14,10 +14,9 @@ package org.trails.component;
 
 import org.apache.hivemind.Messages;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.test.Creator;
 import org.apache.tapestry.components.Block;
+import org.apache.tapestry.test.Creator;
 import org.apache.tapestry.util.ComponentAddress;
-import org.jmock.Mock;
 import org.jmock.Expectations;
 import org.jmock.integration.junit3.MockObjectTestCase;
 import org.trails.descriptor.BlockFinder;
@@ -27,12 +26,6 @@ import org.trails.page.IEditorBlockPage;
 import org.trails.test.Foo;
 
 
-/**
- * @author fus8882
- *         <p/>
- *         TODO To change the template for this generated type comment go to
- *         Window - Preferences - Java - Code Style - Code Templates
- */
 public class PropertyEditorTest extends MockObjectTestCase
 {
 
@@ -48,14 +41,18 @@ public class PropertyEditorTest extends MockObjectTestCase
 	{
 		messages = mock(Messages.class);
 		blockFinder = mock(BlockFinder.class);
+		model = new Foo();
+		descriptor = new TrailsPropertyDescriptor(Foo.class, "number", Double.class);
 
 		propertyEditor = (PropertyEditor) creator.newInstance(PropertyEditor.class,
-			new Object[]{"blockFinder", blockFinder, "messages", messages});
+			new Object[]{
+					"blockFinder", blockFinder,
+					"messages", messages,
+					"model", model,
+					"modelNew", false,
+					"descriptor", descriptor
 
-		descriptor = new TrailsPropertyDescriptor(Foo.class, "number", Double.class);
-		propertyEditor.setDescriptor(descriptor);
-		model = new Foo();
-		propertyEditor.setModel(model);
+			});
 	}
 
 	public void testGetEditorAddress()
@@ -73,7 +70,16 @@ public class PropertyEditorTest extends MockObjectTestCase
 
 		assertEquals(componentAddress, propertyEditor.getEditorAddress());
 
-		propertyEditor.setDescriptor(descriptor2);
+		propertyEditor = (PropertyEditor) creator.newInstance(PropertyEditor.class,
+			new Object[]{
+					"blockFinder", blockFinder,
+					"messages", messages,
+					"model", model,
+					"modelNew", false,
+					"descriptor", descriptor2
+
+			});
+		
 		assertNull(propertyEditor.getEditorAddress());
 	}
 
@@ -91,12 +97,11 @@ public class PropertyEditorTest extends MockObjectTestCase
 			{
 				atLeast(1).of(page).getRequestCycle(); will(returnValue(cycle));
 				atLeast(1).of(cycle).getPage(pageName); will(returnValue(page));
-				atLeast(1).of(page).getPageName(); will(returnValue(pageName));
 				atLeast(1).of(page).getNestedComponent("block"); will(returnValue(block));
 
 				atLeast(1).of(page).setModel(model);
+				atLeast(1).of(page).setModelNew(false);
 				atLeast(1).of(page).setDescriptor(descriptor);
-				atLeast(1).of(page).setEditPageName(pageName);
 
 				atLeast(1).of(blockFinder).findBlockAddress(descriptor); will(returnValue(componentAddress));
 			}

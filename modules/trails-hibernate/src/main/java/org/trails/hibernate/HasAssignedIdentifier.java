@@ -13,12 +13,10 @@ package org.trails.hibernate;
 
 
 /**
- * @author fus8882
- *         <p/>
- *         This interface is for letting the AssignedIdAspect know which
- *         classes have an assigned id.  The aspect will add the implementation
- *         of this interface
+ * This interface is for letting the AssignedIdAspect know which classes have an assigned id.  The aspect will add the
+ * implementation of this interface
  */
 public interface HasAssignedIdentifier extends Interceptable
 {
+	public boolean isSaved();
 }

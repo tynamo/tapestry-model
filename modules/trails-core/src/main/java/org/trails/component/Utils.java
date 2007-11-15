@@ -32,7 +32,7 @@ public class Utils
 	public static final String ADD_NEW_MESSAGE = "org.trails.i18n.addNew";
 	public static String DEFAULT = "Default";
 
-	public static Class getClassForName(String className)
+	public static Class classForName(String className)
 	{
 		try
 		{

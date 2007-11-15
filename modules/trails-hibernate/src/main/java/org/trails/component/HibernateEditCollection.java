@@ -13,7 +13,7 @@ import org.apache.tapestry.form.IPropertySelectionModel;
 import org.hibernate.NonUniqueObjectException;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
-import org.trails.callback.CollectionCallback;
+//import org.trails.callback.CollectionCallback;
 import org.trails.descriptor.IClassDescriptor;
 import org.trails.page.EditPage;
 import org.trails.page.PageType;
@@ -50,17 +50,19 @@ public abstract class HibernateEditCollection extends EditCollection
 	public IPage edit(Object member)
 	{
 
+/*
 		CollectionCallback callback = new CollectionCallback(
 			getPage().getRequestCycle().getPage().getPageName(),
 			getModel(),
 			getCollectionDescriptor());
 
 		getCallbackStack().push(callback);
+*/
 
 		EditPage editPage = (EditPage) getPageResolver().resolvePage(
 			getPage().getRequestCycle(),
 			Utils.checkForCGLIB(member.getClass()),
-			PageType.Edit);
+			PageType.EDIT);
 		try
 		{
 			getPersistenceService().reattach(member);

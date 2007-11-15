@@ -39,7 +39,7 @@ public class ApplicationExceptionPresenterImpl extends ExceptionPresenterImpl {
 			}
 		}
 		log.debug("The problem was caused by: ", throwable.getCause());
-		IPage page = pageResolver.resolvePage(cycle, trailsRuntimeException.getEntityType(), PageType.Exception);
+		IPage page = pageResolver.resolvePage(cycle, trailsRuntimeException.getEntityType(), PageType.EXCEPTION);
 		cycle.activate(page);
 		try {
 			cycle.getResponseBuilder().renderResponse(cycle);

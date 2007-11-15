@@ -13,52 +13,51 @@ import org.trails.page.IEditorBlockPage;
 public class BaseBlockFinder implements BlockFinder
 {
 
-	private Map editorMap;
+	private Map<String, ComponentAddress> editorMap;
 	private ComponentAddress defaultEditor;
 
-	public Map getEditorMap()
+	public Map<String, ComponentAddress> getEditorMap()
 	{
 		return editorMap;
 	}
 
 	/**
-	 * This a map where the keys are ognl expressions and the values are
-	 * component address.
+	 * This a map where the keys are ognl expressions and the values are component address.
 	 *
 	 * @param editorMap
 	 */
-	public void setEditorMap(Map editorMap)
+	public void setEditorMap(Map<String, ComponentAddress> editorMap)
 	{
-		//System.out.println("map type: " + editorMap.getClass().getName());
 		this.editorMap = editorMap;
 	}
 
 	/**
 	 * @param descriptor
-	 * @return The first component address in the editorMap whose key evaluates
-	 *         to true for descriptor. This will be used to load an editor for
-	 *         the descriptor. Returns default editor if no match is found.
-	 * @see org.trails.descriptor.BlockFinder#findBlockAdress(org.trails.descriptor.IPropertyDescriptor)
+	 * @return The first component address in the editorMap whose key evaluates to true for descriptor. This will be used
+	 *         to load an editor for the descriptor. Returns default editor if no match is found.
+	 * @see org.trails.descriptor.BlockFinder#findBlockAddress(IPropertyDescriptor)
 	 */
 	public ComponentAddress findBlockAddress(IPropertyDescriptor descriptor)
 	{
-		for (Iterator iter = editorMap.entrySet().iterator(); iter.hasNext();)
+		ComponentAddress componentAddress = findBlockAddress(editorMap, descriptor);
+		return componentAddress != null ? componentAddress : getDefaultBlockAddress();
+	}
+
+	protected ComponentAddress findBlockAddress(Map<String, ComponentAddress> map, IPropertyDescriptor descriptor)
+	{
+		for (Map.Entry<String, ComponentAddress> entry : map.entrySet())
 		{
-			Map.Entry entry = (Map.Entry) iter.next();
 			try
 			{
-				if (((Boolean) Ognl.getValue((String) entry.getKey(),
-					descriptor)).booleanValue())
+				if ((Boolean) Ognl.getValue(entry.getKey(), descriptor))
 				{
-					return (ComponentAddress) entry.getValue();
+					return entry.getValue();
 				}
 			} catch (OgnlException e)
 			{
-				// TODO Auto-generated catch block
-				//e.printStackTrace();
 			}
 		}
-		return getDefaultBlockAddress();
+		return null;
 	}
 
 	public Block findBlock(IRequestCycle cycle, IPropertyDescriptor descriptor)

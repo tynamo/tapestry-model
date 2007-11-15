@@ -16,7 +16,7 @@ public abstract class HomePage extends TrailsPage implements IExternalPage
 
 	public void activateExternalPage(Object[] parameters, IRequestCycle cycle)
 	{
-		getCallbackStack().getStack().clear();
+		getCallbackStack().clear();
 	}
 
 	public List<IClassDescriptor> getAllDescriptors()

@@ -49,7 +49,7 @@ public class ClassAdaptor implements SqueezeAdaptor
 
 		try
 		{
-			return Utils.getClassForName(className);
+			return Utils.classForName(className);
 
 		} catch (TrailsRuntimeException cnfe)
 		{

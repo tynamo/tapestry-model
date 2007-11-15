@@ -10,11 +10,11 @@ public class SearchTest extends FunctionalTest
 		HtmlPage newApplePage = clickLinkOnPage(listApplesPage, "New Apple");
 		getInputByName(newApplePage, "Color").setValueAttribute("Blue");
 		listApplesPage = clickButton(newApplePage, "Ok");
-		HtmlPage searchApplesPage = clickLinkOnPage(listApplesPage, "Search Apple");
+		HtmlPage searchApplesPage = clickLinkOnPage(listApplesPage, "Search Apples");
 		getInputByName(searchApplesPage, "Color").setValueAttribute("Blue");
 		listApplesPage = clickButton(searchApplesPage, "Search");
 		assertXPathPresent(listApplesPage, "//td[text() = 'Blue']");
-		searchApplesPage = clickLinkOnPage(listApplesPage, "Search Apple");
+		searchApplesPage = clickLinkOnPage(listApplesPage, "Search Apples");
 		getInputByName(searchApplesPage, "Color").setValueAttribute("lu");
 		listApplesPage = clickButton(searchApplesPage, "Search");
 		assertXPathPresent(listApplesPage, "//td[text() = 'Blue']");
