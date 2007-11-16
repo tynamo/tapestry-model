@@ -22,7 +22,6 @@ import org.apache.tapestry.callback.ICallback;
 import org.apache.tapestry.engine.ILink;
 import org.trails.TrailsRuntimeException;
 import org.trails.callback.UrlCallback;
-import org.trails.descriptor.CollectionDescriptor;
 import org.trails.engine.TrailsPagesServiceParameter;
 import org.trails.persistence.PersistenceException;
 import org.trails.validation.TrailsValidationDelegate;
@@ -30,11 +29,11 @@ import org.trails.validation.TrailsValidationDelegate;
 import java.util.HashMap;
 
 /**
+ * This page will edit an instance contained in the model property
+ *
  * @author Chris Nelson
- *         <p/>
- *         This page will edit an instance contained in the model property
  */
-public abstract class EditPage extends ModelPage
+public abstract class EditPage extends ModelPage implements IAssociationPage
 {
 
 	private static final Log LOG = LogFactory.getLog(EditPage.class);
@@ -42,20 +41,6 @@ public abstract class EditPage extends ModelPage
 	@Bean(lifecycle = Lifecycle.REQUEST)
 	public abstract TrailsValidationDelegate getDelegate();
 
-	public abstract CollectionDescriptor getAssociationDescriptor();
-
-	public abstract void setAssociationDescriptor(CollectionDescriptor associationDescriptor);
-
-	public abstract Object getParent();
-
-	public abstract void setParent(Object parent);
-
-	/**
-	 * This property allows components to change the page during the middle of the rewind without causing a
-	 * StaleLinkException
-	 *
-	 * @return
-	 */
 	public abstract ICallback getNextPage();
 
 	public abstract void setNextPage(ICallback NextPage);
@@ -69,26 +54,25 @@ public abstract class EditPage extends ModelPage
 				// When saving objects with assigned IDs, we need to removed the last element of the stack.
 				getCallbackStack().pop();
 			}
-			return getTrailsPagesService()
-					.getLink(false, new TrailsPagesServiceParameter(PageType.EDIT, getClassDescriptor(), getModel(), getAssociationDescriptor(), getParent()));
+			return linkToThisPage();
 		}
 		return null;
 	}
 
 	private ILink defaultCallback()
 	{
-		return getTrailsPagesService()
-				.getLink(false, new TrailsPagesServiceParameter(PageType.LIST, getClassDescriptor()));
+		return getTrailsPagesService().getLink(false, new TrailsPagesServiceParameter(PageType.LIST, getClassDescriptor()));
 	}
 
-	public void pushCallback()
+	private ILink linkToThisPage()
 	{
-		UrlCallback callback = new UrlCallback(getTrailsPagesService()
-				.getLink(false, new TrailsPagesServiceParameter(PageType.EDIT, getClassDescriptor(), getModel(), getAssociationDescriptor(), getParent())).getURL());
-		if (getCallbackStack() != null && (getCallbackStack().isEmpty() || !getCallbackStack().peek().equals(callback)))
-		{
-			getCallbackStack().push(callback);
-		}
+		return getTrailsPagesService()
+				.getLink(false, new TrailsPagesServiceParameter(PageType.EDIT, getClassDescriptor(), getModel(), getAssociationDescriptor(), getParent()));
+	}
+
+	protected ICallback callbackToThisPage()
+	{
+		return new UrlCallback(linkToThisPage().getURL());
 	}
 
 	protected boolean save()

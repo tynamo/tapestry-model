@@ -102,7 +102,7 @@ public class TrailsPagesService implements IEngineService
 	{
 
 		IPage rawPage = null;
-		ITrailsPage page = null;
+		IActivatableTrailsPage page = null;
 
 		try
 		{
@@ -130,10 +130,10 @@ public class TrailsPagesService implements IEngineService
 
 		try
 		{
-			page = (ITrailsPage) rawPage;
+			page = (IActivatableTrailsPage) rawPage;
 		} catch (ClassCastException ex)
 		{
-			throw new ApplicationRuntimeException(EngineMessages.pageNotCompatible(rawPage, ITrailsPage.class), rawPage, null, ex);
+			throw new ApplicationRuntimeException(EngineMessages.pageNotCompatible(rawPage, IActivatableTrailsPage.class), rawPage, null, ex);
 		}
 
 		page.setClassDescriptor(classDescriptor);

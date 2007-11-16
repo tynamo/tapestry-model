@@ -11,9 +11,8 @@
  */
 package org.trails.page;
 
-import org.trails.callback.UrlCallback;
+import org.apache.tapestry.IRequestCycle;
 import org.trails.component.TrailsTableColumn;
-import org.trails.engine.TrailsPagesServiceParameter;
 
 import java.util.List;
 
@@ -37,8 +36,7 @@ public abstract class ListPage extends TrailsPage
 
 	public abstract void setColumn(TrailsTableColumn column);
 
-
-	public void pushCallback()
+	public void activateTrailsPage(Object[] objects, IRequestCycle iRequestCycle)
 	{
 		if (getCallbackStack() != null)
 		{
