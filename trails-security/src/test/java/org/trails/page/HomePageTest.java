@@ -4,30 +4,26 @@
  */
 package org.trails.page;
 
-import java.util.Iterator;
-import java.util.List;
-
+import junit.framework.TestCase;
 import org.acegisecurity.context.SecurityContextHolder;
 import org.acegisecurity.context.SecurityContextImpl;
 import org.apache.tapestry.test.Creator;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.trails.component.ComponentTest;
 import org.trails.descriptor.DescriptorService;
 import org.trails.descriptor.IClassDescriptor;
-import org.trails.persistence.PersistenceService;
 import org.trails.security.SecurityAuthorities;
 import org.trails.security.test.FooSecured;
+
+import java.util.List;
 
 /**
  * @author Eduardo Fernandes Piva (eduardo@gwe.com.br)
  */
-public class HomePageTest extends ComponentTest
+public class HomePageTest extends TestCase
 {
 
-	private ApplicationContext appContext;
-	private DescriptorService service;
-	private PersistenceService persistenceService;
+	private DescriptorService descriptorService;
 	private SecurityAuthorities autorities;
 	private HomePage home;
 	private Creator creator = new Creator();
@@ -38,25 +34,24 @@ public class HomePageTest extends ComponentTest
 		super.setUp();
 		// appContext will initialize the aspect
 		autorities = new SecurityAuthorities();
-		appContext = new ClassPathXmlApplicationContext("applicationContext-test.xml");
-
-		service = (DescriptorService) appContext.getBean("descriptorService");
-		persistenceService = (PersistenceService) appContext.getBean("persistenceService");
+		ApplicationContext appContext = new ClassPathXmlApplicationContext("applicationContext-test.xml");
+		descriptorService = (DescriptorService) appContext.getBean("descriptorService");
 		home = buildHomePage();
 	}
 
 	public void testGetAllDescriptions()
 	{
-		List homeDescriptors = home.getAllDescriptors();
-		List descriptors = service.getAllDescriptors();
+		List<IClassDescriptor> homeDescriptors = home.getAllDescriptors();
+		List<IClassDescriptor> descriptors = descriptorService.getAllDescriptors();
 		assertNotNull(homeDescriptors);
 		assertNotNull(descriptors);
 
-		Iterator i = descriptors.iterator();
-		while (i.hasNext())
+		for (IClassDescriptor descriptor : descriptors)
 		{
-			IClassDescriptor tmp = (IClassDescriptor) i.next();
-			if (!tmp.isHidden()) assertTrue(descriptorContains(homeDescriptors, tmp));
+			if (!descriptor.isHidden())
+			{
+				assertTrue(descriptorContains(homeDescriptors, descriptor));
+			}
 		}
 	}
 
@@ -65,22 +60,23 @@ public class HomePageTest extends ComponentTest
 		SecurityContextImpl context = new SecurityContextImpl();
 		context.setAuthentication(autorities.noAdminAuthentication);
 		SecurityContextHolder.setContext(context);
-		List homeDescriptors = home.getAllDescriptors();
-		List descriptors = service.getAllDescriptors();
+		List<IClassDescriptor> homeDescriptors = home.getAllDescriptors();
+		List<IClassDescriptor> descriptors = descriptorService.getAllDescriptors();
 		boolean hasSecurityAnnotated = false; /* we have to ensure we are testing some class that has security on it */
 
-		Iterator i = descriptors.iterator();
-		while (i.hasNext())
+		for (IClassDescriptor descriptor : descriptors)
 		{
-			IClassDescriptor tmp = (IClassDescriptor) i.next();
-			if (tmp.getType().equals(FooSecured.class))
+			if (descriptor.getType().equals(FooSecured.class))
 			{
-				assertTrue(!descriptorContains(homeDescriptors, tmp));
-				assertTrue(tmp.isHidden());
+				assertTrue(!descriptorContains(homeDescriptors, descriptor));
+				assertTrue(descriptor.isHidden());
 				hasSecurityAnnotated = true;
 			} else
 			{
-				if (!tmp.isHidden()) assertTrue(descriptorContains(homeDescriptors, tmp));
+				if (!descriptor.isHidden())
+				{
+					assertTrue(descriptorContains(homeDescriptors, descriptor));
+				}
 			}
 		}
 
@@ -92,21 +88,22 @@ public class HomePageTest extends ComponentTest
 		SecurityContextImpl context = new SecurityContextImpl();
 		context.setAuthentication(autorities.rootAuthentication);
 		SecurityContextHolder.setContext(context);
-		List homeDescriptors = home.getAllDescriptors();
-		List descriptors = service.getAllDescriptors();
+		List<IClassDescriptor> homeDescriptors = home.getAllDescriptors();
+		List<IClassDescriptor> descriptors = descriptorService.getAllDescriptors();
 		boolean hasSecurityAnnotated = false; /* we have to ensure we are testing some class that has security on it */
 
 		/* admin can view everything. It is the same test as testGetAllDescriptions */
-		Iterator i = descriptors.iterator();
-		while (i.hasNext())
+		for (IClassDescriptor descriptor : descriptors)
 		{
-			IClassDescriptor tmp = (IClassDescriptor) i.next();
-			if (tmp.getType().equals(FooSecured.class))
+			if (descriptor.getType().equals(FooSecured.class))
 			{
 				hasSecurityAnnotated = true;
-				assertFalse(tmp.isHidden());
+				assertFalse(descriptor.isHidden());
 			}
-			if (!tmp.isHidden()) assertTrue(descriptorContains(homeDescriptors, tmp));
+			if (!descriptor.isHidden())
+			{
+				assertTrue(descriptorContains(homeDescriptors, descriptor));
+			}
 		}
 
 		assertTrue(hasSecurityAnnotated);
@@ -114,20 +111,16 @@ public class HomePageTest extends ComponentTest
 
 	private HomePage buildHomePage()
 	{
-		HomePage page = (HomePage) creator.newInstance(HomePage.class,
-			new Object[]{
-				"descriptorService", service,
-				"persistenceService", persistenceService
-			});
-		return page;
+		return (HomePage) creator.newInstance(HomePage.class,
+				new Object[]{
+						"descriptorService", descriptorService,
+				});
 	}
 
-	private boolean descriptorContains(List homeDescriptors, IClassDescriptor tmp)
+	private boolean descriptorContains(List<IClassDescriptor> homeDescriptors, IClassDescriptor tmp)
 	{
-		Iterator i = homeDescriptors.iterator();
-		while (i.hasNext())
+		for (IClassDescriptor descriptor : homeDescriptors)
 		{
-			IClassDescriptor descriptor = (IClassDescriptor) i.next();
 			if (descriptor.getType().equals(tmp.getType()))
 			{
 				return true;

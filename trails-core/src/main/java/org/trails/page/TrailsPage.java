@@ -13,62 +13,26 @@
  */
 package org.trails.page;
 
+import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.annotations.InjectObject;
-import org.apache.tapestry.annotations.InjectState;
-import org.apache.tapestry.engine.IEngineService;
+import org.apache.tapestry.event.PageBeginRenderListener;
+import org.apache.tapestry.event.PageEvent;
 import org.apache.tapestry.html.BasePage;
-import org.trails.callback.CallbackStack;
-import org.trails.descriptor.DescriptorService;
-import org.trails.i18n.TrailsMessageSource;
-import org.trails.persistence.PersistenceService;
 
-public abstract class TrailsPage extends BasePage implements ITrailsPage
+public abstract class TrailsPage extends BasePage implements IActivatableTrailsPage, PageBeginRenderListener
 {
 
 	public void pushCallback()
 	{
-
 	}
-
-	/**
-	 * This property is injected with the callbackStack ASO
-	 *
-	 * @return
-	 */
-	@InjectState("callbackStack")
-	public abstract CallbackStack getCallbackStack();
-
-	/**
-	 * This property is injected with the persistenceService bean
-	 *
-	 * @return
-	 */
-	@InjectObject("service:trails.core.PersistenceService")
-	public abstract PersistenceService getPersistenceService();
-
-	/**
-	 * This property is injected with the descriptorService bean
-	 *
-	 * @return
-	 */
-	@InjectObject("service:trails.core.DescriptorService")
-	public abstract DescriptorService getDescriptorService();
-
-	/**
-	 * Message source to i18n pages
-	 *
-	 * @return
-	 */
-	@InjectObject("service:trails.core.MessageSource")
-	public abstract TrailsMessageSource getResourceBundleMessageSource();
 
 	public void activateTrailsPage(Object[] objects, IRequestCycle iRequestCycle)
 	{
 		pushCallback();
 	}
 
-	@InjectObject(value = "service:trails.core.TrailsPagesService")
-	public abstract IEngineService getTrailsPagesService();
-
+	public void pageBeginRender(PageEvent event)
+	{
+		Defense.notNull(getClassDescriptor(), "classDescriptor");
+	}
 }

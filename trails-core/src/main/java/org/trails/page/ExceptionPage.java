@@ -12,6 +12,9 @@ public abstract class ExceptionPage extends TrailsPage implements IExternalPage
 
 	public void activateExternalPage(Object[] parameters, IRequestCycle cycle)
 	{
-		getCallbackStack().clear();
+		if (getCallbackStack() != null)
+		{
+			getCallbackStack().clear();
+		}
 	}
 }

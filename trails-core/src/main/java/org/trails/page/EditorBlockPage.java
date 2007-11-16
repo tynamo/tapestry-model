@@ -1,7 +1,7 @@
 package org.trails.page;
 
+import org.apache.tapestry.AbstractPage;
 import org.apache.tapestry.annotations.InjectObject;
-import org.trails.descriptor.IPropertyDescriptor;
 import org.trails.validation.ValidatorTranslatorService;
 
 /**
@@ -11,7 +11,7 @@ import org.trails.validation.ValidatorTranslatorService;
  *
  * @author Chris Nelson
  */
-public abstract class EditorBlockPage extends ModelPage implements IEditorBlockPage
+public abstract class EditorBlockPage extends AbstractPage implements IEditorBlockPage
 {
 
 	@InjectObject("service:trails.core.ValidatorTranslatorService")

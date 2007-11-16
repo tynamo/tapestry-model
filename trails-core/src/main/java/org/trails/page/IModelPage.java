@@ -1,11 +1,9 @@
 package org.trails.page;
 
-import org.apache.tapestry.IPage;
-
 /**
  * A page which has a model object.
  */
-public interface IModelPage extends IPage
+public interface IModelPage extends SimpleTrailsBasePage
 {
 	Object getModel();
 

@@ -2,6 +2,7 @@ package org.trails.page;
 
 import ognl.Ognl;
 import ognl.OgnlException;
+import org.apache.tapestry.IRequestCycle;
 import org.trails.TrailsRuntimeException;
 
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ public abstract class SearchPage extends TrailsPage
 			//@note: Danger: gross code
 			ArrayList<String> stringList = new ArrayList<String>();
 			stringList.addAll(
-				(List) Ognl.getValue("propertyDescriptors.{? searchable}.{name}", getClassDescriptor()));
+					(List) Ognl.getValue("propertyDescriptors.{? searchable}.{name}", getClassDescriptor()));
 			return stringList.toArray(new String[]{});
 		}
 		catch (OgnlException oe)
@@ -26,4 +27,11 @@ public abstract class SearchPage extends TrailsPage
 		}
 	}
 
+	public void activateTrailsPage(Object[] objects, IRequestCycle iRequestCycle)
+	{
+		if (getCallbackStack() != null)
+		{
+			getCallbackStack().clear();
+		}
+	}
 }
