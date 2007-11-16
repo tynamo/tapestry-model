@@ -1,15 +1,14 @@
 package org.trails.seeddata;
 
 
-import java.util.List;
-import javax.persistence.Entity;
-
 import ognl.Ognl;
 import ognl.OgnlException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.validator.InvalidStateException;
+import org.hibernate.validator.InvalidValue;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -18,7 +17,11 @@ import org.trails.descriptor.DescriptorService;
 import org.trails.descriptor.IClassDescriptor;
 import org.trails.descriptor.IPropertyDescriptor;
 import org.trails.persistence.HibernatePersistenceService;
+import org.trails.persistence.PersistenceException;
 import org.trails.validation.ValidateUniqueness;
+
+import javax.persistence.Entity;
+import java.util.List;
 
 public class SpringSeedEntityInitializer implements ApplicationContextAware, SeedDataInitializer
 {
@@ -135,7 +138,20 @@ public class SpringSeedEntityInitializer implements ApplicationContextAware, See
 					}
 					continue;
 				}
-				persistenceService.saveOrUpdate(object);
+				try
+				{
+					persistenceService.saveOrUpdate(object);
+				} catch (InvalidStateException ivex)
+				{
+					StringBuilder erroMessageBuilder = new StringBuilder();
+					for (InvalidValue invalidValue : ivex.getInvalidValues())
+					{
+						String message = invalidValue.getPropertyName() + ": " + invalidValue.getMessage();
+						log.fatal(message);
+						erroMessageBuilder.append(message).append("\n");
+					}
+					throw new PersistenceException(erroMessageBuilder.toString(), ivex);
+				}
 			}
 		}
 	}
