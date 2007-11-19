@@ -63,7 +63,8 @@
 
 	<bean id="descriptorService" class="org.trails.descriptor.TrailsDescriptorService" init-method="init">
 		<property name="types">
-			<bean id="persistenceService.allTypes" class="org.springframework.beans.factory.config.PropertyPathFactoryBean"/>
+			<bean id="persistenceService.allTypes"
+				  class="org.springframework.beans.factory.config.PropertyPathFactoryBean"/>
 		</property>
 		<property name="descriptorFactory" ref="descriptorFactory"/>
 		<property name="decorators">
@@ -109,11 +110,10 @@
 		<property name="descriptorService" ref="descriptorService"/>
 	</bean>
 
-	<bean id="descriptorInternationalizationAspect" class="org.trails.i18n.DescriptorInternationalization" factory-method="aspectOf">
+	<bean id="descriptorInternationalizationAspect" class="org.trails.i18n.DescriptorInternationalization"
+		  factory-method="aspectOf">
 		<property name="trailsMessageSource" ref="trailsMessageSource"/>
 	</bean>
-
-	<bean id="pageResolver" class="org.trails.page.DefaultPageResolver"/>
 
 	<bean id="searchBlockFinder" class="org.trails.descriptor.BaseBlockFinder">
 		<property name="defaultBlockAddress">
@@ -412,50 +412,8 @@
 		</property>
 	</bean>
 
-	<bean id="viewerService" class="org.trails.descriptor.EditorBlockFinder">
-		<property name="defaultBlockAddress">
-			<bean class="org.apache.tapestry.util.ComponentAddress">
-				<constructor-arg index="0">
-					<value>trails:Viewers</value>
-				</constructor-arg>
-				<constructor-arg index="1">
-					<value>stringViewer</value>
-				</constructor-arg>
-			</bean>
-		</property>
-		<property name="editorMap">
-			<map>
-				<entry>
-					<key>
-						<value>hidden</value>
-					</key>
-					<bean class="org.apache.tapestry.util.ComponentAddress">
-						<constructor-arg index="0">
-							<value>trails:Viewers</value>
-						</constructor-arg>
-						<constructor-arg index="1">
-							<value>hidden</value>
-						</constructor-arg>
-					</bean>
-				</entry>
-				<entry>
-					<key>
-						<value>richText</value>
-					</key>
-					<bean class="org.apache.tapestry.util.ComponentAddress">
-						<constructor-arg index="0">
-							<value>trails:Viewers</value>
-						</constructor-arg>
-						<constructor-arg index="1">
-							<value>htmlTextViewer</value>
-						</constructor-arg>
-					</bean>
-				</entry>
-			</map>
-		</property>
-	</bean>
-
-	<bean id="hibernateValidationAspect" class="org.trails.validation.HibernateValidationAspect" factory-method="aspectOf">
+	<bean id="hibernateValidationAspect" class="org.trails.validation.HibernateValidationAspect"
+		  factory-method="aspectOf">
 		<property name="hibernateClassValidatorFactory" ref="hibernateClassValidatorFactory"/>
 	</bean>
 
