@@ -1,13 +1,14 @@
 package org.trails.component;
 
-import java.util.Iterator;
-
 import org.apache.commons.lang.SerializationUtils;
+import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.contrib.table.model.IBasicTableModel;
 import org.apache.tapestry.contrib.table.model.ITableColumn;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.trails.persistence.HibernatePersistenceService;
+
+import java.util.Iterator;
 
 public class HibernateTableModel implements IBasicTableModel
 {
@@ -25,19 +26,9 @@ public class HibernateTableModel implements IBasicTableModel
 		this.criteria = criteria;
 	}
 
-	public HibernatePersistenceService getPersistenceService()
-	{
-		return persistenceService;
-	}
-
 	public void setPersistenceService(HibernatePersistenceService persistenceService)
 	{
 		this.persistenceService = persistenceService;
-	}
-
-	public DetachedCriteria getCriteria()
-	{
-		return criteria;
 	}
 
 	public void setCriteria(DetachedCriteria criteria)
@@ -45,23 +36,27 @@ public class HibernateTableModel implements IBasicTableModel
 		this.criteria = criteria;
 	}
 
-	public Iterator getCurrentPageRows(int startIndex, int maxResults, ITableColumn column,
-									   boolean asc)
+	public void setEntityType(Class entityType)
 	{
-		DetachedCriteria clonedCriteria = (DetachedCriteria) SerializationUtils.clone(getCriteria());
-		TrailsTableColumn trailsTableColumn = (TrailsTableColumn) column;
-		if (trailsTableColumn != null)
+		this.entityType = entityType;
+	}
+
+	public Iterator getCurrentPageRows(int startIndex, int maxResults, ITableColumn column, boolean asc)
+	{
+		DetachedCriteria clonedCriteria = (DetachedCriteria) SerializationUtils.clone(criteria);
+		if (column != null && column instanceof TrailsTableColumn)
 		{
+			TrailsTableColumn trailsTableColumn = (TrailsTableColumn) column;
 			String sortProperty = trailsTableColumn.getPropertyDescriptor().getName();
 			clonedCriteria.addOrder(asc ? Order.asc(sortProperty) : Order.desc(sortProperty));
 		}
-		return getPersistenceService().getInstances(entityType, clonedCriteria, startIndex, maxResults).iterator();
+		return persistenceService.getInstances(entityType, clonedCriteria, startIndex, maxResults).iterator();
 	}
 
 	public int getRowCount()
 	{
 		// doing a count alters the criteria
-		DetachedCriteria clonedCriteria = (DetachedCriteria) SerializationUtils.clone(getCriteria());
-		return getPersistenceService().count(entityType, clonedCriteria);
+		DetachedCriteria clonedCriteria = (DetachedCriteria) SerializationUtils.clone(criteria);
+		return persistenceService.count(entityType, clonedCriteria);
 	}
 }

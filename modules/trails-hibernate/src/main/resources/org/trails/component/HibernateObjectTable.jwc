@@ -1,4 +1,5 @@
-<!DOCTYPE component-specification PUBLIC "-//Apache Software Foundation//Tapestry Specification 4.1//EN" "http://jakarta.apache.org/tapestry/dtd/Tapestry_4_1.dtd">
+<!DOCTYPE component-specification PUBLIC "-//Apache Software Foundation//Tapestry Specification 4.1//EN"
+		"http://jakarta.apache.org/tapestry/dtd/Tapestry_4_1.dtd">
 <component-specification class="org.trails.component.HibernateObjectTable">
 
 	<component id="table" inherit-informal-parameters="yes" type="contrib:Table">
@@ -8,14 +9,27 @@
 		<inherited-binding name="columnsClass" parameter-name="columnsClass"/>
 		<inherited-binding name="index" parameter-name="index"/>
 
-		<binding name="source">source</binding>
-		<binding name="columns">columns</binding>
-		<binding name="pageSize">pageSize</binding>
+		<binding name="source" value="source"/>
+		<binding name="columns" value="columns"/>
+		<binding name="pageSize" value="pageSize"/>
 
-		<binding name="initialSortColumn">initialSortColumn</binding>
-		<binding name="initialSortOrder">initialSortOrder</binding>
-		<binding name="persist">persist</binding>
+		<binding name="initialSortColumn" value="initialSortColumn"/>
+		<binding name="initialSortOrder" value="initialSortOrder"/>
+		<binding name="persist" value="persist"/>
 
+		<binding name="arrowUpAsset" value="arrowUpAsset"/>
+		<binding name="arrowDownAsset" value="arrowDownAsset"/>
+
+	</component>
+
+	<component id="tableView" type="contrib:TableView">
+		<inherited-binding name="source" parameter-name="source"/>
+		<inherited-binding name="columns" parameter-name="extraColumns"/>
+		<inherited-binding name="pageSize" parameter-name="pageSize"/>
+		<inherited-binding name="initialSortColumn" parameter-name="initialSortColumn"/>
+		<inherited-binding name="initialSortOrder" parameter-name="initialSortOrder"/>
+		<inherited-binding name="persist" parameter-name="persist"/>
+		<binding name="element">literal:div</binding>
 	</component>
 
 </component-specification>

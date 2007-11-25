@@ -11,59 +11,53 @@
  */
 package org.trails.component;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
+import org.apache.hivemind.Messages;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.components.Block;
+import org.apache.tapestry.contrib.table.model.IAdvancedTableColumn;
+import org.apache.tapestry.contrib.table.model.ITableColumn;
+import org.apache.tapestry.contrib.table.model.common.BlockTableRendererSource;
+import org.apache.tapestry.test.Creator;
 import org.apache.tapestry.util.ComponentAddress;
-import org.jmock.Mock;
-import org.trails.descriptor.CollectionDescriptor;
-import org.trails.descriptor.IClassDescriptor;
-import org.trails.descriptor.IPropertyDescriptor;
-import org.trails.descriptor.IdentifierDescriptor;
-import org.trails.descriptor.ReflectionDescriptorFactory;
-import org.trails.descriptor.TrailsPropertyDescriptor;
+import org.jmock.Expectations;
+import org.jmock.integration.junit3.MockObjectTestCase;
+import org.trails.descriptor.*;
 import org.trails.persistence.PersistenceService;
 import org.trails.test.Foo;
 
-/**
- * @author fus8882 <p/> TODO To change the template for this generated type
- *         comment go to Window - Preferences - Java - Code Style - Code
- *         Templates
- */
-public class ObjectTableTest extends ComponentTest
+import java.util.*;
+
+public class ObjectTableTest extends MockObjectTestCase
 {
+	Creator creator = new Creator();
 	ObjectTable objectTable;
 
-	Mock psvcMock = new Mock(PersistenceService.class);
-
-	Mock pageMock = new Mock(IPage.class);
-
 	IPage page;
+	Messages messages;
+	PersistenceService persistenceService;
 
 	Map components = new HashMap();
+	IClassDescriptor classDescriptor;
 
 	public void setUp() throws Exception
 	{
-		page = (IPage) pageMock.proxy();
-		objectTable = (ObjectTable) creator.newInstance(ObjectTable.class, new Object[] { "persistenceService",
-				psvcMock.proxy() });
-		objectTable.setShowCollections(false);
-		Block idColumnValue = (Block) creator.newInstance(Block.class);
-		idColumnValue.setId("linkColumnValue");
+		page = mock(IPage.class);
+		messages = mock(Messages.class);
+		persistenceService = mock(PersistenceService.class);
 
-		idColumnValue.setPage(page);
-		idColumnValue.setContainer(objectTable);
+		objectTable = (ObjectTable) creator.newInstance(ObjectTable.class,
+				new Object[]{"id", "myTable", "persistenceService", persistenceService});
+		objectTable.setShowCollections(false);
+
+		Block idColumnValue = (Block) creator.newInstance(Block.class,
+				new Object[]{"id", "linkColumnValue", "page", page, "container", objectTable});
+
 		objectTable.addComponent(idColumnValue);
 		objectTable.setPage(page);
 		objectTable.setContainer(page);
 
 		ReflectionDescriptorFactory descriptorFactory = new ReflectionDescriptorFactory();
-		IClassDescriptor classDescriptor = descriptorFactory.buildClassDescriptor(Foo.class);
+		classDescriptor = descriptorFactory.buildClassDescriptor(Foo.class);
 
 		List propertyDescriptors = new ArrayList();
 		IdentifierDescriptor idProp = new IdentifierDescriptor(Foo.class, classDescriptor.getPropertyDescriptor("id"));
@@ -88,10 +82,19 @@ public class ObjectTableTest extends ComponentTest
 		classDescriptor.setPropertyDescriptors(propertyDescriptors);
 		objectTable.setClassDescriptor(classDescriptor);
 
-		pageMock.expects(atLeastOnce()).method("getComponents").will(returnValue(components));
-		pageMock.expects(atLeastOnce()).method("getPageName").will(returnValue("fooPage"));
-		pageMock.expects(atLeastOnce()).method("getIdPath").will(returnValue(null));
-		objectTable.createColumns();
+		checking(new Expectations()
+		{
+			{
+				atLeast(1).of(page).getComponents(); will(returnValue(components));
+				atLeast(1).of(page).getPageName(); will(returnValue("fooPage"));
+				atLeast(1).of(page).getIdPath(); will(returnValue("fooPageIdPath"));
+				atLeast(1).of(page).getMessages(); will(returnValue(messages));
+				atLeast(1).of(messages).getMessage("multiWordProperty"); will(returnValue("multiWordProperty"));
+				atLeast(1).of(messages).getMessage("Id"); will(returnValue("Id"));
+			}
+		});
+
+		objectTable.prepareForRender(null);
 	}
 
 	public void testGetColumns() throws Exception
@@ -104,58 +107,79 @@ public class ObjectTableTest extends ComponentTest
 
 		Block fakeBlock = (Block) creator.newInstance(Block.class);
 		components.put("multiWordPropertyColumnValue", fakeBlock);
-		objectTable.setPropertyNames(new String[] { "multiWordProperty" });
+		objectTable.setPropertyNames(new String[]{"multiWordProperty"});
 		columns = objectTable.getColumns();
 		assertEquals("2 column", 2, columns.size());
 		TrailsTableColumn column = (TrailsTableColumn) columns.get(0);
-		assertNotNull(column.getBlockAddress());
+		assertNotNull(column);
 	}
 
 	public void testGetBlockAddress() throws Exception
 	{
+		String fakeBlockName = "nameColumnValue";
 
-		Block fakeBlock = (Block) creator.newInstance(Block.class);
-		components.put("nameColumnValue", fakeBlock);
-		pageMock.expects(atLeastOnce()).method("getComponents").will(returnValue(components));
-		pageMock.expects(atLeastOnce()).method("getPageName").will(returnValue("listPage"));
+		checking(new Expectations()
+		{
+			{
+				atLeast(1).of(messages).getMessage("name"); will(returnValue("name"));
+			}
+		});
+
+		Block fakeBlock = (Block) creator.newInstance(Block.class, new Object[]{"id", fakeBlockName, "page", page, "container", page});
+		components.put(fakeBlockName, fakeBlock);
+
 		IPropertyDescriptor descriptor = new TrailsPropertyDescriptor(Foo.class, "name", String.class);
-		ComponentAddress address = objectTable.getBlockAddress(descriptor);
-		assertEquals("listPage", address.getPageName());
-		assertEquals("nameColumnValue", address.getIdPath());
+		classDescriptor.getPropertyDescriptors().add(descriptor);
 
-		descriptor = new TrailsPropertyDescriptor(Foo.class, "wump", String.class);
-		assertNull(objectTable.getBlockAddress(descriptor));
+		objectTable.prepareForRender(null);
+		List<ITableColumn> columns = objectTable.getColumns();
+		assertEquals("3 columns", 3, columns.size());
+
+		IAdvancedTableColumn column = null;
+
+		for (ITableColumn aux : columns)
+		{
+			if (aux.getColumnName().equals("name"))
+			{
+				column = (IAdvancedTableColumn) aux;
+				break;
+			}
+		}
+
+		assertNotNull(column);
+
+		ComponentAddress address = ((BlockTableRendererSource) column.getValueRendererSource()).getBlockAddress();
+		assertEquals("fooPage", address.getPageName());
+		assertEquals("fooPageIdPath." + fakeBlockName, address.getIdPath());
 	}
 
 	public void testGetLinkBlockAddress() throws Exception
 	{
-		Map components = new HashMap();
-		pageMock.expects(atLeastOnce()).method("getComponents").will(returnValue(components));
-		pageMock.expects(atLeastOnce()).method("getPageName").will(returnValue("listPage"));
-		IPropertyDescriptor descriptor = new TrailsPropertyDescriptor(Foo.class, "id", Integer.class);
-		ComponentAddress address = objectTable.getLinkBlockAddress(descriptor);
-		assertEquals("linkColumnValue", address.getIdPath());
-		Block fakeBlock = (Block) creator.newInstance(Block.class);
-		components.put("idColumnValue", fakeBlock);
-		address = objectTable.getLinkBlockAddress(descriptor);
-		assertEquals("idColumnValue", address.getIdPath());
-	}
+		List columns = objectTable.getColumns();
+		assertEquals("2 columns", 2, columns.size());
+		assertTrue(columns.get(0) instanceof TrailsTableColumn);
+		TrailsTableColumn idColumn = (TrailsTableColumn) columns.get(0);
+		assertEquals("Id", idColumn.getDisplayName());
 
-	public void testGetTableSource() throws Exception
-	{
-		/*
-		 * //@todo: reimplement this test without hibernate DetachedCriteria
-		 * criteria = DetachedCriteria.forClass(Foo.class);
-		 * objectTable.setCriteria(criteria); TrailsTableModel tableModel =
-		 * (TrailsTableModel) objectTable.getSource();
-		 * 
-		 * assertNotNull(tableModel.getPersistenceService());
-		 * assertEquals(criteria, tableModel.getCriteria());
-		 * 
-		 * objectTable.setCriteria(null); List instances = new ArrayList();
-		 * objectTable.setInstances(instances); assertEquals(instances,
-		 * objectTable.getSource());
-		 */
+		ComponentAddress address = ((BlockTableRendererSource) idColumn.getValueRendererSource()).getBlockAddress();
+
+		assertNotNull(address);
+		assertEquals("fooPageIdPath.myTable.linkColumnValue", address.getIdPath());
+
+		String fakeBlockName = "idColumnValue";
+		Block fakeBlock = (Block) creator.newInstance(Block.class, new Object[]{"id", fakeBlockName, "page", page, "container", page});
+		components.put(fakeBlockName, fakeBlock);
+
+		objectTable.prepareForRender(null);
+		columns = objectTable.getColumns();
+		assertEquals("2 columns", 2, columns.size());
+		assertTrue(columns.get(0) instanceof TrailsTableColumn);
+		idColumn = (TrailsTableColumn) columns.get(0);
+		assertEquals("Id", idColumn.getDisplayName());
+
+		address = ((BlockTableRendererSource) idColumn.getValueRendererSource()).getBlockAddress();
+		assertNotNull(address);
+		assertEquals("fooPageIdPath.idColumnValue", address.getIdPath());
 	}
 
 	public void testGetIdentifierProperty() throws Exception

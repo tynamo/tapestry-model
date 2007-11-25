@@ -1,20 +1,8 @@
-
 <span jwcid="$content$">
 	<table jwcid="table">
 		<div jwcid="linkColumnValue@Block">
-			<a jwcid="editLink@EditLink" model="ognl:object" href="#"><span jwcid="linkInsert@Insert" value="ognl:object[#this.linkProperty]"/></a>
-		</div>
-
-		<div jwcid="blobColumnValue@Block">
-			<!-- render if the descriptor supports and actually has a blob -->
-			<span jwcid="@If" condition="ognl:column.propertyDescriptor.supportsExtension(@org.trails.descriptor.BlobDescriptorExtension@class)">
-				<span jwcid="@TrailsDownload"
-					  propertyDescriptor="ognl:column.propertyDescriptor"
-					  model="ognl:object"	
-					  bytes="ognl:object[#this.column.propertyDescriptor.name]"
-					/>
-
-			</span>
+			<a jwcid="editLink@EditLink" model="ognl:object" href="#"><span jwcid="linkInsert@Insert"
+																			value="ognl:object[#this.linkProperty]"/></a>
 		</div>
 	</table>
 </span>

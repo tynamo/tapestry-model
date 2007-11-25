@@ -1,28 +1,25 @@
 package org.trails.component;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
+import org.apache.hivemind.Messages;
+import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.components.Block;
 import org.apache.tapestry.components.BlockRenderer;
 import org.apache.tapestry.contrib.table.model.ITableRendererSource;
 import org.apache.tapestry.services.ExpressionEvaluator;
-import org.apache.tapestry.util.ComponentAddress;
 import org.apache.tapestry.valid.RenderString;
 import org.jmock.Mock;
 import org.trails.descriptor.TrailsPropertyDescriptor;
 import org.trails.test.Foo;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
 public class TrailsTableColumnTest extends ComponentTest
 {
-
-	public TrailsTableColumnTest()
-	{
-		super();
-		// TODO Auto-generated constructor stub
-	}
 
 	TrailsTableColumn column;
 	Mock exprEvalMock;
@@ -47,7 +44,7 @@ public class TrailsTableColumnTest extends ComponentTest
 
 
 		exprEvalMock.expects(atLeastOnce()).method("read").with(same(foo), eq("date")).will(
-			onConsecutiveCalls(returnValue(date), returnValue(null)));
+				onConsecutiveCalls(returnValue(date), returnValue(null)));
 		//exprEvalMock.expects(atLeastOnce()).method("read").with(null, eq("date")).will(returnValue(null));
 
 		assertEquals("06/01/2005", column.getColumnValue(foo));
@@ -58,25 +55,37 @@ public class TrailsTableColumnTest extends ComponentTest
 
 	public void testGetValueRenderer() throws Exception
 	{
-		column = new TrailsTableColumn(descriptor, (ExpressionEvaluator) exprEvalMock.proxy());
+		Map components = new HashMap();
+		Mock messagesMock = new Mock(Messages.class);
 		Mock renderSourceMock = new Mock(ITableRendererSource.class);
-
+		Mock pageMock = new Mock(IPage.class);
+		Mock containerMock = new Mock(IComponent.class);
 		RenderString renderer = new RenderString("howdy");
+		Mock cycleMock = new Mock(IRequestCycle.class);
+
 		renderSourceMock.expects(once()).method("getRenderer").will(returnValue(renderer));
 		column.setValueRendererSource((ITableRendererSource) renderSourceMock.proxy());
 
 		assertEquals("no block address uses super.getValueRenderer", renderer,
-			column.getValueRenderer(null, null, foo));
+				column.getValueRenderer(null, null, foo));
 
-		ComponentAddress blockAddress = new ComponentAddress("listPage", "dateColumn");
-		column = new TrailsTableColumn(descriptor, (ExpressionEvaluator) exprEvalMock.proxy(), blockAddress);
-		Block fakeBlock = (Block) creator.newInstance(Block.class);
-		Mock cycleMock = new Mock(IRequestCycle.class);
-		Mock pageMock = new Mock(IPage.class);
+		Block fakeBlock = (Block) creator.newInstance(Block.class,
+				new Object[]{"id", "dateColumnValue", "page", (IPage) pageMock.proxy() , "container", (IComponent) containerMock.proxy()});
+
+		components.put("dateColumnValue", fakeBlock);
+
 		cycleMock.expects(once()).method("getPage").with(eq("listPage")).will(returnValue(pageMock.proxy()));
-		pageMock.expects(once()).method("getNestedComponent").with(eq("dateColumn")).will(returnValue(fakeBlock));
+		containerMock.expects(once()).method("getIdPath").will(returnValue("container"));
+		containerMock.expects(once()).method("getMessages").will(returnValue(messagesMock.proxy()));
+		messagesMock.expects(once()).method("getMessage").with(eq("date")).will(returnValue("date"));
+		containerMock.expects(atLeastOnce()).method("getComponents").will(returnValue(components));
+		pageMock.expects(atLeastOnce()).method("getPageName").will(returnValue("listPage"));
+		pageMock.expects(once()).method("getNestedComponent").with(eq("container.dateColumnValue")).will(returnValue(fakeBlock));
+
+		column = new TrailsTableColumn(descriptor, (ExpressionEvaluator) exprEvalMock.proxy());
+		column.loadSettings((IComponent) containerMock.proxy());
 
 		assertTrue("renders with block",
-			column.getValueRenderer((IRequestCycle) cycleMock.proxy(), null, foo) instanceof BlockRenderer);
+				column.getValueRenderer((IRequestCycle) cycleMock.proxy(), null, foo) instanceof BlockRenderer);
 	}
 }
