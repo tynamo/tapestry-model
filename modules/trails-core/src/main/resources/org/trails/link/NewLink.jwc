@@ -1,5 +1,0 @@
-<!DOCTYPE component-specification PUBLIC "-//Apache Software Foundation//Tapestry Specification 4.1//EN" "http://jakarta.apache.org/tapestry/dtd/Tapestry_4_1.dtd">
-
-<component-specification class="org.trails.link.NewLink">
-	<description>Produces a link to an EditPage containing a new instance of specified type</description>
-</component-specification>

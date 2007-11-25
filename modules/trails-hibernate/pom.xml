@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>trails-hibernate</artifactId>
@@ -30,6 +31,48 @@
 						</goals>
 					</execution>
 				</executions>
+			</plugin>
+			<plugin>
+				<groupId>net.sf.tacos</groupId>
+				<artifactId>tapdoc-maven-plugin</artifactId>
+				<version>0.7.0-SNAPSHOT</version>
+				<configuration>
+					<libraries>
+						<param>/org/trails/component/trails_hibernate.library</param>
+					</libraries>
+				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>log4j</groupId>
+						<artifactId>log4j</artifactId>
+						<version>${log4j.version}</version>
+					</dependency>
+					<dependency>
+						<groupId>org.springframework</groupId>
+						<artifactId>spring-beans</artifactId>
+						<version>${spring.version}</version>
+					</dependency>
+						<dependency>
+						<groupId>org.apache.tapestry</groupId>
+						<artifactId>tapestry-framework</artifactId>
+						<version>${tapestry.version}</version>
+					</dependency>
+					<dependency>
+						<groupId>org.apache.tapestry</groupId>
+						<artifactId>tapestry-contrib</artifactId>
+						<version>${tapestry.version}</version>
+					</dependency>
+					<dependency>
+						<groupId>org.trailsframework</groupId>
+						<artifactId>trails-core</artifactId>
+						<version>1.2-SNAPSHOT</version>
+					</dependency>
+					<dependency>
+						<groupId>org.hibernate</groupId>
+						<artifactId>hibernate</artifactId>
+						<version>3.2.5.ga</version>
+					</dependency>
+				</dependencies>
 			</plugin>
 		</plugins>
 	</build>
@@ -141,4 +184,25 @@
 		</dependency>
 
 	</dependencies>
+
+	<reporting>
+		<plugins>
+			<plugin>
+				<groupId>net.sf.tacos</groupId>
+				<artifactId>tapdoc-maven-plugin</artifactId>
+				<version>0.7.0-SNAPSHOT</version>
+				<configuration>
+					<libraries>
+						<param>/org/trails/component/trails_hibernate.library</param>
+					</libraries>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>ch.marcus-schulte.maven</groupId>
+				<artifactId>hivedoc-plugin</artifactId>
+				<version>1.0.2</version>
+			</plugin>
+		</plugins>
+	</reporting>
+
 </project>

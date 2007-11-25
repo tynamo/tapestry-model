@@ -12,6 +12,7 @@
 package org.trails.page;
 
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.contrib.table.model.ITableColumn;
 import org.trails.component.TrailsTableColumn;
 
 import java.util.List;
@@ -32,9 +33,9 @@ public abstract class ListPage extends TrailsPage
 
 	public abstract void setInstances(List Instances);
 
-	public abstract TrailsTableColumn getColumn();
+	public abstract ITableColumn getColumn();
 
-	public abstract void setColumn(TrailsTableColumn column);
+	public abstract void setColumn(ITableColumn column);
 
 	public void activateTrailsPage(Object[] objects, IRequestCycle iRequestCycle)
 	{

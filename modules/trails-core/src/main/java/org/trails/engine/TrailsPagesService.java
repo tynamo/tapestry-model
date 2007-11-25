@@ -1,5 +1,7 @@
 package org.trails.engine;
 
+import ognl.Ognl;
+import ognl.OgnlException;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.IPage;
@@ -190,10 +192,9 @@ public class TrailsPagesService implements IEngineService
 		this.pageResolver = pageResolver;
 	}
 
-	protected Object buildNewMemberInstance(IClassDescriptor classDescriptor, CollectionDescriptor collectionDescriptor) throws InstantiationException, IllegalAccessException
+/*	protected Object buildNewMemberInstance(IClassDescriptor classDescriptor, CollectionDescriptor collectionDescriptor) throws InstantiationException, IllegalAccessException
 	{
 		Object object = null;
-/*
 		if (getCreateExpression() == null)
 		{
 			object = collectionDescriptor.getElementType().newInstance();
@@ -220,11 +221,11 @@ public class TrailsPagesService implements IEngineService
 				LOG.error(e.getMessage());
 			}
 		}
-*/
+
 		return object;
 	}
 
-/*
+
 	@Override
 	protected boolean isModelNew(Object model)
 	{
