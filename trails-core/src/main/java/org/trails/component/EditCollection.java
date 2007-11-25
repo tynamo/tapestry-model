@@ -16,6 +16,7 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.tapestry.IAsset;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.annotations.Asset;
+import org.apache.tapestry.annotations.ComponentClass;
 import org.apache.tapestry.annotations.InjectObject;
 import org.apache.tapestry.annotations.Parameter;
 import org.apache.tapestry.contrib.palette.SortMode;
@@ -41,6 +42,7 @@ import java.util.List;
  *
  * @author Chris Nelson
  */
+@ComponentClass(allowBody = false)
 public abstract class EditCollection extends TrailsComponent
 {
 

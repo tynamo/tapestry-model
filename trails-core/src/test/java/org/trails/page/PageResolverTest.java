@@ -11,7 +11,8 @@ public class PageResolverTest extends MockObjectTestCase
 {
 	public void testResolve() throws Exception
 	{
-		PageResolver pageResolver = new DefaultPageResolver();
+		DefaultPageResolver pageResolver = new DefaultPageResolver();
+		pageResolver.setCacheDisabled(true);
 		final IRequestCycle cycle = mock(IRequestCycle.class);
 
 		final IPage fooSearchPage = mock(IPage.class);

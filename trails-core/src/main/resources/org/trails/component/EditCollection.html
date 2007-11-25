@@ -7,7 +7,8 @@
 						<tr jwcid="foreach@For" source="ognl:collection" value="ognl:currentObject" index="ognl:index"
 							renderTag="true">
 							<td>
-								<a href="#" jwcid="@EditLink" model="ognl:currentObject" collectionProperty="ognl:propertyDescriptor.name">
+								<a href="#" jwcid="@EditLink" model="ognl:currentObject"
+								   collectionProperty="ognl:propertyDescriptor.name">
 									<span jwcid="insert@Insert" value="ognl:currentObject"/>
 								</a>
 							</td>
@@ -16,9 +17,23 @@
 							</td>
 						</tr>
 					</table>
-					<!--table class="list" jwcid="@ObjectTable"
-									instances="ognl:collection"
-									classDescriptor="ognl:page.descriptorService.getClassDescriptor(propertyDescriptor.elementType)" /-->
+					<!--
+						 <table class="list table contribTable" jwcid="@ObjectTable" instances="ognl:collection"
+								classDescriptor="ognl:descriptorService.getClassDescriptor(propertyDescriptor.elementType)"
+								object="ognl:currentObject"
+								index="ognl:index"
+								extraColumns="!checkbox: :checkbox">
+							 <span jwcid="linkColumnValue@Block">
+								 <a href="#" jwcid="@EditLink" model="ognl:currentObject"
+									collectionProperty="ognl:propertyDescriptor.name">
+									 <span jwcid="insert@Insert" value="ognl:currentObject + 'jguyt'"/>
+								 </a>
+							 </span>
+							 <span jwcid="checkboxColumnValue@Block">
+								 <input jwcid="removeCheckbox@Checkbox" type="checkbox" value="ognl:#this.selected[index]"/>
+							 </span>
+						 </table>
+	 -->
 				</td>
 
 				<td jwcid="@If" condition="ognl:list" renderTag="true">
@@ -37,18 +52,19 @@
 			   listener="listener:remove" disabled="ognl:page.modelNew"/>
 	</div>
     <div jwcid="canAddFromExisting@If" condition="ognl:addFromExisting">
-		<div jwcid="palette@contrib:Palette" tableClass="field tapestry-palette" model="ognl:selectionModel" selected="ognl:selectedList"
+		<div jwcid="palette@contrib:Palette" tableClass="field tapestry-palette" model="ognl:selectionModel"
+			 selected="ognl:selectedList"
 			 sort="ognl:sortMode"/>
 	</div>
 	<div jwcid="allowCreate@If" condition="ognl:allowCreate">
 		<span type="button" jwcid="@TrailsLink"
-		   classDescriptor="ognl:descriptorService.getClassDescriptor(propertyDescriptor.elementType)"
-		   pageType="ognl:@org.trails.page.PageType@NEW" 
-		   associationDescriptor="ognl:propertyDescriptor"
-		   parent="ognl:model"
-		   disabled="ognl:page.modelNew"
-		   renderer="ognl:renderer"
-		   name="ognl:getMessage(@org.trails.component.Utils@ADD_NEW_MESSAGE)">
+			  classDescriptor="ognl:descriptorService.getClassDescriptor(propertyDescriptor.elementType)"
+			  pageType="ognl:@org.trails.page.PageType@NEW"
+			  associationDescriptor="ognl:propertyDescriptor"
+			  parent="ognl:model"
+			  disabled="ognl:page.modelNew"
+			  renderer="ognl:renderer"
+			  name="ognl:getMessage(@org.trails.component.Utils@ADD_NEW_MESSAGE)">
 		<span jwcid="@InsertI18N" bundleKey="org.trails.i18n.addNew" defaultMessage="[TRAILS][ORG.TRAILS.I18N.ADDNEW]"/>
 		</span>
 	</div>
