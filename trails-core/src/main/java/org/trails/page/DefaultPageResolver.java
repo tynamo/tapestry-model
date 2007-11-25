@@ -1,16 +1,23 @@
 package org.trails.page;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.hivemind.impl.MessageFormatter;
+import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.PageNotFoundException;
-import org.trails.page.PageType;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class DefaultPageResolver implements PageResolver
 {
+	private static final Log LOG = LogFactory.getLog(DefaultPageResolver.class);
+
 	private String defaultPrefix = "Default";
+
+	private boolean cacheDisabled = System.getProperty("org.apache.tapestry.disable-caching") != null;
 
 	private Map<PageType, String> postFixMap;
 
@@ -21,7 +28,8 @@ public class DefaultPageResolver implements PageResolver
 
 	public IPage resolvePage(IRequestCycle cycle, Class type, PageType pageType)
 	{
-		if (type == null) return cycle.getPage(getDefaultPrefix() + getPostFix(pageType));
+		Defense.notNull(type, "type");
+		Defense.notNull(pageType, "pageType");
 
 		String pageName = type.getSimpleName() + getPostFix(pageType);
 		IPage page = null;
@@ -32,6 +40,14 @@ public class DefaultPageResolver implements PageResolver
 		} catch (PageNotFoundException ae)
 		{
 			page = cycle.getPage(getDefaultPrefix() + getPostFix(pageType));
+
+			if (!cacheDisabled)
+			{
+				if (LOG.isDebugEnabled())
+					LOG.debug(_formatter.format("installing-page", pageName, page.getNamespace(), page.getSpecification()));
+				page.getNamespace().installPageSpecification(pageName, page.getSpecification());
+				page = cycle.getPage(pageName);
+			}
 		}
 		return page;
 	}
@@ -65,4 +81,10 @@ public class DefaultPageResolver implements PageResolver
 		this.defaultPrefix = defaultPostfix;
 	}
 
+	public void setCacheDisabled(boolean cacheDisabled)
+	{
+		this.cacheDisabled = cacheDisabled;
+	}
+
+	private static final MessageFormatter _formatter = new MessageFormatter(LOG, "org.apache.tapestry.resolver.ResolverStrings");
 }
