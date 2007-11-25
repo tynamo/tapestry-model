@@ -29,6 +29,10 @@
         <summaryresult date="2007-06-16" filecount="13" statvalue="18" type="pmd"/>
         <summaryresult date="2007-06-16" filecount="113" statvalue="56" type="cobertura-line"/>
         <summaryresult date="2007-06-16" filecount="113" statvalue="66" type="cobertura-branch"/>
+        <summaryresult date="2007-11-21" filecount="305" statvalue="747" type="checkstyle"/>
+        <summaryresult date="2007-11-21" filecount="23" statvalue="53" type="pmd"/>
+        <summaryresult date="2007-11-21" filecount="142" statvalue="46" type="cobertura-line"/>
+        <summaryresult date="2007-11-21" filecount="142" statvalue="55" type="cobertura-branch"/>
     </summary>
     <file id="org_trails_i18n_DefaultLocaleHolder.java" path="org/trails/i18n/DefaultLocaleHolder.java">
         <result date="2007-06-06" statvalue="1" type="checkstyle"/>
@@ -76,6 +80,9 @@
         <result date="2007-06-16" statvalue="2" type="checkstyle"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-line"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-branch"/>
+        <result date="2007-11-21" statvalue="1" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-line"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
     </file>
     <file id="org_trails_TrailsRuntimeException.java" path="org/trails/TrailsRuntimeException.java">
         <result date="2007-06-06" statvalue="1" type="checkstyle"/>
@@ -84,6 +91,9 @@
         <result date="2007-06-07" statvalue="100" type="cobertura-branch"/>
         <result date="2007-06-16" statvalue="1" type="checkstyle"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-branch"/>
+        <result date="2007-11-21" statvalue="4" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="1" type="pmd"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
     </file>
     <file id="org_trails_component_ObjectEditComponent.java" path="org/trails/component/ObjectEditComponent.java">
         <result date="2007-06-06" statvalue="8" type="checkstyle"/>
@@ -103,6 +113,8 @@
         <result date="2007-06-07" statvalue="100" type="cobertura-branch"/>
         <result date="2007-06-16" statvalue="1" type="checkstyle"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-branch"/>
+        <result date="2007-11-21" statvalue="1" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
     </file>
     <file id="org_trails_component_Utils.java" path="org/trails/component/Utils.java">
         <result date="2007-06-06" statvalue="4" type="checkstyle"/>
@@ -114,6 +126,9 @@
         <result date="2007-06-16" statvalue="4" type="checkstyle"/>
         <result date="2007-06-16" statvalue="86" type="cobertura-line"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-branch"/>
+        <result date="2007-11-21" statvalue="4" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="86" type="cobertura-line"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
     </file>
     <file id="org_trails_component_EditCollection.java" path="org/trails/component/EditCollection.java">
         <result date="2007-06-06" statvalue="16" type="checkstyle"/>
@@ -128,6 +143,10 @@
         <result date="2007-06-16" statvalue="1" type="pmd"/>
         <result date="2007-06-16" statvalue="78" type="cobertura-line"/>
         <result date="2007-06-16" statvalue="92" type="cobertura-branch"/>
+        <result date="2007-11-21" statvalue="17" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="1" type="pmd"/>
+        <result date="2007-11-21" statvalue="83" type="cobertura-line"/>
+        <result date="2007-11-21" statvalue="90" type="cobertura-branch"/>
     </file>
     <file id="org_trails_component_AbstractTypeNavigationLink.java" path="org/trails/component/AbstractTypeNavigationLink.java">
         <result date="2007-06-06" statvalue="8" type="checkstyle"/>
@@ -150,6 +169,9 @@
         <result date="2007-06-16" statvalue="6" type="checkstyle"/>
         <result date="2007-06-16" statvalue="66" type="cobertura-line"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-branch"/>
+        <result date="2007-11-21" statvalue="1" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-line"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
     </file>
     <file id="org_trails_component_NewLink.java" path="org/trails/component/NewLink.java">
         <result date="2007-06-06" statvalue="2" type="checkstyle"/>
@@ -175,6 +197,10 @@
         <result date="2007-06-16" statvalue="1" type="pmd"/>
         <result date="2007-06-16" statvalue="86" type="cobertura-line"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-branch"/>
+        <result date="2007-11-21" statvalue="3" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="1" type="pmd"/>
+        <result date="2007-11-21" statvalue="79" type="cobertura-line"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
     </file>
     <file id="org_trails_component_AssociationSelect.java" path="org/trails/component/AssociationSelect.java">
         <result date="2007-06-06" statvalue="6" type="checkstyle"/>
@@ -186,6 +212,9 @@
         <result date="2007-06-16" statvalue="6" type="checkstyle"/>
         <result date="2007-06-16" statvalue="62" type="cobertura-line"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-branch"/>
+        <result date="2007-11-21" statvalue="1" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="71" type="cobertura-line"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
     </file>
     <file id="org_trails_component_TrailsComponent.java" path="org/trails/component/TrailsComponent.java">
         <result date="2007-06-06" statvalue="1" type="checkstyle"/>
@@ -197,6 +226,9 @@
         <result date="2007-06-16" statvalue="1" type="checkstyle"/>
         <result date="2007-06-16" statvalue="40" type="cobertura-line"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-branch"/>
+        <result date="2007-11-21" statvalue="2" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="66" type="cobertura-line"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
     </file>
     <file id="org_trails_component_ListAllLink.java" path="org/trails/component/ListAllLink.java">
         <result date="2007-06-06" statvalue="2" type="checkstyle"/>
@@ -213,6 +245,7 @@
         <result date="2007-06-06" statvalue="3" type="checkstyle"/>
         <result date="2007-06-07" statvalue="3" type="checkstyle"/>
         <result date="2007-06-16" statvalue="3" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="1" type="checkstyle"/>
     </file>
     <file id="org_trails_component_SearchLink.java" path="org/trails/component/SearchLink.java">
         <result date="2007-06-06" statvalue="2" type="checkstyle"/>
@@ -229,6 +262,9 @@
         <result date="2007-06-06" statvalue="5" type="checkstyle"/>
         <result date="2007-06-07" statvalue="5" type="checkstyle"/>
         <result date="2007-06-16" statvalue="5" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="28" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="24" type="pmd"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
     </file>
     <file id="org_trails_component_TrailsTableColumn.java" path="org/trails/component/TrailsTableColumn.java">
         <result date="2007-06-06" statvalue="4" type="checkstyle"/>
@@ -240,6 +276,9 @@
         <result date="2007-06-16" statvalue="4" type="checkstyle"/>
         <result date="2007-06-16" statvalue="81" type="cobertura-line"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-branch"/>
+        <result date="2007-11-21" statvalue="2" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="81" type="cobertura-line"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
     </file>
     <file id="org_trails_component_ClassDescriptorComponent.java" path="org/trails/component/ClassDescriptorComponent.java">
         <result date="2007-06-06" statvalue="4" type="checkstyle"/>
@@ -251,6 +290,9 @@
         <result date="2007-06-16" statvalue="4" type="checkstyle"/>
         <result date="2007-06-16" statvalue="66" type="cobertura-line"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-branch"/>
+        <result date="2007-11-21" statvalue="3" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="80" type="cobertura-line"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
     </file>
     <file id="org_trails_component_ObjectActions.java" path="org/trails/component/ObjectActions.java">
         <result date="2007-06-06" statvalue="8" type="checkstyle"/>
@@ -262,6 +304,9 @@
         <result date="2007-06-16" statvalue="8" type="checkstyle"/>
         <result date="2007-06-16" statvalue="80" type="cobertura-line"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-branch"/>
+        <result date="2007-11-21" statvalue="8" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-line"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
     </file>
     <file id="org_trails_component_ObjectForm.java" path="org/trails/component/ObjectForm.java">
         <result date="2007-06-06" statvalue="1" type="checkstyle"/>
@@ -270,6 +315,8 @@
         <result date="2007-06-07" statvalue="100" type="cobertura-branch"/>
         <result date="2007-06-16" statvalue="1" type="checkstyle"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-branch"/>
+        <result date="2007-11-21" statvalue="1" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
     </file>
     <file id="org_trails_component_EnumSelectionModel.java" path="org/trails/component/EnumSelectionModel.java">
         <result date="2007-06-06" statvalue="4" type="checkstyle"/>
@@ -295,6 +342,8 @@
         <result date="2007-06-16" statvalue="1" type="checkstyle"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-line"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-branch"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-line"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
     </file>
     <file id="org_trails_component_InvokeMethod.java" path="org/trails/component/InvokeMethod.java">
         <result date="2007-06-06" statvalue="3" type="checkstyle"/>
@@ -306,6 +355,9 @@
         <result date="2007-06-16" statvalue="3" type="checkstyle"/>
         <result date="2007-06-16" statvalue="75" type="cobertura-line"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-branch"/>
+        <result date="2007-11-21" statvalue="3" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="75" type="cobertura-line"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
     </file>
     <file id="org_trails_component_blob_TrailsBlobImpl.java" path="org/trails/component/blob/TrailsBlobImpl.java">
         <result date="2007-06-06" statvalue="6" type="checkstyle"/>
@@ -314,11 +366,14 @@
         <result date="2007-06-07" statvalue="100" type="cobertura-branch"/>
         <result date="2007-06-16" statvalue="6" type="checkstyle"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-branch"/>
+        <result date="2007-11-21" statvalue="6" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
     </file>
     <file id="org_trails_component_blob_image_MimedImage.java" path="org/trails/component/blob/image/MimedImage.java">
         <result date="2007-06-06" statvalue="1" type="checkstyle"/>
         <result date="2007-06-07" statvalue="1" type="checkstyle"/>
         <result date="2007-06-16" statvalue="1" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="1" type="checkstyle"/>
     </file>
     <file id="org_trails_component_blob_BlobDownloadService.java" path="org/trails/component/blob/BlobDownloadService.java">
         <result date="2007-06-06" statvalue="1" type="checkstyle"/>
@@ -333,6 +388,9 @@
         <result date="2007-06-16" statvalue="37" type="checkstyle"/>
         <result date="2007-06-16" statvalue="1" type="checkstyle"/>
         <result date="2007-06-16" statvalue="2" type="pmd"/>
+        <result date="2007-11-21" statvalue="37" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="1" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="2" type="pmd"/>
     </file>
     <file id="org_trails_component_blob_TrailsBlobAsset.java" path="org/trails/component/blob/TrailsBlobAsset.java">
         <result date="2007-06-06" statvalue="1" type="checkstyle"/>
@@ -347,11 +405,15 @@
         <result date="2007-06-16" statvalue="8" type="checkstyle"/>
         <result date="2007-06-16" statvalue="1" type="checkstyle"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-branch"/>
+        <result date="2007-11-21" statvalue="8" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="1" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
     </file>
     <file id="org_trails_component_blob_TrailsDownload.java" path="org/trails/component/blob/TrailsDownload.java">
         <result date="2007-06-06" statvalue="1" type="checkstyle"/>
         <result date="2007-06-07" statvalue="1" type="checkstyle"/>
         <result date="2007-06-16" statvalue="1" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="1" type="checkstyle"/>
     </file>
     <file id="org_trails_component_ObjectTable.java" path="org/trails/component/ObjectTable.java">
         <result date="2007-06-06" statvalue="6" type="checkstyle"/>
@@ -365,6 +427,10 @@
         <result date="2007-06-16" statvalue="1" type="pmd"/>
         <result date="2007-06-16" statvalue="60" type="cobertura-line"/>
         <result date="2007-06-16" statvalue="62" type="cobertura-branch"/>
+        <result date="2007-11-21" statvalue="16" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="1" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="16" type="cobertura-line"/>
+        <result date="2007-11-21" statvalue="16" type="cobertura-branch"/>
     </file>
     <file id="org_trails_persistence_PersistenceService.java" path="org/trails/persistence/PersistenceService.java">
         <result date="2007-06-06" statvalue="8" type="checkstyle"/>
@@ -376,6 +442,9 @@
         <result date="2007-06-16" statvalue="8" type="checkstyle"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-line"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-branch"/>
+        <result date="2007-11-21" statvalue="9" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-line"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
     </file>
     <file id="org_trails_servlet_TrailsApplicationServlet.java" path="org/trails/servlet/TrailsApplicationServlet.java">
         <result date="2007-06-06" statvalue="2" type="checkstyle"/>
@@ -384,6 +453,9 @@
         <result date="2007-06-07" statvalue="22" type="cobertura-line"/>
         <result date="2007-06-16" statvalue="2" type="checkstyle"/>
         <result date="2007-06-16" statvalue="22" type="cobertura-line"/>
+        <result date="2007-11-21" statvalue="3" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="1" type="pmd"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
     </file>
     <file id="org_trails_seeddata_SeedDataInitializer.java" path="org/trails/seeddata/SeedDataInitializer.java">
         <result date="2007-06-06" statvalue="1" type="checkstyle"/>
@@ -401,6 +473,10 @@
         <result date="2007-06-16" statvalue="1" type="checkstyle"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-line"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-branch"/>
+        <result date="2007-11-21" statvalue="1" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="1" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-line"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
     </file>
     <file id="org_trails_validation_TrailsValidationDelegate.java" path="org/trails/validation/TrailsValidationDelegate.java">
         <result date="2007-06-06" statvalue="1" type="checkstyle"/>
@@ -412,6 +488,9 @@
         <result date="2007-06-16" statvalue="1" type="checkstyle"/>
         <result date="2007-06-16" statvalue="92" type="cobertura-line"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-branch"/>
+        <result date="2007-11-21" statvalue="1" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="92" type="cobertura-line"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
     </file>
     <file id="org_trails_validation_ValidationException.java" path="org/trails/validation/ValidationException.java">
         <result date="2007-06-06" statvalue="4" type="checkstyle"/>
@@ -426,6 +505,10 @@
         <result date="2007-06-16" statvalue="1" type="pmd"/>
         <result date="2007-06-16" statvalue="16" type="cobertura-line"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-branch"/>
+        <result date="2007-11-21" statvalue="4" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="1" type="pmd"/>
+        <result date="2007-11-21" statvalue="16" type="cobertura-line"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
     </file>
     <file id="org_trails_callback_CallbackStack.java" path="org/trails/callback/CallbackStack.java">
         <result date="2007-06-06" statvalue="1" type="checkstyle"/>
@@ -437,6 +520,10 @@
         <result date="2007-06-16" statvalue="1" type="checkstyle"/>
         <result date="2007-06-16" statvalue="75" type="cobertura-line"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-branch"/>
+        <result date="2007-11-21" statvalue="1" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="1" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="66" type="cobertura-line"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
     </file>
     <file id="org_trails_callback_EditCallback.java" path="org/trails/callback/EditCallback.java">
         <result date="2007-06-06" statvalue="12" type="checkstyle"/>
@@ -520,6 +607,10 @@
         <result date="2007-06-16" statvalue="2" type="checkstyle"/>
         <result date="2007-06-16" statvalue="84" type="cobertura-line"/>
         <result date="2007-06-16" statvalue="88" type="cobertura-branch"/>
+        <result date="2007-11-21" statvalue="10" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="1" type="pmd"/>
+        <result date="2007-11-21" statvalue="81" type="cobertura-line"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
     </file>
     <file id="org_trails_page_SearchPage.java" path="org/trails/page/SearchPage.java">
         <result date="2007-06-06" statvalue="2" type="checkstyle"/>
@@ -531,6 +622,8 @@
         <result date="2007-06-16" statvalue="2" type="checkstyle"/>
         <result date="2007-06-16" statvalue="53" type="cobertura-line"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-branch"/>
+        <result date="2007-11-21" statvalue="2" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="50" type="cobertura-line"/>
     </file>
     <file id="org_trails_page_DefaultPageResolver.java" path="org/trails/page/DefaultPageResolver.java">
         <result date="2007-06-06" statvalue="2" type="checkstyle"/>
@@ -542,6 +635,9 @@
         <result date="2007-06-16" statvalue="2" type="checkstyle"/>
         <result date="2007-06-16" statvalue="80" type="cobertura-line"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-branch"/>
+        <result date="2007-11-21" statvalue="7" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="75" type="cobertura-line"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
     </file>
     <file id="org_trails_page_ListPage.java" path="org/trails/page/ListPage.java">
         <result date="2007-06-06" statvalue="4" type="checkstyle"/>
@@ -553,6 +649,7 @@
         <result date="2007-06-16" statvalue="6" type="checkstyle"/>
         <result date="2007-06-16" statvalue="80" type="cobertura-line"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-branch"/>
+        <result date="2007-11-21" statvalue="3" type="checkstyle"/>
     </file>
     <file id="org_trails_page_InvokeMethodPage.java" path="org/trails/page/InvokeMethodPage.java">
         <result date="2007-06-06" statvalue="2" type="checkstyle"/>
@@ -561,6 +658,8 @@
         <result date="2007-06-07" statvalue="100" type="cobertura-branch"/>
         <result date="2007-06-16" statvalue="2" type="checkstyle"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-branch"/>
+        <result date="2007-11-21" statvalue="2" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
     </file>
     <file id="org_trails_page_TrailsPage.java" path="org/trails/page/TrailsPage.java">
         <result date="2007-06-06" statvalue="11" type="checkstyle"/>
@@ -572,6 +671,8 @@
         <result date="2007-06-16" statvalue="11" type="checkstyle"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-line"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-branch"/>
+        <result date="2007-11-21" statvalue="16" type="cobertura-line"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
     </file>
     <file id="org_trails_page_EditorBlockPage.java" path="org/trails/page/EditorBlockPage.java">
         <result date="2007-06-06" statvalue="2" type="checkstyle"/>
@@ -583,6 +684,8 @@
         <result date="2007-06-16" statvalue="2" type="checkstyle"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-line"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-branch"/>
+        <result date="2007-11-21" statvalue="1" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
     </file>
     <file id="org_trails_page_PageResolver.java" path="org/trails/page/PageResolver.java">
         <result date="2007-06-06" statvalue="1" type="checkstyle"/>
@@ -594,6 +697,10 @@
         <result date="2007-06-16" statvalue="1" type="checkstyle"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-line"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-branch"/>
+        <result date="2007-11-21" statvalue="2" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="1" type="pmd"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-line"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
     </file>
     <file id="org_trails_util_DatePattern.java" path="org/trails/util/DatePattern.java">
         <result date="2007-06-06" statvalue="1" type="checkstyle"/>
@@ -602,6 +709,8 @@
         <result date="2007-06-07" statvalue="100" type="cobertura-branch"/>
         <result date="2007-06-16" statvalue="1" type="checkstyle"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-branch"/>
+        <result date="2007-11-21" statvalue="1" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
     </file>
     <file id="org_trails_descriptor_DescriptorService.java" path="org/trails/descriptor/DescriptorService.java">
         <result date="2007-06-06" statvalue="3" type="checkstyle"/>
@@ -613,6 +722,9 @@
         <result date="2007-06-16" statvalue="3" type="checkstyle"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-line"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-branch"/>
+        <result date="2007-11-21" statvalue="3" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-line"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
     </file>
     <file id="org_trails_descriptor_TrailsPropertyDescriptor.java" path="org/trails/descriptor/TrailsPropertyDescriptor.java">
         <result date="2007-06-06" statvalue="18" type="checkstyle"/>
@@ -627,6 +739,10 @@
         <result date="2007-06-16" statvalue="1" type="pmd"/>
         <result date="2007-06-16" statvalue="68" type="cobertura-line"/>
         <result date="2007-06-16" statvalue="90" type="cobertura-branch"/>
+        <result date="2007-11-21" statvalue="17" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="1" type="pmd"/>
+        <result date="2007-11-21" statvalue="67" type="cobertura-line"/>
+        <result date="2007-11-21" statvalue="90" type="cobertura-branch"/>
     </file>
     <file id="org_trails_descriptor_DescriptorFactory.java" path="org/trails/descriptor/DescriptorFactory.java">
         <result date="2007-06-06" statvalue="3" type="checkstyle"/>
@@ -638,6 +754,9 @@
         <result date="2007-06-16" statvalue="3" type="checkstyle"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-line"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-branch"/>
+        <result date="2007-11-21" statvalue="3" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-line"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
     </file>
     <file
         id="org_trails_descriptor_OwningObjectReferenceDescriptor.java" path="org/trails/descriptor/OwningObjectReferenceDescriptor.java">
@@ -647,11 +766,14 @@
         <result date="2007-06-07" statvalue="100" type="cobertura-branch"/>
         <result date="2007-06-16" statvalue="2" type="checkstyle"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-branch"/>
+        <result date="2007-11-21" statvalue="2" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
     </file>
     <file id="org_trails_descriptor_BlobDescriptorExtension.java" path="org/trails/descriptor/BlobDescriptorExtension.java">
         <result date="2007-06-06" statvalue="64" type="checkstyle"/>
         <result date="2007-06-07" statvalue="64" type="checkstyle"/>
         <result date="2007-06-16" statvalue="64" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="64" type="checkstyle"/>
     </file>
     <file id="org_trails_descriptor_IExtensible.java" path="org/trails/descriptor/IExtensible.java">
         <result date="2007-06-06" statvalue="5" type="checkstyle"/>
@@ -663,6 +785,9 @@
         <result date="2007-06-16" statvalue="8" type="checkstyle"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-line"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-branch"/>
+        <result date="2007-11-21" statvalue="8" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-line"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
     </file>
     <file id="org_trails_descriptor_IClassDescriptor.java" path="org/trails/descriptor/IClassDescriptor.java">
         <result date="2007-06-06" statvalue="1" type="checkstyle"/>
@@ -680,6 +805,10 @@
         <result date="2007-06-16" statvalue="1" type="checkstyle"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-line"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-branch"/>
+        <result date="2007-11-21" statvalue="28" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="1" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-line"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
     </file>
     <file id="org_trails_descriptor_BaseBlockFinder.java" path="org/trails/descriptor/BaseBlockFinder.java">
         <result date="2007-06-06" statvalue="2" type="checkstyle"/>
@@ -694,6 +823,10 @@
         <result date="2007-06-16" statvalue="1" type="pmd"/>
         <result date="2007-06-16" statvalue="95" type="cobertura-line"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-branch"/>
+        <result date="2007-11-21" statvalue="4" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="2" type="pmd"/>
+        <result date="2007-11-21" statvalue="90" type="cobertura-line"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
     </file>
     <file id="org_trails_descriptor_TrailsDescriptorService.java" path="org/trails/descriptor/TrailsDescriptorService.java">
         <result date="2007-06-06" statvalue="9" type="checkstyle"/>
@@ -705,6 +838,9 @@
         <result date="2007-06-16" statvalue="9" type="checkstyle"/>
         <result date="2007-06-16" statvalue="77" type="cobertura-line"/>
         <result date="2007-06-16" statvalue="77" type="cobertura-branch"/>
+        <result date="2007-11-21" statvalue="8" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="76" type="cobertura-line"/>
+        <result date="2007-11-21" statvalue="75" type="cobertura-branch"/>
     </file>
     <file id="org_trails_descriptor_DescriptorDecorator.java" path="org/trails/descriptor/DescriptorDecorator.java">
         <result date="2007-06-06" statvalue="1" type="checkstyle"/>
@@ -716,6 +852,9 @@
         <result date="2007-06-16" statvalue="1" type="checkstyle"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-line"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-branch"/>
+        <result date="2007-11-21" statvalue="1" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-line"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
     </file>
     <file id="org_trails_descriptor_IdentifierDescriptor.java" path="org/trails/descriptor/IdentifierDescriptor.java">
         <result date="2007-06-06" statvalue="2" type="checkstyle"/>
@@ -727,6 +866,9 @@
         <result date="2007-06-16" statvalue="2" type="checkstyle"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-line"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-branch"/>
+        <result date="2007-11-21" statvalue="2" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-line"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
     </file>
     <file id="org_trails_descriptor_ReflectionDescriptorFactory.java" path="org/trails/descriptor/ReflectionDescriptorFactory.java">
         <result date="2007-06-06" statvalue="4" type="checkstyle"/>
@@ -738,6 +880,9 @@
         <result date="2007-06-16" statvalue="4" type="checkstyle"/>
         <result date="2007-06-16" statvalue="74" type="cobertura-line"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-branch"/>
+        <result date="2007-11-21" statvalue="8" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="69" type="cobertura-line"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
     </file>
     <file id="org_trails_descriptor_EnumReferenceDescriptor.java" path="org/trails/descriptor/EnumReferenceDescriptor.java">
         <result date="2007-06-06" statvalue="1" type="checkstyle"/>
@@ -749,6 +894,9 @@
         <result date="2007-06-16" statvalue="1" type="checkstyle"/>
         <result date="2007-06-16" statvalue="80" type="cobertura-line"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-branch"/>
+        <result date="2007-11-21" statvalue="1" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="80" type="cobertura-line"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
     </file>
     <file id="org_trails_descriptor_BlockFinder.java" path="org/trails/descriptor/BlockFinder.java">
         <result date="2007-06-06" statvalue="1" type="checkstyle"/>
@@ -766,6 +914,10 @@
         <result date="2007-06-16" statvalue="1" type="checkstyle"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-line"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-branch"/>
+        <result date="2007-11-21" statvalue="4" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="1" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-line"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
     </file>
     <file id="org_trails_descriptor_TrailsClassDescriptor.java" path="org/trails/descriptor/TrailsClassDescriptor.java">
         <result date="2007-06-06" statvalue="9" type="checkstyle"/>
@@ -777,6 +929,9 @@
         <result date="2007-06-16" statvalue="9" type="checkstyle"/>
         <result date="2007-06-16" statvalue="72" type="cobertura-line"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-branch"/>
+        <result date="2007-11-21" statvalue="9" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="72" type="cobertura-line"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
     </file>
     <file id="org_trails_descriptor_ObjectReferenceDescriptor.java" path="org/trails/descriptor/ObjectReferenceDescriptor.java">
         <result date="2007-06-06" statvalue="4" type="checkstyle"/>
@@ -788,6 +943,10 @@
         <result date="2007-06-16" statvalue="4" type="checkstyle"/>
         <result date="2007-06-16" statvalue="88" type="cobertura-line"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-branch"/>
+        <result date="2007-11-21" statvalue="4" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="1" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="88" type="cobertura-line"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
     </file>
     <file id="org_trails_descriptor_IDescriptor.java" path="org/trails/descriptor/IDescriptor.java">
         <result date="2007-06-06" statvalue="1" type="checkstyle"/>
@@ -805,6 +964,10 @@
         <result date="2007-06-16" statvalue="1" type="checkstyle"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-line"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-branch"/>
+        <result date="2007-11-21" statvalue="5" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="1" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-line"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
     </file>
     <file id="org_trails_descriptor_IMethodDescriptor.java" path="org/trails/descriptor/IMethodDescriptor.java">
         <result date="2007-06-06" statvalue="1" type="checkstyle"/>
@@ -822,6 +985,10 @@
         <result date="2007-06-16" statvalue="1" type="checkstyle"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-line"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-branch"/>
+        <result date="2007-11-21" statvalue="4" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="1" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-line"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
     </file>
     <file id="org_trails_descriptor_EmbeddedDescriptor.java" path="org/trails/descriptor/EmbeddedDescriptor.java">
         <result date="2007-06-06" statvalue="22" type="checkstyle"/>
@@ -836,6 +1003,10 @@
         <result date="2007-06-16" statvalue="1" type="pmd"/>
         <result date="2007-06-16" statvalue="87" type="cobertura-line"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-branch"/>
+        <result date="2007-11-21" statvalue="22" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="1" type="pmd"/>
+        <result date="2007-11-21" statvalue="87" type="cobertura-line"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
     </file>
     <file id="org_trails_descriptor_IIdentifierDescriptor.java" path="org/trails/descriptor/IIdentifierDescriptor.java">
         <result date="2007-06-06" statvalue="2" type="checkstyle"/>
@@ -847,6 +1018,9 @@
         <result date="2007-06-16" statvalue="2" type="checkstyle"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-line"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-branch"/>
+        <result date="2007-11-21" statvalue="2" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-line"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
     </file>
     <file id="org_trails_descriptor_CollectionDescriptor.java" path="org/trails/descriptor/CollectionDescriptor.java">
         <result date="2007-06-06" statvalue="5" type="checkstyle"/>
@@ -858,6 +1032,9 @@
         <result date="2007-06-16" statvalue="5" type="checkstyle"/>
         <result date="2007-06-16" statvalue="83" type="cobertura-line"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-branch"/>
+        <result date="2007-11-21" statvalue="10" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="80" type="cobertura-line"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
     </file>
     <file id="org_trails_descriptor_annotation_PropertyDescriptor.java" path="org/trails/descriptor/annotation/PropertyDescriptor.java">
         <result date="2007-06-06" statvalue="7" type="checkstyle"/>
@@ -869,6 +1046,9 @@
         <result date="2007-06-16" statvalue="7" type="checkstyle"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-line"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-branch"/>
+        <result date="2007-11-21" statvalue="7" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-line"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
     </file>
     <file id="org_trails_descriptor_annotation_ClassDescriptor.java" path="org/trails/descriptor/annotation/ClassDescriptor.java">
         <result date="2007-06-06" statvalue="2" type="checkstyle"/>
@@ -880,6 +1060,9 @@
         <result date="2007-06-16" statvalue="2" type="checkstyle"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-line"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-branch"/>
+        <result date="2007-11-21" statvalue="2" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-line"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
     </file>
     <file
         id="org_trails_descriptor_annotation_BlobDescriptorAnnotationHandler.java" path="org/trails/descriptor/annotation/BlobDescriptorAnnotationHandler.java">
@@ -889,6 +1072,8 @@
         <result date="2007-06-07" statvalue="100" type="cobertura-branch"/>
         <result date="2007-06-16" statvalue="3" type="checkstyle"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-branch"/>
+        <result date="2007-11-21" statvalue="3" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
     </file>
     <file
         id="org_trails_descriptor_annotation_DescriptorAnnotationHandler.java" path="org/trails/descriptor/annotation/DescriptorAnnotationHandler.java">
@@ -901,6 +1086,9 @@
         <result date="2007-06-16" statvalue="1" type="checkstyle"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-line"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-branch"/>
+        <result date="2007-11-21" statvalue="1" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-line"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
     </file>
     <file id="org_trails_descriptor_annotation_Collection.java" path="org/trails/descriptor/annotation/Collection.java">
         <result date="2007-06-06" statvalue="3" type="checkstyle"/>
@@ -912,6 +1100,9 @@
         <result date="2007-06-16" statvalue="3" type="checkstyle"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-line"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-branch"/>
+        <result date="2007-11-21" statvalue="3" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-line"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
     </file>
     <file
         id="org_trails_descriptor_annotation_AbstractAnnotationHandler.java" path="org/trails/descriptor/annotation/AbstractAnnotationHandler.java">
@@ -927,6 +1118,10 @@
         <result date="2007-06-16" statvalue="2" type="pmd"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-line"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-branch"/>
+        <result date="2007-11-21" statvalue="4" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="2" type="pmd"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-line"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
     </file>
     <file
         id="org_trails_descriptor_annotation_PropertyDescriptorAnnotationHandler.java" path="org/trails/descriptor/annotation/PropertyDescriptorAnnotationHandler.java">
@@ -939,6 +1134,9 @@
         <result date="2007-06-16" statvalue="2" type="checkstyle"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-line"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-branch"/>
+        <result date="2007-11-21" statvalue="2" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-line"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
     </file>
     <file id="org_trails_descriptor_annotation_AnnotationDecorator.java" path="org/trails/descriptor/annotation/AnnotationDecorator.java">
         <result date="2007-06-06" statvalue="8" type="checkstyle"/>
@@ -953,6 +1151,10 @@
         <result date="2007-06-16" statvalue="3" type="pmd"/>
         <result date="2007-06-16" statvalue="97" type="cobertura-line"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-branch"/>
+        <result date="2007-11-21" statvalue="8" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="3" type="pmd"/>
+        <result date="2007-11-21" statvalue="97" type="cobertura-line"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
     </file>
     <file id="org_trails_descriptor_annotation_BlobDescriptor.java" path="org/trails/descriptor/annotation/BlobDescriptor.java">
         <result date="2007-06-06" statvalue="9" type="checkstyle"/>
@@ -964,6 +1166,9 @@
         <result date="2007-06-16" statvalue="9" type="checkstyle"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-line"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-branch"/>
+        <result date="2007-11-21" statvalue="9" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-line"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
     </file>
     <file
         id="org_trails_descriptor_annotation_ClassDescriptorAnnotationHandler.java" path="org/trails/descriptor/annotation/ClassDescriptorAnnotationHandler.java">
@@ -976,6 +1181,9 @@
         <result date="2007-06-16" statvalue="2" type="checkstyle"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-line"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-branch"/>
+        <result date="2007-11-21" statvalue="2" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-line"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
     </file>
     <file
         id="org_trails_descriptor_annotation_CollectionDescriptorAnnotationHandler.java" path="org/trails/descriptor/annotation/CollectionDescriptorAnnotationHandler.java">
@@ -988,6 +1196,9 @@
         <result date="2007-06-16" statvalue="1" type="checkstyle"/>
         <result date="2007-06-16" statvalue="83" type="cobertura-line"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-branch"/>
+        <result date="2007-11-21" statvalue="1" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="83" type="cobertura-line"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
     </file>
     <file id="org_trails_descriptor_IPropertyDescriptor.java" path="org/trails/descriptor/IPropertyDescriptor.java">
         <result date="2007-06-06" statvalue="1" type="checkstyle"/>
@@ -1005,6 +1216,10 @@
         <result date="2007-06-16" statvalue="1" type="checkstyle"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-line"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-branch"/>
+        <result date="2007-11-21" statvalue="36" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="1" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-line"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
     </file>
     <file id="org_trails_descriptor_TrailsDescriptor.java" path="org/trails/descriptor/TrailsDescriptor.java">
         <result date="2007-06-06" statvalue="22" type="checkstyle"/>
@@ -1019,6 +1234,10 @@
         <result date="2007-06-16" statvalue="1" type="pmd"/>
         <result date="2007-06-16" statvalue="53" type="cobertura-line"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-branch"/>
+        <result date="2007-11-21" statvalue="23" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="2" type="pmd"/>
+        <result date="2007-11-21" statvalue="55" type="cobertura-line"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
     </file>
     <file id="org_trails_descriptor_TrailsMethodDescriptor.java" path="org/trails/descriptor/TrailsMethodDescriptor.java">
         <result date="2007-06-06" statvalue="5" type="checkstyle"/>
@@ -1030,6 +1249,9 @@
         <result date="2007-06-16" statvalue="5" type="checkstyle"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-line"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-branch"/>
+        <result date="2007-11-21" statvalue="5" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-line"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
     </file>
     <file id="org_trails_descriptor_IExpressionSupport.java" path="org/trails/descriptor/IExpressionSupport.java">
         <result date="2007-06-06" statvalue="6" type="checkstyle"/>
@@ -1041,76 +1263,93 @@
         <result date="2007-06-16" statvalue="6" type="checkstyle"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-line"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-branch"/>
+        <result date="2007-11-21" statvalue="6" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-line"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
     </file>
     <file id="org_trails_page_package.html" path="org/trails/page/package.html">
         <result date="2007-06-06" statvalue="1" type="checkstyle"/>
         <result date="2007-06-07" statvalue="1" type="checkstyle"/>
         <result date="2007-06-16" statvalue="1" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="1" type="checkstyle"/>
     </file>
     <file id="org_trails_component_blob_package.html" path="org/trails/component/blob/package.html">
         <result date="2007-06-06" statvalue="1" type="checkstyle"/>
         <result date="2007-06-07" statvalue="1" type="checkstyle"/>
         <result date="2007-06-16" statvalue="1" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="1" type="checkstyle"/>
     </file>
     <file id="org_trails_i18n_package.html" path="org/trails/i18n/package.html">
         <result date="2007-06-06" statvalue="1" type="checkstyle"/>
         <result date="2007-06-07" statvalue="1" type="checkstyle"/>
         <result date="2007-06-16" statvalue="1" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="1" type="checkstyle"/>
     </file>
     <file id="org_trails_util_package.html" path="org/trails/util/package.html">
         <result date="2007-06-06" statvalue="1" type="checkstyle"/>
         <result date="2007-06-07" statvalue="1" type="checkstyle"/>
         <result date="2007-06-16" statvalue="1" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="1" type="checkstyle"/>
     </file>
     <file id="org_trails_descriptor_annotation_package.html" path="org/trails/descriptor/annotation/package.html">
         <result date="2007-06-06" statvalue="1" type="checkstyle"/>
         <result date="2007-06-07" statvalue="1" type="checkstyle"/>
         <result date="2007-06-16" statvalue="1" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="1" type="checkstyle"/>
     </file>
     <file id="org_trails_component_package.html" path="org/trails/component/package.html">
         <result date="2007-06-06" statvalue="1" type="checkstyle"/>
         <result date="2007-06-07" statvalue="1" type="checkstyle"/>
         <result date="2007-06-16" statvalue="1" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="1" type="checkstyle"/>
     </file>
     <file id="org_trails_seeddata_package.html" path="org/trails/seeddata/package.html">
         <result date="2007-06-06" statvalue="1" type="checkstyle"/>
         <result date="2007-06-07" statvalue="1" type="checkstyle"/>
         <result date="2007-06-16" statvalue="1" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="1" type="checkstyle"/>
     </file>
     <file id="org_trails_component_blob_image_package.html" path="org/trails/component/blob/image/package.html">
         <result date="2007-06-06" statvalue="1" type="checkstyle"/>
         <result date="2007-06-07" statvalue="1" type="checkstyle"/>
         <result date="2007-06-16" statvalue="1" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="1" type="checkstyle"/>
     </file>
     <file id="org_trails_callback_package.html" path="org/trails/callback/package.html">
         <result date="2007-06-06" statvalue="1" type="checkstyle"/>
         <result date="2007-06-07" statvalue="1" type="checkstyle"/>
         <result date="2007-06-16" statvalue="1" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="1" type="checkstyle"/>
     </file>
     <file id="org_trails_servlet_package.html" path="org/trails/servlet/package.html">
         <result date="2007-06-06" statvalue="1" type="checkstyle"/>
         <result date="2007-06-07" statvalue="1" type="checkstyle"/>
         <result date="2007-06-16" statvalue="1" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="1" type="checkstyle"/>
     </file>
     <file id="org_trails_persistence_package.html" path="org/trails/persistence/package.html">
         <result date="2007-06-06" statvalue="1" type="checkstyle"/>
         <result date="2007-06-07" statvalue="1" type="checkstyle"/>
         <result date="2007-06-16" statvalue="1" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="1" type="checkstyle"/>
     </file>
     <file id="org_trails_validation_package.html" path="org/trails/validation/package.html">
         <result date="2007-06-06" statvalue="1" type="checkstyle"/>
         <result date="2007-06-07" statvalue="1" type="checkstyle"/>
         <result date="2007-06-16" statvalue="1" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="1" type="checkstyle"/>
     </file>
     <file id="org_trails_package.html" path="org/trails/package.html">
         <result date="2007-06-06" statvalue="1" type="checkstyle"/>
         <result date="2007-06-07" statvalue="1" type="checkstyle"/>
         <result date="2007-06-16" statvalue="1" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="1" type="checkstyle"/>
     </file>
     <file id="org_trails_descriptor_package.html" path="org/trails/descriptor/package.html">
         <result date="2007-06-06" statvalue="1" type="checkstyle"/>
         <result date="2007-06-07" statvalue="1" type="checkstyle"/>
         <result date="2007-06-16" statvalue="1" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="1" type="checkstyle"/>
     </file>
     <file id="org_trails_component_EditProperties.java" path="org/trails/component/EditProperties.java">
         <result date="2007-06-06" statvalue="1" type="checkstyle"/>
@@ -1122,6 +1361,9 @@
         <result date="2007-06-16" statvalue="1" type="checkstyle"/>
         <result date="2007-06-16" statvalue="50" type="cobertura-line"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-branch"/>
+        <result date="2007-11-21" statvalue="1" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-line"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
     </file>
     <file id="org_trails_component_blob_BlobComponent.java" path="org/trails/component/blob/BlobComponent.java">
         <result date="2007-06-06" statvalue="1" type="checkstyle"/>
@@ -1130,6 +1372,8 @@
         <result date="2007-06-07" statvalue="100" type="cobertura-branch"/>
         <result date="2007-06-16" statvalue="1" type="checkstyle"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-branch"/>
+        <result date="2007-11-21" statvalue="1" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
     </file>
     <file id="org_trails_component_blob_BlobDownloadService.java" path="org/trails/component/blob/BlobDownloadService.java"/>
     <file id="org_trails_component_blob_TrailsBlobAsset.java" path="org/trails/component/blob/TrailsBlobAsset.java"/>
@@ -1163,6 +1407,8 @@
         <result date="2007-06-07" statvalue="100" type="cobertura-branch"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-line"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-branch"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-line"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
     </file>
     <file id="org_trails_descriptor_EditorBlockFinder.java" path="org/trails/descriptor/EditorBlockFinder.java">
         <result date="2007-06-06" statvalue="100" type="cobertura-line"/>
@@ -1171,6 +1417,8 @@
         <result date="2007-06-07" statvalue="100" type="cobertura-branch"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-line"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-branch"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-line"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
     </file>
     <file id="org_trails_descriptor_IDescriptorExtension.java" path="org/trails/descriptor/IDescriptorExtension.java">
         <result date="2007-06-06" statvalue="100" type="cobertura-line"/>
@@ -1179,6 +1427,8 @@
         <result date="2007-06-07" statvalue="100" type="cobertura-branch"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-line"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-branch"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-line"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
     </file>
     <file
         id="org_trails_descriptor_annotation_DescriptorAnnotation.java" path="org/trails/descriptor/annotation/DescriptorAnnotation.java">
@@ -1188,6 +1438,8 @@
         <result date="2007-06-07" statvalue="100" type="cobertura-branch"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-line"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-branch"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-line"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
     </file>
     <file id="org_trails_i18n_DescriptorInternationalization.aj" path="org/trails/i18n/DescriptorInternationalization.aj">
         <result date="2007-06-06" statvalue="44" type="cobertura-line"/>
@@ -1196,11 +1448,14 @@
         <result date="2007-06-07" statvalue="50" type="cobertura-branch"/>
         <result date="2007-06-16" statvalue="44" type="cobertura-line"/>
         <result date="2007-06-16" statvalue="50" type="cobertura-branch"/>
+        <result date="2007-11-21" statvalue="28" type="cobertura-line"/>
+        <result date="2007-11-21" statvalue="33" type="cobertura-branch"/>
     </file>
     <file id="org_trails_page_HomePage.java" path="org/trails/page/HomePage.java">
         <result date="2007-06-06" statvalue="9" type="cobertura-line"/>
         <result date="2007-06-07" statvalue="9" type="cobertura-line"/>
         <result date="2007-06-16" statvalue="9" type="cobertura-line"/>
+        <result date="2007-11-21" statvalue="1" type="checkstyle"/>
     </file>
     <file id="org_trails_page_ModelPage.java" path="org/trails/page/ModelPage.java">
         <result date="2007-06-06" statvalue="66" type="cobertura-line"/>
@@ -1209,6 +1464,9 @@
         <result date="2007-06-07" statvalue="100" type="cobertura-branch"/>
         <result date="2007-06-16" statvalue="66" type="cobertura-line"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-branch"/>
+        <result date="2007-11-21" statvalue="4" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="1" type="pmd"/>
+        <result date="2007-11-21" statvalue="11" type="cobertura-line"/>
     </file>
     <file id="org_trails_persistence_PersistenceException.java" path="org/trails/persistence/PersistenceException.java">
         <result date="2007-06-06" statvalue="50" type="cobertura-line"/>
@@ -1217,6 +1475,8 @@
         <result date="2007-06-07" statvalue="100" type="cobertura-branch"/>
         <result date="2007-06-16" statvalue="50" type="cobertura-line"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-branch"/>
+        <result date="2007-11-21" statvalue="50" type="cobertura-line"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
     </file>
     <file id="org_trails_persistence_Query.java" path="org/trails/persistence/Query.java">
         <result date="2007-06-06" statvalue="100" type="cobertura-line"/>
@@ -1225,6 +1485,8 @@
         <result date="2007-06-07" statvalue="100" type="cobertura-branch"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-line"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-branch"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-line"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
     </file>
     <file id="org_trails_validation_ValidatorTranslatorService.java" path="org/trails/validation/ValidatorTranslatorService.java">
         <result date="2007-06-06" statvalue="94" type="cobertura-line"/>
@@ -1233,6 +1495,8 @@
         <result date="2007-06-07" statvalue="100" type="cobertura-branch"/>
         <result date="2007-06-16" statvalue="94" type="cobertura-line"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-branch"/>
+        <result date="2007-11-21" statvalue="94" type="cobertura-line"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
     </file>
     <file id="org_trails_component_LinkTableColumn.java" path="org/trails/component/LinkTableColumn.java">
         <result date="2007-06-06" statvalue="100" type="cobertura-branch"/>
@@ -1248,28 +1512,44 @@
         <result date="2007-06-16" statvalue="2" type="checkstyle"/>
         <result date="2007-06-16" statvalue="53" type="cobertura-line"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-branch"/>
+        <result date="2007-11-21" statvalue="2" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="1" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="69" type="cobertura-line"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
     </file>
     <file id="org_trails_io_EntitySqueezerStrategy.java" path="org/trails/io/EntitySqueezerStrategy.java">
         <result date="2007-06-16" statvalue="6" type="checkstyle"/>
         <result date="2007-06-16" statvalue="63" type="cobertura-line"/>
         <result date="2007-06-16" statvalue="71" type="cobertura-branch"/>
+        <result date="2007-11-21" statvalue="11" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="52" type="cobertura-line"/>
+        <result date="2007-11-21" statvalue="76" type="cobertura-branch"/>
     </file>
     <file id="org_trails_io_EntityIdentity.java" path="org/trails/io/EntityIdentity.java">
         <result date="2007-06-16" statvalue="5" type="checkstyle"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-branch"/>
+        <result date="2007-11-21" statvalue="5" type="checkstyle"/>
     </file>
     <file id="org_trails_io_PropertyDescriptorSqueezerStrategy.java" path="org/trails/io/PropertyDescriptorSqueezerStrategy.java">
         <result date="2007-06-16" statvalue="4" type="checkstyle"/>
         <result date="2007-06-16" statvalue="78" type="cobertura-line"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-branch"/>
+        <result date="2007-11-21" statvalue="4" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="1" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="78" type="cobertura-line"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
     </file>
     <file id="org_trails_io_ClassDescriptorSqueezerStrategy.java" path="org/trails/io/ClassDescriptorSqueezerStrategy.java">
         <result date="2007-06-16" statvalue="3" type="checkstyle"/>
         <result date="2007-06-16" statvalue="75" type="cobertura-line"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-branch"/>
+        <result date="2007-11-21" statvalue="5" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="66" type="cobertura-line"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
     </file>
     <file id="org_trails_io_package.html" path="org/trails/io/package.html">
         <result date="2007-06-16" statvalue="1" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="1" type="checkstyle"/>
     </file>
     <file id="org_trails_io_ClassAdaptor.java" path="org/trails/io/ClassAdaptor.java">
         <result date="2007-06-16" statvalue="1" type="checkstyle"/>
@@ -1280,5 +1560,281 @@
     <file id="org_trails_io_SqueezeFilter.java" path="org/trails/io/SqueezeFilter.java">
         <result date="2007-06-16" statvalue="100" type="cobertura-line"/>
         <result date="2007-06-16" statvalue="100" type="cobertura-branch"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-line"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
+    </file>
+    <file id="org_trails_i18n_TrailsMessageSource.java" path="org/trails/i18n/TrailsMessageSource.java">
+        <result date="2007-11-21" statvalue="11" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-line"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
+    </file>
+    <file id="org_trails_i18n_HiveMindMessageSource.java" path="org/trails/i18n/HiveMindMessageSource.java">
+        <result date="2007-11-21" statvalue="2" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="29" type="cobertura-line"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
+    </file>
+    <file id="org_trails_component_EnumPropertySelectionModel.java" path="org/trails/component/EnumPropertySelectionModel.java">
+        <result date="2007-11-21" statvalue="3" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="1" type="pmd"/>
+        <result date="2007-11-21" statvalue="72" type="cobertura-line"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
+    </file>
+    <file id="org_trails_component_AbstractPropertySelectionModel.java" path="org/trails/component/AbstractPropertySelectionModel.java">
+        <result date="2007-11-21" statvalue="13" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="84" type="cobertura-line"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
+    </file>
+    <file id="org_trails_component_AbstractPropertySelection.java" path="org/trails/component/AbstractPropertySelection.java">
+        <result date="2007-11-21" statvalue="3" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-line"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
+    </file>
+    <file id="org_trails_component_AbstractObjectRenderComponent.java" path="org/trails/component/AbstractObjectRenderComponent.java">
+        <result date="2007-11-21" statvalue="8" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-line"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
+    </file>
+    <file id="org_trails_component_InsertI18N.java" path="org/trails/component/InsertI18N.java">
+        <result date="2007-11-21" statvalue="2" type="checkstyle"/>
+    </file>
+    <file id="org_trails_component_RenderProperties.java" path="org/trails/component/RenderProperties.java">
+        <result date="2007-11-21" statvalue="1" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-line"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
+    </file>
+    <file id="org_trails_io_CallbackStackAdaptor.java" path="org/trails/io/CallbackStackAdaptor.java">
+        <result date="2007-11-21" statvalue="4" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="1" type="pmd"/>
+        <result date="2007-11-21" statvalue="44" type="cobertura-line"/>
+    </file>
+    <file id="org_trails_io_PropertyChangeAdaptor.java" path="org/trails/io/PropertyChangeAdaptor.java">
+        <result date="2007-11-21" statvalue="3" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
+    </file>
+    <file id="org_trails_callback_UrlCallback.java" path="org/trails/callback/UrlCallback.java">
+        <result date="2007-11-21" statvalue="1" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="57" type="cobertura-line"/>
+        <result date="2007-11-21" statvalue="50" type="cobertura-branch"/>
+    </file>
+    <file id="org_trails_page_SimpleTrailsBasePage.java" path="org/trails/page/SimpleTrailsBasePage.java">
+        <result date="2007-11-21" statvalue="3" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-line"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
+    </file>
+    <file id="org_trails_page_ViewPage.java" path="org/trails/page/ViewPage.java">
+        <result date="2007-11-21" statvalue="1" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
+    </file>
+    <file id="org_trails_page_IActivatableTrailsPage.java" path="org/trails/page/IActivatableTrailsPage.java">
+        <result date="2007-11-21" statvalue="3" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-line"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
+    </file>
+    <file id="org_trails_page_IEditorBlockPage.java" path="org/trails/page/IEditorBlockPage.java">
+        <result date="2007-11-21" statvalue="1" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-line"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
+    </file>
+    <file id="org_trails_exception_EmptyModelException.java" path="org/trails/exception/EmptyModelException.java">
+        <result date="2007-11-21" statvalue="2" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
+    </file>
+    <file
+        id="org_trails_exception_ApplicationExceptionPresenterImpl.java" path="org/trails/exception/ApplicationExceptionPresenterImpl.java">
+        <result date="2007-11-21" statvalue="12" type="checkstyle"/>
+    </file>
+    <file
+        id="org_trails_record_ClientAsoPropertyPersistenceStrategy.java" path="org/trails/record/ClientAsoPropertyPersistenceStrategy.java">
+        <result date="2007-11-21" statvalue="4" type="checkstyle"/>
+    </file>
+    <file
+        id="org_trails_record_FormClientPropertyPersistenceStrategy.java" path="org/trails/record/FormClientPropertyPersistenceStrategy.java">
+        <result date="2007-11-21" statvalue="1" type="checkstyle"/>
+    </file>
+    <file id="org_trails_record_FormClientPropertyPersistenceScope.java" path="org/trails/record/FormClientPropertyPersistenceScope.java">
+        <result date="2007-11-21" statvalue="1" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
+    </file>
+    <file id="org_trails_record_SqueezerDataEncoder.java" path="org/trails/record/SqueezerDataEncoder.java">
+        <result date="2007-11-21" statvalue="1" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="90" type="cobertura-line"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
+    </file>
+    <file
+        id="org_trails_record_ReloadReattachPropertyPersistenceStrategy.java" path="org/trails/record/ReloadReattachPropertyPersistenceStrategy.java">
+        <result date="2007-11-21" statvalue="1" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
+    </file>
+    <file
+        id="org_trails_record_AbstractSessionPropertyPersistenceStrategy.java" path="org/trails/record/AbstractSessionPropertyPersistenceStrategy.java">
+        <result date="2007-11-21" statvalue="3" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="1" type="pmd"/>
+    </file>
+    <file
+        id="org_trails_record_ReattachPropertyPersistenceStrategy.java" path="org/trails/record/ReattachPropertyPersistenceStrategy.java">
+        <result date="2007-11-21" statvalue="3" type="checkstyle"/>
+    </file>
+    <file
+        id="org_trails_engine_encoders_abbreviator_DefaultAbbreviator.java" path="org/trails/engine/encoders/abbreviator/DefaultAbbreviator.java">
+        <result date="2007-11-21" statvalue="2" type="checkstyle"/>
+    </file>
+    <file
+        id="org_trails_engine_encoders_abbreviator_EntityNameAbbreviator.java" path="org/trails/engine/encoders/abbreviator/EntityNameAbbreviator.java">
+        <result date="2007-11-21" statvalue="2" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-line"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
+    </file>
+    <file id="org_trails_engine_encoders_PagesEncoder.java" path="org/trails/engine/encoders/PagesEncoder.java">
+        <result date="2007-11-21" statvalue="7" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="1" type="pmd"/>
+        <result date="2007-11-21" statvalue="12" type="cobertura-line"/>
+        <result date="2007-11-21" statvalue="16" type="cobertura-branch"/>
+    </file>
+    <file id="org_trails_engine_state_RequestScopeManager.java" path="org/trails/engine/state/RequestScopeManager.java">
+        <result date="2007-11-21" statvalue="8" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="79" type="cobertura-line"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
+    </file>
+    <file id="org_trails_engine_TrailsPagesService.java" path="org/trails/engine/TrailsPagesService.java">
+        <result date="2007-11-21" statvalue="16" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="2" type="pmd"/>
+    </file>
+    <file id="org_trails_engine_TrailsPagesServiceParameter.java" path="org/trails/engine/TrailsPagesServiceParameter.java">
+        <result date="2007-11-21" statvalue="11" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="72" type="cobertura-line"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
+    </file>
+    <file id="org_trails_link_AbstractTypeNavigationLink.java" path="org/trails/link/AbstractTypeNavigationLink.java">
+        <result date="2007-11-21" statvalue="8" type="checkstyle"/>
+    </file>
+    <file id="org_trails_link_EditLink.java" path="org/trails/link/EditLink.java">
+        <result date="2007-11-21" statvalue="1" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
+    </file>
+    <file id="org_trails_link_NewLink.java" path="org/trails/link/NewLink.java">
+        <result date="2007-11-21" statvalue="1" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
+    </file>
+    <file id="org_trails_link_ViewLink.java" path="org/trails/link/ViewLink.java">
+        <result date="2007-11-21" statvalue="1" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
+    </file>
+    <file id="org_trails_link_TrailsLink.java" path="org/trails/link/TrailsLink.java">
+        <result date="2007-11-21" statvalue="1" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
+    </file>
+    <file id="org_trails_link_LocaleLink.java" path="org/trails/link/LocaleLink.java">
+        <result date="2007-11-21" statvalue="1" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="1" type="pmd"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
+    </file>
+    <file id="org_trails_link_ModelLink.java" path="org/trails/link/ModelLink.java">
+        <result date="2007-11-21" statvalue="1" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="1" type="pmd"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
+    </file>
+    <file id="org_trails_engine_encoders_package.html" path="org/trails/engine/encoders/package.html">
+        <result date="2007-11-21" statvalue="1" type="checkstyle"/>
+    </file>
+    <file id="org_trails_record_package.html" path="org/trails/record/package.html">
+        <result date="2007-11-21" statvalue="1" type="checkstyle"/>
+    </file>
+    <file id="org_trails_engine_state_package.html" path="org/trails/engine/state/package.html">
+        <result date="2007-11-21" statvalue="1" type="checkstyle"/>
+    </file>
+    <file id="org_trails_exception_package.html" path="org/trails/exception/package.html">
+        <result date="2007-11-21" statvalue="1" type="checkstyle"/>
+    </file>
+    <file id="org_trails_engine_package.html" path="org/trails/engine/package.html">
+        <result date="2007-11-21" statvalue="1" type="checkstyle"/>
+    </file>
+    <file id="org_trails_services_package.html" path="org/trails/services/package.html">
+        <result date="2007-11-21" statvalue="1" type="checkstyle"/>
+    </file>
+    <file id="org_trails_engine_encoders_abbreviator_package.html" path="org/trails/engine/encoders/abbreviator/package.html">
+        <result date="2007-11-21" statvalue="1" type="checkstyle"/>
+    </file>
+    <file id="org_trails_link_package.html" path="org/trails/link/package.html">
+        <result date="2007-11-21" statvalue="1" type="checkstyle"/>
+    </file>
+    <file id="org_trails_i18n_HiveMindMessageSource.java" path="org/trails/i18n/HiveMindMessageSource.java">
+        <result date="2007-11-21" statvalue="1" type="checkstyle"/>
+    </file>
+    <file id="org_trails_component_ViewProperties.java" path="org/trails/component/ViewProperties.java">
+        <result date="2007-11-21" statvalue="1" type="checkstyle"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
+    </file>
+    <file id="org_trails_component_RenderProperties.java" path="org/trails/component/RenderProperties.java">
+        <result date="2007-11-21" statvalue="1" type="checkstyle"/>
+    </file>
+    <file id="org_trails_io_CallbackStackAdaptor.java" path="org/trails/io/CallbackStackAdaptor.java">
+        <result date="2007-11-21" statvalue="1" type="checkstyle"/>
+    </file>
+    <file id="org_trails_callback_UrlCallback.java" path="org/trails/callback/UrlCallback.java">
+        <result date="2007-11-21" statvalue="1" type="checkstyle"/>
+    </file>
+    <file id="org_trails_page_ViewPage.java" path="org/trails/page/ViewPage.java">
+        <result date="2007-11-21" statvalue="1" type="checkstyle"/>
+    </file>
+    <file
+        id="org_trails_record_FormClientPropertyPersistenceStrategy.java" path="org/trails/record/FormClientPropertyPersistenceStrategy.java">
+        <result date="2007-11-21" statvalue="1" type="checkstyle"/>
+    </file>
+    <file id="org_trails_record_FormClientPropertyPersistenceScope.java" path="org/trails/record/FormClientPropertyPersistenceScope.java">
+        <result date="2007-11-21" statvalue="1" type="checkstyle"/>
+    </file>
+    <file
+        id="org_trails_record_ReloadReattachPropertyPersistenceStrategy.java" path="org/trails/record/ReloadReattachPropertyPersistenceStrategy.java">
+        <result date="2007-11-21" statvalue="1" type="checkstyle"/>
+    </file>
+    <file
+        id="org_trails_record_ReattachPropertyPersistenceStrategy.java" path="org/trails/record/ReattachPropertyPersistenceStrategy.java">
+        <result date="2007-11-21" statvalue="1" type="checkstyle"/>
+    </file>
+    <file id="org_trails_engine_encoders_PagesEncoder.java" path="org/trails/engine/encoders/PagesEncoder.java">
+        <result date="2007-11-21" statvalue="1" type="checkstyle"/>
+    </file>
+    <file id="org_trails_link_ViewLink.java" path="org/trails/link/ViewLink.java">
+        <result date="2007-11-21" statvalue="1" type="checkstyle"/>
+    </file>
+    <file id="org_trails_link_ModelLink.java" path="org/trails/link/ModelLink.java">
+        <result date="2007-11-21" statvalue="1" type="checkstyle"/>
+    </file>
+    <file id="org_trails_i18n_AbstractMessageSource.java" path="org/trails/i18n/AbstractMessageSource.java">
+        <result date="2007-11-21" statvalue="72" type="cobertura-line"/>
+        <result date="2007-11-21" statvalue="80" type="cobertura-branch"/>
+    </file>
+    <file id="org_trails_io_Squeezable.java" path="org/trails/io/Squeezable.java">
+        <result date="2007-11-21" statvalue="100" type="cobertura-line"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
+    </file>
+    <file id="org_trails_page_IAssociationPage.java" path="org/trails/page/IAssociationPage.java">
+        <result date="2007-11-21" statvalue="100" type="cobertura-line"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
+    </file>
+    <file id="org_trails_page_IModelPage.java" path="org/trails/page/IModelPage.java">
+        <result date="2007-11-21" statvalue="100" type="cobertura-line"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
+    </file>
+    <file id="org_trails_page_PageType.java" path="org/trails/page/PageType.java">
+        <result date="2007-11-21" statvalue="100" type="cobertura-line"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
+    </file>
+    <file
+        id="org_trails_record_IClientAsoPropertyPersistenceStrategy.java" path="org/trails/record/IClientAsoPropertyPersistenceStrategy.java">
+        <result date="2007-11-21" statvalue="100" type="cobertura-line"/>
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
+    </file>
+    <file id="org_trails_Trails.java" path="org/trails/Trails.java">
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
+    </file>
+    <file id="org_trails_link_ListAllLink.java" path="org/trails/link/ListAllLink.java">
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
+    </file>
+    <file id="org_trails_link_SearchLink.java" path="org/trails/link/SearchLink.java">
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
+    </file>
+    <file id="org_trails_services_ServiceConstants.java" path="org/trails/services/ServiceConstants.java">
+        <result date="2007-11-21" statvalue="100" type="cobertura-branch"/>
     </file>
 </qalab>

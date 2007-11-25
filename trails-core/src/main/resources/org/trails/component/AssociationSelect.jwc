@@ -1,4 +1,0 @@
-<!DOCTYPE component-specification PUBLIC "-//Apache Software Foundation//Tapestry Specification 4.1//EN" "http://jakarta.apache.org/tapestry/dtd/Tapestry_4_1.dtd">
-<component-specification class="org.trails.component.AssociationSelect">
-	<description>produces a select list for an association property</description>
-</component-specification>

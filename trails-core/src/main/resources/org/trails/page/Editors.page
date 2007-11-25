@@ -59,19 +59,6 @@
 		<binding name="propertyDescriptor">descriptor</binding>
 	</component>
 
-	<component id="blobFields" type="BlobComponent">
-		<binding name="model">model</binding>
-		<binding name="descriptor">descriptor</binding>
-	</component>
-
-	<component id="associationMgt" type="AssociationMgt">
-		<binding name="model">model</binding>
-		<binding name="value">model[#this.descriptor.name]</binding>
-		<binding name="owner">model</binding>
-		<binding name="association">model[#this.descriptor.name]</binding>
-		<binding name="descriptor">descriptor</binding>
-	</component>
-
 	<component id="associationSelect" type="AssociationSelect">
 		<binding name="value">model[#this.descriptor.name]</binding>
 		<binding name="propertyDescriptor">descriptor</binding>

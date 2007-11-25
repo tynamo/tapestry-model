@@ -1,6 +1,0 @@
-<!DOCTYPE component-specification PUBLIC "-//Apache Software Foundation//Tapestry Specification 4.1//EN" "http://jakarta.apache.org/tapestry/dtd/Tapestry_4_1.dtd">
-<component-specification class="org.trails.component.EditCollection" allow-body="yes" allow-informal-parameters="yes">
-
-	<description>Allows a user to edit a collection property</description>
-
-</component-specification>

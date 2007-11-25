@@ -162,8 +162,25 @@
 
 	<pluginRepositories>
 		<pluginRepository>
-			<id>tapdoc</id>
-			<url>http://www.erinors.com/developer/maven2</url>
+			<id>tacos.stable</id>
+			<url>http://tacos.sourceforge.net/repository/</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+		</pluginRepository>
+		<pluginRepository>
+			<id>tacos-snapshot</id>
+			<name>Tacos Snapshot Repo</name>
+			<url>http://tacos.sourceforge.net/nightly/</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
 		</pluginRepository>
 	</pluginRepositories>
 

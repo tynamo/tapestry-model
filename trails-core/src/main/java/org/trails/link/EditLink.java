@@ -11,11 +11,13 @@
  */
 package org.trails.link;
 
+import org.apache.tapestry.annotations.ComponentClass;
 import org.trails.page.PageType;
 
 /**
  * This component displays a link to the EditPage for an object
  */
+@ComponentClass
 public abstract class EditLink extends ModelLink
 {
 
