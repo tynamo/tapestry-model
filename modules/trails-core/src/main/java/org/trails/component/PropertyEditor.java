@@ -11,7 +11,9 @@
  */
 package org.trails.component;
 
-import org.apache.tapestry.BaseComponent;
+import org.apache.tapestry.AbstractComponent;
+import org.apache.tapestry.IMarkupWriter;
+import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.annotations.Component;
 import org.apache.tapestry.annotations.ComponentClass;
 import org.apache.tapestry.annotations.Parameter;
@@ -23,7 +25,7 @@ import org.trails.descriptor.IPropertyDescriptor;
 import org.trails.page.IEditorBlockPage;
 
 @ComponentClass(allowBody = true, allowInformalParameters = true)
-public abstract class PropertyEditor extends BaseComponent
+public abstract class PropertyEditor extends AbstractComponent
 {
 
 	@Parameter(defaultValue = "container.property")
@@ -37,6 +39,11 @@ public abstract class PropertyEditor extends BaseComponent
 
 	@Parameter(defaultValue = "container.blockFinder")
 	public abstract BlockFinder getBlockFinder();
+
+	protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
+	{
+		getRenderBlock().render(writer, cycle);
+	}
 
 	public Block getBlock()
 	{

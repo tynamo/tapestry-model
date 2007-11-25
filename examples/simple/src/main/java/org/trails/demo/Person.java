@@ -1,13 +1,8 @@
 package org.trails.demo;
 
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import org.trails.descriptor.annotation.PropertyDescriptor;
 
-import org.apache.commons.lang.builder.EqualsBuilder;
+import javax.persistence.*;
 
 @Entity
 public class Person
@@ -15,18 +10,15 @@ public class Person
 
 	private Integer id;
 
-	private String name;
+	private String firstName;
+
+	private String lastName;
 
 	private Car car;
 
-	public Person()
-	{
-		super();
-		// TODO Auto-generated constructor stub
-	}
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+	@PropertyDescriptor(index = 0)
 	public Integer getId()
 	{
 		return id;
@@ -50,14 +42,24 @@ public class Person
 		this.address = address;
 	}
 
-	public String getName()
+	public String getFirstName()
 	{
-		return name;
+		return firstName;
 	}
 
-	public void setName(String name)
+	public void setFirstName(String firstName)
 	{
-		this.name = name;
+		this.firstName = firstName;
+	}
+
+	public String getLastName()
+	{
+		return lastName;
+	}
+
+	public void setLastName(String lastName)
+	{
+		this.lastName = lastName;
 	}
 
 	@OneToOne(mappedBy = "owner")
@@ -71,10 +73,18 @@ public class Person
 		this.car = car;
 	}
 
-	@Override
-	public boolean equals(Object obj)
+	public boolean equals(Object o)
 	{
-		// TODO Auto-generated method stub
-		return EqualsBuilder.reflectionEquals(this, obj);
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		Person person = (Person) o;
+
+		return (id != null ? id.equals(person.id) : person.id == null);
+	}
+
+	public int hashCode()
+	{
+		return (id != null ? id.hashCode() : 0);
 	}
 }

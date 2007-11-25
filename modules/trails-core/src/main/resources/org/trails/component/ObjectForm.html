@@ -1,10 +1,17 @@
 <span jwcid="$content$">
 	<form jwcid="form">
 		<ul class="glasslist">
-			<div jwcid="editProperties"/>
-			<li class="buttonBar bottom">
-				<div jwcid="objectActions"/>
-			</li>
+			<div jwcid="@If" condition="ognl:renderProperties">
+				<div jwcid="editProperties"/>
+			</div>
+			<div jwcid="@If" condition="ognl:bodyCount &gt; 0">
+				<span jwcid="@RenderBody"/>
+			</div>
+			<div jwcid="@If" condition="ognl:renderActions">
+				<li class="buttonBar bottom">
+					<div jwcid="objectActions"/>
+				</li>
+			</div>
 		</ul>
 	</form>
 </span>
