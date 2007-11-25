@@ -32,9 +32,6 @@ public abstract class TrailsLink extends AbstractLinkComponent
 		return getTrailsPagesService().getLink(false, esp);
 	}
 
-	@Parameter
-	public abstract String getCollectionProperty();
-
 	@Parameter(required = true)
 	public abstract PageType getPageType();
 

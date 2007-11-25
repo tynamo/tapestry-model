@@ -11,6 +11,7 @@
  */
 package org.trails.component;
 
+import org.apache.tapestry.BaseComponent;
 import org.apache.tapestry.annotations.Bean;
 import org.apache.tapestry.annotations.ComponentClass;
 import org.apache.tapestry.annotations.Lifecycle;
@@ -25,8 +26,13 @@ import org.trails.page.ModelPage;
  * Displays an id property
  */
 @ComponentClass(allowBody = true, allowInformalParameters = true)
-public abstract class Identifier extends PropertyEditor
+public abstract class Identifier extends BaseComponent
 {
+	@Parameter(defaultValue = "container.model")
+	public abstract Object getModel();
+
+	@Parameter(defaultValue = "container.modelNew")
+	public abstract boolean isModelNew();
 
 	@Parameter(required = true, cache = true)
 	public abstract IPropertyDescriptor getDescriptor();
