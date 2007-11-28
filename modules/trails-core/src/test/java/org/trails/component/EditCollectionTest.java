@@ -47,7 +47,6 @@ public class EditCollectionTest extends ComponentTest
 
 	EditCollection editCollection;
 	EditPage addPage;
-	Mock cycleMock = new Mock(IRequestCycle.class);
 	Mock pageMock = new Mock(IPage.class);
 	Mock pageResolverMock = new Mock(PageResolver.class);
 
@@ -154,7 +153,7 @@ public class EditCollectionTest extends ComponentTest
 		baz1 = (Baz) bazIterator.next();
 		baz2 = (Baz) bazIterator.next();
 		editCollection.setSelected(deletedList);
-		editCollection.remove((IRequestCycle) cycleMock.proxy());
+		editCollection.remove();
 		//System.out.println("size of collection: " + foo.getBazzes().size());
 		assertFalse("baz1 removed", foo.getBazzes().contains(baz1));
 		assertTrue("baz2 not removed", foo.getBazzes().contains(baz2));
@@ -170,14 +169,14 @@ public class EditCollectionTest extends ComponentTest
 		selectedList.add(new Boolean(true));
 		editCollection.setSelected(selectedList);
 		Mock cycleMock = new Mock(IRequestCycle.class);
-		editCollection.moveUp((IRequestCycle) cycleMock.proxy());
+		editCollection.moveUp();
 
 		assertEquals("still 2", 2, foo.getBings().size());
 		assertEquals("bing2 moved up", bing2, foo.getBings().get(0));
 
 		selectedList.set(0, new Boolean(true));
 		selectedList.set(1, new Boolean(false));
-		editCollection.moveDown((IRequestCycle) cycleMock.proxy());
+		editCollection.moveDown();
 		assertEquals("still 2", 2, foo.getBings().size());
 		assertEquals("bing2 moved down", bing2, foo.getBings().get(1));
 	}
