@@ -12,31 +12,26 @@ public class TrailsRuntimeException extends RuntimeException
 
 	public TrailsRuntimeException(Exception e, Class entityType)
 	{
-		super();
+		super(e);
 		this.entityType = entityType;
-		// TODO Auto-generated constructor stub
 	}
 
 	public TrailsRuntimeException(String message)
 	{
 		super(message);
-		// TODO Auto-generated constructor stub
 	}
 
 	public TrailsRuntimeException(String message, Throwable cause)
 	{
 		super(message, cause);
-		// TODO Auto-generated constructor stub
 	}
 
 	public TrailsRuntimeException(Throwable cause)
 	{
 		super(cause);
-		// TODO Auto-generated constructor stub
 	}
 
 	public Class getEntityType() {
 		return entityType;
 	}
-
 }

@@ -11,11 +11,14 @@
  */
 package org.trails.component;
 
-import java.util.ArrayList;
-
+import ognl.Ognl;
+import ognl.OgnlException;
 import org.apache.commons.lang.StringUtils;
 import org.apache.oro.text.perl.Perl5Util;
 import org.trails.TrailsRuntimeException;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 
 /**
@@ -147,4 +150,17 @@ public class Utils
 		} else return type;
 	}
 
+	public static void executeOgnlExpression(String ognlExpression, Object member, Object model)
+	{
+		HashMap context = new HashMap();
+		context.put("member", member);
+
+		try
+		{
+			Ognl.getValue(ognlExpression + "(#member)", context, model);
+		} catch (OgnlException e)
+		{
+			throw new TrailsRuntimeException(e, model.getClass());
+		}
+	}
 }

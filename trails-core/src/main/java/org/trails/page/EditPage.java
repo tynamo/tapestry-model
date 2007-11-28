@@ -11,8 +11,6 @@
  */
 package org.trails.page;
 
-import ognl.Ognl;
-import ognl.OgnlException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.tapestry.IRequestCycle;
@@ -20,13 +18,11 @@ import org.apache.tapestry.annotations.Bean;
 import org.apache.tapestry.annotations.Lifecycle;
 import org.apache.tapestry.callback.ICallback;
 import org.apache.tapestry.engine.ILink;
-import org.trails.TrailsRuntimeException;
 import org.trails.callback.UrlCallback;
+import org.trails.component.Utils;
 import org.trails.engine.TrailsPagesServiceParameter;
 import org.trails.persistence.PersistenceException;
 import org.trails.validation.TrailsValidationDelegate;
-
-import java.util.HashMap;
 
 /**
  * This page will edit an instance contained in the model property
@@ -125,7 +121,7 @@ public abstract class EditPage extends ModelPage implements IAssociationPage
 		{
 			if (cameFromCollection())
 			{
-				executeOgnlExpression(getAssociationDescriptor().findAddExpression(), getModel(), getParent());
+				Utils.executeOgnlExpression(getAssociationDescriptor().findAddExpression(), getModel(), getParent());
 				getPersistenceService().save(getParent());
 			}
 			return goBack(cycle);
@@ -138,13 +134,13 @@ public abstract class EditPage extends ModelPage implements IAssociationPage
 
 		try
 		{
-			getPersistenceService().remove(getModel());
-
 			if (cameFromCollection())
 			{
-				executeOgnlExpression(getAssociationDescriptor().findRemoveExpression(), getModel(), getParent());
+				Utils.executeOgnlExpression(getAssociationDescriptor().findRemoveExpression(), getModel(), getParent());
 				getPersistenceService().save(getParent());
 			}
+
+			getPersistenceService().remove(getModel());
 
 		} catch (PersistenceException pe)
 		{
@@ -182,17 +178,4 @@ public abstract class EditPage extends ModelPage implements IAssociationPage
 		return getParent() != null;
 	}
 
-	private void executeOgnlExpression(String ognlExpression, Object newObject, Object model)
-	{
-		HashMap context = new HashMap();
-		context.put("member", newObject);
-
-		try
-		{
-			Ognl.getValue(ognlExpression + "(#member)", context, model);
-		} catch (OgnlException e)
-		{
-			throw new TrailsRuntimeException(e, model.getClass());
-		}
-	}
 }

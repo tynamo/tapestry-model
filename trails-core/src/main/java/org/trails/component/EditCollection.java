@@ -30,10 +30,7 @@ import org.trails.descriptor.IPropertyDescriptor;
 import org.trails.page.PageResolver;
 import org.trails.persistence.PersistenceService;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 
 /**
@@ -108,7 +105,7 @@ public abstract class EditCollection extends TrailsComponent
 	@Asset("classpath:move_down.gif")
 	public abstract IAsset getDownImage();
 
-	private List selected = new ArrayList();
+	private List<Boolean> selected = new ArrayList<Boolean>();
 
 	/**
 	 * 
@@ -124,10 +121,9 @@ public abstract class EditCollection extends TrailsComponent
 	 *
 	 * @see org.apache.tapestry.AbstractComponent#prepareForRender(org.apache.tapestry.IRequestCycle)
 	 */
-	protected void prepareForRender(IRequestCycle arg0)
+	protected void prepareForRender(IRequestCycle cycle)
 	{
-		// TODO Auto-generated method stub
-		super.prepareForRender(arg0);
+		super.prepareForRender(cycle);
 		buildSelectedList();
 	}
 
@@ -135,11 +131,10 @@ public abstract class EditCollection extends TrailsComponent
 	{
 		if (getCollection() != null)
 		{
-			selected = new ArrayList();
-			for (Iterator iter = getCollection().iterator(); iter.hasNext();)
+			selected = new ArrayList<Boolean>(getCollection().size());
+			for (Object o : getCollection())
 			{
-				iter.next();
-				selected.add(new Boolean(false));
+				selected.add(false);
 			}
 		}
 	}
@@ -152,26 +147,24 @@ public abstract class EditCollection extends TrailsComponent
 	@InjectObject("service:trails.core.PageResolver")
 	public abstract PageResolver getPageResolver();
 
-	/**
-	 * @param cycle
-	 */
-	public void remove(IRequestCycle cycle)
+	public void remove()
 	{
 		int i = 0;
 		// TODO CN - This code stinks (I wrote it).  Isn't there a better way??
 		ArrayList deleting = new ArrayList();
-		for (Iterator iter = getCollection().iterator(); iter.hasNext();)
+		for (Object element : getCollection())
 		{
-
-			Object element = (Object) iter.next();
-
-			if (((Boolean) getSelected().get(i)).booleanValue())
+			if (getSelected().get(i))
 			{
 				deleting.add(element);
 			}
 			i++;
 		}
-		getCollection().removeAll(deleting);
+
+		for (Object element : deleting)
+		{
+			Utils.executeOgnlExpression(getCollectionDescriptor().findRemoveExpression(), element, getModel());
+		}
 	}
 
 	public List getSelectedList()
@@ -193,17 +186,17 @@ public abstract class EditCollection extends TrailsComponent
 	/**
 	 * @return Returns the toBeDeleted.
 	 */
-	public List getSelected()
+	public List<Boolean> getSelected()
 	{
 		return selected;
 	}
 
 	/**
-	 * @param toBeDeleted The toBeDeleted to set.
+	 * @param selected The toBeDeleted to set.
 	 */
-	public void setSelected(List toBeDeleted)
+	public void setSelected(List<Boolean> selected)
 	{
-		this.selected = toBeDeleted;
+		this.selected = selected;
 	}
 
 	/**
@@ -237,40 +230,26 @@ public abstract class EditCollection extends TrailsComponent
 		}
 	}
 
-	/**
-	 * @param cycle
-	 */
-	public void moveUp(IRequestCycle cycle)
+	public void moveUp()
 	{
 		List list = (List) getCollection();
 		for (int i = 1; i < getSelected().size(); i++)
 		{
-			if (((Boolean) getSelected().get(i)).booleanValue())
+			if (getSelected().get(i))
 			{
-				swap(list, i, i - 1);
+				Collections.swap(list, i, i - 1);
 			}
 		}
 	}
 
-	private void swap(List list, int fromIndex, int toIndex)
-	{
-		Object from = list.get(fromIndex);
-		Object to = list.get(toIndex);
-		list.set(fromIndex, to);
-		list.set(toIndex, from);
-	}
-
-	/**
-	 * @param cycle
-	 */
-	public void moveDown(IRequestCycle cycle)
+	public void moveDown()
 	{
 		List list = (List) getCollection();
 		for (int i = 0; i < getSelected().size() - 1; i++)
 		{
-			if (((Boolean) getSelected().get(i)).booleanValue())
+			if (getSelected().get(i))
 			{
-				swap(list, i, i + 1);
+				Collections.swap(list, i, i + 1);
 			}
 		}
 	}
