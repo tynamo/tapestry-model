@@ -8,7 +8,7 @@
 							renderTag="true">
 							<td>
 								<a href="#" jwcid="@EditLink" model="ognl:currentObject"
-								   collectionProperty="ognl:propertyDescriptor.name">
+								   collectionProperty="ognl:collectionDescriptor.name">
 									<span jwcid="insert@Insert" value="ognl:currentObject"/>
 								</a>
 							</td>
@@ -19,13 +19,13 @@
 					</table>
 					<!--
 						 <table class="list table contribTable" jwcid="@ObjectTable" instances="ognl:collection"
-								classDescriptor="ognl:descriptorService.getClassDescriptor(propertyDescriptor.elementType)"
+								classDescriptor="ognl:descriptorService.getClassDescriptor(collectionDescriptor.elementType)"
 								object="ognl:currentObject"
 								index="ognl:index"
 								extraColumns="!checkbox: :checkbox">
 							 <span jwcid="linkColumnValue@Block">
 								 <a href="#" jwcid="@EditLink" model="ognl:currentObject"
-									collectionProperty="ognl:propertyDescriptor.name">
+									collectionProperty="ognl:collectionDescriptor.name">
 									 <span jwcid="insert@Insert" value="ognl:currentObject + 'jguyt'"/>
 								 </a>
 							 </span>
@@ -47,9 +47,11 @@
 				</td>
 			</tr>
 		</table>
-		<input jwcid="removeButton@Submit" type="button"
-			   value="ognl:getMessage(@org.trails.component.Utils@REMOVE_MESSAGE)"
-			   listener="listener:remove" disabled="ognl:page.modelNew"/>
+		<span jwcid="@If" condition="ognl:allowRemove">
+			<input jwcid="removeButton@Submit" type="button"
+				   value="ognl:getMessage(@org.trails.component.Utils@REMOVE_MESSAGE)"
+				   listener="listener:remove" disabled="ognl:page.modelNew"/>
+		</span>
 	</div>
     <div jwcid="canAddFromExisting@If" condition="ognl:addFromExisting">
 		<div jwcid="palette@contrib:Palette" tableClass="field tapestry-palette" model="ognl:selectionModel"
@@ -58,9 +60,9 @@
 	</div>
 	<div jwcid="allowCreate@If" condition="ognl:allowCreate">
 		<span type="button" jwcid="@TrailsLink"
-			  classDescriptor="ognl:descriptorService.getClassDescriptor(propertyDescriptor.elementType)"
+			  classDescriptor="ognl:descriptorService.getClassDescriptor(collectionDescriptor.elementType)"
 			  pageType="ognl:@org.trails.page.PageType@NEW"
-			  associationDescriptor="ognl:propertyDescriptor"
+			  associationDescriptor="ognl:collectionDescriptor"
 			  parent="ognl:model"
 			  disabled="ognl:page.modelNew"
 			  renderer="ognl:renderer"

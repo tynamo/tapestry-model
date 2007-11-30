@@ -70,8 +70,7 @@ public class ObjectTableTest extends MockObjectTestCase
 		IPropertyDescriptor summaryDescriptor = new TrailsPropertyDescriptor(Foo.class, "nonSummary", String.class);
 		summaryDescriptor.setSummary(false);
 
-		CollectionDescriptor bazzesDesriptor = new CollectionDescriptor(Foo.class, Set.class);
-		bazzesDesriptor.setName("bazzes");
+		CollectionDescriptor bazzesDesriptor = new CollectionDescriptor(Foo.class, "bazzes", Set.class);
 
 		propertyDescriptors.add(idProp);
 		propertyDescriptors.add(multiWordProp);

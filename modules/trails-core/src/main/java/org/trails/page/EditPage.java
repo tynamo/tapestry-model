@@ -121,7 +121,7 @@ public abstract class EditPage extends ModelPage implements IAssociationPage
 		{
 			if (cameFromCollection())
 			{
-				Utils.executeOgnlExpression(getAssociationDescriptor().findAddExpression(), getModel(), getParent());
+				Utils.executeOgnlExpression(getAssociationDescriptor().getAddExpression(), getModel(), getParent());
 				getPersistenceService().save(getParent());
 			}
 			return goBack(cycle);
@@ -136,7 +136,7 @@ public abstract class EditPage extends ModelPage implements IAssociationPage
 		{
 			if (cameFromCollection())
 			{
-				Utils.executeOgnlExpression(getAssociationDescriptor().findRemoveExpression(), getModel(), getParent());
+				Utils.executeOgnlExpression(getAssociationDescriptor().getRemoveExpression(), getModel(), getParent());
 				getPersistenceService().save(getParent());
 			}
 

@@ -33,6 +33,14 @@ public class CollectionDescriptor extends TrailsPropertyDescriptor
 
 	private boolean oneToMany = false;
 
+	private String addExpression = null;
+
+	private String removeExpression = null;
+
+	private String swapExpression = null;
+
+	private boolean allowRemove = true;
+
 	public CollectionDescriptor(Class beanType, IPropertyDescriptor descriptor)
 	{
 		super(beanType, descriptor);
@@ -44,21 +52,18 @@ public class CollectionDescriptor extends TrailsPropertyDescriptor
 		this.copyFrom(collectionDescriptor);
 	}
 
-	public CollectionDescriptor(Class beanType, Class type)
-	{
-		super(beanType, type);
-		// TODO Auto-generated constructor stub
-	}
-
 	public CollectionDescriptor(Class beanType, String name, Class type)
 	{
-		this(beanType, type);
+		super(beanType, type);
 		this.setName(name);
 	}
 
-	/* (non-Javadoc)
-		 * @see org.trails.descriptor.PropertyDescriptor#isCollection()
-		 */
+
+	/**
+	 * (non-Javadoc)
+	 *
+	 * @see org.trails.descriptor.TrailsPropertyDescriptor#isCollection()
+	 */
 	public boolean isCollection()
 	{
 		return true;
@@ -124,12 +129,60 @@ public class CollectionDescriptor extends TrailsPropertyDescriptor
 		}
 	}
 
+	public String getAddExpression()
+	{
+		if (addExpression == null)
+		{
+			addExpression = findAddExpression();
+		}
+		return addExpression;
+	}
+
+	public void setAddExpression(String addExpression)
+	{
+		this.addExpression = addExpression;
+	}
+
+	public String getRemoveExpression()
+	{
+		if (removeExpression == null)
+		{
+			removeExpression = findRemoveExpression();
+		}
+		return removeExpression;
+	}
+
+	public void setRemoveExpression(String removeExpression)
+	{
+		this.removeExpression = removeExpression;
+	}
+
+	public String getSwapExpression()
+	{
+		return swapExpression;
+	}
+
+	public void setSwapExpression(String swapExpression)
+	{
+		this.swapExpression = swapExpression;
+	}
+
+	public boolean isAllowRemove()
+	{
+		return allowRemove;
+	}
+
+	public void setAllowRemove(boolean allowRemove)
+	{
+		this.allowRemove = allowRemove;
+	}
+
 	public Object clone()
 	{
 		return new CollectionDescriptor(getBeanType(), this);
 	}
 
-	public String findAddExpression()
+	private String findAddExpression()
 	{
 		final String method = "add";
 
@@ -140,25 +193,27 @@ public class CollectionDescriptor extends TrailsPropertyDescriptor
 		 * eg: "bazzes.contains(#member) ? bazzes.size() : bazzes.add" 
 		 *
 		 */
-		if (isChildRelationship() && List.class.isAssignableFrom(getType())) {
-			return findExpression(method, getName() + ".contains(#member) ? " + getName() + ".size() : " + getName() + "." + method);
-		} else {
+		if (isChildRelationship() && List.class.isAssignableFrom(getType()))
+		{
+			return findExpression(method,
+					getName() + ".contains(#member) ? " + getName() + ".size() : " + getName() + "." + method);
+		} else
+		{
 			return findExpression(method);
 		}
 
 	}
 
-	public String findRemoveExpression()
+	private String findRemoveExpression()
 	{
 		return findExpression("remove");
 	}
 
 	/**
 	 * @param method the method to look for, usually add or remove
-	 * @return the ogln expression to use to add or remove a member to the
-	 *         collection.  Will look for a addName method where Name is
-	 *         the unqualified element class name, if there isn't one it will use
-	 *         the collection's add method.
+	 * @return the ogln expression to use to add or remove a member to the collection.  Will look for a addName method
+	 *         where Name is the unqualified element class name, if there isn't one it will use the collection's add
+	 *         method.
 	 */
 	private String findExpression(String method, String defaultValue)
 	{
@@ -166,7 +221,8 @@ public class CollectionDescriptor extends TrailsPropertyDescriptor
 
 		try
 		{
-			addMethod = getBeanType().getMethod(method + getElementType().getSimpleName(), new Class[]{getElementType()});
+			addMethod =
+					getBeanType().getMethod(method + getElementType().getSimpleName(), new Class[]{getElementType()});
 		} catch (NoSuchMethodException ex)
 		{
 			// if we don't have one...

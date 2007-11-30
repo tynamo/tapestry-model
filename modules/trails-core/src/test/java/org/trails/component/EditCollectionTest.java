@@ -12,24 +12,20 @@
 package org.trails.component;
 
 import ognl.Ognl;
-import org.apache.tapestry.IPage;
-import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.contrib.palette.SortMode;
 import org.apache.tapestry.form.IPropertySelectionModel;
 import org.jmock.Mock;
-import org.trails.callback.CallbackStack;
 import org.trails.descriptor.CollectionDescriptor;
 import org.trails.descriptor.IClassDescriptor;
 import org.trails.descriptor.IdentifierDescriptor;
 import org.trails.descriptor.TrailsClassDescriptor;
-import org.trails.page.EditPage;
 import org.trails.page.PageResolver;
 import org.trails.test.Baz;
 import org.trails.test.Bing;
 import org.trails.test.Foo;
 
-import java.beans.IntrospectionException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -37,30 +33,16 @@ import java.util.Set;
 public class EditCollectionTest extends ComponentTest
 {
 
-	EditPage editPage;
-
 	Foo foo;
 	Baz baz1;
 	Baz baz2;
 	Bing bing1;
 	Bing bing2;
 
-	EditCollection editCollection;
-	EditPage addPage;
-	Mock pageMock = new Mock(IPage.class);
 	Mock pageResolverMock = new Mock(PageResolver.class);
 
 	public void setUp()
 	{
-		editCollection = (EditCollection) creator.newInstance(EditCollection.class,
-				new Object[]{
-						"persistenceService", persistenceMock.proxy(),
-						"descriptorService", descriptorServiceMock.proxy(),
-						"callbackStack", callbackStack,
-						"pageResolver", pageResolverMock.proxy()
-				});
-		editPage = buildTrailsPage(EditPage.class);
-
 		foo = new Foo();
 
 		baz1 = new Baz();
@@ -76,77 +58,29 @@ public class EditCollectionTest extends ComponentTest
 		bing2.setDescription("bing 2");
 		foo.getBings().add(bing1);
 		foo.getBings().add(bing2);
-
-		editPage.setModel(foo);
-		editPage.setPageName("fooPage");
-
-		addPage = (EditPage) creator.newInstance(EditPage.class);
-
-		editCollection.setCallbackStack(new CallbackStack());
-		editCollection.setPage((IPage) pageMock.proxy());
-
-		editCollection.setCollection(new ArrayList());
 	}
 
 	public void testOgnl() throws Exception
 	{
-		buildCollectionDescriptor("bings", Bing.class);
+		EditCollection editCollection = buildEditCollection("bings", Bing.class, null);
 		Ognl.getValue("collectionDescriptor.childRelationship", editCollection);
-	}
-
-	/**
-	 * @throws IntrospectionException
-	 */
-	private void buildCollectionDescriptor(String property, Class elementType)
-			throws IntrospectionException
-	{
-		CollectionDescriptor collectionDescriptor = new CollectionDescriptor(Foo.class, Set.class);
-		collectionDescriptor.setName(property);
-		collectionDescriptor.setElementType(elementType);
-		collectionDescriptor.setChildRelationship(true);
-		editCollection.setPropertyDescriptor(collectionDescriptor);
-		editCollection.setModel(foo);
-
-	}
-
-
-	/**
-	 * @return
-	 */
-	protected Mock buildCycleMock(String element)
-	{
-		// lets say Foo_addBaz has custom page
-		Mock cycleMock = new Mock(IRequestCycle.class);
-		cycleMock.expects(once()).method("getPage").with(eq(
-				element + "Edit")).will(returnValue(addPage));
-		cycleMock.expects(atLeastOnce()).method("activate").with(same(addPage));
-		cycleMock.expects(atLeastOnce()).method("getPage").with(eq("fooEditPage")).will(
-				returnValue(editPage));
-
-		return cycleMock;
 	}
 
 	public void testBuildSelectedList() throws Exception
 	{
-
-		editCollection.setCollection(foo.getBazzes());
+		EditCollection editCollection = buildEditCollection("bazzes", Baz.class, foo.getBazzes());
 		editCollection.buildSelectedList();
 		assertEquals("2 in list", 2, editCollection.getSelected().size());
 		Boolean toBeDeleted = (Boolean) editCollection.getSelected().get(1);
 		assertFalse("not to be deleted", toBeDeleted.booleanValue());
-		editCollection.setCollection(null);
-		editCollection.buildSelectedList();
 	}
 
 	public void testRemove() throws Exception
 	{
-		buildCollectionDescriptor("bazzes", Baz.class);
-
-		editCollection.setCollection(foo.getBazzes());
-		ArrayList deletedList = new ArrayList();
-		deletedList.add(new Boolean(true));
-		deletedList.add(new Boolean(false));
-		Mock cycleMock = new Mock(IRequestCycle.class);
+		EditCollection editCollection = buildEditCollection("bazzes", Baz.class, foo.getBazzes());
+		ArrayList<Boolean> deletedList = new ArrayList<Boolean>();
+		deletedList.add(true);
+		deletedList.add(false);
 
 		// dunno what order they're in really
 		Iterator bazIterator = foo.getBazzes().iterator();
@@ -161,21 +95,18 @@ public class EditCollectionTest extends ComponentTest
 
 	public void testMove() throws Exception
 	{
-		buildCollectionDescriptor("bings", Bing.class);
-
-		editCollection.setCollection(foo.getBings());
-		ArrayList selectedList = new ArrayList();
-		selectedList.add(new Boolean(false));
-		selectedList.add(new Boolean(true));
+		EditCollection editCollection = buildEditCollection("bings", Bing.class, foo.getBings());
+		ArrayList<Boolean> selectedList = new ArrayList<Boolean>();
+		selectedList.add(false);
+		selectedList.add(true);
 		editCollection.setSelected(selectedList);
-		Mock cycleMock = new Mock(IRequestCycle.class);
 		editCollection.moveUp();
 
 		assertEquals("still 2", 2, foo.getBings().size());
 		assertEquals("bing2 moved up", bing2, foo.getBings().get(0));
 
-		selectedList.set(0, new Boolean(true));
-		selectedList.set(1, new Boolean(false));
+		selectedList.set(0, true);
+		selectedList.set(1, false);
 		editCollection.moveDown();
 		assertEquals("still 2", 2, foo.getBings().size());
 		assertEquals("bing2 moved down", bing2, foo.getBings().get(1));
@@ -183,14 +114,13 @@ public class EditCollectionTest extends ComponentTest
 
 	public void testSortMode() throws Exception
 	{
-		buildCollectionDescriptor("bings", Bing.class);
-		editCollection.setCollection(new ArrayList());
+		EditCollection editCollection = buildEditCollection("bings", Bing.class, new ArrayList());
 		assertEquals("user sortable", SortMode.USER, editCollection.getSortMode());
 	}
 
 	public void testGetSelectionModel() throws Exception
 	{
-		buildCollectionDescriptor("bings", Bing.class);
+		EditCollection editCollection = buildEditCollection("bings", Bing.class, new ArrayList());
 		Bing bing1 = new Bing();
 		editCollection.getCollectionDescriptor().setChildRelationship(true);
 		editCollection.getCollection().add(bing1);
@@ -206,4 +136,20 @@ public class EditCollectionTest extends ComponentTest
 
 	}
 
+	private EditCollection buildEditCollection(String property, Class elementType, Collection collection)
+	{
+		CollectionDescriptor collectionDescriptor = new CollectionDescriptor(Foo.class, property, Set.class);
+		collectionDescriptor.setElementType(elementType);
+		collectionDescriptor.setChildRelationship(true);
+
+		return (EditCollection) creator.newInstance(EditCollection.class,
+				new Object[]{
+						"persistenceService", persistenceMock.proxy(),
+						"descriptorService", descriptorServiceMock.proxy(),
+						"pageResolver", pageResolverMock.proxy(),
+						"collectionDescriptor", collectionDescriptor,
+						"collection", collection,
+						"model", foo
+				});
+	}
 }

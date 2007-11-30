@@ -1,24 +1,32 @@
 package org.trails.demo;
 
+import org.hibernate.annotations.IndexColumn;
 import org.hibernate.validator.NotNull;
 import org.trails.descriptor.annotation.Collection;
 import org.trails.descriptor.annotation.PropertyDescriptor;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Entity
 public class Category
 {
-	private Integer id;
-	private String name;
-	private List<SubCategory> subcategories = new ArrayList<SubCategory>();
-
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@PropertyDescriptor(hidden = true)
+	private Integer id;
+
+	private String name;
+
+	@OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
+	@IndexColumn(name = "CATEGORY_INDEX")
+	@Collection(child = true, allowRemove = false, swapExpression = "swapSubCategory")
+	private List<SubCategory> subcategories = new ArrayList<SubCategory>();
+
+
 	public Integer getId()
 	{
 		return id;
@@ -41,16 +49,43 @@ public class Category
 	}
 
 
-	@OneToMany
-	@Collection(child = true)
 	public List<SubCategory> getSubcategories()
 	{
-		return subcategories;
+		return Collections.unmodifiableList(subcategories);
 	}
 
-	public void setSubcategories(List<SubCategory> subcategories)
+	public void addSubCategory(SubCategory subCategory)
 	{
-		this.subcategories = subcategories;
+		subCategory.setCategory(this);
+		if (!subcategories.contains(subCategory))
+		{
+			subcategories.add(subCategory);
+			subCategory.setCategoryIndex(subcategories.size() - 1);
+		}
+	}
+
+	public void removeSubCategory(SubCategory subCategory)
+	{
+		subCategory.setCategory(null);
+		if (subcategories.contains(subCategory))
+		{
+			subcategories.remove(subCategory);
+		}
+	}
+
+	public void swapSubCategory(int from, int to)
+	{
+		subcategories.get(from).setCategoryIndex(to);
+		subcategories.get(to).setCategoryIndex(from);
+		Collections.swap(subcategories, from, to);
+	}
+
+	public void swapSubCategory(SubCategory from, SubCategory to)
+	{
+		int i = from.getCategoryIndex();
+		from.setCategoryIndex(to.getCategoryIndex());
+		to.setCategoryIndex(i);
+		Collections.swap(subcategories, subcategories.indexOf(from), subcategories.indexOf(to));
 	}
 
 	public boolean equals(Object o)
@@ -65,11 +100,11 @@ public class Category
 
 	public int hashCode()
 	{
-		return (id != null ? id.hashCode() : 0);
+		return (getId() != null ? getId().hashCode() : 0);
 	}
 
 	public String toString()
 	{
-		return name;
+		return getName();
 	}
 }
