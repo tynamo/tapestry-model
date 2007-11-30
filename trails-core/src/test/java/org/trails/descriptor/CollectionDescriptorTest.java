@@ -13,11 +13,11 @@ public class CollectionDescriptorTest extends TestCase
 	{
 		CollectionDescriptor bingsDescriptor = new CollectionDescriptor(Foo.class, "bings", Set.class);
 		bingsDescriptor.setElementType(Bing.class);
-		assertEquals("bings.add", bingsDescriptor.findAddExpression());
+		assertEquals("bings.add", bingsDescriptor.getAddExpression());
 		CollectionDescriptor bazzesDescriptor = new CollectionDescriptor(Foo.class, "bazzes", Set.class);
 		bazzesDescriptor.setElementType(Baz.class);
-		assertEquals("addBaz", bazzesDescriptor.findAddExpression());
-		assertEquals("removeBaz", bazzesDescriptor.findRemoveExpression());
+		assertEquals("addBaz", bazzesDescriptor.getAddExpression());
+		assertEquals("removeBaz", bazzesDescriptor.getRemoveExpression());
 
 	}
 

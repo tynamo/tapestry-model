@@ -2,6 +2,7 @@ package org.trails.engine;
 
 import ognl.Ognl;
 import ognl.OgnlException;
+import org.apache.commons.lang.StringUtils;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.IPage;
@@ -90,9 +91,11 @@ public class TrailsPagesService implements IEngineService
 			throw e;
 		}
 
-		IClassDescriptor classDescriptor = (IClassDescriptor) dataSqueezer.unsqueeze(cycle.getParameter(ServiceConstants.CLASS_DESCRIPTOR));
+		IClassDescriptor classDescriptor =
+				(IClassDescriptor) dataSqueezer.unsqueeze(cycle.getParameter(ServiceConstants.CLASS_DESCRIPTOR));
 		Object model = unsqueezeIfNotNull(cycle, ServiceConstants.MODEL);
-		CollectionDescriptor collectionDescriptor = (CollectionDescriptor) unsqueezeIfNotNull(cycle, ServiceConstants.ASSOC_DESCRIPTOR);
+		CollectionDescriptor collectionDescriptor =
+				(CollectionDescriptor) unsqueezeIfNotNull(cycle, ServiceConstants.ASSOC_DESCRIPTOR);
 		Object parent = unsqueezeIfNotNull(cycle, ServiceConstants.PAERNT_MODEL);
 
 		activateTrailsPage(cycle, pageType, classDescriptor, model, parent, collectionDescriptor);
@@ -135,7 +138,8 @@ public class TrailsPagesService implements IEngineService
 			page = (IActivatableTrailsPage) rawPage;
 		} catch (ClassCastException ex)
 		{
-			throw new ApplicationRuntimeException(EngineMessages.pageNotCompatible(rawPage, IActivatableTrailsPage.class), rawPage, null, ex);
+			throw new ApplicationRuntimeException(
+					EngineMessages.pageNotCompatible(rawPage, IActivatableTrailsPage.class), rawPage, null, ex);
 		}
 
 		page.setClassDescriptor(classDescriptor);
@@ -147,6 +151,17 @@ public class TrailsPagesService implements IEngineService
 			if (PageType.NEW.equals(pageType))
 			{
 				((ModelPage) page).setModelNew(true);
+				if ((collectionDescriptor != null) && (parent != null) &&
+						(!StringUtils.isEmpty(collectionDescriptor.getInverseProperty())))
+				{
+					try
+					{
+						Ognl.setValue(collectionDescriptor.getInverseProperty(), model, parent);
+					} catch (OgnlException e)
+					{
+						//@todo LOG ERROR
+					}
+				}
 			} else
 			{
 				((ModelPage) page).setModelNew(false);

@@ -8,7 +8,7 @@
 
 	<component id="editCollection" type="HibernateEditCollection" inherit-informal-parameters="no">
 		<binding name="collection">model[#this.descriptor.name]</binding>
-		<binding name="propertyDescriptor">descriptor</binding>
+		<binding name="collectionDescriptor">descriptor</binding>
 	</component>
 
 	<component id="identifier" type="HibernateIdentifier" inherit-informal-parameters="no">

@@ -36,7 +36,7 @@
 	</component>
 	<component id="editCollection" type="EditCollection" inherit-informal-parameters="no">
 		<binding name="collection">model[#this.descriptor.name]</binding>
-		<binding name="propertyDescriptor">descriptor</binding>
+		<binding name="collectionDescriptor">descriptor</binding>
 	</component>
 	<component id="identifier" type="Identifier" inherit-informal-parameters="no">
 		<binding name="descriptor">descriptor</binding>
