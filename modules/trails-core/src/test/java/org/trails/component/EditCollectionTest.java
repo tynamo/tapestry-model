@@ -69,7 +69,7 @@ public class EditCollectionTest extends ComponentTest
 	public void testBuildSelectedList() throws Exception
 	{
 		EditCollection editCollection = buildEditCollection("bazzes", Baz.class, foo.getBazzes());
-		editCollection.buildSelectedList();
+		editCollection.setSelected(editCollection.buildSelectedList());
 		assertEquals("2 in list", 2, editCollection.getSelected().size());
 		Boolean toBeDeleted = (Boolean) editCollection.getSelected().get(1);
 		assertFalse("not to be deleted", toBeDeleted.booleanValue());

@@ -177,6 +177,11 @@ public abstract class EditCollection extends TrailsComponent
 		return selected;
 	}
 
+	protected void setSelected(List<Boolean> selected)
+	{
+		this.selected = selected;
+	}
+
 	/**
 	 * @return
 	 */
