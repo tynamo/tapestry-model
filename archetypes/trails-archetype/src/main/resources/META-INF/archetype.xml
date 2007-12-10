@@ -3,6 +3,10 @@
 	<sources>
 		<source>src/main/java/MyDomainObject.java</source>
 	</sources>
+	<testSources>
+		<source>src/test/java/MyDomainObjectTest.java</source>
+		<source>src/test/java/AppTest.java</source>
+	</testSources>
 	<resources>
 		<resource filtered="false">src/main/webapp/images/bullet_error.png</resource>
 		<resource filtered="false">src/main/webapp/images/aquadot.jpg</resource>
@@ -64,9 +68,5 @@
 		<resource filtered="false">src/main/webapp/styles/tapestryskin/forms.css</resource>
 
 	</resources>
-
-	<testSources>
-		<source>src/test/java/AppTest.java</source>
-	</testSources>
 
 </archetype>
