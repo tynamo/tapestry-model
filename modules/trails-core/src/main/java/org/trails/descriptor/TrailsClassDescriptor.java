@@ -141,8 +141,7 @@ public class TrailsClassDescriptor extends TrailsDescriptor implements
 	 */
 	public IPropertyDescriptor getPropertyDescriptor(String name)
 	{
-		return findDescriptor("propertyDescriptors.{? name == '" + name
-			+ "'}[0]");
+		return findDescriptor("propertyDescriptors.{? name == '" + name + "'}[0]");
 	}
 
 	/**

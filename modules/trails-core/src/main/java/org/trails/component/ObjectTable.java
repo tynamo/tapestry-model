@@ -234,33 +234,29 @@ public abstract class ObjectTable extends ClassDescriptorComponent implements Pa
 			LOG.debug("Creating Columns for " + getClassDescriptor().getPluralDisplayName());
 			for (IPropertyDescriptor descriptor : getPropertyDescriptors())
 			{
-				if (displaying(descriptor))
+				TrailsTableColumn tableColumn = new TrailsTableColumn(descriptor, getEvaluator());
+				tableColumn.loadSettings(getContainer());
+				columns.add(tableColumn);
+				Block block = (Block) getContainer().getComponents().get(
+						descriptor.getName() + AbstractTableColumn.VALUE_RENDERER_BLOCK_SUFFIX);
+				if (block == null)
 				{
-					TrailsTableColumn tableColumn = new TrailsTableColumn(descriptor, getEvaluator());
-					tableColumn.loadSettings(getContainer());
-					columns.add(tableColumn);
-					Block block = (Block) getContainer().getComponents().get(
-							descriptor.getName() + AbstractTableColumn.VALUE_RENDERER_BLOCK_SUFFIX);
-					if (block == null)
+					if (getLinkProperty().equals(descriptor.getName())
+							&& (getClassDescriptor().isAllowSave() || getClassDescriptor().isAllowRemove()))
 					{
-						if (getLinkProperty().equals(descriptor.getName())
-								&& (getClassDescriptor().isAllowSave() || getClassDescriptor().isAllowRemove()))
-						{
-
-							/**
-							 * Add a link for the edit page following these rules:
-							 * a) Use the identifier descriptor if is displayable (summary=true ).
-							 * b) Use the first displayable property if  the identifier property is not displayable
-							 *    (summary=false)
-							 *
-							 */
-							Block linkBlock = (Block) getContainer().getComponents().get(LINK_COLUMN);
-							tableColumn.setValueRendererSource(new BlockTableRendererSource(
-									linkBlock != null ? linkBlock : (Block) getComponent(LINK_COLUMN)));
-						} else
-						{
-							alterTableColumn(descriptor, tableColumn);
-						}
+						/**
+						 * Add a link for the edit page following these rules:
+						 * a) Use the identifier descriptor if is displayable (summary=true ).
+						 * b) Use the first displayable property if  the identifier property is not displayable
+						 *    (summary=false)
+						 *
+						 */
+						Block linkBlock = (Block) getContainer().getComponents().get(LINK_COLUMN);
+						tableColumn.setValueRendererSource(new BlockTableRendererSource(
+								linkBlock != null ? linkBlock : (Block) getComponent(LINK_COLUMN)));
+					} else
+					{
+						alterTableColumn(descriptor, tableColumn);
 					}
 				}
 			}
@@ -286,11 +282,7 @@ public abstract class ObjectTable extends ClassDescriptorComponent implements Pa
 
 	}
 
-	/**
-	 * @param descriptor
-	 * @return
-	 */
-	protected boolean displaying(IPropertyDescriptor descriptor)
+	protected boolean shouldDisplay(IPropertyDescriptor descriptor)
 	{
 		return !descriptor.isHidden() && descriptor.isSummary() &&
 				((descriptor.isCollection() && isShowCollections()) || (!descriptor.isCollection()));
@@ -314,7 +306,7 @@ public abstract class ObjectTable extends ClassDescriptorComponent implements Pa
 	public String getLinkProperty()
 	{
 		IPropertyDescriptor propertyDescriptor = getIdentifierPropertyDescriptor();
-		if (!displaying(propertyDescriptor))
+		if (!shouldDisplay(propertyDescriptor))
 			propertyDescriptor = getFirstDisplayableProperty();
 
 		return propertyDescriptor.getName();
@@ -329,7 +321,7 @@ public abstract class ObjectTable extends ClassDescriptorComponent implements Pa
 	{
 		for (IPropertyDescriptor descriptor : getPropertyDescriptors())
 		{
-			if (displaying(descriptor))
+			if (shouldDisplay(descriptor))
 			{
 				return descriptor;
 

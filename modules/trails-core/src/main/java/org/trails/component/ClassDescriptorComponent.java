@@ -1,12 +1,10 @@
 package org.trails.component;
 
 import java.util.List;
+import java.util.ArrayList;
 
-import ognl.Ognl;
-import ognl.OgnlException;
 import org.apache.tapestry.annotations.Parameter;
 import org.apache.tapestry.components.Block;
-import org.trails.TrailsRuntimeException;
 import org.trails.descriptor.IClassDescriptor;
 import org.trails.descriptor.IPropertyDescriptor;
 
@@ -23,26 +21,34 @@ public abstract class ClassDescriptorComponent extends TrailsComponent
 
 	public abstract void setPropertyNames(String[] PropertyNames);
 
-	/**
-	 * @return
-	 * @throws OgnlException
-	 */
 	public List<IPropertyDescriptor> getPropertyDescriptors()
 	{
 		if (getPropertyNames() == null || getPropertyNames().length == 0)
 		{
-			try
+			List<IPropertyDescriptor> displayingPropertyDescriptors = new ArrayList<IPropertyDescriptor>();
+			for (IPropertyDescriptor propertyDescriptor : getClassDescriptor().getPropertyDescriptors())
 			{
-				return (List) Ognl.getValue("#this.{? not(hidden)}", getClassDescriptor().getPropertyDescriptors());
+				if (shouldDisplay(propertyDescriptor))
+				{
+					displayingPropertyDescriptors.add(propertyDescriptor);
+				}
 			}
-			catch (OgnlException oe)
-			{
-				throw new TrailsRuntimeException(oe, getClassDescriptor().getType());
-			}
+			return displayingPropertyDescriptors;
 		} else
 		{
 			return getClassDescriptor().getPropertyDescriptors(getPropertyNames());
 		}
+	}
+
+	/**
+	 * Hook method to allow subclasses to modify when an IPropertyDescriptor should be displayed.
+	 *
+	 * @param descriptor
+	 * @return
+	 */
+	protected boolean shouldDisplay(IPropertyDescriptor descriptor)
+	{
+		return !descriptor.isHidden();
 	}
 
 	public boolean hasBlock(String propertyName)
