@@ -27,7 +27,16 @@ public class EnumPropertySelectionModel extends AbstractPropertySelectionModel
 	public EnumPropertySelectionModel(Class type)
 	{
 		this(type, false);
+	}
 
+	public EnumPropertySelectionModel(Enum[] set)
+	{
+		this(Arrays.asList(set), false);
+	}
+
+	public EnumPropertySelectionModel(Enum[] set, boolean allowNone)
+	{
+		this(Arrays.asList(set), allowNone);
 	}
 
 	public EnumPropertySelectionModel(List instances, boolean allowNone)
