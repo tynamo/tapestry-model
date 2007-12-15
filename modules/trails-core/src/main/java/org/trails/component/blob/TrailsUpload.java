@@ -9,7 +9,8 @@ import org.apache.tapestry.annotations.ComponentClass;
 import org.apache.tapestry.annotations.InjectObject;
 import org.apache.tapestry.annotations.Parameter;
 import org.apache.tapestry.request.IUploadFile;
-import org.trails.descriptor.BlobDescriptorExtension;
+import org.trails.descriptor.extension.BlobDescriptorExtension;
+import org.trails.descriptor.extension.ITrailsBlob;
 import org.trails.descriptor.IPropertyDescriptor;
 import org.trails.persistence.PersistenceService;
 

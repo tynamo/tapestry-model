@@ -3,7 +3,6 @@ package org.trails.demo;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -16,13 +15,12 @@ import javax.persistence.Transient;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.trails.component.blob.ITrailsBlob;
-import org.trails.descriptor.BlobDescriptorExtension.ContentDisposition;
-import org.trails.descriptor.BlobDescriptorExtension.RenderType;
+import org.trails.descriptor.extension.ITrailsBlob;
+import org.trails.descriptor.extension.BlobDescriptorExtension.ContentDisposition;
+import org.trails.descriptor.extension.BlobDescriptorExtension.RenderType;
 import org.trails.descriptor.annotation.BlobDescriptor;
 import org.trails.descriptor.annotation.PropertyDescriptor;
-import org.trails.security.annotation.ViewRequiresAssociation;
-import org.trails.util.DatePattern;
+import org.trails.demo.DatePattern;
 
 /**
  * 

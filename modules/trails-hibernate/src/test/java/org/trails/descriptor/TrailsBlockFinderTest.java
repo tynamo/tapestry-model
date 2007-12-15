@@ -7,6 +7,8 @@ import org.jmock.integration.junit3.MockObjectTestCase;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.trails.testhibernate.Foo;
+import org.trails.finder.EditorBlockFinder;
+import org.trails.finder.BlockFinder;
 
 public class TrailsBlockFinderTest extends MockObjectTestCase
 {

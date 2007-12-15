@@ -1,4 +1,4 @@
-package org.trails.util;
+package org.trails.demo;
 
 import java.text.SimpleDateFormat;
 

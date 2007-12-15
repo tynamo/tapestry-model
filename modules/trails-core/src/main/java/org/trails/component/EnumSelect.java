@@ -2,7 +2,7 @@ package org.trails.component;
 
 import org.apache.tapestry.annotations.ComponentClass;
 import org.apache.tapestry.form.IPropertySelectionModel;
-import org.trails.descriptor.EnumReferenceDescriptor;
+import org.trails.descriptor.extension.EnumReferenceDescriptor;
 
 /**
  * Produces a select list for native java enum types.

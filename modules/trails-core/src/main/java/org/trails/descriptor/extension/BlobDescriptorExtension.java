@@ -1,15 +1,20 @@
-package org.trails.descriptor;
+package org.trails.descriptor.extension;
 
 import java.lang.reflect.InvocationTargetException;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.trails.TrailsRuntimeException;
-import org.trails.component.blob.ITrailsBlob;
+import org.trails.exception.TrailsRuntimeException;
+import org.trails.descriptor.IDescriptorExtension;
+import org.trails.descriptor.IExpressionSupport;
+import org.trails.descriptor.IPropertyDescriptor;
+import org.trails.descriptor.IDescriptor;
+import org.trails.descriptor.extension.ITrailsBlob;
 
 public class BlobDescriptorExtension implements IDescriptorExtension,
-		IExpressionSupport {
+		IExpressionSupport
+{
 	protected static final Log LOG = LogFactory
 			.getLog(BlobDescriptorExtension.class);
 

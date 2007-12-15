@@ -1,8 +1,9 @@
-package org.trails.descriptor;
+package org.trails.finder;
 
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.components.Block;
 import org.trails.page.IEditorBlockPage;
+import org.trails.descriptor.IPropertyDescriptor;
 
 
 public class EditorBlockFinder extends BaseBlockFinder

@@ -18,10 +18,11 @@ import org.apache.tapestry.error.RequestExceptionReporter;
 import org.apache.tapestry.services.LinkFactory;
 import org.apache.tapestry.util.ContentType;
 import org.apache.tapestry.web.WebResponse;
-import org.trails.descriptor.BlobDescriptorExtension;
+import org.trails.descriptor.extension.BlobDescriptorExtension;
+import org.trails.descriptor.extension.ITrailsBlob;
 import org.trails.descriptor.DescriptorService;
 import org.trails.persistence.PersistenceService;
-import org.trails.component.Utils;
+import org.trails.util.Utils;
 
 public class BlobDownloadService implements IEngineService {
 

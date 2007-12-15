@@ -4,7 +4,7 @@ import org.apache.tapestry.IAsset;
 import org.apache.tapestry.annotations.Asset;
 import org.apache.tapestry.annotations.ComponentClass;
 import org.apache.tapestry.annotations.Parameter;
-import org.trails.descriptor.BlockFinder;
+import org.trails.finder.BlockFinder;
 import org.trails.descriptor.IPropertyDescriptor;
 
 /**

@@ -19,6 +19,7 @@ import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
 import org.trails.test.Baz;
 import org.trails.test.Foo;
+import org.trails.util.Utils;
 
 
 public class UtilsTest extends TestCase

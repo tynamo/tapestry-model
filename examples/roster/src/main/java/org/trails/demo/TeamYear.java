@@ -19,7 +19,7 @@ import org.trails.descriptor.annotation.ClassDescriptor;
 import org.trails.descriptor.annotation.PropertyDescriptor;
 import org.trails.security.annotation.RemoveRequiresRole;
 import org.trails.security.annotation.UpdateRequiresRole;
-import org.trails.util.DatePattern;
+import org.trails.demo.DatePattern;
 
 /**
  * 

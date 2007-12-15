@@ -1,4 +1,4 @@
-package org.trails.component.blob;
+package org.trails.descriptor.extension;
 
 import java.io.Serializable;
 

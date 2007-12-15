@@ -15,10 +15,9 @@ import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.annotations.InjectObject;
 import org.apache.tapestry.annotations.Parameter;
 import org.apache.tapestry.annotations.ComponentClass;
-import org.trails.component.Utils;
+import org.trails.util.Utils;
 import org.trails.descriptor.DescriptorService;
 import org.trails.descriptor.IClassDescriptor;
-import org.trails.page.PageType;
 
 @ComponentClass
 public abstract class ModelLink extends TrailsLink

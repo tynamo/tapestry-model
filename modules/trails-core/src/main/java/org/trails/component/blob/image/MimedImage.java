@@ -12,8 +12,8 @@ import org.apache.tapestry.annotations.InjectObject;
 import org.apache.tapestry.annotations.Parameter;
 import org.apache.tapestry.asset.AssetFactory;
 import org.apache.tapestry.html.Image;
-import org.trails.component.blob.ITrailsBlob;
-import org.trails.descriptor.BlobDescriptorExtension;
+import org.trails.descriptor.extension.ITrailsBlob;
+import org.trails.descriptor.extension.BlobDescriptorExtension;
 import org.trails.descriptor.IPropertyDescriptor;
 import org.trails.persistence.PersistenceService;
 
@@ -23,7 +23,7 @@ import org.trails.persistence.PersistenceService;
  * It substitutes icons when tapestry fails to negotiate a
  * proper src for uploadable media.
  * <p/>
- * This is exclusively intended for org.trails.component.blob.ITrailsBlob
+ * This is exclusively intended for org.trails.descriptor.extension.ITrailsBlob
  *
  * @author kenneth.colassi
  */

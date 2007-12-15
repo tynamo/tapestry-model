@@ -12,7 +12,7 @@ import org.trails.descriptor.DescriptorService;
 import org.trails.descriptor.IClassDescriptor;
 import org.trails.persistence.HibernatePersistenceService;
 import java.util.List;
-import org.trails.component.Utils;
+import org.trails.util.Utils;
 
 public aspect ValidateUniqueAspect
 {

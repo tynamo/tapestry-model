@@ -1,6 +1,6 @@
 package org.trails.hibernate;
 
-import org.trails.TrailsRuntimeException;
+import org.trails.exception.TrailsRuntimeException;
 
 public class MetadataNotFoundException extends TrailsRuntimeException
 {

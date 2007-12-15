@@ -3,8 +3,8 @@ package org.trails.testhibernate;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.text.SimpleDateFormat;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -17,12 +17,11 @@ import javax.persistence.Transient;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.trails.component.blob.ITrailsBlob;
-import org.trails.descriptor.BlobDescriptorExtension.ContentDisposition;
-import org.trails.descriptor.BlobDescriptorExtension.RenderType;
+import org.trails.descriptor.extension.ITrailsBlob;
+import org.trails.descriptor.extension.BlobDescriptorExtension.ContentDisposition;
+import org.trails.descriptor.extension.BlobDescriptorExtension.RenderType;
 import org.trails.descriptor.annotation.BlobDescriptor;
 import org.trails.descriptor.annotation.PropertyDescriptor;
-import org.trails.util.DatePattern;
 
 /**
  *
@@ -51,8 +50,12 @@ import org.trails.util.DatePattern;
 	}
  */
 @Entity
-public class UploadableMedia implements ITrailsBlob {
+public class UploadableMedia implements ITrailsBlob
+{
+
 	private static final Log log = LogFactory.getLog(UploadableMedia.class);
+
+	private static final SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy");
 
 	public enum EMedia {
 		DOCUMENT, PHOTO, CLIP
@@ -178,7 +181,7 @@ public class UploadableMedia implements ITrailsBlob {
 	public String getCreatedAsString() {
 		Calendar cal = new GregorianCalendar();
 		cal.setTimeInMillis(created.longValue());
-		return DatePattern.sdf.format(cal.getTime());
+		return sdf.format(cal.getTime());
 	}
 
 	@Transient
@@ -186,14 +189,14 @@ public class UploadableMedia implements ITrailsBlob {
 	public String getAccessedAsString() {
 		Calendar cal = new GregorianCalendar();
 		cal.setTimeInMillis(accessed.longValue());
-		return DatePattern.sdf.format(cal.getTime());
+		return sdf.format(cal.getTime());
 	}
 
 	@Transient
 	@PropertyDescriptor(hidden = true, summary = false, searchable = false)
 	public void setCreatedAsString(String value) throws Exception {
 		Calendar cal = new GregorianCalendar();
-		cal.setTimeInMillis(DatePattern.sdf.parse(value).getTime());
+		cal.setTimeInMillis(sdf.parse(value).getTime());
 		this.created = new Long(cal.getTimeInMillis());
 	}
 
@@ -201,7 +204,7 @@ public class UploadableMedia implements ITrailsBlob {
 	@PropertyDescriptor(hidden = true, summary = false, searchable = false)
 	public void setAccessedAsString(String value) throws Exception {
 		Calendar cal = new GregorianCalendar();
-		cal.setTimeInMillis(DatePattern.sdf.parse(value).getTime());
+		cal.setTimeInMillis(sdf.parse(value).getTime());
 		this.accessed = new Long(cal.getTimeInMillis());
 	}
 

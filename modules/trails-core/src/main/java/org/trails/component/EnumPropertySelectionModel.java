@@ -3,7 +3,7 @@ package org.trails.component;
 import java.util.Arrays;
 import java.util.List;
 
-import org.trails.TrailsRuntimeException;
+import org.trails.exception.TrailsRuntimeException;
 
 /**
  * Implementation of a property model that works off of native

@@ -5,7 +5,6 @@ package org.trails.i18n;
 
 import org.trails.descriptor.IClassDescriptor;
 import org.trails.descriptor.IDescriptor;
-import org.trails.servlet.TrailsApplicationServlet;
 
 /**
   * This class doesn't have a Aspect name (Ex.: DescriptorInternationalizationAspect) because we

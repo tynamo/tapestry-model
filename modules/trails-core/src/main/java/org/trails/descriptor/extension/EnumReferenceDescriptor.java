@@ -1,4 +1,6 @@
-package org.trails.descriptor;
+package org.trails.descriptor.extension;
+
+import org.trails.descriptor.IDescriptorExtension;
 
 
 public class EnumReferenceDescriptor implements IDescriptorExtension

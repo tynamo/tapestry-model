@@ -21,7 +21,6 @@ import java.util.Map;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.trails.component.Utils;
 
 /**
  * @author fus8882

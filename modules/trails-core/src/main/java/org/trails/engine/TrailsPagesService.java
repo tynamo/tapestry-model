@@ -15,7 +15,7 @@ import org.apache.tapestry.services.DataSqueezer;
 import org.apache.tapestry.services.LinkFactory;
 import org.apache.tapestry.services.ResponseRenderer;
 import org.trails.Trails;
-import org.trails.TrailsRuntimeException;
+import org.trails.exception.TrailsRuntimeException;
 import org.trails.descriptor.CollectionDescriptor;
 import org.trails.descriptor.IClassDescriptor;
 import org.trails.page.*;

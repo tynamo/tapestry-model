@@ -18,6 +18,7 @@ import org.trails.descriptor.IClassDescriptor;
 import org.trails.page.EditPage;
 import org.trails.page.PageType;
 import org.trails.persistence.HibernatePersistenceService;
+import org.trails.util.Utils;
 
 
 /**

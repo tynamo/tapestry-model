@@ -18,7 +18,7 @@ import java.util.List;
 import ognl.Ognl;
 import ognl.OgnlException;
 import org.apache.commons.beanutils.BeanUtils;
-import org.trails.component.Utils;
+import org.trails.util.Utils;
 
 /**
  * This represents all the Trails metadata for a single class.

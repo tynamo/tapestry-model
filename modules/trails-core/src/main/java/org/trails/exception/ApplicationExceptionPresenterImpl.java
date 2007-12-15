@@ -7,7 +7,7 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.error.ExceptionPresenterImpl;
-import org.trails.TrailsRuntimeException;
+import org.trails.exception.TrailsRuntimeException;
 import org.trails.page.PageResolver;
 import org.trails.page.PageType;
 

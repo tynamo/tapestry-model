@@ -41,17 +41,17 @@ import org.hibernate.metadata.CollectionMetadata;
 import org.hibernate.type.ComponentType;
 import org.hibernate.type.Type;
 import org.springframework.orm.hibernate3.LocalSessionFactoryBean;
-import org.trails.TrailsRuntimeException;
+import org.trails.exception.TrailsRuntimeException;
 import org.trails.descriptor.CollectionDescriptor;
 import org.trails.descriptor.DescriptorDecorator;
 import org.trails.descriptor.DescriptorFactory;
 import org.trails.descriptor.EmbeddedDescriptor;
-import org.trails.descriptor.EnumReferenceDescriptor;
+import org.trails.descriptor.extension.EnumReferenceDescriptor;
 import org.trails.descriptor.IClassDescriptor;
 import org.trails.descriptor.IPropertyDescriptor;
 import org.trails.descriptor.IdentifierDescriptor;
 import org.trails.descriptor.ObjectReferenceDescriptor;
-import org.trails.descriptor.OwningObjectReferenceDescriptor;
+import org.trails.descriptor.extension.OwningObjectReferenceDescriptor;
 import org.trails.descriptor.TrailsPropertyDescriptor;
 
 /**

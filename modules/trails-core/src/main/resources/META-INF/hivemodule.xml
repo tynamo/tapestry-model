@@ -2,8 +2,8 @@
 
 	<service-point id="DescriptorService" interface="org.trails.descriptor.DescriptorService"/>
 	<service-point id="PersistenceService" interface="org.trails.persistence.PersistenceService"/>
-	<service-point id="EditorService" interface="org.trails.descriptor.BlockFinder"/>
-	<service-point id="ViewerService" interface="org.trails.descriptor.BlockFinder"/>
+	<service-point id="EditorService" interface="org.trails.finder.BlockFinder"/>
+	<service-point id="ViewerService" interface="org.trails.finder.BlockFinder"/>
 	<service-point id="MessageSource" interface="org.trails.i18n.TrailsMessageSource"/>
 	<service-point id="AddNewLinkRenderer" interface="org.apache.tapestry.link.ILinkRenderer"/>
 

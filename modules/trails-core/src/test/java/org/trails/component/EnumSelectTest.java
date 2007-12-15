@@ -1,6 +1,6 @@
 package org.trails.component;
 
-import org.trails.descriptor.EnumReferenceDescriptor;
+import org.trails.descriptor.extension.EnumReferenceDescriptor;
 import org.trails.descriptor.IPropertyDescriptor;
 import org.trails.descriptor.IdentifierDescriptor;
 import org.trails.descriptor.TrailsClassDescriptor;

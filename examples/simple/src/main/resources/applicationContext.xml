@@ -39,27 +39,36 @@
 		<property name="password" value="${hibernate.connection.password}"/>
 	</bean>
 
-	<bean id="sessionFactory"
-		  class="org.springframework.orm.hibernate3.LocalSessionFactoryBean" autowire="byName">
+	<bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+		<property name="dataSource" ref="dataSource"/>
 		<property name="configLocation" value="classpath:hibernate.cfg.xml"/>
 		<property name="configurationClass" value="org.hibernate.cfg.AnnotationConfiguration"/>
 		<property name="entityInterceptor" ref="trailsInterceptor"/>
 		<property name="hibernateProperties" ref="hibernateProperties"/>
 	</bean>
 
-	<bean id="autoproxy" class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"
-		  autowire="autodetect"/>
-	<bean id="transactionInterceptor" class="org.springframework.transaction.interceptor.TransactionInterceptor"
-		  autowire="byName"/>
-	<bean id="transactionAdvisor" class="org.springframework.transaction.interceptor.TransactionAttributeSourceAdvisor"
-		  autowire="autodetect"/>
-	<bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager"
-		  autowire="autodetect"/>
+	<!-- it creates AOP proxies based on all candidate Advisors in the current BeanFactory -->
+	<bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"/>
+
+	<bean id="transactionAdvisor" class="org.springframework.transaction.interceptor.TransactionAttributeSourceAdvisor">
+		<property name="transactionInterceptor" ref="transactionInterceptor"/>
+	</bean>
+
+	<bean id="transactionInterceptor" class="org.springframework.transaction.interceptor.TransactionInterceptor">
+		<property name="transactionAttributeSource" ref="transactionAttributeSource"/>
+		<property name="transactionManager" ref="transactionManager"/>
+	</bean>
+
+	<bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+
 	<bean id="transactionAttributeSource"
 		  class="org.springframework.transaction.annotation.AnnotationTransactionAttributeSource"/>
 
-	<bean id="persistenceService" class="org.trails.hibernate.HibernatePersistenceServiceImpl" autowire="autodetect"/>
-
+	<bean id="persistenceService" class="org.trails.hibernate.HibernatePersistenceServiceImpl">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
 
 	<bean id="descriptorService" class="org.trails.descriptor.TrailsDescriptorService" init-method="init">
 		<property name="types">
@@ -109,11 +118,12 @@
 		<property name="descriptorService" ref="descriptorService"/>
 	</bean>
 
-	<bean id="descriptorInternationalizationAspect" class="org.trails.i18n.DescriptorInternationalization" factory-method="aspectOf">
+	<bean id="descriptorInternationalizationAspect" class="org.trails.i18n.DescriptorInternationalization"
+		  factory-method="aspectOf">
 		<property name="trailsMessageSource" ref="trailsMessageSource"/>
 	</bean>
 
-	<bean id="searchBlockFinder" class="org.trails.descriptor.BaseBlockFinder">
+	<bean id="searchBlockFinder" class="org.trails.finder.BaseBlockFinder">
 		<property name="defaultBlockAddress">
 			<bean class="org.apache.tapestry.util.ComponentAddress">
 				<constructor-arg index="0">
@@ -182,7 +192,7 @@
 		</property>
 	</bean>
 
-	<bean id="editorService" class="org.trails.descriptor.EditorBlockFinder">
+	<bean id="editorService" class="org.trails.finder.EditorBlockFinder">
 		<property name="defaultBlockAddress">
 			<bean class="org.apache.tapestry.util.ComponentAddress">
 				<constructor-arg index="0">
@@ -328,7 +338,7 @@
 				</entry>
 				<entry>
 					<key>
-						<value>supportsExtension('org.trails.descriptor.EnumReferenceDescriptor')</value>
+						<value>supportsExtension('org.trails.descriptor.extension.EnumReferenceDescriptor')</value>
 					</key>
 					<bean class="org.apache.tapestry.util.ComponentAddress">
 						<constructor-arg index="0">
@@ -341,7 +351,7 @@
 				</entry>
 				<entry>
 					<key>
-						<value>supportsExtension('org.trails.descriptor.BlobDescriptorExtension')</value>
+						<value>supportsExtension('org.trails.descriptor.extension.BlobDescriptorExtension')</value>
 					</key>
 					<bean class="org.apache.tapestry.util.ComponentAddress">
 						<constructor-arg index="0">
@@ -355,7 +365,7 @@
 
 				<entry>
 					<key>
-						<value>supportsExtension('org.trails.descriptor.OwningObjectReferenceDescriptor')</value>
+						<value>supportsExtension('org.trails.descriptor.extension.OwningObjectReferenceDescriptor')</value>
 					</key>
 					<bean class="org.apache.tapestry.util.ComponentAddress">
 						<constructor-arg index="0">
@@ -410,7 +420,7 @@
 		</property>
 	</bean>
 
-	<bean id="viewerService" class="org.trails.descriptor.EditorBlockFinder">
+	<bean id="viewerService" class="org.trails.finder.EditorBlockFinder">
 		<property name="defaultBlockAddress">
 			<bean class="org.apache.tapestry.util.ComponentAddress">
 				<constructor-arg index="0">

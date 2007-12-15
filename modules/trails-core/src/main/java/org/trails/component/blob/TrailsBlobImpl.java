@@ -1,5 +1,7 @@
 package org.trails.component.blob;
 
+import org.trails.descriptor.extension.ITrailsBlob;
+
 public class TrailsBlobImpl implements ITrailsBlob
 {
 	private String fileName;

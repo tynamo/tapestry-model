@@ -1,7 +1,8 @@
-package org.trails.descriptor;
+package org.trails.descriptor.extension;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.trails.descriptor.IDescriptorExtension;
 
 
 /**
@@ -27,7 +28,7 @@ import org.apache.commons.logging.LogFactory;
  * framework and gets detected as owner iff OneToOne does NOT have the mappedBy
  * attribute set
  * @see HibernateDescriptorDecorator
- * @see ObjectReferenceDescriptor
+ * @see org.trails.descriptor.ObjectReferenceDescriptor
  * @see org.trails.component.AssociationSelect
  * @see org.trails.component.AssociationMgt
  */

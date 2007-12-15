@@ -3,7 +3,7 @@ package org.trails.component;
 import org.apache.tapestry.annotations.ComponentClass;
 import org.apache.tapestry.annotations.InjectObject;
 import org.apache.tapestry.annotations.Parameter;
-import org.trails.descriptor.BlockFinder;
+import org.trails.finder.BlockFinder;
 import org.trails.descriptor.IClassDescriptor;
 import org.trails.descriptor.IPropertyDescriptor;
 

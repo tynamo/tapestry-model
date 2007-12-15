@@ -8,7 +8,7 @@ import ognl.OgnlException;
 
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
-import org.trails.TrailsRuntimeException;
+import org.trails.exception.TrailsRuntimeException;
 import org.trails.descriptor.DescriptorService;
 import org.trails.descriptor.IClassDescriptor;
 import org.trails.descriptor.IPropertyDescriptor;

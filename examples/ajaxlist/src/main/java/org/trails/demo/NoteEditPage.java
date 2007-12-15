@@ -8,7 +8,7 @@ import org.apache.tapestry.form.IPropertySelectionModel;
 import org.apache.tapestry.services.ResponseBuilder;
 import org.trails.component.IdentifierSelectionModel;
 import org.trails.page.HibernateEditPage;
-import org.trails.descriptor.BlockFinder;
+import org.trails.finder.BlockFinder;
 
 import java.util.ArrayList;
 import java.util.Collection;

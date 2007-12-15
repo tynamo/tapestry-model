@@ -1,7 +1,7 @@
 package org.trails.descriptor.annotation;
 
 import org.trails.descriptor.IPropertyDescriptor;
-import org.trails.descriptor.OwningObjectReferenceDescriptor;
+import org.trails.descriptor.extension.OwningObjectReferenceDescriptor;
 
 public class HardOneToOneAnnotationHandler extends AbstractAnnotationHandler implements
 		DescriptorAnnotationHandler<HardOneToOne, IPropertyDescriptor>

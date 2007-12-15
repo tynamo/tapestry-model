@@ -1,6 +1,5 @@
-package org.trails.descriptor;
+package org.trails.finder;
 
-import java.util.Iterator;
 import java.util.Map;
 
 import ognl.Ognl;
@@ -9,6 +8,7 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.components.Block;
 import org.apache.tapestry.util.ComponentAddress;
 import org.trails.page.IEditorBlockPage;
+import org.trails.descriptor.IPropertyDescriptor;
 
 public class BaseBlockFinder implements BlockFinder
 {
@@ -35,7 +35,7 @@ public class BaseBlockFinder implements BlockFinder
 	 * @param descriptor
 	 * @return The first component address in the editorMap whose key evaluates to true for descriptor. This will be used
 	 *         to load an editor for the descriptor. Returns default editor if no match is found.
-	 * @see org.trails.descriptor.BlockFinder#findBlockAddress(IPropertyDescriptor)
+	 * @see BlockFinder#findBlockAddress(org.trails.descriptor.IPropertyDescriptor)
 	 */
 	public ComponentAddress findBlockAddress(IPropertyDescriptor descriptor)
 	{
