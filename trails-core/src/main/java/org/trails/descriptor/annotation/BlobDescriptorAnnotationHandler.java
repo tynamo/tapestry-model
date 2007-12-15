@@ -1,6 +1,6 @@
 package org.trails.descriptor.annotation;
 
-import org.trails.descriptor.BlobDescriptorExtension;
+import org.trails.descriptor.extension.BlobDescriptorExtension;
 import org.trails.descriptor.IPropertyDescriptor;
 
 public class BlobDescriptorAnnotationHandler extends AbstractAnnotationHandler implements DescriptorAnnotationHandler<BlobDescriptor, IPropertyDescriptor>

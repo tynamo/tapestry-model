@@ -19,7 +19,7 @@ import org.apache.tapestry.test.Creator;
 import org.apache.tapestry.util.ComponentAddress;
 import org.jmock.Expectations;
 import org.jmock.integration.junit3.MockObjectTestCase;
-import org.trails.descriptor.BlockFinder;
+import org.trails.finder.BlockFinder;
 import org.trails.descriptor.IPropertyDescriptor;
 import org.trails.descriptor.TrailsPropertyDescriptor;
 import org.trails.page.IEditorBlockPage;

@@ -4,8 +4,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.tapestry.services.DataSqueezer;
 import org.apache.tapestry.util.io.SqueezeAdaptor;
-import org.trails.TrailsRuntimeException;
-import org.trails.component.Utils;
+import org.trails.exception.TrailsRuntimeException;
+import org.trails.util.Utils;
 
 /**
  * Squeezes a {@link Class}

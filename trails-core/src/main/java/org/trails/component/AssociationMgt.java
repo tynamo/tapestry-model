@@ -1,31 +1,6 @@
 package org.trails.component;
 
-import ognl.Ognl;
-import ognl.OgnlException;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.tapestry.IPage;
-import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.annotations.Bean;
 import org.apache.tapestry.annotations.ComponentClass;
-import org.apache.tapestry.annotations.InjectObject;
-import org.apache.tapestry.annotations.InjectState;
-import org.apache.tapestry.annotations.Lifecycle;
-import org.apache.tapestry.annotations.Parameter;
-import org.trails.TrailsRuntimeException;
-import org.trails.callback.CallbackStack;
-import org.trails.descriptor.BlockFinder;
-import org.trails.descriptor.DescriptorService;
-import org.trails.descriptor.IClassDescriptor;
-import org.trails.descriptor.ObjectReferenceDescriptor;
-import org.trails.descriptor.OwningObjectReferenceDescriptor;
-import org.trails.page.EditPage;
-import org.trails.page.PageResolver;
-import org.trails.page.PageType;
-import org.trails.persistence.PersistenceException;
-import org.trails.persistence.PersistenceService;
-import org.trails.validation.TrailsValidationDelegate;
 
 /**
  * @author kenneth.colassi nhhockeyplayer@hotmail.com

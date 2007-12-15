@@ -4,7 +4,7 @@ import java.lang.reflect.Constructor;
 
 import org.apache.tapestry.form.translator.NumberTranslator;
 import org.hibernate.criterion.Restrictions;
-import org.trails.TrailsRuntimeException;
+import org.trails.exception.TrailsRuntimeException;
 
 public abstract class NumberSearchField extends SimpleSearchField
 {

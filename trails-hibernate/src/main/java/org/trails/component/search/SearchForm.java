@@ -9,7 +9,7 @@ import org.apache.tapestry.event.PageEvent;
 import org.apache.hivemind.util.PropertyUtils;
 import org.hibernate.criterion.DetachedCriteria;
 import org.trails.component.ClassDescriptorComponent;
-import org.trails.descriptor.BlockFinder;
+import org.trails.finder.BlockFinder;
 import org.trails.descriptor.IClassDescriptor;
 import org.trails.descriptor.IPropertyDescriptor;
 import org.trails.page.HibernateListPage;

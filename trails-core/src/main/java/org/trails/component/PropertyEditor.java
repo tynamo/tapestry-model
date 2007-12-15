@@ -20,7 +20,7 @@ import org.apache.tapestry.annotations.Parameter;
 import org.apache.tapestry.components.Block;
 import org.apache.tapestry.components.RenderBlock;
 import org.apache.tapestry.util.ComponentAddress;
-import org.trails.descriptor.BlockFinder;
+import org.trails.finder.BlockFinder;
 import org.trails.descriptor.IPropertyDescriptor;
 import org.trails.page.IEditorBlockPage;
 

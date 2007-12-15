@@ -15,7 +15,7 @@ import java.util.List;
 
 import ognl.Ognl;
 import org.apache.commons.lang.StringUtils;
-import org.trails.TrailsRuntimeException;
+import org.trails.exception.TrailsRuntimeException;
 
 
 public class IdentifierSelectionModel extends AbstractPropertySelectionModel

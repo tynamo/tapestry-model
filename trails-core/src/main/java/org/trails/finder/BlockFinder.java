@@ -1,8 +1,9 @@
-package org.trails.descriptor;
+package org.trails.finder;
 
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.components.Block;
 import org.apache.tapestry.util.ComponentAddress;
+import org.trails.descriptor.IPropertyDescriptor;
 
 public interface BlockFinder
 {

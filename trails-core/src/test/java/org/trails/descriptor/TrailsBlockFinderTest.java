@@ -11,6 +11,7 @@ import org.jmock.Expectations;
 import org.jmock.integration.junit3.MockObjectTestCase;
 import org.trails.page.IEditorBlockPage;
 import org.trails.test.Foo;
+import org.trails.finder.EditorBlockFinder;
 
 public class TrailsBlockFinderTest extends MockObjectTestCase
 {

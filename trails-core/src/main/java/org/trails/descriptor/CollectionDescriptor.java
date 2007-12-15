@@ -18,7 +18,7 @@ import java.util.List;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.trails.TrailsRuntimeException;
+import org.trails.exception.TrailsRuntimeException;
 
 
 public class CollectionDescriptor extends TrailsPropertyDescriptor

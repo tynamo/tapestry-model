@@ -8,12 +8,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
+import javax.persistence.OneToOne;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.trails.descriptor.BlobDescriptorExtension.ContentDisposition;
-import org.trails.descriptor.BlobDescriptorExtension.RenderType;
+import org.trails.descriptor.extension.BlobDescriptorExtension.ContentDisposition;
+import org.trails.descriptor.extension.BlobDescriptorExtension.RenderType;
 import org.trails.descriptor.annotation.BlobDescriptor;
 import org.trails.descriptor.annotation.ClassDescriptor;
 import org.trails.descriptor.annotation.PropertyDescriptor;

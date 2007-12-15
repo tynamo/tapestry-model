@@ -7,7 +7,7 @@ import org.apache.tapestry.components.Block;
 import org.apache.tapestry.contrib.table.model.common.AbstractTableColumn;
 import org.apache.tapestry.contrib.table.model.common.BlockTableRendererSource;
 import org.hibernate.criterion.DetachedCriteria;
-import org.trails.descriptor.BlobDescriptorExtension;
+import org.trails.descriptor.extension.BlobDescriptorExtension;
 import org.trails.descriptor.IPropertyDescriptor;
 import org.trails.persistence.HibernatePersistenceService;
 

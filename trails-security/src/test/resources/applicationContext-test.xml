@@ -103,7 +103,7 @@
 	</bean>
 -->
 
-	<bean id="editorService" class="org.trails.descriptor.EditorBlockFinder">
+	<bean id="editorService" class="org.trails.finder.EditorBlockFinder">
 		<property name="editorMap">
 		<map>
 				<entry>

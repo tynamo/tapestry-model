@@ -5,7 +5,7 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.services.DataSqueezer;
 import org.apache.tapestry.util.io.SqueezeAdaptor;
-import org.trails.component.Utils;
+import org.trails.util.Utils;
 import org.trails.descriptor.DescriptorService;
 import org.trails.descriptor.IClassDescriptor;
 import org.trails.engine.encoders.abbreviator.EntityNameAbbreviator;

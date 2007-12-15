@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.tapestry.form.IPropertySelectionModel;
-import org.trails.TrailsRuntimeException;
+import org.trails.exception.TrailsRuntimeException;
 import ognl.Ognl;
 
 public abstract class AbstractPropertySelectionModel implements IPropertySelectionModel

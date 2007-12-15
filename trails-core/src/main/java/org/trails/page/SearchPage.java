@@ -3,7 +3,7 @@ package org.trails.page;
 import ognl.Ognl;
 import ognl.OgnlException;
 import org.apache.tapestry.IRequestCycle;
-import org.trails.TrailsRuntimeException;
+import org.trails.exception.TrailsRuntimeException;
 
 import java.util.ArrayList;
 import java.util.List;

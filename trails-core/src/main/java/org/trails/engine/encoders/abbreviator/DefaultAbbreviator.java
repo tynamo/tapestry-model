@@ -2,7 +2,7 @@ package org.trails.engine.encoders.abbreviator;
 
 import org.apache.commons.collections.BidiMap;
 import org.apache.commons.collections.bidimap.TreeBidiMap;
-import org.trails.component.Utils;
+import org.trails.util.Utils;
 import org.trails.descriptor.DescriptorService;
 import org.trails.descriptor.IClassDescriptor;
 

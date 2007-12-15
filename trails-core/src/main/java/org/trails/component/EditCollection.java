@@ -26,6 +26,7 @@ import org.trails.descriptor.DescriptorService;
 import org.trails.descriptor.IClassDescriptor;
 import org.trails.page.PageResolver;
 import org.trails.persistence.PersistenceService;
+import org.trails.util.Utils;
 
 import java.util.ArrayList;
 import java.util.Collection;

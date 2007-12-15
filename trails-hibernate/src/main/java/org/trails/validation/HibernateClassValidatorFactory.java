@@ -13,7 +13,7 @@ import org.hibernate.validator.InvalidStateException;
 import org.hibernate.validator.InvalidValue;
 import org.hibernate.validator.MessageInterpolator;
 import org.hibernate.validator.Validator;
-import org.trails.component.Utils;
+import org.trails.util.Utils;
 import org.trails.i18n.LocaleHolder;
 import org.trails.i18n.TrailsMessageSource;
 

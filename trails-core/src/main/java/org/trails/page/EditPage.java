@@ -19,7 +19,7 @@ import org.apache.tapestry.annotations.Lifecycle;
 import org.apache.tapestry.callback.ICallback;
 import org.apache.tapestry.engine.ILink;
 import org.trails.callback.UrlCallback;
-import org.trails.component.Utils;
+import org.trails.util.Utils;
 import org.trails.engine.TrailsPagesServiceParameter;
 import org.trails.persistence.PersistenceException;
 import org.trails.validation.TrailsValidationDelegate;

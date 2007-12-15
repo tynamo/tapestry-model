@@ -102,7 +102,7 @@
 	 </bean>
  -->
 
-	<bean id="editorService" class="org.trails.descriptor.EditorBlockFinder">
+	<bean id="editorService" class="org.trails.finder.EditorBlockFinder">
 		<property name="editorMap">
 			<map>
 				<entry>
@@ -147,7 +147,7 @@
 
 				<entry>
 					<key>
-						<value>supportsExtension('org.trails.descriptor.BlobDescriptorExtension')</value>
+						<value>supportsExtension('org.trails.descriptor.extension.BlobDescriptorExtension')</value>
 					</key>
 					<bean class="org.apache.tapestry.util.ComponentAddress">
 						<constructor-arg index="0">

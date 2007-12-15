@@ -2,7 +2,7 @@ package org.trails.security;
 
 import ognl.OgnlException;
 
-import org.trails.TrailsRuntimeException;
+import org.trails.exception.TrailsRuntimeException;
 
 public class TrailsSecurityException extends TrailsRuntimeException {
 	public TrailsSecurityException(String string) {

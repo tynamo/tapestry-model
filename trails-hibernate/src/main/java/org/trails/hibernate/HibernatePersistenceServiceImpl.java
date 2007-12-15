@@ -24,7 +24,7 @@ import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.trails.component.Utils;
+import org.trails.util.Utils;
 import org.trails.descriptor.CollectionDescriptor;
 import org.trails.descriptor.DescriptorService;
 import org.trails.descriptor.IClassDescriptor;
