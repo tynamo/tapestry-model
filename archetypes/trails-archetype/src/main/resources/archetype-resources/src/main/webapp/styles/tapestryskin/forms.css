@@ -203,15 +203,16 @@ label.choice {
     font-size: 1.05em;
 }
 
-textarea.textarea{
-    font-size: 1.1em;
-    font-family: Tahoma,"Lucida Grande", "Trebuchet MS", Verdana, sans-serif;
-    margin-bottom: 1px;
+textarea.textarea {
+	font-size: 1.2em;
+	font-family: Lucida Grande, Arial, Helvetica, sans-serif;
+	margin-bottom: 1px;
 }
 
-textarea.textarea[class]{
-    font-family: "Lucida Grande", Tahoma, "Trebuchet MS", Verdana, sans-serif;
+textarea.textarea[class] {
+	font-family: Lucida Grande, Arial, Helvetica, sans-serif;
 }
+
 
 select.select{
     padding: 1px 0 0 0;
