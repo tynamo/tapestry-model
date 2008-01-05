@@ -25,9 +25,7 @@
 		<dependency>
 			<groupId>net.sf.tacos</groupId>
 			<artifactId>tacos-core</artifactId>
-			<version>4.1.1-SNAPSHOT</version>
-			<!-- Needs <version>4.1.1-SNAPSHOT</version> to work -->
-			<!--<version>4.1.0</version>-->
+			<version>4.1.1</version>
 			<exclusions>
 				<!-- it depends on tapestry 4.1.2 -->
 				<exclusion>
@@ -46,27 +44,4 @@
 		</dependency>
 	</dependencies>
 
-	<repositories>
-		<repository>
-			<id>tacos.stable</id>
-			<url>http://tacos.sourceforge.net/repository/</url>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-		</repository>
-		<repository>
-			<id>tacos-snapshot</id>
-			<name>Tacos Snapshot Repo</name>
-			<url>http://tacos.sourceforge.net/nightly/</url>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
-		</repository>
-	</repositories>
 </project>
