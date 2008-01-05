@@ -3,38 +3,38 @@
 	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
-	<bean id="roleUser" class="sample.Role">
+	<bean id="roleUser" class="${packageName}.Role">
 		<property name="name" value="ROLE_USER"/>
 	</bean>
 
-	<bean id="roleManager" class="sample.Role">
+	<bean id="roleManager" class="${packageName}.Role">
 		<property name="name" value="ROLE_MANAGER"/>
 	</bean>
 
-	<bean id="user" class="sample.User">
+	<bean id="user" class="${packageName}.User">
 		<property name="username" value="user"/>
 		<property name="password" value="user"/>
 		<property name="confirmPassword" value="user"/>
 		<property name="firstName" value="Foo"/>
 		<property name="lastName" value="Bar"/>
 		<property name="roles">
-			<list>
+			<set>
 				<ref bean="roleUser"/>
-			</list>
+			</set>
 		</property>
 	</bean>
 
-	<bean id="admin" class="sample.User">
+	<bean id="admin" class="${packageName}.User">
 		<property name="username" value="admin"/>
 		<property name="password" value="admin"/>
 		<property name="confirmPassword" value="admin"/>
 		<property name="firstName" value="Admin"/>
 		<property name="lastName" value="Admin"/>
 		<property name="roles">
-			<list>
+			<set>
 				<ref bean="roleUser"/>
 				<ref bean="roleManager"/>
-			</list>
+			</set>
 		</property>
 	</bean>
 </beans>

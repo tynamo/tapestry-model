@@ -1,9 +1,4 @@
-package sample;
-
-import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
-import javax.persistence.*;
+package $packageName;
 
 import org.acegisecurity.GrantedAuthority;
 import org.hibernate.validator.Length;
@@ -12,6 +7,9 @@ import org.trails.descriptor.annotation.ClassDescriptor;
 import org.trails.descriptor.annotation.PropertyDescriptor;
 import org.trails.security.annotation.ViewRequiresRole;
 import org.trails.validation.ValidateUniqueness;
+
+import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "TRAILS_ROLE")
