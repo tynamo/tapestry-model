@@ -31,6 +31,15 @@
 		</invoke-factory>
 	</implementation>
 
+	<service-point id="currentUserFactory" interface="org.apache.tapestry.engine.state.StateObjectFactory">
+		<invoke-factory>
+			<construct class="org.trails.demo.service.CurrentUserFactory">
+				<set-object property="webRequest" value="service:tapestry.globals.WebRequest"/>
+				<set-object property="userDao" value="spring:trailsUserDAO"/>
+			</construct>
+		</invoke-factory>
+	</service-point>
+
 	<implementation service-id="trails.core.MessageSource">
 		<invoke-factory service-id="hivemind.lib.SpringLookupFactory">
 			<lookup-bean name="trailsMessageSource"/>
@@ -53,6 +62,9 @@
 	<contribution configuration-id="tapestry.state.ApplicationObjects">
 		<state-object name="callbackStack" scope="session">
 			<create-instance class="org.trails.callback.CallbackStack"/>
+		</state-object>
+		<state-object name="currentUser" scope="session">
+			<invoke-factory object="service:currentUserFactory"/>
 		</state-object>
 	</contribution>
 
