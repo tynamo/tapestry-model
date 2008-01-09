@@ -22,11 +22,15 @@ import org.apache.tapestry.components.RenderBlock;
 import org.apache.tapestry.util.ComponentAddress;
 import org.trails.finder.BlockFinder;
 import org.trails.descriptor.IPropertyDescriptor;
+import org.trails.descriptor.IClassDescriptor;
 import org.trails.page.IEditorBlockPage;
 
 @ComponentClass(allowBody = true, allowInformalParameters = true)
 public abstract class PropertyEditor extends AbstractComponent
 {
+
+	@Parameter(defaultValue = "container.classDescriptor")
+	public abstract IClassDescriptor getClassDescriptor();
 
 	@Parameter(defaultValue = "container.property")
 	public abstract IPropertyDescriptor getDescriptor();
@@ -54,6 +58,7 @@ public abstract class PropertyEditor extends AbstractComponent
 		((IEditorBlockPage) editorBlock.getPage()).setModel(getModel());
 		((IEditorBlockPage) editorBlock.getPage()).setModelNew(isModelNew());
 		((IEditorBlockPage) editorBlock.getPage()).setDescriptor(getDescriptor());
+		((IEditorBlockPage) editorBlock.getPage()).setClassDescriptor(getClassDescriptor());
 
 		return editorBlock;
 	}

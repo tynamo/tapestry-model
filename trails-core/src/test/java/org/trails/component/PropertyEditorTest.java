@@ -22,6 +22,8 @@ import org.jmock.integration.junit3.MockObjectTestCase;
 import org.trails.finder.BlockFinder;
 import org.trails.descriptor.IPropertyDescriptor;
 import org.trails.descriptor.TrailsPropertyDescriptor;
+import org.trails.descriptor.IClassDescriptor;
+import org.trails.descriptor.TrailsClassDescriptor;
 import org.trails.page.IEditorBlockPage;
 import org.trails.test.Foo;
 
@@ -31,6 +33,7 @@ public class PropertyEditorTest extends MockObjectTestCase
 
 	PropertyEditor propertyEditor;
 	IPropertyDescriptor descriptor;
+	IClassDescriptor classDescriptor;
 	BlockFinder blockFinder;
 	Messages messages;
 	Foo model;
@@ -43,6 +46,7 @@ public class PropertyEditorTest extends MockObjectTestCase
 		blockFinder = mock(BlockFinder.class);
 		model = new Foo();
 		descriptor = new TrailsPropertyDescriptor(Foo.class, "number", Double.class);
+		classDescriptor = new TrailsClassDescriptor(Foo.class);
 
 		propertyEditor = (PropertyEditor) creator.newInstance(PropertyEditor.class,
 			new Object[]{
@@ -50,7 +54,8 @@ public class PropertyEditorTest extends MockObjectTestCase
 					"messages", messages,
 					"model", model,
 					"modelNew", false,
-					"descriptor", descriptor
+					"descriptor", descriptor,
+					"classDescriptor", classDescriptor
 
 			});
 	}
@@ -76,8 +81,8 @@ public class PropertyEditorTest extends MockObjectTestCase
 					"messages", messages,
 					"model", model,
 					"modelNew", false,
-					"descriptor", descriptor2
-
+					"descriptor", descriptor2,
+					"classDescriptor", classDescriptor
 			});
 		
 		assertNull(propertyEditor.getEditorAddress());
@@ -102,6 +107,7 @@ public class PropertyEditorTest extends MockObjectTestCase
 				atLeast(1).of(page).setModel(model);
 				atLeast(1).of(page).setModelNew(false);
 				atLeast(1).of(page).setDescriptor(descriptor);
+				atLeast(1).of(page).setClassDescriptor(classDescriptor);
 
 				atLeast(1).of(blockFinder).findBlockAddress(descriptor); will(returnValue(componentAddress));
 			}
