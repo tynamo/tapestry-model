@@ -7,6 +7,12 @@
 		Every bean is expected to have a @Entity and @Id
 	 -->
 
+	<!--  ApplicationContext.getBeanDefinitionNames gets all bean names, but seed entity initializer
+	should just skip over abstract ones -->
+	<bean id="nonInstantiable" abstract="true">
+		<property name="justsomerandomproperty" value="somevalue"/>
+	</bean>
+
 	<bean id="foo" class="org.trails.testhibernate.Foo" lazy-init="true">
 		<property name="id" value="1"/>
 		<property name="name" value="seed foo"/>
