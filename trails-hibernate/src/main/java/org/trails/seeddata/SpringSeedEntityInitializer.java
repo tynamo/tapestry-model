@@ -10,6 +10,7 @@ import org.hibernate.criterion.Restrictions;
 import org.hibernate.validator.InvalidStateException;
 import org.hibernate.validator.InvalidValue;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.BeanIsAbstractException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.transaction.annotation.Transactional;
@@ -57,101 +58,105 @@ public class SpringSeedEntityInitializer implements ApplicationContextAware, See
 		String[] beanNames = applicationContext.getBeanDefinitionNames();
 		descriptorService.getAllDescriptors();
 
-		for (String beanName : beanNames)
-		{
-			Object object = applicationContext.getBean(beanName);
-			if (object.getClass().getAnnotation(Entity.class) != null && object != this)
-			{
-				IClassDescriptor classDescriptor = descriptorService.getClassDescriptor(object.getClass());
-				if (classDescriptor == null)
+		for (String beanName : beanNames) {
+			try { 
+				Object object = applicationContext.getBean(beanName);
+				
+				if (object.getClass().getAnnotation(Entity.class) != null && object != this)
 				{
-					log.error("Cannot handle entity of type " + object.getClass() + " because of non-existent class descriptor");
-					log.warn("Skipped seeding the entity bean " + beanName + ", check that hibernate configuration exists in the correct location and/or is generated correctly");
-					continue;
-				}
-				IPropertyDescriptor identifierDescriptor = classDescriptor.getIdentifierDescriptor();
-				Object id = null, savedObject = null;
-				String propertyName = identifierDescriptor.getName();
-				try
-				{
-					id = Ognl.getValue(propertyName, object);
-				} catch (OgnlException e)
-				{
-					log.warn("Couldn't get the id of a seed bean " + object + " because of: ", e);
-				}
-
-				// Try to find if a persistent entity already exists based on unique property or manually set id
-				ValidateUniqueness validateUniqueness = object.getClass().getAnnotation(ValidateUniqueness.class);
-				if (validateUniqueness == null && id == null)
-				{
-					log.info("Entity of type " + object.getClass() + " doesn't have uniquely identifying property. Searching using the whole entity as an example " + object);
-					List objects = persistenceService.getInstances(object, classDescriptor);
-					if (objects.size() == 0) log.info("Couldn't find an existing seed entity");
-					else if (objects.size() == 1)
+					IClassDescriptor classDescriptor = descriptorService.getClassDescriptor(object.getClass());
+					if (classDescriptor == null)
 					{
-						log.info("Found exactly one existing matching entity, assuming it is an earlier seeded entity");
-						savedObject = objects.get(0);
-					} else
-					{
-						log.warn("Found more than one existing entity based on the seed entity example, won't add a new one. You should make sure seed entities can be uniquely identified.");
+						log.error("Cannot handle entity of type " + object.getClass() + " because of non-existent class descriptor");
+						log.warn("Skipped seeding the entity bean " + beanName + ", check that hibernate configuration exists in the correct location and/or is generated correctly");
 						continue;
 					}
-				} else
-				{
-					DetachedCriteria criteria = DetachedCriteria.forClass(object.getClass());
-					if (validateUniqueness != null)
+					IPropertyDescriptor identifierDescriptor = classDescriptor.getIdentifierDescriptor();
+					Object id = null, savedObject = null;
+					String propertyName = identifierDescriptor.getName();
+					try
 					{
-						propertyName = validateUniqueness.property();
-
+						id = Ognl.getValue(propertyName, object);
+					} catch (OgnlException e)
+					{
+						log.warn("Couldn't get the id of a seed bean " + object + " because of: ", e);
+					}
+	
+					// Try to find if a persistent entity already exists based on unique property or manually set id
+					ValidateUniqueness validateUniqueness = object.getClass().getAnnotation(ValidateUniqueness.class);
+					if (validateUniqueness == null && id == null)
+					{
+						log.info("Entity of type " + object.getClass() + " doesn't have uniquely identifying property. Searching using the whole entity as an example " + object);
+						List objects = persistenceService.getInstances(object, classDescriptor);
+						if (objects.size() == 0) log.info("Couldn't find an existing seed entity");
+						else if (objects.size() == 1)
+						{
+							log.info("Found exactly one existing matching entity, assuming it is an earlier seeded entity");
+							savedObject = objects.get(0);
+						} else
+						{
+							log.warn("Found more than one existing entity based on the seed entity example, won't add a new one. You should make sure seed entities can be uniquely identified.");
+							continue;
+						}
+					} else
+					{
+						DetachedCriteria criteria = DetachedCriteria.forClass(object.getClass());
+						if (validateUniqueness != null)
+						{
+							propertyName = validateUniqueness.property();
+	
+							try
+							{
+								Object value = Ognl.getValue(propertyName, object);
+								if (value == null) criteria.add(Restrictions.isNull(propertyName));
+								else criteria.add(Restrictions.eq(propertyName, value));
+							} catch (OgnlException e)
+							{
+								log.error("Couldn't find if an entity already exists because of: ", e);
+							}
+						} else criteria.add(Restrictions.eq(propertyName, id));
+	
+						savedObject = persistenceService.getInstance(object.getClass(), criteria);
+					}
+	
+					if (savedObject != null)
+					{
 						try
 						{
-							Object value = Ognl.getValue(propertyName, object);
-							if (value == null) criteria.add(Restrictions.isNull(propertyName));
-							else criteria.add(Restrictions.eq(propertyName, value));
+							log.info("Entity of type " + object.getClass() + " identified by unique property " + propertyName + " " + Ognl.getValue(propertyName, savedObject) + " already exists");
 						} catch (OgnlException e)
 						{
-							log.error("Couldn't find if an entity already exists because of: ", e);
+							log.warn("Entity of type " + object.getClass() + " identified by unique property " + propertyName + " exists, but couldn't display value of identifying property because of: ", e);
 						}
-					} else criteria.add(Restrictions.eq(propertyName, id));
-
-					savedObject = persistenceService.getInstance(object.getClass(), criteria);
-				}
-
-				if (savedObject != null)
-				{
+	
+						// Need to set the ids to seed beans so a new seed entity with a relationship to existing seed entities can be saved  
+						try
+						{
+							id = Ognl.getValue(identifierDescriptor.getName(), savedObject);
+							Ognl.setValue(identifierDescriptor.getName(), object, id);
+						} catch (OgnlException e)
+						{
+							log.warn("Couldn't set the id of an already existing entity because of: ", e);
+						}
+						continue;
+					}
 					try
 					{
-						log.info("Entity of type " + object.getClass() + " identified by unique property " + propertyName + " " + Ognl.getValue(propertyName, savedObject) + " already exists");
-					} catch (OgnlException e)
+						persistenceService.saveOrUpdate(object);
+					} catch (InvalidStateException ivex)
 					{
-						log.warn("Entity of type " + object.getClass() + " identified by unique property " + propertyName + " exists, but couldn't display value of identifying property because of: ", e);
+						StringBuilder erroMessageBuilder = new StringBuilder();
+						for (InvalidValue invalidValue : ivex.getInvalidValues())
+						{
+							String message = invalidValue.getPropertyName() + ": " + invalidValue.getMessage();
+							log.fatal(message);
+							erroMessageBuilder.append(message).append("\n");
+						}
+						throw new PersistenceException(erroMessageBuilder.toString(), ivex);
 					}
-
-					// Need to set the ids to seed beans so a new seed entity with a relationship to existing seed entities can be saved  
-					try
-					{
-						id = Ognl.getValue(identifierDescriptor.getName(), savedObject);
-						Ognl.setValue(identifierDescriptor.getName(), object, id);
-					} catch (OgnlException e)
-					{
-						log.warn("Couldn't set the id of an already existing entity because of: ", e);
-					}
-					continue;
 				}
-				try
-				{
-					persistenceService.saveOrUpdate(object);
-				} catch (InvalidStateException ivex)
-				{
-					StringBuilder erroMessageBuilder = new StringBuilder();
-					for (InvalidValue invalidValue : ivex.getInvalidValues())
-					{
-						String message = invalidValue.getPropertyName() + ": " + invalidValue.getMessage();
-						log.fatal(message);
-						erroMessageBuilder.append(message).append("\n");
-					}
-					throw new PersistenceException(erroMessageBuilder.toString(), ivex);
-				}
+			} catch (BeanIsAbstractException e) {
+				log.debug("Bean named " + beanName + " is abstract, ignore from entity bean discovery");
 			}
 		}
 	}
