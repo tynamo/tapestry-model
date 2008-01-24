@@ -35,7 +35,6 @@
 			<plugin>
 				<groupId>net.sf.tacos</groupId>
 				<artifactId>tapdoc-maven-plugin</artifactId>
-				<version>0.7.0-SNAPSHOT</version>
 				<configuration>
 					<libraries>
 						<param>/org/trails/component/trails.library</param>
