@@ -13,17 +13,9 @@ public interface ITrailsBlob extends Serializable
 
 	void setFilePath(String filePath);
 
-	String getFileExtension();
-
-	void setFileExtension(String filePath);
-
 	String getContentType();
 
 	void setContentType(String contentType);
-
-	Long getNumBytes();
-
-	void setNumBytes(Long contentType);
 
 	byte[] getBytes();
 

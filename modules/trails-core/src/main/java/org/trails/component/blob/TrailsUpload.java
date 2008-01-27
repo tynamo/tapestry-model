@@ -20,8 +20,7 @@ public abstract class TrailsUpload extends BaseComponent
 	@Parameter(required = true)
 	public abstract IPropertyDescriptor getDescriptor();
 
-	public abstract void setDescriptor(
-		IPropertyDescriptor descriptor);
+	public abstract void setDescriptor(IPropertyDescriptor descriptor);
 
 	@Parameter(required = true)
 	public abstract Object getBytes();
@@ -38,8 +37,7 @@ public abstract class TrailsUpload extends BaseComponent
 
 	public BlobDescriptorExtension getBlobDescriptorExtension()
 	{
-		return getDescriptor().getExtension(
-			BlobDescriptorExtension.class);
+		return getDescriptor().getExtension(BlobDescriptorExtension.class);
 	}
 
 	public IUploadFile getFile()
@@ -73,10 +71,9 @@ public abstract class TrailsUpload extends BaseComponent
 			{
 				trailsBlob.setFileName(file.getFileName());
 				trailsBlob.setFilePath(file.getFilePath());
-				trailsBlob.setFileExtension(file.getFilePath());
+//				trailsBlob.setFileExtension(file.getFilePath());
 				trailsBlob.setContentType(file.getContentType());
-				trailsBlob.setNumBytes(new Long(((byte[]) trailsBlob
-					.getBytes()).length));
+//				trailsBlob.setNumBytes(new Long(((byte[]) trailsBlob.getBytes()).length));
 				trailsBlob.setBytes(data);
 			}
 		}

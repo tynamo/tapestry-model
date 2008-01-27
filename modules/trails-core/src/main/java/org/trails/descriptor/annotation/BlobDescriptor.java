@@ -1,11 +1,11 @@
 package org.trails.descriptor.annotation;
 
+import org.trails.descriptor.extension.BlobDescriptorExtension;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-
-import org.trails.descriptor.extension.BlobDescriptorExtension;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD, ElementType.METHOD})
@@ -15,8 +15,6 @@ public @interface BlobDescriptor
 
 	public static final String DEFAULT_fileName = "";
 	public static final String DEFAULT_contentType = "";
-//    public static final BlobDescriptorExtension.RenderType DEFAULT_renderType = BlobDescriptorExtension.RenderType.LINK;
-//    public static final BlobDescriptorExtension.ContentDisposition DEFAULT_contentDisposition = BlobDescriptorExtension.ContentDisposition.INLINE;
 
 	public String fileName() default "";
 

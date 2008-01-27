@@ -58,8 +58,9 @@ public abstract class TrailsDownload extends BaseComponent
 		try
 		{
 			if (Ognl.getValue(getIdentifierDescriptor().getName(), getModel()) != null)
-				id = Ognl.getValue(getIdentifierDescriptor().getName(),
-					getModel()).toString();
+			{
+				id = Ognl.getValue(getIdentifierDescriptor().getName(), getModel()).toString();
+			}
 		} catch (OgnlException e)
 		{
 			e.printStackTrace();
@@ -82,8 +83,7 @@ public abstract class TrailsDownload extends BaseComponent
 		contentType = trailsBlob.getContentType();
 		fileName = trailsBlob.getFileName();
 
-		return new TrailsBlobAsset(getDownloadService(), getClassDescriptor()
-			.getType().getName(), id, getPropertyDescriptor().getName(),
-			contentType, fileName);
+		return new TrailsBlobAsset(getDownloadService(), getClassDescriptor().getType().getName(), id,
+				getPropertyDescriptor().getName(), contentType, fileName);
 	}
 }
