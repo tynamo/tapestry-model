@@ -10,6 +10,8 @@ import org.trails.descriptor.DescriptorService;
 import org.trails.descriptor.IClassDescriptor;
 import org.trails.engine.encoders.abbreviator.EntityNameAbbreviator;
 import org.trails.persistence.PersistenceService;
+import org.trails.builder.BuilderDirector;
+import org.trails.exception.TrailsRuntimeException;
 
 import java.io.Serializable;
 
@@ -29,6 +31,8 @@ public class EntitySqueezerStrategy implements SqueezeFilter, SqueezeAdaptor
 
 	private EntityNameAbbreviator entityNameAbbreviator;
 	private boolean shouldAbbreviate = false;
+
+	private BuilderDirector builderDirector;
 
 	public String getPrefix()
 	{
@@ -121,11 +125,8 @@ public class EntitySqueezerStrategy implements SqueezeFilter, SqueezeAdaptor
 			{
 				try
 				{
-					return clazz.newInstance(); //@todo we need an entity factory
-				} catch (InstantiationException e)
-				{
-					throw new ApplicationRuntimeException("decode-failure: unable to unsqueeze entity", e);
-				} catch (IllegalAccessException e)
+					return builderDirector.createNewInstance(clazz);
+				} catch (TrailsRuntimeException e)
 				{
 					throw new ApplicationRuntimeException("decode-failure: unable to unsqueeze entity", e);
 				}
@@ -170,6 +171,11 @@ public class EntitySqueezerStrategy implements SqueezeFilter, SqueezeAdaptor
 	{
 		this.entityNameAbbreviator = entityNameAbbreviator;
 		shouldAbbreviate = entityNameAbbreviator != null;
+	}
+
+	public void setBuilderDirector(BuilderDirector builderDirector)
+	{
+		this.builderDirector = builderDirector;
 	}
 
 	private String abbreviate(Class clazz)

@@ -15,6 +15,7 @@ import org.apache.tapestry.services.DataSqueezer;
 import org.apache.tapestry.services.LinkFactory;
 import org.apache.tapestry.services.ResponseRenderer;
 import org.trails.Trails;
+import org.trails.builder.BuilderDirector;
 import org.trails.exception.TrailsRuntimeException;
 import org.trails.descriptor.CollectionDescriptor;
 import org.trails.descriptor.IClassDescriptor;
@@ -31,6 +32,7 @@ public class TrailsPagesService implements IEngineService
 	private ResponseRenderer responseRenderer;
 	private LinkFactory linkFactory;
 	private DataSqueezer dataSqueezer;
+	private BuilderDirector builderDirector;
 
 	/**
 	 * "service:trails.core.PageResolver"
@@ -121,7 +123,7 @@ public class TrailsPagesService implements IEngineService
 				rawPage = pageResolver.resolvePage(cycle, classDescriptor.getType(), PageType.EDIT);
 				try
 				{
-					model = classDescriptor.getType().newInstance(); //TODO: we need a POJO factory.
+					model = builderDirector.createNewInstance(classDescriptor.getType());
 				} catch (Exception ex)
 				{
 					throw new TrailsRuntimeException(ex, classDescriptor.getType());
@@ -207,51 +209,10 @@ public class TrailsPagesService implements IEngineService
 		this.pageResolver = pageResolver;
 	}
 
-/*	protected Object buildNewMemberInstance(IClassDescriptor classDescriptor, CollectionDescriptor collectionDescriptor) throws InstantiationException, IllegalAccessException
+	public void setBuilderDirector(BuilderDirector builderDirector)
 	{
-		Object object = null;
-		if (getCreateExpression() == null)
-		{
-			object = collectionDescriptor.getElementType().newInstance();
-		} else
-		{
-			try
-			{
-				object = Ognl.getValue(getCreateExpression(), getModel());
-			}
-			catch (OgnlException oe)
-			{
-				oe.printStackTrace();
-				return null;
-			}
-		}
-
-		if (getCollectionDescriptor().getInverseProperty() != null && getCollectionDescriptor().isOneToMany())
-		{
-			try
-			{
-				Ognl.setValue(getCollectionDescriptor().getInverseProperty(), object, getModel());
-			} catch (OgnlException e)
-			{
-				LOG.error(e.getMessage());
-			}
-		}
-
-		return object;
+		this.builderDirector = builderDirector;
 	}
 
-
-	@Override
-	protected boolean isModelNew(Object model)
-	{
-		if (model instanceof HasAssignedIdentifier)
-		{
-			return !((HasAssignedIdentifier) getModel()).isSaved();
-		} else
-		{
-			return super.isModelNew(model);
-		}
-	}
-*/
 }
 
