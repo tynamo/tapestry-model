@@ -359,18 +359,21 @@ public class HibernatePersistenceServiceImpl extends HibernateDaoSupport impleme
 								CollectionDescriptor collectionDescriptor =
 										(CollectionDescriptor) propertyDescriptor;
 								IClassDescriptor classDescriptor = getDescriptorService().getClassDescriptor(collectionDescriptor.getElementType());
-								String identifierName = classDescriptor.getIdentifierDescriptor().getName();
-								Collection<Serializable> identifierValues = new ArrayList<Serializable>();
-								Collection associatedItems = (Collection) value;
-								if (associatedItems != null && associatedItems.size() > 0)
+								if (classDescriptor != null)
 								{
-									for (Object o : associatedItems)
+									String identifierName = classDescriptor.getIdentifierDescriptor().getName();
+									Collection<Serializable> identifierValues = new ArrayList<Serializable>();
+									Collection associatedItems = (Collection) value;
+									if (associatedItems != null && associatedItems.size() > 0)
 									{
-										identifierValues.add(getIdentifier(o, classDescriptor));
+										for (Object o : associatedItems)
+										{
+											identifierValues.add(getIdentifier(o, classDescriptor));
+										}
+										//add a 'value IN collection' restriction
+										searchCriteria.createCriteria(propertyName)
+												.add(Restrictions.in(identifierName, identifierValues));
 									}
-									//add a 'value IN collection' restriction
-									searchCriteria.createCriteria(propertyName)
-											.add(Restrictions.in(identifierName, identifierValues));
 								}
 							}
 						}
