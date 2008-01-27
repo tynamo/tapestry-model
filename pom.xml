@@ -40,6 +40,8 @@
 		<developer>
 			<id>ascandroli</id>
 			<name>Alejandro Scandroli</name>
+			<organization>Amneris Web Solutions</organization>
+			<organizationUrl>http://www.amneris.es/</organizationUrl>
 			<email>ascandroli@N05PAM.codehaus.org</email>
 			<url>http://docs.codehaus.org/display/~ascandroli</url>
 			<timezone>+1</timezone>
