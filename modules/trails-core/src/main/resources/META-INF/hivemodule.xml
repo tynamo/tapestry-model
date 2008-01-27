@@ -34,6 +34,7 @@
 				<set-object property="persistenceService" value="service:PersistenceService"/>
 				<set-object property="descriptorService" value="service:DescriptorService"/>
 				<set-object property="entityNameAbbreviator" value="service:EntityNameAbbreviator"/>
+				<set-object property="builderDirector" value="service:BuilderDirector"/>
 				<set property="delimiter" value=":"/>
 				<set property="prefix" value="HIBRN8:"/>
 			</construct>
@@ -128,6 +129,7 @@
 				<set-object property="responseRenderer" value="infrastructure:responseRenderer"/>
 				<set-object property="linkFactory" value="infrastructure:linkFactory"/>
 				<set-object property="dataSqueezer" value="service:tapestry.data.DataSqueezer"/>
+				<set-object property="builderDirector" value="service:BuilderDirector"/>
 			</construct>
 		</invoke-factory>
 	</service-point>
@@ -149,5 +151,12 @@
 			</construct>
 		</invoke-factory>
 	</service-point>
+
+	<service-point id="BuilderDirector" interface="org.trails.builder.BuilderDirector">
+		<invoke-factory>
+			<construct class="org.trails.builder.BuilderDirector"/>
+		</invoke-factory>
+	</service-point>
+
 
 </module>
