@@ -16,6 +16,10 @@
 			classpath:applicationContext-seedData.xml
 		</param-value>
 	</context-param>
+	
+	<listener>
+		<listener-class>org.acegisecurity.ui.session.HttpSessionEventPublisher</listener-class>
+	</listener>	
 
 	<!-- Added for Acegi support. -->
 	<filter>
