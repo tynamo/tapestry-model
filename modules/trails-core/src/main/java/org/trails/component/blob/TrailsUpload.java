@@ -1,44 +1,30 @@
 package org.trails.component.blob;
 
-import java.io.IOException;
-import java.io.InputStream;
-
-import org.apache.commons.io.IOUtils;
 import org.apache.tapestry.BaseComponent;
 import org.apache.tapestry.annotations.ComponentClass;
 import org.apache.tapestry.annotations.InjectObject;
 import org.apache.tapestry.annotations.Parameter;
 import org.apache.tapestry.request.IUploadFile;
-import org.trails.descriptor.extension.BlobDescriptorExtension;
-import org.trails.descriptor.extension.ITrailsBlob;
 import org.trails.descriptor.IPropertyDescriptor;
-import org.trails.persistence.PersistenceService;
+import org.trails.descriptor.IClassDescriptor;
 
 @ComponentClass(allowBody = true, allowInformalParameters = true)
 public abstract class TrailsUpload extends BaseComponent
 {
-	@Parameter(required = true)
-	public abstract IPropertyDescriptor getDescriptor();
-
-	public abstract void setDescriptor(IPropertyDescriptor descriptor);
-
-	@Parameter(required = true)
-	public abstract Object getBytes();
-
-	public abstract void setBytes(Object bytes);
+	@InjectObject("service:trails.core.FilePersister")
+	public abstract IFilePersister getFilePersister();
 
 	@Parameter(required = true)
 	public abstract Object getModel();
-
 	public abstract void setModel(Object bytes);
 
-	@InjectObject("service:trails.core.PersistenceService")
-	public abstract PersistenceService getPersistenceService();
+	@Parameter(required = true)
+	public abstract IPropertyDescriptor getPropertyDescriptor();
+	public abstract void setPropertyDescriptor(IPropertyDescriptor descriptor);
 
-	public BlobDescriptorExtension getBlobDescriptorExtension()
-	{
-		return getDescriptor().getExtension(BlobDescriptorExtension.class);
-	}
+	@Parameter(required = false, defaultValue = "page.classDescriptor")
+	public abstract IClassDescriptor getClassDescriptor();
+	public abstract void setClassDescriptor(IClassDescriptor ClassDescriptor);
 
 	public IUploadFile getFile()
 	{
@@ -49,33 +35,7 @@ public abstract class TrailsUpload extends BaseComponent
 	{
 		if (file != null)
 		{
-			ITrailsBlob trailsBlob = null;
-			byte[] data = new byte[0];
-			InputStream inputStream = file.getStream();
-			try
-			{
-				data = IOUtils.toByteArray(inputStream);
-				if (getBlobDescriptorExtension().isBytes())
-				{
-					trailsBlob = (ITrailsBlob) getModel();
-				} else if (getBlobDescriptorExtension().isITrailsBlob())
-				{
-					trailsBlob = (ITrailsBlob) getBytes();
-				}
-			} catch (IOException ioe)
-			{
-				ioe.printStackTrace();
-			}
-
-			if (data.length > 1)
-			{
-				trailsBlob.setFileName(file.getFileName());
-				trailsBlob.setFilePath(file.getFilePath());
-//				trailsBlob.setFileExtension(file.getFilePath());
-				trailsBlob.setContentType(file.getContentType());
-//				trailsBlob.setNumBytes(new Long(((byte[]) trailsBlob.getBytes()).length));
-				trailsBlob.setBytes(data);
-			}
+			getFilePersister().store(getClassDescriptor(), getPropertyDescriptor(), getModel(), file);
 		}
 	}
 }

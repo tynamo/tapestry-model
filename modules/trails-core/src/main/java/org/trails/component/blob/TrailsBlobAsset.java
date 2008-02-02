@@ -1,9 +1,9 @@
 package org.trails.component.blob;
 
-import java.io.InputStream;
-
 import org.apache.tapestry.asset.AbstractAsset;
 import org.apache.tapestry.engine.ILink;
+
+import java.io.InputStream;
 
 public class TrailsBlobAsset extends AbstractAsset
 {
@@ -20,8 +20,7 @@ public class TrailsBlobAsset extends AbstractAsset
 
 	private String fileName;
 
-	public TrailsBlobAsset(BlobDownloadService chartService, String entityName,
-						   String idProperty, String bytesProperty)
+	public TrailsBlobAsset(BlobDownloadService chartService, String entityName, String idProperty, String bytesProperty)
 	{
 		super(null, null);
 		this.bytesService = chartService;
@@ -30,9 +29,8 @@ public class TrailsBlobAsset extends AbstractAsset
 		this.bytesProperty = bytesProperty;
 	}
 
-	public TrailsBlobAsset(BlobDownloadService chartService, String entityName,
-						   String idProperty, String bytesProperty, String contentType,
-						   String fileName)
+	public TrailsBlobAsset(BlobDownloadService chartService, String entityName, String idProperty, String bytesProperty,
+						   String contentType, String fileName)
 	{
 		super(null, null);
 		this.bytesService = chartService;
@@ -76,7 +74,6 @@ public class TrailsBlobAsset extends AbstractAsset
 
 	public InputStream getResourceAsStream()
 	{
-		// TODO Auto-generated method stub
 		return null;
 	}
 }

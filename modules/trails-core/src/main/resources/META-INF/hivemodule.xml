@@ -158,5 +158,21 @@
 		</invoke-factory>
 	</service-point>
 
+	<service-point id="FilePersister" interface="org.trails.component.blob.IFilePersister">
+		<invoke-factory>
+			<construct class="org.trails.component.blob.DefaultFilePersister">
+				<set-object property="persistenceService" value="service:PersistenceService"/>
+				<set-object property="blobDownloadService" value="service:BlobService"/>
+			</construct>
+		</invoke-factory>
+	</service-point>
+
+	<service-point id="IconResolver" interface="org.trails.component.blob.IconResolverImpl">
+		<invoke-factory>
+			<construct class="org.trails.component.blob.IconResolverImpl">
+				<set-object property="classpathAssetFactory" value="service:tapestry.asset.ClasspathAssetFactory"/>
+			</construct>
+		</invoke-factory>
+	</service-point>
 
 </module>

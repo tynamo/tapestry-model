@@ -1,19 +1,11 @@
-<span jwcid="$content$">
-	<span jwcid="@If" condition="ognl:blobDescriptorExtension.renderType.image">
-		<a jwcid="@ServiceLink" service="BlobService" parameters="ognl:byteArrayAsset">
-			<img jwcid="@MimedImage"
-				 propertyDescriptor="ognl:propertyDescriptor"
-				 model="ognl:model"
-				 image="ognl:byteArrayAsset"
-				 bytes="ognl:model[#this.propertyDescriptor.name]"
-				 alt="ognl:byteArrayAsset.fileName"
-				 title="ognl:byteArrayAsset.fileName"
-				/>
-		</a>
-
-	</span>
-	<span jwcid="@If" condition="ognl:blobDescriptorExtension.renderType.link">
-		<a jwcid="@ServiceLink" service="BlobService"
-		   parameters="ognl:byteArrayAsset">download</a>
-	</span>
+<span jwcid="@If" condition="ognl:renderType.image">
+	<img jwcid="@Image" image="ognl:byteArrayAsset"/>
+</span><span jwcid="@Else">
+	<a jwcid="@Any" href="ognl:byteArrayAsset.buildURL()">
+		<span jwcid="@If" condition="ognl:byteArrayAsset and renderType.icon">
+			<img jwcid="@Image" image="ognl:icon" alt="ognl:fileName" title="ognl:fileName"/>
+		</span><span jwcid="@Else">
+			<span key="download"/>
+		</span>
+	</a>
 </span>
