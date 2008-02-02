@@ -26,7 +26,7 @@ public class BlobDescriptorExtension implements IDescriptorExtension
 
 	public enum RenderType
 	{
-		IMAGE, LINK, IFRAME;
+		IMAGE, LINK, IFRAME, ICON;
 
 		public boolean isImage()
 		{
@@ -41,6 +41,11 @@ public class BlobDescriptorExtension implements IDescriptorExtension
 		public boolean isIFrame()
 		{
 			return this == IFRAME;
+		}
+
+		public boolean isIcon()
+		{
+			return this == ICON;
 		}
 	}
 
