@@ -3,16 +3,11 @@ package org.trails.descriptor.extension;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.trails.descriptor.IDescriptorExtension;
-import org.trails.descriptor.IPropertyDescriptor;
 import org.trails.exception.TrailsRuntimeException;
 
 public class BlobDescriptorExtension implements IDescriptorExtension
 {
 	protected static final Log LOG = LogFactory.getLog(BlobDescriptorExtension.class);
-
-	private Class beanType;
-
-	private IPropertyDescriptor propertyDescriptor = null;
 
 	public enum ContentDisposition
 	{
@@ -66,13 +61,9 @@ public class BlobDescriptorExtension implements IDescriptorExtension
 
 	/**
 	 * @param beanType
-	 * @param propertyDescriptor
 	 */
-	public BlobDescriptorExtension(Class beanType, IPropertyDescriptor propertyDescriptor)
+	public BlobDescriptorExtension(Class beanType)
 	{
-		this.beanType = beanType;
-		this.propertyDescriptor = propertyDescriptor;
-
 		if (ITrailsBlob.class.isAssignableFrom(beanType))
 		{
 			blobType = BlobType.ITRAILSBLOB;

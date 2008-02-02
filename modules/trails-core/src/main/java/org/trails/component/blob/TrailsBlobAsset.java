@@ -16,10 +16,6 @@ public class TrailsBlobAsset extends AbstractAsset
 
 	private String bytesProperty;
 
-	private String contentType;
-
-	private String fileName;
-
 	public TrailsBlobAsset(BlobDownloadService chartService, String entityName, String idProperty, String bytesProperty)
 	{
 		super(null, null);
@@ -27,18 +23,6 @@ public class TrailsBlobAsset extends AbstractAsset
 		this.entityName = entityName;
 		this.idProperty = idProperty;
 		this.bytesProperty = bytesProperty;
-	}
-
-	public TrailsBlobAsset(BlobDownloadService chartService, String entityName, String idProperty, String bytesProperty,
-						   String contentType, String fileName)
-	{
-		super(null, null);
-		this.bytesService = chartService;
-		this.entityName = entityName;
-		this.idProperty = idProperty;
-		this.bytesProperty = bytesProperty;
-		this.contentType = contentType;
-		this.fileName = fileName;
 	}
 
 	public String getBytesProperty()
@@ -54,16 +38,6 @@ public class TrailsBlobAsset extends AbstractAsset
 	public String getIdProperty()
 	{
 		return idProperty;
-	}
-
-	public String getContentType()
-	{
-		return contentType;
-	}
-
-	public String getFileName()
-	{
-		return fileName;
 	}
 
 	public String buildURL()

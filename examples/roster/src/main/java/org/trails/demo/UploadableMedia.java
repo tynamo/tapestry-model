@@ -282,6 +282,11 @@ public class UploadableMedia implements ITrailsBlob
 		this.created = created;
 	}
 
+	public void reset()
+	{
+
+	}
+
 	public String toString()
 	{
 		return getName();

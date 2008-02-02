@@ -284,4 +284,9 @@ public class UploadableMedia implements ITrailsBlob
 			return false;
 		return true;
 	}
+
+	public void reset()
+	{
+
+	}
 }

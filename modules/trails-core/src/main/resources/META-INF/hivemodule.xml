@@ -97,7 +97,6 @@
 	<service-point id="BlobService" interface="org.trails.component.blob.BlobDownloadService">
 		<invoke-factory>
 			<construct class="org.trails.component.blob.BlobDownloadService">
-				<set-object property="exceptionReporter" value="infrastructure:requestExceptionReporter"/>
 				<set-object property="linkFactory" value="infrastructure:linkFactory"/>
 				<set-object property="response" value="service:tapestry.globals.WebResponse"/>
 				<set-object property="persistenceService" value="spring:persistenceService"/>
@@ -167,9 +166,9 @@
 		</invoke-factory>
 	</service-point>
 
-	<service-point id="IconResolver" interface="org.trails.component.blob.IconResolverImpl">
+	<service-point id="IconResolver" interface="org.trails.component.blob.IconResolver">
 		<invoke-factory>
-			<construct class="org.trails.component.blob.IconResolverImpl">
+			<construct class="org.trails.component.blob.DefaultIconResolver">
 				<set-object property="classpathAssetFactory" value="service:tapestry.asset.ClasspathAssetFactory"/>
 			</construct>
 		</invoke-factory>
