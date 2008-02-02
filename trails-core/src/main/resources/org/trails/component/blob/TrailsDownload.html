@@ -1,11 +1,20 @@
-<span jwcid="@If" condition="ognl:renderType.image">
-	<img jwcid="@Image" image="ognl:byteArrayAsset"/>
-</span><span jwcid="@Else">
-	<a jwcid="@Any" href="ognl:byteArrayAsset.buildURL()">
-		<span jwcid="@If" condition="ognl:byteArrayAsset and renderType.icon">
-			<img jwcid="@Image" image="ognl:icon" alt="ognl:fileName" title="ognl:fileName"/>
+	<span jwcid="@If" condition="ognl:renderType.image">
+		<span jwcid="@If" condition="ognl:byteArrayAsset">
+			<img jwcid="@Image" image="ognl:byteArrayAsset"/>
 		</span><span jwcid="@Else">
-			<span key="download"/>
+			<img jwcid="@Image" image="ognl:noImage"/>
 		</span>
-	</a>
-</span>
+	</span><span jwcid="@Else"><span jwcid="@If" condition="ognl:renderType.icon">
+		<span jwcid="@If" condition="ognl:byteArrayAsset">
+			<a jwcid="@Any" href="ognl:byteArrayAsset.buildURL()">
+				<img jwcid="@Image" image="ognl:icon" alt="ognl:fileName" title="ognl:fileName"/>
+			</a>
+		</span><span jwcid="@Else">
+			<img jwcid="@Image" image="ognl:noIcon"/>
+		</span>
+	</span><span jwcid="@Else"><span jwcid="@If" condition="ognl:byteArrayAsset">
+			<a jwcid="@Any" href="ognl:byteArrayAsset.buildURL()">
+				<span key="download"/>
+			</a>
+		</span></span>
+	</span>

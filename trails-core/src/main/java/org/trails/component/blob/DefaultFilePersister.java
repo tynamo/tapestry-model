@@ -1,9 +1,9 @@
 package org.trails.component.blob;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.hivemind.util.PropertyUtils;
 import org.apache.tapestry.IAsset;
-import org.apache.tapestry.asset.ExternalAsset;
 import org.apache.tapestry.request.IUploadFile;
 import org.trails.descriptor.IClassDescriptor;
 import org.trails.descriptor.IPropertyDescriptor;
@@ -21,7 +21,6 @@ public class DefaultFilePersister implements IFilePersister
 
 	PersistenceService persistenceService;
 	BlobDownloadService blobDownloadService;
-
 
 	public void store(IClassDescriptor classDescriptor, IPropertyDescriptor propertyDescriptor, Object model,
 					  IUploadFile file)
@@ -57,34 +56,62 @@ public class DefaultFilePersister implements IFilePersister
 		}
 	}
 
+	public byte[] getData(IClassDescriptor classDescriptor, IPropertyDescriptor propertyDescriptor, Object model)
+	{
+		BlobDescriptorExtension blobDescriptorExtension = getBlobDescriptorExtension(propertyDescriptor);
+
+		if (blobDescriptorExtension.isBytes())
+		{
+			return (byte[]) PropertyUtils.read(model, propertyDescriptor.getName());
+
+		} else if (blobDescriptorExtension.isITrailsBlob())
+		{
+			ITrailsBlob trailsBlob = (ITrailsBlob) PropertyUtils.read(model, propertyDescriptor.getName());
+			return trailsBlob.getBytes();
+		}
+		return null;
+	}
+
+	public void delete(IClassDescriptor classDescriptor, IPropertyDescriptor propertyDescriptor, Object model)
+	{
+		BlobDescriptorExtension blobDescriptorExtension = getBlobDescriptorExtension(propertyDescriptor);
+
+		if (blobDescriptorExtension.isBytes())
+		{
+			PropertyUtils.write(model, propertyDescriptor.getName(), new byte[0]);
+
+		} else if (blobDescriptorExtension.isITrailsBlob())
+		{
+			ITrailsBlob trailsBlob = (ITrailsBlob) PropertyUtils.read(model, propertyDescriptor.getName());
+			trailsBlob.reset();
+		}
+
+		persistenceService.save(model);
+	}
+
 	public IAsset getAsset(IClassDescriptor classDescriptor, IPropertyDescriptor propertyDescriptor, Object model)
 	{
 		Serializable pk = persistenceService.getIdentifier(model, classDescriptor);
 		if (pk != null)
 		{
-			BlobDescriptorExtension blobDescriptorExtension = getBlobDescriptorExtension(propertyDescriptor);
 			String id = pk.toString();
 
-			if (blobDescriptorExtension.isBytes())
-			{
-				return new TrailsBlobAsset(blobDownloadService, classDescriptor.getType().getName(), id,
-						propertyDescriptor.getName(), blobDescriptorExtension.getContentType(),
-						blobDescriptorExtension.getFileName());
-
-			} else if (blobDescriptorExtension.isITrailsBlob())
-			{
-				ITrailsBlob trailsBlob = (ITrailsBlob) PropertyUtils.read(model, propertyDescriptor.getName());
-				return new TrailsBlobAsset(blobDownloadService, classDescriptor.getType().getName(), id,
-						propertyDescriptor.getName(), trailsBlob.getContentType(), trailsBlob.getFileName());
-			}
+			return new TrailsBlobAsset(blobDownloadService, classDescriptor.getType().getName(), id,
+					propertyDescriptor.getName());
 		}
-
-		return new ExternalAsset("http://alpha.amneris.es/speeddial/no-image.gif", null);
+		return null;
 	}
 
 	public String getContentType(IClassDescriptor classDescriptor, IPropertyDescriptor propertyDescriptor, Object model)
 	{
 		BlobDescriptorExtension blobDescriptorExtension = getBlobDescriptorExtension(propertyDescriptor);
+
+		if (StringUtils.isNotEmpty(blobDescriptorExtension.getFileName()))
+		{
+			return blobDescriptorExtension.getContentType();
+		}
+
+
 		if (blobDescriptorExtension.isITrailsBlob())
 		{
 			ITrailsBlob trailsBlob = (ITrailsBlob) PropertyUtils.read(model, propertyDescriptor.getName());
@@ -93,12 +120,19 @@ public class DefaultFilePersister implements IFilePersister
 				return trailsBlob.getContentType();
 			}
 		}
-		return blobDescriptorExtension.getContentType();
+
+		return null;
 	}
 
 	public String getFileName(IClassDescriptor classDescriptor, IPropertyDescriptor propertyDescriptor, Object model)
 	{
 		BlobDescriptorExtension blobDescriptorExtension = getBlobDescriptorExtension(propertyDescriptor);
+
+		if (StringUtils.isNotEmpty(blobDescriptorExtension.getFileName()))
+		{
+			return blobDescriptorExtension.getFileName();
+		}
+
 		if (blobDescriptorExtension.isITrailsBlob())
 		{
 			ITrailsBlob trailsBlob = (ITrailsBlob) PropertyUtils.read(model, propertyDescriptor.getName());
@@ -107,7 +141,8 @@ public class DefaultFilePersister implements IFilePersister
 				return trailsBlob.getFileName();
 			}
 		}
-		return blobDescriptorExtension.getFileName();
+
+		return null;
 	}
 
 	private BlobDescriptorExtension getBlobDescriptorExtension(IPropertyDescriptor propertyDescriptor)

@@ -11,7 +11,11 @@ public interface IFilePersister
 
 	void store(IClassDescriptor classDescriptor, IPropertyDescriptor propertyDescriptor, Object model, IUploadFile file);
 
+	public byte[] getData(IClassDescriptor classDescriptor, IPropertyDescriptor propertyDescriptor, Object model);
+
 	String getContentType(IClassDescriptor classDescriptor, IPropertyDescriptor propertyDescriptor, Object model);
 
 	String getFileName(IClassDescriptor classDescriptor, IPropertyDescriptor propertyDescriptor, Object model);
+
+	void delete(IClassDescriptor classDescriptor, IPropertyDescriptor propertyDescriptor, Object model);
 }

@@ -20,4 +20,7 @@ public interface ITrailsBlob extends Serializable
 	byte[] getBytes();
 
 	void setBytes(byte[] bytes);
+
+	void reset();
+
 }

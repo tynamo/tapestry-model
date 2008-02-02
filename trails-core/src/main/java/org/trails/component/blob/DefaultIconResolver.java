@@ -6,7 +6,7 @@ import org.apache.tapestry.asset.AssetFactory;
 import java.util.HashMap;
 import java.util.Map;
 
-public class IconResolverImpl
+public class DefaultIconResolver implements IconResolver
 {
 
 	/**

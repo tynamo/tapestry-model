@@ -5,6 +5,7 @@ import org.apache.tapestry.IAsset;
 import org.apache.tapestry.annotations.ComponentClass;
 import org.apache.tapestry.annotations.InjectObject;
 import org.apache.tapestry.annotations.Parameter;
+import org.apache.tapestry.asset.AssetFactory;
 import org.trails.descriptor.IClassDescriptor;
 import org.trails.descriptor.IPropertyDescriptor;
 import org.trails.descriptor.extension.BlobDescriptorExtension;
@@ -12,26 +13,26 @@ import org.trails.descriptor.extension.BlobDescriptorExtension;
 @ComponentClass(allowBody = true, allowInformalParameters = true)
 public abstract class TrailsDownload extends BaseComponent
 {
+	private final static String noIcon = "/images/cross.png";
+	private final static String noImage = "/images/noimage.jpg";
+
 	@InjectObject("service:trails.core.FilePersister")
 	public abstract IFilePersister getFilePersister();
 
 	@InjectObject("service:trails.core.IconResolver")
-	public abstract IconResolverImpl getIconResolver();
+	public abstract IconResolver getIconResolver();
+
+	@InjectObject("service:tapestry.asset.ContextAssetFactory")
+	public abstract AssetFactory getContextAssetFactory();
 
 	@Parameter(required = true)
 	public abstract Object getModel();
 
-	public abstract void setModel(Object bytes);
-
 	@Parameter(required = true)
 	public abstract IPropertyDescriptor getPropertyDescriptor();
 
-	public abstract void setPropertyDescriptor(IPropertyDescriptor descriptor);
-
 	@Parameter(required = false, defaultValue = "page.classDescriptor")
 	public abstract IClassDescriptor getClassDescriptor();
-
-	public abstract void setClassDescriptor(IClassDescriptor ClassDescriptor);
 
 	public BlobDescriptorExtension.RenderType getRenderType()
 	{
@@ -45,7 +46,7 @@ public abstract class TrailsDownload extends BaseComponent
 
 	public IAsset getIcon()
 	{
-		return getIconResolver().getAsset(getContentType());
+		return getContentType() != null ? getIconResolver().getAsset(getContentType()) : getNoIcon();
 	}
 
 	private String getContentType()
@@ -58,4 +59,13 @@ public abstract class TrailsDownload extends BaseComponent
 		return getFilePersister().getFileName(getClassDescriptor(), getPropertyDescriptor(), getModel());
 	}
 
+	public IAsset getNoIcon()
+	{
+		return getContextAssetFactory().createAbsoluteAsset(noIcon, null, null);
+	}
+
+	public IAsset getNoImage()
+	{
+		return getContextAssetFactory().createAbsoluteAsset(noImage, null, null);
+	}
 }

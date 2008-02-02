@@ -6,10 +6,8 @@ public class TrailsBlobImpl implements ITrailsBlob
 {
 	private String fileName;
 	private String filePath;
-	private String fileExtension;
 	private String contentType;
-	private byte[] bytes = new byte[0];
-	private Long numBytes;
+	private byte[] bytes;
 
 	public String getFileName()
 	{
@@ -31,16 +29,6 @@ public class TrailsBlobImpl implements ITrailsBlob
 		this.filePath = filePath;
 	}
 
-	public String getFileExtension()
-	{
-		return fileExtension;
-	}
-
-	public void setFileExtension(String fileExtension)
-	{
-		this.fileExtension = fileExtension;
-	}
-
 	public String getContentType()
 	{
 		return contentType;
@@ -51,16 +39,6 @@ public class TrailsBlobImpl implements ITrailsBlob
 		this.contentType = contentType;
 	}
 
-	public Long getNumBytes()
-	{
-		return numBytes;
-	}
-
-	public void setNumBytes(Long numBytes)
-	{
-		this.numBytes = numBytes;
-	}
-
 	public byte[] getBytes()
 	{
 		return bytes;
@@ -69,5 +47,13 @@ public class TrailsBlobImpl implements ITrailsBlob
 	public void setBytes(byte[] bytes)
 	{
 		this.bytes = bytes;
+	}
+
+	public void reset()
+	{
+		fileName = null;
+		filePath = null;
+		contentType = null;
+		bytes = null;
 	}
 }

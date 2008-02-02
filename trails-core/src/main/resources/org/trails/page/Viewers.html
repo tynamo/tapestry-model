@@ -11,3 +11,9 @@
 		<span jwcid="insertHtmlText@Insert" value="ognl:model[#this.descriptor.name]" raw="true"/>
 	</li>
 </span>
+
+<span jwcid="blobViewer@Block">
+	<li><label class="desc"><span jwcid="@Insert" value="ognl:descriptor.displayName"/></label>
+		<span jwcid="@TrailsDownload" propertyDescriptor="ognl:descriptor" model="ognl:model"/>
+	</li>
+</span>
