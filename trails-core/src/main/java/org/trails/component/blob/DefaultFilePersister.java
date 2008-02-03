@@ -16,6 +16,9 @@ import java.io.InputStream;
 import java.io.Serializable;
 
 
+/**
+ * The Trails {@link org.trails.component.blob.IFilePersister} default implementation.
+ */
 public class DefaultFilePersister implements IFilePersister
 {
 

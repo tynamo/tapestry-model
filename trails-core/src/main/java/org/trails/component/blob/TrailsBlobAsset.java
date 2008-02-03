@@ -5,23 +5,26 @@ import org.apache.tapestry.engine.ILink;
 
 import java.io.InputStream;
 
+/**
+  * An implementation of {@link org.apache.tapestry.IAsset} for assets that are entity properties.
+ */
 public class TrailsBlobAsset extends AbstractAsset
 {
 
 	private BlobDownloadService bytesService;
 
-	private String idProperty;
+	private String id;
 
 	private String entityName;
 
 	private String bytesProperty;
 
-	public TrailsBlobAsset(BlobDownloadService chartService, String entityName, String idProperty, String bytesProperty)
+	public TrailsBlobAsset(BlobDownloadService chartService, String entityName, String id, String bytesProperty)
 	{
 		super(null, null);
 		this.bytesService = chartService;
 		this.entityName = entityName;
-		this.idProperty = idProperty;
+		this.id = id;
 		this.bytesProperty = bytesProperty;
 	}
 
@@ -35,9 +38,9 @@ public class TrailsBlobAsset extends AbstractAsset
 		return entityName;
 	}
 
-	public String getIdProperty()
+	public String getId()
 	{
-		return idProperty;
+		return id;
 	}
 
 	public String buildURL()

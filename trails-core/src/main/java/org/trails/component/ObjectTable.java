@@ -83,14 +83,11 @@ public abstract class ObjectTable extends ClassDescriptorComponent implements Pa
 	@Parameter(cache = false, defaultValue = "objectParameter")
 	public abstract Object getObject();
 
-	public abstract void setObject(Object object);
-
 	/**
 	 * Returns the currently rendered table row. It's used when there is no binding for the "object" parameter. This method
 	 * is for internal use only.
 	 */
 	public abstract Object getObjectParameter();
-
 	public abstract void setObjectParameter(Object object);
 
 	/**
@@ -99,15 +96,11 @@ public abstract class ObjectTable extends ClassDescriptorComponent implements Pa
 	@Parameter(cache = false)
 	public abstract ITableColumn getColumn();
 
-	public abstract void setColumn(ITableColumn column);
-
 	/**
 	 * The CSS class of the table rows.
 	 */
 	@Parameter(cache = false)
 	public abstract String getRowsClass();
-
-	public abstract void setRowsClass(String rowsClass);
 
 	/**
 	 * The CSS class of the table columns.
@@ -115,15 +108,11 @@ public abstract class ObjectTable extends ClassDescriptorComponent implements Pa
 	@Parameter(cache = false)
 	public abstract String getColumnsClass();
 
-	public abstract void setColumnsClass(String columnsClass);
-
 	/**
 	 * The number of records displayed per page.
 	 */
 	@Parameter(cache = false, defaultValue = "10")
 	public abstract int getPageSize();
-
-	public abstract void setPageSize(int pageSize);
 
 	/**
 	 * If provided, the parameter is updated with the index of the loop on each iteration.
@@ -131,15 +120,11 @@ public abstract class ObjectTable extends ClassDescriptorComponent implements Pa
 	@Parameter
 	public abstract int getIndex();
 
-	public abstract void setIndex(int index);
-
 	/**
 	 * The id of the column to initially sort the table by.
 	 */
 	@Parameter
 	public abstract String getInitialSortColumn();
-
-	public abstract void setInitialSortColumn(String initialSortColumn);
 
 	/**
 	 * The order of the initial sorting. Set this parameter to 'false' to sort in an ascending order and to 'true' to sort
@@ -148,16 +133,12 @@ public abstract class ObjectTable extends ClassDescriptorComponent implements Pa
 	@Parameter(defaultValue = "false")
 	public abstract boolean getInitialSortOrder();
 
-	public abstract void setInitialSortOrder(boolean initialSortOrder);
-
 	/**
 	 * Defines how the table state (paging and sorting) will be persisted if no tableSessionStoreManager is defined. The
 	 * possible values are 'session' (the default), 'client', 'client:page', and 'client:app'.
 	 */
 	@Parameter(defaultValue = "literal:session")
 	public abstract String getPersist();
-
-	public abstract void setPersist(String persist);
 
 	/**
 	 * The image to use to describe a column sorted in a descending order.

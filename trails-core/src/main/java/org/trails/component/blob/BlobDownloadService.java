@@ -53,7 +53,7 @@ public class BlobDownloadService implements IEngineService
 
 		Map<String, String> parameters = new HashMap<String, String>();
 
-		parameters.put(BLOBID, String.valueOf(asset.getIdProperty()));
+		parameters.put(BLOBID, String.valueOf(asset.getId()));
 		parameters.put(ENTITY_NAME, asset.getEntityName());
 		parameters.put(BYTES_PROPERTY, asset.getBytesProperty());
 
