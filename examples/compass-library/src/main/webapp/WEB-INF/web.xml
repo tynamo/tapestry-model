@@ -47,6 +47,12 @@
 
 	<filter-mapping>
 		<filter-name>hibernateFilter</filter-name>
+		<url-pattern>/trails/*</url-pattern>
+	</filter-mapping>
+
+
+	<filter-mapping>
+		<filter-name>hibernateFilter</filter-name>
 		<url-pattern>*.page</url-pattern>
 	</filter-mapping>
 
@@ -70,9 +76,15 @@
 		<url-pattern>*.svc</url-pattern>
 	</filter-mapping>
 
+	<filter-mapping>
+		<filter-name>hibernateFilter</filter-name>
+		<url-pattern>*.ext</url-pattern>
+	</filter-mapping>
+
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
+
 	<servlet>
 		<servlet-name>trails</servlet-name>
 		<servlet-class>org.trails.servlet.TrailsApplicationServlet</servlet-class>
@@ -85,6 +97,11 @@
 
 	<servlet-mapping>
 		<servlet-name>trails</servlet-name>
+		<url-pattern>/trails/*</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>trails</servlet-name>
 		<url-pattern>*.page</url-pattern>
 	</servlet-mapping>
 
@@ -107,4 +124,10 @@
 		<servlet-name>trails</servlet-name>
 		<url-pattern>*.svc</url-pattern>
 	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>trails</servlet-name>
+		<url-pattern>*.ext</url-pattern>
+	</servlet-mapping>
+
 </web-app>

@@ -1,10 +1,5 @@
 package org.trails.compass;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Set;
-
 import org.apache.tapestry.IExternalPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.annotations.Bean;
@@ -12,17 +7,26 @@ import org.apache.tapestry.annotations.Component;
 import org.apache.tapestry.annotations.InjectObject;
 import org.apache.tapestry.bean.EvenOdd;
 import org.apache.tapestry.engine.ILink;
+import org.apache.tapestry.html.BasePage;
 import org.apache.tapestry.link.ExternalLink;
 import org.compass.core.CompassException;
 import org.compass.core.CompassHit;
 import org.trails.descriptor.IClassDescriptor;
-import org.trails.page.TrailsPage;
+import org.trails.descriptor.DescriptorService;
 
-public abstract class CompassPage extends TrailsPage implements IExternalPage
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Set;
+
+public abstract class CompassPage extends BasePage implements IExternalPage
 {
 
 	@InjectObject("spring:compassService")
 	public abstract CompassSearchService getCompassSearchService();
+
+	@InjectObject("service:trails.core.DescriptorService")
+	public abstract DescriptorService getDescriptorService();
 
 	@Bean
 	public abstract EvenOdd getEvenOdd();
@@ -57,6 +61,7 @@ public abstract class CompassPage extends TrailsPage implements IExternalPage
 
 	/**
 	 * Property used only in the template
+	 *
 	 * @return
 	 */
 	public abstract Object getClassIterator();
@@ -65,7 +70,10 @@ public abstract class CompassPage extends TrailsPage implements IExternalPage
 
 	public void activateExternalPage(Object[] parameters, IRequestCycle cycle)
 	{
-		setQuery((String) parameters[0]);
+		if (parameters.length > 0)
+		{
+			setQuery((String) parameters[0]);
+		}
 		search();
 	}
 
@@ -119,15 +127,8 @@ public abstract class CompassPage extends TrailsPage implements IExternalPage
 		return getResults().get(clazz);
 	}
 
-
 	public IClassDescriptor getClassDescriptor(Class clazz)
 	{
-		try
-		{
-			return getDescriptorService().getClassDescriptor(clazz);
-		} catch (Exception e)
-		{
-			return null;
-		}
+		return clazz != null ? getDescriptorService().getClassDescriptor(clazz) : null;
 	}
 }

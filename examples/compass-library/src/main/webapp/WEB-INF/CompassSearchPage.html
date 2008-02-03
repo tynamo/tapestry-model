@@ -31,9 +31,12 @@
 		<h1><a href="#" jwcid="@trails:ListAllLink" type="ognl:classIterator">
 			<span jwcid="@Insert" value="ognl:getClassDescriptor(classIterator).pluralDisplayName"/></a>
 		</h1>
-		<table class="table contribTable" jwcid="@trails:ObjectTable" instances="ognl:getInstances(classIterator)"
+		<table class="table contribTable" jwcid="@trails:ObjectTable"
+			   instances="ognl:getInstances(classIterator)"
 			   rowsClass="ognl:beans.evenOdd.next"
-			   object="ognl:object" classDescriptor="ognl:getClassDescriptor(classIterator)"/>
+			   object="ognl:object"
+			   cacheDisabled="ognl:true"
+			   classDescriptor="ognl:getClassDescriptor(classIterator)"/>
 		<br/>
 		<br/>
 	</div>
