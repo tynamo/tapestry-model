@@ -26,7 +26,7 @@ public class BlobDownloadService implements IEngineService
 
 	private static final Log LOG = LogFactory.getLog(BlobDownloadService.class);
 
-	public static final String SERVICE_NAME = "BlobService";
+	public static final String SERVICE_NAME = "download";
 
 	private LinkFactory _linkFactory;
 

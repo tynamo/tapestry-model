@@ -6,6 +6,9 @@
 	<service-point id="ViewerService" interface="org.trails.finder.BlockFinder"/>
 	<service-point id="MessageSource" interface="org.trails.i18n.TrailsMessageSource"/>
 	<service-point id="AddNewLinkRenderer" interface="org.apache.tapestry.link.ILinkRenderer"/>
+	<service-point id="BuilderDirector" interface="org.trails.builder.BuilderDirector" />
+	<service-point id="FilePersister" interface="org.trails.component.blob.IFilePersister" />
+	<service-point id="IconResolver" interface="org.trails.component.blob.IconResolver" />
 
 	<!--
 		====================================================================================================================
@@ -91,7 +94,7 @@
 	</contribution>
 
 	<contribution configuration-id="tapestry.services.ApplicationServices">
-		<service name="BlobService" object="service:BlobService"/>
+		<service name="download" object="service:BlobService"/>
 	</contribution>
 
 	<service-point id="BlobService" interface="org.trails.component.blob.BlobDownloadService">
@@ -147,29 +150,6 @@
 		<invoke-factory>
 			<construct class="org.trails.engine.encoders.abbreviator.DefaultAbbreviator">
 				<set-object property="descriptorService" value="service:DescriptorService"/>
-			</construct>
-		</invoke-factory>
-	</service-point>
-
-	<service-point id="BuilderDirector" interface="org.trails.builder.BuilderDirector">
-		<invoke-factory>
-			<construct class="org.trails.builder.BuilderDirector"/>
-		</invoke-factory>
-	</service-point>
-
-	<service-point id="FilePersister" interface="org.trails.component.blob.IFilePersister">
-		<invoke-factory>
-			<construct class="org.trails.component.blob.DefaultFilePersister">
-				<set-object property="persistenceService" value="service:PersistenceService"/>
-				<set-object property="blobDownloadService" value="service:BlobService"/>
-			</construct>
-		</invoke-factory>
-	</service-point>
-
-	<service-point id="IconResolver" interface="org.trails.component.blob.IconResolver">
-		<invoke-factory>
-			<construct class="org.trails.component.blob.DefaultIconResolver">
-				<set-object property="classpathAssetFactory" value="service:tapestry.asset.ClasspathAssetFactory"/>
 			</construct>
 		</invoke-factory>
 	</service-point>
