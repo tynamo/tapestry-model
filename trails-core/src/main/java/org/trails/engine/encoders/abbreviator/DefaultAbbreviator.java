@@ -24,7 +24,7 @@ public class DefaultAbbreviator implements EntityNameAbbreviator
 
 	public Class unabbreviate(String abbreviation)
 	{
-		return Utils.classForName((String) abbreviationMap.getKey(abbreviation));
+		return Utils.classForName((String) abbreviationMap.getKey(abbreviation)); //@todo check NPEs
 	}
 
 	public void initializeService()
