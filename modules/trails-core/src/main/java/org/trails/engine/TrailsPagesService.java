@@ -5,6 +5,7 @@ import ognl.OgnlException;
 import org.apache.commons.lang.StringUtils;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.util.Defense;
+import org.apache.hivemind.util.PropertyUtils;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.PageNotFoundException;
@@ -156,13 +157,7 @@ public class TrailsPagesService implements IEngineService
 				if ((collectionDescriptor != null) && (parent != null) &&
 						(!StringUtils.isEmpty(collectionDescriptor.getInverseProperty())))
 				{
-					try
-					{
-						Ognl.setValue(collectionDescriptor.getInverseProperty(), model, parent);
-					} catch (OgnlException e)
-					{
-						//@todo LOG ERROR
-					}
+					PropertyUtils.write(model, collectionDescriptor.getInverseProperty(), parent);
 				}
 			} else
 			{

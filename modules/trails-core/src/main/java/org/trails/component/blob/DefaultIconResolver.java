@@ -6,6 +6,9 @@ import org.apache.tapestry.asset.AssetFactory;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * The Trails {@link org.trails.component.blob.IconResolver} default implementation.
+ */
 public class DefaultIconResolver implements IconResolver
 {
 

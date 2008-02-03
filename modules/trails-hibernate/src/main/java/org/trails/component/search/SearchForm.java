@@ -1,21 +1,24 @@
 package org.trails.component.search;
 
+import org.apache.hivemind.util.PropertyUtils;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.annotations.ComponentClass;
 import org.apache.tapestry.annotations.InjectObject;
-import org.apache.tapestry.annotations.Parameter;
 import org.apache.tapestry.components.Block;
 import org.apache.tapestry.event.PageBeginRenderListener;
 import org.apache.tapestry.event.PageEvent;
-import org.apache.hivemind.util.PropertyUtils;
 import org.hibernate.criterion.DetachedCriteria;
 import org.trails.component.ClassDescriptorComponent;
-import org.trails.finder.BlockFinder;
-import org.trails.descriptor.IClassDescriptor;
 import org.trails.descriptor.IPropertyDescriptor;
+import org.trails.finder.BlockFinder;
 import org.trails.page.HibernateListPage;
 import org.trails.page.PageResolver;
 import org.trails.page.PageType;
 
+/**
+ * This component extends Form and renders a form to search for a domain object
+ */
+@ComponentClass
 public abstract class SearchForm extends ClassDescriptorComponent implements PageBeginRenderListener
 {
 
@@ -24,11 +27,6 @@ public abstract class SearchForm extends ClassDescriptorComponent implements Pag
 
 	@InjectObject("spring:searchBlockFinder")
 	public abstract BlockFinder getBlockFinder();
-
-	@Parameter(name = "classDescriptor", required = false, defaultValue = "ognl:page.classDescriptor")
-	public abstract IClassDescriptor getClassDescriptor();
-
-	public abstract void setClassDescriptor(IClassDescriptor ClassDescriptor);
 
 	public abstract IPropertyDescriptor getPropertyDescriptor();
 
