@@ -14,6 +14,8 @@
 package org.trails.component;
 
 import java.util.Date;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.trails.descriptor.IClassDescriptor;
 import org.trails.descriptor.IPropertyDescriptor;
@@ -32,8 +34,6 @@ public class EditPropertiesTest extends ComponentTest
 
 	public void testGetPropertyDescriptors() throws Exception
 	{
-		EditProperties propertyTable = (EditProperties) creator.newInstance(EditProperties.class);
-
 		IClassDescriptor classDescriptor = new TrailsClassDescriptor(Foo.class);
 		IPropertyDescriptor nameDescriptor = new TrailsPropertyDescriptor(Foo.class,
 			"name", String.class);
@@ -44,13 +44,23 @@ public class EditPropertiesTest extends ComponentTest
 		classDescriptor.getPropertyDescriptors().add(nameDescriptor);
 		classDescriptor.getPropertyDescriptors().add(dateDescriptor);
 		classDescriptor.getPropertyDescriptors().add(numberDescriptor);
-		propertyTable.setClassDescriptor(classDescriptor);
+
+		EditProperties propertyTable = (EditProperties) creator.newInstance(EditProperties.class,
+				new Object[]{
+					"classDescriptor", classDescriptor,
+				});
+
 		assertEquals("got 3", 3, propertyTable.getPropertyDescriptors().size());
 		nameDescriptor.setHidden(true);
 		assertEquals("got 2", 2, propertyTable.getPropertyDescriptors().size());
 		assertFalse(propertyTable.getPropertyDescriptors().contains(nameDescriptor));
 
-		propertyTable.setPropertyNames(new String[]{"date", "name"});
+		propertyTable = (EditProperties) creator.newInstance(EditProperties.class,
+				new Object[]{
+					"classDescriptor", classDescriptor,
+					"propertyNames", Arrays.asList("date", "name")
+				});
+
 		assertTrue(propertyTable.getPropertyDescriptors().contains(nameDescriptor));
 		assertEquals("got 2", 2, propertyTable.getPropertyDescriptors().size());
 		assertEquals("first one is date", dateDescriptor,

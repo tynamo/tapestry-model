@@ -12,6 +12,7 @@
 package org.trails.component;
 
 import org.apache.hivemind.Messages;
+import org.apache.hivemind.util.PropertyUtils;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.components.Block;
 import org.apache.tapestry.contrib.table.model.IAdvancedTableColumn;
@@ -45,17 +46,6 @@ public class ObjectTableTest extends MockObjectTestCase
 		messages = mock(Messages.class);
 		persistenceService = mock(PersistenceService.class);
 
-		objectTable = (ObjectTable) creator.newInstance(ObjectTable.class,
-				new Object[]{"id", "myTable", "persistenceService", persistenceService});
-		objectTable.setShowCollections(false);
-
-		Block idColumnValue = (Block) creator.newInstance(Block.class,
-				new Object[]{"id", "linkColumnValue", "page", page, "container", objectTable});
-
-		objectTable.addComponent(idColumnValue);
-		objectTable.setPage(page);
-		objectTable.setContainer(page);
-
 		ReflectionDescriptorFactory descriptorFactory = new ReflectionDescriptorFactory();
 		classDescriptor = descriptorFactory.buildClassDescriptor(Foo.class);
 
@@ -79,7 +69,15 @@ public class ObjectTableTest extends MockObjectTestCase
 		propertyDescriptors.add(bazzesDesriptor);
 
 		classDescriptor.setPropertyDescriptors(propertyDescriptors);
-		objectTable.setClassDescriptor(classDescriptor);
+
+		objectTable = (ObjectTable) creator.newInstance(ObjectTable.class,
+				new Object[]{"id", "myTable", "persistenceService", persistenceService, "page", page, "container", page, "classDescriptor", classDescriptor});
+		objectTable.setShowCollections(false);
+
+		Block idColumnValue = (Block) creator.newInstance(Block.class,
+				new Object[]{"id", "linkColumnValue", "page", page, "container", objectTable});
+
+		objectTable.addComponent(idColumnValue);
 
 		checking(new Expectations()
 		{
@@ -106,7 +104,9 @@ public class ObjectTableTest extends MockObjectTestCase
 
 		Block fakeBlock = (Block) creator.newInstance(Block.class);
 		components.put("multiWordPropertyColumnValue", fakeBlock);
-		objectTable.setPropertyNames(new String[]{"multiWordProperty"});
+
+		PropertyUtils.write(objectTable, "propertyNames", Arrays.asList("multiWordProperty"));
+
 		columns = objectTable.getColumns();
 		assertEquals("2 column", 2, columns.size());
 		TrailsTableColumn column = (TrailsTableColumn) columns.get(0);

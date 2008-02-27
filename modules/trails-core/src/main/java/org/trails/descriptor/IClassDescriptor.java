@@ -82,7 +82,7 @@ public interface IClassDescriptor extends IDescriptor
 	 */
 	public void setChild(boolean child);
 
-	public List<IPropertyDescriptor> getPropertyDescriptors(String[] strings);
+	public List<IPropertyDescriptor> getPropertyDescriptors(List<String> propertyNames);
 
 	public boolean isAllowSave();
 

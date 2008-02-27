@@ -25,8 +25,7 @@
 			<li jwcid="@trails:PropertyEditor" model="ognl:model"
 				descriptor="ognl:classDescriptor.getPropertyDescriptor('note')" blockFinder="ognl:blockFinder"/>
 -->
-			<li jwcid="@trails:EditProperties" classDescriptor="ognl:classDescriptor" model="ognl:model"
-				propertyNames="ognl: new java.lang.String[] {'id','note'} "/>
+			<li jwcid="@trails:EditProperties" classDescriptor="ognl:classDescriptor" model="ognl:model" propertyNames="ognl:{'id','note'}"/>
 			<li>
 				<label class="desc">
 					<span jwcid="@Insert" value="ognl:classDescriptor.getPropertyDescriptor('category').displayName"/>

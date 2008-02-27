@@ -152,11 +152,9 @@ public class TrailsClassDescriptor extends TrailsDescriptor implements
 		return Utils.pluralize(getDisplayName() );
 	}
 
-	public List<IPropertyDescriptor> getPropertyDescriptors(String[] properties)
-	{
+	public List<IPropertyDescriptor> getPropertyDescriptors(List<String> properties) {
 		ArrayList<IPropertyDescriptor> descriptors = new ArrayList<IPropertyDescriptor>();
-		for (String property : properties)
-		{
+		for (String property : properties) {
 			descriptors.add(getPropertyDescriptor(property));
 		}
 		return descriptors;

@@ -20,27 +20,24 @@
 		<div id="status" align="center"></div>
 	</div>
 
-    <table id="notes" class="table contribTable" jwcid="@trails:ObjectTable"
+<div jwcid="notes@Any">
+    <table class="table contribTable" jwcid="@trails:ObjectTable"
 		   rowsClass="ognl:beans.evenOdd.next"
 		   criteria="ognl:criteria"
 		   object="ognl:object"
-		   column="ognl:column"		   
+		   column="ognl:column"
 			/>
+</div>
 
 	<br/>
 	<br/>
 
-	<div jwcid="@Any" id="note_form">
-		<form jwcid="@tacos:AjaxForm" updateComponents="ognl:{'notes', 'note_form'}" listener="listener:addNote">
+	<div jwcid="note_form@Any">
+		<form jwcid="@Form" updateComponents="notes, note_form" success="listener:addNote" async="true" clientValidationEnabled="true">
 			<ul>
-				<div jwcid="@trails:EditProperties" model="ognl:note" modelNew="ognl:true" propertyNames="ognl:new java.lang.String[] {'note'}"/>
+				<div jwcid="@trails:EditProperties" model="ognl:note" modelNew="true" propertyNames="ognl:{'note'}"/>
 				<li class="buttonBar bottom">
-					<!--<input jwcid="@tacos:AjaxSubmit"-->
-					<input jwcid="@Submit" async="true"
-						   value="Add Note"
-						   statusElement="status"
-						   effects="template:{highlight:{notes:'[255,255,184], 500, 500'}}"
-						   updateComponents="ognl:{'notes', 'note_form'}"/>
+					<input jwcid="@Submit" value="Add Note"/>
 				</li>
 			</ul>
 		</form>

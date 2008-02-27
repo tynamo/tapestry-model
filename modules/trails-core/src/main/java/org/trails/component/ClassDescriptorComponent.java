@@ -14,16 +14,12 @@ public abstract class ClassDescriptorComponent extends TrailsComponent
 	@Parameter(required = false, defaultValue = "page.classDescriptor", cache = true)
 	public abstract IClassDescriptor getClassDescriptor();
 
-	public abstract void setClassDescriptor(IClassDescriptor ClassDescriptor);
-
 	@Parameter(required = false, defaultValue = "ognl:null", cache = true)
-	public abstract String[] getPropertyNames();
-
-	public abstract void setPropertyNames(String[] PropertyNames);
+	public abstract List<String> getPropertyNames();
 
 	public List<IPropertyDescriptor> getPropertyDescriptors()
 	{
-		if (getPropertyNames() == null || getPropertyNames().length == 0)
+		if (getPropertyNames() == null || getPropertyNames().size() == 0)
 		{
 			List<IPropertyDescriptor> displayingPropertyDescriptors = new ArrayList<IPropertyDescriptor>();
 			for (IPropertyDescriptor propertyDescriptor : getClassDescriptor().getPropertyDescriptors())

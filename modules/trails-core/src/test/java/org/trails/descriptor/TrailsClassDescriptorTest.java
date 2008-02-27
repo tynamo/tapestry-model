@@ -12,6 +12,7 @@
 package org.trails.descriptor;
 
 import java.util.List;
+import java.util.Arrays;
 
 import junit.framework.TestCase;
 import org.trails.test.Bar;
@@ -82,7 +83,7 @@ public class TrailsClassDescriptorTest extends TestCase
 			classDescriptor.getPropertyDescriptor("multiWordProperty"));
 		assertNull("should return null if none found",
 			classDescriptor.getPropertyDescriptor("doesntexist"));
-		List descriptors = classDescriptor.getPropertyDescriptors(new String[]{"multiWordProperty", "id"});
+		List descriptors = classDescriptor.getPropertyDescriptors(Arrays.asList("multiWordProperty", "id"));
 		assertEquals("get 2 descriptors", 2, descriptors.size());
 		assertEquals("in specified order", multiWordProp, descriptors.get(0));
 	}
