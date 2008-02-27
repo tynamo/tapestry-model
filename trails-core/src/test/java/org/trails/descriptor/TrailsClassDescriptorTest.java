@@ -13,11 +13,15 @@ package org.trails.descriptor;
 
 import java.util.List;
 import java.util.Arrays;
+import java.util.Set;
 
 import junit.framework.TestCase;
 import org.trails.test.Bar;
 import org.trails.test.BlogEntry;
 import org.trails.test.Foo;
+import org.trails.test.Searchee;
+import ognl.Ognl;
+import ognl.OgnlException;
 
 
 /**
@@ -106,5 +110,21 @@ public class TrailsClassDescriptorTest extends TestCase
 	{
 		classDescriptor = new TrailsClassDescriptor(BlogEntry.class);
 		assertFalse("default value should be false", classDescriptor.getHasCyclicRelationships());
+	}
+
+		public void testGetSearchableProperties()
+	{
+		TrailsClassDescriptor classDescriptor = new TrailsClassDescriptor(Searchee.class);
+		classDescriptor.getPropertyDescriptors().add(new TrailsPropertyDescriptor(Foo.class, "someProperty", String.class));
+		classDescriptor.getPropertyDescriptors().add(new IdentifierDescriptor(Foo.class, "id", String.class));
+		classDescriptor.getPropertyDescriptors().add(new CollectionDescriptor(Foo.class, "name", Set.class));
+
+		try {
+			List<IPropertyDescriptor> searchableProperties = (List<IPropertyDescriptor>) Ognl.getValue("propertyDescriptors.{? searchable}", classDescriptor);
+			assertEquals("should only be 2 search properties", 2, searchableProperties.size());
+			assertEquals("someProperty", searchableProperties.get(0).getName());
+		} catch (OgnlException e) {
+			fail();
+		}
 	}
 }
