@@ -24,10 +24,11 @@ public class SearchFormTest extends HibernateComponentTest
 	public void setUp() throws Exception
 	{
 		pageResolverMock = new Mock(PageResolver.class);
-		searchForm = (SearchForm) creator.newInstance(SearchForm.class,
-				new Object[]{"pageResolver", pageResolverMock.proxy()});
 		IClassDescriptor fooDescriptor = new TrailsClassDescriptor(Foo.class, "Foo");
-		searchForm.setClassDescriptor(fooDescriptor);
+
+		searchForm = (SearchForm) creator.newInstance(SearchForm.class,
+				new Object[]{"pageResolver", pageResolverMock.proxy(), "classDescriptor", fooDescriptor});
+
 		IPropertyDescriptor namePropDescriptor = new TrailsPropertyDescriptor(Foo.class, "name", String.class);
 		SimpleSearchField nameSearchField = (SimpleSearchField) creator.newInstance(SimpleSearchField.class);
 		nameSearchField.setPropertyDescriptor(namePropDescriptor);

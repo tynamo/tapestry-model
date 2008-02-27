@@ -11,11 +11,7 @@
  */
 package org.trails.component;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
@@ -26,6 +22,7 @@ import org.apache.tapestry.test.Creator;
 import org.apache.tapestry.components.Block;
 import org.apache.tapestry.util.ComponentAddress;
 import org.apache.hivemind.Messages;
+import org.apache.hivemind.util.PropertyUtils;
 import org.hibernate.criterion.DetachedCriteria;
 import org.jmock.Mock;
 import org.jmock.Expectations;
@@ -70,17 +67,6 @@ public class ObjectTableTest extends MockObjectTestCase
 		messages = mock(Messages.class);
 
 		authorities = new SecurityAuthorities();
-		objectTable = (HibernateObjectTable) creator.newInstance(HibernateObjectTable.class,
-				new Object[]{"id", "myObjectTable", "hibernatePersistenceService", persistenceService });
-
-		objectTable.setShowCollections(false);
-
-		Block idColumnValue = (Block) creator.newInstance(Block.class,
-				new Object[]{"id", "linkColumnValue", "page", page, "container", objectTable});
-
-		objectTable.addComponent(idColumnValue);
-		objectTable.setPage(page);
-		objectTable.setContainer(page);
 
 		ReflectionDescriptorFactory descriptorFactory = new ReflectionDescriptorFactory();
 		classDescriptor = descriptorFactory.buildClassDescriptor(Foo.class);
@@ -120,7 +106,16 @@ public class ObjectTableTest extends MockObjectTestCase
 
 		classDescriptor.setPropertyDescriptors(propertyDescriptors);
 		fooSecuredDescriptor.setPropertyDescriptors(fooSecuredPropertyDescriptors);
-		objectTable.setClassDescriptor(classDescriptor);
+
+		objectTable = (HibernateObjectTable) creator.newInstance(HibernateObjectTable.class,
+				new Object[]{"id", "myObjectTable", "hibernatePersistenceService", persistenceService, "page", page, "container", page, "classDescriptor", classDescriptor});
+		objectTable.setShowCollections(false);
+
+		Block idColumnValue = (Block) creator.newInstance(Block.class,
+				new Object[]{"id", "linkColumnValue", "page", page, "container", objectTable});
+
+		objectTable.addComponent(idColumnValue);
+
 	}
 
 	public void testGetColumns() throws Exception
@@ -149,7 +144,8 @@ public class ObjectTableTest extends MockObjectTestCase
 				new Object[]{"id", "multiWordPropertyColumnValue", "page", page, "container", page});
 
 		components.put("multiWordPropertyColumnValue", fakeBlock);
-		objectTable.setPropertyNames(new String[]{"multiWordProperty"});
+
+		PropertyUtils.write(objectTable, "propertyNames", Arrays.asList("multiWordProperty"));
 
 		objectTable.prepareForRender(cycle);
 		columns = objectTable.getColumns();
@@ -261,7 +257,7 @@ public class ObjectTableTest extends MockObjectTestCase
 			}
 		});
 
-		objectTable.setClassDescriptor(fooSecuredDescriptor);
+		PropertyUtils.write(objectTable, "classDescriptor", fooSecuredDescriptor);
 		fooSecuredDescriptor.setAllowSave(false);
 		nameSecured.setHidden(true);
 
@@ -321,7 +317,7 @@ public class ObjectTableTest extends MockObjectTestCase
 			}
 		});
 
-		objectTable.setClassDescriptor(fooSecuredDescriptor);
+		PropertyUtils.write(objectTable, "classDescriptor", fooSecuredDescriptor);
 
 		objectTable.prepareForRender(cycle);
 		List columns = objectTable.getColumns();
