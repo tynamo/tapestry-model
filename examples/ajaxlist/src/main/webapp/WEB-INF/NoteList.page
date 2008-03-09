@@ -10,4 +10,6 @@
 
 	<bean name="evenOdd" class="org.apache.tapestry.bean.EvenOdd"/>
 
+	<inject property="callbackStack" type="state" object="callbackStack"/>
+
 </page-specification>
