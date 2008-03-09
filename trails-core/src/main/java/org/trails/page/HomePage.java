@@ -5,7 +5,6 @@
 package org.trails.page;
 
 import org.apache.tapestry.annotations.InjectObject;
-import org.apache.tapestry.annotations.InjectState;
 import org.apache.tapestry.event.PageBeginRenderListener;
 import org.apache.tapestry.event.PageEvent;
 import org.apache.tapestry.html.BasePage;
@@ -19,7 +18,6 @@ import java.util.List;
 public abstract class HomePage extends BasePage implements PageBeginRenderListener
 {
 
-	@InjectState("callbackStack")
 	public abstract CallbackStack getCallbackStack();
 
 	@InjectObject("service:trails.core.DescriptorService")
