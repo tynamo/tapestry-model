@@ -46,6 +46,7 @@
 
 	<component id="cancelButton" type="Submit" inherit-informal-parameters="no">
 		<binding name="submitType" value="literal:cancel"/>
+		<binding name="action" value="ognl:page.listeners.cancel"/>
 	</component>
 
 	<property name="methodDescriptor"/>
