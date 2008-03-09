@@ -2,6 +2,7 @@ package org.trails.page;
 
 import org.apache.tapestry.annotations.Bean;
 import org.apache.tapestry.annotations.Lifecycle;
+import org.apache.tapestry.annotations.InjectObject;
 import org.hibernate.validator.InvalidStateException;
 import org.trails.persistence.HibernatePersistenceService;
 import org.trails.persistence.PersistenceException;
@@ -21,6 +22,16 @@ public abstract class HibernateEditPage extends EditPage
 		return getHibernateValidationDelegate();
 	}
 
+	@InjectObject("service:trails.hibernate.PersistenceService")
+	public abstract HibernatePersistenceService getHibernatePersistenceService();
+
+	/**
+	 * @todo: remove when the components reuse issue goes away.
+	 */
+	public HibernatePersistenceService getPersistenceService()
+	{
+		return getHibernatePersistenceService();
+	}
 
 	@Override
 	protected boolean save()
@@ -42,9 +53,5 @@ public abstract class HibernateEditPage extends EditPage
 			return true;
 		}
 		return false;
-	}
-
-	public HibernatePersistenceService getHibernatePersistenceService() {
-		return (HibernatePersistenceService)getPersistenceService();
 	}
 }

@@ -30,7 +30,7 @@ public abstract class HibernateComponentTest extends ComponentTest
 
 		HibernateEditPage editPage = (HibernateEditPage) creator.newInstance(HibernateEditPage.class,
 			new Object[]{
-				"persistenceService", persistenceMock.proxy(),
+				"hibernatePersistenceService", persistenceMock.proxy(),
 				"descriptorService", descriptorServiceMock.proxy(),
 				"callbackStack", callbackStack,
 				"hibernateValidationDelegate", delegate,
