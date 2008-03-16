@@ -14,5 +14,6 @@
 		<set name="valueType">"int"</set>
 	</bean>
 
+	<inject property="callbackStack" type="state" object="callbackStack"/>
 
 </page-specification>
