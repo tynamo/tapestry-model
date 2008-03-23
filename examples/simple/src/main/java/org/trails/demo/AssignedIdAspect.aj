@@ -13,13 +13,7 @@ package org.trails.demo;
 
 import org.trails.hibernate.HasAssignedIdentifier;
 
-/**
- * @author fus8882
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
- */
 public aspect AssignedIdAspect {
 
-    declare parents : (Thing || Thing2) implements HasAssignedIdentifier;
+    declare parents : (Thing || Thing2 || Car) implements HasAssignedIdentifier;
 }

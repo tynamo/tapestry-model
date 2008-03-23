@@ -24,6 +24,16 @@
 			<span key="org.trails.simple.person.message"/>
 		</li>
 		<li>
+			<span jwcid="@If" condition="ognl:filePersister.getAsset(classDescriptor, classDescriptor.getPropertyDescriptor('photo'), model)">
+				<img jwcid="@Image" width="100px" height="100px"
+					 image="ognl:filePersister.getAsset(classDescriptor, classDescriptor.getPropertyDescriptor('photo'), model)"/>
+			</span><span jwcid="@Else">
+				<img alt="no photo" title="no photo"/>
+			</span>
+			<span jwcid="@trails:TrailsUpload" propertyDescriptor="ognl:classDescriptor.getPropertyDescriptor('photo')"
+				  model="ognl:model"/>
+		</li>
+		<li>
 			<div>
 				<div class="left">
 					<span jwcid="@trails:SimplePropertyEditor" property="literal:firstName"/>

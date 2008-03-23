@@ -1,21 +1,16 @@
 package org.trails.demo;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-
-import org.apache.commons.lang.builder.EqualsBuilder;
+import java.io.Serializable;
 
 @Entity
-public class Model
+public class Model implements Serializable
 {
-
-	public Model()
-	{
-		super();
-		// TODO Auto-generated constructor stub
-	}
 
 	private Integer id;
 
@@ -53,8 +48,6 @@ public class Model
 	@Override
 	public String toString()
 	{
-		// TODO Auto-generated method stub
 		return getName();
 	}
-
 }

@@ -1,74 +1,45 @@
 package org.trails.demo;
 
+import org.hibernate.validator.Length;
+import org.trails.descriptor.annotation.PropertyDescriptor;
+
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import java.io.Serializable;
 
 @Entity
-public class Car
+public class Car implements Serializable
 {
 
-	public Car()
-	{
-		super();
-		// TODO Auto-generated constructor stub
-	}
-
-	private Integer id;
-
-	private String name;
+	private CarPk id = new CarPk();
 
 	private Person owner;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	public Integer getId()
+	private String notes;
+
+	@EmbeddedId
+	@PropertyDescriptor(index = 0)
+	public CarPk getId()
 	{
 		return id;
 	}
 
-	public void setId(Integer id)
+	public void setId(CarPk id)
 	{
 		this.id = id;
 	}
 
-	public String getName()
+	@PropertyDescriptor(index = 1)
+	@Length(max = 350)
+	public String getNotes()
 	{
-		return name;
+		return notes;
 	}
 
-	public void setName(String name)
+	public void setNotes(String notes)
 	{
-		this.name = name;
-	}
-
-	private Make make;
-
-	private Model model;
-
-	@ManyToOne
-	public Make getMake()
-	{
-		return make;
-	}
-
-	public void setMake(Make make)
-	{
-		this.make = make;
-	}
-
-	@ManyToOne
-	public Model getModel()
-	{
-		return model;
-	}
-
-	public void setModel(Model model)
-	{
-		this.model = model;
+		this.notes = notes;
 	}
 
 	@OneToOne

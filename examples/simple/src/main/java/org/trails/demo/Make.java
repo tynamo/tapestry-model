@@ -1,5 +1,6 @@
 package org.trails.demo;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.Entity;
@@ -9,14 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 @Entity
-public class Make
+public class Make implements Serializable
 {
-
-	public Make()
-	{
-		super();
-		// TODO Auto-generated constructor stub
-	}
 
 	private Integer id;
 
@@ -66,11 +61,10 @@ public class Make
 	@Override
 	public String toString()
 	{
-		// TODO Auto-generated method stub
 		return getName();
 	}
 
-	@OneToMany(mappedBy = "make")
+	@OneToMany(mappedBy = "id.make")
 	public Set<Car> getCars()
 	{
 		return cars;
@@ -80,6 +74,4 @@ public class Make
 	{
 		this.cars = cars;
 	}
-
-
 }

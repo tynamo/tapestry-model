@@ -90,8 +90,25 @@ public class BlobDownloadService implements IEngineService
 							blobDescriptor.getContentDisposition().getValue() + (fileName != null ? "; filename=" + fileName : ""));
 					_response.setContentLength(bytes.length);
 
-					OutputStream output = _response.getOutputStream(contentType != null ? new ContentType(contentType) : new ContentType());
-					output.write(bytes);
+					OutputStream output = null;
+					try
+					{
+						output = _response.getOutputStream(contentType != null ? new ContentType(contentType) : new ContentType());
+						output.write(bytes);
+					} finally
+					{
+						try
+						{
+							if (output != null)
+							{
+								output.flush();
+								output.close();
+							}
+						} catch (Throwable t)
+						{
+							// do nothing;
+						}
+					}
 				} else
 				{
 					String errorText = "BlobDownloadServcie: entityName->" + entityName + ", blobID ->" +

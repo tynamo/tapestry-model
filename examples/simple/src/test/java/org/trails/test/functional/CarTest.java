@@ -1,16 +1,21 @@
 package org.trails.test.functional;
 
-import java.util.List;
-
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.gargoylesoftware.htmlunit.html.HtmlSelect;
-import com.gargoylesoftware.htmlunit.html.xpath.HtmlUnitXPath;
 
 public class CarTest extends FunctionalTest
 {
 
 	public void testObjectTableOnEditPage() throws Exception
 	{
+		HtmlPage listModelsPage = clickLinkOnPage(startPage, "List Models");
+		HtmlPage newModelPage = clickLinkOnPage(listModelsPage, "New Model");
+
+		getInputByName(newModelPage, "Name").setValueAttribute("Civic");
+
+		listModelsPage = clickButton(newModelPage, "Ok");
+		startPage = clickLinkOnPage(listModelsPage, "Home");
+
 		HtmlPage listMakesPage = clickLinkOnPage(startPage, "List Makes");
 		HtmlPage newMakePage = clickLinkOnPage(listMakesPage, "New Make");
 
@@ -27,7 +32,7 @@ public class CarTest extends FunctionalTest
 		startPage = clickLinkOnPage(listCarsPage, "Home");
 		listMakesPage = clickLinkOnPage(startPage, "List Makes");
 		HtmlPage make1Page = clickLinkOnPage(listMakesPage, "1");
-		assertXPathPresent(make1Page, "//td[text() = 'Accord']");
+		assertXPathPresent(make1Page, "//td/a[contains(text(),'Accord')]");
 	}
 
 	public void testCancelAndDefaultCallback() throws Exception {
@@ -36,7 +41,8 @@ public class CarTest extends FunctionalTest
 		HtmlPage newMakePage = clickLinkOnPage(listMakesPage, "New Make");
 
 		newMakePage = clickButton(newMakePage, "Cancel");
-		assertXPathPresent(newMakePage, "//h1[text() = 'List Makes ']"); //note there an extra space in the h1 text
+
+		assertXPathPresent(newMakePage, "//h1[contains(text(),'List Makes')]");
 	}
 
 	public void testCancelWithSessionCallbackStack() throws Exception

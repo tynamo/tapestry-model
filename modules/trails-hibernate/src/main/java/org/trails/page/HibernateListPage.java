@@ -21,6 +21,7 @@ public abstract class HibernateListPage extends ListPage
 
 	public void activateTrailsPage(Object[] args, IRequestCycle cycle)
 	{
+		super.activateTrailsPage(args, cycle);
 		setCriteria(DetachedCriteria.forClass(getClassDescriptor().getType()));
 	}
 
