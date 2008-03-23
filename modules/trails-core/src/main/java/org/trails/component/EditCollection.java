@@ -46,6 +46,9 @@ public abstract class EditCollection extends TrailsComponent
 
 	protected static final Log LOG = LogFactory.getLog(EditCollection.class);
 
+	@Parameter(required = false)
+	public abstract List getInstances();
+	
 	@Parameter(required = true)
 	public abstract Collection getCollection();
 
@@ -204,15 +207,17 @@ public abstract class EditCollection extends TrailsComponent
 		IClassDescriptor elementDescriptor =
 				getDescriptorService().getClassDescriptor(getCollectionDescriptor().getElementType());
 		// don't allow use to select from all here
-		if (getCollectionDescriptor().isChildRelationship())
+		if (getInstances() != null)
+		{
+			return new IdentifierSelectionModel(getInstances(), elementDescriptor.getIdentifierDescriptor().getName());
+		} else if (getCollectionDescriptor().isChildRelationship())
 		{
 			return new IdentifierSelectionModel(getSelectedList(),
 					elementDescriptor.getIdentifierDescriptor().getName());
 		} else
 		{
 			// but do here
-			return new IdentifierSelectionModel(
-					getPersistenceService().getAllInstances(getCollectionDescriptor().getElementType()),
+			return new IdentifierSelectionModel(getPersistenceService().getAllInstances(getCollectionDescriptor().getElementType()),
 					elementDescriptor.getIdentifierDescriptor().getName());
 		}
 	}
