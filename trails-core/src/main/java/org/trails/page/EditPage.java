@@ -57,7 +57,14 @@ public abstract class EditPage extends ModelPage implements IAssociationPage
 
 	private ILink defaultCallback()
 	{
-		return getTrailsPagesService().getLink(false, new TrailsPagesServiceParameter(PageType.LIST, getClassDescriptor()));
+		if (!cameFromCollection())
+		{
+			return getTrailsPagesService().getLink(false, new TrailsPagesServiceParameter(PageType.LIST, getClassDescriptor()));
+		} else {
+			return getTrailsPagesService().getLink(false, new TrailsPagesServiceParameter(PageType.EDIT,
+					getDescriptorService().getClassDescriptor(getParent().getClass()), getParent(), null, null));
+		}
+
 	}
 
 	private ILink linkToThisPage()

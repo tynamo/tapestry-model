@@ -95,12 +95,18 @@ public class DefaultFilePersister implements IFilePersister
 	public IAsset getAsset(IClassDescriptor classDescriptor, IPropertyDescriptor propertyDescriptor, Object model)
 	{
 		Serializable pk = persistenceService.getIdentifier(model, classDescriptor);
+
 		if (pk != null)
 		{
-			String id = pk.toString();
+			byte[] bytes = getData(classDescriptor, propertyDescriptor, model);
 
-			return new TrailsBlobAsset(blobDownloadService, classDescriptor.getType().getName(), id,
-					propertyDescriptor.getName());
+			if (bytes != null && bytes.length > 0)
+			{
+				String id = pk.toString();
+
+				return new TrailsBlobAsset(blobDownloadService, classDescriptor.getType().getName(), id,
+						propertyDescriptor.getName());
+			}
 		}
 		return null;
 	}

@@ -1,13 +1,11 @@
 package org.trails.engine.encoders;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry.TapestryUtils;
 import org.apache.tapestry.engine.ServiceEncoder;
 import org.apache.tapestry.engine.ServiceEncoding;
 import org.trails.Trails;
 import org.trails.io.ClassDescriptorSqueezerStrategy;
 import org.trails.services.ServiceConstants;
-
 
 /**
  * A specialized encoder for the TrailsPageService that encodes the necessary parameters into the servlet path allowing
@@ -71,7 +69,8 @@ public class PagesEncoder implements ServiceEncoder
 		String simpleClassName = params[1];
 		encoding.setParameterValue(ServiceConstants.CLASS_DESCRIPTOR, unAbbreviateSqueezedClassDescripor(simpleClassName));
 		if (params.length > 2)
-			encoding.setParameterValue(ServiceConstants.MODEL, unAbbreviateSqueezedEntity(params[2], simpleClassName));
+			encoding.setParameterValue(ServiceConstants.MODEL, unAbbreviateSqueezedEntity(
+					pathInfo.substring(params[0].length() + params[1].length() + 3), simpleClassName));
 	}
 
 	private String abbreviateSqueezedClassDescripor(String squeezedClassDescripor)
