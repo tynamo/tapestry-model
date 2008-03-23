@@ -42,17 +42,9 @@ import org.hibernate.type.ComponentType;
 import org.hibernate.type.Type;
 import org.springframework.orm.hibernate3.LocalSessionFactoryBean;
 import org.trails.exception.TrailsRuntimeException;
-import org.trails.descriptor.CollectionDescriptor;
-import org.trails.descriptor.DescriptorDecorator;
-import org.trails.descriptor.DescriptorFactory;
-import org.trails.descriptor.EmbeddedDescriptor;
 import org.trails.descriptor.extension.EnumReferenceDescriptor;
-import org.trails.descriptor.IClassDescriptor;
-import org.trails.descriptor.IPropertyDescriptor;
-import org.trails.descriptor.IdentifierDescriptor;
-import org.trails.descriptor.ObjectReferenceDescriptor;
 import org.trails.descriptor.extension.OwningObjectReferenceDescriptor;
-import org.trails.descriptor.TrailsPropertyDescriptor;
+import org.trails.descriptor.*;
 
 /**
  * This decorator will add metadata information. It will replace simple
@@ -117,7 +109,7 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 
 				if (propertyDescriptor.getName().equals(getIdentifierProperty(type)))
 				{
-					descriptorReference = createIdentifierDescriptor(type, propertyDescriptor);
+					descriptorReference = createIdentifierDescriptor(type, propertyDescriptor, descriptor);
 				} else if (notAHibernateProperty(classMetaData, propertyDescriptor))
 				{
 					// If this is not a hibernate property (i.e. marked
@@ -340,10 +332,24 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 	 * @param parentClassDescriptor
 	 * @return
 	 */
-	private IdentifierDescriptor createIdentifierDescriptor(Class type, IPropertyDescriptor descriptor)
+	private IIdentifierDescriptor createIdentifierDescriptor(Class type, IPropertyDescriptor descriptor, IClassDescriptor parentClassDescriptor)
 	{
-		IdentifierDescriptor identifierDescriptor = new IdentifierDescriptor(type, descriptor);
+		IIdentifierDescriptor identifierDescriptor;
 		PersistentClass mapping = getMapping(type);
+
+		/**
+		 * fix for TRAILS-92
+		 */
+		if (mapping.getProperty(descriptor.getName()).getType() instanceof ComponentType)
+		{
+			EmbeddedDescriptor embeddedDescriptor = buildEmbeddedDescriptor(type,
+					mapping.getProperty(descriptor.getName()), descriptor, parentClassDescriptor);
+			embeddedDescriptor.setIdentifier(true);
+			identifierDescriptor = embeddedDescriptor;
+		} else
+		{
+			identifierDescriptor = new IdentifierDescriptor(type, descriptor);
+		}
 
 		if (((SimpleValue) mapping.getIdentifier()).getIdentifierGeneratorStrategy().equals("assigned"))
 		{

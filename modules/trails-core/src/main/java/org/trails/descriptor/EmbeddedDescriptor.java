@@ -1,11 +1,15 @@
 package org.trails.descriptor;
 
-public class EmbeddedDescriptor extends TrailsClassDescriptor implements IPropertyDescriptor
+public class EmbeddedDescriptor extends TrailsClassDescriptor implements IIdentifierDescriptor
 {
 
 	private int index;
 
 	private boolean readOnly;
+
+	private boolean identifier;
+
+	private boolean generated;
 
 	private String name;
 
@@ -230,8 +234,21 @@ public class EmbeddedDescriptor extends TrailsClassDescriptor implements IProper
 
 	public boolean isIdentifier()
 	{
-		return false;
+		return identifier;
 	}
 
+	public void setIdentifier(boolean identifier)
+	{
+		this.identifier = identifier;
+	}
 
+	public boolean isGenerated()
+	{
+		return generated;
+	}
+
+	public void setGenerated(boolean generated)
+	{
+		this.generated = generated;
+	}
 }
