@@ -58,7 +58,9 @@
 		</state-object>
 	</contribution>
 
-<!--	<service-point id="CallbackStackAdaptor" interface="org.apache.tapestry.util.io.SqueezeAdaptor">
+
+<!--
+	<service-point id="CallbackStackAdaptor" interface="org.apache.tapestry.util.io.SqueezeAdaptor">
 		<invoke-factory>
 			<construct class="org.trails.io.CallbackStackAdaptor"/>
 		</invoke-factory>
@@ -75,8 +77,16 @@
 			<construct class="org.trails.io.EntitySqueezerStrategy">
 				<set property="prefix" value="U"/>
 				<set property="delimiter" value=":"/>
-				<set-object property="persistenceService" value="service:trails.core.DefaultPersistenceService"/>
-				<set-object property="descriptorService" value="service:trails.core.DefaultDescriptorService"/>
+				<set-object property="persistenceService" value="service:trails.core.PersistenceService"/>
+				<set-object property="descriptorService" value="service:trails.core.DescriptorService"/>
+			</construct>
+		</invoke-factory>
+	</service-point>
+
+	<service-point id="TrailsPageCallbackAdaptor" interface="org.apache.tapestry.util.io.SqueezeAdaptor">
+		<invoke-factory>
+			<construct class="org.trails.io.TrailsPageCallbackAdaptor">
+				<set-object property="trailsPagesService" value="service:trails.core.TrailsPagesService"/>
 			</construct>
 		</invoke-factory>
 	</service-point>
@@ -148,13 +158,15 @@
 		<adaptor object="service:PropertyChangeAdaptor"/>
 		<adaptor object="service:EntitySqueezerAdaptor"/>
 		<adaptor object="service:CallbackStackAdaptor"/>
+		<adaptor object="service:TrailsPageCallbackAdaptor"/>
 	</contribution>
 
 	<contribution configuration-id="tapestry.persist.PersistenceStrategy">
 		<strategy name="trails-entity" object="service:FormClientPropertyPersistenceStrategy"/>
 		<strategy name="trails-default" object="service:tapestry.persist.PageClientPropertyPersistenceStrategy"/>
 		<strategy name="trails-form" object="service:FormClientPropertyPersistenceStrategy"/>
-	</contribution>-->
+	</contribution>
+-->
 
 	<implementation service-id="trails.core.AddNewLinkRenderer">
 		<invoke-factory>
