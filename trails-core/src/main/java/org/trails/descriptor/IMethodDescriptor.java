@@ -1,15 +1,17 @@
 package org.trails.descriptor;
 
+import java.lang.reflect.Method;
+
 
 public interface IMethodDescriptor extends IDescriptor
 {
 
-	public abstract Class[] getArgumentTypes();
+	Class[] getArgumentTypes();
 
-	public abstract void setArgumentTypes(Class[] argumentTypes);
+	String getName();
 
-	public abstract String getName();
+	Class getBeanType();
 
-	public abstract void setName(String name);
+	Method getMethod() throws NoSuchMethodException;
 
 }

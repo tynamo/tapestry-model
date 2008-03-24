@@ -44,7 +44,7 @@ public class TrailsClassDescriptorTest extends TestCase
 		multiWordProp = new TrailsPropertyDescriptor(Foo.class, "multiWordProperty", String.class);
 		classDescriptor.getPropertyDescriptors().add(idProp);
 		classDescriptor.getPropertyDescriptors().add(multiWordProp);
-		classDescriptor.getMethodDescriptors().add(new TrailsMethodDescriptor("foo", void.class, new Class[]{}));
+		classDescriptor.getMethodDescriptors().add(new TrailsMethodDescriptor(Foo.class, "foo", void.class, new Class[] {}));
 		classDescriptor.setHasCyclicRelationships(true);
 		classDescriptor.setShortDescription("a simple foo");
 	}

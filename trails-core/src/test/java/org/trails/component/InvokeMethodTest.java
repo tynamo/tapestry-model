@@ -20,6 +20,7 @@ import org.apache.tapestry.IActionListener;
 import org.apache.tapestry.IRequestCycle;
 import org.jmock.Mock;
 import org.trails.test.Baz;
+import org.trails.descriptor.TrailsMethodDescriptor;
 
 
 /**
@@ -58,10 +59,14 @@ public class InvokeMethodTest extends ComponentTest
 
 	public void testClick() throws Exception
 	{
-		MethodDescriptor methodDescriptor = (MethodDescriptor) Ognl.getValue("methodDescriptors.{? name == 'doSomething'}[0]",
-			beanInfo);
+		MethodDescriptor beanMethodDescriptor =
+				(MethodDescriptor) Ognl.getValue("methodDescriptors.{? name == 'doSomething'}[0]", beanInfo);
 
-		invokeMethod.setMethodDescriptor(methodDescriptor);
+		TrailsMethodDescriptor trailsMethodDescriptor = new TrailsMethodDescriptor(Baz.class,
+				beanMethodDescriptor.getMethod().getName(), beanMethodDescriptor.getMethod().getReturnType(),
+				beanMethodDescriptor.getMethod().getParameterTypes());
+
+		invokeMethod.setMethodDescriptor(trailsMethodDescriptor);
 
 		invokeMethod.click(cycle);
 		assertEquals("method invokes", "something done", baz.getDescription());

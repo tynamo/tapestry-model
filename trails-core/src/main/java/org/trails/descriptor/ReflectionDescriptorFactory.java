@@ -1,9 +1,6 @@
 package org.trails.descriptor;
 
-import java.beans.BeanDescriptor;
-import java.beans.BeanInfo;
-import java.beans.Introspector;
-import java.beans.PropertyDescriptor;
+import java.beans.*;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +44,7 @@ public class ReflectionDescriptorFactory implements DescriptorFactory
 			beanDescriptor.setDisplayName(Utils.unCamelCase(beanDescriptor.getDisplayName()) );
 			BeanUtils.copyProperties(descriptor, beanInfo.getBeanDescriptor());
 			descriptor.setPropertyDescriptors(buildPropertyDescriptors(type,beanInfo, descriptor));
+			descriptor.setMethodDescriptors(buildMethodDescriptors(type, beanInfo, descriptor));
 			return descriptor;
 
 		} catch (IllegalAccessException e)
@@ -93,6 +91,25 @@ public class ReflectionDescriptorFactory implements DescriptorFactory
 				BeanUtils.copyProperties(propDescriptor, beanPropDescriptor);
 				TrailsPropertyDescriptor newPropertyDescriptor = propDescriptor;
 				result.add(newPropertyDescriptor);
+			}
+		}
+		return result;
+	}
+
+	protected ArrayList<IMethodDescriptor> buildMethodDescriptors(Class type, BeanInfo beanInfo,
+																  IClassDescriptor parentClassDescriptor)
+			throws Exception
+	{
+		ArrayList<IMethodDescriptor> result = new ArrayList<IMethodDescriptor>();
+		for (MethodDescriptor beanMethodDescriptor : beanInfo.getMethodDescriptors())
+		{
+			if (!isExcluded(beanMethodDescriptor.getMethod().getName(), getMethodExcludes()))
+			{
+				TrailsMethodDescriptor methodDescriptor = new TrailsMethodDescriptor(type,
+						beanMethodDescriptor.getMethod().getName(), beanMethodDescriptor.getMethod().getReturnType(),
+						beanMethodDescriptor.getMethod().getParameterTypes());
+				methodDescriptor.setDisplayName(Utils.unCamelCase(beanMethodDescriptor.getDisplayName()));
+				result.add(methodDescriptor);
 			}
 		}
 		return result;

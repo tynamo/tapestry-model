@@ -11,24 +11,17 @@
  */
 package org.trails.component;
 
-import java.beans.MethodDescriptor;
-
 import org.apache.tapestry.IActionListener;
 import org.apache.tapestry.IRequestCycle;
+import org.trails.descriptor.IMethodDescriptor;
 import org.trails.exception.TrailsRuntimeException;
 
 
-/**
- * @author fus8882
- *         <p/>
- *         TODO To change the template for this generated type comment go to
- *         Window - Preferences - Java - Code Style - Code Templates
- */
 public abstract class InvokeMethod extends TrailsComponent
 {
-	public abstract MethodDescriptor getMethodDescriptor();
+	public abstract IMethodDescriptor getMethodDescriptor();
 
-	public abstract void setMethodDescriptor(MethodDescriptor MethodDescriptor);
+	public abstract void setMethodDescriptor(IMethodDescriptor MethodDescriptor);
 
 	public abstract IActionListener getListener();
 
@@ -42,8 +35,7 @@ public abstract class InvokeMethod extends TrailsComponent
 	{
 		try
 		{
-			getMethodDescriptor().getMethod().invoke(getModel(),
-				new Object[]{});
+			getMethodDescriptor().getMethod().invoke(getModel());
 		} catch (Exception e)
 		{
 			throw new TrailsRuntimeException(e, getModel().getClass());
