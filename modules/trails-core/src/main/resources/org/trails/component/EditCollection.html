@@ -48,7 +48,7 @@
 			</tr>
 		</table>
 		<span jwcid="@If" condition="ognl:allowRemove">
-			<input jwcid="removeButton@Submit" type="button"
+			<input class="button" jwcid="removeButton@Submit" type="button"
 				   value="ognl:getMessage(@org.trails.util.Utils@REMOVE_MESSAGE)"
 				   listener="listener:remove" disabled="ognl:page.modelNew"/>
 		</span>
@@ -59,7 +59,7 @@
 			 sort="ognl:sortMode"/>
 	</div>
 	<div jwcid="allowCreate@If" condition="ognl:allowCreate">
-		<span type="button" jwcid="@TrailsLink"
+		<span class="button" type="button" jwcid="@TrailsLink"
 			  classDescriptor="ognl:descriptorService.getClassDescriptor(collectionDescriptor.elementType)"
 			  pageType="ognl:@org.trails.page.PageType@NEW"
 			  associationDescriptor="ognl:collectionDescriptor"

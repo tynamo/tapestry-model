@@ -13,12 +13,12 @@
 	<tr>
 		<td>
 			<div jwcid="@If" condition="ognl:association">
-				<input jwcid="removeButton" type="button"
+				<input class="button" jwcid="removeButton" type="button"
 					   value="ognl:getMessage(@org.trails.util.Utils@REMOVE_MESSAGE)"/>
 			</div>
 			<div jwcid="@If" condition="ognl:not(page.isModelNew())">
 				<div jwcid="@If" condition="ognl:not association">
-					<input jwcid="addButton" type="button"
+					<input class="button" jwcid="addButton" type="button"
 						   value="ognl:getMessage(@org.trails.util.Utils@ADD_NEW_MESSAGE)"/>
 				</div>
 			</div>
