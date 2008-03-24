@@ -1,13 +1,9 @@
 package org.trails.demo;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
 
 @Entity
 public class Make implements Serializable
@@ -42,22 +38,21 @@ public class Make implements Serializable
 	}
 
 	@Override
-	public boolean equals(Object obj)
+	public boolean equals(Object o)
 	{
-		if (this == obj)
-			return true;
-		try
-		{
-			final Make make = (Make) obj;
-			if (!getId().equals(make.getId()))
-				return false;
-			return true;
-		} catch (Exception e)
-		{
-			return false;
-		}
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		Make item = (Make) o;
+		return getId() != null ? getId().equals(item.getId()) : item.getId() == null;
 	}
 
+	@Override
+	public int hashCode()
+	{
+		return (getId() != null ? getId().hashCode() : 0);
+	}
+	
 	@Override
 	public String toString()
 	{

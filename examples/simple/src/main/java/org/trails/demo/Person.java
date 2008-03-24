@@ -112,11 +112,11 @@ public class Person
 
 		Person person = (Person) o;
 
-		return (id != null ? id.equals(person.id) : person.id == null);
+		return getId() != null ? getId().equals(person.getId()) : person.getId() == null;
 	}
 
 	public int hashCode()
 	{
-		return (id != null ? id.hashCode() : 0);
+		return (getId() != null ? getId().hashCode() : 0);
 	}
 }

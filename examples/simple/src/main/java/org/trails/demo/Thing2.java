@@ -19,11 +19,6 @@ import org.trails.descriptor.annotation.PropertyDescriptor;
 import org.trails.validation.ValidateUniqueness;
 
 
-/**
- * @author fus8882
- * @hibernate.class TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
- */
 @ValidateUniqueness(property = "name")
 @Entity
 public class Thing2

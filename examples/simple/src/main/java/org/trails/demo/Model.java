@@ -39,10 +39,19 @@ public class Model implements Serializable
 	}
 
 	@Override
-	public boolean equals(Object obj)
+	public boolean equals(Object o)
 	{
-		// TODO Auto-generated method stub
-		return EqualsBuilder.reflectionEquals(this, obj);
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		Model item = (Model) o;
+		return getId() != null ? getId().equals(item.getId()) : item.getId() == null;
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return (getId() != null ? getId().hashCode() : 0);
 	}
 
 	@Override

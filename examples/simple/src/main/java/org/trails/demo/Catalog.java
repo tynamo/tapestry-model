@@ -28,12 +28,6 @@ import org.trails.descriptor.annotation.Collection;
 import org.trails.descriptor.annotation.PropertyDescriptor;
 
 
-/**
- * @hibernate.class
- * @javabean.class shortDescription="This is some other descriptive text."
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
- */
 @Entity
 public class Catalog
 {
@@ -41,10 +35,6 @@ public class Catalog
 	private String name;
 	private List<Category> categories = new ArrayList<Category>();
 
-	/**
-	 * @hibernate.id generator-class="native"
-	 * @javabean.property
-	 */
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	public Integer getId()
@@ -60,10 +50,6 @@ public class Catalog
 		this.id = id;
 	}
 
-	/**
-	 * @hibernate.property
-	 * @javabean.property
-	 */
 	@NotNull
 	@Length(min = 1, max = 20)
 	@Pattern(regex = "[a-z]*")
@@ -86,13 +72,6 @@ public class Catalog
 		return getName();
 	}
 
-	/**
-	 * @hibernate.list cascade="all-delete-orphan"
-	 * @hibernate.collection-key column="CATALOG_ID"
-	 * @hibernate.collection-index column = "CATEGORY_INDEX"
-	 * @hibernate.collection-one-to-many class="org.trails.demo.Category"
-	 * @javabean.property
-	 */
 	@OneToMany(cascade = javax.persistence.CascadeType.ALL)
 	@JoinColumn(name = "CATALOG_ID")
 	@IndexColumn(name = "CATEGORY_INDEX")
@@ -113,19 +92,20 @@ public class Catalog
 	}
 
 	@Override
-	public boolean equals(Object obj)
+	public boolean equals(Object o)
 	{
-		if (this == obj)
-			return true;
-		try
-		{
-			final Catalog catalog = (Catalog) obj;
-			if (!getId().equals(catalog.getId()))
-				return false;
-			return true;
-		} catch (Exception e)
-		{
-			return false;
-		}
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		Catalog catalog = (Catalog) o;
+
+		return getId() != null ? getId().equals(catalog.getId()) : catalog.getId() == null;
+
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return (getId() != null ? getId().hashCode() : 0);
 	}
 }

@@ -18,12 +18,6 @@ public class Item2
 
 	private String name;
 
-	public Item2()
-	{
-		super();
-		// TODO Auto-generated constructor stub
-	}
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	public Integer getId()
@@ -48,22 +42,21 @@ public class Item2
 	}
 
 	@Override
-	public boolean equals(Object obj)
+	public boolean equals(Object o)
 	{
-		if (this == obj)
-			return true;
-		try
-		{
-			final Item2 many = (Item2) obj;
-			if (!getId().equals(many.getId()))
-				return false;
-			return true;
-		} catch (Exception e)
-		{
-			return false;
-		}
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
 
+		Item2 item = (Item2) o;
+		return getId() != null ? getId().equals(item.getId()) : item.getId() == null;
 	}
+
+	@Override
+	public int hashCode()
+	{
+		return (getId() != null ? getId().hashCode() : 0);
+	}
+
 
 	@Override
 	public String toString()

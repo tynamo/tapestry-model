@@ -17,12 +17,6 @@ public class Item
 
 	private Set<Item2> item2s = new HashSet<Item2>();
 
-	public Item()
-	{
-		super();
-		// TODO Auto-generated constructor stub
-	}
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	public Integer getId()
@@ -57,21 +51,21 @@ public class Item
 	}
 
 	@Override
-	public boolean equals(Object obj)
+	public boolean equals(Object o)
 	{
-		if (this == obj)
-			return true;
-		try
-		{
-			final Item many = (Item) obj;
-			if (!getId().equals(many.getId()))
-				return false;
-			return true;
-		} catch (Exception e)
-		{
-			return false;
-		}
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
 
+		Item item = (Item) o;
+
+		return getId() != null ? getId().equals(item.getId()) : item.getId() == null;
+
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return (getId() != null ? getId().hashCode() : 0);
 	}
 
 	@Override

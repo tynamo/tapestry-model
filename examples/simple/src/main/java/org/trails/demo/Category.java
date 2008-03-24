@@ -26,12 +26,6 @@ import org.hibernate.validator.Length;
 import org.hibernate.validator.NotNull;
 
 
-/**
- * @hibernate.class table="CATEGORY"
- * <p/>
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
- */
 @Entity
 public class Category
 {
@@ -40,9 +34,6 @@ public class Category
 	private String name;
 	private List<Product> products = new ArrayList<Product>();
 
-	/**
-	 * @hibernate.property not-null="true"
-	 */
 	@NotNull
 	@Length(min = 1, max = 20)
 	public String getDescription()
@@ -58,9 +49,6 @@ public class Category
 		this.description = description;
 	}
 
-	/**
-	 * @hibernate.id generator-class="native"
-	 */
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	public Integer getId()
@@ -76,66 +64,39 @@ public class Category
 		this.id = id;
 	}
 
-	/* (non-Javadoc)
-		 * @see java.lang.Object#toString()
-		 */
 	public String toString()
 	{
-		// TODO Auto-generated method stub
 		return getDescription();
 	}
 
-	/* (non-Javadoc)
-		 * @see java.lang.Object#equals(java.lang.Object)
-		 */
-	public boolean equals(Object obj)
+	@Override
+	public boolean equals(Object o)
 	{
-		if (!(obj instanceof Category))
-		{
-			return false;
-		}
-		Category cat = ((Category) obj);
-		if (cat == null) return false;
-		if (cat.getId() != null)
-		{
-			return cat.getId().equals(getId());
-		} else
-		{
-			return getId() == null;
-		}
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		Category category = (Category) o;
+
+		return getId() != null ? getId().equals(category.getId()) : category.getId() == null;
+
 	}
 
-	/* (non-Javadoc)
-		 * @see java.lang.Object#hashCode()
-		 */
+	@Override
 	public int hashCode()
 	{
-		return new HashCodeBuilder().append(getId()).toHashCode();
+		return (getId() != null ? getId().hashCode() : 0);
 	}
 
-	/**
-	 * @hibernate.property not-null="true"
-	 */
 	public String getName()
 	{
 		return name;
 	}
 
-	/**
-	 * @param name The name to set.
-	 */
 	public void setName(String name)
 	{
 		this.name = name;
 	}
 
-	/**
-	 * @hibernate.list cascade="save-update" table="category_member"
-	 * @hibernate.collection-key column="category"
-	 * @hibernate.collection-index column = "product_index"
-	 * @hibernate.collection-many-to-many class="org.trails.demo.Product"
-	 * @javabean.property
-	 */
 	@OneToMany
 	@JoinColumn(name = "CATEGORY_ID")
 	@IndexColumn(name = "PRODUCT_INDEX")

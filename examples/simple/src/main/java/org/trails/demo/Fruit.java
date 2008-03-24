@@ -61,4 +61,20 @@ public class Fruit
 	{
 		this.origin = origin;
 	}
+
+	public boolean equals(Object o)
+	{
+		if (this == o) return true;
+		if (o == null || !(o instanceof Fruit)) return false;
+
+		Fruit fruit = (Fruit) o;
+
+		return getId() != null ? getId().equals(fruit.getId()) : fruit.getId() == null;
+
+	}
+
+	public int hashCode()
+	{
+		return (getId() != null ? getId().hashCode() : 0);
+	}
 }

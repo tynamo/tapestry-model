@@ -34,11 +34,4 @@ public class Apple extends Fruit
 	{
 		this.history = history;
 	}
-
-	@Override
-	public boolean equals(Object obj)
-	{
-		// TODO Auto-generated method stub
-		return EqualsBuilder.reflectionEquals(this, obj);
-	}
 }

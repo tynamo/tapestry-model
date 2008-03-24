@@ -22,11 +22,6 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.trails.descriptor.annotation.PropertyDescriptor;
 
 
-/**
- * @hibernate.class table="PRODUCT"
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
- */
 @Entity
 public class Product
 {
@@ -36,18 +31,6 @@ public class Product
 	private Integer id;
 	private Double cost;
 
-	public Product(String name)
-	{
-		this.name = name;
-	}
-
-	public Product()
-	{
-	}
-
-	/**
-	 * @hibernate.property
-	 */
 	public String getDescription()
 	{
 		return description;
@@ -61,9 +44,6 @@ public class Product
 		this.description = description;
 	}
 
-	/**
-	 * @hibernate.property
-	 */
 	public String getName()
 	{
 		return name;
@@ -77,9 +57,6 @@ public class Product
 		this.name = name;
 	}
 
-	/**
-	 * @hibernate.property type="date"
-	 */
 	@PropertyDescriptor(format = "MM/dd/yyyy")
 	public Date getBornOnDate()
 	{
@@ -94,17 +71,12 @@ public class Product
 		this.bornOnDate = bornOnDate;
 	}
 
-	/* (non-Javadoc)
-		 * @see java.lang.Object#toString()
-		 */
+	@Override
 	public String toString()
 	{
 		return getName();
 	}
 
-	/**
-	 * @hibernate.id generator-class="native"
-	 */
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	public Integer getId()
@@ -127,9 +99,7 @@ public class Product
 
 	/**
 	 * @return Returns the cost.
-	 * @hibernate.property
 	 */
-
 	public Double getCost()
 	{
 		return cost;
@@ -144,19 +114,21 @@ public class Product
 	}
 
 
-	/* (non-Javadoc)
-		 * @see java.lang.Object#equals(java.lang.Object)
-		 */
-	public boolean equals(Object obj)
+	@Override
+	public boolean equals(Object o)
 	{
-		return EqualsBuilder.reflectionEquals(this, obj);
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		Product product = (Product) o;
+
+		return getId() != null ? getId().equals(product.getId()) : product.getId() == null;
+
 	}
 
-	/* (non-Javadoc)
-		 * @see java.lang.Object#hashCode()
-		 */
+	@Override
 	public int hashCode()
 	{
-		return HashCodeBuilder.reflectionHashCode(this);
+		return (getId() != null ? getId().hashCode() : 0);
 	}
 }

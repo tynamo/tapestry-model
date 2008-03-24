@@ -13,12 +13,6 @@ import javax.persistence.OneToMany;
 public class Stuff
 {
 
-	public Stuff()
-	{
-		super();
-		// TODO Auto-generated constructor stub
-	}
-
 	private Integer id;
 
 	private String name;
@@ -48,7 +42,6 @@ public class Stuff
 	}
 
 	@OneToMany(cascade = CascadeType.ALL)
-
 	public Set<Thing> getThings()
 	{
 		return things;

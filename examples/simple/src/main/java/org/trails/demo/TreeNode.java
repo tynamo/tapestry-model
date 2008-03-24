@@ -1,12 +1,12 @@
 package org.trails.demo;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-
+import org.hibernate.validator.NotNull;
 import org.trails.descriptor.annotation.ClassDescriptor;
+import org.trails.descriptor.annotation.PropertyDescriptor;
+
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @ClassDescriptor(hasCyclicRelationships = true)
@@ -18,28 +18,23 @@ public class TreeNode
 
 	private TreeNode parent;
 
-//    private Set<TreeNode> children = new HashSet<TreeNode>();
+	private Set<TreeNode> children = new HashSet<TreeNode>();
 
-	public TreeNode()
+	@OneToMany(mappedBy = "parent")
+	@PropertyDescriptor(readOnly = true, summary = true, index = 3)
+	public Set<TreeNode> getChildren()
 	{
-		super();
-		// TODO Auto-generated constructor stub
+		return children;
 	}
 
-//    @OneToMany
-//    @PropertyDescriptor(hidden=true)
-//    public Set<TreeNode> getChildren()
-//    {
-//        return children;
-//    }
-//
-//    public void setChildren(Set<TreeNode> children)
-//    {
-//        this.children = children;
-//    }
+	public void setChildren(Set<TreeNode> children)
+	{
+		this.children = children;
+	}
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+	@PropertyDescriptor(index = 0)
 	public Integer getId()
 	{
 		return id;
@@ -50,6 +45,8 @@ public class TreeNode
 		this.id = id;
 	}
 
+	@NotNull
+	@PropertyDescriptor(index = 1)
 	public String getName()
 	{
 		return name;
@@ -61,6 +58,7 @@ public class TreeNode
 	}
 
 	@ManyToOne
+	@PropertyDescriptor(index = 2)
 	public TreeNode getParent()
 	{
 		return parent;
@@ -71,21 +69,20 @@ public class TreeNode
 		this.parent = parent;
 	}
 
-	@Override
-	public boolean equals(Object obj)
+	public boolean equals(Object o)
 	{
-		if (this == obj)
-			return true;
-		try
-		{
-			final TreeNode many = (TreeNode) obj;
-			if (!getId().equals(many.getId()))
-				return false;
-			return true;
-		} catch (Exception e)
-		{
-			return false;
-		}
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		TreeNode treeNode = (TreeNode) o;
+
+		return getId() != null ? getId().equals(treeNode.getId()) : treeNode.getId() == null;
+
+	}
+
+	public int hashCode()
+	{
+		return (getId() != null ? getId().hashCode() : 0);
 	}
 
 	@Override

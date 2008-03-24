@@ -13,12 +13,6 @@ public class VersionedThing
 {
 	private Integer id;
 
-	public VersionedThing()
-	{
-		super();
-		// TODO Auto-generated constructor stub
-	}
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	public Integer getId()

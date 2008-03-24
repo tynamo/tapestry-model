@@ -8,7 +8,7 @@
 							renderTag="true">
 							<td>
 								<a href="#" jwcid="@EditLink" model="ognl:currentObject"
-								   collectionProperty="ognl:collectionDescriptor.name">
+								   associationDescriptor="ognl:collectionDescriptor" parent="ognl:model">
 									<span jwcid="insert@Insert" value="ognl:currentObject"/>
 								</a>
 							</td>
