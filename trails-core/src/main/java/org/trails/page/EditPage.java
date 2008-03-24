@@ -18,7 +18,7 @@ import org.apache.tapestry.annotations.Bean;
 import org.apache.tapestry.annotations.Lifecycle;
 import org.apache.tapestry.callback.ICallback;
 import org.apache.tapestry.engine.ILink;
-import org.trails.callback.UrlCallback;
+import org.trails.callback.TrailsPageCallback;
 import org.trails.util.Utils;
 import org.trails.engine.TrailsPagesServiceParameter;
 import org.trails.persistence.PersistenceException;
@@ -75,7 +75,8 @@ public abstract class EditPage extends ModelPage implements IAssociationPage
 
 	protected ICallback callbackToThisPage()
 	{
-		return new UrlCallback(linkToThisPage().getURL());
+		return new TrailsPageCallback(new TrailsPagesServiceParameter(PageType.EDIT, getClassDescriptor(), getModel(),
+				getAssociationDescriptor(), getParent()), getTrailsPagesService());
 	}
 
 	protected boolean save()
@@ -114,19 +115,17 @@ public abstract class EditPage extends ModelPage implements IAssociationPage
 			if (callback != null)
 			{
 				callback.performCallback(cycle);
+				return null;
 			}
 		}
 		return defaultCallback();
 	}
 
-	/**
-	 * @param cycle
-	 */
 	public ILink saveAndReturn(IRequestCycle cycle)
 	{
 		if (save())
 		{
-			if (cameFromCollection())
+			if (cameFromCollection() && isModelNew())
 			{
 				Utils.executeOgnlExpression(getAssociationDescriptor().getAddExpression(), getModel(), getParent());
 				getPersistenceService().save(getParent());

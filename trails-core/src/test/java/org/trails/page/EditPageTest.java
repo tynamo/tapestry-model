@@ -56,6 +56,7 @@ public class EditPageTest extends ComponentTest
 
 		bazEditPage = buildEditPage();
 		bazEditPage.setModel(baz);
+		bazEditPage.setModelNew(true);
 
 		callbackStack.clear();
 		callbackStack.push(callback);
