@@ -10,38 +10,40 @@
 	</parameter>
 
 	<component id="buttonBarDiv" type="Any">
-		<binding name="element">literal:div</binding>
-		<binding name="class">buttonBarClass</binding>
+		<binding name="element" value="literal:div"/>
+		<binding name="class" value="ognl:buttonBarClass"/>
 	</component>
+
 	<component id="hasMethodBlock" type="If" inherit-informal-parameters="no">
-		<binding name="condition">hasBlock(methodDescriptor.name)</binding>
+		<binding name="condition" value="ognl:hasBlock(methodDescriptor.name)"/>
 	</component>
 	<component id="doesntHaveMethodBlock" type="If" inherit-informal-parameters="no">
-		<binding name="condition">not(hasBlock(methodDescriptor.name))</binding>
+		<binding name="condition" value="ognl:not(hasBlock(methodDescriptor.name))"/>
 	</component>
 	<component id="renderMethodBlock" type="RenderBlock" inherit-informal-parameters="no">
-		<binding name="block">getBlock(methodDescriptor.name)</binding>
+		<binding name="block" value="ognl:getBlock(methodDescriptor.name)"/>
 	</component>
 	<component id="invokeMethod" type="InvokeMethod" inherit-informal-parameters="no">
 	</component>
 	<component id="saveButton" type="Submit" inherit-informal-parameters="no">
-		<binding name="action">ognl:page.listeners.save</binding>
+		<binding name="action" value="ognl:page.listeners.save"/>
 	</component>
 	<component id="saveAndReturnButton" type="Submit" inherit-informal-parameters="no">
-		<binding name="action">ognl:page.listeners.saveAndReturn</binding>
+		<binding name="action" value="ognl:page.listeners.saveAndReturn"/>
 	</component>
 	<component id="removeButton" type="Submit" inherit-informal-parameters="no">
-		<binding name="listener">ognl:page.listeners.remove</binding>
+		<binding name="listener" value="ognl:page.listeners.remove"/>
 	</component>
 	<component id="showSaveButton" type="If" inherit-informal-parameters="no">
-		<binding name="condition">showSaveButton</binding>
+		<binding name="condition" value="ognl:showSaveButton"/>
 	</component>
 	<component id="showRemoveButton" type="If" inherit-informal-parameters="no">
-		<binding name="condition">ognl:showRemoveButton</binding>
+		<binding name="condition" value="ognl:showRemoveButton"/>
 	</component>
-	<component id="methodsForeach" type="For" inherit-informal-parameters="no">
-		<binding name="source">classDescriptor.methodDescriptors</binding>
-		<binding name="value">methodDescriptor</binding>
+	
+	<component id="methodsForeach" type="For">
+		<binding name="source" value="ognl:methodDescriptors"/>
+		<binding name="value" value="ognl:methodDescriptor"/>
 	</component>
 
 	<component id="cancelButton" type="Submit" inherit-informal-parameters="no">

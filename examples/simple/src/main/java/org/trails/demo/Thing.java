@@ -16,6 +16,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 
 import org.trails.descriptor.annotation.PropertyDescriptor;
+import org.trails.descriptor.annotation.MethodDescriptor;
 import org.trails.validation.ValidateUniqueness;
 
 @Entity
@@ -51,7 +52,6 @@ public class Thing
 
 	/**
 	 * @return Returns the name.
-	 * @hibernate.property not-null="true"
 	 */
 	public String getName()
 	{
@@ -68,7 +68,6 @@ public class Thing
 
 	/**
 	 * @return Returns the on.
-	 * @hibernate.property type="yes_no"
 	 */
 	public boolean isFlag()
 	{
@@ -96,22 +95,21 @@ public class Thing
 	}
 
 	@Override
-	public boolean equals(Object obj)
+	public boolean equals(Object o)
 	{
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
 
-		if (this == obj)
-			return true;
-		try
-		{
-			final Thing many = (Thing) obj;
-			if (!getId().equals(many.getId()))
-				return false;
-			return true;
-		} catch (Exception e)
-		{
-			return false;
-		}
+		Thing thing = (Thing) o;
 
+		return getId() != null ? getId().equals(thing.getId()) : thing.getId() == null;
+
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return (getId() != null ? getId().hashCode() : 0);
 	}
 
 	public String toString()
@@ -137,6 +135,17 @@ public class Thing
 	public void setNumber2(Integer number2)
 	{
 		this.number2 = number2;
+	}
+
+	@MethodDescriptor
+	public void weirdOperation() {
+		try
+		{
+			setNumber2(getNumber() * getNumber2());
+		} catch (RuntimeException e)
+		{
+			setNumber2(0);
+		}
 	}
 
 }

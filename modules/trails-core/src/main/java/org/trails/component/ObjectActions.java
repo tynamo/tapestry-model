@@ -13,18 +13,27 @@
  */
 package org.trails.component;
 
-import java.beans.MethodDescriptor;
-
+import org.trails.descriptor.IMethodDescriptor;
 import org.trails.page.ModelPage;
 
-/**
- * @author fus8882
- */
+import java.util.ArrayList;
+import java.util.List;
+
 public abstract class ObjectActions extends AbstractObjectRenderComponent
 {
-	public abstract MethodDescriptor getMethodDescriptor();
 
-	public abstract void setMethodDescriptor(MethodDescriptor MethodDescriptor);
+	public List<IMethodDescriptor> getMethodDescriptors()
+	{
+		List<IMethodDescriptor> displayingPropertyDescriptors = new ArrayList<IMethodDescriptor>();
+		for (IMethodDescriptor methodDescriptor : getClassDescriptor().getMethodDescriptors())
+		{
+			if (!methodDescriptor.isHidden())
+			{
+				displayingPropertyDescriptors.add(methodDescriptor);
+			}
+		}
+		return displayingPropertyDescriptors;
+	}
 
 	public boolean isShowRemoveButton()
 	{
