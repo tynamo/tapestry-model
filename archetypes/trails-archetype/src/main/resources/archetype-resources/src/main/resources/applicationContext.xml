@@ -91,7 +91,10 @@
 				<value>get.*</value>
 				<value>is.*</value>
 				<value>equals</value>
+				<value>wait</value>
 				<value>toString</value>
+				<value>notify.*</value>
+				<value>hashCode</value>
 			</list>
 		</property>
 		<property name="propertyExcludes">
