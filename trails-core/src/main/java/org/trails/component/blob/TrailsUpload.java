@@ -20,9 +20,6 @@ public abstract class TrailsUpload extends BaseComponent
 	@Parameter(required = true)
 	public abstract IPropertyDescriptor getPropertyDescriptor();
 
-	@Parameter(required = false, defaultValue = "page.classDescriptor")
-	public abstract IClassDescriptor getClassDescriptor();
-
 	public IUploadFile getFile()
 	{
 		return null;
@@ -32,7 +29,7 @@ public abstract class TrailsUpload extends BaseComponent
 	{
 		if (file != null)
 		{
-			getFilePersister().store(getClassDescriptor(), getPropertyDescriptor(), getModel(), file);
+			getFilePersister().store(getPropertyDescriptor(), getModel(), file);
 		}
 	}
 }

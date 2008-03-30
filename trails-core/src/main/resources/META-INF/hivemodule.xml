@@ -103,7 +103,7 @@
 				<set-object property="linkFactory" value="infrastructure:linkFactory"/>
 				<set-object property="response" value="service:tapestry.globals.WebResponse"/>
 				<set-object property="persistenceService" value="spring:persistenceService"/>
-				<set-object property="descriptorService" value="spring:descriptorService"/>
+				<set-object property="dataSqueezer" value="service:tapestry.data.DataSqueezer"/>
 			</construct>
 		</invoke-factory>
 	</service-point>

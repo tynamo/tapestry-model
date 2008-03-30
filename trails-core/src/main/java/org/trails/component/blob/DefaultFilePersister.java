@@ -7,6 +7,7 @@ import org.apache.tapestry.IAsset;
 import org.apache.tapestry.request.IUploadFile;
 import org.trails.descriptor.IClassDescriptor;
 import org.trails.descriptor.IPropertyDescriptor;
+import org.trails.descriptor.DescriptorService;
 import org.trails.descriptor.extension.BlobDescriptorExtension;
 import org.trails.descriptor.extension.ITrailsBlob;
 import org.trails.persistence.PersistenceService;
@@ -23,10 +24,10 @@ public class DefaultFilePersister implements IFilePersister
 {
 
 	PersistenceService persistenceService;
+	DescriptorService descriptorService;
 	BlobDownloadService blobDownloadService;
 
-	public void store(IClassDescriptor classDescriptor, IPropertyDescriptor propertyDescriptor, Object model,
-					  IUploadFile file)
+	public void store(IPropertyDescriptor propertyDescriptor, Object model, IUploadFile file)
 	{
 		BlobDescriptorExtension blobDescriptorExtension = getBlobDescriptorExtension(propertyDescriptor);
 
@@ -59,7 +60,7 @@ public class DefaultFilePersister implements IFilePersister
 		}
 	}
 
-	public byte[] getData(IClassDescriptor classDescriptor, IPropertyDescriptor propertyDescriptor, Object model)
+	public byte[] getData(IPropertyDescriptor propertyDescriptor, Object model)
 	{
 		BlobDescriptorExtension blobDescriptorExtension = getBlobDescriptorExtension(propertyDescriptor);
 
@@ -75,7 +76,7 @@ public class DefaultFilePersister implements IFilePersister
 		return null;
 	}
 
-	public void delete(IClassDescriptor classDescriptor, IPropertyDescriptor propertyDescriptor, Object model)
+	public void delete(IPropertyDescriptor propertyDescriptor, Object model)
 	{
 		BlobDescriptorExtension blobDescriptorExtension = getBlobDescriptorExtension(propertyDescriptor);
 
@@ -92,26 +93,24 @@ public class DefaultFilePersister implements IFilePersister
 		persistenceService.save(model);
 	}
 
-	public IAsset getAsset(IClassDescriptor classDescriptor, IPropertyDescriptor propertyDescriptor, Object model)
+	public IAsset getAsset(IPropertyDescriptor propertyDescriptor, Object model)
 	{
-		Serializable pk = persistenceService.getIdentifier(model, classDescriptor);
+		Serializable pk = persistenceService
+				.getIdentifier(model, descriptorService.getClassDescriptor(propertyDescriptor.getBeanType()));
 
 		if (pk != null)
 		{
-			byte[] bytes = getData(classDescriptor, propertyDescriptor, model);
+			byte[] bytes = getData(propertyDescriptor, model);
 
 			if (bytes != null && bytes.length > 0)
 			{
-				String id = pk.toString();
-
-				return new TrailsBlobAsset(blobDownloadService, classDescriptor.getType().getName(), id,
-						propertyDescriptor.getName());
+				return new TrailsBlobAsset(blobDownloadService, propertyDescriptor, pk);
 			}
 		}
 		return null;
 	}
 
-	public String getContentType(IClassDescriptor classDescriptor, IPropertyDescriptor propertyDescriptor, Object model)
+	public String getContentType(IPropertyDescriptor propertyDescriptor, Object model)
 	{
 		BlobDescriptorExtension blobDescriptorExtension = getBlobDescriptorExtension(propertyDescriptor);
 
@@ -133,7 +132,7 @@ public class DefaultFilePersister implements IFilePersister
 		return null;
 	}
 
-	public String getFileName(IClassDescriptor classDescriptor, IPropertyDescriptor propertyDescriptor, Object model)
+	public String getFileName(IPropertyDescriptor propertyDescriptor, Object model)
 	{
 		BlobDescriptorExtension blobDescriptorExtension = getBlobDescriptorExtension(propertyDescriptor);
 
@@ -167,5 +166,10 @@ public class DefaultFilePersister implements IFilePersister
 	public void setBlobDownloadService(BlobDownloadService blobDownloadService)
 	{
 		this.blobDownloadService = blobDownloadService;
+	}
+
+	public void setDescriptorService(DescriptorService descriptorService)
+	{
+		this.descriptorService = descriptorService;
 	}
 }

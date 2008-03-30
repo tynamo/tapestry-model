@@ -2,43 +2,37 @@ package org.trails.component.blob;
 
 import org.apache.tapestry.asset.AbstractAsset;
 import org.apache.tapestry.engine.ILink;
+import org.trails.descriptor.IPropertyDescriptor;
 
 import java.io.InputStream;
+import java.io.Serializable;
 
 /**
-  * An implementation of {@link org.apache.tapestry.IAsset} for assets that are entity properties.
+ * An implementation of {@link org.apache.tapestry.IAsset} for assets that are entity properties.
  */
 public class TrailsBlobAsset extends AbstractAsset
 {
 
 	private BlobDownloadService bytesService;
 
-	private String id;
+	private Serializable id;
 
-	private String entityName;
+	private IPropertyDescriptor propertyDescriptor;
 
-	private String bytesProperty;
-
-	public TrailsBlobAsset(BlobDownloadService chartService, String entityName, String id, String bytesProperty)
+	public TrailsBlobAsset(BlobDownloadService chartService, IPropertyDescriptor propertyDescriptor, Serializable id)
 	{
 		super(null, null);
 		this.bytesService = chartService;
-		this.entityName = entityName;
 		this.id = id;
-		this.bytesProperty = bytesProperty;
+		this.propertyDescriptor = propertyDescriptor;
 	}
 
-	public String getBytesProperty()
+	public IPropertyDescriptor getPropertyDescriptor()
 	{
-		return bytesProperty;
+		return propertyDescriptor;
 	}
 
-	public String getEntityName()
-	{
-		return entityName;
-	}
-
-	public String getId()
+	public Serializable getId()
 	{
 		return id;
 	}
