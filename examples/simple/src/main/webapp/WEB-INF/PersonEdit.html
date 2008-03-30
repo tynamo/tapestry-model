@@ -24,9 +24,9 @@
 			<span key="org.trails.simple.person.message"/>
 		</li>
 		<li>
-			<span jwcid="@If" condition="ognl:filePersister.getAsset(classDescriptor, classDescriptor.getPropertyDescriptor('photo'), model)">
+			<span jwcid="@If" condition="ognl:filePersister.getAsset(classDescriptor.getPropertyDescriptor('photo'), model)">
 				<img jwcid="@Image" width="100px" height="100px"
-					 image="ognl:filePersister.getAsset(classDescriptor, classDescriptor.getPropertyDescriptor('photo'), model)"/>
+					 image="ognl:filePersister.getAsset(classDescriptor.getPropertyDescriptor('photo'), model)"/>
 			</span><span jwcid="@Else">
 				<img alt="no photo" title="no photo"/>
 			</span>
