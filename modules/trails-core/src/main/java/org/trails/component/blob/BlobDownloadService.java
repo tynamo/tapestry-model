@@ -6,18 +6,17 @@ import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
+import org.apache.tapestry.services.DataSqueezer;
 import org.apache.tapestry.services.LinkFactory;
 import org.apache.tapestry.util.ContentType;
 import org.apache.tapestry.web.WebResponse;
-import org.trails.descriptor.DescriptorService;
-import org.trails.descriptor.IClassDescriptor;
 import org.trails.descriptor.IPropertyDescriptor;
 import org.trails.descriptor.extension.BlobDescriptorExtension;
 import org.trails.persistence.PersistenceService;
-import org.trails.util.Utils;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,15 +33,13 @@ public class BlobDownloadService implements IEngineService
 
 	private PersistenceService persistenceService;
 
-	private DescriptorService descriptorService;
-
 	private IFilePersister filePersister;
 
-	private static final String BLOBID = "id";
+	DataSqueezer dataSqueezer;
 
-	private static final String ENTITY_NAME = "class";
+	private static final String BLOBID_PARAMETER_NAME = "id";
 
-	private static final String BYTES_PROPERTY = "property";
+	private static final String PROP_DESC_PARAMETER_NAME = "propDesc";
 
 	public ILink getLink(boolean post, Object parameter)
 	{
@@ -53,9 +50,8 @@ public class BlobDownloadService implements IEngineService
 
 		Map<String, String> parameters = new HashMap<String, String>();
 
-		parameters.put(BLOBID, String.valueOf(asset.getId()));
-		parameters.put(ENTITY_NAME, asset.getEntityName());
-		parameters.put(BYTES_PROPERTY, asset.getBytesProperty());
+		parameters.put(PROP_DESC_PARAMETER_NAME, dataSqueezer.squeeze(asset.getPropertyDescriptor()));
+		parameters.put(BLOBID_PARAMETER_NAME, dataSqueezer.squeeze(asset.getId()));
 
 		return _linkFactory.constructLink(this, false, parameters, true);
 
@@ -63,23 +59,22 @@ public class BlobDownloadService implements IEngineService
 
 	public void service(IRequestCycle cycle) throws IOException
 	{
-		String blobID = cycle.getParameter(BLOBID);
-		String entityName = cycle.getParameter(ENTITY_NAME);
-		String bytesProp = cycle.getParameter(BYTES_PROPERTY);
+		String blobID = cycle.getParameter(BLOBID_PARAMETER_NAME);
+		String bytesProp = cycle.getParameter(PROP_DESC_PARAMETER_NAME);
 
-		IClassDescriptor classDescriptor = descriptorService.getClassDescriptor(Utils.classForName(entityName));
-		IPropertyDescriptor propertyDescriptor = classDescriptor.getPropertyDescriptor(bytesProp);
+		IPropertyDescriptor propertyDescriptor = (IPropertyDescriptor) dataSqueezer.unsqueeze(bytesProp);
 		BlobDescriptorExtension blobDescriptor = propertyDescriptor.getExtension(BlobDescriptorExtension.class);
 
 		if (blobDescriptor != null && blobID != null && !"".equals(blobID))
 		{
-			Object model = persistenceService.getInstance(classDescriptor.getType(), Integer.valueOf(blobID));
+			Object model = persistenceService
+					.getInstance(propertyDescriptor.getBeanType(), (Serializable) dataSqueezer.unsqueeze(blobID));
 
 			if (model != null)
 			{
-				String fileName = filePersister.getFileName(classDescriptor, propertyDescriptor, model);
-				String contentType = filePersister.getContentType(classDescriptor, propertyDescriptor, model);
-				byte[] bytes = filePersister.getData(classDescriptor, propertyDescriptor, model);
+				String fileName = filePersister.getFileName(propertyDescriptor, model);
+				String contentType = filePersister.getContentType(propertyDescriptor, model);
+				byte[] bytes = filePersister.getData(propertyDescriptor, model);
 
 				if (bytes.length > 0)
 				{
@@ -87,13 +82,15 @@ public class BlobDownloadService implements IEngineService
 					_response.setHeader("Cache-Control", "must-revalidate, post-check=0,pre-check=0");
 					_response.setHeader("Pragma", "public");
 					_response.setHeader("Content-Disposition",
-							blobDescriptor.getContentDisposition().getValue() + (fileName != null ? "; filename=" + fileName : ""));
+							blobDescriptor.getContentDisposition().getValue() +
+									(fileName != null ? "; filename=" + fileName : ""));
 					_response.setContentLength(bytes.length);
 
 					OutputStream output = null;
 					try
 					{
-						output = _response.getOutputStream(contentType != null ? new ContentType(contentType) : new ContentType());
+						output = _response.getOutputStream(
+								contentType != null ? new ContentType(contentType) : new ContentType());
 						output.write(bytes);
 					} finally
 					{
@@ -111,8 +108,9 @@ public class BlobDownloadService implements IEngineService
 					}
 				} else
 				{
-					String errorText = "BlobDownloadServcie: entityName->" + entityName + ", blobID ->" +
-							blobID + " : has not been ingested yet";
+					String errorText = "BlobDownloadServcie: entityName->" +
+							propertyDescriptor.getBeanType().getName() + ", blobID ->" + blobID +
+							" : has not been ingested yet";
 					LOG.info(errorText);
 //							 muted kwc - throw new TrailsRuntimeException(errorText);
 				}
@@ -120,7 +118,8 @@ public class BlobDownloadService implements IEngineService
 
 		} else
 		{
-			String errorText = "BlobDownloadServcie: entityName->" + entityName + ", blobID ->" + blobID +
+			String errorText = "BlobDownloadServcie: entityName->" + propertyDescriptor.getBeanType().getName() +
+					", blobID ->" + blobID +
 					" : has not been ingested yet";
 			LOG.info(errorText);
 			// muted kwc - throw new TrailsRuntimeException(errorText);
@@ -147,13 +146,13 @@ public class BlobDownloadService implements IEngineService
 		this.persistenceService = persistenceService;
 	}
 
-	public void setDescriptorService(DescriptorService descriptorService)
-	{
-		this.descriptorService = descriptorService;
-	}
-
 	public void setFilePersister(IFilePersister filePersister)
 	{
 		this.filePersister = filePersister;
+	}
+
+	public void setDataSqueezer(DataSqueezer dataSqueezer)
+	{
+		this.dataSqueezer = dataSqueezer;
 	}
 }

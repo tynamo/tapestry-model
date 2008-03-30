@@ -31,9 +31,6 @@ public abstract class TrailsDownload extends BaseComponent
 	@Parameter(required = true)
 	public abstract IPropertyDescriptor getPropertyDescriptor();
 
-	@Parameter(required = false, defaultValue = "page.classDescriptor")
-	public abstract IClassDescriptor getClassDescriptor();
-
 	public BlobDescriptorExtension.RenderType getRenderType()
 	{
 		return getPropertyDescriptor().getExtension(BlobDescriptorExtension.class).getRenderType();
@@ -41,7 +38,7 @@ public abstract class TrailsDownload extends BaseComponent
 
 	public IAsset getByteArrayAsset()
 	{
-		return getFilePersister().getAsset(getClassDescriptor(), getPropertyDescriptor(), getModel());
+		return getFilePersister().getAsset(getPropertyDescriptor(), getModel());
 	}
 
 	public IAsset getIcon()
@@ -51,12 +48,12 @@ public abstract class TrailsDownload extends BaseComponent
 
 	private String getContentType()
 	{
-		return getFilePersister().getContentType(getClassDescriptor(), getPropertyDescriptor(), getModel());
+		return getFilePersister().getContentType(getPropertyDescriptor(), getModel());
 	}
 
 	public String getFileName()
 	{
-		return getFilePersister().getFileName(getClassDescriptor(), getPropertyDescriptor(), getModel());
+		return getFilePersister().getFileName(getPropertyDescriptor(), getModel());
 	}
 
 	public IAsset getNoIcon()

@@ -84,6 +84,7 @@
 		<invoke-factory>
 			<construct class="org.trails.component.blob.DefaultFilePersister">
 				<set-object property="persistenceService" value="service:trails.core.PersistenceService"/>
+				<set-object property="descriptorService" value="service:trails.core.DescriptorService"/>
 				<set-object property="blobDownloadService" value="service:trails.core.BlobService"/>
 			</construct>
 		</invoke-factory>
