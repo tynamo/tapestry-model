@@ -11,6 +11,7 @@ import org.trails.descriptor.DescriptorService;
 import org.trails.descriptor.extension.BlobDescriptorExtension;
 import org.trails.descriptor.extension.ITrailsBlob;
 import org.trails.persistence.PersistenceService;
+import org.trails.builder.BuilderDirector;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -51,11 +52,16 @@ public class DefaultFilePersister implements IFilePersister
 			} else if (blobDescriptorExtension.isITrailsBlob())
 			{
 				ITrailsBlob trailsBlob = (ITrailsBlob) PropertyUtils.read(model, propertyDescriptor.getName());
+
+				if (trailsBlob == null) { //trying to avoid an NPE
+					trailsBlob = new TrailsBlobImpl();
+					PropertyUtils.write(model, propertyDescriptor.getName(), trailsBlob);
+				}
+
 				trailsBlob.setFileName(file.getFileName());
 				trailsBlob.setFilePath(file.getFilePath());
 				trailsBlob.setContentType(file.getContentType());
 				trailsBlob.setBytes(data);
-				//@todo check for NPE
 			}
 		}
 	}
@@ -71,7 +77,7 @@ public class DefaultFilePersister implements IFilePersister
 		} else if (blobDescriptorExtension.isITrailsBlob())
 		{
 			ITrailsBlob trailsBlob = (ITrailsBlob) PropertyUtils.read(model, propertyDescriptor.getName());
-			return trailsBlob.getBytes();
+			return trailsBlob != null ? trailsBlob.getBytes() : new byte[0];
 		}
 		return null;
 	}
