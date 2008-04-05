@@ -99,8 +99,13 @@
 	</filter-mapping>
 
 	<listener>
+		<listener-class>org.acegisecurity.ui.session.HttpSessionEventPublisher</listener-class>
+	</listener>
+
+	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
+
 	<servlet>
 		<servlet-name>trails</servlet-name>
 		<servlet-class>org.trails.servlet.TrailsApplicationServlet</servlet-class>

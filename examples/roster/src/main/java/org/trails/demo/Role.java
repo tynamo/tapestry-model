@@ -21,6 +21,7 @@ import org.hibernate.validator.Length;
 import org.hibernate.validator.NotNull;
 import org.trails.descriptor.annotation.ClassDescriptor;
 import org.trails.descriptor.annotation.PropertyDescriptor;
+import org.trails.descriptor.annotation.Collection;
 import org.trails.security.annotation.ViewRequiresRole;
 import org.trails.validation.ValidateUniqueness;
 
@@ -28,8 +29,7 @@ import org.trails.validation.ValidateUniqueness;
 @Table(name = "TRAILS_ROLE")
 @ValidateUniqueness(property = "name")
 @ViewRequiresRole("ROLE_MANAGER")
-@ClassDescriptor(hasCyclicRelationships = true)
-public class Role implements GrantedAuthority, Serializable
+public class Role implements GrantedAuthority
 {
 
 	private Integer id;
@@ -81,8 +81,7 @@ public class Role implements GrantedAuthority, Serializable
 		this.description = description;
 	}
 
-	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "user_role", joinColumns = { @JoinColumn(name = "role_ID") }, inverseJoinColumns = { @JoinColumn(name = "user_ID") })
+	@ManyToMany(mappedBy = "roles")
 	public Set<User> getUsers()
 	{
 		return users;
@@ -91,6 +90,12 @@ public class Role implements GrantedAuthority, Serializable
 	public void setUsers(Set<User> users)
 	{
 		this.users = users;
+	}
+
+	public void addUsers(User user)
+	{
+		user.getRoles().add(this);
+		users.add(user);
 	}
 
 	@Version

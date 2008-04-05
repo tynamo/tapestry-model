@@ -92,31 +92,4 @@ public class Officer extends Person
 		return new Officer(this);
 	}
 
-	@Override
-	public int hashCode()
-	{
-		final int PRIME = 31;
-		int result = 1;
-		result = PRIME * result + ((getId() == null) ? 0 : getId().hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object rhs)
-	{
-		if (this == rhs)
-			return true;
-		if (rhs == null)
-			return false;
-		if (!(rhs instanceof Officer))
-			return false;
-		final Officer castedObject = (Officer) rhs;
-		if (getId() == null)
-		{
-			if (castedObject.getId() != null)
-				return false;
-		} else if (!getId().equals(castedObject.getId()))
-			return false;
-		return true;
-	}
 }

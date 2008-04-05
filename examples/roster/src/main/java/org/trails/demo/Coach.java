@@ -1,10 +1,6 @@
 package org.trails.demo;
 
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.logging.Log;
@@ -103,33 +99,5 @@ public class Coach extends Person
 	public Coach clone()
 	{
 		return new Coach(this);
-	}
-
-	@Override
-	public int hashCode()
-	{
-		final int PRIME = 31;
-		int result = 1;
-		result = PRIME * result + ((getId() == null) ? 0 : getId().hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object rhs)
-	{
-		if (this == rhs)
-			return true;
-		if (rhs == null)
-			return false;
-		if (!(rhs instanceof Coach))
-			return false;
-		final Coach castedObject = (Coach) rhs;
-		if (getId() == null)
-		{
-			if (castedObject.getId() != null)
-				return false;
-		} else if (!getId().equals(castedObject.getId()))
-			return false;
-		return true;
 	}
 }

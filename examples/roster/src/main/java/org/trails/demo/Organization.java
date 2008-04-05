@@ -50,7 +50,7 @@ import org.trails.validation.ValidateUniqueness;
 @UpdateRequiresRole( { "ROLE_ADMIN", "ROLE_MANAGER" })
 @ValidateUniqueness(property = "name")
 @ClassDescriptor(hasCyclicRelationships = true)
-public class Organization implements Cloneable, Serializable
+public class Organization implements Cloneable
 {
 	private static final Log log = LogFactory.getLog(Organization.class);
 
@@ -124,9 +124,8 @@ public class Organization implements Cloneable, Serializable
 		return league;
 	}
 
-	@OneToOne(cascade = CascadeType.REFRESH)
+	@OneToOne
 	@HardOneToOne(identity = Identity.OWNER)
-	@JoinTable(name = "join_table_Organization_Director", joinColumns = @JoinColumn(name = "director_fk", insertable = true, updatable = true, nullable = true), inverseJoinColumns = { @JoinColumn(name = "organization_fk", insertable = true, updatable = true, nullable = true) })
 	// @OrderBy("lastName")
 	@PropertyDescriptor(index = 2)
 	public Director getDirector()

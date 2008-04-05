@@ -1,48 +1,23 @@
 package org.trails.demo;
 
-import java.io.Serializable;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.PrimaryKeyJoinColumn;
-import javax.persistence.Transient;
-
 import org.acegisecurity.GrantedAuthority;
-import org.acegisecurity.userdetails.UserDetails;
 import org.acegisecurity.userdetails.UsernameNotFoundException;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.validator.NotNull;
-import org.trails.descriptor.extension.BlobDescriptorExtension.ContentDisposition;
-import org.trails.descriptor.extension.BlobDescriptorExtension.RenderType;
 import org.trails.descriptor.annotation.BlobDescriptor;
 import org.trails.descriptor.annotation.ClassDescriptor;
 import org.trails.descriptor.annotation.PropertyDescriptor;
+import org.trails.descriptor.extension.BlobDescriptorExtension.ContentDisposition;
+import org.trails.descriptor.extension.BlobDescriptorExtension.RenderType;
 import org.trails.security.annotation.RemoveRequiresRole;
 import org.trails.security.annotation.UpdateRequiresRole;
 import org.trails.security.annotation.ViewRequiresRole;
-import org.trails.demo.DatePattern;
 import org.trails.validation.ValidateUniqueness;
+
+import javax.persistence.*;
+import java.util.*;
 
 /**
  * A Person has a photo, eRole and application role
@@ -54,11 +29,13 @@ import org.trails.validation.ValidateUniqueness;
 @UpdateRequiresRole( { "ROLE_ADMIN", "ROLE_MANAGER" })
 @ViewRequiresRole( { "ROLE_ADMIN", "ROLE_MANAGER", "ROLE_USER" })
 @ValidateUniqueness(property = "emailAddress")
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-// @Inheritance(strategy = InheritanceType.JOINED)
-// @MappedSuperclass
 @ClassDescriptor(hidden = true)
-public class Person implements UserDetails, Cloneable, Serializable
+@Inheritance(strategy = InheritanceType.JOINED)
+public class Person implements Cloneable
+/**
+ * TrailsUserDAO expects one and only one implementation of UserDetails
+ * If you need more then one implementation you need to create your own UserDetailsService  
+ */
 {
 	private static final Log log = LogFactory.getLog(Person.class);
 
@@ -72,37 +49,37 @@ public class Person implements UserDetails, Cloneable, Serializable
 		MANAGER, DIRECTOR, SALES, MARKETING
 	}
 
-	protected Integer id = null;
+	private Integer id = null;
 
-	protected String firstName;
+	private String firstName;
 
-	protected String lastName;
+	private String lastName;
 
-	protected Demographics demographics = new Demographics();
+	private Demographics demographics = new Demographics();
 
-	protected Date dob;
+	private Date dob;
 
-	protected String emailAddress;
+	private String emailAddress;
 
-	protected String password;
+	private String password;
 
-	protected ERole eRole;
+	private ERole eRole;
 
-	protected EApplicationRole eApplicationRole;
+	private EApplicationRole eApplicationRole;
 
-	protected Set<Role> roles = new HashSet<Role>();
+	private Set<Role> roles = new HashSet<Role>();
 
-	protected boolean accountNonExpired = true;
+	private boolean accountNonExpired = true;
 
-	protected boolean accountNonLocked = true;
+	private boolean accountNonLocked = true;
 
-	protected boolean credentialsNonExpired = true;
+	private boolean credentialsNonExpired = true;
 
-	protected boolean enabled = true;
+	private boolean enabled = true;
 
-	protected Long created = new Long(GregorianCalendar.getInstance().getTimeInMillis());
+	private Long created = new Long(GregorianCalendar.getInstance().getTimeInMillis());
 
-	protected Long accessed = new Long(GregorianCalendar.getInstance().getTimeInMillis());
+	private Long accessed = new Long(GregorianCalendar.getInstance().getTimeInMillis());
 
 	/**
 	 * CTOR
@@ -112,7 +89,6 @@ public class Person implements UserDetails, Cloneable, Serializable
 		try
 		{
 			BeanUtils.copyProperties(this, dto);
-			setUsername(emailAddress);
 		} catch (Exception e)
 		{
 			log.error(e.toString());
@@ -189,7 +165,6 @@ public class Person implements UserDetails, Cloneable, Serializable
 	}
 
 	@Column(unique = true)
-	@PrimaryKeyJoinColumn
 	@PropertyDescriptor(summary = true, index = 7)
 	public String getEmailAddress()
 	{
@@ -275,7 +250,6 @@ public class Person implements UserDetails, Cloneable, Serializable
 	public void setEmailAddress(String emailAddress)
 	{
 		this.emailAddress = emailAddress;
-		setUsername(emailAddress);
 	}
 
 	public void setPassword(String password)
@@ -326,30 +300,20 @@ public class Person implements UserDetails, Cloneable, Serializable
 	@Override
 	public int hashCode()
 	{
-		final int PRIME = 31;
-		int result = 1;
-		result = PRIME * result + ((getId() == null) ? 0 : getId().hashCode());
-		return result;
+		return (getId() != null ? getId().hashCode() : 0);
 	}
 
 	@Override
-	public boolean equals(Object rhs)
+	public boolean equals(Object o)
 	{
-		if (this == rhs)
-			return true;
-		if (rhs == null)
-			return false;
-		if (!(rhs instanceof Person))
-			return false;
-		final Person castedObject = (Person) rhs;
-		if (getId() == null)
-		{
-			if (castedObject.getId() != null)
-				return false;
-		} else if (!getId().equals(castedObject.getId()))
-			return false;
-		return true;
+		if (this == o) return true;
+		if (!(o instanceof Person)) return false;
+
+		Person person = (Person) o;
+
+		return getId() != null ? getId().equals(person.getId()) : person.getId() == null;
 	}
+
 
 	public boolean isAccountNonExpired()
 	{
@@ -401,7 +365,7 @@ public class Person implements UserDetails, Cloneable, Serializable
 		return roles.toArray(new GrantedAuthority[roles.size()]);
 	}
 
-	@ManyToMany(fetch = FetchType.EAGER)
+	@ManyToMany
 	@JoinTable(name = "join_table_person_role", joinColumns = { @JoinColumn(name = "person_fk") }, inverseJoinColumns = { @JoinColumn(name = "role_fk") })
 	public Set<Role> getRoles()
 	{
@@ -414,13 +378,9 @@ public class Person implements UserDetails, Cloneable, Serializable
 	}
 
 	@PropertyDescriptor(hidden = true)
+	@Transient
 	public String getUsername()
 	{
 		return emailAddress;
-	}
-
-	public void setUsername(String username)
-	{
-		this.emailAddress = username;
 	}
 }

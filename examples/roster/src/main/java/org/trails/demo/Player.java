@@ -126,29 +126,9 @@ public class Player extends Person
 		return stats;
 	}
 
-	public void setId(Integer id)
-	{
-		this.id = id;
-	}
-
 	public void setPlayerNumber(Integer number)
 	{
 		this.playerNumber = number;
-	}
-
-	public void setFirstName(String firstName)
-	{
-		this.firstName = firstName;
-	}
-
-	public void setLastName(String lastName)
-	{
-		this.lastName = lastName;
-	}
-
-	public void setEmailAddress(String emailAddress)
-	{
-		this.emailAddress = emailAddress;
 	}
 
 	public void setPlayerPosition(EPosition position)
@@ -180,33 +160,5 @@ public class Player extends Person
 	public Player clone()
 	{
 		return new Player(this);
-	}
-
-	@Override
-	public int hashCode()
-	{
-		final int PRIME = 31;
-		int result = 1;
-		result = PRIME * result + ((getId() == null) ? 0 : getId().hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object rhs)
-	{
-		if (this == rhs)
-			return true;
-		if (rhs == null)
-			return false;
-		if (!(rhs instanceof Player))
-			return false;
-		final Player castedObject = (Player) rhs;
-		if (getId() == null)
-		{
-			if (castedObject.getId() != null)
-				return false;
-		} else if (!getId().equals(castedObject.getId()))
-			return false;
-		return true;
 	}
 }

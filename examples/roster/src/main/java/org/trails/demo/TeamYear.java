@@ -29,7 +29,7 @@ import org.trails.demo.DatePattern;
 @RemoveRequiresRole({"ROLE_ADMIN"})
 @UpdateRequiresRole({"ROLE_ADMIN"})
 @ClassDescriptor(hasCyclicRelationships = true, hidden = false)
-public class TeamYear implements Cloneable, Serializable
+public class TeamYear implements Cloneable
 {
 	private static final Log log = LogFactory.getLog(TeamYear.class);
 

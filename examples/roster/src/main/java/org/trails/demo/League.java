@@ -44,7 +44,7 @@ import org.trails.validation.ValidateUniqueness;
 @UpdateRequiresRole( { "ROLE_ADMIN", "ROLE_MANAGER" })
 @ValidateUniqueness(property = "name")
 @ClassDescriptor(hasCyclicRelationships = true)
-public class League implements Cloneable, Serializable
+public class League implements Cloneable
 {
 	private static final Log log = LogFactory.getLog(League.class);
 

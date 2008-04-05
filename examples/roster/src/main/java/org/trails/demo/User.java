@@ -5,23 +5,6 @@
 
 package org.trails.demo;
 
-import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-import javax.persistence.Version;
-
 import org.acegisecurity.GrantedAuthority;
 import org.acegisecurity.userdetails.UserDetails;
 import org.acegisecurity.userdetails.UsernameNotFoundException;
@@ -37,14 +20,17 @@ import org.trails.security.annotation.ViewRequiresRole;
 import org.trails.security.password.DigestUtil;
 import org.trails.validation.ValidateUniqueness;
 
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @Table(name = "TRAILS_USER")
 @ValidateUniqueness(property = "username")
-@ClassDescriptor(hasCyclicRelationships = true)
 @ViewRequiresRole( { "ROLE_MANAGER", "ROLE_ROOT" })
 @ViewRequiresAssociation
 @UpdateRequiresAssociation
-public class User implements UserDetails, Serializable
+public class User implements UserDetails
 {
 	private static final Log log = LogFactory.getLog(User.class);
 
@@ -145,7 +131,6 @@ public class User implements UserDetails, Serializable
 	}
 
 	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "user_role", joinColumns = { @JoinColumn(name = "user_ID") }, inverseJoinColumns = { @JoinColumn(name = "role_ID") })
 	@UpdateRequiresRole( { "ROLE_MANAGER" })
 	public Set<Role> getRoles()
 	{
@@ -189,6 +174,7 @@ public class User implements UserDetails, Serializable
 		this.version = version;
 	}
 
+	@Override
 	public boolean equals(Object o)
 	{
 		if (this == o)
@@ -204,6 +190,7 @@ public class User implements UserDetails, Serializable
 		return true;
 	}
 
+	@Override
 	public int hashCode()
 	{
 		return (username != null ? username.hashCode() : 0);

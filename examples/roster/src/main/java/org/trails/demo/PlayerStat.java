@@ -30,7 +30,7 @@ import org.trails.demo.DatePattern;
 @RemoveRequiresRole({"ROLE_ADMIN", "ROLE_MANAGER"})
 @UpdateRequiresRole({"ROLE_ADMIN", "ROLE_MANAGER"})
 @ClassDescriptor(hasCyclicRelationships = true, hidden = true)
-public class PlayerStat implements Cloneable, Serializable
+public class PlayerStat implements Cloneable
 {
 	private static final Log log = LogFactory.getLog(PlayerStat.class);
 

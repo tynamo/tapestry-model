@@ -1,38 +1,22 @@
 package org.trails.demo;
 
-import java.io.Serializable;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.OrderBy;
-import javax.persistence.PrimaryKeyJoinColumn;
-import javax.persistence.Transient;
-
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.trails.descriptor.extension.BlobDescriptorExtension.ContentDisposition;
-import org.trails.descriptor.extension.BlobDescriptorExtension.RenderType;
 import org.trails.descriptor.annotation.BlobDescriptor;
 import org.trails.descriptor.annotation.ClassDescriptor;
 import org.trails.descriptor.annotation.Collection;
 import org.trails.descriptor.annotation.PropertyDescriptor;
+import org.trails.descriptor.extension.BlobDescriptorExtension.ContentDisposition;
+import org.trails.descriptor.extension.BlobDescriptorExtension.RenderType;
 import org.trails.security.annotation.RemoveRequiresRole;
 import org.trails.security.annotation.UpdateRequiresRole;
-import org.trails.demo.DatePattern;
+
+import javax.persistence.*;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * A Team has players, coaches, clips and stats
@@ -43,7 +27,7 @@ import org.trails.demo.DatePattern;
 @RemoveRequiresRole( { "ROLE_ADMIN", "ROLE_MANAGER" })
 @UpdateRequiresRole( { "ROLE_ADMIN", "ROLE_MANAGER" })
 @ClassDescriptor(hasCyclicRelationships = true)
-public class Team implements Cloneable, Serializable
+public class Team implements Cloneable
 {
 	private static final Log log = LogFactory.getLog(Team.class);
 
@@ -205,7 +189,7 @@ public class Team implements Cloneable, Serializable
 
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "clips_team_fk", insertable = true, updatable = true, nullable = true)
-	@Collection(child = true, inverse = "team")
+	@Collection(child = true)
 	@PropertyDescriptor(searchable = false, readOnly = false)
 	@OrderBy("name")
 	public Set<UploadableMedia> getClips()
@@ -235,7 +219,6 @@ public class Team implements Cloneable, Serializable
 
 	@ManyToOne
 	@JoinColumn(name = "team_teamyear_fk")
-	@PrimaryKeyJoinColumn
 	@PropertyDescriptor(index = 1)
 	public TeamYear getTeamYear()
 	{
