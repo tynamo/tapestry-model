@@ -365,6 +365,7 @@
 					</bean>
 				</entry>
 
+<!--
 				<entry>
 					<key>
 						<value>supportsExtension('org.trails.descriptor.extension.OwningObjectReferenceDescriptor')</value>
@@ -378,6 +379,7 @@
 						</constructor-arg>
 					</bean>
 				</entry>
+-->
 
 				<entry>
 					<key>
