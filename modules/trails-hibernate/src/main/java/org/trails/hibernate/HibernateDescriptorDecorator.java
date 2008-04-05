@@ -43,7 +43,6 @@ import org.hibernate.type.Type;
 import org.springframework.orm.hibernate3.LocalSessionFactoryBean;
 import org.trails.exception.TrailsRuntimeException;
 import org.trails.descriptor.extension.EnumReferenceDescriptor;
-import org.trails.descriptor.extension.OwningObjectReferenceDescriptor;
 import org.trails.descriptor.*;
 
 /**
@@ -62,7 +61,6 @@ import org.trails.descriptor.*;
  * 
  * @see TrailsPropertyDescriptor
  * @see ObjectReferenceDescriptor
- * @see OwningObjectReferenceDescriptor
  * @see CollectionDescriptor
  * @see EmbeddedDescriptor
  */

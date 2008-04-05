@@ -7,7 +7,6 @@ package org.trails.descriptor;
  * @author kenneth.colassi						nhhockeyplayer@hotmail.com
  * 
  * @see CollectionDescriptor
- * @see org.trails.descriptor.extension.OwningObjectReferenceDescriptor
  */
 public interface IExpressionSupport {
 
