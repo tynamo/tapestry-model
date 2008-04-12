@@ -11,8 +11,7 @@
  */
 package org.trails.hibernate;
 
-import ognl.Ognl;
-import ognl.OgnlException;
+import org.apache.hivemind.util.PropertyUtils;
 import org.hibernate.*;
 import org.hibernate.criterion.*;
 import org.hibernate.metadata.ClassMetadata;
@@ -24,13 +23,13 @@ import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.trails.util.Utils;
 import org.trails.descriptor.CollectionDescriptor;
 import org.trails.descriptor.DescriptorService;
 import org.trails.descriptor.IClassDescriptor;
 import org.trails.descriptor.IPropertyDescriptor;
 import org.trails.persistence.HibernatePersistenceService;
 import org.trails.persistence.PersistenceException;
+import org.trails.util.Utils;
 import org.trails.validation.ValidationException;
 
 import java.io.Serializable;
@@ -219,8 +218,7 @@ public class HibernatePersistenceServiceImpl extends HibernateDaoSupport impleme
 	@Transactional
 	public void remove(Object instance)
 	{
-		// merge first to avoid NonUniqueObjectException
-		getHibernateTemplate().delete(getHibernateTemplate().merge(instance));
+		getHibernateTemplate().delete(instance, LockMode.READ);
 	}
 
 	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
@@ -264,31 +262,39 @@ public class HibernatePersistenceServiceImpl extends HibernateDaoSupport impleme
 		return (T) getInstance(type, DetachedCriteria.forClass(type));
 	}
 
+	/**
+	 * Returns an entity's pk.
+	 *
+	 * @note (ascandroli): I tried to implement it using something like:
+
+	 * <code>
+	 *
+	 * @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+	 * private Serializable getIdentifier(final Object data)
+	 * {
+	 *   return (Serializable) getHibernateTemplate().execute(new HibernateCallback()
+	 *    {
+	 *      public Object doInHibernate(Session session) throws HibernateException, SQLException
+	 *        {
+	 *          return session.getIdentifier(data);
+	 *        }
+	 *    });
+	 * }
+	 *
+	 * </code>
+	 *
+	 * but it didn't work.
+	 * "session.getIdentifier(data)" thows TransientObjectException when the Entity is not loaded by the current session,
+	 * which is pretty usual in Trails.
+	 *
+	 *
+	 * @param data
+	 * @param classDescriptor
+	 * @return
+	 */
 	public Serializable getIdentifier(final Object data, final IClassDescriptor classDescriptor)
 	{
-		try
-		{
-			/** This is only until I figure out where are the Callbacks persisting its properties **/
-
-			return (Serializable) Ognl.getValue(classDescriptor.getIdentifierDescriptor().getName(), data);
-
-		} catch (OgnlException e)
-		{
-			return null;
-		}
-	}
-
-
-	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-	private Serializable getIdentifier(final Object data)
-	{
-		return (Serializable) getHibernateTemplate().execute(new HibernateCallback()
-		{
-			public Object doInHibernate(Session session) throws HibernateException, SQLException
-			{
-				return session.getIdentifier(data);
-			}
-		});
+		return (Serializable) PropertyUtils.read(data, classDescriptor.getIdentifierDescriptor().getName());
 	}
 
 	public boolean isTransient(Object data, IClassDescriptor classDescriptor)
@@ -321,12 +327,7 @@ public class HibernatePersistenceServiceImpl extends HibernateDaoSupport impleme
 					{
 						String propertyName = propertyDescriptor.getName();
 						Class propertyClass = propertyDescriptor.getPropertyType();
-						Object value = null;
-						try
-						{
-							value = Ognl.getValue(propertyName, example);
-						} catch (OgnlException e)
-						{ /* do nothing! */ }
+						Object value = PropertyUtils.read(example, propertyName);
 
 						//only add a Criterion to the Criteria instance if the value for this property is non-null
 						if (value != null)
@@ -481,6 +482,23 @@ public class HibernatePersistenceServiceImpl extends HibernateDaoSupport impleme
 		{
 			throw new PersistenceException(dex);
 		}
+	}
+
+	@Transactional
+	public <T> T saveCollectionElement(String addExpression, T member, Object parent)
+	{
+		T instance = save(member);
+		Utils.executeOgnlExpression(addExpression, member, parent);
+		save(parent);
+		return instance;
+	}
+
+	@Transactional
+	public void removeCollectionElement(String removeExpression, Object member, Object parent)
+	{
+		Utils.executeOgnlExpression(removeExpression, member, parent);
+		save(parent);
+		remove(member);
 	}
 
 	public void setApplicationContext(ApplicationContext arg0) throws BeansException

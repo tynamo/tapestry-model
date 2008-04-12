@@ -1,7 +1,5 @@
 package org.trails.component;
 
-import ognl.Ognl;
-import ognl.OgnlException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.tapestry.IAsset;
@@ -67,16 +65,12 @@ public abstract class HibernateEditCollection extends EditCollection
 				String identifier = elementDescriptor.getIdentifierDescriptor().getName();
 				if (getModel() != null)
 				{
-					try
-					{
-						criteria.add(
+					criteria.add(
 							Restrictions.disjunction()
-								.add(Restrictions.isNull(getCollectionDescriptor().getInverseProperty()))
-								.add(Restrictions.eq(getCollectionDescriptor().getInverseProperty() + "." + identifier, Ognl.getValue(elementDescriptor.getIdentifierDescriptor().getName(), getModel()))));
-					} catch (OgnlException e)
-					{
-						LOG.error(e.getMessage());
-					}
+									.add(Restrictions.isNull(getCollectionDescriptor().getInverseProperty()))
+									.add(Restrictions.eq(
+									getCollectionDescriptor().getInverseProperty() + "." + identifier,
+									getPersistenceService().getIdentifier(getModel(), elementDescriptor))));
 				} else
 				{
 					criteria.add(Restrictions.isNull(getCollectionDescriptor().getInverseProperty()));

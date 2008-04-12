@@ -23,6 +23,7 @@
 package org.trails.hibernate;
 
 import java.util.List;
+import java.lang.reflect.Method;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -43,6 +44,9 @@ import org.trails.testhibernate.BlogEntry;
 import org.trails.testhibernate.Descendant;
 import org.trails.testhibernate.Foo;
 import org.trails.testhibernate.Wibble;
+import net.sf.cglib.proxy.MethodProxy;
+import net.sf.cglib.proxy.Enhancer;
+import net.sf.cglib.proxy.MethodInterceptor;
 
 
 /**
@@ -373,35 +377,48 @@ public class HibernatePersistenceServiceTest extends AbstractTransactionalSpring
 		assertEquals("1 baz", 1, foo.getBazzes().size());
 	}
 
-/*
-	public void testCGLIBDoesntPukeOnReload() throws Exception
+	public void testRemoveCollectionElement() throws Exception
 	{
-		Enhancer enhancer = new Enhancer();
-		enhancer.setUseCache(false);
-		enhancer.setInterceptDuringConstruction(false);
-		enhancer.setCallbackType(MethodInterceptor.class);
-		enhancer.setSuperclass(BlogEntry.class);
-		enhancer.setCallback(new MethodInterceptor()
-		{
-			public Object intercept(Object obj, Method method, Object[] args, MethodProxy proxy) throws Throwable
-			{
-				return proxy.invokeSuper(obj, args);
-			}
-		});
+		Foo foo = new Foo();
+		foo.setId(new Integer(1));
+		foo.setName("boo");
+		persistenceService.save(foo);
 
-		BlogEntry entry = new BlogEntry();
-		entry.setText("howdy doody");
-		entry = persistenceService.save(entry);
-		entry = persistenceService.getInstance(BlogEntry.class, entry.getId());
+		Baz baz = new Baz();
+		baz.setDescription("one");
+		persistenceService.saveCollectionElement("bazzes.add", baz, foo);
 
-		BlogEntry loadedBlogEntry = (BlogEntry) enhancer.create();
-		loadedBlogEntry.setId(entry.getId());
-		loadedBlogEntry.setText("otherdifferenttext");
-		loadedBlogEntry = persistenceService.reload(loadedBlogEntry);
+		SessionFactory sessionFactory = (SessionFactory) applicationContext.getBean("sessionFactory");
+		Session session = SessionFactoryUtils.getSession(sessionFactory, true);
+		List foos = session.createQuery("from org.trails.testhibernate.Foo").list();
+		foo = (Foo) foos.get(0);
+		assertEquals("1 baz", 1, foo.getBazzes().size());
 
-		assertEquals("howdy doody", loadedBlogEntry.getText());
+		persistenceService.removeCollectionElement("bazzes.remove", baz, foo);
+
+		foo = (Foo) foos.get(0);
+
+		assertEquals("no bazzes", 0, foo.getBazzes().size());
 	}
-*/
+
+	public void testSaveCollectionElement() throws Exception
+	{
+		Foo foo = new Foo();
+		foo.setId(new Integer(1));
+		foo.setName("boo");
+		persistenceService.save(foo);
+
+		Baz baz = new Baz();
+		baz.setDescription("one");
+		persistenceService.saveCollectionElement("bazzes.add", baz, foo);
+
+		SessionFactory sessionFactory = (SessionFactory) applicationContext.getBean("sessionFactory");
+		Session session = SessionFactoryUtils.getSession(sessionFactory, true);
+		List foos = session.createQuery("from org.trails.testhibernate.Foo").list();
+		foo = (Foo) foos.get(0);
+		assertEquals("1 baz", 1, foo.getBazzes().size());
+	}
+
 
 	@Override
 	protected String[] getConfigLocations()

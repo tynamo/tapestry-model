@@ -130,8 +130,7 @@ public class EditPageTest extends ComponentTest
 	public void testAddToChildCollection()
 	{
 		bazzesDescriptor.setChildRelationship(true);
-		persistenceMock.expects(once()).method("save").with(eq(baz));
-		persistenceMock.expects(once()).method("save").with(eq(foo));
+		persistenceMock.expects(once()).method("saveCollectionElement").with(eq("addBaz"), eq(baz), eq(foo));
 
 		try
 		{
@@ -143,14 +142,12 @@ public class EditPageTest extends ComponentTest
 			assertEquals(CALLBACK_URL, e.getRedirectLocation());
 		}
 
-		assertEquals("1 baz", 1, foo.getBazzes().size());
 	}
 
 	public void testAddToNonChildCollection()
 	{
 		bazzesDescriptor.setChildRelationship(false);
-		persistenceMock.expects(once()).method("save").with(eq(baz));
-		persistenceMock.expects(once()).method("save").with(eq(foo));
+		persistenceMock.expects(once()).method("saveCollectionElement").with(eq("addBaz"), eq(baz), eq(foo));
 
 		try
 		{
@@ -162,15 +159,13 @@ public class EditPageTest extends ComponentTest
 			assertEquals(CALLBACK_URL, e.getRedirectLocation());
 		}
 
-		assertEquals("1 baz", 1, foo.getBazzes().size());
 	}
 
 	public void testRemoveFrom()
 	{
 		foo.getBazzes().add(baz);
 
-		persistenceMock.expects(once()).method("remove").with(eq(baz));
-		persistenceMock.expects(once()).method("save").with(eq(foo));
+		persistenceMock.expects(once()).method("removeCollectionElement").with(eq("removeBaz"), eq(baz), eq(foo));
 
 		try
 		{
@@ -183,7 +178,6 @@ public class EditPageTest extends ComponentTest
 			assertEquals(CALLBACK_URL, e.getRedirectLocation());
 		}
 
-		assertEquals("no bazzes", 0, foo.getBazzes().size());
 	}
 
 	public void testRemove()

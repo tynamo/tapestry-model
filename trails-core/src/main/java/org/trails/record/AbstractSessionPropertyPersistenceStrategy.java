@@ -44,8 +44,6 @@ public abstract class AbstractSessionPropertyPersistenceStrategy implements Prop
 
 	protected abstract String getStrategyId();
 
-	protected abstract Object reattach(Object entity);
-
 	// Really, the name of the servlet; used as a prefix on all
 	// HttpSessionAttribute keys
 	// to keep things straight if multiple Tapestry apps are deployed
