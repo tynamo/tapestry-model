@@ -51,4 +51,9 @@ public interface PersistenceService
 	Serializable getIdentifier(Object data, IClassDescriptor classDescriptor);
 
 	boolean isTransient(Object data, IClassDescriptor classDescriptor);
+
+	<T> T saveCollectionElement(String addExpression, T member, Object parent);
+
+	void removeCollectionElement(String removeExpression, Object member, Object parent);
+
 }

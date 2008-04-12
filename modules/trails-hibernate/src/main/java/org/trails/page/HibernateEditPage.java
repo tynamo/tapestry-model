@@ -40,7 +40,16 @@ public abstract class HibernateEditPage extends EditPage
 		{
 			try
 			{
-				setModel(getPersistenceService().save(getModel()));
+				if (cameFromCollection() && isModelNew())
+				{
+					setModel(getPersistenceService().saveCollectionElement(
+							getAssociationDescriptor().getAddExpression(), getModel(), getParent()));
+					setModelNew(false);
+				} else
+				{
+					setModel(getPersistenceService().save(getModel()));
+				}
+
 			} catch (PersistenceException pe)
 			{
 				getDelegate().record(pe);

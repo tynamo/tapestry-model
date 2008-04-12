@@ -16,6 +16,8 @@ import java.util.Collection;
 public abstract class ReattachPropertyPersistenceStrategy extends AbstractSessionPropertyPersistenceStrategy
 {
 
+	protected abstract Object reattach(Object entity);
+
 	private static final Log LOG = LogFactory.getLog(ReattachPropertyPersistenceStrategy.class);
 
 	public Collection getStoredChanges(String pageName)

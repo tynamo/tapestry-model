@@ -56,7 +56,7 @@
 	</contribution>
 
 	<contribution configuration-id="tapestry.persist.PersistenceStrategy">
-		<strategy name="trails-entity" object="service:trails.hibernate.ReattachReattachPropertyPersistenceStrategy"/>
+		<strategy name="trails-entity" object="service:trails.hibernate.ReloadReattachPropertyPersistenceStrategy"/>
 	</contribution>
 
 	<contribution configuration-id="tapestry.state.ApplicationObjects">

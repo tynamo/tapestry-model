@@ -19,7 +19,6 @@ import org.apache.tapestry.annotations.Lifecycle;
 import org.apache.tapestry.callback.ICallback;
 import org.apache.tapestry.engine.ILink;
 import org.trails.callback.TrailsPageCallback;
-import org.trails.util.Utils;
 import org.trails.engine.TrailsPagesServiceParameter;
 import org.trails.persistence.PersistenceException;
 import org.trails.validation.TrailsValidationDelegate;
@@ -89,7 +88,14 @@ public abstract class EditPage extends ModelPage implements IAssociationPage
 			// {
 			try
 			{
-				setModel(getPersistenceService().save(getModel()));
+				if (cameFromCollection() && isModelNew())
+				{
+					setModel(getPersistenceService().saveCollectionElement(
+							getAssociationDescriptor().getAddExpression(), getModel(), getParent()));
+				} else
+				{
+					setModel(getPersistenceService().save(getModel()));
+				}
 			} catch (PersistenceException pe)
 			{
 				getDelegate().record(pe);
@@ -125,11 +131,6 @@ public abstract class EditPage extends ModelPage implements IAssociationPage
 	{
 		if (save())
 		{
-			if (cameFromCollection() && isModelNew())
-			{
-				Utils.executeOgnlExpression(getAssociationDescriptor().getAddExpression(), getModel(), getParent());
-				getPersistenceService().save(getParent());
-			}
 			return goBack(cycle);
 		}
 		return null;
@@ -142,11 +143,13 @@ public abstract class EditPage extends ModelPage implements IAssociationPage
 		{
 			if (cameFromCollection())
 			{
-				Utils.executeOgnlExpression(getAssociationDescriptor().getRemoveExpression(), getModel(), getParent());
-				getPersistenceService().save(getParent());
-			}
 
-			getPersistenceService().remove(getModel());
+				getPersistenceService().removeCollectionElement(getAssociationDescriptor().getRemoveExpression(),
+						getModel(), getParent());
+			} else
+			{
+				getPersistenceService().remove(getModel());
+			}
 
 		} catch (PersistenceException pe)
 		{
