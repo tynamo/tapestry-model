@@ -66,6 +66,7 @@
 		<resource filtered="false">src/main/webapp/styles/tapestryskin/table.css</resource>
 		<resource filtered="false">src/main/webapp/styles/tapestryskin/iepatches.css</resource>
 		<resource filtered="false">src/main/webapp/styles/tapestryskin/forms.css</resource>
+		<resource filtered="false">src/main/webapp/styles/tapestryskin/messages.css</resource>
 
 	</resources>
 
