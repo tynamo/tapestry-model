@@ -171,7 +171,7 @@ public abstract class EditPage extends ModelPage implements IAssociationPage
 	public String getTitle()
 	{
 		Object[] params = new Object[]{getClassDescriptor().getDisplayName()};
-		if (cameFromCollection() && isModelNew())
+		if (isModelNew())
 		{
 			return getResourceBundleMessageSource()
 					.getMessageWithDefaultValue("org.trails.i18n.add", params, "[TRAILS][ORG.TRAILS.I18N.ADD]");
