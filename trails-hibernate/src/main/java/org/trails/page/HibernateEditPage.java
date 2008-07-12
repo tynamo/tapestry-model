@@ -40,7 +40,7 @@ public abstract class HibernateEditPage extends EditPage
 		{
 			try
 			{
-				if (cameFromCollection() && isModelNew())
+				if (isReferencedByParentPage() && isModelNew())
 				{
 					setModel(getPersistenceService().saveCollectionElement(
 							getAssociationDescriptor().getAddExpression(), getModel(), getParent()));

@@ -56,7 +56,7 @@ public abstract class EditPage extends ModelPage implements IAssociationPage
 
 	private ILink defaultCallback()
 	{
-		if (!cameFromCollection())
+		if (!isReferencedByParentPage())
 		{
 			return getTrailsPagesService().getLink(false, new TrailsPagesServiceParameter(PageType.LIST, getClassDescriptor()));
 		} else {
@@ -88,7 +88,7 @@ public abstract class EditPage extends ModelPage implements IAssociationPage
 			// {
 			try
 			{
-				if (cameFromCollection() && isModelNew())
+				if (isReferencedByParentPage() && isModelNew())
 				{
 					setModel(getPersistenceService().saveCollectionElement(
 							getAssociationDescriptor().getAddExpression(), getModel(), getParent()));
@@ -141,7 +141,7 @@ public abstract class EditPage extends ModelPage implements IAssociationPage
 
 		try
 		{
-			if (cameFromCollection())
+			if (isReferencedByParentPage())
 			{
 
 				getPersistenceService().removeCollectionElement(getAssociationDescriptor().getRemoveExpression(),
@@ -182,7 +182,7 @@ public abstract class EditPage extends ModelPage implements IAssociationPage
 		}
 	}
 
-	public boolean cameFromCollection()
+	public boolean isReferencedByParentPage()
 	{
 		return getParent() != null;
 	}
