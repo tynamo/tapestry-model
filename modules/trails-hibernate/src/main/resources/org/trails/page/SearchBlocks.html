@@ -26,3 +26,11 @@
 		<span jwcid="@AssociationSearchField" propertyDescriptor="ognl:descriptor" class="select large"/>
 	</li>
 </div>
+
+<!-- A block used to input the search condition on an enum. It is a combo box
+with an option to ignore this field in the search. -->
+<div jwcid="enumSearch@Block">
+	<li><label class="desc"><span jwcid="@Insert" value="ognl:descriptor.displayName"/></label>
+		<span jwcid="@EnumSearchField" propertyDescriptor="ognl:descriptor" class="select large"/>
+	</li>
+</div>

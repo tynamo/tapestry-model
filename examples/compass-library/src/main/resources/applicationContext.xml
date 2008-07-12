@@ -164,6 +164,22 @@
 						</constructor-arg>
 					</bean>
 				</entry>
+				<!-- Field to search for an enum. -->
+				<entry>
+					<key>
+						<value>
+							supportsExtension('org.trails.descriptor.extension.EnumReferenceDescriptor')
+						</value>
+					</key>
+					<bean class="org.apache.tapestry.util.ComponentAddress">
+						<constructor-arg  index="0">
+							<value>trails:SearchBlocks</value>
+						</constructor-arg>
+						<constructor-arg  index="1">
+							<value>enumSearch</value>
+						</constructor-arg>
+					</bean>
+				</entry>
 				<entry>
 					<key>
 						<value>numeric</value>

@@ -5,6 +5,8 @@
 	<component id="hibernateAssociationSelect" type="HibernateAssociationSelect" inherit-informal-parameters="yes">
 		<binding name="value" value="value"/>
 		<binding name="propertyDescriptor" value="propertyDescriptor"/>
+		<binding name="allowNone" value="true"/>
+		<binding name="noneLabel" value="literal:"/>
 	</component>
 	
 </component-specification>
