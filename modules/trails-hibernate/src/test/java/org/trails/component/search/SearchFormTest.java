@@ -14,6 +14,7 @@ import org.trails.page.HibernateListPage;
 import org.trails.page.PageResolver;
 import org.trails.page.PageType;
 import org.trails.testhibernate.Foo;
+import org.trails.builder.BuilderDirector;
 
 public class SearchFormTest extends HibernateComponentTest
 {
@@ -27,7 +28,7 @@ public class SearchFormTest extends HibernateComponentTest
 		IClassDescriptor fooDescriptor = new TrailsClassDescriptor(Foo.class, "Foo");
 
 		searchForm = (SearchForm) creator.newInstance(SearchForm.class,
-				new Object[]{"pageResolver", pageResolverMock.proxy(), "classDescriptor", fooDescriptor});
+				new Object[]{"pageResolver", pageResolverMock.proxy(), "classDescriptor", fooDescriptor, "builderDirector", new BuilderDirector()});
 
 		IPropertyDescriptor namePropDescriptor = new TrailsPropertyDescriptor(Foo.class, "name", String.class);
 		SimpleSearchField nameSearchField = (SimpleSearchField) creator.newInstance(SimpleSearchField.class);
@@ -71,5 +72,6 @@ public class SearchFormTest extends HibernateComponentTest
 		PageEvent pageEvent = new PageEvent((IPage) pageMock.proxy(), (IRequestCycle) cycleMock.proxy());
 		searchForm.pageBeginRender(pageEvent);
 		assertNotNull(searchForm.getCriteria());
+		assertNotNull(searchForm.getModel());
 	}
 }

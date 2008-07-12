@@ -12,4 +12,6 @@
 
 	<inject property="callbackStack" type="state" object="callbackStack"/>
 
+	<property name="searchModel" persist="trails-form"/>
+
 </page-specification>
