@@ -12,6 +12,8 @@ import org.trails.validation.ValidatorTranslatorService;
 
 public abstract class SimpleSearchField extends BaseComponent
 {
+
+	@Parameter
 	public abstract Object getValue();
 
 	public abstract void setValue(Object Value);
