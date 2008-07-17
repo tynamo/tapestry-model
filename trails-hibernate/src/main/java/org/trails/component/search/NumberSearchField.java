@@ -2,6 +2,8 @@ package org.trails.component.search;
 
 import java.lang.reflect.Constructor;
 
+import org.apache.commons.lang.ClassUtils;
+
 import org.apache.tapestry.form.translator.NumberTranslator;
 import org.hibernate.criterion.Restrictions;
 import org.trails.exception.TrailsRuntimeException;
@@ -19,7 +21,7 @@ public abstract class NumberSearchField extends SimpleSearchField
 		 **/
 		try
 		{
-			Class type = getPropertyDescriptor().getPropertyType();
+			Class type = ClassUtils.primitiveToWrapper(getPropertyDescriptor().getPropertyType());
 			Constructor cons = type.getConstructor(new Class[]{String.class});
 			return cons.newInstance(getValue().toString());
 		}
