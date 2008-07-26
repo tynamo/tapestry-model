@@ -85,12 +85,10 @@ public class ReflectionDescriptorFactory implements DescriptorFactory
 			{
 				beanPropDescriptor.setDisplayName(Utils.unCamelCase(beanPropDescriptor.getDisplayName()) );
 				
-				TrailsPropertyDescriptor propDescriptor;
 				Class<?> propertyType = beanPropDescriptor.getPropertyType();
-				propDescriptor = new TrailsPropertyDescriptor(beanType,propertyType);
+				TrailsPropertyDescriptor propDescriptor = new TrailsPropertyDescriptor(beanType,propertyType);
 				BeanUtils.copyProperties(propDescriptor, beanPropDescriptor);
-				TrailsPropertyDescriptor newPropertyDescriptor = propDescriptor;
-				result.add(newPropertyDescriptor);
+				result.add(propDescriptor);
 			}
 		}
 		return result;

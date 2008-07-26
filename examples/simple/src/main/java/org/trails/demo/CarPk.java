@@ -4,7 +4,12 @@ import org.hibernate.validator.NotNull;
 
 import javax.persistence.Embeddable;
 import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 import java.io.Serializable;
+
+import org.trails.descriptor.annotation.PropertyDescriptor;
+import org.trails.descriptor.annotation.InitialValue;
+import org.trails.descriptor.annotation.PossibleValues;
 
 @Embeddable
 public class CarPk implements Serializable
@@ -27,8 +32,9 @@ public class CarPk implements Serializable
 
 	private Model model;
 
-	@NotNull
-	@ManyToOne(optional = false)
+	@Transient
+	@PropertyDescriptor(summary = false)
+	@InitialValue("model.make")
 	public Make getMake()
 	{
 		return make;
@@ -41,6 +47,7 @@ public class CarPk implements Serializable
 
 	@NotNull
 	@ManyToOne(optional = false)
+	@PossibleValues("make.models")
 	public Model getModel()
 	{
 		return model;
@@ -53,7 +60,7 @@ public class CarPk implements Serializable
 
 	public String toString()
 	{
-		return getModel().toString() + ", " + getMake().toString() + ", " + name;
+		return getModel().toString() + ", " + getModel().getMake().toString() + ", " + name;
 	}
 
 }

@@ -5,13 +5,13 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.trails.descriptor.annotation.PropertyDescriptor;
+
 @Entity
 public class Make implements Serializable
 {
 
 	private Integer id;
-
-	private Set<Car> cars = new HashSet<Car>();
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -37,6 +37,21 @@ public class Make implements Serializable
 		this.name = name;
 	}
 
+	private Set<Model> models = new HashSet<Model>();
+
+	@OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "make")
+	@PropertyDescriptor(readOnly = true, index = 2, searchable = false)
+	public Set<Model> getModels()
+	{
+		return models;
+	}
+
+	public void setModels(final Set<Model> theModels)
+	{
+		models = theModels;
+	}
+
+
 	@Override
 	public boolean equals(Object o)
 	{
@@ -58,15 +73,5 @@ public class Make implements Serializable
 	{
 		return getName();
 	}
-
-	@OneToMany(mappedBy = "id.make")
-	public Set<Car> getCars()
-	{
-		return cars;
-	}
-
-	public void setCars(Set<Car> cars)
-	{
-		this.cars = cars;
-	}
 }
+

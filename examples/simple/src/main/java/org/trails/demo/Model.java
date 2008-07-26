@@ -6,6 +6,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import org.hibernate.validator.NotNull;
 import java.io.Serializable;
 
 @Entity
@@ -36,6 +38,20 @@ public class Model implements Serializable
 	public void setName(String name)
 	{
 		this.name = name;
+	}
+
+	private Make make;
+
+	@ManyToOne
+	@NotNull
+	public Make getMake()
+	{
+		return make;
+	}
+
+	public void setMake(Make make)
+	{
+		this.make = make;
 	}
 
 	@Override

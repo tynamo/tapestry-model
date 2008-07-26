@@ -229,6 +229,23 @@
 			<map>
 				<entry>
 					<key>
+						<value>
+							supportsExtension('org.trails.descriptor.annotation.PossibleValuesDescriptorExtension')
+							or
+							supportsExtension('org.trails.descriptor.annotation.InitialValueDescriptorExtension')
+						</value>
+					</key>
+					<bean class="org.apache.tapestry.util.ComponentAddress">
+						<constructor-arg index="0">
+							<value>trails:Editors</value>
+						</constructor-arg>
+						<constructor-arg index="1">
+							<value>filteredAssociation</value>
+						</constructor-arg>
+					</bean>
+				</entry>
+				<entry>
+					<key>
 						<value>hidden</value>
 					</key>
 					<bean class="org.apache.tapestry.util.ComponentAddress">
