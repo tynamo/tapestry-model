@@ -97,17 +97,3 @@
 		</select>
 	</li>
 </span>
-
-
-<span jwcid="filteredAssociation@Block">
-	<li><label class="desc" jwcid="@FieldLabel"
-			   field="component:filteredAssociationSelect"
-			   displayName="ognl:descriptor.displayName"/>
-		<select jwcid="filteredAssociationSelect@FilteredAssociationSelect"
-				value="ognl:model[#this.descriptor.name]"
-				propertyDescriptor="ognl:descriptor" class="select medium"
-				onchange="ognl:getComponent('filteredAssociationSelect').onChangeJavascript">
-		</select>
-	</li>
-</span>
-
