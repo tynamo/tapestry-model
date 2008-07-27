@@ -8,31 +8,32 @@ public class CarTest extends FunctionalTest
 
 	public void testObjectTableOnEditPage() throws Exception
 	{
-		HtmlPage listModelsPage = clickLinkOnPage(startPage, "List Models");
-		HtmlPage newModelPage = clickLinkOnPage(listModelsPage, "New Model");
-
-		getInputByName(newModelPage, "Name").setValueAttribute("Civic");
-
-		listModelsPage = clickButton(newModelPage, "Ok");
-		startPage = clickLinkOnPage(listModelsPage, "Home");
-
 		HtmlPage listMakesPage = clickLinkOnPage(startPage, "List Makes");
 		HtmlPage newMakePage = clickLinkOnPage(listMakesPage, "New Make");
-
 		getInputByName(newMakePage, "Name").setValueAttribute("Honda");
-
 		listMakesPage = clickButton(newMakePage, "Ok");
+
 		startPage = clickLinkOnPage(listMakesPage, "Home");
+
+		HtmlPage listModelsPage = clickLinkOnPage(startPage, "List Models");
+		HtmlPage newModelPage = clickLinkOnPage(listModelsPage, "New Model");
+		getInputByName(newModelPage, "Name").setValueAttribute("Civic");
+		listModelsPage = clickButton(newModelPage, "Ok");
+
+		startPage = clickLinkOnPage(listModelsPage, "Home");
+
 		HtmlPage listCarsPage = clickLinkOnPage(startPage, "List Cars");
 		HtmlPage newCarPage = clickLinkOnPage(listCarsPage, "New Car");
 		getInputByName(newCarPage, "Name").setValueAttribute("Accord");
 		HtmlSelect makeSelect = getSelectByName(newCarPage, "Make");
 		makeSelect.setSelectedAttribute("1", true);
 		listCarsPage = clickButton(newCarPage, "Ok");
+
 		startPage = clickLinkOnPage(listCarsPage, "Home");
-		listMakesPage = clickLinkOnPage(startPage, "List Makes");
-		HtmlPage make1Page = clickLinkOnPage(listMakesPage, "1");
-		assertXPathPresent(make1Page, "//td/a[contains(text(),'Accord')]");
+
+		listModelsPage = clickLinkOnPage(startPage, "List Models");
+		HtmlPage model1Page = clickLinkOnPage(listModelsPage, "1");
+		assertXPathPresent(model1Page, "//td/a[contains(text(),'Accord')]");
 	}
 
 	public void testCancelAndDefaultCallback() throws Exception {

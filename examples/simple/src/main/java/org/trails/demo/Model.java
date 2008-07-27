@@ -2,19 +2,22 @@ package org.trails.demo;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
+
 import org.hibernate.validator.NotNull;
+import org.trails.descriptor.annotation.PropertyDescriptor;
+
 import java.io.Serializable;
+import java.util.Set;
+import java.util.HashSet;
 
 @Entity
 public class Model implements Serializable
 {
 
 	private Integer id;
+
+	private Set<Car> cars = new HashSet<Car>();
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -52,6 +55,18 @@ public class Model implements Serializable
 	public void setMake(Make make)
 	{
 		this.make = make;
+	}
+
+	@OneToMany(mappedBy = "id.model")
+	@PropertyDescriptor(readOnly = true)
+	public Set<Car> getCars()
+	{
+		return cars;
+	}
+
+	public void setCars(Set<Car> cars)
+	{
+		this.cars = cars;
 	}
 
 	@Override

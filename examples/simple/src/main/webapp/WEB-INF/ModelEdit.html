@@ -19,6 +19,14 @@
 		</span>
 	</div>
 
-	<form jwcid="@trails:ObjectForm" model="ognl:model"/>
-
+	<form jwcid="@trails:ObjectForm" model="ognl:model">
+		<div jwcid="cars@Block">
+			<li><label class="desc">Cars</label>
+				<table class="table contribTable" jwcid="@trails:ObjectTable"
+					   rowsClass="ognl:beans.evenOdd.next"
+					   instances="ognl:model.cars"
+					   classDescriptor="ognl:page.descriptorService.getClassDescriptor(classDescriptor.getPropertyDescriptor('cars').elementType)"/>
+			</li>
+		</div>
+	</form>
 </span>
