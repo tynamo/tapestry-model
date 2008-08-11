@@ -1,24 +1,19 @@
-/* vim: set ts=2 et sw=2 cindent fo=qroca: */
-
 package org.trails.component;
+
+import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.annotations.Parameter;
+import org.apache.tapestry.form.IPropertySelectionModel;
+import org.trails.descriptor.annotation.InitialValueDescriptorExtension;
+import org.trails.descriptor.annotation.PossibleValuesDescriptorExtension;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import ognl.Ognl;
+/** imports for javadocs **/
+import org.trails.descriptor.annotation.InitialValue;
+import org.trails.descriptor.annotation.PossibleValues;
 import ognl.OgnlException;
-
-import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.annotations.InjectObject;
-import org.apache.tapestry.form.IPropertySelectionModel;
-
-import org.trails.descriptor.DescriptorService;
-import org.trails.descriptor.IClassDescriptor;
-import org.trails.persistence.PersistenceService;
-
-import org.trails.descriptor.annotation.PossibleValuesDescriptorExtension;
-import org.trails.descriptor.annotation.InitialValueDescriptorExtension;
 
 /**
  * Component that renders a select element based on the annotations
@@ -34,35 +29,11 @@ import org.trails.descriptor.annotation.InitialValueDescriptorExtension;
  *
  * @author pruggia
  */
-public abstract class FilteredAssociationSelect extends AbstractPropertySelection
+public abstract class FilteredAssociationSelect extends AssociationSelect
 {
 
-	/**
-	 * The persistence service.
-	 *
-	 * @return Returns the persistence service.
-	 */
-	@InjectObject("spring:persistenceService")
-	public abstract PersistenceService getPersistenceService();
-
-	/**
-	 * The descriptor service.
-	 *
-	 * @return Returs the descriptor service.
-	 */
-	@InjectObject("spring:descriptorService")
-	public abstract DescriptorService getDescriptorService();
-
-	/**
-	 * Convenience method to retrieve the class descriptor for the current
-	 * property.
-	 *
-	 * @return a {@link IClassDescriptor} object, never null.
-	 */
-	public IClassDescriptor getClassDescriptor()
-	{
-		return getDescriptorService().getClassDescriptor(getPropertyDescriptor().getPropertyType());
-	}
+	@Parameter(required = true)
+	public abstract Object getPageModel();
 
 	/**
 	 * Sets the initial value for the property based on the expression declared
@@ -70,26 +41,25 @@ public abstract class FilteredAssociationSelect extends AbstractPropertySelectio
 	 *
 	 * @param cycle the request cycle, it's never null.
 	 */
+	@Override
 	protected void prepareForRender(final IRequestCycle cycle)
 	{
 		InitialValueDescriptorExtension extension = (InitialValueDescriptorExtension) getPropertyDescriptor()
 				.getExtension(InitialValueDescriptorExtension.class.getName());
 		if (extension != null)
 		{
-			Object value = null;
-			try
+			if (getValue() == null)
 			{
-				value = Ognl.getValue(getPropertyDescriptor().getName(), getPageModel());
-			} catch (OgnlException e)
-			{
-				throw new RuntimeException("Error obtaining object property: " + getPropertyDescriptor().getName(), e);
-			}
-			if (value == null)
-			{
-				IPropertySelectionModel propertySelectionModel = buildSelectionModel();
-				extension.initValue(getPageModel(), getPropertyDescriptor().getName(), propertySelectionModel);
+				try
+				{
+					setValue(extension.evaluateExpresion(getPageModel()));
+				} catch (OgnlException e)
+				{
+					// do nothing, don't worry about it
+				}
 			}
 		}
+		super.prepareForRender(cycle);
 	}
 
 	/**
@@ -98,61 +68,47 @@ public abstract class FilteredAssociationSelect extends AbstractPropertySelectio
 	 *
 	 * @return Returns the selection model, it never returns null.
 	 */
+	@Override
 	@SuppressWarnings("unchecked")
 	public IPropertySelectionModel buildSelectionModel()
 	{
-		IdentifierSelectionModel selectionModel;
-		if (getInstances() != null)
-		{
-			// instances passed directly from a collection to the component, no need
-			// to build a list.
-			selectionModel = new IdentifierSelectionModel(getInstances(),
-					getClassDescriptor().getIdentifierDescriptor().getName(), isAllowNone());
-		} else
-		{
-			String idProperty;
-			idProperty = getClassDescriptor().getIdentifierDescriptor().getName();
-			PossibleValuesDescriptorExtension extension = (PossibleValuesDescriptorExtension) getPropertyDescriptor()
-					.getExtension(PossibleValuesDescriptorExtension.class.getName());
+		PossibleValuesDescriptorExtension extension = (PossibleValuesDescriptorExtension) getPropertyDescriptor()
+				.getExtension(PossibleValuesDescriptorExtension.class.getName());
 
+		/* instances passed directly from a collection to the component, no need to build a list. */
+		if (extension != null && getInstances() == null)
+		{
+			// If it's filtered by a "PossibleValues" annotation, we need to
+			// retrieve the list evaluating the ognl expression of the annotation.
+			Collection<Object> col = null;
 			List allObjects = null;
-
-			if (extension != null)
+			try
 			{
-				// If it's filtered by a "PossibleValues" annotation, we need to
-				// retrieve the list evaluating the ognl expression of the annotation.
-				Collection<Object> col = null;
-				try
-				{
-					col = (Collection) Ognl.getValue(extension.getExpression(), getPageModel());
-				} catch (Exception e)
-				{
-					col = new ArrayList();
-				}
-				if (col instanceof List)
-				{
-					allObjects = (List) col;
-				} else
-				{
-					allObjects = new ArrayList();
-					allObjects.addAll(col);
-				}
+				col = (Collection) extension.evaluateExpresion(getPageModel());
+			} catch (OgnlException e)
+			{
+				col = new ArrayList();
+			}
+			if (col instanceof List)
+			{
+				allObjects = (List) col;
 			} else
 			{
-				allObjects = getPersistenceService().getAllInstances(getClassDescriptor().getType());
+				allObjects = new ArrayList();
+				allObjects.addAll(col);
 			}
 
-			if (allObjects.isEmpty())
+			if (!allObjects.isEmpty())
 			{
-				selectionModel = new IdentifierSelectionModel(allObjects, idProperty, true);
+
+				IdentifierSelectionModel selectionModel = new IdentifierSelectionModel(allObjects,
+						getClassDescriptor().getIdentifierDescriptor().getName(), isAllowNone());
 				selectionModel.setNoneLabel(getNoneLabel());
-			} else
-			{
-				selectionModel = new IdentifierSelectionModel(allObjects, idProperty, false);
+				return selectionModel;
 			}
 		}
-		selectionModel.setNoneLabel(getNoneLabel());
-		return selectionModel;
+
+		return super.buildSelectionModel();
 	}
 
 	/**
@@ -176,23 +132,5 @@ public abstract class FilteredAssociationSelect extends AbstractPropertySelectio
 		{
 			return "";
 		}
-	}
-
-	/**
-	 * Convenience method to retrieve the page model.
-	 *
-	 * @return an Object, never null.
-	 */
-	private Object getPageModel()
-	{
-		Object model;
-		try
-		{
-			model = Ognl.getValue("model", getPage());
-		} catch (OgnlException e)
-		{
-			throw new RuntimeException("Error obtaining model from page.", e);
-		}
-		return model;
 	}
 }
