@@ -12,12 +12,6 @@ import org.apache.commons.beanutils.PropertyUtils;
 public abstract class AbstractAnnotationHandler
 {
 
-	public AbstractAnnotationHandler()
-	{
-		super();
-		// TODO Auto-generated constructor stub
-	}
-
 	/**
 	 * This method will check if an annotation property has a default value by
 	 * see if there is a field named DEFAULT_ + property name.  If it has a default

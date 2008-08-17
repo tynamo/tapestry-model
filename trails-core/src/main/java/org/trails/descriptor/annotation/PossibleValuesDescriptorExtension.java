@@ -1,5 +1,7 @@
 package org.trails.descriptor.annotation;
 
+import java.util.Map;
+
 /**
  * Extension to the property descriptor that holds information about possible
  * values.
@@ -14,4 +16,8 @@ public class PossibleValuesDescriptorExtension extends ExpressionExtension
 		super(theExpression);
 	}
 
+	public PossibleValuesDescriptorExtension(String theExpression, Map context)
+	{
+		super(theExpression, context);
+	}
 }
