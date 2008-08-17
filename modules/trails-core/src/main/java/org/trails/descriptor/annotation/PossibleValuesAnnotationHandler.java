@@ -3,11 +3,10 @@
 package org.trails.descriptor.annotation;
 
 import org.apache.commons.lang.Validate;
-
 import org.trails.descriptor.IPropertyDescriptor;
 
 /**
- * Creates a {@link InitialValueDescriptorExtension} using the
+ * Creates a {@link PossibleValuesDescriptorExtension} using the
  * information retrieved from a {@link PossibleValues} annotation.
  *
  * @author pruggia

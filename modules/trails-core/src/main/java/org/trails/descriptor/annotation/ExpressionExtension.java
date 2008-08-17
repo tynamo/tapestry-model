@@ -7,6 +7,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.trails.descriptor.IDescriptorExtension;
 
+import java.util.Map;
+
 
 public abstract class ExpressionExtension implements IDescriptorExtension
 {
@@ -16,7 +18,12 @@ public abstract class ExpressionExtension implements IDescriptorExtension
 	 * Ognl expression that evaluated gets a list of possible values to use with
 	 * the current property, cannot be null.
 	 */
-	protected String expression;
+	private String expression;
+
+	/**
+	 * Map of variables to put into the available namespace (scope) for OGNL expressions.
+	 */
+	private Map context;
 
 	/**
 	 * Creates a {@link ExpressionExtension}.
@@ -29,6 +36,20 @@ public abstract class ExpressionExtension implements IDescriptorExtension
 		super();
 		Validate.notNull(theExpression, "The expression cannot be null");
 		expression = theExpression;
+	}
+
+
+	/**
+	 * Creates a {@link ExpressionExtension}.
+	 *
+	 * @param theExpression Ognl expression that evaluated gets a list of possible
+	 *                      values to use with the current property, cannot be null.
+	 * @param context
+	 */
+	public ExpressionExtension(final String theExpression, Map context)
+	{
+		this(theExpression);
+		this.context = context;
 	}
 
 	/**
@@ -53,7 +74,13 @@ public abstract class ExpressionExtension implements IDescriptorExtension
 		Validate.notNull(model, "The model cannot be null");
 		try
 		{
-			return Ognl.getValue(expression, model);
+			if (context != null)
+			{
+				return Ognl.getValue(expression, context, model);
+			} else
+			{
+				return Ognl.getValue(expression, model);
+			}
 		} catch (OgnlException e)
 		{
 			LOG.warn("Exception thrown evaluationg " + expression, e);
