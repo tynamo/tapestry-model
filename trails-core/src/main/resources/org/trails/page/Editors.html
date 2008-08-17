@@ -92,6 +92,7 @@
 			   displayName="ognl:descriptor.displayName"/>
 		<select jwcid="filteredAssociationSelect@FilteredAssociationSelect"
 				value="ognl:model[#this.descriptor.name]"
+				pageModel="ognl:model"
 				propertyDescriptor="ognl:descriptor" class="select medium"
 				onchange="ognl:getComponent('filteredAssociationSelect').onChangeJavascript">
 		</select>
