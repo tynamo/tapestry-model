@@ -190,7 +190,7 @@
 			<plugin>
 				<groupId>net.sf.tacos</groupId>
 				<artifactId>tapdoc-maven-plugin</artifactId>
-				<version>0.7.0-SNAPSHOT</version>
+				<version>0.7.0</version>
 				<configuration>
 					<libraries>
 						<param>/org/trails/component/trails_hibernate.library</param>
