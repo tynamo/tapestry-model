@@ -3,12 +3,12 @@
 	<groupId>org.trailsframework</groupId>
 	<artifactId>trails-secure-archetype</artifactId>
 	<name>Archetype - trails-secure-archetype</name>
-	<version>1.2-SNAPSHOT</version>
+	<version>1.2</version>
 
 	<parent>
 		<artifactId>archetypes</artifactId>
 		<groupId>org.trailsframework</groupId>
-		<version>1.2-SNAPSHOT</version>
+		<version>1.2</version>
 	</parent>
 	<build>
 		<plugins>

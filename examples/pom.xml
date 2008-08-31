@@ -20,7 +20,7 @@
 	<parent>
 		<groupId>org.trailsframework</groupId>
 		<artifactId>trails</artifactId>
-		<version>1.2-SNAPSHOT</version>
+		<version>1.2</version>
 	</parent>
 	<build>
 
@@ -194,7 +194,7 @@
 		<dependency>
 			<groupId>org.trailsframework</groupId>
 			<artifactId>trails-hibernate</artifactId>
-			<version>1.2-SNAPSHOT</version>
+			<version>1.2</version>
 		</dependency>
 		<dependency>
 			<!-- kaosko 2006-09-06: Apt plugin may silently fail if Jaxen isn't declared. The reason's a bit unclear, but my best guess
