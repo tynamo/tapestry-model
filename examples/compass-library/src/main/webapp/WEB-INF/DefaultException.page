@@ -1,7 +1,0 @@
-<!DOCTYPE page-specification PUBLIC "-//Apache Software Foundation//Tapestry Specification 4.1//EN" "http://jakarta.apache.org/tapestry/dtd/Tapestry_4_1.dtd">
-<page-specification class="org.trails.page.ExceptionPage">
-
-	<property name="exception"/>
-	<inject property="callbackStack" type="state" object="callbackStack"/>
-
-</page-specification>
