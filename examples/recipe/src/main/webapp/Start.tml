@@ -1,10 +1,13 @@
-<span jwcid="@Border">
-	<h1><span key="org.trails.welcome">Welcome to Trails</span></h1>
-	<ul class="glassList">
-		<div class="glassList" jwcid="@For" source="ognl:allDescriptors" value="ognl:descriptor">
+<t:layout title="literal:Trails!" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_0_0.xsd">
+
+	<h1>Trails Start Page</h1>
+
+	<ul>
+		<t:loop source="allDescriptors" value="descriptorIterator">
 			<li>
-				<a href="#" jwcid="@trails:ListAllLink" type="ognl:descriptor.type"/>
+				<t:pagelink page="ListPage" context="descriptorIterator.type">${descriptorIterator.displayName}</t:pagelink>
 			</li>
-		</div>
+		</t:loop>
 	</ul>
-</span>
+
+</t:layout>

@@ -1,13 +1,13 @@
 package org.trailsframework.pages;
 
-import org.trailsframework.util.GenericSelectionModel;
-import org.trailsframework.services.PersitenceService;
-import org.apache.tapestry5.services.PropertyEditContext;
-import org.apache.tapestry5.services.ValueEncoderSource;
-import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.SelectModel;
 import org.apache.tapestry5.ValueEncoder;
 import org.apache.tapestry5.annotations.Environmental;
+import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.services.PropertyEditContext;
+import org.apache.tapestry5.services.ValueEncoderSource;
+import org.trailsframework.services.PersistenceService;
+import org.trailsframework.util.GenericSelectionModel;
 
 
 public class Editors
@@ -16,7 +16,7 @@ public class Editors
 	private PropertyEditContext context;
 
 	@Inject
-	private PersitenceService persitenceService;
+	private PersistenceService persitenceService;
 
 	@Inject
 	private ValueEncoderSource valueEncoderSource;
@@ -28,11 +28,13 @@ public class Editors
 
 	public SelectModel getSelectModel()
 	{
-		return new GenericSelectionModel<Caetg>(persitenceService.getAllInstances(Caetg.class));
+		return new GenericSelectionModel(persitenceService.getInstances(context.getPropertyType()));
 	}
 
 	/**
 	 * Provide a value encoder for an enum type.
+	 *
+	 * @return
 	 */
 	public ValueEncoder getValueEncoderForProperty()
 	{

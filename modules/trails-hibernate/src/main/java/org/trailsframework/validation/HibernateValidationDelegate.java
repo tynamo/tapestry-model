@@ -1,15 +1,10 @@
-package org.trails.validation;
+package org.trailsframework.validation;
 
-import org.apache.tapestry.valid.FieldTracking;
-import org.apache.tapestry.valid.RenderString;
-import org.hibernate.validator.InvalidStateException;
-import org.hibernate.validator.InvalidValue;
-import org.trails.descriptor.IClassDescriptor;
-import org.trails.descriptor.IPropertyDescriptor;
 
-public class HibernateValidationDelegate extends TrailsValidationDelegate
+public class HibernateValidationDelegate //extends TrailsValidationDelegate
 {
 
+/*
 	public void record(IClassDescriptor descriptor, InvalidStateException invalidStateException)
 	{
 		for (InvalidValue invalidValue : invalidStateException.getInvalidValues())
@@ -34,5 +29,6 @@ public class HibernateValidationDelegate extends TrailsValidationDelegate
 			fieldTracking.setErrorRenderer(new RenderString(message));
 		}
 	}
+*/
 
 }

@@ -1,26 +1,11 @@
-<span jwcid="@Border" subBlock="subBlock">
-	<span jwcid="subBlock@Block">
-		<ul id="local">
-			<div jwcid="@If" condition="ognl:classDescriptor.allowSave">
-				<li>
-					<a class="newlink" href="#" jwcid="@trails:NewLink" type="ognl:type"></a>
-				</li>
-			</div>
-			<li>
-				<a class="searchlink" href="#" jwcid="@trails:SearchLink" type="ognl:type"></a>
-			</li>
-		</ul>
-	</span>
+<t:layout title="literal:Trails!" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_0_0.xsd">
 
-	<h1><span jwcid="@Insert" value="message:org.trails.i18n.list">
-		List</span>&nbsp;<span jwcid="@Insert" value="ognl:classDescriptor.pluralDisplayName"/>
-	</h1>
+	<h1>List Page</h1>
 
-  <table class="table contribTable" jwcid="@trails:ObjectTable"
-		 rowsClass="ognl:beans.evenOdd.next"
-		 criteria="ognl:criteria"
-		 object="ognl:object"
-		 column="ognl:column"
-		  />
+		<t:grid source="instances" row="model">
+			<t:parameter name="idcell">
+				<t:pagelink t:page="EditPage" context="editPageContext">${model.id}</t:pagelink>
+			</t:parameter>
+		</t:grid>
 
-</span>
+</t:layout>

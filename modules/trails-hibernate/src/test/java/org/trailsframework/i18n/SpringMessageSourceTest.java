@@ -2,7 +2,7 @@
  * Created on 01/12/2005 by Eduardo Piva - eduardo@gwe.com.br
  *
  */
-package org.trails.i18n;
+package org.trailsframework.i18n;
 
 import java.util.Locale;
 

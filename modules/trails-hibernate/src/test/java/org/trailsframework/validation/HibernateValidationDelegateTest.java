@@ -1,4 +1,4 @@
-package org.trails.validation;
+package org.trailsframework.validation;
 
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.form.IFormComponent;

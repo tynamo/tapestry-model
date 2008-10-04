@@ -1,12 +1,7 @@
-package org.trails.services;
+package org.trailsframework.services;
 
 public class ServiceConstants
 {
-
-	/**
-	 * The name of the service responsible for processing the request.
-	 */
-	public static final String SERVICE = org.apache.tapestry.services.ServiceConstants.SERVICE;
 
 	public static final String MODEL = "model";
 	public static final String PAERNT_MODEL = "parentModel";

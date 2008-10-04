@@ -1,6 +1,7 @@
-package org.trails.validation;
+package org.trailsframework.validation;
 
-import org.trails.descriptor.IPropertyDescriptor;
+import org.trailsframework.descriptor.IPropertyDescriptor;
+import org.trailsframework.exception.ValidationException;
 
 public class UniquenessException extends ValidationException
 {
@@ -39,5 +40,4 @@ public class UniquenessException extends ValidationException
 		super(cause);
 		// TODO Auto-generated constructor stub
 	}
-
 }

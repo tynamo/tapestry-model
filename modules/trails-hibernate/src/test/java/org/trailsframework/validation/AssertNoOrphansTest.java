@@ -1,4 +1,4 @@
-package org.trails.validation;
+package org.trailsframework.validation;
 
 import org.springframework.test.AbstractDependencyInjectionSpringContextTests;
 import org.springframework.test.AbstractTransactionalSpringContextTests;

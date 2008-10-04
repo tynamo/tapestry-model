@@ -1,8 +1,4 @@
-/*
- * Created on 29/11/2005
- *
- */
-package org.trails.validation;
+package org.trailsframework.validation;
 
 import java.util.HashMap;
 import java.util.Locale;
@@ -13,12 +9,11 @@ import org.hibernate.validator.InvalidStateException;
 import org.hibernate.validator.InvalidValue;
 import org.hibernate.validator.MessageInterpolator;
 import org.hibernate.validator.Validator;
-import org.trails.util.Utils;
-import org.trails.i18n.LocaleHolder;
-import org.trails.i18n.TrailsMessageSource;
+import org.trailsframework.util.Utils;
 
 public class HibernateClassValidatorFactory
 {
+/*
 	private static Map classValidator = new HashMap();
 	private TrailsMessageInterpolator messageInterpolator = new TrailsMessageInterpolator();
 	TrailsMessageSource messageSource;
@@ -70,10 +65,12 @@ public class HibernateClassValidatorFactory
 		this.localeHolder = localeHolder;
 	}
 
-	/**
+	*/
+/**
 	 * This inner class doesn't return exceptions when some key is searched in the bundle. This is nice so we don't have
 	 * exceptions thrown in the screen by hibernate ClassValidator.
 	 */
+/*
 	private class TrailsMessageInterpolator implements MessageInterpolator
 	{
 		public String interpolate(String key, Validator validator, MessageInterpolator messageInterpolator)
@@ -81,5 +78,6 @@ public class HibernateClassValidatorFactory
 			return messageSource.getMessageWithDefaultValue(key, new Object[]{validator}, key);
 		}
 	}
+*/
 
 }

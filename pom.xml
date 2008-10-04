@@ -21,9 +21,8 @@
 		<module>codehaus-unity-skin</module>
 		-->
 		<module>modules</module>
-<!--
 		<module>examples</module>
--->
+
 <!--
 		<module>archetypes</module>
 -->

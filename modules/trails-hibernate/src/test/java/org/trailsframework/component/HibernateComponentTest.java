@@ -1,4 +1,4 @@
-package org.trails.component;
+package org.trailsframework.component;
 
 import java.util.Locale;
 

@@ -11,12 +11,13 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
  * See the License for the specific language governing permissions and limitations under the License.
  */
-package org.trails.demo;
+package org.trailsframework.examples.recipe.model;
 
 import org.hibernate.validator.NotNull;
-import org.trails.descriptor.annotation.Collection;
-import org.trails.descriptor.annotation.PropertyDescriptor;
-import org.trails.validation.ValidateUniqueness;
+import org.trailsframework.descriptor.annotation.Collection;
+import org.trailsframework.descriptor.annotation.PropertyDescriptor;
+import org.trailsframework.util.Identifiable;
+import org.trailsframework.validation.ValidateUniqueness;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -24,107 +25,107 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@ValidateUniqueness(property="title")
-public class Recipe
+@ValidateUniqueness(property = "title")
+public class Recipe implements Identifiable
 {
-    private Integer id;
-    
-    private String title;
-    
-    private String description;
-    
-    private String instructions;
-    
-    private Date date;
+	private Long id;
 
-    @PropertyDescriptor(index=0)
-    @Id @GeneratedValue(strategy=GenerationType.AUTO)
-    public Integer getId()
-    {
-        return id;
-    }
+	private String title;
 
-    public void setId(Integer id)
-    {
-        this.id = id;
-    }
-    
-    @PropertyDescriptor(index=1)
-    @NotNull(message="{error.emptyMessage}")
-    public String getTitle()
-    {
-        return title;
-    }
+	private String description;
 
-    public void setTitle(String title)
-    {
-        this.title = title;
-    }
+	private String instructions;
 
-    @PropertyDescriptor(index=2)
-    public String getDescription()
-    {
-        return description;
-    }
+	private Date date;
 
-    public void setDescription(String description)
-    {
-        this.description = description;
-    }
-    
-    @PropertyDescriptor(index=3,format="MM/dd/yyyy",displayName="Created On")
-    public Date getDate()
-    {
-        return date;
-    }
+	@PropertyDescriptor(index = 0)
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	public Long getId()
+	{
+		return id;
+	}
 
-    public void setDate(Date date)
-    {
-        this.date = date;
-    }
- 
-    private Category category;
-    
-    @ManyToOne
-    @PropertyDescriptor(index=4)
-    public Category getCategory()
-    {
-        return category;
-    }
-    
-    public void setCategory(Category category)
-    {
-        this.category = category;
-    }
-    
-    @PropertyDescriptor(index=6)
-    public String getInstructions()
-    {
-        return instructions;
-    }
+	public void setId(Long id)
+	{
+		this.id = id;
+	}
 
-    public void setInstructions(String instructions)
-    {
-        this.instructions = instructions;
-    }
+	@PropertyDescriptor(index = 1)
+	@NotNull(message = "{error.emptyMessage}")
+	public String getTitle()
+	{
+		return title;
+	}
 
-    private Set<Ingredient> ingredients = new HashSet<Ingredient>();
-    
-    @OneToMany(cascade=CascadeType.ALL)
-    @JoinColumn(name="recipeId")
-    @Collection(child=true)
-    public Set<Ingredient> getIngredients()
-    {
-        return ingredients;
-    }
+	public void setTitle(String title)
+	{
+		this.title = title;
+	}
 
-    public void setIngredients(Set<Ingredient> ingredients)
-    {
-        this.ingredients = ingredients;
-    }
+	@PropertyDescriptor(index = 2)
+	public String getDescription()
+	{
+		return description;
+	}
+
+	public void setDescription(String description)
+	{
+		this.description = description;
+	}
+
+	@PropertyDescriptor(index = 3, format = "MM/dd/yyyy", displayName = "Created On")
+	public Date getDate()
+	{
+		return date;
+	}
+
+	public void setDate(Date date)
+	{
+		this.date = date;
+	}
+
+	private Category category;
+
+	@ManyToOne
+	@PropertyDescriptor(index = 4)
+	public Category getCategory()
+	{
+		return category;
+	}
+
+	public void setCategory(Category category)
+	{
+		this.category = category;
+	}
+
+	@PropertyDescriptor(index = 6)
+	public String getInstructions()
+	{
+		return instructions;
+	}
+
+	public void setInstructions(String instructions)
+	{
+		this.instructions = instructions;
+	}
+
+/*
+	private Set<Ingredient> ingredients = new HashSet<Ingredient>();
+
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "recipeId")
+	@Collection(child = true)
+	public Set<Ingredient> getIngredients()
+	{
+		return ingredients;
+	}
+
+	public void setIngredients(Set<Ingredient> ingredients)
+	{
+		this.ingredients = ingredients;
+	}
+*/
 
 
-    
-    
-    
 }

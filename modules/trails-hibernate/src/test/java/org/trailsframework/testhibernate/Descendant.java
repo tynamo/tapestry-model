@@ -1,4 +1,4 @@
-package org.trails.testhibernate;
+package org.trailsframework.testhibernate;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;

@@ -18,7 +18,7 @@ import java.util.List;
 import ognl.Ognl;
 import ognl.OgnlException;
 import org.apache.commons.beanutils.BeanUtils;
-import org.trailsframework.utils.Utils;
+import org.trailsframework.util.Utils;
 
 
 /**

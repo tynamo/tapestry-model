@@ -1,4 +1,4 @@
-package org.trails.component.search;
+package org.trailsframework.component.search;
 
 import org.trails.component.HibernateComponentTest;
 import org.trails.descriptor.TrailsPropertyDescriptor;

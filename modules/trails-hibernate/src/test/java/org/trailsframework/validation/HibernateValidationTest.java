@@ -1,4 +1,4 @@
-package org.trails.validation;
+package org.trailsframework.validation;
 
 import org.hibernate.validator.ClassValidator;
 import org.hibernate.validator.InvalidStateException;

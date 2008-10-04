@@ -1,8 +1,9 @@
-package org.trails.demo;
+package org.trailsframework.examples.recipe.model;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
-import org.trails.descriptor.annotation.ClassDescriptor;
-import org.trails.descriptor.annotation.PropertyDescriptor;
+import org.trailsframework.descriptor.annotation.ClassDescriptor;
+import org.trailsframework.descriptor.annotation.PropertyDescriptor;
+import org.trailsframework.util.Identifiable;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,54 +12,55 @@ import javax.persistence.Id;
 
 @Entity
 @ClassDescriptor(hidden = true)
-public class Ingredient
+public class Ingredient implements Identifiable
 {
 
-    private Integer id;
-    
-    private String amount;
-    
-    private String name;
+	private Long id;
 
-    public String getAmount()
-    {
-        return amount;
-    }
+	private String amount;
 
-    public void setAmount(String amount)
-    {
-        this.amount = amount;
-    }
+	private String name;
 
-    @PropertyDescriptor(index=0)
-    @Id @GeneratedValue(strategy=GenerationType.AUTO)
-    public Integer getId()
-    {
-        return id;
-    }
+	public String getAmount()
+	{
+		return amount;
+	}
 
-    public void setId(Integer id)
-    {
-        this.id = id;
-    }
+	public void setAmount(String amount)
+	{
+		this.amount = amount;
+	}
 
-    public String getName()
-    {
-        return name;
-    }
+	@PropertyDescriptor(index = 0)
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	public Long getId()
+	{
+		return id;
+	}
 
-    public void setName(String name)
-    {
-        this.name = name;
-    }
-    
-    public boolean equals(Object obj)
-    {
-        return EqualsBuilder.reflectionEquals(this, obj);
-    }
+	public void setId(Long id)
+	{
+		this.id = id;
+	}
 
-    public String toString()
-    {
-        return getAmount() + " " + getName();
-    }
+	public String getName()
+	{
+		return name;
+	}
+
+	public void setName(String name)
+	{
+		this.name = name;
+	}
+
+	public boolean equals(Object obj)
+	{
+		return EqualsBuilder.reflectionEquals(this, obj);
+	}
+
+	public String toString()
+	{
+		return getAmount() + " " + getName();
+	}
 }

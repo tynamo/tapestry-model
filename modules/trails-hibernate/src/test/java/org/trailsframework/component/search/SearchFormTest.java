@@ -1,4 +1,4 @@
-package org.trails.component.search;
+package org.trailsframework.component.search;
 
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
