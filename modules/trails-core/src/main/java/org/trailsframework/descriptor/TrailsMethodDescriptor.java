@@ -1,4 +1,4 @@
-package org.trails.descriptor;
+package org.trailsframework.descriptor;
 
 import java.lang.reflect.Method;
 
@@ -33,7 +33,7 @@ public class TrailsMethodDescriptor extends TrailsDescriptor implements IMethodD
 	/**
 	 * (non-Javadoc)
 	 *
-	 * @see org.trails.descriptor.IMethodDescriptor#getArgumentTypes()
+	 * @see org.trailsframework.descriptor.IMethodDescriptor#getArgumentTypes()
 	 */
 
 	public Class[] getArgumentTypes()
@@ -54,7 +54,7 @@ public class TrailsMethodDescriptor extends TrailsDescriptor implements IMethodD
 	/**
 	 * (non-Javadoc)
 	 *
-	 * @see org.trails.descriptor.IMethodDescriptor#getName()
+	 * @see org.trailsframework.descriptor.IMethodDescriptor#getName()
 	 */
 	public String getName()
 	{

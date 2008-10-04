@@ -1,8 +1,8 @@
-package org.trails.descriptor.annotation;
+package org.trailsframework.descriptor.annotation;
 
 import java.lang.annotation.Annotation;
 
-import org.trails.descriptor.IDescriptor;
+import org.trailsframework.descriptor.IDescriptor;
 
 public interface DescriptorAnnotationHandler<T extends Annotation, X extends IDescriptor>
 {

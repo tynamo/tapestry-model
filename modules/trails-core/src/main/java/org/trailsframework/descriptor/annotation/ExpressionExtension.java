@@ -1,11 +1,11 @@
-package org.trails.descriptor.annotation;
+package org.trailsframework.descriptor.annotation;
 
 import ognl.Ognl;
 import ognl.OgnlException;
 import org.apache.commons.lang.Validate;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.trails.descriptor.IDescriptorExtension;
+import org.trailsframework.descriptor.IDescriptorExtension;
 
 import java.util.Map;
 

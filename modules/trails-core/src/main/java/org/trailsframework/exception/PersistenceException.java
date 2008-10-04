@@ -1,4 +1,4 @@
-package org.trails.persistence;
+package org.trailsframework.exception;
 
 public class PersistenceException extends RuntimeException
 {

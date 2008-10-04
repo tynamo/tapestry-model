@@ -9,23 +9,18 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and limitations under the License.
  */
-package org.trails.descriptor;
+package org.trailsframework.services;
+
+import org.trailsframework.descriptor.IClassDescriptor;
 
 import java.util.List;
 
 
-/**
- * @author fus8882
- *         <p/>
- *         TODO To change the template for this generated type comment go to
- *         Window - Preferences - Java - Code Style - Code Templates
- */
 public interface DescriptorService
 {
+
 	public IClassDescriptor getClassDescriptor(Class type);
 
 	public List<IClassDescriptor> getAllDescriptors();
-
-	public void setDecorators(List<DescriptorDecorator> decorators);
 
 }

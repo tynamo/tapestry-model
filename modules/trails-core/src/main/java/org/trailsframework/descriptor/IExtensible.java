@@ -1,4 +1,4 @@
-package org.trails.descriptor;
+package org.trailsframework.descriptor;
 
 import java.util.Map;
 

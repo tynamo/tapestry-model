@@ -9,7 +9,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and limitations under the License.
  */
-package org.trails.descriptor;
+package org.trailsframework.descriptor;
 
 /**
  * This class represents a to-one association and is created by HibernateDescriptorDecorator
@@ -39,7 +39,7 @@ public class ObjectReferenceDescriptor extends TrailsPropertyDescriptor
 	}
 
 	/* (non-Javadoc)
-		 * @see org.trails.descriptor.PropertyDescriptor#getPropertyType()
+		 * @see org.trailsframework.descriptor.PropertyDescriptor#getPropertyType()
 		 */
 	public Class getPropertyType()
 	{
@@ -47,7 +47,7 @@ public class ObjectReferenceDescriptor extends TrailsPropertyDescriptor
 	}
 
 	/* (non-Javadoc)
-		 * @see org.trails.descriptor.PropertyDescriptor#isObjectReference()
+		 * @see org.trailsframework.descriptor.PropertyDescriptor#isObjectReference()
 		 */
 	public boolean isObjectReference()
 	{

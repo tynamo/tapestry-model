@@ -1,4 +1,4 @@
-package org.trails.descriptor;
+package org.trailsframework.descriptor;
 
 public interface IDescriptor extends Cloneable, IExtensible
 {

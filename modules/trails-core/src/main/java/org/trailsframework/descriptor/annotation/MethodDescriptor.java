@@ -1,4 +1,4 @@
-package org.trails.descriptor.annotation;
+package org.trailsframework.descriptor.annotation;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

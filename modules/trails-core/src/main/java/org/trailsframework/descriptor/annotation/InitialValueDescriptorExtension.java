@@ -1,6 +1,6 @@
 /* vim: set ts=2 et sw=2 cindent fo=qroca: */
 
-package org.trails.descriptor.annotation;
+package org.trailsframework.descriptor.annotation;
 
 import java.util.Map;
 
