@@ -9,21 +9,18 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and limitations under the License.
  */
-package org.trails.util;
+package org.trailsframework.util;
 
 import ognl.Ognl;
 import ognl.OgnlException;
 import org.apache.commons.lang.StringUtils;
 import org.apache.oro.text.perl.Perl5Util;
-import org.trails.exception.TrailsRuntimeException;
+import org.trailsframework.exception.TrailsRuntimeException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 
-/**
- * @author fus8882
- */
 public class Utils
 {
 

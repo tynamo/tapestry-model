@@ -1,6 +1,4 @@
-package org.trails.exception;
-
-import org.trails.exception.TrailsRuntimeException;
+package org.trailsframework.exception;
 
 public class EmptyModelException extends TrailsRuntimeException {
 

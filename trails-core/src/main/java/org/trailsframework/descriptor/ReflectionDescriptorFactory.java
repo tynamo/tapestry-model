@@ -8,7 +8,7 @@ import java.util.List;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.trailsframework.utils.Utils;
+import org.trailsframework.util.Utils;
 
 /**
  * Generate descriptors using reflection on the underlying class.

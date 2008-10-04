@@ -1,4 +1,4 @@
-package org.trails.exception;
+package org.trailsframework.exception;
 
 /**
  * Runtime exceptions for Trails
