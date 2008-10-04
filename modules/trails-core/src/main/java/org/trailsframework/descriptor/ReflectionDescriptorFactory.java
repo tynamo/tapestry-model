@@ -4,6 +4,7 @@ import java.beans.*;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Collection;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.logging.Log;
@@ -20,7 +21,7 @@ public class ReflectionDescriptorFactory implements DescriptorFactory
 
 	protected static final Log LOG = LogFactory.getLog(ReflectionDescriptorFactory.class);
 
-	private static List<String> propertyExcludes = new ArrayList<String>();
+	private final Collection<String> propertyExcludes;
 
 	private static List<String> methodExcludes = new ArrayList<String>();
 
@@ -35,11 +36,12 @@ public class ReflectionDescriptorFactory implements DescriptorFactory
 		methodExcludes.add("toString");
 		methodExcludes.add("notify.*");
 		methodExcludes.add("hashCode");
-
-		propertyExcludes.add("exclude.*");
-		propertyExcludes.add("class");
 	}
 
+	public ReflectionDescriptorFactory(final Collection<String> propertyExcludes)
+	{
+		this.propertyExcludes = propertyExcludes;
+	}
 
 	/**
 	 * Given a type, build a property descriptor
@@ -131,12 +133,10 @@ public class ReflectionDescriptorFactory implements DescriptorFactory
 		return result;
 	}
 
-	protected boolean isExcluded(String name, List excludes)
+	protected boolean isExcluded(String name, Collection<String> excludes)
 	{
-		for (Object exclude1 : excludes)
+		for (String exclude : excludes)
 		{
-			String exclude = (String) exclude1;
-
 			if (name.matches(exclude))
 			{
 				return true;

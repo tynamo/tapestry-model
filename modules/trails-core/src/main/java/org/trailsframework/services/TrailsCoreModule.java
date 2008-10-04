@@ -1,17 +1,26 @@
 package org.trailsframework.services;
 
-import org.apache.tapestry5.ioc.Configuration;
-import org.apache.tapestry5.ioc.ObjectLocator;
-import org.apache.tapestry5.ioc.OrderedConfiguration;
+import org.apache.tapestry5.ioc.*;
 import org.apache.tapestry5.ioc.annotations.InjectService;
 import org.apache.tapestry5.ioc.services.Coercion;
 import org.apache.tapestry5.ioc.services.CoercionTuple;
 import org.apache.tapestry5.services.BeanBlockContribution;
 import org.apache.tapestry5.services.DataTypeAnalyzer;
 import org.apache.tapestry5.services.LibraryMapping;
+import org.trailsframework.descriptor.DescriptorFactory;
+import org.trailsframework.descriptor.ReflectionDescriptorFactory;
 
 public class TrailsCoreModule
 {
+
+	public static void bind(ServiceBinder binder)
+	{
+		// Make bind() calls on the binder object to define most IoC services.
+		// Use service builder methods (example below) when the implementation
+		// is provided inline, or requires more initialization than simply
+		// invoking the constructor.
+
+	}
 
 	public static void contributeComponentClassResolver(Configuration<LibraryMapping> configuration)
 	{
@@ -35,17 +44,18 @@ public class TrailsCoreModule
 	public static void contributeDataTypeAnalyzer(OrderedConfiguration<DataTypeAnalyzer> configuration,
 												  @InjectService("DefaultDataTypeAnalyzer")
 												  DataTypeAnalyzer defaultDataTypeAnalyzer,
-												  ObjectLocator locator)
+												  @InjectService("TrailsDataTypeAnalyzer")
+												  DataTypeAnalyzer trailsDataTypeAnalyzer)
 	{
-		configuration.add("Trails", locator.autobuild(TrailsDataTypeAnalizer.class));
+		configuration.add("Trails", trailsDataTypeAnalyzer);
 		configuration.add("Default", defaultDataTypeAnalyzer, "after:*");
 	}
 
 	/**
 	 * Contributes a set of standard type coercions to the {@link org.apache.tapestry5.ioc.services.TypeCoercer} service:
 	 * <ul>
-	 *     <li>Class to String</li>
-	 *     <li>String to Double</li>
+	 * <li>Class to String</li>
+	 * <li>String to Double</li>
 	 * </ul>
 	 */
 	public static void contributeTypeCoercer(Configuration<CoercionTuple> configuration)
@@ -77,5 +87,13 @@ public class TrailsCoreModule
 		configuration.add(new CoercionTuple<String, Class>(String.class, Class.class, stringToClass));
 	}
 
+	public TrailsDataTypeAnalyzer buildTrailsDataTypeAnalyzer(ServiceResources resources)
+	{
+		return resources.autobuild(TrailsDataTypeAnalyzer.class);
+	}
 
+	public ReflectionDescriptorFactory buildReflectionDescriptorFactory(ServiceResources resources)
+	{
+		return resources.autobuild(ReflectionDescriptorFactory.class);
+	}
 }

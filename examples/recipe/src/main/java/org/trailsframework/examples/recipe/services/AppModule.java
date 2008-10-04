@@ -29,7 +29,6 @@ public class AppModule
 		// invoking the constructor.
 
 		binder.bind(PersistenceService.class, HibernatePersistenceServiceImpl.class);
-		binder.bind(DescriptorFactory.class, ReflectionDescriptorFactory.class);
 		binder.bind(DescriptorService.class, DescriptorServiceImpl.class);
 	}
 
@@ -90,6 +89,37 @@ public class AppModule
 	{
 		configuration.add("Annotation", new AnnotationDecorator());
 		configuration.add("Hibernate", locator.autobuild(HibernateDescriptorDecorator.class));
+	}
+
+	public void contributeTrailsDataTypeAnalyzer(MappedConfiguration<String, String> configuration)
+	{
+
+/*
+		configuration.add("hidden", "hidden");
+		configuration.add("readOnly", "readOnly");
+		configuration.add("richText", "FCKEditor");
+		configuration.add("hidden", "hidden");
+		configuration.add("name.toLowerCase().endsWith('password')", "passwordEditor");
+		configuration.add("string and !large and !identifier", "stringEditor");
+		configuration.add("string and large and !identifier", "textAreaEditor");
+		configuration.add("date", "dateEditor");
+		configuration.add("numeric and !identifier", "numberEditor");
+		configuration.add("identifier", "identifierEditor");
+		configuration.add("boolean", "booleanEditor");
+		configuration.add("supportsExtension('org.trails.descriptor.extension.EnumReferenceDescriptor')", "enumEditor");
+		configuration.add("supportsExtension('org.trails.descriptor.extension.BlobDescriptorExtension')", "blobEditor");
+*/
+		configuration.add("objectReference", "referenceEditor");
+/*
+		configuration.add("collection", "collectionEditor");
+		configuration.add("embedded", "embedded");
+*/
+	}
+
+	public void contributeReflectionDescriptorFactory(Configuration<String> configuration)
+	{
+		configuration.add("exclude.*");
+		configuration.add("class");
 	}
 
 }
