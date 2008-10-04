@@ -9,7 +9,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and limitations under the License.
  */
-package org.trails.descriptor;
+package org.trailsframework.descriptor;
 
 
 /**
@@ -45,7 +45,7 @@ public class IdentifierDescriptor extends TrailsPropertyDescriptor implements II
 	}
 
 	/* (non-Javadoc)
-		 * @see org.trails.descriptor.PropertyDescriptor#isIdentifier()
+		 * @see org.trailsframework.descriptor.PropertyDescriptor#isIdentifier()
 		 */
 	public boolean isIdentifier()
 	{

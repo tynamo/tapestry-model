@@ -1,9 +1,9 @@
-package org.trails.descriptor.extension;
+package org.trailsframework.descriptor.extension;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.trails.descriptor.IDescriptorExtension;
-import org.trails.exception.TrailsRuntimeException;
+import org.trailsframework.descriptor.IDescriptorExtension;
+import org.trailsframework.exception.TrailsRuntimeException;
 
 public class BlobDescriptorExtension implements IDescriptorExtension
 {

@@ -9,7 +9,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and limitations under the License.
  */
-package org.trails.descriptor;
+package org.trailsframework.descriptor;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -18,7 +18,8 @@ import java.util.List;
 import ognl.Ognl;
 import ognl.OgnlException;
 import org.apache.commons.beanutils.BeanUtils;
-import org.trails.util.Utils;
+import org.trailsframework.utils.Utils;
+
 
 /**
  * This represents all the Trails metadata for a single class.

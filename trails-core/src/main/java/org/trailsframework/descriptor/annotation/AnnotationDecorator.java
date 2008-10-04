@@ -1,4 +1,4 @@
-package org.trails.descriptor.annotation;
+package org.trailsframework.descriptor.annotation;
 
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
@@ -8,7 +8,7 @@ import java.lang.reflect.Method;
 import java.util.*;
 
 import ognl.Ognl;
-import org.trails.descriptor.*;
+import org.trailsframework.descriptor.*;
 
 /**
  * This class uses the annotations on a given class or property to modify its

@@ -1,190 +1,75 @@
-/*
- * Copyright 2004 Chris Nelson
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and limitations under the License.
- */
-package org.trails.page;
+package org.trailsframework.pages;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.annotations.Bean;
-import org.apache.tapestry.annotations.Lifecycle;
-import org.apache.tapestry.callback.ICallback;
-import org.apache.tapestry.engine.ILink;
-import org.trails.callback.TrailsPageCallback;
-import org.trails.engine.TrailsPagesServiceParameter;
-import org.trails.persistence.PersistenceException;
-import org.trails.validation.TrailsValidationDelegate;
 
-/**
- * This page will edit an instance contained in the model property
- *
- * @author Chris Nelson
- */
-public abstract class EditPage extends ModelPage implements IAssociationPage
-{
+import org.trailsframework.services.PersitenceService;
+import org.apache.tapestry5.annotations.Property;
+import org.apache.tapestry5.beaneditor.BeanModel;
+import org.apache.tapestry5.ioc.Messages;
+import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.services.BeanModelSource;
+import org.apache.tapestry5.services.ContextValueEncoder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-	private static final Log LOG = LogFactory.getLog(EditPage.class);
+public class EditPage {
 
-	@Bean(lifecycle = Lifecycle.REQUEST)
-	public abstract TrailsValidationDelegate getDelegate();
+	private static final Logger LOGGER = LoggerFactory.getLogger(EditPage.class);
 
-	public abstract ICallback getNextPage();
+	@Inject
+	private ContextValueEncoder contextValueEncoder;
 
-	public abstract void setNextPage(ICallback NextPage);
+	@Inject
+	private BeanModelSource beanModelSource;
 
-	public ILink save(IRequestCycle cycle)
-	{
-		if (save())
-		{
-			if (getCallbackStack() != null && !getCallbackStack().isEmpty())
-			{
-				// When saving objects with assigned IDs, we need to removed the last element of the stack.
-				getCallbackStack().pop();
-			}
-			return linkToThisPage();
-		}
-		return null;
+	@Inject
+	private Messages messages;
+
+	@Inject
+	private PersitenceService persitenceService;
+
+	private BeanModel beanModel;
+
+	@Property
+	private Object bean;
+
+	@Property
+	private Class clazz;
+
+	void pageLoaded() {
+		System.out.println("Make other changes to _model here.");
+		// Make other changes to _model here.
 	}
 
-	private ILink defaultCallback()
-	{
-		if (!isReferencedByParentPage())
-		{
-			return getTrailsPagesService().getLink(false, new TrailsPagesServiceParameter(PageType.LIST, getClassDescriptor()));
-		} else {
-			return getTrailsPagesService().getLink(false, new TrailsPagesServiceParameter(PageType.EDIT,
-					getDescriptorService().getClassDescriptor(getParent().getClass()), getParent(), null, null));
-		}
 
-	}
+	void onActivate(Class clazz, String id) throws Exception {
+		bean = contextValueEncoder.toValue(clazz, id);
+		this.clazz = clazz;
+		beanModel = beanModelSource.create(clazz, true, messages);
 
-	private ILink linkToThisPage()
-	{
-		return getTrailsPagesService()
-				.getLink(false, new TrailsPagesServiceParameter(PageType.EDIT, getClassDescriptor(), getModel(), getAssociationDescriptor(), getParent()));
-	}
-
-	protected ICallback callbackToThisPage()
-	{
-		return new TrailsPageCallback(new TrailsPagesServiceParameter(PageType.EDIT, getClassDescriptor(), getModel(),
-				getAssociationDescriptor(), getParent()), getTrailsPagesService());
-	}
-
-	protected boolean save()
-	{
-		if (!getDelegate().getHasErrors())
-		{
-			// We get hibernate errors when the cascade tries to
-			// put the same object on the session twice
-			// if (!cameFromChildCollection())
-			// {
-			try
-			{
-				if (isReferencedByParentPage() && isModelNew())
-				{
-					setModel(getPersistenceService().saveCollectionElement(
-							getAssociationDescriptor().getAddExpression(), getModel(), getParent()));
-				} else
-				{
-					setModel(getPersistenceService().save(getModel()));
-				}
-			} catch (PersistenceException pe)
-			{
-				getDelegate().record(pe);
-				return false;
-			}
-			// }
-			return true;
-		}
-		return false;
-	}
-
-	public ILink cancel(IRequestCycle cycle)
-	{
-		return goBack(cycle);
-	}
-
-	public ILink goBack(IRequestCycle cycle)
-	{
-
-		if (getCallbackStack() != null)
-		{
-			ICallback callback = getCallbackStack().popPreviousCallback();
-			if (callback != null)
-			{
-				callback.performCallback(cycle);
-				return null;
-			}
-		}
-		return defaultCallback();
-	}
-
-	public ILink saveAndReturn(IRequestCycle cycle)
-	{
-		if (save())
-		{
-			return goBack(cycle);
-		}
-		return null;
-	}
-
-	public ILink remove(IRequestCycle cycle)
-	{
-
-		try
-		{
-			if (isReferencedByParentPage())
-			{
-
-				getPersistenceService().removeCollectionElement(getAssociationDescriptor().getRemoveExpression(),
-						getModel(), getParent());
-			} else
-			{
-				getPersistenceService().remove(getModel());
-			}
-
-		} catch (PersistenceException pe)
-		{
-			getDelegate().record(pe);
-			return null;
-
-		} catch (Exception e)
-		{
-			getDelegate().record(e);
-			return null;
-		}
-
-		return goBack(cycle);
+//		BeanModelUtils.modify(_beanModel, null, null, null, null);
 	}
 
 	/**
+	 * This tells Tapestry to put _personId into the URL, making it bookmarkable.
+	 *
 	 * @return
 	 */
-	public String getTitle()
-	{
-		Object[] params = new Object[]{getClassDescriptor().getDisplayName()};
-		if (isModelNew())
-		{
-			return getResourceBundleMessageSource()
-					.getMessageWithDefaultValue("org.trails.i18n.add", params, "[TRAILS][ORG.TRAILS.I18N.ADD]");
-		} else
-		{
-			return getResourceBundleMessageSource()
-					.getMessageWithDefaultValue("org.trails.i18n.edit", params, "[TRAILS][ORG.TRAILS.I18N.EDIT]");
-		}
+	Object[] onPassivate() {
+		return new Object[]{clazz, bean};
 	}
 
-	public boolean isReferencedByParentPage()
-	{
-		return getParent() != null;
+	void onSuccess() {
+		LOGGER.info("saving....");
+		persitenceService.save(bean);
 	}
 
+	void cleanupRender() {
+		bean = null;
+		clazz = null;
+		beanModel = null;
+	}
+
+	public BeanModel getBeanModel() {
+		return beanModel;
+	}
 }

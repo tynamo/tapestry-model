@@ -1,12 +1,12 @@
-package org.trails.descriptor.annotation;
+package org.trailsframework.descriptor.annotation;
 
-import org.trails.descriptor.IPropertyDescriptor;
+import org.trailsframework.descriptor.IPropertyDescriptor;
 
 /**
  * @author fus8882
  *         <p/>
  *         Applies the annotation to a given property.
- * @see org.trails.descriptor.annotation.AbstractAnnotationHandler.setDescriptorPropertiesFromAnnotation
+ * @see org.trailsframework.descriptor.annotation.AbstractAnnotationHandler.setDescriptorPropertiesFromAnnotation
  */
 public class PropertyDescriptorAnnotationHandler extends AbstractAnnotationHandler implements DescriptorAnnotationHandler<PropertyDescriptor, IPropertyDescriptor>
 {

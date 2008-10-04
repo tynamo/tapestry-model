@@ -1,11 +1,11 @@
-package org.trails.descriptor.annotation;
+package org.trailsframework.descriptor.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.trails.descriptor.IPropertyDescriptor;
+import org.trailsframework.descriptor.IPropertyDescriptor;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD, ElementType.METHOD})
@@ -27,7 +27,7 @@ public @interface PropertyDescriptor
 	 * Specifies if a property should appear on both edit and list pages
 	 *
 	 * @return
-	 * @see org.trails.descriptor.IDescriptor#isHidden()
+	 * @see org.trailsframework.descriptor.IDescriptor#isHidden()
 	 */
 	boolean hidden() default false;
 

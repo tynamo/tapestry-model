@@ -1,6 +1,6 @@
-package org.trails.descriptor.annotation;
+package org.trailsframework.descriptor.annotation;
 
-import org.trails.descriptor.CollectionDescriptor;
+import org.trailsframework.descriptor.CollectionDescriptor;
 
 public class CollectionDescriptorAnnotationHandler implements DescriptorAnnotationHandler<Collection, CollectionDescriptor>
 {

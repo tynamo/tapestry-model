@@ -1,6 +1,6 @@
-package org.trails.descriptor.annotation;
+package org.trailsframework.descriptor.annotation;
 
-import org.trails.descriptor.IMethodDescriptor;
+import org.trailsframework.descriptor.IMethodDescriptor;
 
 
 public class MethodDescriptorAnnotationHandler extends AbstractAnnotationHandler

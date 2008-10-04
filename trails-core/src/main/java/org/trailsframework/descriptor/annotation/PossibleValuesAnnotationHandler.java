@@ -1,9 +1,9 @@
 /* vim: set ts=2 et sw=2 cindent fo=qroca: */
 
-package org.trails.descriptor.annotation;
+package org.trailsframework.descriptor.annotation;
 
 import org.apache.commons.lang.Validate;
-import org.trails.descriptor.IPropertyDescriptor;
+import org.trailsframework.descriptor.IPropertyDescriptor;
 
 /**
  * Creates a {@link PossibleValuesDescriptorExtension} using the

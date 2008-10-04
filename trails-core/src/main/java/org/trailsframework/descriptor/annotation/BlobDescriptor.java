@@ -1,6 +1,6 @@
-package org.trails.descriptor.annotation;
+package org.trailsframework.descriptor.annotation;
 
-import org.trails.descriptor.extension.BlobDescriptorExtension;
+import org.trailsframework.descriptor.extension.BlobDescriptorExtension;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

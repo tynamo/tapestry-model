@@ -1,7 +1,7 @@
-package org.trails.descriptor.annotation;
+package org.trailsframework.descriptor.annotation;
 
 import ognl.Ognl;
-import org.trails.descriptor.*;
+import org.trailsframework.descriptor.*;
 
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;

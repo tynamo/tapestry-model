@@ -1,4 +1,4 @@
-package org.trails.descriptor.extension;
+package org.trailsframework.descriptor.extension;
 
 import java.io.Serializable;
 

@@ -1,4 +1,4 @@
-package org.trails.descriptor;
+package org.trailsframework.descriptor;
 
 import java.beans.*;
 import java.lang.reflect.InvocationTargetException;
@@ -8,7 +8,7 @@ import java.util.List;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.trails.util.Utils;
+import org.trailsframework.utils.Utils;
 
 /**
  * Generate descriptors using reflection on the underlying class.
@@ -17,11 +17,29 @@ import org.trails.util.Utils;
  */
 public class ReflectionDescriptorFactory implements DescriptorFactory
 {
+
 	protected static final Log LOG = LogFactory.getLog(ReflectionDescriptorFactory.class);
 
-	private List propertyExcludes = new ArrayList();
+	private static List<String> propertyExcludes = new ArrayList<String>();
 
-	private List methodExcludes = new ArrayList();
+	private static List<String> methodExcludes = new ArrayList<String>();
+
+	static
+	{
+		methodExcludes.add("shouldExclude");
+		methodExcludes.add("set.*");
+		methodExcludes.add("get.*");
+		methodExcludes.add("is.*");
+		methodExcludes.add("equals");
+		methodExcludes.add("wait");
+		methodExcludes.add("toString");
+		methodExcludes.add("notify.*");
+		methodExcludes.add("hashCode");
+
+		propertyExcludes.add("exclude.*");
+		propertyExcludes.add("class");
+	}
+
 
 	/**
 	 * Given a type, build a property descriptor
@@ -81,7 +99,7 @@ public class ReflectionDescriptorFactory implements DescriptorFactory
 		ArrayList<IPropertyDescriptor> result = new ArrayList<IPropertyDescriptor>();
 		for (PropertyDescriptor beanPropDescriptor : beanInfo.getPropertyDescriptors())
 		{
-			if (!isExcluded(beanPropDescriptor.getName(), getPropertyExcludes()))
+			if (!isExcluded(beanPropDescriptor.getName(), propertyExcludes))
 			{
 				beanPropDescriptor.setDisplayName(Utils.unCamelCase(beanPropDescriptor.getDisplayName()) );
 				
@@ -101,7 +119,7 @@ public class ReflectionDescriptorFactory implements DescriptorFactory
 		ArrayList<IMethodDescriptor> result = new ArrayList<IMethodDescriptor>();
 		for (MethodDescriptor beanMethodDescriptor : beanInfo.getMethodDescriptors())
 		{
-			if (!isExcluded(beanMethodDescriptor.getMethod().getName(), getMethodExcludes()))
+			if (!isExcluded(beanMethodDescriptor.getMethod().getName(), methodExcludes))
 			{
 				TrailsMethodDescriptor methodDescriptor = new TrailsMethodDescriptor(type,
 						beanMethodDescriptor.getMethod().getName(), beanMethodDescriptor.getMethod().getReturnType(),
@@ -126,25 +144,5 @@ public class ReflectionDescriptorFactory implements DescriptorFactory
 		}
 
 		return false;
-	}
-
-	public List getMethodExcludes()
-	{
-		return methodExcludes;
-	}
-
-	public void setMethodExcludes(List methodExcludes)
-	{
-		this.methodExcludes = methodExcludes;
-	}
-
-	public List getPropertyExcludes()
-	{
-		return propertyExcludes;
-	}
-
-	public void setPropertyExcludes(List propertyExcludes)
-	{
-		this.propertyExcludes = propertyExcludes;
 	}
 }
