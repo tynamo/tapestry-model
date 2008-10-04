@@ -1,6 +1,6 @@
-package org.trails.seeddata;
+package org.trailsframework.seeddata;
 
-
+/*
 import ognl.Ognl;
 import ognl.OgnlException;
 import org.apache.commons.logging.Log;
@@ -14,17 +14,15 @@ import org.springframework.beans.factory.BeanIsAbstractException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.transaction.annotation.Transactional;
-import org.trails.descriptor.DescriptorService;
-import org.trails.descriptor.IClassDescriptor;
-import org.trails.descriptor.IPropertyDescriptor;
-import org.trails.persistence.HibernatePersistenceService;
-import org.trails.persistence.PersistenceException;
-import org.trails.validation.ValidateUniqueness;
 
 import javax.persistence.Entity;
 import java.util.List;
+*/
 
-public class SpringSeedEntityInitializer implements ApplicationContextAware, SeedDataInitializer
+public class SpringSeedEntityInitializer {
+/*
+	implements ApplicationContextAware, SeedDataInitializer
+}
 {
 	private static final Log log = LogFactory.getLog(SpringSeedEntityInitializer.class);
 
@@ -49,9 +47,6 @@ public class SpringSeedEntityInitializer implements ApplicationContextAware, See
 		this.applicationContext = applicationContext;
 	}
 
-	/* (non-Javadoc)
-		 * @see org.trails.seeddata.SeedDataInitializer#init()
-		 */
 	@Transactional
 	public void init()
 	{
@@ -160,4 +155,5 @@ public class SpringSeedEntityInitializer implements ApplicationContextAware, See
 			}
 		}
 	}
+*/
 }
