@@ -9,59 +9,44 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and limitations under the License.
  */
-package org.trails.hibernate;
+package org.trailsframework.services;
 
-import org.apache.hivemind.util.PropertyUtils;
 import org.hibernate.*;
 import org.hibernate.criterion.*;
-import org.hibernate.metadata.ClassMetadata;
-import org.springframework.beans.BeansException;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
-import org.springframework.dao.DataAccessException;
-import org.springframework.orm.hibernate3.HibernateCallback;
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-import org.trails.descriptor.CollectionDescriptor;
-import org.trails.descriptor.DescriptorService;
-import org.trails.descriptor.IClassDescriptor;
-import org.trails.descriptor.IPropertyDescriptor;
-import org.trails.persistence.HibernatePersistenceService;
-import org.trails.persistence.PersistenceException;
-import org.trails.util.Utils;
-import org.trails.validation.ValidationException;
+import org.trailsframework.util.Utils;
+import org.trailsframework.descriptor.IClassDescriptor;
+import org.trailsframework.descriptor.IPropertyDescriptor;
+import org.trailsframework.descriptor.CollectionDescriptor;
+import org.slf4j.Logger;
 
 import java.io.Serializable;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class HibernatePersistenceServiceImpl extends HibernateDaoSupport implements
-		HibernatePersistenceService, ApplicationContextAware
+public class HibernatePersistenceServiceImpl implements HibernatePersistenceService
 {
 
-	ApplicationContext appContext = null;
-	private DescriptorService _descriptorService = null;
+	private Logger logger;
+	private DescriptorService descriptorService;
+	private Session session;
 
-	/**
-	 * We need this because cylcic reference between HibernatePersistenceServiceImpl and TrailsDescriptorService
-	 */
-	public DescriptorService getDescriptorService()
+	public HibernatePersistenceServiceImpl(Logger logger, DescriptorService descriptorService, Session session)
 	{
-		if (_descriptorService == null)
-		{
-			_descriptorService = (DescriptorService) appContext.getBean("descriptorService");
-		}
-		return _descriptorService;
+		this.logger = logger;
+		this.descriptorService = descriptorService;
+		this.session = session;
 	}
 
 	/**
 	 * https://trails.dev.java.net/servlets/ReadMsg?listName=users&msgNo=1226
 	 * <p/>
-	 * Very often I find myself writing: <code> Object example = new Object(); example.setProperty(uniqueValue); List
-	 * objects = ((TrailsPage)getPage()).getPersistenceService().getInstances(example); (MyObject)objects.get(0); </code>
+	 * Very often I find myself writing:
+	 * <code>
+	 * Object example = new Object(); example.setProperty(uniqueValue);
+	 * List objects = ((TrailsPage)getPage()).getPersistenceService().getInstances(example);
+	 * (MyObject)objects.get(0);
+	 * </code>
 	 * when, in fact, I know that the single property I populated my example object with should be unique, and thus only
 	 * one object should be returned
 	 *
@@ -69,26 +54,19 @@ public class HibernatePersistenceServiceImpl extends HibernateDaoSupport impleme
 	 * @param detachedCriteria
 	 * @return
 	 */
-	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+
 	public <T> T getInstance(final Class<T> type, DetachedCriteria detachedCriteria)
 	{
 		final DetachedCriteria criteria = alterCriteria(type, detachedCriteria);
-
-		return (T) getHibernateTemplate().execute(new HibernateCallback()
-		{
-			public Object doInHibernate(Session session) throws HibernateException, SQLException
-			{
-				return criteria.getExecutableCriteria(session).uniqueResult();
-			}
-		});
+		return (T) criteria.getExecutableCriteria(session).uniqueResult();
 	}
 
 	/**
 	 * (non-Javadoc)
 	 *
-	 * @see org.trails.persistence.PersistenceService#getInstance(Class,Serializable)
+	 * @see org.trailsframework.services.PersistenceService#getInstance(Class,Serializable)
 	 */
-	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+
 	public <T> T getInstance(final Class<T> type, final Serializable id)
 	{
 		DetachedCriteria criteria = DetachedCriteria.forClass(Utils.checkForCGLIB(type)).add(Expression.idEq(id));
@@ -97,8 +75,7 @@ public class HibernatePersistenceServiceImpl extends HibernateDaoSupport impleme
 
 
 	/**
-	 * <strong>Description copied from:</strong> {@link org.springframework.orm.hibernate3.HibernateTemplate#load(Class,java.io.Serializable)}
-	 * and {@link org.hibernate.Session#load(Class,java.io.Serializable)}
+	 * <strong>Description copied from:</strong> {@link org.hibernate.Session#load(Class,java.io.Serializable)}
 	 * <p/>
 	 * Return the persistent instance of the given entity class with the given identifier, assuming that the instance
 	 * exists, throwing an exception if not found.
@@ -113,70 +90,79 @@ public class HibernatePersistenceServiceImpl extends HibernateDaoSupport impleme
 	 * @param type a persistent class
 	 * @param id   the identifier of the persistent instance
 	 * @return the persistent instance
-	 * @see org.springframework.orm.hibernate3.HibernateTemplate#load(Class,java.io.Serializable)
 	 * @see org.hibernate.Session#load(Class,java.io.Serializable)
 	 */
-	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+
 	public <T> T loadInstance(final Class<T> type, Serializable id)
 	{
-		return (T) getHibernateTemplate().load(type, id);
+		return (T) session.load(type, id);
 	}
 
 	/**
 	 * Execute an HQL query.
 	 *
 	 * @param queryString a query expressed in Hibernate's query language
-	 * @return a List containing the results of the query execution
-	 * @see org.springframework.orm.hibernate3.HibernateTemplate#find(String)
+	 * @return a List of entities containing the results of the query execution
 	 */
-	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-	public List find(String queryString)
+	public List findByQuery(String queryString)
 	{
-		return getHibernateTemplate().find(queryString);
+		return findByQuery(queryString, new QueryParameter[0]);
 	}
 
 	/**
-	 * Execute an HQL query, binding one value to a "?" parameter in the query string.
+	 * Execute an HQL query.
 	 *
 	 * @param queryString a query expressed in Hibernate's query language
-	 * @param value	   the query parameter
-	 * @return a List containing the results of the query execution
-	 * @see org.springframework.orm.hibernate3.HibernateTemplate#find(String,Object)
+	 * @param parameters  the (optional) parameters for the query.
+	 * @return a List of entities containing the results of the query execution
 	 */
-	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-	public List find(String queryString, Object value)
+	public List findByQuery(String queryString, QueryParameter... parameters)
 	{
-		return getHibernateTemplate().find(queryString, value);
+		return findByQuery(queryString, 0, 0, parameters);
 	}
 
 	/**
-	 * Execute an HQL query, binding a number of values to "?" parameters in the query string.
+	 * Execute an HQL query.
 	 *
 	 * @param queryString a query expressed in Hibernate's query language
-	 * @param values	  the query parameters
-	 * @return a List containing the results of the query execution
-	 * @see org.springframework.orm.hibernate3.HibernateTemplate#find(String,Object[])
+	 * @param startIndex  the index of the first item to be retrieved
+	 * @param maxResults  the number of items to be retrieved, if <code>0</code> it retrieves ALL the items
+	 * @param parameters  the (optional) parameters for the query.
+	 * @return a List of entities containing the results of the query execution
 	 */
-	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-	public List find(String queryString, Object[] values)
+	public List findByQuery(String queryString, int startIndex, int maxResults, QueryParameter... parameters)
 	{
-		return getHibernateTemplate().find(queryString, values);
+		Query query = session.createQuery(queryString);
+		for (QueryParameter parameter : parameters)
+		{
+			parameter.applyNamedParameterToQuery(query);
+		}
+
+		if (maxResults > 0)
+			query.setMaxResults(maxResults);
+
+		if (startIndex > 0)
+			query.setFirstResult(startIndex);
+
+		if (logger.isDebugEnabled())
+			logger.debug(query.getQueryString());
+
+		return query.list();
 	}
 
 
 	/**
 	 * (non-Javadoc)
 	 *
-	 * @see org.trails.persistence.PersistenceService#getAllInstances(java.lang.Class)
+	 * @see org.trailsframework.services.PersistenceService#getInstances(java.lang.Class)
 	 */
-	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-	public <T> List<T> getAllInstances(final Class<T> type)
+
+	public <T> List<T> getInstances(final Class<T> type)
 	{
-		DetachedCriteria criteria = DetachedCriteria.forClass(Utils.checkForCGLIB(type));
-		return getInstances(type, criteria);
+		return session.createCriteria(type).list();
 	}
 
-	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+
 	public <T> List<T> getInstances(final Class<T> type, int startIndex, int maxResults)
 	{
 		return getInstances(type, DetachedCriteria.forClass(type), startIndex, maxResults);
@@ -185,55 +171,59 @@ public class HibernatePersistenceServiceImpl extends HibernateDaoSupport impleme
 	/**
 	 * (non-Javadoc)
 	 *
-	 * @see org.trails.persistence.PersistenceService#save(java.lang.Object)
+	 * @see org.trailsframework.services.PersistenceService#save(java.lang.Object)
 	 */
-	@Transactional
-	public <T> T save(T instance) throws ValidationException
+	public <T> T save(T instance) // throws ValidationException
 	{
+/*
 		try
 		{
-			IClassDescriptor iClassDescriptor = getDescriptorService().getClassDescriptor(instance.getClass());
-			/* check isTransient to avoid merging on entities not persisted yet. TRAILS-33 */
-			if (!iClassDescriptor.getHasCyclicRelationships() || isTransient(instance, iClassDescriptor))
-			{
-				getHibernateTemplate().saveOrUpdate(instance);
-			} else
-			{
-				instance = (T) getHibernateTemplate().merge(instance);
-			}
-			return instance;
+*/
+		IClassDescriptor iClassDescriptor = descriptorService.getClassDescriptor(instance.getClass());
+		/* check isTransient to avoid merging on entities not persisted yet. TRAILS-33 */
+		if (!iClassDescriptor.getHasCyclicRelationships() || isTransient(instance, iClassDescriptor))
+		{
+			session.saveOrUpdate(instance);
+		} else
+		{
+			instance = (T) session.merge(instance);
 		}
+		return instance;
+//		}
+/*
 		catch (DataAccessException dex)
 		{
 			throw new PersistenceException(dex);
 		}
+*/
 	}
 
-	@Transactional
+
 	public void removeAll(Collection collection)
 	{
-		getHibernateTemplate().deleteAll(collection);
+//		session.deleteAll(collection);
 	}
 
-	@Transactional
+
 	public void remove(Object instance)
 	{
-		getHibernateTemplate().delete(instance, LockMode.READ);
+		session.delete(instance);
 	}
 
-	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+
 	public <T> List<T> getInstances(Class<T> type, DetachedCriteria criteria)
 	{
 		criteria = alterCriteria(type, criteria);
 		criteria.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
-		return getHibernateTemplate().findByCriteria(criteria);
+		return criteria.getExecutableCriteria(session).list();
 	}
 
 	/**
 	 * (non-Javadoc)
 	 *
-	 * @see org.trails.persistence.PersistenceService#getAllTypes()
+	 * @see org.trailsframework.services.PersistenceService#getAllTypes()
 	 */
+/*
 	public List<Class> getAllTypes()
 	{
 		ArrayList<Class> allTypes = new ArrayList<Class>();
@@ -243,20 +233,19 @@ public class HibernatePersistenceServiceImpl extends HibernateDaoSupport impleme
 		}
 		return allTypes;
 	}
-
-	@Transactional
+*/
 	public void reattach(Object model)
 	{
-		getSession().lock(model, LockMode.NONE);
+		session.lock(model, LockMode.NONE);
 	}
 
 
 	/**
 	 * (non-Javadoc)
 	 *
-	 * @see org.trails.persistence.PersistenceService#getInstance(Class<T>)
+	 * @see org.trailsframework.services.PersistenceService#getInstance(Class<T>)
 	 */
-	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+
 	public <T> T getInstance(final Class<T> type)
 	{
 		return (T) getInstance(type, DetachedCriteria.forClass(type));
@@ -265,36 +254,35 @@ public class HibernatePersistenceServiceImpl extends HibernateDaoSupport impleme
 	/**
 	 * Returns an entity's pk.
 	 *
-	 * @note (ascandroli): I tried to implement it using something like:
-
-	 * <code>
-	 *
-	 * @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-	 * private Serializable getIdentifier(final Object data)
-	 * {
-	 *   return (Serializable) getHibernateTemplate().execute(new HibernateCallback()
-	 *    {
-	 *      public Object doInHibernate(Session session) throws HibernateException, SQLException
-	 *        {
-	 *          return session.getIdentifier(data);
-	 *        }
-	 *    });
-	 * }
-	 *
-	 * </code>
-	 *
-	 * but it didn't work.
-	 * "session.getIdentifier(data)" thows TransientObjectException when the Entity is not loaded by the current session,
-	 * which is pretty usual in Trails.
-	 *
-	 *
 	 * @param data
 	 * @param classDescriptor
 	 * @return
+	 * @note (ascandroli): I tried to implement it using something like:
+	 * <p/>
+	 * <code>
+	 * <p/>
+	 * <p/>
+	 * private Serializable getIdentifier(final Object data)
+	 * {
+	 * return (Serializable) session.execute(new HibernateCallback()
+	 * {
+	 * public Object doInHibernate(Session session) throws HibernateException, SQLException
+	 * {
+	 * return session.getIdentifier(data);
+	 * }
+	 * });
+	 * }
+	 * <p/>
+	 * </code>
+	 * <p/>
+	 * but it didn't work.
+	 * "session.getIdentifier(data)" thows TransientObjectException when the Entity is not loaded by the current session,
+	 * which is pretty usual in Trails.
 	 */
 	public Serializable getIdentifier(final Object data, final IClassDescriptor classDescriptor)
 	{
-		return (Serializable) PropertyUtils.read(data, classDescriptor.getIdentifierDescriptor().getName());
+//		return (Serializable) PropertyUtils.read(data, classDescriptor.getIdentifierDescriptor().getName());
+		return 0;
 	}
 
 	public boolean isTransient(Object data, IClassDescriptor classDescriptor)
@@ -308,136 +296,107 @@ public class HibernatePersistenceServiceImpl extends HibernateDaoSupport impleme
 		}
 	}
 
-	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+
 	public List getInstances(final Object example, final IClassDescriptor classDescriptor)
 	{
-		return (List) getHibernateTemplate().execute(new HibernateCallback()
+		//create Criteria instance
+		DetachedCriteria searchCriteria = DetachedCriteria.forClass(Utils.checkForCGLIB(example.getClass()));
+		searchCriteria = alterCriteria(example.getClass(), searchCriteria);
+
+		//loop over the example object's PropertyDescriptors
+		for (IPropertyDescriptor propertyDescriptor : classDescriptor.getPropertyDescriptors())
 		{
-			public Object doInHibernate(Session session) throws HibernateException, SQLException
+			//only add a Criterion to the Criteria instance if this property is searchable
+			if (propertyDescriptor.isSearchable())
 			{
-				//create Criteria instance
-				DetachedCriteria searchCriteria = DetachedCriteria.forClass(Utils.checkForCGLIB(example.getClass()));
-				searchCriteria = alterCriteria(example.getClass(), searchCriteria);
+				String propertyName = propertyDescriptor.getName();
+				Class propertyClass = propertyDescriptor.getPropertyType();
+				Object value = null; //PropertyUtils.read(example, propertyName);
 
-				//loop over the example object's PropertyDescriptors
-				for (IPropertyDescriptor propertyDescriptor : classDescriptor.getPropertyDescriptors())
+				//only add a Criterion to the Criteria instance if the value for this property is non-null
+				if (value != null)
 				{
-					//only add a Criterion to the Criteria instance if this property is searchable
-					if (propertyDescriptor.isSearchable())
+					if (String.class.isAssignableFrom(propertyClass) && ((String) value).length() > 0)
 					{
-						String propertyName = propertyDescriptor.getName();
-						Class propertyClass = propertyDescriptor.getPropertyType();
-						Object value = PropertyUtils.read(example, propertyName);
-
-						//only add a Criterion to the Criteria instance if the value for this property is non-null
-						if (value != null)
+						searchCriteria
+								.add(Restrictions.like(propertyName, value.toString(), MatchMode.ANYWHERE));
+					}
+					/**
+					 * 'one'-end of many-to-one, one-to-one
+					 *
+					 * Just match the identifier
+					 */
+					else if (propertyDescriptor.isObjectReference())
+					{
+						Serializable identifierValue = getIdentifier(value,
+								descriptorService.getClassDescriptor(propertyDescriptor.getBeanType()));
+						searchCriteria.createCriteria(propertyName).add(Restrictions.idEq(identifierValue));
+					} else if (propertyClass.isPrimitive())
+					{
+						//primitive types: ignore zeroes in case of numeric types, ignore booleans anyway (TODO come up with something...)
+						if (!propertyClass.equals(boolean.class) && ((Number) value).longValue() != 0)
 						{
-							if (String.class.isAssignableFrom(propertyClass) && ((String) value).length() > 0)
+							searchCriteria.add(Restrictions.eq(propertyName, value));
+						}
+					} else if (propertyDescriptor.isCollection())
+					{
+						//one-to-many or many-to-many
+						CollectionDescriptor collectionDescriptor =
+								(CollectionDescriptor) propertyDescriptor;
+						IClassDescriptor collectionClassDescriptor = descriptorService.getClassDescriptor(collectionDescriptor.getElementType());
+						if (collectionClassDescriptor != null)
+						{
+							String identifierName = collectionClassDescriptor.getIdentifierDescriptor().getName();
+							Collection<Serializable> identifierValues = new ArrayList<Serializable>();
+							Collection associatedItems = (Collection) value;
+							if (associatedItems != null && associatedItems.size() > 0)
 							{
-								searchCriteria
-										.add(Restrictions.like(propertyName, value.toString(), MatchMode.ANYWHERE));
-							}
-							/**
-							 * 'one'-end of many-to-one, one-to-one
-							 *
-							 * Just match the identifier
-							 */
-							else if (propertyDescriptor.isObjectReference())
-							{
-								Serializable identifierValue = getIdentifier(value,
-										getDescriptorService().getClassDescriptor(propertyDescriptor.getBeanType()));
-								searchCriteria.createCriteria(propertyName).add(Restrictions.idEq(identifierValue));
-							} else if (propertyClass.isPrimitive())
-							{
-								//primitive types: ignore zeroes in case of numeric types, ignore booleans anyway (TODO come up with something...)
-								if (!propertyClass.equals(boolean.class) && ((Number) value).longValue() != 0)
+								for (Object o : associatedItems)
 								{
-									searchCriteria.add(Restrictions.eq(propertyName, value));
+									identifierValues.add(getIdentifier(o, collectionClassDescriptor));
 								}
-							} else if (propertyDescriptor.isCollection())
-							{
-								//one-to-many or many-to-many
-								CollectionDescriptor collectionDescriptor =
-										(CollectionDescriptor) propertyDescriptor;
-								IClassDescriptor classDescriptor = getDescriptorService().getClassDescriptor(collectionDescriptor.getElementType());
-								if (classDescriptor != null)
-								{
-									String identifierName = classDescriptor.getIdentifierDescriptor().getName();
-									Collection<Serializable> identifierValues = new ArrayList<Serializable>();
-									Collection associatedItems = (Collection) value;
-									if (associatedItems != null && associatedItems.size() > 0)
-									{
-										for (Object o : associatedItems)
-										{
-											identifierValues.add(getIdentifier(o, classDescriptor));
-										}
-										//add a 'value IN collection' restriction
-										searchCriteria.createCriteria(propertyName)
-												.add(Restrictions.in(identifierName, identifierValues));
-									}
-								}
+								//add a 'value IN collection' restriction
+								searchCriteria.createCriteria(propertyName)
+										.add(Restrictions.in(identifierName, identifierValues));
 							}
 						}
 					}
 				}
-				searchCriteria.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
-				return searchCriteria.getExecutableCriteria(session).list();
 			}
-		}, true);
+		}
+		searchCriteria.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+		return searchCriteria.getExecutableCriteria(session).list();
 	}
 
-	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+
 	public int count(Class type, DetachedCriteria detachedCriteria)
 	{
-		// todo hacking useNative is a result of SPR-2499 and will be removed soon
-		boolean useNative = getHibernateTemplate().isExposeNativeSession();
-		getHibernateTemplate().setExposeNativeSession(true);
 		detachedCriteria.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 		final DetachedCriteria criteria = alterCriteria(type, detachedCriteria);
-		Integer result = (Integer) getHibernateTemplate().execute(new HibernateCallback()
-		{
-			public Object doInHibernate(Session session) throws HibernateException, SQLException
-			{
-				Criteria executableCriteria =
-						criteria.getExecutableCriteria(session).setProjection(Projections.rowCount());
-				return executableCriteria.uniqueResult();
-			}
-		});
-		getHibernateTemplate().setExposeNativeSession(useNative);
-		return result;
+		Criteria executableCriteria = criteria.getExecutableCriteria(session).setProjection(Projections.rowCount());
+		return (Integer) executableCriteria.uniqueResult();
 	}
 
-	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+
 	public <T> List<T> getInstances(Class<T> type, final DetachedCriteria detachedCriteria, final int startIndex, final int maxResults)
 	{
 		return getInstances(alterCriteria(type, detachedCriteria), startIndex, maxResults);
 	}
 
-	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+
 	public List getInstances(final DetachedCriteria detachedCriteria, final int startIndex, final int maxResults)
 	{
 		detachedCriteria.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
-		// todo hacking useNative is a result of SPR-2499 and will be removed soon
-		boolean useNative = getHibernateTemplate().isExposeNativeSession();
-		getHibernateTemplate().setExposeNativeSession(true);
-		List result = (List) getHibernateTemplate().execute(new HibernateCallback()
+		Criteria executableCriteria = detachedCriteria.getExecutableCriteria(session);
+		if (startIndex >= 0)
 		{
-			public Object doInHibernate(Session session) throws HibernateException, SQLException
-			{
-				Criteria executableCriteria = detachedCriteria.getExecutableCriteria(session);
-				if (startIndex >= 0)
-				{
-					executableCriteria.setFirstResult(startIndex);
-				}
-				if (maxResults > 0)
-				{
-					executableCriteria.setMaxResults(maxResults);
-				}
-				return executableCriteria.list();
-			}
-		});
-		getHibernateTemplate().setExposeNativeSession(useNative);
-		return result;
+			executableCriteria.setFirstResult(startIndex);
+		}
+		if (maxResults > 0)
+		{
+			executableCriteria.setMaxResults(maxResults);
+		}
+		return executableCriteria.list();
 	}
 
 	/**
@@ -452,39 +411,32 @@ public class HibernatePersistenceServiceImpl extends HibernateDaoSupport impleme
 	}
 
 	/**
-	 * @see org.trails.persistence.HibernatePersistenceService#saveOrUpdate(java.lang.Object)
+	 * @see org.trailsframework.services.HibernatePersistenceService#saveOrUpdate(java.lang.Object)
 	 */
-	@Transactional
+
 	public <T> T merge(T instance)
 	{
-		try
-		{
-			return (T) getHibernateTemplate().merge(instance);
-		}
-		catch (DataAccessException dex)
-		{
-			throw new PersistenceException(dex);
-		}
+		return (T) session.merge(instance);
 	}
 
 	/**
-	 * @see org.trails.persistence.HibernatePersistenceService#saveOrUpdate(java.lang.Object)
+	 * @see org.trailsframework.services.HibernatePersistenceService#saveOrUpdate(java.lang.Object)
 	 */
-	@Transactional
-	public <T> T saveOrUpdate(T instance) throws ValidationException
+
+	public <T> T saveOrUpdate(T instance)  // throws ValidationException
 	{
-		try
-		{
-			getHibernateTemplate().saveOrUpdate(instance);
-			return instance;
-		}
+		session.saveOrUpdate(instance);
+		return instance;
+
+/*
 		catch (DataAccessException dex)
 		{
 			throw new PersistenceException(dex);
 		}
+*/
 	}
 
-	@Transactional
+
 	public <T> T saveCollectionElement(String addExpression, T member, Object parent)
 	{
 		T instance = save(member);
@@ -493,7 +445,7 @@ public class HibernatePersistenceServiceImpl extends HibernateDaoSupport impleme
 		return instance;
 	}
 
-	@Transactional
+
 	public void removeCollectionElement(String removeExpression, Object member, Object parent)
 	{
 		Utils.executeOgnlExpression(removeExpression, member, parent);
@@ -501,9 +453,4 @@ public class HibernatePersistenceServiceImpl extends HibernateDaoSupport impleme
 		remove(member);
 	}
 
-	public void setApplicationContext(ApplicationContext arg0) throws BeansException
-	{
-		this.appContext = arg0;
-
-	}
 }

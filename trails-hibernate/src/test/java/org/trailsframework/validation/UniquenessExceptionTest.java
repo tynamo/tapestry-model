@@ -1,4 +1,4 @@
-package org.trails.validation;
+package org.trailsframework.validation;
 
 import junit.framework.TestCase;
 import org.trails.descriptor.TrailsPropertyDescriptor;

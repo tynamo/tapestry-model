@@ -1,6 +1,6 @@
-package org.trails.builder;
+package org.trailsframework.builder;
 
-import org.trails.exception.TrailsRuntimeException;
+import org.trailsframework.exception.TrailsRuntimeException;
 
 import java.lang.reflect.Constructor;
 import java.util.HashMap;

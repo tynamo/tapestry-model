@@ -9,7 +9,24 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and limitations under the License.
  */
-package org.trails.hibernate;
+package org.trailsframework.services;
+
+import ognl.Ognl;
+import ognl.OgnlException;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.tapestry5.hibernate.HibernateSessionSource;
+import org.hibernate.HibernateException;
+import org.hibernate.cfg.Configuration;
+import org.hibernate.mapping.*;
+import org.hibernate.metadata.ClassMetadata;
+import org.hibernate.metadata.CollectionMetadata;
+import org.hibernate.type.ComponentType;
+import org.hibernate.type.Type;
+import org.trailsframework.descriptor.*;
+import org.trailsframework.descriptor.extension.EnumReferenceDescriptor;
+import org.trailsframework.exception.MetadataNotFoundException;
+import org.trailsframework.exception.TrailsRuntimeException;
 
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
@@ -18,32 +35,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-
-import ognl.Ognl;
-import ognl.OgnlException;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.hibernate.HibernateException;
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
-import org.hibernate.mapping.Column;
-import org.hibernate.mapping.Component;
-import org.hibernate.mapping.PersistentClass;
-import org.hibernate.mapping.Property;
-import org.hibernate.mapping.Selectable;
-import org.hibernate.mapping.SimpleValue;
-import org.hibernate.metadata.ClassMetadata;
-import org.hibernate.metadata.CollectionMetadata;
-import org.hibernate.type.ComponentType;
-import org.hibernate.type.Type;
-import org.springframework.orm.hibernate3.LocalSessionFactoryBean;
-import org.trails.exception.TrailsRuntimeException;
-import org.trails.descriptor.extension.EnumReferenceDescriptor;
-import org.trails.descriptor.*;
 
 /**
  * This decorator will add metadata information. It will replace simple
@@ -68,17 +61,19 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 {
 	protected static final Log LOG = LogFactory.getLog(HibernateDescriptorDecorator.class);
 
-	private LocalSessionFactoryBean localSessionFactoryBean;
-
-	private List types;
+	private HibernateSessionSource hibernateSessionSource;
 
 	private DescriptorFactory descriptorFactory;
-
-	private HashMap<Class, IClassDescriptor> descriptors = new HashMap<Class, IClassDescriptor>();
 
 	private int largeColumnLength = 100;
 
 	private boolean ignoreNonHibernateTypes = false;
+
+	public HibernateDescriptorDecorator(HibernateSessionSource hibernateSessionSource, DescriptorFactory descriptorFactory)
+	{
+		this.hibernateSessionSource = hibernateSessionSource;
+		this.descriptorFactory = descriptorFactory;
+	}
 
 	public IClassDescriptor decorate(IClassDescriptor descriptor)
 	{
@@ -180,7 +175,7 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 			IPropertyDescriptor descriptor, IClassDescriptor parentClassDescriptor)
 	{
 		Component componentMapping = (Component) mappingProperty.getValue();
-		IClassDescriptor baseDescriptor = getDescriptorFactory().buildClassDescriptor(descriptor.getPropertyType());
+		IClassDescriptor baseDescriptor = descriptorFactory.buildClassDescriptor(descriptor.getPropertyType());
 		// build from base descriptor
 		EmbeddedDescriptor embeddedDescriptor = new EmbeddedDescriptor(type, baseDescriptor);
 		// and copy from property descriptor
@@ -241,7 +236,7 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 	 */
 	protected ClassMetadata findMetadata(Class type) throws MetadataNotFoundException
 	{
-		ClassMetadata metaData = getSessionFactory().getClassMetadata(type);
+		ClassMetadata metaData = hibernateSessionSource.getSessionFactory().getClassMetadata(type);
 		if (metaData != null)
 		{
 			return metaData;
@@ -309,7 +304,7 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 
 	/**
 	 * @param classMetaData
-	 * @param type
+	 * @param descriptor
 	 * @return
 	 */
 	protected boolean notAHibernateProperty(ClassMetadata classMetaData, IPropertyDescriptor descriptor)
@@ -363,14 +358,15 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 	 */
 	protected PersistentClass getMapping(Class type)
 	{
-		Configuration cfg = getLocalSessionFactoryBean().getConfiguration();
+		Configuration cfg = hibernateSessionSource.getConfiguration();
 
 		return cfg.getClassMapping(type.getName());
 	}
 
 	/**
 	 * @param type
-	 * @param newDescriptor
+	 * @param descriptor
+	 * @param parentClassDescriptor 
 	 */
 	private CollectionDescriptor decorateCollectionDescriptor(Class type, IPropertyDescriptor descriptor,
 			IClassDescriptor parentClassDescriptor)
@@ -382,7 +378,7 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 			// It is a child relationship if it has delete-orphan specified in
 			// the mapping
 			collectionDescriptor.setChildRelationship(collectionMapping.hasOrphanDelete());
-			CollectionMetadata collectionMetaData = getSessionFactory().getCollectionMetadata(
+			CollectionMetadata collectionMetaData = hibernateSessionSource.getSessionFactory().getCollectionMetadata(
 					collectionMapping.getRole());
 
 			collectionDescriptor.setElementType(collectionMetaData.getElementType().getReturnedClass());
@@ -518,7 +514,7 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 	protected org.hibernate.mapping.Collection findCollectionMapping(Class type, String name)
 	{
 		String roleName = type.getName() + "." + name;
-		org.hibernate.mapping.Collection collectionMapping = getLocalSessionFactoryBean().getConfiguration()
+		org.hibernate.mapping.Collection collectionMapping = hibernateSessionSource.getConfiguration()
 				.getCollectionMapping(roleName);
 		if (collectionMapping != null)
 		{
@@ -542,61 +538,11 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 	{
 		try
 		{
-			return getSessionFactory().getClassMetadata(type).getIdentifierPropertyName();
+			return hibernateSessionSource.getSessionFactory().getClassMetadata(type).getIdentifierPropertyName();
 		} catch (HibernateException e)
 		{
 			throw new TrailsRuntimeException(e);
 		}
-	}
-
-	/**
-	 * @return Returns the sessionFactory.
-	 */
-	public SessionFactory getSessionFactory()
-	{
-		return (SessionFactory) getLocalSessionFactoryBean().getObject();
-	}
-
-	public IClassDescriptor getClassDescriptor(Class type)
-	{
-		return descriptors.get(type);
-	}
-
-	/**
-	 * @return Returns the localSessionFactoryBean.
-	 */
-	public LocalSessionFactoryBean getLocalSessionFactoryBean()
-	{
-		return localSessionFactoryBean;
-	}
-
-	/**
-	 * @param localSessionFactoryBean
-	 *            The localSessionFactoryBean to set.
-	 */
-	public void setLocalSessionFactoryBean(LocalSessionFactoryBean localSessionFactoryBean)
-	{
-		this.localSessionFactoryBean = localSessionFactoryBean;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.trails.descriptor.TrailsDescriptorService#getAllDescriptors()
-	 */
-	public List<IClassDescriptor> getAllDescriptors()
-	{
-		return new ArrayList<IClassDescriptor>(descriptors.values());
-	}
-
-	public List getTypes()
-	{
-		return types;
-	}
-
-	public void setTypes(List types)
-	{
-		this.types = types;
 	}
 
 	public int getLargeColumnLength()
@@ -612,16 +558,6 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 	public void setLargeColumnLength(int largeColumnLength)
 	{
 		this.largeColumnLength = largeColumnLength;
-	}
-
-	public DescriptorFactory getDescriptorFactory()
-	{
-		return descriptorFactory;
-	}
-
-	public void setDescriptorFactory(DescriptorFactory descriptorFactory)
-	{
-		this.descriptorFactory = descriptorFactory;
 	}
 
 	public void setIgnoreNonHibernateTypes(boolean ignoreNonHibernateTypes)

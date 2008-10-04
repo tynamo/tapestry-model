@@ -1,4 +1,4 @@
-package org.trails.builder;
+package org.trailsframework.builder;
 
 /**
  * Fulfils the "Builder" role in the Trails implementation of

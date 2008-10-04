@@ -9,19 +9,20 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and limitations under the License.
  */
-package org.trails.persistence;
-
-import java.util.List;
+package org.trailsframework.services;
 
 import org.hibernate.criterion.DetachedCriteria;
-import org.trails.descriptor.IClassDescriptor;
+import org.trailsframework.descriptor.IClassDescriptor;
 
+import java.util.List;
 
 public interface HibernatePersistenceService extends PersistenceService
 {
 
 	public <T> T getInstance(Class<T> type, DetachedCriteria criteria);
+
 	public <T> List<T> getInstances(Class<T> type, DetachedCriteria criteria);
+
 	public <T> List<T> getInstances(Class<T> type, DetachedCriteria criteria, int startIndex, int maxResults);
 
 	public int count(Class type, DetachedCriteria criteria);
@@ -42,8 +43,10 @@ public interface HibernatePersistenceService extends PersistenceService
 	public <T> T merge(T instance);
 
 	public <T> T saveOrUpdate(T instance);
-	
-	public List find(String queryString);
-	public List find(String queryString, Object value);
-	public List find(String queryString, Object[] values);
+
+	public List findByQuery(String queryString);
+
+	public List findByQuery(String queryString, QueryParameter... parameters);
+
+	public List findByQuery(String queryString, int startIndex, int maxResults, QueryParameter... parameters);
 }

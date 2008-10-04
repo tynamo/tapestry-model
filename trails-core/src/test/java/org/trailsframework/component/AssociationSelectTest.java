@@ -39,7 +39,7 @@ public class AssociationSelectTest extends ComponentTest
 
 		List instances = new ArrayList();
 
-		persistenceMock.expects(atLeastOnce()).method("getAllInstances").with(eq(Foo.class)).will(returnValue(instances));
+		persistenceMock.expects(atLeastOnce()).method("getInstances").with(eq(Foo.class)).will(returnValue(instances));
 
 		AbstractPropertySelectionModel selectionModel = (AbstractPropertySelectionModel) associationSelect.buildSelectionModel();
 		assertEquals(1, selectionModel.getOptionCount());

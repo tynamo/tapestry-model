@@ -1,9 +1,8 @@
-package org.trails.validation;
+package org.trailsframework.exception;
+
+import org.trailsframework.descriptor.IPropertyDescriptor;
 
 import java.text.MessageFormat;
-
-import org.trails.descriptor.IPropertyDescriptor;
-import org.trails.persistence.PersistenceException;
 
 public class ValidationException extends PersistenceException
 {

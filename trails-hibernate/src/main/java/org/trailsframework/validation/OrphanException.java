@@ -1,6 +1,7 @@
-package org.trails.validation;
+package org.trailsframework.validation;
 
-import org.trails.descriptor.IPropertyDescriptor;
+import org.trailsframework.descriptor.IPropertyDescriptor;
+import org.trailsframework.exception.ValidationException;
 
 public class OrphanException extends ValidationException
 {

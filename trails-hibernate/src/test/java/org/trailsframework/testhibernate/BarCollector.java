@@ -1,4 +1,4 @@
-package org.trails.testhibernate;
+package org.trailsframework.testhibernate;
 
 import java.util.ArrayList;
 import java.util.List;

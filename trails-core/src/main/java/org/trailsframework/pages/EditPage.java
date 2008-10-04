@@ -1,7 +1,6 @@
 package org.trailsframework.pages;
 
 
-import org.trailsframework.services.PersitenceService;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.beaneditor.BeanModel;
 import org.apache.tapestry5.ioc.Messages;
@@ -10,6 +9,7 @@ import org.apache.tapestry5.services.BeanModelSource;
 import org.apache.tapestry5.services.ContextValueEncoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.trailsframework.services.PersistenceService;
 
 public class EditPage {
 
@@ -25,7 +25,7 @@ public class EditPage {
 	private Messages messages;
 
 	@Inject
-	private PersitenceService persitenceService;
+	private PersistenceService persitenceService;
 
 	private BeanModel beanModel;
 

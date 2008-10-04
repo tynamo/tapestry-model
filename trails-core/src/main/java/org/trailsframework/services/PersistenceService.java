@@ -25,7 +25,7 @@ public interface PersistenceService
 
 	<T> T loadInstance(final Class<T> type, Serializable id);
 
-	public <T> List<T> getAllInstances(Class<T> type);
+	public <T> List<T> getInstances(Class<T> type);
 
 	public <T> List<T> getInstances(Class<T> type, int startIndex, int maxResults);
 
@@ -33,7 +33,7 @@ public interface PersistenceService
 	 * @return a List containing all the classes this persistence
 	 *         service knows about
 	 */
-	public List getAllTypes();
+//	public List getAllTypes();
 
 	@CommitAfter
 	public <T> T save(T instance);
@@ -49,8 +49,6 @@ public interface PersistenceService
 	 * @return Returns the singleton entity of requested type
 	 */
 	public <T> T getInstance(final Class<T> type);
-
-	Serializable getIdentifier(Object data, IClassDescriptor classDescriptor);
 
 	boolean isTransient(Object data, IClassDescriptor classDescriptor);
 

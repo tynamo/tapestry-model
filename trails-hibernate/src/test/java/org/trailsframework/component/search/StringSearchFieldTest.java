@@ -1,7 +1,7 @@
 /**
  *
  */
-package org.trails.component.search;
+package org.trailsframework.component.search;
 
 import org.hibernate.criterion.DetachedCriteria;
 import org.trails.component.HibernateComponentTest;
