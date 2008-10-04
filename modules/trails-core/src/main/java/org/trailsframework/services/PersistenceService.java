@@ -15,7 +15,6 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 
-import org.trails.descriptor.IClassDescriptor;
 import org.trailsframework.descriptor.IClassDescriptor;
 import org.apache.tapestry5.hibernate.annotations.CommitAfter;
 

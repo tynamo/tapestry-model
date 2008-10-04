@@ -1,20 +1,41 @@
-package org.trails.page;
+package org.trailsframework.pages;
 
-import org.apache.tapestry.AbstractPage;
-import org.apache.tapestry.annotations.InjectObject;
-import org.trails.validation.ValidatorTranslatorService;
+import org.trailsframework.util.GenericSelectionModel;
+import org.trailsframework.services.PersitenceService;
+import org.apache.tapestry5.services.PropertyEditContext;
+import org.apache.tapestry5.services.ValueEncoderSource;
+import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.SelectModel;
+import org.apache.tapestry5.ValueEncoder;
+import org.apache.tapestry5.annotations.Environmental;
 
-/**
- * This page contains all the default editor Blocks.  This allows
- * Trails to dynamically pick at runtime which editor to use for a
- * specific property.
- *
- * @author Chris Nelson
- */
-public abstract class EditorBlockPage extends AbstractPage implements IEditorBlockPage
+
+public class Editors
 {
+	@Environmental
+	private PropertyEditContext context;
 
-	@InjectObject("service:trails.core.ValidatorTranslatorService")
-	public abstract ValidatorTranslatorService getValidatorTranslatorService();
+	@Inject
+	private PersitenceService persitenceService;
 
+	@Inject
+	private ValueEncoderSource valueEncoderSource;
+
+	public PropertyEditContext getContext()
+	{
+		return context;
+	}
+
+	public SelectModel getSelectModel()
+	{
+		return new GenericSelectionModel<Caetg>(persitenceService.getAllInstances(Caetg.class));
+	}
+
+	/**
+	 * Provide a value encoder for an enum type.
+	 */
+	public ValueEncoder getValueEncoderForProperty()
+	{
+		return valueEncoderSource.getValueEncoder(context.getPropertyType());
+	}
 }

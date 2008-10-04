@@ -1,4 +1,4 @@
-package org.trails.page;
+package org.trailsframework.pages;
 
 import org.apache.commons.lang.StringUtils;
 
