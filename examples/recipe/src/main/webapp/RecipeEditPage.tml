@@ -4,7 +4,7 @@
 
 	<br/>
 
-	<t:beaneditform object="bean" model="beanModel">
+	<t:beaneditform object="bean">
 		<t:parameter name="instructions">
 			<t:label for="instructions"/>
 			<t:textarea t:id="instructions" value="bean.instructions"/>
