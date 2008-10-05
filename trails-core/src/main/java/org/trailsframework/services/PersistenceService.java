@@ -16,7 +16,6 @@ import java.util.Collection;
 import java.util.List;
 
 import org.trailsframework.descriptor.IClassDescriptor;
-import org.apache.tapestry5.hibernate.annotations.CommitAfter;
 
 public interface PersistenceService
 {
@@ -35,7 +34,6 @@ public interface PersistenceService
 	 */
 //	public List getAllTypes();
 
-	@CommitAfter
 	public <T> T save(T instance);
 
 	public void remove(Object instance);

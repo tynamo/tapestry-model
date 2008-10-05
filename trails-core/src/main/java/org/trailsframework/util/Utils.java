@@ -19,6 +19,7 @@ import org.trailsframework.exception.TrailsRuntimeException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Collection;
 
 
 public class Utils
@@ -159,5 +160,25 @@ public class Utils
 		{
 			throw new TrailsRuntimeException(e, model.getClass());
 		}
+	}
+
+	/**
+	 * Tests whether or not a name matches against at least one exclude pattern.
+	 *
+	 * @param name The name to match. Must not be null.
+	 * @param exclusionPatterns the list of exclude patterns to test against
+	 * @return true when the name matches against at least one exclude pattern, or false otherwise.
+	 */
+	public static boolean isExcluded(String name, Collection<String> exclusionPatterns)
+	{
+		for (String exclusionPattern : exclusionPatterns)
+		{
+			if (name.matches(exclusionPattern))
+			{
+				return true;
+			}
+		}
+
+		return false;
 	}
 }

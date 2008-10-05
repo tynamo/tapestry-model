@@ -1,15 +1,15 @@
 package org.trailsframework.descriptor;
 
-import java.beans.*;
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Collection;
-
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.trailsframework.util.Utils;
+
+import java.beans.BeanDescriptor;
+import java.beans.BeanInfo;
+import java.beans.Introspector;
+import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 
 /**
  * Generate descriptors using reflection on the underlying class.
@@ -21,33 +21,27 @@ public class ReflectionDescriptorFactory implements DescriptorFactory
 
 	protected static final Log LOG = LogFactory.getLog(ReflectionDescriptorFactory.class);
 
-	private final Collection<String> propertyExcludes;
+	private final MethodDescriptorFactory methodDescriptorFactory;
+	private final PropertyDescriptorFactory propertyDescriptorFactory;
+	private final List<DescriptorDecorator> decorators;
 
-	private static List<String> methodExcludes = new ArrayList<String>();
-
-	static
+	/**
+	 * @param decorators				In the default Trails configuration this will contain a HibernateDescriptorDecorator and an AnnotationDecorator
+	 * @param methodDescriptorFactory
+	 * @param propertyDescriptorFactory
+	 */
+	public ReflectionDescriptorFactory(final List<DescriptorDecorator> decorators, MethodDescriptorFactory methodDescriptorFactory, PropertyDescriptorFactory propertyDescriptorFactory)
 	{
-		methodExcludes.add("shouldExclude");
-		methodExcludes.add("set.*");
-		methodExcludes.add("get.*");
-		methodExcludes.add("is.*");
-		methodExcludes.add("equals");
-		methodExcludes.add("wait");
-		methodExcludes.add("toString");
-		methodExcludes.add("notify.*");
-		methodExcludes.add("hashCode");
-	}
-
-	public ReflectionDescriptorFactory(final Collection<String> propertyExcludes)
-	{
-		this.propertyExcludes = propertyExcludes;
+		this.decorators = decorators;
+		this.methodDescriptorFactory = methodDescriptorFactory;
+		this.propertyDescriptorFactory = propertyDescriptorFactory;
 	}
 
 	/**
-	 * Given a type, build a property descriptor
+	 * Given a type, build a class descriptor
 	 *
 	 * @param type The type to build for
-	 * @return a completed property descriptor
+	 * @return a completed class descriptor
 	 */
 	public IClassDescriptor buildClassDescriptor(Class type)
 	{
@@ -56,15 +50,19 @@ public class ReflectionDescriptorFactory implements DescriptorFactory
 			IClassDescriptor descriptor = new TrailsClassDescriptor(type);
 			BeanInfo beanInfo = Introspector.getBeanInfo(type);
 			BeanDescriptor beanDescriptor = beanInfo.getBeanDescriptor();
+
 			// Note there's various places and ways to uncamelcase the display name. However
 			// we don't want to un-camelcase the possibly customized displayName
 			// Also, because Introspector uses static methods, it's less clean to replace it 
 			// with a custom implementation. Proxy doesn't scale well and an aspect would 
 			// only work if it's run. So decided to deal with uncamelcasing displayname here
-			beanDescriptor.setDisplayName(Utils.unCamelCase(beanDescriptor.getDisplayName()) );
+			beanDescriptor.setDisplayName(Utils.unCamelCase(beanDescriptor.getDisplayName()));
 			BeanUtils.copyProperties(descriptor, beanInfo.getBeanDescriptor());
-			descriptor.setPropertyDescriptors(buildPropertyDescriptors(type,beanInfo, descriptor));
-			descriptor.setMethodDescriptors(buildMethodDescriptors(type, beanInfo, descriptor));
+			descriptor.setPropertyDescriptors(propertyDescriptorFactory.buildPropertyDescriptors(type, beanInfo));
+			descriptor.setMethodDescriptors(methodDescriptorFactory.buildMethodDescriptors(type, beanInfo));
+
+			descriptor = applyDecorators(descriptor);
+
 			return descriptor;
 
 		} catch (IllegalAccessException e)
@@ -84,65 +82,18 @@ public class ReflectionDescriptorFactory implements DescriptorFactory
 	}
 
 	/**
-	 * Build the set of property descriptors for this type
+	 * Have the decorators decorate this descriptor
 	 *
-	 * @param beanType			  the aggregating class
-	 * @param beanInfo			  the BeanInfo, already gathered
-	 * @param parentClassDescriptor reference to the aggregating class, used for recovery with
-	 *                              graph traversal
-	 * @return ObjectReferenceDescriptor if this property is an association,
-	 *         otherwise a TrailsPropertyDescriptor
-	 * @throws Exception
+	 * @param descriptor
+	 * @param decorators
+	 * @return The resulting descriptor after all decorators are applied
 	 */
-	protected ArrayList<IPropertyDescriptor> buildPropertyDescriptors(
-		Class beanType, BeanInfo beanInfo,
-		IClassDescriptor parentClassDescriptor) throws Exception
+	private IClassDescriptor applyDecorators(IClassDescriptor descriptor)
 	{
-		ArrayList<IPropertyDescriptor> result = new ArrayList<IPropertyDescriptor>();
-		for (PropertyDescriptor beanPropDescriptor : beanInfo.getPropertyDescriptors())
+		for (DescriptorDecorator decorator : decorators)
 		{
-			if (!isExcluded(beanPropDescriptor.getName(), propertyExcludes))
-			{
-				beanPropDescriptor.setDisplayName(Utils.unCamelCase(beanPropDescriptor.getDisplayName()) );
-				
-				Class<?> propertyType = beanPropDescriptor.getPropertyType();
-				TrailsPropertyDescriptor propDescriptor = new TrailsPropertyDescriptor(beanType,propertyType);
-				BeanUtils.copyProperties(propDescriptor, beanPropDescriptor);
-				result.add(propDescriptor);
-			}
+			descriptor = decorator.decorate(descriptor);
 		}
-		return result;
-	}
-
-	protected ArrayList<IMethodDescriptor> buildMethodDescriptors(Class type, BeanInfo beanInfo,
-																  IClassDescriptor parentClassDescriptor)
-			throws Exception
-	{
-		ArrayList<IMethodDescriptor> result = new ArrayList<IMethodDescriptor>();
-		for (MethodDescriptor beanMethodDescriptor : beanInfo.getMethodDescriptors())
-		{
-			if (!isExcluded(beanMethodDescriptor.getMethod().getName(), methodExcludes))
-			{
-				TrailsMethodDescriptor methodDescriptor = new TrailsMethodDescriptor(type,
-						beanMethodDescriptor.getMethod().getName(), beanMethodDescriptor.getMethod().getReturnType(),
-						beanMethodDescriptor.getMethod().getParameterTypes());
-				methodDescriptor.setDisplayName(Utils.unCamelCase(beanMethodDescriptor.getDisplayName()));
-				result.add(methodDescriptor);
-			}
-		}
-		return result;
-	}
-
-	protected boolean isExcluded(String name, Collection<String> excludes)
-	{
-		for (String exclude : excludes)
-		{
-			if (name.matches(exclude))
-			{
-				return true;
-			}
-		}
-
-		return false;
+		return descriptor;
 	}
 }

@@ -10,7 +10,7 @@ import org.apache.tapestry5.ioc.services.CoercionTuple;
 import org.apache.tapestry5.services.BeanBlockContribution;
 import org.apache.tapestry5.services.DataTypeAnalyzer;
 import org.apache.tapestry5.services.LibraryMapping;
-import org.trailsframework.descriptor.ReflectionDescriptorFactory;
+import org.trailsframework.descriptor.*;
 
 public class TrailsCoreModule
 {
@@ -21,6 +21,10 @@ public class TrailsCoreModule
 		// Use service builder methods (example below) when the implementation
 		// is provided inline, or requires more initialization than simply
 		// invoking the constructor.
+
+		binder.bind(DescriptorFactory.class, ReflectionDescriptorFactory.class);
+		binder.bind(PropertyDescriptorFactory.class, PropertyDescriptorFactoryImpl.class);
+		binder.bind(MethodDescriptorFactory.class, MethodDescriptorFactoryImpl.class);
 
 	}
 
@@ -94,8 +98,4 @@ public class TrailsCoreModule
 		return resources.autobuild(TrailsDataTypeAnalyzer.class);
 	}
 
-	public ReflectionDescriptorFactory buildReflectionDescriptorFactory(ServiceResources resources)
-	{
-		return resources.autobuild(ReflectionDescriptorFactory.class);
-	}
 }
