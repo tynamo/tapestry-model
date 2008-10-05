@@ -8,8 +8,6 @@ import org.apache.tapestry5.ioc.annotations.Match;
 import org.apache.tapestry5.ioc.annotations.SubModule;
 import org.apache.tapestry5.services.BeanBlockContribution;
 import org.trailsframework.descriptor.DescriptorDecorator;
-import org.trailsframework.descriptor.DescriptorFactory;
-import org.trailsframework.descriptor.ReflectionDescriptorFactory;
 import org.trailsframework.descriptor.annotation.AnnotationDecorator;
 import org.trailsframework.services.*;
 

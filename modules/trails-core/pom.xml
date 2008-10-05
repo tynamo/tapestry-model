@@ -13,6 +13,8 @@
 	</parent>
 
 	<build>
+		<testSourceDirectory>src/test/resources</testSourceDirectory>
+
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -27,15 +29,13 @@
 	</build>
 
 	<dependencies>
+
 		<dependency>
 			<groupId>org.apache.tapestry</groupId>
 			<artifactId>tapestry-hibernate</artifactId>
 			<version>${tapestry-release-version}</version>
 		</dependency>
 
-		<!-- A dependency on either JUnit or TestNG is required, or the surefire plugin (which runs the tests)
-		will fail, preventing Maven from packaging the WAR. Tapestry includes a large number
-		of testing facilities designed for use with TestNG (http://testng.org/), so it's recommended. -->
 		<dependency>
 			<groupId>org.testng</groupId>
 			<artifactId>testng</artifactId>
