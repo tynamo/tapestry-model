@@ -2,11 +2,14 @@ package org.trailsframework.examples.recipe.services;
 
 import org.apache.tapestry5.SymbolConstants;
 import org.apache.tapestry5.hibernate.HibernateModule;
+import org.apache.tapestry5.hibernate.HibernateSessionSource;
 import org.apache.tapestry5.hibernate.HibernateTransactionDecorator;
 import org.apache.tapestry5.ioc.*;
 import org.apache.tapestry5.ioc.annotations.Match;
 import org.apache.tapestry5.ioc.annotations.SubModule;
 import org.apache.tapestry5.services.BeanBlockContribution;
+import org.hibernate.EntityMode;
+import org.hibernate.metadata.ClassMetadata;
 import org.trailsframework.descriptor.DescriptorDecorator;
 import org.trailsframework.descriptor.annotation.AnnotationDecorator;
 import org.trailsframework.services.*;
@@ -26,8 +29,8 @@ public class AppModule
 		// is provided inline, or requires more initialization than simply
 		// invoking the constructor.
 
-		binder.bind(PersistenceService.class, HibernatePersistenceServiceImpl.class);
 		binder.bind(DescriptorService.class, DescriptorServiceImpl.class);
+		binder.bind(HibernatePersistenceService.class, HibernatePersistenceServiceImpl.class);
 	}
 
 
@@ -53,7 +56,7 @@ public class AppModule
 		configuration.add("org.trailsframework.examples.recipe.model");
 	}
 
-	@Match("PersistenceService")
+	@Match("HibernatePersistenceService")
 	public static <T> T decorateTransactionally(HibernateTransactionDecorator decorator, Class<T> serviceInterface,
 												T delegate,
 												String serviceId)
@@ -68,10 +71,10 @@ public class AppModule
 	 * annotations on the property. In general, DefaultDataTypeAnalyzer is used, as that only needs to consider property
 	 * type. DefaultDataTypeAnalyzer matches property types to data types, based on a search up the inheritance path.
 	 */
-	 public static void contributeDefaultDataTypeAnalyzer(MappedConfiguration<Class, String> configuration)
-	 {
+	public static void contributeDefaultDataTypeAnalyzer(MappedConfiguration<Class, String> configuration)
+	{
 
-	 }
+	}
 
 	/**
 	 * Contribution to the BeanBlockSource service to tell the BeanEditForm component about the editors. When the
@@ -83,10 +86,22 @@ public class AppModule
 
 	}
 
-	public static void contributeDescriptorService(OrderedConfiguration<DescriptorDecorator> configuration, ObjectLocator locator)
+	public static void contributeDescriptorFactory(OrderedConfiguration<DescriptorDecorator> configuration,
+												   ObjectLocator locator)
 	{
 		configuration.add("Annotation", new AnnotationDecorator());
 		configuration.add("Hibernate", locator.autobuild(HibernateDescriptorDecorator.class));
+	}
+
+	public static void contributeDescriptorService(Configuration<Class> configuration,
+												   HibernateSessionSource hibernateSessionSource)
+	{
+
+		for (Object classMetadata : hibernateSessionSource.getSessionFactory().getAllClassMetadata().values())
+		{
+			configuration.add(((ClassMetadata) classMetadata).getMappedClass(EntityMode.POJO));
+		}
+
 	}
 
 	public void contributeTrailsDataTypeAnalyzer(MappedConfiguration<String, String> configuration)
@@ -114,10 +129,23 @@ public class AppModule
 */
 	}
 
-	public void contributeReflectionDescriptorFactory(Configuration<String> configuration)
+	public void contributePropertyDescriptorFactory(Configuration<String> configuration)
 	{
 		configuration.add("exclude.*");
 		configuration.add("class");
+	}
+
+	public void contributeMethodDescriptorFactory(Configuration<String> configuration)
+	{
+		configuration.add("shouldExclude");
+		configuration.add("set.*");
+		configuration.add("get.*");
+		configuration.add("is.*");
+		configuration.add("equals");
+		configuration.add("wait");
+		configuration.add("toString");
+		configuration.add("notify.*");
+		configuration.add("hashCode");
 	}
 
 }

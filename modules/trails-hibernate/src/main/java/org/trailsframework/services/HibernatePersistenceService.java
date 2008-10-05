@@ -13,11 +13,15 @@ package org.trailsframework.services;
 
 import org.hibernate.criterion.DetachedCriteria;
 import org.trailsframework.descriptor.IClassDescriptor;
+import org.apache.tapestry5.hibernate.annotations.CommitAfter;
 
 import java.util.List;
 
 public interface HibernatePersistenceService extends PersistenceService
 {
+
+	@CommitAfter
+	<T> T save(T instance);
 
 	public <T> T getInstance(Class<T> type, DetachedCriteria criteria);
 
