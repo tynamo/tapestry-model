@@ -13,6 +13,7 @@ import org.hibernate.metadata.ClassMetadata;
 import org.trailsframework.descriptor.DescriptorDecorator;
 import org.trailsframework.descriptor.annotation.AnnotationDecorator;
 import org.trailsframework.services.*;
+import org.trailsframework.builder.BuilderDirector;
 
 /**
  * This module is automatically included as part of the Tapestry IoC Registry, it's a good place to configure and extend
@@ -31,6 +32,7 @@ public class AppModule
 
 		binder.bind(DescriptorService.class, DescriptorServiceImpl.class);
 		binder.bind(HibernatePersistenceService.class, HibernatePersistenceServiceImpl.class);
+		binder.bind(BuilderDirector.class, BuilderDirector.class);
 	}
 
 

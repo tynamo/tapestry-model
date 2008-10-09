@@ -2,6 +2,7 @@ package org.trailsframework.examples.recipe.components;
 
 import org.apache.tapestry5.BindingConstants;
 import org.apache.tapestry5.RenderSupport;
+import org.apache.tapestry5.Block;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.IncludeStylesheet;
@@ -23,10 +24,17 @@ public class Layout {
 	@Inject
 	private RenderSupport renderSupport;
 
-
 	@Property
 	@Parameter(required = true)
 	private String title;
+
+	@Property(write = false)
+	@Parameter(value = "block:subMenuBlock", defaultPrefix = BindingConstants.LITERAL)
+	private Block subMenuBlock;
+
+	@Property(write = false)
+	@Parameter(value = "block:navBlock", defaultPrefix = BindingConstants.LITERAL)
+	private Block navBlock;
 
 //
 //	@InjectContainer
@@ -54,7 +62,4 @@ public class Layout {
 //		renderSupport.addScriptLink(globalLibrary);
 //	}
 
-	public String getCssTheme() {
-		return "simplicity";
-	}
 }

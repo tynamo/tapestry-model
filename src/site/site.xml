@@ -14,7 +14,7 @@
 		 <skin>
 			 <groupId>org.apache.tapestry</groupId>
 			 <artifactId>maven-skin</artifactId>
-			 <version>1.1</version>
+			 <version>1.2</version>
 		 </skin>
 	 -->
 
@@ -29,8 +29,6 @@
 		<menu name="Trails">
 			<item name="News" href="http://docs.codehaus.org/pages/viewrecentblogposts.action?key=TRAILS"/>
 			<item name="Wiki" href="http://docs.codehaus.org/pages/listpages-dirview.action?key=TRAILS"/>
-			<item name="Trails Google Co-op"
-				  href="http://www.google.com/coop/cse?cx=013250026102135188957%3Anax2woa71p0"/>
 		</menu>
 
 		<menu name="Quick Links">

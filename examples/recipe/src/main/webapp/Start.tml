@@ -1,11 +1,26 @@
 <t:layout title="literal:Trails!" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_0_0.xsd">
+	<t:parameter name="subMenuBlock">
+		<ul>
+			<li>
+				pepepepepepepep
+			</li>
+		</ul>
+	</t:parameter>
+	<t:parameter name="navBlock">
+		<ul>
+			<li>
+				lalalalalalla
+			</li>
+		</ul>
+	</t:parameter>
+	
 
 	<h1>Trails Start Page</h1>
 
 	<ul>
 		<t:loop source="allDescriptors" value="descriptorIterator">
 			<li>
-				<t:pagelink page="ListPage" context="descriptorIterator.type">${descriptorIterator.displayName}</t:pagelink>
+				<t:pagelink page="ListPage" context="descriptorIterator.type">List ${descriptorIterator.displayName}</t:pagelink>
 			</li>
 		</t:loop>
 	</ul>

@@ -1,4 +1,18 @@
 <t:layout title="literal:Trails!" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_0_0.xsd">
+	<t:parameter name="subMenuBlock">
+		<ul id="local">
+			<t:if test="classDescriptor.allowSave">
+				<li>
+					<t:pagelink page="NewPage" context="classDescriptor.type">New ${classDescriptor.displayName}</t:pagelink>
+				</li>
+			</t:if>
+<!--
+			<li>
+				<a class="searchlink" href="#" jwcid="@trails:SearchLink" type="ognl:type"></a>
+			</li>
+-->
+		</ul>
+	</t:parameter>
 
 	<h1>List Page</h1>
 

@@ -1,5 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns:t="http://tapestry.apache.org/schema/tapestry_5_0_0.xsd">
+
 	<head>
 		<title>${title}</title>
 		<t:if test="heading">
@@ -22,6 +23,11 @@
 				<t:body />
 			</div>
 
+			<div id="sub">
+				<h2>Menu</h2>
+				<t:delegate to="subMenuBlock" />
+			</div>
+
 			<div id="navcolumn">
 				<h5>Trails</h5>
 				<ul>
@@ -36,8 +42,9 @@
 					<h2 class="accessibility">Navigation</h2>
 					<ul id="primary-nav" class="menuList">
 						<li class="selected">
-
+							<t:pagelink page="Start">Home</t:pagelink>
 						</li>
+						<t:delegate to="navBlock" />
 				  </ul>
 				  <ul class="locales">
 						<li>
@@ -67,4 +74,8 @@
 		</div>
 	</div>
 	</body>
+
+<t:block id="subMenuBlock"/>
+<t:block id="navBlock"/>
+
 </html>

@@ -3,13 +3,13 @@
 		<ul>
 			<ul id="local">
 				<li>
-					<t:pagelink page="ListPage" context="classDescriptor.type">List ${classDescriptor.displayName}</t:pagelink>
+					<t:pagelink t:id="listPageLink" page="ListPage" context="classDescriptor.type">List ${classDescriptor.displayName}</t:pagelink>
 				</li>
 			</ul>
 		</ul>
 	</t:parameter>
 
-	<h1>Edit Page</h1>
+	<h1>New Page</h1>
 
 	<br/>
 

@@ -6,20 +6,17 @@ import org.apache.tapestry5.beaneditor.BeanModel;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.BeanModelSource;
-import org.apache.tapestry5.services.ContextValueEncoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.trailsframework.builder.BuilderDirector;
 import org.trailsframework.descriptor.IClassDescriptor;
 import org.trailsframework.services.DescriptorService;
 import org.trailsframework.services.PersistenceService;
 
-public class EditPage
+public class NewPage
 {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(EditPage.class);
-
-	@Inject
-	private ContextValueEncoder contextValueEncoder;
+	private static final Logger LOGGER = LoggerFactory.getLogger(NewPage.class);
 
 	@Inject
 	private BeanModelSource beanModelSource;
@@ -32,6 +29,9 @@ public class EditPage
 
 	@Inject
 	private DescriptorService descriptorService;
+
+	@Inject
+	private BuilderDirector builderDirector;
 
 	@Property(write = false)
 	private IClassDescriptor classDescriptor;
@@ -47,9 +47,9 @@ public class EditPage
 		// Make other changes to _model here.
 	}
 
-	void onActivate(Class clazz, String id) throws Exception
+	void onActivate(Class clazz) throws Exception
 	{
-		bean = contextValueEncoder.toValue(clazz, id);
+		bean = builderDirector.createNewInstance(clazz);
 		classDescriptor = descriptorService.getClassDescriptor(clazz);
 		beanModel = beanModelSource.create(clazz, true, messages);
 
@@ -63,10 +63,10 @@ public class EditPage
 	 */
 	Object[] onPassivate()
 	{
-		return new Object[]{classDescriptor.getType(), bean};
+		return new Object[]{classDescriptor.getType()};
 	}
 
-	void onSuccess()
+	Class onSuccess()
 	{
 		LOGGER.info("saving....");
 		persitenceService.save(bean);

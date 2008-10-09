@@ -2,6 +2,8 @@ package org.trailsframework.examples.recipe.pages;
 
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
+import org.trailsframework.descriptor.IClassDescriptor;
+import org.trailsframework.services.DescriptorService;
 import org.trailsframework.services.PersistenceService;
 import org.trailsframework.util.Identifiable;
 
@@ -13,25 +15,28 @@ public class ListPage
 	@Inject
 	private PersistenceService persitenceService;
 
+	@Inject
+	private DescriptorService descriptorService;
+
 	@Property
 	private Identifiable model;
 
-	@Property
-	private Class clazz;
+	@Property(write = false)
+	private IClassDescriptor classDescriptor;
 
 	void onActivate(Class clazz) throws Exception
 	{
-		this.clazz = clazz;
+		classDescriptor = descriptorService.getClassDescriptor(clazz);
 	}
 
 	public List getInstances()
 	{
-		return persitenceService.getInstances(clazz);
+		return persitenceService.getInstances(classDescriptor.getType());
 	}
 
 	public Object[] getEditPageContext()
 	{
-		return new Object[]{clazz, model};
+		return new Object[]{classDescriptor.getType(), model};
 	}
 
 }
