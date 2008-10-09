@@ -66,7 +66,7 @@ public class EditPage
 		return new Object[]{classDescriptor.getType(), bean};
 	}
 
-	void onSuccess()
+	Class onSuccess()
 	{
 		LOGGER.info("saving....");
 		persitenceService.save(bean);
