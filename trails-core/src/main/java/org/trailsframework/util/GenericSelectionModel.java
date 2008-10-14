@@ -8,6 +8,7 @@ import org.apache.tapestry5.util.AbstractSelectModel;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Collections;
 
 public class GenericSelectionModel<T> extends AbstractSelectModel
 {
@@ -34,7 +35,7 @@ public class GenericSelectionModel<T> extends AbstractSelectModel
 
 	public List<OptionGroupModel> getOptionGroups()
 	{
-		return null;
+		return Collections.EMPTY_LIST;
 	}
 
 	public List<OptionModel> getOptions()

@@ -39,6 +39,8 @@ public class TrailsCoreModule
 	public static void contributeBeanBlockSource(Configuration<BeanBlockContribution> configuration)
 	{
 		configuration.add(new BeanBlockContribution("referenceEditor", "trails/Editors", "select", true));
+		configuration.add(new BeanBlockContribution("identifierEditor", "trails/Editors", "identifierEditor", true));
+		configuration.add(new BeanBlockContribution("collectionEditor", "trails/Editors", "palette", true));
 	}
 
 
