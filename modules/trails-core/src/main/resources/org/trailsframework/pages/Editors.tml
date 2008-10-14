@@ -1,9 +1,29 @@
 <html xmlns:t="http://tapestry.apache.org/schema/tapestry_5_0_0.xsd">
-	<t:block id="select">
-		<t:label for="select"/>
-		<t:select t:id="select" model="selectModel" value="context.propertyValue" encoder="valueEncoderForProperty"/>
-		<em>
-			&lt;== ERROR MESSAGE HERE!!!!
-		</em>
-	</t:block>
+
+<t:block id="select">
+	<t:label for="select"/>
+	<t:select t:id="select" model="selectModel" value="propertyEditContext.propertyValue" encoder="valueEncoderForProperty"/>
+	<em>
+		help message here
+	</em>
+</t:block>
+
+<t:block id="identifierEditor">
+	<label>${propertyEditContext.label}</label><p>${propertyEditContext.propertyValue}</p>
+</t:block>
+
+
+<t:block id="palette">
+	<t:label for="palette"/>
+	<t:palette t:id="palette" model="selectModel" selected="propertyEditContext.propertyValue"  encoder="valueEncoderForProperty"/>
+	<em>
+		help message here
+	</em>
+</t:block>
+
+
+
+
+
+
 </html>

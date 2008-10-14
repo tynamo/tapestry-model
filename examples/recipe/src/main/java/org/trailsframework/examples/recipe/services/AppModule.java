@@ -109,9 +109,10 @@ public class AppModule
 	public void contributeTrailsDataTypeAnalyzer(MappedConfiguration<String, String> configuration)
 	{
 
+
+//		configuration.add("hidden", "hidden");
+		configuration.add("readOnly", "propertyDisplay");
 /*
-		configuration.add("hidden", "hidden");
-		configuration.add("readOnly", "readOnly");
 		configuration.add("richText", "FCKEditor");
 		configuration.add("hidden", "hidden");
 		configuration.add("name.toLowerCase().endsWith('password')", "passwordEditor");
@@ -119,14 +120,16 @@ public class AppModule
 		configuration.add("string and large and !identifier", "textAreaEditor");
 		configuration.add("date", "dateEditor");
 		configuration.add("numeric and !identifier", "numberEditor");
-		configuration.add("identifier", "identifierEditor");
+*/
+		configuration.add("identifier", "identifierEditor"); //"identifierEditor");
+/*
 		configuration.add("boolean", "booleanEditor");
 		configuration.add("supportsExtension('org.trails.descriptor.extension.EnumReferenceDescriptor')", "enumEditor");
 		configuration.add("supportsExtension('org.trails.descriptor.extension.BlobDescriptorExtension')", "blobEditor");
 */
 		configuration.add("objectReference", "referenceEditor");
+		configuration.add("collection and not(childRelationship)", "collectionEditor");
 /*
-		configuration.add("collection", "collectionEditor");
 		configuration.add("embedded", "embedded");
 */
 	}
