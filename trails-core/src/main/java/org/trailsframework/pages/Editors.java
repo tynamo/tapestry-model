@@ -1,13 +1,18 @@
 package org.trailsframework.pages;
 
+import org.apache.tapestry.commons.components.DateTimeField;
+import org.apache.tapestry.commons.components.Editor;
+import org.apache.tapestry5.FieldTranslator;
+import org.apache.tapestry5.FieldValidator;
 import org.apache.tapestry5.SelectModel;
 import org.apache.tapestry5.ValueEncoder;
+import org.apache.tapestry5.annotations.Component;
 import org.apache.tapestry5.annotations.Environmental;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.services.BeanEditContext;
 import org.apache.tapestry5.services.PropertyEditContext;
 import org.apache.tapestry5.services.ValueEncoderSource;
-import org.apache.tapestry5.services.BeanEditContext;
 import org.trailsframework.descriptor.CollectionDescriptor;
 import org.trailsframework.descriptor.IPropertyDescriptor;
 import org.trailsframework.services.DescriptorService;
@@ -34,6 +39,18 @@ public class Editors
 
 	@Inject
 	private ValueEncoderSource valueEncoderSource;
+
+
+	@Component(parameters = {"value=propertyEditContext.propertyValue", "label=prop:propertyEditContext.label",
+			"clientId=propertyEditContext.propertyid", "validate=prop:dateFieldValidator"})
+	private DateTimeField dateField;
+
+	@Component(
+			parameters = {"value=propertyEditContext.propertyValue", "label=prop:propertyEditContext.label",
+					"translate=prop:fckTranslator", "validate=prop:fckValidator", 
+					"clientId=prop:propertyEditContext.propertyId", "annotationProvider=propertyEditContext"})
+	private Editor fckEditor;
+
 
 	public SelectModel getSelectModel()
 	{
@@ -66,4 +83,20 @@ public class Editors
 			return valueEncoderSource.getValueEncoder(propertyEditContext.getPropertyType());
 		}
 	}
+
+	public FieldValidator getDateFieldValidator()
+	{
+		return propertyEditContext.getValidator(dateField);
+	}
+
+	public FieldValidator getFckValidator()
+	{
+		return propertyEditContext.getValidator(fckEditor);
+	}
+
+	public FieldTranslator getFckTranslator()
+	{
+		return propertyEditContext.getTranslator(fckEditor);
+	}
+
 }

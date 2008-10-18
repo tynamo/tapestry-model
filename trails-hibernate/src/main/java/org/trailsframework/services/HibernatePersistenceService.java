@@ -23,6 +23,9 @@ public interface HibernatePersistenceService extends PersistenceService
 	@CommitAfter
 	<T> T save(T instance);
 
+	@CommitAfter
+	void remove(Object instance);
+
 	public <T> T getInstance(Class<T> type, DetachedCriteria criteria);
 
 	public <T> List<T> getInstances(Class<T> type, DetachedCriteria criteria);

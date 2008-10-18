@@ -1,5 +1,15 @@
 <html xmlns:t="http://tapestry.apache.org/schema/tapestry_5_0_0.xsd">
 
+<t:block id="date">
+	<t:label for="dateField"/>
+	<input t:id="dateField" value="propertyEditContext.propertyValue" label="prop:propertyEditContext.label" clientId="propertyEditContext.propertyid" validate="prop:dateFieldValidator"/>
+</t:block>
+
+<t:block id="fckEditor">
+	<t:label for="fckEditor"/>
+	<input t:id="fckEditor" value="propertyEditContext.propertyValue"/>
+</t:block>
+
 <t:block id="select">
 	<t:label for="select"/>
 	<t:select t:id="select" model="selectModel" value="propertyEditContext.propertyValue" encoder="valueEncoderForProperty"/>
@@ -12,6 +22,9 @@
 	<label>${propertyEditContext.label}</label><p>${propertyEditContext.propertyValue}</p>
 </t:block>
 
+<t:block id="readOnly">
+	<label>${propertyEditContext.label}</label><p>${propertyEditContext.propertyValue}</p>
+</t:block>
 
 <t:block id="palette">
 	<t:label for="palette"/>
@@ -21,6 +34,9 @@
 	</em>
 </t:block>
 
+<t:block id="version">
+<!--	<t:hidden t:id="version" value="propertyEditContext.propertyValue"/>-->
+</t:block>
 
 
 
