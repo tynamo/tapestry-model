@@ -110,28 +110,23 @@ public class AppModule
 	{
 
 
-//		configuration.add("hidden", "hidden");
-		configuration.add("readOnly", "propertyDisplay");
-/*
-		configuration.add("richText", "FCKEditor");
-		configuration.add("hidden", "hidden");
-		configuration.add("name.toLowerCase().endsWith('password')", "passwordEditor");
-		configuration.add("string and !large and !identifier", "stringEditor");
-		configuration.add("string and large and !identifier", "textAreaEditor");
+// @todo: configuration.add("hidden", "hidden");
+		configuration.add("readOnly", "readOnly");
+		configuration.add("richText", "fckEditor");
+//		configuration.add("name.toLowerCase().endsWith('password')", "passwordEditor"); //USE @DataType("password")
+//		configuration.add("string and !large and !identifier", "stringEditor"); //managed by Tapestry
+		configuration.add("string and large and !identifier", "longtext");
 		configuration.add("date", "dateEditor");
-		configuration.add("numeric and !identifier", "numberEditor");
-*/
-		configuration.add("identifier", "identifierEditor"); //"identifierEditor");
-/*
-		configuration.add("boolean", "booleanEditor");
-		configuration.add("supportsExtension('org.trails.descriptor.extension.EnumReferenceDescriptor')", "enumEditor");
-		configuration.add("supportsExtension('org.trails.descriptor.extension.BlobDescriptorExtension')", "blobEditor");
-*/
+//		configuration.add("numeric and !identifier", "numberEditor"); //managed by Tapestry
+		configuration.add("identifier", "identifierEditor");
+//		configuration.add("boolean", "booleanEditor"); //managed by Tapestry
+//		configuration.add("supportsExtension('org.trails.descriptor.extension.EnumReferenceDescriptor')", "enumEditor"); //managed by Tapestry
+// @todo: configuration.add("supportsExtension('org.trails.descriptor.extension.BlobDescriptorExtension')", "blobEditor");
 		configuration.add("objectReference", "referenceEditor");
 		configuration.add("collection and not(childRelationship)", "collectionEditor");
-/*
-		configuration.add("embedded", "embedded");
-*/
+// @todo: configuration.add("collection and childRelationship", "collectionEditor");
+// @todo: configuration.add("embedded", "embedded");
+
 	}
 
 	public void contributePropertyDescriptorFactory(Configuration<String> configuration)

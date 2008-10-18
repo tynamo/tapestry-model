@@ -14,6 +14,7 @@
 package org.trailsframework.examples.recipe.model;
 
 import org.hibernate.validator.NotNull;
+import org.hibernate.validator.Length;
 import org.trailsframework.descriptor.annotation.Collection;
 import org.trailsframework.descriptor.annotation.PropertyDescriptor;
 import org.trailsframework.util.Identifiable;
@@ -63,7 +64,7 @@ public class Recipe implements Identifiable
 		this.title = title;
 	}
 
-	@PropertyDescriptor(index = 2)
+	@PropertyDescriptor(index = 2, richText = true)
 	public String getDescription()
 	{
 		return description;
@@ -100,6 +101,7 @@ public class Recipe implements Identifiable
 	}
 
 	@PropertyDescriptor(index = 6)
+	@Length(max = 500)
 	public String getInstructions()
 	{
 		return instructions;

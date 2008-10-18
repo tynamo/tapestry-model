@@ -74,6 +74,21 @@
 			<version>2.0.8</version>
 		</dependency>
 
+		<dependency>
+			<groupId>org.apache.tapestry</groupId>
+			<artifactId>t5c-commons</artifactId>
+			<version>0.5.15</version>
+		</dependency>
+
+
 	</dependencies>
+
+	<repositories>
+		<repository>
+			<id>t5components</id>
+			<name>T5Components Maven Repository</name>
+			<url>http://87.193.218.134:8080/t5components/maven-repository</url>
+		</repository>
+	</repositories>
 
 </project>

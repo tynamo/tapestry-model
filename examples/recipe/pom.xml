@@ -29,16 +29,7 @@
 			<plugin>
 				<groupId>org.mortbay.jetty</groupId>
 				<artifactId>maven-jetty-plugin</artifactId>
-				<configuration>
-					<!-- Log to the console. -->
-					<requestLog implementation="org.mortbay.jetty.NCSARequestLog">
-						<!-- This doesn't do anything for Jetty, but is a workaround for a Maven bug
-													 that prevents the requestLog from being set. -->
-						<append>true</append>
-					</requestLog>
-				</configuration>
 			</plugin>
-
 
 			<!-- This changes the WAR file packaging so that what would normally go into WEB-INF/classes
 				 is instead packaged as WEB-INF/lib/recipe.jar.  This is necessary for Tapestry

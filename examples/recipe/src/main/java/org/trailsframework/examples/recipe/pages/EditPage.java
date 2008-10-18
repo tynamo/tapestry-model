@@ -2,11 +2,18 @@ package org.trailsframework.examples.recipe.pages;
 
 
 import org.apache.tapestry5.annotations.Property;
+import org.apache.tapestry5.annotations.Component;
+import org.apache.tapestry5.annotations.InjectPage;
 import org.apache.tapestry5.beaneditor.BeanModel;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.BeanModelSource;
 import org.apache.tapestry5.services.ContextValueEncoder;
+import org.apache.tapestry5.corelib.components.Form;
+import org.apache.tapestry5.corelib.components.BeanEditForm;
+import org.apache.tapestry5.corelib.components.PageLink;
+import org.apache.tapestry5.Link;
+import org.apache.tapestry5.ComponentResources;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.trailsframework.descriptor.IClassDescriptor;
@@ -33,6 +40,9 @@ public class EditPage
 	@Inject
 	private DescriptorService descriptorService;
 
+	@Inject
+	private ComponentResources resources;
+
 	@Property(write = false)
 	private IClassDescriptor classDescriptor;
 
@@ -42,9 +52,15 @@ public class EditPage
 	@Property(write = false)
 	private Object bean;
 
+	@Component
+	private BeanEditForm form;
+
+	@Component
+	private PageLink link;
+
 	void pageLoaded()
 	{
-		// Make other changes to _model here.
+		// Make other changes to the bean here.
 	}
 
 	void onActivate(Class clazz, String id) throws Exception
@@ -57,7 +73,7 @@ public class EditPage
 	}
 
 	/**
-	 * This tells Tapestry to put _personId into the URL, making it bookmarkable.
+	 * This tells Tapestry to put type & id into the URL, making it bookmarkable.
 	 *
 	 * @return
 	 */
@@ -66,11 +82,34 @@ public class EditPage
 		return new Object[]{classDescriptor.getType(), bean};
 	}
 
-	Class onSuccess()
+	boolean onValidateForm()
 	{
-		LOGGER.info("saving....");
-		persitenceService.save(bean);
-		return Start.class;
+		LOGGER.debug("validating");
+		//add validation logic here
+		return true;
+	}
+
+	Object onSuccess()
+	{
+		try
+		{
+
+			LOGGER.debug("saving....");
+			persitenceService.save(bean);
+
+			return backToList();
+		}
+
+		catch (Exception e)
+		{
+//			missing ExceptionUtils (Lang 2.3 API)
+//			form.recordError(ExceptionUtil.getRootCause(e));
+			form.recordError(e.getMessage());
+			LOGGER.error(e.getMessage());
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 
 	void cleanupRender()
@@ -78,6 +117,21 @@ public class EditPage
 		bean = null;
 		classDescriptor = null;
 		beanModel = null;
+	}
+
+	public Link onActionFromDelete()
+	{
+		persitenceService.remove(bean);
+		return backToList();
+	}
+
+	public Link onActionFromCancel()
+	{
+		return backToList();
+	}
+
+	public Link backToList() {
+		return resources.createPageLink(ListPage.class, false, classDescriptor.getType());
 	}
 
 }

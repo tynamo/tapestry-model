@@ -3,7 +3,7 @@
 		<ul>
 			<ul id="local">
 				<li>
-					<t:pagelink page="ListPage" context="classDescriptor.type">List ${classDescriptor.displayName}</t:pagelink>
+					<a t:id="link" page="ListPage" context="classDescriptor.type">List ${classDescriptor.displayName}</a>
 				</li>
 			</ul>
 		</ul>
@@ -13,6 +13,10 @@
 
 	<br/>
 
-	<t:beaneditform object="bean" model="beanModel"/>
+	<t:beaneditform t:id="form" object="bean" model="beanModel"/>
+
+	<t:actionlink t:id="delete">Delete</t:actionlink>
+	<t:actionlink t:id="cancel">Cancel</t:actionlink>
+
 
 </t:layout>
