@@ -1,0 +1,69 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+
+<div id="${clientId}" class="editcomposition" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_0_0.xsd">
+
+	<table class="field editCollection">
+		<tr>
+			<td>
+<!--
+				<table jwcid="any@Any">
+					<tr jwcid="foreach@For" source="ognl:collection" value="ognl:currentObject" index="ognl:index"
+						renderTag="true">
+						<td>
+							<a href="#" jwcid="@EditLink" model="ognl:currentObject"
+							   associationDescriptor="ognl:collectionDescriptor" parent="ognl:model">
+								<span jwcid="insert@Insert" value="ognl:currentObject"/>
+							</a>
+						</td>
+						<td>
+							<input jwcid="removeCheckbox@Checkbox" type="checkbox" value="ognl:#this.selected[index]"/>
+						</td>
+					</tr>
+				</table>
+-->
+				<t:grid source="collection" row="collectionIterator" columnIndex="index" model="beanModel">
+					<t:parameter name="idcell">
+						<t:pagelink t:page="EditPage" context="editPageContext">${collectionIterator.id}</t:pagelink>
+					</t:parameter>
+				</t:grid>
+
+				<!--
+					 <table class="list table contribTable" jwcid="@ObjectTable" instances="ognl:collection"
+							classDescriptor="ognl:descriptorService.getClassDescriptor(collectionDescriptor.elementType)"
+							object="ognl:currentObject"
+							index="ognl:index"
+							extraColumns="!checkbox: :checkbox">
+						 <span jwcid="linkColumnValue@Block">
+							 <a href="#" jwcid="@EditLink" model="ognl:currentObject"
+								collectionProperty="ognl:collectionDescriptor.name">
+								 <span jwcid="insert@Insert" value="ognl:currentObject + 'jguyt'"/>
+							 </a>
+						 </span>
+						 <span jwcid="checkboxColumnValue@Block">
+							 <input jwcid="removeCheckbox@Checkbox" type="checkbox" value="ognl:#this.selected[index]"/>
+						 </span>
+					 </table>
+ -->
+			</td>
+
+<!--
+			<td jwcid="@If" condition="ognl:list" renderTag="true">
+				<a jwcid="upLink@LinkSubmit" listener="listener:moveUp" disabled="ognl:page.modelNew">
+					<img jwcid="@Image" image="ognl:assets.upImage" alt="Up"/>
+				</a>
+				<br/>
+				<a jwcid="downLink@LinkSubmit" listener="listener:moveDown" disabled="ognl:page.modelNew">
+					<img jwcid="@Image" image="ognl:assets.downImage" alt="Down"/>
+				</a>
+			</td>
+-->
+		</tr>
+	</table>
+<!--
+	<span jwcid="@If" condition="ognl:allowRemove">
+		<input class="button" jwcid="removeButton@Submit" type="button"
+			   value="ognl:getMessage(@org.trails.util.Utils@REMOVE_MESSAGE)"
+			   listener="listener:remove" disabled="ognl:page.modelNew"/>
+	</span>
+-->
+</div>

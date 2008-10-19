@@ -2,12 +2,12 @@
 
 <t:block id="date">
 	<t:label for="dateField"/>
-	<input t:id="dateField" value="propertyEditContext.propertyValue" label="prop:propertyEditContext.label" clientId="propertyEditContext.propertyid" validate="prop:dateFieldValidator"/>
+	<input t:id="dateField"/>
 </t:block>
 
 <t:block id="fckEditor">
 	<t:label for="fckEditor"/>
-	<input t:id="fckEditor" value="propertyEditContext.propertyValue"/>
+	<input t:id="fckEditor"/>
 </t:block>
 
 <t:block id="select">
@@ -38,7 +38,9 @@
 <!--	<t:hidden t:id="version" value="propertyEditContext.propertyValue"/>-->
 </t:block>
 
-
+<t:block id="editComposition">
+	<div t:id="editComposition"/>
+</t:block>
 
 
 

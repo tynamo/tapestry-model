@@ -1,14 +1,19 @@
 package org.trailsframework.descriptor.annotation;
 
+import ognl.Ognl;
+import org.apache.commons.lang.exception.ExceptionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.trailsframework.descriptor.*;
+
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.*;
-
-import ognl.Ognl;
-import org.trailsframework.descriptor.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * This class uses the annotations on a given class or property to modify its
@@ -18,6 +23,8 @@ import org.trailsframework.descriptor.*;
  */
 public class AnnotationDecorator implements DescriptorDecorator
 {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(AnnotationDecorator.class);
 
 	public IClassDescriptor decorate(IClassDescriptor descriptor)
 	{
@@ -75,7 +82,7 @@ public class AnnotationDecorator implements DescriptorDecorator
 		try
 		{
 			PropertyDescriptor beanPropDescriptor = (PropertyDescriptor) Ognl.getValue("propertyDescriptors.{? name == '" + propertyDescriptor.getName() + "'}[0]",
-				Introspector.getBeanInfo(clonedDescriptor.getBeanType()));
+					Introspector.getBeanInfo(clonedDescriptor.getBeanType()));
 
 			Method readMethod = beanPropDescriptor.getReadMethod();
 			clonedDescriptor = (IPropertyDescriptor) decorateFromAnnotations(clonedDescriptor, readMethod.getAnnotations());
@@ -89,15 +96,16 @@ public class AnnotationDecorator implements DescriptorDecorator
 		return clonedDescriptor;
 	}
 
-	protected IMethodDescriptor decorateMethodDescriptor(IMethodDescriptor methodDescriptor) {
+	protected IMethodDescriptor decorateMethodDescriptor(IMethodDescriptor methodDescriptor)
+	{
 		try
 		{
 
 			return (IMethodDescriptor) decorateFromAnnotations(methodDescriptor, methodDescriptor.getMethod().getAnnotations());
 
-		} catch (NoSuchMethodException e)
+		} catch (NoSuchMethodException nsme)
 		{
-
+			LOGGER.warn(ExceptionUtils.getRootCauseMessage(nsme));
 		}
 		return methodDescriptor;
 	}
@@ -136,7 +144,7 @@ public class AnnotationDecorator implements DescriptorDecorator
 				}
 				catch (Exception ex)
 				{
-					//ex.printStackTrace();
+					LOGGER.warn(ExceptionUtils.getRootCauseMessage(ex));
 				}
 			}
 		}

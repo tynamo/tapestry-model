@@ -28,6 +28,9 @@ public class TrailsCoreModule
 
 	}
 
+	/**
+	 * Add our components and pages to the "trails" library.
+	 */
 	public static void contributeComponentClassResolver(Configuration<LibraryMapping> configuration)
 	{
 		configuration.add(new LibraryMapping("trails", "org.trailsframework"));
@@ -44,6 +47,7 @@ public class TrailsCoreModule
 		configuration.add(new BeanBlockContribution("referenceEditor", "trails/Editors", "select", true));
 		configuration.add(new BeanBlockContribution("identifierEditor", "trails/Editors", "identifierEditor", true));
 		configuration.add(new BeanBlockContribution("collectionEditor", "trails/Editors", "palette", true));
+		configuration.add(new BeanBlockContribution("editComposition", "trails/Editors", "editComposition", true));
 	}
 
 
