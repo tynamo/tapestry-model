@@ -36,14 +36,15 @@ public class DescriptorServiceImpl implements DescriptorService
 			descriptorsMap.put(type, descriptorFactory.buildClassDescriptor(type));
 		}
 
-		// second pass to find children and set up descriptor parents
+		this.descriptors = CollectionFactory.newList(descriptorsMap.values());
+		this.descriptorsRegistry = StrategyRegistry.newInstance(IClassDescriptor.class, descriptorsMap);
+
+		// second pass to find children
 		for (IClassDescriptor iClassDescriptor : descriptorsMap.values())
 		{
 			findChildren(iClassDescriptor);
 		}
 
-		this.descriptors = CollectionFactory.newList(descriptorsMap.values());
-		this.descriptorsRegistry = StrategyRegistry.newInstance(IClassDescriptor.class, descriptorsMap);
 	}
 
 	public List<IClassDescriptor> getAllDescriptors()

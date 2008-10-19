@@ -18,6 +18,10 @@ import org.trailsframework.descriptor.IPropertyDescriptor;
 import org.trailsframework.services.DescriptorService;
 import org.trailsframework.services.PersistenceService;
 import org.trailsframework.util.GenericSelectionModel;
+import org.trailsframework.components.EditComposition;
+
+import java.util.List;
+import java.util.ArrayList;
 
 
 public class Editors
@@ -45,16 +49,23 @@ public class Editors
 			"clientId=propertyEditContext.propertyid", "validate=prop:dateFieldValidator"})
 	private DateTimeField dateField;
 
-	@Component(
-			parameters = {"value=propertyEditContext.propertyValue", "label=prop:propertyEditContext.label",
-					"translate=prop:fckTranslator", "validate=prop:fckValidator", 
-					"clientId=prop:propertyEditContext.propertyId", "annotationProvider=propertyEditContext"})
+	@Component(parameters = {"value=propertyEditContext.propertyValue", "label=prop:propertyEditContext.label",
+			"translate=prop:fckTranslator", "validate=prop:fckValidator",
+			"clientId=prop:propertyEditContext.propertyId", "annotationProvider=propertyEditContext"})
 	private Editor fckEditor;
 
+	@Component(parameters = {"collection=propertyEditContext.propertyValue", "label=prop:propertyEditContext.label",
+			"clientId=prop:propertyEditContext.propertyId", "collectionDescriptor=propertyDescriptor"})
+	private EditComposition editComposition;
+
+	public IPropertyDescriptor getPropertyDescriptor()
+	{
+		return descriptorService.getClassDescriptor(beanEditContext.getBeanClass()).getPropertyDescriptor(propertyEditContext.getPropertyId());
+	}
 
 	public SelectModel getSelectModel()
 	{
-		IPropertyDescriptor propertyDescriptor = descriptorService.getClassDescriptor(beanEditContext.getBeanClass()).getPropertyDescriptor(propertyEditContext.getPropertyId());
+		IPropertyDescriptor propertyDescriptor = getPropertyDescriptor();
 
 		if (propertyDescriptor.isCollection())
 		{
@@ -73,7 +84,7 @@ public class Editors
 	 */
 	public ValueEncoder getValueEncoderForProperty()
 	{
-		IPropertyDescriptor propertyDescriptor = descriptorService.getClassDescriptor(beanEditContext.getBeanClass()).getPropertyDescriptor(propertyEditContext.getPropertyId());
+		IPropertyDescriptor propertyDescriptor = getPropertyDescriptor();
 		if (propertyDescriptor.isCollection())
 		{
 			CollectionDescriptor collectionDescriptor = (CollectionDescriptor) propertyDescriptor;
@@ -98,5 +109,37 @@ public class Editors
 	{
 		return propertyEditContext.getTranslator(fckEditor);
 	}
+
+
+/*	public List<Boolean> buildSelectedList()
+	{
+		ArrayList<Boolean> selected = new ArrayList<Boolean>();
+		if (collection != null)
+		{
+			selected = new ArrayList<Boolean>(collection.size());
+			for (Object o : getCollection())
+			{
+				selected.add(false);
+			}
+		}
+		return selected;
+	}
+
+	public List getSelectedList()
+	{
+		ArrayList selectedList = new ArrayList();
+		selectedList.addAll(getCollection());
+		return selectedList;
+	}
+
+	public void setSelectedList(List selected)
+	{
+		if (selected != null)
+		{
+			getCollection().clear();
+			getCollection().addAll(selected);
+		}
+	}
+*/
 
 }

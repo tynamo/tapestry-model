@@ -1,19 +1,17 @@
 package org.trailsframework.examples.recipe.pages;
 
 
-import org.apache.tapestry5.annotations.Property;
+import org.apache.tapestry5.ComponentResources;
+import org.apache.tapestry5.Link;
 import org.apache.tapestry5.annotations.Component;
-import org.apache.tapestry5.annotations.InjectPage;
+import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.beaneditor.BeanModel;
+import org.apache.tapestry5.corelib.components.BeanEditForm;
+import org.apache.tapestry5.corelib.components.PageLink;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.BeanModelSource;
 import org.apache.tapestry5.services.ContextValueEncoder;
-import org.apache.tapestry5.corelib.components.Form;
-import org.apache.tapestry5.corelib.components.BeanEditForm;
-import org.apache.tapestry5.corelib.components.PageLink;
-import org.apache.tapestry5.Link;
-import org.apache.tapestry5.ComponentResources;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.trailsframework.descriptor.IClassDescriptor;
@@ -130,7 +128,8 @@ public class EditPage
 		return backToList();
 	}
 
-	public Link backToList() {
+	public Link backToList()
+	{
 		return resources.createPageLink(ListPage.class, false, classDescriptor.getType());
 	}
 

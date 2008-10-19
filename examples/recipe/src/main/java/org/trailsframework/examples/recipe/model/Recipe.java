@@ -13,8 +13,8 @@
  */
 package org.trailsframework.examples.recipe.model;
 
-import org.hibernate.validator.NotNull;
 import org.hibernate.validator.Length;
+import org.hibernate.validator.NotNull;
 import org.trailsframework.descriptor.annotation.Collection;
 import org.trailsframework.descriptor.annotation.PropertyDescriptor;
 import org.trailsframework.util.Identifiable;
@@ -64,7 +64,7 @@ public class Recipe implements Identifiable
 		this.title = title;
 	}
 
-	@PropertyDescriptor(index = 2, richText = true)
+	@PropertyDescriptor(index = 2)
 	public String getDescription()
 	{
 		return description;
@@ -112,7 +112,6 @@ public class Recipe implements Identifiable
 		this.instructions = instructions;
 	}
 
-/*
 	private Set<Ingredient> ingredients = new HashSet<Ingredient>();
 
 	@OneToMany(cascade = CascadeType.ALL)
@@ -127,7 +126,5 @@ public class Recipe implements Identifiable
 	{
 		this.ingredients = ingredients;
 	}
-*/
-
 
 }

@@ -91,8 +91,8 @@ public class AppModule
 	public static void contributeDescriptorFactory(OrderedConfiguration<DescriptorDecorator> configuration,
 												   ObjectLocator locator)
 	{
-		configuration.add("Annotation", new AnnotationDecorator());
 		configuration.add("Hibernate", locator.autobuild(HibernateDescriptorDecorator.class));
+		configuration.add("Annotation", new AnnotationDecorator());
 	}
 
 	public static void contributeDescriptorService(Configuration<Class> configuration,
@@ -123,8 +123,8 @@ public class AppModule
 //		configuration.add("supportsExtension('org.trails.descriptor.extension.EnumReferenceDescriptor')", "enumEditor"); //managed by Tapestry
 // @todo: configuration.add("supportsExtension('org.trails.descriptor.extension.BlobDescriptorExtension')", "blobEditor");
 		configuration.add("objectReference", "referenceEditor");
-		configuration.add("collection and not(childRelationship)", "collectionEditor");
-// @todo: configuration.add("collection and childRelationship", "collectionEditor");
+		configuration.add("collection && not(childRelationship)", "collectionEditor");
+		configuration.add("collection && childRelationship", "editComposition");
 // @todo: configuration.add("embedded", "embedded");
 
 	}
