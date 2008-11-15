@@ -1,221 +1,191 @@
-/* A CSS Framework by Mike Stenhouse of Content with Style */
-/* - - - - - - - - - - - - - - - - - - - - -FORM - ELEMENTS - - - - - - - - - - - - - - - - - - - */
-/* From http://www.wufoo.com/css/global/dynamic.css */
 
-form {
-	font-size: .9em;
-}
-
-form ul {
-	position: relative;
-	list-style: none;
+form div.t-beaneditor {
+	margin: 0;
+	padding: 0;
 	width: 100%;
-	padding: 0px;
+	background-color:#fff;
+	border:none;
 }
 
-form li {
-	line-height: 2em;
-	margin: 0;
-	padding: 1px 1px 6px 5px;
-}
-
-form li.focused {
-	background-color: #fff7c0 !important;
-}
-
-form li p {
-	font-size: 9px;
-	line-height: 13px;
-	color: #444;
-}
-
-form[id] li {
+form div.t-beaneditor-row {
 	display: block;
-}
-
-form[id] ul.glassList li {
-	display: list-item;
-}
-
-form li div {
-	display: inline-block;
-}
-
-form li div.group {
-	display: block !important;
-	background-color: #f7f7f7;
-	padding: 10px;
-	width: 355px;
-}
-
-form li div.group p, form div.group p label {
-	text-align: left;
-}
-
-form li div.group input.large, form li div.group textarea.large, form li fieldset {
-	width: 339px;
-}
-
-form[id] li div {
-	display: inline;
-}
-
-form .left {
-	float: left !important;
 	margin: 0;
-}
-
-form .right {
-	float: right !important;
-	margin: 0;
-}
-
-form .clear {
+	padding: 4px 5px 2px 9px;
 	clear: both;
 }
 
-form li div {
-	margin-bottom: 0px;
+form div.t-beaneditor-row:after {
+	content: ".";
+	display: block;
+	height: 0;
+	clear: both;
+	visibility: hidden;
 }
 
-form li div p {
-	margin: 0 0 5px 0;
+* html form div.t-beaneditor-row {
+	height: 1%;
 }
 
-form div.left {
-	margin-right: 2px !important;
+* html form div.t-beaneditor-row div {
+	display: inline-block;
 }
 
-form div.left[class] {
-	margin-right: 4px !important;
+*+html form div.t-beaneditor-row div {
+	display: inline-block;
 }
 
-form div.left img {
-	margin: 0 0 -2px 0;
+form div.t-beaneditor-row div, form div.t-beaneditor-row span {
+	margin: 0 4px 0 0;
+	padding: 0 0 8px 0;
+	color: #444;
 }
 
-/* ----- INFO ----- */
-form h2 {
-	font-size: 1.8em;
+form div.t-beaneditor-row span {
+	float: left;
+}
+
+form li div.column {
+	padding-bottom: 0;
+}
+
+form li div span.left, form li div span.right {
+	width: 47%;
+	margin: 0;
+}
+
+form li div span.full input, form li div span.full select, form li div span.left input, form li div span.right input, form li div span.left select, form li div span.right select {
+	width: 100%;
+}
+
+.left {
+	float: left;
+}
+
+.right {
+	float: right;
+}
+
+.clear {
+	clear: both !important;
+}
+
+.info {
+	display: inline-block;
+	clear: both;
+	border-bottom: 1px dotted #ccc;
+	margin: 0 0 1em 0;
+}
+
+.info[class] {
+	display: block;
+}
+
+.info h2 {
+	font-weight: normal;
+	font-size: 160%;
+	margin: 0 0 .2em 0;
 	clear: left;
 }
 
-form .info {
-	display: inline-block;
-	margin: 0 0 4px 0;
-	padding: 0 0 4px 0;
-	border-bottom: 1px dotted #ccc !important;
-	text-align: left;
+.info div {
+	font-size: 95%;
+	line-height: 135%;
+	margin: 0 0 1em 0;
+	color: #555;
 }
 
-form .info[class] {
+form hr {
+	display: none;
+}
+
+div.t-beaneditor-row label {
+	clear:both;
+	display:block;
+	float:none;
+	text-align:left;
+	vertical-align:middle;
+	line-height: 150%;
+	padding: 0 0 1px 0;
+	border: none;
+	color: #222;
 	display: block;
-}
-
-form .info p {
-	font-size: 1em;
-	line-height: 1.3em;
-	margin: 0 0 8px 0;
-}
-
-/* ----- SECTIONS ----- */
-form .section {
-	display: inline-block;
-	border-top: 1px dotted #ccc !important;
-	margin-top: 15px !important;
-	padding-top: 12px !important;
-	padding-bottom: 0px !important;
-}
-
-form .section[class] {
-	display: block;
-}
-
-form .first {
-	border-top: none !important;
-	margin-top: 0px !important;
-	padding-top: 1px !important;
-}
-
-form .section h3 {
-	font-size: 1.25em;
-}
-
-form .section p {
-	font-size: 11px;
-	line-height: 13px;
-}
-
-/* ----- FIELDS AND LABELS ----- */
-label.desc {
-	margin: 4px 0 3px 0;
-	border: 0;
-	color: #444;
-	font-size: 1em;
-	line-height: 1.3em;
-	display: block;
+	font-size: 95%;
 	font-weight: bold;
 }
 
-p label {
-	font-weight: normal;
+form li div label, form li span label {
+	margin: 0;
+	padding-top: 6px;
+	clear: both;
+	font-size: 9px;
+	line-height: 9px;
+	color: #444;
+	display: block;
 }
 
-input.text, input.number, input.url, input.email, input.password, input.file,
-	textarea.textarea, select.select {
-	font-size: 1.2em;
+label.choice {
+	font-size: 100%;
+	display: block;
+	line-height: 1.5em;
+	margin: -1.65em 0 0 25px;
+	padding: .44em 0 .5em 0;
+	color: #222;
+	width: 88%;
+	display: block;
+}
+
+span.symbol {
+	font-size: 115%;
+	line-height: 130%;
+}
+
+form li div label var {
+	font-weight: bold;
+	font-style: normal;
+}
+
+form li div label .currently {
+	display: none;
+}
+
+input,  textarea, select {
+	margin: 0;
+	font-size: 100%;
+	color: #333;
+}
+
+input, textarea, .firefox select {
 	border-top: 1px solid #7c7c7c;
 	border-left: 1px solid #c3c3c3;
 	border-right: 1px solid #c3c3c3;
 	border-bottom: 1px solid #ddd;
-	background: #fff url( ../images/fieldbg.gif ) repeat-x top;
-	color: #333;
+	background: #fff url( /images/fieldbg.gif ) repeat-x top;
 }
 
-input.text, input.number, input.url, input.email, input.password, input.file {
-	padding: 2px;
-}
-
-input.currency {
-	text-align: right;
+input {
+	padding: 2px 0 2px 0;
 }
 
 input.checkbox, input.radio {
 	display: block;
-	line-height: 1.4em;
-	margin: 8px 0 0 3px;
+	line-height: 1.5em;
+	margin: .6em 0 0 3px;
 	width: 13px;
 	height: 13px;
 }
 
-input.focus, textarea.focus {
-	background: #ffd;
-	color: #000;
+input.other {
+	margin: 0 0 0 25px;
 }
 
-label.choice {
-	display: block;
-	line-height: 1.4em;
-	margin: -19px 0 0 25px;
-	padding: 4px 0 5px 0;
-	color: #444;
-	width: 80%;
-	font-size: 1.05em;
+textarea {
+	font-family: "Lucida Grande", Tahoma, Arial, sans-serif;
 }
 
-textarea.textarea {
-	font-size: 1.2em;
-	font-family: Lucida Grande, Arial, Helvetica, sans-serif;
-	margin-bottom: 1px;
-}
-
-textarea.textarea[class] {
-	font-family: Lucida Grande, Arial, Helvetica, sans-serif;
-}
-
-select.select {
+select {
+	font-family: "Lucida Grande", Tahoma, Arial, sans-serif;
+	margin: 1px 0;
 	padding: 1px 0 0 0;
-	margin: 1px 0 3px 0;
 }
 
 select.select[class] {
@@ -223,173 +193,325 @@ select.select[class] {
 	padding: 1px 0 1px 0;
 }
 
-/* ----- SIZES ----- */
-form .small {
-	width: 70px;
-}
-
-form .medium {
-	width: 170px;
-}
-
-form .large, form textarea.textarea {
-	width: 349px;
-}
-
-form .tags {
-	width: 320px;
-}
-
-form textarea.small {
-	height: 5.5em;
-}
-
-form textarea.medium {
-	height: 10em;
-}
-
-form textarea.large {
-	height: 20em;
-}
-
-/* ----- ERRORS ----- */
-form li.error {
-	background-color: #FFDFDF;
-	margin: 3px 0 !important;
-}
-
-input.error, textarea.error {
-	border: 1px solid #EF5959;
-	border-left: 1px solid #FF8F8F;
-	border-top: 1px solid #FF8F8F;
-	background: #fff;
-}
-
-p.error, li.error label.desc {
-	color: red !important;
-}
-
-p.error {
-	font-size: 9px !important;
+*:first-child+html select.select[class] {
 	margin: 1px 0;
 }
 
-/* ----- REQUIRED ----- */
-.req {
-	font-size: 1em !important;
-	color: #f90;
+.safari select.select {
+	margin-bottom: 1px;
+	font-size: 120% !important;
+}
+
+input.btTxt {
+	padding: 0 7px;
+	width: auto;
+	overflow: visible;
+}
+
+.buttons {
+	clear: both;
+	margin-top: 10px;
+}
+
+.buttons input {
+	font-size: 120%;
+	margin-right: 5px;
+}
+
+.rtl .info h2, .rtl .info div, .rtl label, .rtl label.choice, .rtl div label, .rtl span label, .rtl input.text, .rtl textarea.textarea, .rtl select.select, .rtl p.instruct, .rtl .section h3, .rtl .section div, .rtl input.btTxt {
+	direction: rtl;
+}
+
+.third {
+	width: 32% !important;
+}
+
+.half {
+	width: 48% !important;
+}
+
+.full {
+	width: 100% !important;
+}
+
+input.small, select.small {
+	width: 25%;
+}
+
+input.medium, select.medium {
+	width: 50%;
+}
+
+input.large, select.large, textarea.textarea {
+	width: 100%;
+}
+
+textarea.small {
+	height: 5.5em;
+}
+
+textarea.medium {
+	height: 10em;
+}
+
+textarea.large {
+	height: 20em;
+}
+
+#errorLi {
+	width: 99%;
+	margin: 0 auto;
+	background: #fff;
+	border: 1px dotted red;
+	margin-bottom: 1em;
+	text-align: center;
+	padding-top: 4px;
+	padding-left: 0px;
+	padding-right: 0px;
+}
+
+#errorMsgLbl {
+	margin: 7px 0 5px 0;
+	padding: 0;
+	font-size: 125%;
+	color: #DF0000;
+}
+
+#errorMsg {
+	margin: 0 0 .8em 0;
+	color: #000;
+	font-size: 100%;
+}
+
+#errorMsg strong {
+	background-color: #FFDFDF;
+	padding: 2px 3px;
+	color: red;
+}
+
+form li.error {
+	display: block !important;
+	border-bottom: 1px solid #F9B9B2;
+	border-right: 1px solid #F9B9B2;
+	background-color: #FFDFDF !important;
+}
+
+form li.error label {
+	color: #DF0000 !important;
+}
+
+form p.error {
+	display: none;
+	color: red;
 	font-weight: bold;
+	font-size: 10px;
+	margin: -2px 0 5px 0;
+	clear: both;
 }
 
-/* ----- Fieldsets ----- */
-fieldset {
-	margin: 10px 0 10px 0;
-	padding: 10px 10px 0 10px;
-	color: #444;
-	background-color: #eee;
+form li.error p.error {
+	display: block;
 }
 
-/* Firefox and others, don't apply to IE or it will put a border under each input element */
-li>fieldset, form>fieldset {
-	border: 1px solid silver
+.leftLabel p.error, .rightLabel p.error {
+	margin-left: 30%;
+	padding-left: 15px;
 }
 
-fieldset.choices {
-	padding: 10px 5px 10px 10px;
+.noI .leftLabel p.error, .noI .rightLabel p.error {
+	margin-left: 35%;
+	padding-left: 15px;
 }
 
-fieldset.fieldset {
-	padding: 0px 0 10px 0;
-}
-
-legend {
+form .req {
+	float: none;
+	color: red !important;
 	font-weight: bold;
-	margin: 0 0 0 0;
-	color: #444;
-}
-
-#formProperties[id] legend, .choices[class] legend {
-	margin: 0 0 0 -5px;
-}
-
-.fieldset legend {
 	margin: 0;
 }
 
-.fieldset[class] legend {
-	margin: 0 0 0 5px;
+form li.focused {
+	background-color: #fff7c0;
 }
 
-#formProperties fieldset div {
-	margin-bottom: 7px;
+form li.focused, form li:hover {
+	position: relative;
 }
 
-fieldset div .number {
-	margin: 7px 15px 0 0;
+form .instruct {
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 1000;
+	width: 42%;
+	margin: 0 0 0 8px;
+	padding: 8px 10px 9px 10px;
+	border: 1px solid #e6e6e6;
+	background: #f5f5f5;
+	line-height: 130%;
+	font-size: 80%;
+	color: #444;
+	visibility: hidden;
 }
 
-fieldset p {
-	margin: 10px;
+form .instruct small {
+	font-size: 105%;
 }
 
-/* ----- Choices ----- */
-.choices input {
-	width: 200px;
-	margin-right: 3px;
+form li.focused .instruct, form li:hover .instruct {
+	left: 100%;
+	visibility: visible;
 }
 
-.choices ol {
-	margin: 10px 0 0 0;
+.altInstruct .instruct, li.leftHalf .instruct, li.rightHalf .instruct {
+	visibility: visible;
+	position: static;
+	margin: -2px 0 0 0;
+	padding: 0 0 7px 0;
+	background: none;
+	border: none;
+	width: 100%;
+	font-size: 9px;
+	clear: left;
 }
 
-.choices[class] ol {
-	margin: 0 !important;
+.leftLabel li, .rightLabel li {
+	width: 74% !important;
+	padding-top: 9px;
 }
 
-.choices img {
-	margin: 0 0 1px 0;
+.leftLabel label, .rightLabel label {
+	float: left;
+	width: 29%;
+	margin: 2px 15px 0 0;
 }
 
-fieldset ol li {
-	display: list-item !important;
-	margin: 0 5px 2px 3px !important;
-	padding: 0 !important;
-	list-style: inside decimal;
+.rightLabel label {
+	text-align: right;
 }
 
-/* ----- Buttons ----- */
-input.button, button {
-	width: 6em;
-	padding: 2px 2px 0 0; /* fix for IE */
+.leftLabel .column, .rightLabel .column {
+	float: left;
 }
 
-/* revert to normal for Firefox */
-li>input.button, li>button, input.button>input.button, button>button {
-	padding: 2px;
+.leftLabel .small, .rightLabel .small {
+	width: 17%;
 }
 
-/* END FORM ELEMENTS */
-
-/* Specific forms */
-
-#loginForm {
-	width: inherit !important;
-	margin: 0px auto;
-	text-align: left;
-	padding: 15px;
+.leftLabel .medium, .rightLabel .medium {
+	width: 35%;
 }
 
-#loginForm fieldset {
-	width: 300px;
-	padding: 10px 30px;
-	margin: 0px auto;
+.leftLabel .large, .leftLabel textarea.textarea, .rightLabel .large, .rightLabel textarea.textarea, .leftLabel .column, .rightLabel .column {
+	width: 64%;
 }
 
-#loginForm li {
-	text-align: left;
-	padding: 0px;
+* html .leftLabel .small, * html .rightLabel .small {
+	width: 23%;
 }
 
-table.editCollection a {
-	font-size: 1.6em;
+* html .leftLabel .medium, * html .rightLabel .medium {
+	width: 55%;
+}
+
+* html .leftLabel .large, * html .leftLabel textarea.textarea, * html .rightLabel .large, * html .rightLabel textarea.textarea {
+	width: 97%;
+}
+
+.leftLabel p.instruct, .rightLabel p.instruct {
+	width: 27%;
+	margin-left: 5px;
+}
+
+.leftLabel .altInstruct .instruct, .rightLabel .altInstruct .instruct {
+	margin-left: 29% !important;
+	padding-left: 15px;
+	width: 65%;
+}
+
+.leftLabel .buttons, .rightLabel .buttons {
+	margin-left: 15px;
+}
+
+.leftLabel .buttons input, .rightLabel .buttons input {
+	margin-left: 29%;
+}
+
+* html .leftLabel .buttons input, * html .rightLabel .buttons input {
+	margin-left: 22%;
+}
+
+* html .leftLabel .buttons, * html .rightLabel .buttons {
+	margin-left: 4px;
+}
+
+*+html .leftLabel .buttons, *+html .rightLabel .buttons {
+	margin-left: 7px;
+}
+
+.noI .instruct {
+	display: none !important;
+}
+
+.noI form li, .noI form li.buttons, .altInstruct form li, .altInstruct form li.buttons {
+	width: 97% !important;
+}
+
+.noI form li.section, .altInstruct form li.section {
+	padding-left: 9px !important;
+}
+
+.noI .leftLabel label, .noI .rightLabel label {
+	width: 34%;
+}
+
+.noI .leftLabel .large, .noI .leftLabel textarea.textarea, .noI .rightLabel .large, .noI .rightLabel textarea.textarea, .noI .leftLabel .column, .noI .rightLabel .column {
+	width: 60%;
+}
+
+.noI .leftLabel .buttons input, .noI .rightLabel .buttons input {
+	margin-left: 34%;
+}
+
+form li.leftHalf, form li.rightHalf {
+	width: 46% !important;
+}
+
+li.leftHalf {
+	clear: left;
+	float: left;
+}
+
+li.rightHalf {
+	clear: none;
+	float: right;
+}
+
+li.leftHalf .medium, li.rightHalf .medium, li.leftHalf .small, li.rightHalf .small {
+	width: 100%;
+}
+
+@media print {
+	#public, h2 {
+		margin: 0;
+	}
+
+	#container {
+		border: none !important;
+		width: 100%;
+	}
+
+	#top, #bottom, h1, form .buttons, #printPage, .icon {
+		display: none !important;
+	}
+
+	form.wufoo {
+		margin: 0;
+		padding: 0;
+		page-break-inside: auto;
+	}
+
+	form.wufoo .instruct {
+		display: block;
+	}
 }
