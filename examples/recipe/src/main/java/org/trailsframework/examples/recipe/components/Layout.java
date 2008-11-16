@@ -1,19 +1,26 @@
 package org.trailsframework.examples.recipe.components;
 
 import org.apache.tapestry5.BindingConstants;
-import org.apache.tapestry5.RenderSupport;
 import org.apache.tapestry5.Block;
+import org.apache.tapestry5.RenderSupport;
+import org.apache.tapestry5.annotations.IncludeStylesheet;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
-import org.apache.tapestry5.annotations.IncludeStylesheet;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Context;
 import org.apache.tapestry5.services.Environment;
+import org.trailsframework.descriptor.IClassDescriptor;
+import org.trailsframework.services.DescriptorService;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 
-//@IncludeJavaScriptLibrary("context:scripts/global.js")
-@IncludeStylesheet({"context:styles/andreas01/theme.css"})//, "context:styles/tapestryskin/print.css"})
-public class Layout {
+@IncludeStylesheet({"context:styles/tapestryskin/theme.css"})
+public class Layout
+{
 
 	@Inject
 	private Environment environment;
@@ -36,16 +43,6 @@ public class Layout {
 	@Parameter(value = "block:navBlock", defaultPrefix = BindingConstants.LITERAL)
 	private Block navBlock;
 
-//
-//	@InjectContainer
-//	@Property
-//	private BasePage page;
-
-//	
-//	private String message;
-//	
-//	private String type;
-
 	@Property
 	@Parameter(required = false, defaultPrefix = BindingConstants.MESSAGE)
 	private String heading;
@@ -58,8 +55,35 @@ public class Layout {
 	@Parameter(required = false, defaultPrefix = BindingConstants.LITERAL)
 	private String bodyId;
 
-//	void setupRender() {
-//		renderSupport.addScriptLink(globalLibrary);
-//	}
+	@Inject
+	private DescriptorService descriptorService;
+
+	@Property
+	private IClassDescriptor descriptorIterator;
+
+	public List<IClassDescriptor> getAllDescriptors()
+	{
+		List<IClassDescriptor> descriptors = descriptorService.getAllDescriptors();
+
+		List<IClassDescriptor> result = new ArrayList<IClassDescriptor>(descriptors.size());
+
+		for (IClassDescriptor descriptor : descriptors)
+		{
+			if (!descriptor.isHidden())
+			{
+				result.add(descriptor);
+			}
+		}
+
+		Collections.sort(result, new Comparator<IClassDescriptor>()
+		{
+			public int compare(IClassDescriptor o1, IClassDescriptor o2)
+			{
+				return o1.getDisplayName().compareTo(o2.getDisplayName());
+			}
+		});
+
+		return result;
+	}
 
 }

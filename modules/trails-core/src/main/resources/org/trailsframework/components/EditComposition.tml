@@ -21,9 +21,9 @@
 					</tr>
 				</table>
 -->
-				<t:grid source="collection" row="collectionIterator" columnIndex="index" model="beanModel">
+				<t:grid source="collection" row="collectionIterator" columnIndex="index" model="beanModel" volatile="true">
 					<t:parameter name="idcell">
-						<t:pagelink t:page="EditPage" context="editPageContext">${collectionIterator.id}</t:pagelink>
+						<t:pagelink t:page="EditCompositionPage" context="editPageContext">${collectionIterator.id}</t:pagelink>
 					</t:parameter>
 				</t:grid>
 

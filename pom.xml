@@ -12,7 +12,7 @@
 	<properties>
 		<!-- Plugin dependencies and extensions don't use dependencyManagement section, specify a single version here.
 		BUT don't just abuse this section, it's a hack. -->
-		<tapestry-release-version>5.0.15</tapestry-release-version>
+		<tapestry-release-version>5.0.16</tapestry-release-version>
 		<trails-release-version>2.0-SNAPSHOT</trails-release-version>
 	</properties>
 
@@ -128,6 +128,18 @@
 				<enabled>false</enabled>
 			</snapshots>
 		</repository>
+
+		<repository>
+			<id>tapestry</id>
+			<url>http://people.apache.org/~hlship/tapestry-ibiblio-rsynch-repository</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+
 	</repositories>
 
 	<pluginRepositories>

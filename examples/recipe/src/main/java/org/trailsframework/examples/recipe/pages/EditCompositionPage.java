@@ -1,4 +1,4 @@
-package org.trailsframework.pages;
+package org.trailsframework.examples.recipe.pages;
 
 
 import org.apache.tapestry5.ComponentResources;
@@ -15,13 +15,15 @@ import org.apache.tapestry5.services.ContextValueEncoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.trailsframework.descriptor.IClassDescriptor;
+import org.trailsframework.descriptor.IPropertyDescriptor;
+import org.trailsframework.descriptor.CollectionDescriptor;
 import org.trailsframework.services.DescriptorService;
 import org.trailsframework.services.PersistenceService;
 
-public class EditPage
+public class EditCompositionPage
 {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(EditPage.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(EditCompositionPage.class);
 
 	@Inject
 	private ContextValueEncoder contextValueEncoder;
@@ -45,10 +47,16 @@ public class EditPage
 	private IClassDescriptor classDescriptor;
 
 	@Property(write = false)
+	private CollectionDescriptor collectionDescriptor;
+
+	@Property(write = false)
 	private BeanModel beanModel;
 
 	@Property(write = false)
 	private Object bean;
+
+	@Property(write = false)
+	private Object parentBean;
 
 	@Component
 	private BeanEditForm form;
@@ -61,11 +69,15 @@ public class EditPage
 		// Make other changes to the bean here.
 	}
 
-	void onActivate(Class clazz, String id) throws Exception
+	void onActivate(Class clazz, String parentId, String property, String id) throws Exception
 	{
-		bean = contextValueEncoder.toValue(clazz, id);
-		classDescriptor = descriptorService.getClassDescriptor(clazz);
-		beanModel = beanModelSource.create(clazz, true, messages);
+		IPropertyDescriptor propertyDescriptor = descriptorService.getClassDescriptor(clazz).getPropertyDescriptor(property);
+		collectionDescriptor = ((CollectionDescriptor) propertyDescriptor);
+		classDescriptor = descriptorService.getClassDescriptor(collectionDescriptor.getElementType());
+		bean = contextValueEncoder.toValue(classDescriptor.getType(), id);
+		beanModel = beanModelSource.create(classDescriptor.getType(), true, messages);
+
+		parentBean = contextValueEncoder.toValue(clazz, parentId);
 
 //		BeanModelUtils.modify(_beanModel, null, null, null, null);
 	}
@@ -77,7 +89,7 @@ public class EditPage
 	 */
 	Object[] onPassivate()
 	{
-		return new Object[]{classDescriptor.getType(), bean};
+		return new Object[]{collectionDescriptor.getBeanType(), parentBean, collectionDescriptor.getName(), bean};
 	}
 
 	boolean onValidateForm()
@@ -130,7 +142,7 @@ public class EditPage
 
 	public Link backToList()
 	{
-		return resources.createPageLink(ListPage.class, false, classDescriptor.getType());
+		return resources.createPageLink(org.trailsframework.pages.EditPage.class, false, collectionDescriptor.getBeanType(), parentBean);
 	}
 
 }

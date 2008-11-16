@@ -182,7 +182,7 @@ public class EditComposition
 
 	public Object[] getEditPageContext()
 	{
-		return new Object[]{collectionDescriptor.getElementType(), collectionIterator};
+		return new Object[]{collectionDescriptor.getBeanType(), owner, collectionDescriptor.getName(), collectionIterator};
 	}
 
 }

@@ -3,7 +3,7 @@
 		<ul>
 			<ul id="local">
 				<li>
-					<a class="listlink" t:id="link" page="ListPage" context="classDescriptor.type">List ${classDescriptor.displayName}</a>
+					<a t:id="link" page="ListPage" context="classDescriptor.type">List ${classDescriptor.displayName}</a>
 				</li>
 			</ul>
 		</ul>
@@ -17,6 +17,7 @@
 
 	<t:actionlink t:id="delete">Delete</t:actionlink>
 	<t:actionlink t:id="cancel">Cancel</t:actionlink>
+
 
 
 </t:layout>

@@ -55,7 +55,7 @@ public class Editors
 	private Editor fckEditor;
 
 	@Component(parameters = {"collection=propertyEditContext.propertyValue", "label=prop:propertyEditContext.label",
-			"clientId=prop:propertyEditContext.propertyId", "collectionDescriptor=propertyDescriptor"})
+			"clientId=prop:propertyEditContext.propertyId", "collectionDescriptor=propertyDescriptor"})//, "owner=beanEditContext.object"})
 	private EditComposition editComposition;
 
 	public IPropertyDescriptor getPropertyDescriptor()
