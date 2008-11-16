@@ -1,17 +1,25 @@
 package org.trailsframework.pages;
 
 
+import org.apache.tapestry5.ComponentResources;
+import org.apache.tapestry5.Link;
+import org.apache.tapestry5.annotations.Component;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.beaneditor.BeanModel;
+import org.apache.tapestry5.corelib.components.BeanEditForm;
+import org.apache.tapestry5.corelib.components.PageLink;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.BeanModelSource;
 import org.apache.tapestry5.services.ContextValueEncoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.trailsframework.descriptor.IClassDescriptor;
+import org.trailsframework.services.DescriptorService;
 import org.trailsframework.services.PersistenceService;
 
-public class EditPage {
+public class EditPage
+{
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(EditPage.class);
 
@@ -27,49 +35,102 @@ public class EditPage {
 	@Inject
 	private PersistenceService persitenceService;
 
+	@Inject
+	private DescriptorService descriptorService;
+
+	@Inject
+	private ComponentResources resources;
+
+	@Property(write = false)
+	private IClassDescriptor classDescriptor;
+
+	@Property(write = false)
 	private BeanModel beanModel;
 
-	@Property
+	@Property(write = false)
 	private Object bean;
 
-	@Property
-	private Class clazz;
+	@Component
+	private BeanEditForm form;
 
-	void pageLoaded() {
-		System.out.println("Make other changes to _model here.");
-		// Make other changes to _model here.
+	@Component
+	private PageLink link;
+
+	void pageLoaded()
+	{
+		// Make other changes to the bean here.
 	}
 
-
-	void onActivate(Class clazz, String id) throws Exception {
+	void onActivate(Class clazz, String id) throws Exception
+	{
 		bean = contextValueEncoder.toValue(clazz, id);
-		this.clazz = clazz;
+		classDescriptor = descriptorService.getClassDescriptor(clazz);
 		beanModel = beanModelSource.create(clazz, true, messages);
 
 //		BeanModelUtils.modify(_beanModel, null, null, null, null);
 	}
 
 	/**
-	 * This tells Tapestry to put _personId into the URL, making it bookmarkable.
+	 * This tells Tapestry to put type & id into the URL, making it bookmarkable.
 	 *
 	 * @return
 	 */
-	Object[] onPassivate() {
-		return new Object[]{clazz, bean};
+	Object[] onPassivate()
+	{
+		return new Object[]{classDescriptor.getType(), bean};
 	}
 
-	void onSuccess() {
-		LOGGER.info("saving....");
-		persitenceService.save(bean);
+	boolean onValidateForm()
+	{
+		LOGGER.debug("validating");
+		//add validation logic here
+		return true;
 	}
 
-	void cleanupRender() {
+	Object onSuccess()
+	{
+		try
+		{
+
+			LOGGER.debug("saving....");
+			persitenceService.save(bean);
+
+			return backToList();
+		}
+
+		catch (Exception e)
+		{
+//			missing ExceptionUtils (Lang 2.3 API)
+//			form.recordError(ExceptionUtil.getRootCause(e));
+			form.recordError(e.getMessage());
+			LOGGER.error(e.getMessage());
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	void cleanupRender()
+	{
 		bean = null;
-		clazz = null;
+		classDescriptor = null;
 		beanModel = null;
 	}
 
-	public BeanModel getBeanModel() {
-		return beanModel;
+	public Link onActionFromDelete()
+	{
+		persitenceService.remove(bean);
+		return backToList();
 	}
+
+	public Link onActionFromCancel()
+	{
+		return backToList();
+	}
+
+	public Link backToList()
+	{
+		return resources.createPageLink(ListPage.class, false, classDescriptor.getType());
+	}
+
 }

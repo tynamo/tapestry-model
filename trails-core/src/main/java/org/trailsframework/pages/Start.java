@@ -1,17 +1,20 @@
 package org.trailsframework.pages;
 
-import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.annotations.Property;
+import org.apache.tapestry5.ioc.annotations.Inject;
 import org.trailsframework.descriptor.IClassDescriptor;
 import org.trailsframework.services.DescriptorService;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
  * Start page of application APP.
  */
-public class Start {
+public class Start
+{
 
 	@Inject
 	private DescriptorService descriptorService;
@@ -23,6 +26,7 @@ public class Start {
 	public List<IClassDescriptor> getAllDescriptors()
 	{
 		List<IClassDescriptor> descriptors = descriptorService.getAllDescriptors();
+
 		List<IClassDescriptor> result = new ArrayList<IClassDescriptor>(descriptors.size());
 
 		for (IClassDescriptor descriptor : descriptors)
@@ -33,7 +37,14 @@ public class Start {
 			}
 		}
 
+		Collections.sort(result, new Comparator<IClassDescriptor>()
+		{
+			public int compare(IClassDescriptor o1, IClassDescriptor o2)
+			{
+				return o1.getDisplayName().compareTo(o2.getDisplayName());
+			}
+		});
+
 		return result;
 	}
-
 }

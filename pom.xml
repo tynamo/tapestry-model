@@ -16,6 +16,7 @@
 		<module>trails-core</module>
 		<module>trails-hibernate</module>
 <!--		<module>trails-security</module>-->
+		<module>trails-web</module>
 	</modules>
 
 	<build>
