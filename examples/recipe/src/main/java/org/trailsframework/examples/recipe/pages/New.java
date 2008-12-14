@@ -13,10 +13,10 @@ import org.trailsframework.descriptor.IClassDescriptor;
 import org.trailsframework.services.DescriptorService;
 import org.trailsframework.services.PersistenceService;
 
-public class NewPage
+public class New
 {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(NewPage.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(New.class);
 
 	@Inject
 	private BeanModelSource beanModelSource;

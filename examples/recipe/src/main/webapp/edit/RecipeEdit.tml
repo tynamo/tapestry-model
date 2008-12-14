@@ -1,0 +1,10 @@
+<t:layout title="literal:Trails!" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_0_0.xsd">
+
+	<h1>Custom Edit Page</h1>
+
+	<br/>
+
+	<t:beaneditform object="bean" />
+
+
+</t:layout>

@@ -5,12 +5,13 @@ import org.apache.tapestry5.ioc.OrderedConfiguration;
 import org.apache.tapestry5.ioc.ServiceBinder;
 import org.apache.tapestry5.ioc.ServiceResources;
 import org.apache.tapestry5.ioc.annotations.InjectService;
-import org.apache.tapestry5.ioc.services.Coercion;
 import org.apache.tapestry5.ioc.services.CoercionTuple;
 import org.apache.tapestry5.services.BeanBlockContribution;
 import org.apache.tapestry5.services.DataTypeAnalyzer;
 import org.apache.tapestry5.services.LibraryMapping;
 import org.trailsframework.descriptor.*;
+
+import java.util.Collection;
 
 public class TrailsCoreModule
 {
@@ -25,6 +26,7 @@ public class TrailsCoreModule
 		binder.bind(DescriptorFactory.class, ReflectionDescriptorFactory.class);
 		binder.bind(PropertyDescriptorFactory.class, PropertyDescriptorFactoryImpl.class);
 		binder.bind(MethodDescriptorFactory.class, MethodDescriptorFactoryImpl.class);
+		binder.bind(EntityCoercerService.class, EntityCoercerServiceImpl.class);
 
 	}
 
@@ -73,36 +75,14 @@ public class TrailsCoreModule
 	 * <li>String to Double</li>
 	 * </ul>
 	 */
-	public static void contributeTypeCoercer(Configuration<CoercionTuple> configuration)
+	public static void contributeTypeCoercer(final Configuration<CoercionTuple> configuration,
+											 @InjectService("EntityCoercerService") EntityCoercerService entityCoercerService)
 	{
-		Coercion<Class, String> classToString = new Coercion<Class, String>()
-		{
-			public String coerce(Class clazz)
-			{
-				return clazz.getName();
-			}
-		};
-
-		Coercion<String, Class> stringToClass = new Coercion<String, Class>()
-		{
-			public Class coerce(String className)
-			{
-				try
-				{
-					return Class.forName(className);
-
-				} catch (ClassNotFoundException e)
-				{
-					throw new RuntimeException("Coercion failed!", e);
-				}
-			}
-		};
-
-		configuration.add(new CoercionTuple<Class, String>(Class.class, String.class, classToString));
-		configuration.add(new CoercionTuple<String, Class>(String.class, Class.class, stringToClass));
+		configuration.add(new CoercionTuple<Class, String>(Class.class, String.class, new ClassToStringCoercion(entityCoercerService)));
+		configuration.add(new CoercionTuple<String, Class>(String.class, Class.class, new StringToClassCoercion(entityCoercerService)));
 	}
 
-	public TrailsDataTypeAnalyzer buildTrailsDataTypeAnalyzer(ServiceResources resources)
+	public static TrailsDataTypeAnalyzer buildTrailsDataTypeAnalyzer(ServiceResources resources)
 	{
 		return resources.autobuild(TrailsDataTypeAnalyzer.class);
 	}

@@ -18,10 +18,10 @@ import org.trailsframework.descriptor.IClassDescriptor;
 import org.trailsframework.services.DescriptorService;
 import org.trailsframework.services.PersistenceService;
 
-public class EditPage
+public class Edit
 {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(EditPage.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(Edit.class);
 
 	@Inject
 	private ContextValueEncoder contextValueEncoder;
@@ -130,7 +130,7 @@ public class EditPage
 
 	public Link backToList()
 	{
-		return resources.createPageLink(ListPage.class, false, classDescriptor.getType());
+		return resources.createPageLink(List.class, false, classDescriptor.getType());
 	}
 
 }

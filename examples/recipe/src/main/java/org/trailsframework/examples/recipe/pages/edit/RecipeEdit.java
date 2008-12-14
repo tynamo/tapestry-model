@@ -1,4 +1,4 @@
-package org.trailsframework.examples.recipe.pages;
+package org.trailsframework.examples.recipe.pages.edit;
 
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -6,7 +6,7 @@ import org.trailsframework.examples.recipe.model.Recipe;
 import org.trailsframework.services.PersistenceService;
 
 
-public class RecipeEditPage
+public class RecipeEdit
 {
 
 	@Inject

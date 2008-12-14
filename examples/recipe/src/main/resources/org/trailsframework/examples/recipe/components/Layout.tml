@@ -34,7 +34,7 @@
 					<li>
 						<t:loop source="allDescriptors" value="descriptorIterator">
 							<li>
-								<t:pagelink page="ListPage" context="descriptorIterator.type">List ${descriptorIterator.displayName}</t:pagelink>
+								<t:pagelink page="List" context="descriptorIterator.type">List ${descriptorIterator.displayName}</t:pagelink>
 							</li>
 						</t:loop>
 					</li>

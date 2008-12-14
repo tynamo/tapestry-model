@@ -1,12 +1,18 @@
 package org.trailsframework.examples.recipe.services;
 
 import org.apache.tapestry5.SymbolConstants;
+import org.apache.tapestry5.internal.InternalConstants;
 import org.apache.tapestry5.hibernate.HibernateModule;
 import org.apache.tapestry5.hibernate.HibernateSessionSource;
 import org.apache.tapestry5.hibernate.HibernateTransactionDecorator;
+import org.apache.tapestry5.hibernate.HibernateEntityPackageManager;
 import org.apache.tapestry5.ioc.*;
+import org.apache.tapestry5.ioc.services.CoercionTuple;
+import org.apache.tapestry5.ioc.services.Coercion;
 import org.apache.tapestry5.ioc.annotations.Match;
 import org.apache.tapestry5.ioc.annotations.SubModule;
+import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.ioc.annotations.Symbol;
 import org.apache.tapestry5.services.BeanBlockContribution;
 import org.hibernate.EntityMode;
 import org.hibernate.metadata.ClassMetadata;
@@ -106,9 +112,8 @@ public class AppModule
 
 	}
 
-	public void contributeTrailsDataTypeAnalyzer(MappedConfiguration<String, String> configuration)
+	public static void contributeTrailsDataTypeAnalyzer(MappedConfiguration<String, String> configuration)
 	{
-
 
 // @todo: configuration.add("hidden", "hidden");
 		configuration.add("readOnly", "readOnly");
@@ -124,18 +129,18 @@ public class AppModule
 // @todo: configuration.add("supportsExtension('org.trails.descriptor.extension.BlobDescriptorExtension')", "blobEditor");
 		configuration.add("objectReference", "referenceEditor");
 		configuration.add("collection && not(childRelationship)", "collectionEditor");
-		configuration.add("collection && childRelationship", "editComposition");
+//		configuration.add("collection && childRelationship", "editComposition");
 // @todo: configuration.add("embedded", "embedded");
 
 	}
 
-	public void contributePropertyDescriptorFactory(Configuration<String> configuration)
+	public static void contributePropertyDescriptorFactory(Configuration<String> configuration)
 	{
 		configuration.add("exclude.*");
 		configuration.add("class");
 	}
 
-	public void contributeMethodDescriptorFactory(Configuration<String> configuration)
+	public static void contributeMethodDescriptorFactory(Configuration<String> configuration)
 	{
 		configuration.add("shouldExclude");
 		configuration.add("set.*");
@@ -146,6 +151,14 @@ public class AppModule
 		configuration.add("toString");
 		configuration.add("notify.*");
 		configuration.add("hashCode");
+	}
+
+	public static void contributeTrailsEntityPackageManager(Configuration<String> configuration, HibernateEntityPackageManager packageManager)
+	{
+		for (String packageName : packageManager.getPackageNames())
+		{
+			configuration.add(packageName);
+		}
 	}
 
 }

@@ -7,9 +7,7 @@ import org.trailsframework.services.DescriptorService;
 import org.trailsframework.services.PersistenceService;
 import org.trailsframework.util.Identifiable;
 
-import java.util.List;
-
-public class ListPage
+public class List
 {
 
 	@Inject
@@ -29,7 +27,7 @@ public class ListPage
 		classDescriptor = descriptorService.getClassDescriptor(clazz);
 	}
 
-	public List getInstances()
+	public java.util.List getInstances()
 	{
 		return persitenceService.getInstances(classDescriptor.getType());
 	}
