@@ -80,4 +80,9 @@ public class New
 		beanModel = null;
 	}
 
+	public String getTitle()
+	{
+		return messages.format("org.trails.i18n.add", classDescriptor.getDisplayName());
+	}
+
 }

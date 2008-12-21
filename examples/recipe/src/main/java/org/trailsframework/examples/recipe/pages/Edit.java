@@ -6,7 +6,7 @@ import org.apache.tapestry5.Link;
 import org.apache.tapestry5.annotations.Component;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.beaneditor.BeanModel;
-import org.apache.tapestry5.corelib.components.BeanEditForm;
+import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.corelib.components.PageLink;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -51,7 +51,7 @@ public class Edit
 	private Object bean;
 
 	@Component
-	private BeanEditForm form;
+	private Form form;
 
 	@Component
 	private PageLink link;
@@ -66,7 +66,6 @@ public class Edit
 		bean = contextValueEncoder.toValue(clazz, id);
 		classDescriptor = descriptorService.getClassDescriptor(clazz);
 		beanModel = beanModelSource.create(clazz, true, messages);
-
 //		BeanModelUtils.modify(_beanModel, null, null, null, null);
 	}
 
@@ -131,6 +130,11 @@ public class Edit
 	public Link backToList()
 	{
 		return resources.createPageLink(List.class, false, classDescriptor.getType());
+	}
+
+	public String getTitle()
+	{
+		return messages.format("org.trails.i18n.edit", classDescriptor.getDisplayName());
 	}
 
 }

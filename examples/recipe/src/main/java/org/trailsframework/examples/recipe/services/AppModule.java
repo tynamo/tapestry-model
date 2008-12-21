@@ -1,25 +1,21 @@
 package org.trailsframework.examples.recipe.services;
 
 import org.apache.tapestry5.SymbolConstants;
-import org.apache.tapestry5.internal.InternalConstants;
+import org.apache.tapestry5.hibernate.HibernateEntityPackageManager;
 import org.apache.tapestry5.hibernate.HibernateModule;
 import org.apache.tapestry5.hibernate.HibernateSessionSource;
 import org.apache.tapestry5.hibernate.HibernateTransactionDecorator;
-import org.apache.tapestry5.hibernate.HibernateEntityPackageManager;
 import org.apache.tapestry5.ioc.*;
-import org.apache.tapestry5.ioc.services.CoercionTuple;
-import org.apache.tapestry5.ioc.services.Coercion;
 import org.apache.tapestry5.ioc.annotations.Match;
 import org.apache.tapestry5.ioc.annotations.SubModule;
-import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.ioc.annotations.Symbol;
 import org.apache.tapestry5.services.BeanBlockContribution;
+import org.apache.tapestry5.upload.services.UploadSymbols;
 import org.hibernate.EntityMode;
 import org.hibernate.metadata.ClassMetadata;
+import org.trailsframework.builder.BuilderDirector;
 import org.trailsframework.descriptor.DescriptorDecorator;
 import org.trailsframework.descriptor.annotation.AnnotationDecorator;
 import org.trailsframework.services.*;
-import org.trailsframework.builder.BuilderDirector;
 
 /**
  * This module is automatically included as part of the Tapestry IoC Registry, it's a good place to configure and extend
@@ -44,18 +40,23 @@ public class AppModule
 
 	public static void contributeApplicationDefaults(MappedConfiguration<String, String> configuration)
 	{
+
 		// Contributions to ApplicationDefaults will override any contributions to
 		// FactoryDefaults (with the same key). Here we're restricting the supported
 		// locales to just "en" (English). As you add localised message catalogs and other assets,
 		// you can extend this list of locales (it's a comma seperated series of locale names;
 		// the first locale name is the default when there's no reasonable match).
-
-		configuration.add(SymbolConstants.SUPPORTED_LOCALES, "en");
+		configuration.add(SymbolConstants.SUPPORTED_LOCALES, "en, es_AR, pt");
 
 		// The factory default is true but during the early stages of an application
 		// overriding to false is a good idea. In addition, this is often overridden
 		// on the command line as -Dtapestry.production-mode=false
 		configuration.add(SymbolConstants.PRODUCTION_MODE, "false");
+
+		// Set filesize limit to 2 MB
+		configuration.add(UploadSymbols.REQUESTSIZE_MAX, "2048000");
+		configuration.add(UploadSymbols.FILESIZE_MAX, "2048000");
+
 	}
 
 

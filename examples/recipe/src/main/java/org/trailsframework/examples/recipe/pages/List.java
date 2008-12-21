@@ -1,6 +1,7 @@
 package org.trailsframework.examples.recipe.pages;
 
 import org.apache.tapestry5.annotations.Property;
+import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.trailsframework.descriptor.IClassDescriptor;
 import org.trailsframework.services.DescriptorService;
@@ -15,6 +16,9 @@ public class List
 
 	@Inject
 	private DescriptorService descriptorService;
+
+	@Inject
+	private Messages messages;
 
 	@Property
 	private Identifiable model;
@@ -35,6 +39,11 @@ public class List
 	public Object[] getEditPageContext()
 	{
 		return new Object[]{classDescriptor.getType(), model};
+	}
+
+	public String getTitle()
+	{
+		return messages.format("org.trails.i18n.list", classDescriptor.getPluralDisplayName());
 	}
 
 }

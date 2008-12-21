@@ -4,7 +4,7 @@
 
 	<br/>
 
-	<t:beaneditform object="bean" />
+	<form t:id="form" />
 
 
 </t:layout>

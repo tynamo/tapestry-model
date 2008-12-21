@@ -1,22 +1,36 @@
-<t:layout title="literal:Trails!" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_0_0.xsd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<t:layout title="title" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_0_0.xsd">
 	<t:parameter name="subMenuBlock">
 		<ul>
 			<ul id="local">
 				<li>
-					<a class="listlink" t:id="link" page="List" context="classDescriptor.type">List ${classDescriptor.displayName}</a>
+					<t:actionlink class="deletelink" t:id="delete">${message:org.trails.i18n.remove}</t:actionlink>
 				</li>
 			</ul>
 		</ul>
 	</t:parameter>
+	<t:parameter name="navBlock">
+		<a style="font-weight:bolder;margin-left:10px" t:id="link" page="List" context="classDescriptor.type">List ${classDescriptor.displayName}</a>
+	</t:parameter>
 
-	<h1>Edit Page</h1>
+	<h1>${title}</h1>
 
 	<br/>
 
-	<t:beaneditform t:id="form" object="bean" model="beanModel"/>
+	<form t:id="form" clientValidation="true">
+		<t:errors/>
 
-	<t:actionlink t:id="delete">Delete</t:actionlink>
-	<t:actionlink t:id="cancel">Cancel</t:actionlink>
-
+		<div class="t-beaneditor">
+			<t:beaneditor object="bean" model="beanModel"/>
+			<br/>
+			<div class="t-beaneditor-row">
+				<input t:type="any" class="button" type="submit" id="save" value="message:org.trails.i18n.apply"/>
+				<input t:type="any" class="button" type="submit" id="saveAndReturnButton"
+					   value="message:org.trails.i18n.applyAndReturn"/>
+				&nbsp;&nbsp;
+				<t:actionlink class="button" style="color:red; font-weight:bold;" t:id="cancel">${message:org.trails.i18n.cancel}</t:actionlink>
+			</div>
+		</div>
+	</form>
 
 </t:layout>

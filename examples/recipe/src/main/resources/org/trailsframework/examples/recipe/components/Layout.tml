@@ -24,29 +24,21 @@
 			</div>
 
 			<div id="sub">
-				<h2>Menu</h2>
+				<h2>${message:menu}</h2>
 				<t:delegate to="subMenuBlock" />
 			</div>
 
 			<div id="navcolumn">
 				<h5>Trails</h5>
-				<ul>
-					<li>
-						<t:loop source="allDescriptors" value="descriptorIterator">
-							<li>
-								<t:pagelink page="List" context="descriptorIterator.type">List ${descriptorIterator.displayName}</t:pagelink>
-							</li>
-						</t:loop>
-					</li>
-				</ul>
+				<t:trails.ListPageLinkList/>
 			</div>
 
 			<div id="nav">
 				<div class="wrapper">
-					<h2 class="accessibility">Navigation</h2>
+					<h2 class="accessibility">${message:navigationMenu}</h2>
 					<ul id="primary-nav" class="menuList">
 						<li class="selected">
-							<t:pagelink page="Start">Home</t:pagelink>
+							<t:pagelink page="Start">${message:org.trails.i18n.home}</t:pagelink>
 						</li>
 						<t:delegate to="navBlock" />
 				  </ul>

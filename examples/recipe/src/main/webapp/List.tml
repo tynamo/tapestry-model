@@ -1,4 +1,4 @@
-<t:layout title="literal:Trails!" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_0_0.xsd">
+<t:layout title="title" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_0_0.xsd">
 	<t:parameter name="subMenuBlock">
 		<ul id="local">
 			<t:if test="classDescriptor.allowSave">
@@ -14,7 +14,7 @@
 		</ul>
 	</t:parameter>
 
-	<h1>List Page</h1>
+	<h1>${title}</h1>
 
 		<t:grid source="instances" row="model">
 			<t:parameter name="idcell">

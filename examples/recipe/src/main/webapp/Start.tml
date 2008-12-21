@@ -13,14 +13,8 @@
 	</t:parameter>
 	
 
-	<h1>Trails Start Page</h1>
+	<h1>${message:org.trails.welcome}</h1>
 
-	<ul>
-		<t:loop source="allDescriptors" value="descriptorIterator">
-			<li>
-				<t:pagelink page="List" context="descriptorIterator.type">List ${descriptorIterator.displayName}</t:pagelink>
-			</li>
-		</t:loop>
-	</ul>
+	<t:trails.ListPageLinkList/>
 
 </t:layout>
