@@ -227,4 +227,12 @@ ul.locales {
 	line-height: 20px;
 }
 
+.deletelink {
+	background: url( images/delete.png ) left center no-repeat;
+	background-color: transparent;
+	padding-left: 20px;
+	line-height: 20px;
+	color: red;
+}
+
 /* END NAV */

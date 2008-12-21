@@ -1,0 +1,7 @@
+<ul xmlns:t="http://tapestry.apache.org/schema/tapestry_5_0_0.xsd">
+	<t:loop source="allDescriptors" value="descriptorIterator">
+		<li>
+			<t:pagelink page="List" context="descriptorIterator.type">${listAllLinkMessage}</t:pagelink>
+		</li>
+	</t:loop>
+</ul>
