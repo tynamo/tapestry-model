@@ -1,7 +1,5 @@
 package org.trailsframework.pages;
 
-import org.apache.tapestry.commons.components.DateTimeField;
-import org.apache.tapestry.commons.components.Editor;
 import org.apache.tapestry5.FieldTranslator;
 import org.apache.tapestry5.FieldValidator;
 import org.apache.tapestry5.SelectModel;
@@ -13,15 +11,14 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.BeanEditContext;
 import org.apache.tapestry5.services.PropertyEditContext;
 import org.apache.tapestry5.services.ValueEncoderSource;
+import org.chenillekit.tapestry.core.components.DateTimeField;
+import org.chenillekit.tapestry.core.components.Editor;
+import org.trailsframework.components.EditComposition;
 import org.trailsframework.descriptor.CollectionDescriptor;
 import org.trailsframework.descriptor.IPropertyDescriptor;
 import org.trailsframework.services.DescriptorService;
 import org.trailsframework.services.PersistenceService;
 import org.trailsframework.util.GenericSelectionModel;
-import org.trailsframework.components.EditComposition;
-
-import java.util.List;
-import java.util.ArrayList;
 
 
 public class Editors
@@ -43,7 +40,6 @@ public class Editors
 
 	@Inject
 	private ValueEncoderSource valueEncoderSource;
-
 
 	@Component(parameters = {"value=propertyEditContext.propertyValue", "label=prop:propertyEditContext.label",
 			"clientId=propertyEditContext.propertyid", "validate=prop:dateFieldValidator"})
