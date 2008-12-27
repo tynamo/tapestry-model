@@ -11,10 +11,10 @@
  */
 package org.trailsframework.descriptor;
 
-import java.lang.reflect.InvocationTargetException;
-
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
+
+import java.lang.reflect.InvocationTargetException;
 
 /**
  * @author fus8882
@@ -81,13 +81,6 @@ public class TrailsPropertyDescriptor extends TrailsDescriptor implements
 	{
 		super(type);
 		this.beanType = beanType;
-	}
-
-	public TrailsPropertyDescriptor(Class beanType, String name, Class type)
-	{
-		this(beanType, type);
-		this.setName(name);
-		setDisplayName(name);
 	}
 
 	/**

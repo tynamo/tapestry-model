@@ -1,13 +1,13 @@
 package org.trailsframework.descriptor;
 
+import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.trailsframework.exception.TrailsRuntimeException;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.commons.beanutils.BeanUtils;
-import org.trailsframework.exception.TrailsRuntimeException;
 
 
 public class CollectionDescriptor extends TrailsPropertyDescriptor

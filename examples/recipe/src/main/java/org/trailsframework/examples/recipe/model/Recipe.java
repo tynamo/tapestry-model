@@ -75,7 +75,7 @@ public class Recipe implements Identifiable
 		this.description = description;
 	}
 
-	@PropertyDescriptor(index = 3, format = "MM/dd/yyyy", displayName = "Created On")
+	@PropertyDescriptor(index = 3, format = "MM/dd/yyyy")//, displayName = "Created On")
 	public Date getDate()
 	{
 		return date;

@@ -38,12 +38,6 @@ public class IdentifierDescriptor extends TrailsPropertyDescriptor implements II
 		setSearchable(false);
 	}
 
-	public IdentifierDescriptor(Class beanType, String name, Class type)
-	{
-		super(beanType, name, type);
-		setSearchable(false);
-	}
-
 	/* (non-Javadoc)
 		 * @see org.trailsframework.descriptor.PropertyDescriptor#isIdentifier()
 		 */

@@ -1,27 +1,28 @@
 package org.trailsframework.validation;
 
+import org.apache.tapestry5.ioc.services.ThreadLocale;
+import org.hibernate.validator.*;
+import org.trailsframework.util.Utils;
+
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-import org.hibernate.validator.ClassValidator;
-import org.hibernate.validator.InvalidStateException;
-import org.hibernate.validator.InvalidValue;
-import org.hibernate.validator.MessageInterpolator;
-import org.hibernate.validator.Validator;
-import org.trailsframework.util.Utils;
-
 public class HibernateClassValidatorFactory
 {
-/*
+
 	private static Map classValidator = new HashMap();
 	private TrailsMessageInterpolator messageInterpolator = new TrailsMessageInterpolator();
-	TrailsMessageSource messageSource;
-	LocaleHolder localeHolder;
+	ThreadLocale threadLocale;
+
+	public HibernateClassValidatorFactory(ThreadLocale threadLocale)
+	{
+		this.threadLocale = threadLocale;
+	}
 
 	public void validateEntity(Object entity)
 	{
-		Locale locale = localeHolder.getLocale();
+		Locale locale = threadLocale.getLocale();
 
 		String key = Utils.checkForCGLIB(entity.getClass()).toString() + "locale:" + locale;
 		ClassValidator validator = (ClassValidator) classValidator.get(key);
@@ -55,29 +56,16 @@ public class HibernateClassValidatorFactory
 	}
 
 
-	public void setMessageSource(TrailsMessageSource messageSource)
-	{
-		this.messageSource = messageSource;
-	}
-
-	public void setLocaleHolder(LocaleHolder localeHolder)
-	{
-		this.localeHolder = localeHolder;
-	}
-
-	*/
-/**
+	/**
 	 * This inner class doesn't return exceptions when some key is searched in the bundle. This is nice so we don't have
 	 * exceptions thrown in the screen by hibernate ClassValidator.
 	 */
-/*
 	private class TrailsMessageInterpolator implements MessageInterpolator
 	{
 		public String interpolate(String key, Validator validator, MessageInterpolator messageInterpolator)
 		{
-			return messageSource.getMessageWithDefaultValue(key, new Object[]{validator}, key);
+			return key;
 		}
 	}
-*/
 
 }

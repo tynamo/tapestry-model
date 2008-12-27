@@ -3,6 +3,7 @@ package org.trailsframework.examples.recipe.pages;
 
 import org.apache.tapestry5.ComponentResources;
 import org.apache.tapestry5.Link;
+import org.apache.tapestry5.ValidationException;
 import org.apache.tapestry5.annotations.Component;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.beaneditor.BeanModel;
@@ -17,6 +18,10 @@ import org.slf4j.LoggerFactory;
 import org.trailsframework.descriptor.IClassDescriptor;
 import org.trailsframework.services.DescriptorService;
 import org.trailsframework.services.PersistenceService;
+import org.trailsframework.util.DisplayNameUtils;
+import org.trailsframework.validation.HibernateClassValidatorFactory;
+import org.trailsframework.validation.HibernateValidationDelegate;
+import org.hibernate.validator.InvalidStateException;
 
 public class Edit
 {
@@ -37,6 +42,12 @@ public class Edit
 
 	@Inject
 	private DescriptorService descriptorService;
+
+	@Inject
+	private HibernateClassValidatorFactory hibernateClassValidatorFactory;
+
+	@Inject
+	private HibernateValidationDelegate hibernateValidationDelegate;
 
 	@Inject
 	private ComponentResources resources;
@@ -79,11 +90,21 @@ public class Edit
 		return new Object[]{classDescriptor.getType(), bean};
 	}
 
-	boolean onValidateForm()
+	void onValidateFormFromForm() throws ValidationException
 	{
 		LOGGER.debug("validating");
-		//add validation logic here
-		return true;
+		//add more validation logic here
+		try
+		{
+			/**
+			 * The hibernate validate listener is enabled by default, so if nothing is wrong this entity will be
+			 * validated twice, once here, and once in session.saveOrUpdate(instance);
+			 */
+			hibernateClassValidatorFactory.validateEntity(bean);
+		} catch (InvalidStateException ise)
+		{
+			hibernateValidationDelegate.record(classDescriptor, ise, form.getDefaultTracker());
+		}
 	}
 
 	Object onSuccess()
@@ -93,11 +114,12 @@ public class Edit
 
 			LOGGER.debug("saving....");
 			persitenceService.save(bean);
-
 			return backToList();
-		}
 
-		catch (Exception e)
+		} catch (InvalidStateException ise)
+		{
+			hibernateValidationDelegate.record(classDescriptor, ise, form.getDefaultTracker());
+		} catch (Exception e)
 		{
 //			missing ExceptionUtils (Lang 2.3 API)
 //			form.recordError(ExceptionUtil.getRootCause(e));
@@ -134,7 +156,12 @@ public class Edit
 
 	public String getTitle()
 	{
-		return messages.format("org.trails.i18n.edit", classDescriptor.getDisplayName());
+		return messages.format("org.trails.i18n.edit", DisplayNameUtils.getDisplayName(classDescriptor, messages));
+	}
+
+	public String getListAllLinkMessage()
+	{
+		return messages.format("org.trails.component.listalllink", DisplayNameUtils.getPluralDisplayName(classDescriptor, messages));
 	}
 
 }

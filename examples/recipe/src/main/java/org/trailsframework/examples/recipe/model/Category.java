@@ -44,7 +44,7 @@ public class Category implements Identifiable
 		this.id = id;
 	}
 
-	@Pattern(regex = "[A-z|\\s]+", message = "{error.letterOrSpace}")
+	@Pattern(regex = "[A-z|\\s]+", message = "error.letterOrSpace")
 	public String getName()
 	{
 		return name;

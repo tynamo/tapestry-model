@@ -84,13 +84,6 @@ public interface IPropertyDescriptor extends IDescriptor
 
 	public void setName(String name);
 
-	/**
-	 * @return
-	 */
-	public String getShortDescription();
-
-	public void setShortDescription(String shortDescription);
-
 	public int getLength();
 
 	public void setLength(int length);

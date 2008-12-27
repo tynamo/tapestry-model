@@ -10,7 +10,7 @@
 		</ul>
 	</t:parameter>
 	<t:parameter name="navBlock">
-		<a style="font-weight:bolder;margin-left:10px" t:id="link" page="List" context="classDescriptor.type">List ${classDescriptor.displayName}</a>
+		<a style="font-weight:bolder;margin-left:10px" t:id="link" page="List" context="classDescriptor.type">${listAllLinkMessage}</a>
 	</t:parameter>
 
 	<h1>${title}</h1>

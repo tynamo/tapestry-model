@@ -12,6 +12,7 @@ import org.trailsframework.builder.BuilderDirector;
 import org.trailsframework.descriptor.IClassDescriptor;
 import org.trailsframework.services.DescriptorService;
 import org.trailsframework.services.PersistenceService;
+import org.trailsframework.util.DisplayNameUtils;
 
 public class New
 {
@@ -82,7 +83,12 @@ public class New
 
 	public String getTitle()
 	{
-		return messages.format("org.trails.i18n.add", classDescriptor.getDisplayName());
+		return messages.format("org.trails.i18n.add", DisplayNameUtils.getDisplayName(classDescriptor, messages));
+	}
+
+	public String getListAllLinkMessage()
+	{
+		return messages.format("org.trails.component.listalllink", DisplayNameUtils.getPluralDisplayName(classDescriptor, messages));
 	}
 
 }

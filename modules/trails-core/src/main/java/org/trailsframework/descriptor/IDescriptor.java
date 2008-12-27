@@ -9,13 +9,6 @@ public interface IDescriptor extends Cloneable, IExtensible
 
 	public void setHidden(boolean hidden);
 
-	/**
-	 * @return
-	 */
-	public String getDisplayName();
-
-	public void setDisplayName(String displayName);
-
 	public Object clone();
 
 }

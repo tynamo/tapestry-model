@@ -16,6 +16,8 @@ import org.trailsframework.builder.BuilderDirector;
 import org.trailsframework.descriptor.DescriptorDecorator;
 import org.trailsframework.descriptor.annotation.AnnotationDecorator;
 import org.trailsframework.services.*;
+import org.trailsframework.validation.HibernateClassValidatorFactory;
+import org.trailsframework.validation.HibernateValidationDelegate;
 
 /**
  * This module is automatically included as part of the Tapestry IoC Registry, it's a good place to configure and extend
@@ -35,6 +37,8 @@ public class AppModule
 		binder.bind(DescriptorService.class, DescriptorServiceImpl.class);
 		binder.bind(HibernatePersistenceService.class, HibernatePersistenceServiceImpl.class);
 		binder.bind(BuilderDirector.class, BuilderDirector.class);
+		binder.bind(HibernateClassValidatorFactory.class, HibernateClassValidatorFactory.class);
+		binder.bind(HibernateValidationDelegate.class, HibernateValidationDelegate.class);
 	}
 
 
@@ -59,6 +63,10 @@ public class AppModule
 
 	}
 
+	public static void contributeValidationMessagesSource(OrderedConfiguration<String> configuration)
+	{
+		configuration.add("Trails", "ValidationMessages");
+	}
 
 	public static void contributeHibernateEntityPackageManager(Configuration<String> configuration)
 	{
@@ -161,5 +169,12 @@ public class AppModule
 			configuration.add(packageName);
 		}
 	}
+
+
+/*
+	public static void contributeFieldValidatorSource(MappedConfiguration<String, Validator> configuration) {
+			configuration.add("int", new ValidateInt());
+	}
+*/
 
 }

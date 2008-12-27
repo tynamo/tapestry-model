@@ -22,29 +22,4 @@ public class Start
 	@Property
 	private IClassDescriptor descriptorIterator;
 
-
-	public List<IClassDescriptor> getAllDescriptors()
-	{
-		List<IClassDescriptor> descriptors = descriptorService.getAllDescriptors();
-
-		List<IClassDescriptor> result = new ArrayList<IClassDescriptor>(descriptors.size());
-
-		for (IClassDescriptor descriptor : descriptors)
-		{
-			if (!descriptor.isHidden())
-			{
-				result.add(descriptor);
-			}
-		}
-
-		Collections.sort(result, new Comparator<IClassDescriptor>()
-		{
-			public int compare(IClassDescriptor o1, IClassDescriptor o2)
-			{
-				return o1.getDisplayName().compareTo(o2.getDisplayName());
-			}
-		});
-
-		return result;
-	}
 }

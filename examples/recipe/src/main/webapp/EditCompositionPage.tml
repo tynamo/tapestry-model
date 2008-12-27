@@ -3,7 +3,7 @@
 		<ul>
 			<ul id="local">
 				<li>
-					<a t:id="link" page="List" context="classDescriptor.type">List ${classDescriptor.displayName}</a>
+					<a t:id="link" page="List" context="classDescriptor.type">List ${classDescriptor.pluralDisplayName}</a>
 				</li>
 			</ul>
 		</ul>
