@@ -30,7 +30,7 @@ public class MethodDescriptorFactoryImpl implements MethodDescriptorFactory
 				TrailsMethodDescriptor methodDescriptor = new TrailsMethodDescriptor(type,
 						beanMethodDescriptor.getMethod().getName(), beanMethodDescriptor.getMethod().getReturnType(),
 						beanMethodDescriptor.getMethod().getParameterTypes());
-				methodDescriptor.setDisplayName(Utils.unCamelCase(beanMethodDescriptor.getDisplayName()));
+//				methodDescriptor.setDisplayName(Utils.unCamelCase(beanMethodDescriptor.getDisplayName()));
 				result.add(methodDescriptor);
 			}
 		}

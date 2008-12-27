@@ -11,21 +11,19 @@
  */
 package org.trailsframework.descriptor;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.List;
-
 import ognl.Ognl;
 import ognl.OgnlException;
 import org.apache.commons.beanutils.BeanUtils;
-import org.trailsframework.util.Utils;
+
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
  * This represents all the Trails metadata for a single class.
  */
-public class TrailsClassDescriptor extends TrailsDescriptor implements
-	IClassDescriptor
+public class TrailsClassDescriptor extends TrailsDescriptor implements IClassDescriptor
 {
 	private List<IPropertyDescriptor> propertyDescriptors = new ArrayList<IPropertyDescriptor>();
 
@@ -58,12 +56,6 @@ public class TrailsClassDescriptor extends TrailsDescriptor implements
 	public TrailsClassDescriptor(Class type)
 	{
 		super(type);
-	}
-
-	public TrailsClassDescriptor(Class type, String displayName)
-	{
-		super(type);
-		this.setDisplayName(displayName);
 	}
 
 	/**
@@ -143,14 +135,6 @@ public class TrailsClassDescriptor extends TrailsDescriptor implements
 	public IPropertyDescriptor getPropertyDescriptor(String name)
 	{
 		return findDescriptor("propertyDescriptors.{? name == '" + name + "'}[0]");
-	}
-
-	/**
-	 * @return
-	 */
-	public String getPluralDisplayName()
-	{
-		return Utils.pluralize(getDisplayName() );
 	}
 
 	public List<IPropertyDescriptor> getPropertyDescriptors(List<String> properties) {

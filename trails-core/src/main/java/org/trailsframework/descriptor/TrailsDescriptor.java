@@ -13,14 +13,14 @@
  */
 package org.trailsframework.descriptor;
 
+import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Hashtable;
 import java.util.Map;
-
-import org.apache.commons.beanutils.BeanUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /**
  * @author fus8882
@@ -31,10 +31,6 @@ import org.apache.commons.logging.LogFactory;
 public class TrailsDescriptor implements IDescriptor, Serializable
 {
 	protected static final Log LOG = LogFactory.getLog(TrailsDescriptor.class);
-
-	private String displayName;
-
-	private String shortDescription;
 
 	protected Class type;
 
@@ -89,26 +85,6 @@ public class TrailsDescriptor implements IDescriptor, Serializable
 	public TrailsDescriptor(Class type)
 	{
 		this.type = type;
-	}
-
-	public String getDisplayName()
-	{
-		return displayName;
-	}
-
-	public void setDisplayName(String displayName)
-	{
-		this.displayName = displayName;
-	}
-
-	public String getShortDescription()
-	{
-		return shortDescription;
-	}
-
-	public void setShortDescription(String shortDescription)
-	{
-		this.shortDescription = shortDescription;
 	}
 
 	@Override

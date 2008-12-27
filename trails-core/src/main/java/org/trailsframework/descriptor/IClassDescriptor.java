@@ -15,12 +15,6 @@ package org.trailsframework.descriptor;
 
 import java.util.List;
 
-/**
- * @author fus8882
- *         <p/>
- *         TODO To change the template for this generated type comment go to
- *         Window - Preferences - Java - Code Style - Code Templates
- */
 public interface IClassDescriptor extends IDescriptor
 {
 	public Class getType();
@@ -48,29 +42,10 @@ public interface IClassDescriptor extends IDescriptor
 	public IPropertyDescriptor getIdentifierDescriptor();
 
 	/**
-	 * @return
-	 */
-	public String getDisplayName();
-
-	public void setDisplayName(String displayName);
-
-	/**
-	 * @return
-	 */
-	public String getShortDescription();
-
-	public void setShortDescription(String shortDescription);
-
-	/**
 	 * @param string
 	 * @return
 	 */
 	public IPropertyDescriptor getPropertyDescriptor(String name);
-
-	/**
-	 * @return
-	 */
-	public String getPluralDisplayName();
 
 	/**
 	 * @return

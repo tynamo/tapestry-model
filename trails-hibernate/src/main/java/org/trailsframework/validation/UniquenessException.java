@@ -5,39 +5,26 @@ import org.trailsframework.exception.ValidationException;
 
 public class UniquenessException extends ValidationException
 {
+	public static final String DEFAULT_MESSAGE = "{0} must be unique.";
+
 	public UniquenessException()
 	{
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public UniquenessException(IPropertyDescriptor descriptor, String message)
 	{
 		super(descriptor, message);
-		// TODO Auto-generated constructor stub
 	}
 
 	public UniquenessException(IPropertyDescriptor descriptor)
 	{
-		super(descriptor);
-		// TODO Auto-generated constructor stub
+		super(descriptor, DEFAULT_MESSAGE);
 	}
 
 	public UniquenessException(String message)
 	{
 		super(message);
-		// TODO Auto-generated constructor stub
 	}
 
-	public UniquenessException(String message, Throwable cause)
-	{
-		super(cause);
-		// TODO Auto-generated constructor stub
-	}
-
-	public UniquenessException(Throwable cause)
-	{
-		super(cause);
-		// TODO Auto-generated constructor stub
-	}
 }

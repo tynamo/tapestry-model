@@ -1,18 +1,18 @@
 package org.trailsframework.descriptor.annotation;
 
+import org.trailsframework.descriptor.IPropertyDescriptor;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-
-import org.trailsframework.descriptor.IPropertyDescriptor;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD, ElementType.METHOD})
 @DescriptorAnnotation(PropertyDescriptorAnnotationHandler.class)
 public @interface PropertyDescriptor
 {
-	public static final String DEFAULT_displayName = "";
+
 	public static final int DEFAULT_index = IPropertyDescriptor.UNDEFINED_INDEX;
 	public static final String DEFAULT_format = "no_format";
 
@@ -47,15 +47,6 @@ public @interface PropertyDescriptor
 	 * @return
 	 */
 	boolean richText() default false;
-
-	/**
-	 * Override the default label text
-	 *
-	 * @return
-	 */
-	String displayName() default "";
-
-	String shortDescription() default "";
 
 	/**
 	 * A format pattern string

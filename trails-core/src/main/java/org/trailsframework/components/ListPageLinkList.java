@@ -5,6 +5,7 @@ import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.trailsframework.descriptor.IClassDescriptor;
 import org.trailsframework.services.DescriptorService;
+import org.trailsframework.util.DisplayNameUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -40,7 +41,7 @@ public class ListPageLinkList
 		{
 			public int compare(IClassDescriptor o1, IClassDescriptor o2)
 			{
-				return o1.getDisplayName().compareTo(o2.getDisplayName());
+				return DisplayNameUtils.getDisplayName(o1, messages).compareTo(DisplayNameUtils.getDisplayName(o2, messages));
 			}
 		});
 
@@ -49,7 +50,7 @@ public class ListPageLinkList
 
 	public String getListAllLinkMessage()
 	{
-		return messages.format("org.trails.component.listalllink", descriptorIterator.getPluralDisplayName());
+		return messages.format("org.trails.component.listalllink", DisplayNameUtils.getPluralDisplayName(descriptorIterator, messages));
 	}
 
 }

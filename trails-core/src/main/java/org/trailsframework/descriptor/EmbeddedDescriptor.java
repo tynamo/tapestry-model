@@ -17,12 +17,6 @@ public class EmbeddedDescriptor extends TrailsClassDescriptor implements IIdenti
 	// constructors
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	public EmbeddedDescriptor(Class beanType, String displayName, Class type)
-	{
-		super(type, displayName);
-		this.beanType = beanType;
-	}
-
 	public EmbeddedDescriptor(Class beanType, IClassDescriptor descriptor)
 	{
 		super(descriptor);
