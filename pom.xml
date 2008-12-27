@@ -108,16 +108,16 @@
 			</snapshots>
 		</repository>
 
-		<!-- Don't use snapshots unless absolutely necessary
-				<repository>
-					<id>snapshots.codehaus.org</id>
-					<name>Codehaus Snapshots</name>
-					<url>http://snapshots.repository.codehaus.org/</url>
-					<snapshots>
-						<enabled>true</enabled>
-					</snapshots>
-				</repository>
-				-->
+		<!-- Don't use snapshots unless absolutely necessary -->
+		<repository>
+			<id>snapshots.codehaus.org</id>
+			<name>Codehaus Snapshots</name>
+			<url>http://snapshots.repository.codehaus.org</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+		<!--		-->
 
 		<repository>
 			<id>repository.jboss.org</id>

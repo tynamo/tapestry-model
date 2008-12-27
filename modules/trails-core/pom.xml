@@ -75,9 +75,9 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.apache.tapestry</groupId>
-			<artifactId>t5c-commons</artifactId>
-			<version>0.5.15</version>
+			<groupId>org.chenillekit</groupId>
+			<artifactId>chenillekit-tapestry</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 
 
@@ -85,10 +85,20 @@
 
 	<repositories>
 		<repository>
-			<id>t5components</id>
-			<name>T5Components Maven Repository</name>
-			<url>http://87.193.218.134:8080/t5components/maven-repository</url>
+			<id>chenillekit-releases</id>
+			<url>http://www.chenillekit.org/mvnrepo/release</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>chenillekit-snapshots	</id>
+			<url>http://www.chenillekit.org/mvnrepo/snapshot</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
 		</repository>
 	</repositories>
+
 
 </project>
