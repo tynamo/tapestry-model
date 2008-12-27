@@ -1,4 +1,19 @@
 
+html > body div.t-error li {
+	margin-left: 20px;
+	margin-right: 20px;
+}
+
+div.t-error  {
+	border-color: #F0C000 !important;
+}
+
+div.t-error div {
+	background-color: #F0C000;
+	color: white;
+	font-weight: bold;
+}
+
 form div.t-beaneditor {
 	margin: 0;
 	padding: 0;
