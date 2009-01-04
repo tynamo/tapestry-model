@@ -49,14 +49,7 @@ public class ReflectionDescriptorFactory implements DescriptorFactory
 		{
 			IClassDescriptor descriptor = new TrailsClassDescriptor(type);
 			BeanInfo beanInfo = Introspector.getBeanInfo(type);
-			BeanDescriptor beanDescriptor = beanInfo.getBeanDescriptor();
 
-			// Note there's various places and ways to uncamelcase the display name. However
-			// we don't want to un-camelcase the possibly customized displayName
-			// Also, because Introspector uses static methods, it's less clean to replace it 
-			// with a custom implementation. Proxy doesn't scale well and an aspect would 
-			// only work if it's run. So decided to deal with uncamelcasing displayname here
-			beanDescriptor.setDisplayName(Utils.unCamelCase(beanDescriptor.getDisplayName()));
 			BeanUtils.copyProperties(descriptor, beanInfo.getBeanDescriptor());
 			descriptor.setPropertyDescriptors(propertyDescriptorFactory.buildPropertyDescriptors(type, beanInfo));
 			descriptor.setMethodDescriptors(methodDescriptorFactory.buildMethodDescriptors(type, beanInfo));
