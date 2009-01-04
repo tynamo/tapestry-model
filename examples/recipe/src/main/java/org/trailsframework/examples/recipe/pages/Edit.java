@@ -103,7 +103,7 @@ public class Edit
 			hibernateClassValidatorFactory.validateEntity(bean);
 		} catch (InvalidStateException ise)
 		{
-			hibernateValidationDelegate.record(classDescriptor, ise, form.getDefaultTracker());
+			hibernateValidationDelegate.record(classDescriptor, ise, form.getDefaultTracker(), messages);
 		}
 	}
 
@@ -118,7 +118,7 @@ public class Edit
 
 		} catch (InvalidStateException ise)
 		{
-			hibernateValidationDelegate.record(classDescriptor, ise, form.getDefaultTracker());
+			hibernateValidationDelegate.record(classDescriptor, ise, form.getDefaultTracker(), messages);
 		} catch (Exception e)
 		{
 //			missing ExceptionUtils (Lang 2.3 API)

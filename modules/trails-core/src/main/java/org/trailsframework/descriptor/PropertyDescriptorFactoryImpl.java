@@ -35,8 +35,6 @@ public class PropertyDescriptorFactoryImpl implements PropertyDescriptorFactory
 		{
 			if (!Utils.isExcluded(beanPropDescriptor.getName(), propertyExcludes))
 			{
-				beanPropDescriptor.setDisplayName(Utils.unCamelCase(beanPropDescriptor.getDisplayName()));
-
 				Class<?> propertyType = beanPropDescriptor.getPropertyType();
 				TrailsPropertyDescriptor propDescriptor = new TrailsPropertyDescriptor(beanType, propertyType);
 				BeanUtils.copyProperties(propDescriptor, beanPropDescriptor);

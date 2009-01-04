@@ -13,13 +13,10 @@ package org.trailsframework.util;
 
 import ognl.Ognl;
 import ognl.OgnlException;
-import org.apache.commons.lang.StringUtils;
-import org.apache.oro.text.perl.Perl5Util;
 import org.trailsframework.exception.TrailsRuntimeException;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Collection;
+import java.util.HashMap;
 
 
 public class Utils
@@ -112,28 +109,6 @@ public class Utils
 			}
 		}
 		return pluralNoun;
-	}
-
-	/**
-	 * @param name
-	 * @return the uncamelcased display friendly version of this
-	 */
-	public static String unCamelCase(String name)
-	{
-		if (name != null)
-		{
-			ArrayList<String> words = new ArrayList<String>();
-			Perl5Util perl = new Perl5Util();
-			while (perl.match("/(\\w+?)([A-Z].*)/", name))
-			{
-				String word = perl.group(1);
-				name = perl.group(2);
-				words.add(StringUtils.capitalize(word));
-			}
-			words.add(StringUtils.capitalize(name));
-			return StringUtils.join(words.iterator(), " ");
-		}
-		return null;
 	}
 
 	/**

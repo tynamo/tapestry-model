@@ -24,23 +24,26 @@ public class HibernateValidationDelegate //extends TrailsValidationDelegate
 		this.threadLocale = threadLocale;
 	}
 
-	public void record(IClassDescriptor descriptor, InvalidStateException invalidStateException, ValidationTracker validationTracker)
+	/**
+	 * Records error messages for all the class level or method level constraints violations.
+	 */
+	public void record(IClassDescriptor descriptor, InvalidStateException invalidStateException, ValidationTracker validationTracker, Messages componentMessages)
 	{
 		for (InvalidValue invalidValue : invalidStateException.getInvalidValues())
 		{
 			String key = invalidValue.getMessage();
 			IPropertyDescriptor propertyDescriptor = descriptor.getPropertyDescriptor(invalidValue.getPropertyName());
-			Messages messages = messagesSource.getValidationMessages(threadLocale.getLocale());
-			MessageFormatter messageFormatter = messages.getFormatter(key);
+			MessageFormatter messageFormatter = messagesSource.getValidationMessages(threadLocale.getLocale()).getFormatter(key);
 			if (propertyDescriptor != null)
 			{
-				validationTracker.recordError(messageFormatter.format(DisplayNameUtils.getDisplayName(propertyDescriptor, messages), invalidValue.getValue()));
+				validationTracker.recordError(messageFormatter.format(DisplayNameUtils.getDisplayName(propertyDescriptor, componentMessages), invalidValue.getValue()));
 			} else
 			{
 				// This error is an "unassociated (with any field) error".
 				validationTracker.recordError(messageFormatter.format());
 			}
 		}
+
 	}
 
 }
