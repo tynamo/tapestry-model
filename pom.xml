@@ -45,5 +45,56 @@
 			<url>dav:https://dav.codehaus.org/snapshots.repository/trails/</url>
 		</snapshotRepository>
 	</distributionManagement>
+	
+	<!-- We have to specify repositories here, otherwise the build won't find trails-parent (at least before in sycnhed up to repo1 -->
+	<repositories>
+		<repository>
+			<id>trails.codehaus.org</id>
+			<name>Trails Repository</name>
+			<url>http://trails.codehaus.org/repository</url>
+		</repository>
+		<repository>
+			<id>apache.snapshots</id>
+			<url>http://people.apache.org/repo/m2-snapshot-repository</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+
+		<!-- Don't use snapshots unless absolutely necessary -->
+		<repository>
+			<id>snapshots.codehaus.org</id>
+			<name>Codehaus Snapshots</name>
+			<url>http://snapshots.repository.codehaus.org</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+
+		<repository>
+			<id>repository.jboss.org</id>
+			<url>http://repository.jboss.org/maven2</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+
+<!--
+		<repository>
+			<id>tapestry</id>
+			<url>http://people.apache.org/~hlship/tapestry-ibiblio-rsynch-repository</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+-->
+
+	</repositories>
 
 </project>
