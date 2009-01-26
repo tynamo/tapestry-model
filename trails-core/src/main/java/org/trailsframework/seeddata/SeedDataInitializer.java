@@ -1,4 +1,4 @@
-package org.trails.seeddata;
+package org.trailsframework.seeddata;
 
 public interface SeedDataInitializer
 {
