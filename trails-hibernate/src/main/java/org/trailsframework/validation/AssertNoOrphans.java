@@ -1,4 +1,4 @@
-package org.trails.validation;
+package org.trailsframework.validation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Inherited;
@@ -9,8 +9,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 @Inherited
-public @interface AssertNoOrphans
-{
+public @interface AssertNoOrphans {
 	// we can't default this to null, which sucks!
 
 	Class value() default Object.class;
