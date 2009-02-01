@@ -1,47 +1,40 @@
 package org.trailsframework.examples.recipe.pages;
 
 
+import org.apache.tapestry5.Link;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.beaneditor.BeanModel;
-import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.services.BeanModelSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.trailsframework.builder.BuilderDirector;
 import org.trailsframework.descriptor.IClassDescriptor;
-import org.trailsframework.services.DescriptorService;
-import org.trailsframework.services.PersistenceService;
-import org.trailsframework.util.DisplayNameUtils;
+import org.trailsframework.pages.HibernateModelPage;
 
-public class New
+public class New extends HibernateModelPage
 {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(New.class);
 
 	@Inject
-	private BeanModelSource beanModelSource;
-
-	@Inject
-	private Messages messages;
-
-	@Inject
-	private PersistenceService persitenceService;
-
-	@Inject
-	private DescriptorService descriptorService;
-
-	@Inject
 	private BuilderDirector builderDirector;
 
-	@Property(write = false)
 	private IClassDescriptor classDescriptor;
 
 	@Property(write = false)
 	private BeanModel beanModel;
 
-	@Property(write = false)
 	private Object bean;
+
+	public IClassDescriptor getClassDescriptor()
+	{
+		return classDescriptor;
+	}
+
+	public Object getBean()
+	{
+		return bean;
+	}
 
 	void pageLoaded()
 	{
@@ -51,9 +44,8 @@ public class New
 	void onActivate(Class clazz) throws Exception
 	{
 		bean = builderDirector.createNewInstance(clazz);
-		classDescriptor = descriptorService.getClassDescriptor(clazz);
-		beanModel = beanModelSource.create(clazz, true, messages);
-
+		classDescriptor = getDescriptorService().getClassDescriptor(clazz);
+		beanModel = getBeanModelSource().create(clazz, true, getMessages());
 //		BeanModelUtils.modify(_beanModel, null, null, null, null);
 	}
 
@@ -67,13 +59,6 @@ public class New
 		return new Object[]{classDescriptor.getType()};
 	}
 
-	Class onSuccess()
-	{
-		LOGGER.info("saving....");
-		persitenceService.save(bean);
-		return Start.class;
-	}
-
 	void cleanupRender()
 	{
 		bean = null;
@@ -81,14 +66,9 @@ public class New
 		beanModel = null;
 	}
 
-	public String getTitle()
-	{
-		return messages.format("org.trails.i18n.add", DisplayNameUtils.getDisplayName(classDescriptor, messages));
-	}
 
-	public String getListAllLinkMessage()
+	public Link back()
 	{
-		return messages.format("org.trails.component.listalllink", DisplayNameUtils.getPluralDisplayName(classDescriptor, messages));
+		return getResources().createPageLink(List.class, false, getClassDescriptor().getType());
 	}
-
 }

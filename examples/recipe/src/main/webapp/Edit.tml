@@ -24,10 +24,13 @@
 			<t:beaneditor object="bean" model="beanModel"/>
 			<br/>
 			<div class="t-beaneditor-row">
-				<input t:type="any" class="button" type="submit" id="save" value="message:org.trails.i18n.apply"/>
-				<input t:type="any" class="button" type="submit" id="saveAndReturnButton"
-					   value="message:org.trails.i18n.applyAndReturn"/>
-				&nbsp;&nbsp;
+				<button t:type="any" class="button" type="submit" id="save">
+					${message:org.trails.i18n.apply}
+				</button>
+				<button t:type="any" class="button" type="submit" id="saveAndReturnButton">
+					${message:org.trails.i18n.applyAndReturn}
+				</button>
+				&nbsp; or &nbsp;
 				<t:actionlink class="button" style="color:red; font-weight:bold;" t:id="cancel">${message:org.trails.i18n.cancel}</t:actionlink>
 			</div>
 		</div>
