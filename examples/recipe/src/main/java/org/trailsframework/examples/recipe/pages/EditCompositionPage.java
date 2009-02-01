@@ -14,9 +14,9 @@ import org.apache.tapestry5.services.BeanModelSource;
 import org.apache.tapestry5.services.ContextValueEncoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.trailsframework.descriptor.CollectionDescriptor;
 import org.trailsframework.descriptor.IClassDescriptor;
 import org.trailsframework.descriptor.IPropertyDescriptor;
-import org.trailsframework.descriptor.CollectionDescriptor;
 import org.trailsframework.services.DescriptorService;
 import org.trailsframework.services.PersistenceService;
 
@@ -142,7 +142,7 @@ public class EditCompositionPage
 
 	public Link backToList()
 	{
-		return resources.createPageLink(org.trailsframework.pages.EditPage.class, false, collectionDescriptor.getBeanType(), parentBean);
+		return resources.createPageLink(Edit.class, false, collectionDescriptor.getBeanType(), parentBean);
 	}
 
 }
