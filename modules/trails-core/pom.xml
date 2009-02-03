@@ -25,6 +25,19 @@
 					<optimize>true</optimize>
 				</configuration>
 			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+				<archive>
+					<manifestEntries>
+					<Tapestry-Module-Classes>org.trailsframework.services.TrailsCoreModule</Tapestry-Module-Classes>
+					</manifestEntries>
+				</archive>
+				</configuration>
+			</plugin>
+
 		</plugins>
 	</build>
 
