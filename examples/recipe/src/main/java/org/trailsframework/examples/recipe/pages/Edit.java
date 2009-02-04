@@ -7,7 +7,7 @@ import org.apache.tapestry5.beaneditor.BeanModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.trailsframework.descriptor.IClassDescriptor;
-import org.trailsframework.pages.HibernateModelPage;
+import org.trailsframework.hibernate.pages.HibernateModelPage;
 
 public class Edit extends HibernateModelPage
 {

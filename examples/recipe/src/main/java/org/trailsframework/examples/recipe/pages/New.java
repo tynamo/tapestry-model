@@ -9,7 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.trailsframework.builder.BuilderDirector;
 import org.trailsframework.descriptor.IClassDescriptor;
-import org.trailsframework.pages.HibernateModelPage;
+import org.trailsframework.hibernate.pages.HibernateModelPage;
 
 public class New extends HibernateModelPage
 {

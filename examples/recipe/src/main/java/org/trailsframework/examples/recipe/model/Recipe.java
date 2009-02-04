@@ -18,7 +18,7 @@ import org.hibernate.validator.NotNull;
 import org.trailsframework.descriptor.annotation.Collection;
 import org.trailsframework.descriptor.annotation.PropertyDescriptor;
 import org.trailsframework.util.Identifiable;
-import org.trailsframework.validation.ValidateUniqueness;
+import org.trailsframework.hibernate.validation.ValidateUniqueness;
 
 import javax.persistence.*;
 import java.util.Date;

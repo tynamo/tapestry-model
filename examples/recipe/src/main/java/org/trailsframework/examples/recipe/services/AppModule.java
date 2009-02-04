@@ -5,19 +5,21 @@ import org.apache.tapestry5.hibernate.HibernateEntityPackageManager;
 import org.apache.tapestry5.hibernate.HibernateModule;
 import org.apache.tapestry5.hibernate.HibernateSessionSource;
 import org.apache.tapestry5.hibernate.HibernateTransactionDecorator;
-import org.apache.tapestry5.ioc.*;
+import org.apache.tapestry5.ioc.Configuration;
+import org.apache.tapestry5.ioc.MappedConfiguration;
+import org.apache.tapestry5.ioc.ObjectLocator;
+import org.apache.tapestry5.ioc.OrderedConfiguration;
+import org.apache.tapestry5.ioc.ServiceBinder;
 import org.apache.tapestry5.ioc.annotations.Match;
 import org.apache.tapestry5.ioc.annotations.SubModule;
 import org.apache.tapestry5.services.BeanBlockContribution;
 import org.apache.tapestry5.upload.services.UploadSymbols;
 import org.hibernate.EntityMode;
 import org.hibernate.metadata.ClassMetadata;
-import org.trailsframework.builder.BuilderDirector;
 import org.trailsframework.descriptor.DescriptorDecorator;
 import org.trailsframework.descriptor.annotation.AnnotationDecorator;
-import org.trailsframework.services.*;
-import org.trailsframework.validation.HibernateClassValidatorFactory;
-import org.trailsframework.validation.HibernateValidationDelegate;
+import org.trailsframework.hibernate.services.HibernateDescriptorDecorator;
+import org.trailsframework.services.TrailsCoreModule;
 
 /**
  * This module is automatically included as part of the Tapestry IoC Registry, it's a good place to configure and extend
@@ -34,10 +36,6 @@ public class AppModule
 		// is provided inline, or requires more initialization than simply
 		// invoking the constructor.
 
-		binder.bind(HibernatePersistenceService.class, HibernatePersistenceServiceImpl.class);
-		binder.bind(BuilderDirector.class, BuilderDirector.class);
-		binder.bind(HibernateClassValidatorFactory.class, HibernateClassValidatorFactory.class);
-		binder.bind(HibernateValidationDelegate.class, HibernateValidationDelegate.class);
 	}
 
 
@@ -109,6 +107,7 @@ public class AppModule
 		configuration.add("Annotation", new AnnotationDecorator());
 	}
 
+	@SuppressWarnings("unchecked")
 	public static void contributeDescriptorService(Configuration<Class> configuration,
 												   HibernateSessionSource hibernateSessionSource)
 	{
