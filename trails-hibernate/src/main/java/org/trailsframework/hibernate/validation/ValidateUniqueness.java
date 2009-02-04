@@ -1,4 +1,4 @@
-package org.trailsframework.validation;
+package org.trailsframework.hibernate.validation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Inherited;

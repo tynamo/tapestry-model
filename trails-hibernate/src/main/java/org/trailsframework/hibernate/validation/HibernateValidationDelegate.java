@@ -1,4 +1,4 @@
-package org.trailsframework.validation;
+package org.trailsframework.hibernate.validation;
 
 import org.apache.tapestry5.ValidationTracker;
 import org.apache.tapestry5.ioc.MessageFormatter;

@@ -9,10 +9,11 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and limitations under the License.
  */
-package org.trailsframework.services;
+package org.trailsframework.hibernate.services;
 
 import org.hibernate.criterion.DetachedCriteria;
 import org.trailsframework.descriptor.IClassDescriptor;
+import org.trailsframework.services.PersistenceService;
 import org.apache.tapestry5.hibernate.annotations.CommitAfter;
 
 import java.util.List;

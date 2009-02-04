@@ -1,4 +1,4 @@
-package org.trailsframework.services;
+package org.trailsframework.hibernate.services;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Query;

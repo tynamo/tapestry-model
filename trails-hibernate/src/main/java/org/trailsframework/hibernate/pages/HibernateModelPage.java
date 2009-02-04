@@ -1,12 +1,13 @@
-package org.trailsframework.pages;
+package org.trailsframework.hibernate.pages;
 
 import org.apache.tapestry5.ValidationException;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.hibernate.validator.InvalidStateException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.trailsframework.validation.HibernateClassValidatorFactory;
-import org.trailsframework.validation.HibernateValidationDelegate;
+import org.trailsframework.pages.ModelPage;
+import org.trailsframework.hibernate.validation.HibernateClassValidatorFactory;
+import org.trailsframework.hibernate.validation.HibernateValidationDelegate;
 
 
 public abstract class HibernateModelPage extends ModelPage

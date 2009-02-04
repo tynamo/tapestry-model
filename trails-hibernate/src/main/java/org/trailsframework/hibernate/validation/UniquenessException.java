@@ -1,4 +1,4 @@
-package org.trailsframework.validation;
+package org.trailsframework.hibernate.validation;
 
 import org.trailsframework.descriptor.IPropertyDescriptor;
 import org.trailsframework.exception.ValidationException;

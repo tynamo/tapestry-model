@@ -9,10 +9,12 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and limitations under the License.
  */
-package org.trailsframework.services;
+package org.trailsframework.hibernate.services;
 
 import org.hibernate.*;
 import org.hibernate.criterion.*;
+import org.trailsframework.services.DescriptorService;
+import org.trailsframework.services.PersistenceService;
 import org.trailsframework.util.Utils;
 import org.trailsframework.descriptor.IClassDescriptor;
 import org.trailsframework.descriptor.IPropertyDescriptor;
@@ -411,7 +413,7 @@ public class HibernatePersistenceServiceImpl implements HibernatePersistenceServ
 	}
 
 	/**
-	 * @see org.trailsframework.services.HibernatePersistenceService#saveOrUpdate(java.lang.Object)
+	 * @see org.trailsframework.hibernate.services.HibernatePersistenceService#saveOrUpdate(java.lang.Object)
 	 */
 
 	public <T> T merge(T instance)
@@ -420,7 +422,7 @@ public class HibernatePersistenceServiceImpl implements HibernatePersistenceServ
 	}
 
 	/**
-	 * @see org.trailsframework.services.HibernatePersistenceService#saveOrUpdate(java.lang.Object)
+	 * @see org.trailsframework.hibernate.services.HibernatePersistenceService#saveOrUpdate(java.lang.Object)
 	 */
 
 	public <T> T saveOrUpdate(T instance)  // throws ValidationException
