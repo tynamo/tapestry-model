@@ -9,6 +9,7 @@ import org.apache.tapestry5.ioc.services.CoercionTuple;
 import org.apache.tapestry5.services.BeanBlockContribution;
 import org.apache.tapestry5.services.DataTypeAnalyzer;
 import org.apache.tapestry5.services.LibraryMapping;
+import org.trailsframework.builder.BuilderDirector;
 import org.trailsframework.descriptor.DescriptorFactory;
 import org.trailsframework.descriptor.MethodDescriptorFactory;
 import org.trailsframework.descriptor.MethodDescriptorFactoryImpl;
@@ -24,6 +25,7 @@ public class TrailsCoreModule {
 		// is provided inline, or requires more initialization than simply
 		// invoking the constructor.
 
+		binder.bind(BuilderDirector.class, BuilderDirector.class);
 		binder.bind(DescriptorFactory.class, ReflectionDescriptorFactory.class);
 		binder.bind(PropertyDescriptorFactory.class, PropertyDescriptorFactoryImpl.class);
 		binder.bind(MethodDescriptorFactory.class, MethodDescriptorFactoryImpl.class);
