@@ -34,7 +34,6 @@ public class AppModule
 		// is provided inline, or requires more initialization than simply
 		// invoking the constructor.
 
-		binder.bind(DescriptorService.class, DescriptorServiceImpl.class);
 		binder.bind(HibernatePersistenceService.class, HibernatePersistenceServiceImpl.class);
 		binder.bind(BuilderDirector.class, BuilderDirector.class);
 		binder.bind(HibernateClassValidatorFactory.class, HibernateClassValidatorFactory.class);
