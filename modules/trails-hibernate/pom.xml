@@ -14,6 +14,20 @@
 
 	<build>
 		<testSourceDirectory>src/test/resources</testSourceDirectory>
+	
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+				<archive>
+					<manifestEntries>
+					<Tapestry-Module-Classes>org.trailsframework.hibernate.services.TrailsHibernateModule</Tapestry-Module-Classes>
+					</manifestEntries>
+				</archive>
+				</configuration>
+			</plugin>
+		</plugins>
 	</build>
 
 	<dependencies>
