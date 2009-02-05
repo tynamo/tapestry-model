@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import ognl.Ognl;
 import ognl.OgnlException;
 
+import org.apache.tapestry5.hibernate.HibernateSessionManager;
 import org.apache.tapestry5.ioc.annotations.EagerLoad;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
@@ -25,7 +26,8 @@ import org.trailsframework.services.DescriptorService;
 public class SeedEntityImpl implements SeedEntity {
 	private static final Logger LOGGER = LoggerFactory.getLogger(SeedEntityImpl.class);
 
-	public SeedEntityImpl(HibernatePersistenceService persistenceService, DescriptorService descriptorService, List<Object> entities) {
+	@SuppressWarnings("unchecked")
+	public SeedEntityImpl(HibernateSessionManager sessionManager, HibernatePersistenceService persistenceService, DescriptorService descriptorService, List<Object> entities) {
 		for (Object entity : entities) {
 			if (entity.getClass().getAnnotation(Entity.class) == null) {
 				LOGGER.warn("Contributed object '" + entity + "' is not an entity, cannot be used a seed");
@@ -56,11 +58,11 @@ public class SeedEntityImpl implements SeedEntity {
 			if (validateUniqueness == null && id == null) {
 				LOGGER.info("Entity of type " + entity.getClass() + " doesn't have uniquely identifying property. Searching using the whole entity as an example "
 						+ entity);
-				List objects = persistenceService.getInstances(entity.getClass());
-				if (objects.size() == 0) LOGGER.info("Couldn't find an existing seed entity");
-				else if (objects.size() == 1) {
+				List existingEntities = persistenceService.getInstances(entity.getClass());
+				if (existingEntities.size() == 0) LOGGER.info("Couldn't find an existing seed entity");
+				else if (existingEntities.size() == 1) {
 					LOGGER.info("Found exactly one existing matching entity, assuming it is an earlier seeded entity");
-					savedObject = objects.get(0);
+					savedObject = existingEntities.get(0);
 				} else {
 					LOGGER
 							.warn("Found more than one existing entity based on the seed entity example, won't add a new one. You should make sure seed entities can be uniquely identified.");
@@ -113,7 +115,7 @@ public class SeedEntityImpl implements SeedEntity {
 				}
 				throw new PersistenceException(errorMessageBuilder.toString(), ivex);
 			}
-
 		}
+		sessionManager.commit();
 	}
 }
