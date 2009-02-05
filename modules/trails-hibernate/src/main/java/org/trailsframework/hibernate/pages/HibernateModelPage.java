@@ -21,7 +21,8 @@ public abstract class HibernateModelPage extends ModelPage
 	@Inject
 	private HibernateValidationDelegate hibernateValidationDelegate;
 
-	void onValidateFormFromForm() throws ValidationException
+	@Override
+	protected void onValidateFormFromForm() throws ValidationException
 	{
 		LOGGER.debug("validating");
 		//add more validation logic here
@@ -38,7 +39,8 @@ public abstract class HibernateModelPage extends ModelPage
 		}
 	}
 
-	Object onSuccess()
+	@Override
+	protected Object onSuccess()
 	{
 		try
 		{
