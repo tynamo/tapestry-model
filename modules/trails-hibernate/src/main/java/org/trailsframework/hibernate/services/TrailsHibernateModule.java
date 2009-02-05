@@ -29,6 +29,7 @@ public class TrailsHibernateModule {
 		binder.bind(HibernatePersistenceService.class, HibernatePersistenceServiceImpl.class);
 		binder.bind(HibernateClassValidatorFactory.class, HibernateClassValidatorFactory.class);
 		binder.bind(HibernateValidationDelegate.class, HibernateValidationDelegate.class);
+		binder.bind(SeedEntity.class, SeedEntityImpl.class);
 		
 	}
 
