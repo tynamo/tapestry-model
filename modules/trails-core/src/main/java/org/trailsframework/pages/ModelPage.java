@@ -43,9 +43,9 @@ public abstract class ModelPage
 	@Component
 	private PageLink link;
 
-	abstract void onValidateFormFromForm() throws ValidationException;
+	protected abstract void onValidateFormFromForm() throws ValidationException;
 
-	abstract Object onSuccess();
+	protected abstract Object onSuccess();
 
 	public Link onActionFromCancel()
 	{
