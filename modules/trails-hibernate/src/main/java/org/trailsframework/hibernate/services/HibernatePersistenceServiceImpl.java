@@ -367,6 +367,9 @@ public class HibernatePersistenceServiceImpl implements HibernatePersistenceServ
 			}
 		}
 		searchCriteria.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+		// FIXME This won't work because the shadow proxy doesn't implement SessionImplementor
+		// that session is casted to. Maybe we should inject SessionManager instead 
+		// and obtain the Session from it
 		return searchCriteria.getExecutableCriteria(session).list();
 	}
 
