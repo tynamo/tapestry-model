@@ -1,24 +1,12 @@
 package org.trailsframework.examples.recipe.services;
 
 import org.apache.tapestry5.SymbolConstants;
-import org.apache.tapestry5.hibernate.HibernateEntityPackageManager;
 import org.apache.tapestry5.hibernate.HibernateModule;
-import org.apache.tapestry5.hibernate.HibernateSessionSource;
-import org.apache.tapestry5.hibernate.HibernateTransactionDecorator;
 import org.apache.tapestry5.ioc.Configuration;
 import org.apache.tapestry5.ioc.MappedConfiguration;
-import org.apache.tapestry5.ioc.ObjectLocator;
-import org.apache.tapestry5.ioc.OrderedConfiguration;
 import org.apache.tapestry5.ioc.ServiceBinder;
-import org.apache.tapestry5.ioc.annotations.Match;
 import org.apache.tapestry5.ioc.annotations.SubModule;
-import org.apache.tapestry5.services.BeanBlockContribution;
 import org.apache.tapestry5.upload.services.UploadSymbols;
-import org.hibernate.EntityMode;
-import org.hibernate.metadata.ClassMetadata;
-import org.trailsframework.descriptor.DescriptorDecorator;
-import org.trailsframework.descriptor.annotation.AnnotationDecorator;
-import org.trailsframework.hibernate.services.HibernateDescriptorDecorator;
 import org.trailsframework.services.TrailsCoreModule;
 
 /**
