@@ -40,7 +40,7 @@ import java.util.List;
 
 /**
  * This decorator will add metadata information. It will replace simple
- * reflection based TrailsPropertyIPropertyDescriptors with appropriate
+ * reflection based TrailsPropertyTrailsPropertyDescriptors with appropriate
  * Hibernate descriptors <p/> Background... TrailsDescriptorService operates one
  * ReflectorDescriptorFactory - TrailsDescriptorService iterates/scans all class
  * types encountered - ReflectorDescriptorFactory allocates property descriptor
@@ -75,9 +75,9 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 		this.descriptorFactory = descriptorFactory;
 	}
 
-	public IClassDescriptor decorate(IClassDescriptor descriptor)
+	public TrailsClassDescriptor decorate(TrailsClassDescriptor descriptor)
 	{
-		ArrayList<IPropertyDescriptor> decoratedPropertyDescriptors = new ArrayList<IPropertyDescriptor>();
+		ArrayList<TrailsPropertyDescriptor> decoratedPropertyDescriptors = new ArrayList<TrailsPropertyDescriptor>();
 
 		Class type = descriptor.getType();
 		ClassMetadata classMetaData = null;
@@ -94,11 +94,11 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 			}
 		}
 
-		for (IPropertyDescriptor propertyDescriptor : descriptor.getPropertyDescriptors())
+		for (TrailsPropertyDescriptor propertyDescriptor : descriptor.getPropertyDescriptors())
 		{
 			try
 			{
-				IPropertyDescriptor descriptorReference;
+				TrailsPropertyDescriptor descriptorReference;
 
 				if (propertyDescriptor.getName().equals(getIdentifierProperty(type)))
 				{
@@ -128,8 +128,8 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 		return descriptor;
 	}
 
-	protected IPropertyDescriptor decoratePropertyDescriptor(Class type, Property mappingProperty,
-			IPropertyDescriptor descriptor, IClassDescriptor parentClassDescriptor)
+	protected TrailsPropertyDescriptor decoratePropertyDescriptor(Class type, Property mappingProperty,
+			TrailsPropertyDescriptor descriptor, TrailsClassDescriptor parentClassDescriptor)
 	{
 		if (isFormula(mappingProperty))
 		{
@@ -148,7 +148,7 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 			descriptor.setReadOnly(true);
 		}
 
-		IPropertyDescriptor descriptorReference = descriptor;
+		TrailsPropertyDescriptor descriptorReference = descriptor;
 		Type hibernateType = mappingProperty.getType();
 		if (mappingProperty.getType() instanceof ComponentType)
 		{
@@ -172,17 +172,17 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 	}
 
 	private EmbeddedDescriptor buildEmbeddedDescriptor(Class type, Property mappingProperty,
-			IPropertyDescriptor descriptor, IClassDescriptor parentClassDescriptor)
+			TrailsPropertyDescriptor descriptor, TrailsClassDescriptor parentClassDescriptor)
 	{
 		Component componentMapping = (Component) mappingProperty.getValue();
-		IClassDescriptor baseDescriptor = descriptorFactory.buildClassDescriptor(descriptor.getPropertyType());
+		TrailsClassDescriptor baseDescriptor = descriptorFactory.buildClassDescriptor(descriptor.getPropertyType());
 		// build from base descriptor
 		EmbeddedDescriptor embeddedDescriptor = new EmbeddedDescriptor(type, baseDescriptor);
 		// and copy from property descriptor
 		embeddedDescriptor.copyFrom(descriptor);
-		ArrayList<IPropertyDescriptor> decoratedProperties = new ArrayList<IPropertyDescriptor>();
+		ArrayList<TrailsPropertyDescriptor> decoratedProperties = new ArrayList<TrailsPropertyDescriptor>();
 		// go thru each property and decorate it with Hibernate info
-		for (IPropertyDescriptor propertyDescriptor : embeddedDescriptor.getPropertyDescriptors())
+		for (TrailsPropertyDescriptor propertyDescriptor : embeddedDescriptor.getPropertyDescriptors())
 		{
 			if (notAHibernateProperty(componentMapping, propertyDescriptor))
 			{
@@ -190,9 +190,9 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 			} else
 			{
 				Property property = componentMapping.getProperty(propertyDescriptor.getName());
-				IPropertyDescriptor iPropertyDescriptor = decoratePropertyDescriptor(embeddedDescriptor.getBeanType(),
+				TrailsPropertyDescriptor TrailsPropertyDescriptor = decoratePropertyDescriptor(embeddedDescriptor.getBeanType(),
 						property, propertyDescriptor, parentClassDescriptor);
-				decoratedProperties.add(iPropertyDescriptor);
+				decoratedProperties.add(TrailsPropertyDescriptor);
 			}
 		}
 		embeddedDescriptor.setPropertyDescriptors(decoratedProperties);
@@ -270,7 +270,7 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 	 * @param propertyDescriptor
 	 * @return true if the propertyDescriptor property is in componentMapping
 	 */
-	protected boolean notAHibernateProperty(Component componentMapping, IPropertyDescriptor propertyDescriptor)
+	protected boolean notAHibernateProperty(Component componentMapping, TrailsPropertyDescriptor propertyDescriptor)
 	{
 		for (Iterator iter = componentMapping.getPropertyIterator(); iter.hasNext();)
 		{
@@ -307,7 +307,7 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 	 * @param descriptor
 	 * @return
 	 */
-	protected boolean notAHibernateProperty(ClassMetadata classMetaData, IPropertyDescriptor descriptor)
+	protected boolean notAHibernateProperty(ClassMetadata classMetaData, TrailsPropertyDescriptor descriptor)
 	{
 		try
 		{
@@ -325,9 +325,9 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 	 * @param parentClassDescriptor
 	 * @return
 	 */
-	private IIdentifierDescriptor createIdentifierDescriptor(Class type, IPropertyDescriptor descriptor, IClassDescriptor parentClassDescriptor)
+	private IdentifierDescriptor createIdentifierDescriptor(Class type, TrailsPropertyDescriptor descriptor, TrailsClassDescriptor parentClassDescriptor)
 	{
-		IIdentifierDescriptor identifierDescriptor;
+		IdentifierDescriptor identifierDescriptor;
 		PersistentClass mapping = getMapping(type);
 
 		/**
@@ -341,7 +341,7 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 			identifierDescriptor = embeddedDescriptor;
 		} else
 		{
-			identifierDescriptor = new IdentifierDescriptor(type, descriptor);
+			identifierDescriptor = new IdentifierDescriptorImpl(type, descriptor);
 		}
 
 		if (((SimpleValue) mapping.getIdentifier()).getIdentifierGeneratorStrategy().equals("assigned"))
@@ -368,8 +368,8 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 	 * @param descriptor
 	 * @param parentClassDescriptor 
 	 */
-	private CollectionDescriptor decorateCollectionDescriptor(Class type, IPropertyDescriptor descriptor,
-			IClassDescriptor parentClassDescriptor)
+	private CollectionDescriptor decorateCollectionDescriptor(Class type, TrailsPropertyDescriptor descriptor,
+			TrailsClassDescriptor parentClassDescriptor)
 	{
 		try
 		{
@@ -395,8 +395,8 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 		}
 	}
 
-	public IPropertyDescriptor decorateAssociationDescriptor(Class type, Property mappingProperty,
-			IPropertyDescriptor descriptor, IClassDescriptor parentClassDescriptor)
+	public TrailsPropertyDescriptor decorateAssociationDescriptor(Class type, Property mappingProperty,
+			TrailsPropertyDescriptor descriptor, TrailsClassDescriptor parentClassDescriptor)
 	{
 		Type hibernateType = mappingProperty.getType();
 		Class parentClassType = parentClassDescriptor.getType();
@@ -465,7 +465,7 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 	 * I couldn't find a way to get the "mappedBy" value from the collection
 	 * metadata, so I'm getting it from the OneToMany annotation.
 	 */
-	private void decorateOneToManyCollection(IClassDescriptor parentClassDescriptor,
+	private void decorateOneToManyCollection(TrailsClassDescriptor parentClassDescriptor,
 			CollectionDescriptor collectionDescriptor, org.hibernate.mapping.Collection collectionMapping)
 	{
 		Class type = parentClassDescriptor.getType();

@@ -6,7 +6,7 @@ import org.apache.tapestry.event.PageEvent;
 import org.hibernate.criterion.DetachedCriteria;
 import org.jmock.Mock;
 import org.trails.component.HibernateComponentTest;
-import org.trails.descriptor.IClassDescriptor;
+import org.trails.descriptor.TrailsClassDescriptor;
 import org.trails.descriptor.IPropertyDescriptor;
 import org.trails.descriptor.TrailsClassDescriptor;
 import org.trails.descriptor.TrailsPropertyDescriptor;
@@ -25,7 +25,7 @@ public class SearchFormTest extends HibernateComponentTest
 	public void setUp() throws Exception
 	{
 		pageResolverMock = new Mock(PageResolver.class);
-		IClassDescriptor fooDescriptor = new TrailsClassDescriptor(Foo.class, "Foo");
+		TrailsClassDescriptor fooDescriptor = new TrailsClassDescriptor(Foo.class, "Foo");
 
 		searchForm = (SearchForm) creator.newInstance(SearchForm.class,
 				new Object[]{"pageResolver", pageResolverMock.proxy(), "classDescriptor", fooDescriptor, "builderDirector", new BuilderDirector()});

@@ -1,6 +1,6 @@
 package org.trailsframework.hibernate.validation;
 
-import org.trailsframework.descriptor.IPropertyDescriptor;
+import org.trailsframework.descriptor.TrailsPropertyDescriptor;
 import org.trailsframework.exception.ValidationException;
 
 public class UniquenessException extends ValidationException
@@ -12,12 +12,12 @@ public class UniquenessException extends ValidationException
 		super();
 	}
 
-	public UniquenessException(IPropertyDescriptor descriptor, String message)
+	public UniquenessException(TrailsPropertyDescriptor descriptor, String message)
 	{
 		super(descriptor, message);
 	}
 
-	public UniquenessException(IPropertyDescriptor descriptor)
+	public UniquenessException(TrailsPropertyDescriptor descriptor)
 	{
 		super(descriptor, DEFAULT_MESSAGE);
 	}

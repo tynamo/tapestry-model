@@ -16,8 +16,8 @@ import org.hibernate.criterion.*;
 import org.trailsframework.services.DescriptorService;
 import org.trailsframework.services.PersistenceService;
 import org.trailsframework.util.Utils;
-import org.trailsframework.descriptor.IClassDescriptor;
-import org.trailsframework.descriptor.IPropertyDescriptor;
+import org.trailsframework.descriptor.TrailsClassDescriptor;
+import org.trailsframework.descriptor.TrailsPropertyDescriptor;
 import org.trailsframework.descriptor.CollectionDescriptor;
 import org.slf4j.Logger;
 
@@ -181,9 +181,9 @@ public class HibernatePersistenceServiceImpl implements HibernatePersistenceServ
 		try
 		{
 */
-		IClassDescriptor iClassDescriptor = descriptorService.getClassDescriptor(instance.getClass());
+		TrailsClassDescriptor TrailsClassDescriptor = descriptorService.getClassDescriptor(instance.getClass());
 		/* check isTransient to avoid merging on entities not persisted yet. TRAILS-33 */
-		if (!iClassDescriptor.getHasCyclicRelationships() || isTransient(instance, iClassDescriptor))
+		if (!TrailsClassDescriptor.getHasCyclicRelationships() || isTransient(instance, TrailsClassDescriptor))
 		{
 			session.saveOrUpdate(instance);
 		} else
@@ -281,13 +281,13 @@ public class HibernatePersistenceServiceImpl implements HibernatePersistenceServ
 	 * "session.getIdentifier(data)" thows TransientObjectException when the Entity is not loaded by the current session,
 	 * which is pretty usual in Trails.
 	 */
-	public Serializable getIdentifier(final Object data, final IClassDescriptor classDescriptor)
+	public Serializable getIdentifier(final Object data, final TrailsClassDescriptor classDescriptor)
 	{
 //		return (Serializable) PropertyUtils.read(data, classDescriptor.getIdentifierDescriptor().getName());
 		return 0;
 	}
 
-	public boolean isTransient(Object data, IClassDescriptor classDescriptor)
+	public boolean isTransient(Object data, TrailsClassDescriptor classDescriptor)
 	{
 		try
 		{
@@ -299,14 +299,14 @@ public class HibernatePersistenceServiceImpl implements HibernatePersistenceServ
 	}
 
 
-	public List getInstances(final Object example, final IClassDescriptor classDescriptor)
+	public List getInstances(final Object example, final TrailsClassDescriptor classDescriptor)
 	{
 		//create Criteria instance
 		DetachedCriteria searchCriteria = DetachedCriteria.forClass(Utils.checkForCGLIB(example.getClass()));
 		searchCriteria = alterCriteria(example.getClass(), searchCriteria);
 
 		//loop over the example object's PropertyDescriptors
-		for (IPropertyDescriptor propertyDescriptor : classDescriptor.getPropertyDescriptors())
+		for (TrailsPropertyDescriptor propertyDescriptor : classDescriptor.getPropertyDescriptors())
 		{
 			//only add a Criterion to the Criteria instance if this property is searchable
 			if (propertyDescriptor.isSearchable())
@@ -345,7 +345,7 @@ public class HibernatePersistenceServiceImpl implements HibernatePersistenceServ
 						//one-to-many or many-to-many
 						CollectionDescriptor collectionDescriptor =
 								(CollectionDescriptor) propertyDescriptor;
-						IClassDescriptor collectionClassDescriptor = descriptorService.getClassDescriptor(collectionDescriptor.getElementType());
+						TrailsClassDescriptor collectionClassDescriptor = descriptorService.getClassDescriptor(collectionDescriptor.getElementType());
 						if (collectionClassDescriptor != null)
 						{
 							String identifierName = collectionClassDescriptor.getIdentifierDescriptor().getName();

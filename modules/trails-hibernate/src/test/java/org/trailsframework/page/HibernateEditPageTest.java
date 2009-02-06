@@ -16,7 +16,7 @@ import org.hibernate.validator.InvalidStateException;
 import org.hibernate.validator.InvalidValue;
 import org.jmock.Mock;
 import org.trails.component.HibernateComponentTest;
-import org.trails.descriptor.IClassDescriptor;
+import org.trails.descriptor.TrailsClassDescriptor;
 import org.trails.descriptor.TrailsClassDescriptor;
 import org.trails.persistence.HibernatePersistenceService;
 import org.trails.testhibernate.Bar;
@@ -30,7 +30,7 @@ public class HibernateEditPageTest extends HibernateComponentTest
 	Mock cycleMock = new Mock(IRequestCycle.class);
 	HibernateEditPage editPage;
 	Foo foo = new Foo();
-	IClassDescriptor fooDescriptor = new TrailsClassDescriptor(Foo.class, "Foo");
+	TrailsClassDescriptor fooDescriptor = new TrailsClassDescriptor(Foo.class, "Foo");
 
 	protected void setUp() throws Exception
 	{

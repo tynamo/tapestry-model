@@ -8,7 +8,7 @@ import java.util.Locale;
 
 import junit.framework.TestCase;
 import org.springframework.context.support.ResourceBundleMessageSource;
-import org.trails.descriptor.IClassDescriptor;
+import org.trails.descriptor.TrailsClassDescriptor;
 import org.trails.descriptor.IDescriptor;
 import org.trails.descriptor.IPropertyDescriptor;
 import org.trails.descriptor.TrailsClassDescriptor;
@@ -22,9 +22,9 @@ public class SpringMessageSourceTest extends TestCase
 
 	private SpringMessageSource messageSource;
 	private TestLocaleHolder localeHolder;
-	private IClassDescriptor classDescriptor;
-	private IClassDescriptor secondClassDescriptor;
-	private IClassDescriptor thirdClassDescriptor;
+	private TrailsClassDescriptor classDescriptor;
+	private TrailsClassDescriptor secondClassDescriptor;
+	private TrailsClassDescriptor thirdClassDescriptor;
 	private IPropertyDescriptor numberPropertyDescriptor;
 	private IPropertyDescriptor namePropertyDescriptor;
 	private Locale pt = new Locale("pt");
@@ -59,7 +59,7 @@ public class SpringMessageSourceTest extends TestCase
 		assertEquals(expectedResult, messageSource.getDisplayName(descriptor, key));
 	}
 
-	private void pluralDisplayNameTest(IClassDescriptor descriptor, Locale locale, String key, String expectedResult)
+	private void pluralDisplayNameTest(TrailsClassDescriptor descriptor, Locale locale, String key, String expectedResult)
 	{
 		localeHolder.setLocale(locale);
 		assertEquals(expectedResult, messageSource.getPluralDislayName(descriptor, key));

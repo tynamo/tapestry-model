@@ -7,8 +7,8 @@ import org.apache.tapestry5.ioc.services.ThreadLocale;
 import org.apache.tapestry5.services.ValidationMessagesSource;
 import org.hibernate.validator.InvalidStateException;
 import org.hibernate.validator.InvalidValue;
-import org.trailsframework.descriptor.IClassDescriptor;
-import org.trailsframework.descriptor.IPropertyDescriptor;
+import org.trailsframework.descriptor.TrailsClassDescriptor;
+import org.trailsframework.descriptor.TrailsPropertyDescriptor;
 import org.trailsframework.util.DisplayNameUtils;
 
 
@@ -27,12 +27,12 @@ public class HibernateValidationDelegate //extends TrailsValidationDelegate
 	/**
 	 * Records error messages for all the class level or method level constraints violations.
 	 */
-	public void record(IClassDescriptor descriptor, InvalidStateException invalidStateException, ValidationTracker validationTracker, Messages componentMessages)
+	public void record(TrailsClassDescriptor descriptor, InvalidStateException invalidStateException, ValidationTracker validationTracker, Messages componentMessages)
 	{
 		for (InvalidValue invalidValue : invalidStateException.getInvalidValues())
 		{
 			String key = invalidValue.getMessage();
-			IPropertyDescriptor propertyDescriptor = descriptor.getPropertyDescriptor(invalidValue.getPropertyName());
+			TrailsPropertyDescriptor propertyDescriptor = descriptor.getPropertyDescriptor(invalidValue.getPropertyName());
 			MessageFormatter messageFormatter = messagesSource.getValidationMessages(threadLocale.getLocale()).getFormatter(key);
 			if (propertyDescriptor != null)
 			{
