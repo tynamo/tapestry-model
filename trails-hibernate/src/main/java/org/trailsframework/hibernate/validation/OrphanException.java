@@ -1,6 +1,6 @@
 package org.trailsframework.hibernate.validation;
 
-import org.trailsframework.descriptor.IPropertyDescriptor;
+import org.trailsframework.descriptor.TrailsPropertyDescriptor;
 import org.trailsframework.exception.ValidationException;
 
 public class OrphanException extends ValidationException
@@ -11,7 +11,7 @@ public class OrphanException extends ValidationException
 		super();
 	}
 
-	public OrphanException(IPropertyDescriptor descriptor, String message)
+	public OrphanException(TrailsPropertyDescriptor descriptor, String message)
 	{
 		super(descriptor, message);
 	}

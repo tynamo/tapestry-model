@@ -15,8 +15,8 @@ import org.hibernate.validator.InvalidStateException;
 import org.hibernate.validator.InvalidValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.trailsframework.descriptor.IClassDescriptor;
-import org.trailsframework.descriptor.IPropertyDescriptor;
+import org.trailsframework.descriptor.TrailsClassDescriptor;
+import org.trailsframework.descriptor.TrailsPropertyDescriptor;
 import org.trailsframework.exception.PersistenceException;
 import org.trailsframework.hibernate.services.HibernatePersistenceService;
 import org.trailsframework.hibernate.validation.ValidateUniqueness;
@@ -33,7 +33,7 @@ public class SeedEntityImpl implements SeedEntity {
 				LOGGER.warn("Contributed object '" + entity + "' is not an entity, cannot be used a seed");
 				continue;
 			}
-			IClassDescriptor classDescriptor = null;
+			TrailsClassDescriptor classDescriptor = null;
 			try {
 				classDescriptor = descriptorService.getClassDescriptor(entity.getClass());
 			} catch (IllegalArgumentException e) {
@@ -44,7 +44,7 @@ public class SeedEntityImpl implements SeedEntity {
 				LOGGER.error("Cannot handle entity of type " + entity.getClass() + " because of non-existent class descriptor");
 				continue;
 			}
-			IPropertyDescriptor identifierDescriptor = classDescriptor.getIdentifierDescriptor();
+			TrailsPropertyDescriptor identifierDescriptor = classDescriptor.getIdentifierDescriptor();
 			Object id = null, savedObject = null;
 			String propertyName = identifierDescriptor.getName();
 			try {

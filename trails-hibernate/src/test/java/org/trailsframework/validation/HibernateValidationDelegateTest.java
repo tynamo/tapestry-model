@@ -8,7 +8,7 @@ import org.hibernate.validator.InvalidStateException;
 import org.hibernate.validator.InvalidValue;
 import org.jmock.Mock;
 import org.trails.component.HibernateComponentTest;
-import org.trails.descriptor.IClassDescriptor;
+import org.trails.descriptor.TrailsClassDescriptor;
 import org.trails.descriptor.ReflectionDescriptorFactory;
 import org.trails.descriptor.TrailsClassDescriptor;
 import org.trails.descriptor.TrailsPropertyDescriptor;
@@ -108,7 +108,7 @@ public class HibernateValidationDelegateTest extends HibernateComponentTest
 	{
 
 		ReflectionDescriptorFactory descriptorFactory = new ReflectionDescriptorFactory();
-		IClassDescriptor descriptor = descriptorFactory.buildClassDescriptor(Baz.class);
+		TrailsClassDescriptor descriptor = descriptorFactory.buildClassDescriptor(Baz.class);
 		
 		InvalidValue invalidValue = new InvalidValue("Is not a valid entity", Baz.class, "foo", "blarg", new Baz());
 		InvalidStateException invalidStateException = new InvalidStateException(new InvalidValue[]{invalidValue});

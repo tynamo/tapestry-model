@@ -34,7 +34,7 @@ import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.orm.hibernate3.SessionFactoryUtils;
 import org.springframework.test.AbstractTransactionalSpringContextTests;
 import org.trails.descriptor.DescriptorService;
-import org.trails.descriptor.IClassDescriptor;
+import org.trails.descriptor.TrailsClassDescriptor;
 import org.trails.persistence.HibernatePersistenceService;
 import org.trails.persistence.PersistenceException;
 import org.trails.testhibernate.Ancestor;
@@ -155,7 +155,7 @@ public class HibernatePersistenceServiceTest extends AbstractTransactionalSpring
 
 	public void testQueryByExample() throws Exception
 	{
-		IClassDescriptor fooClassDescriptor = descriptorService.getClassDescriptor(Foo.class);
+		TrailsClassDescriptor fooClassDescriptor = descriptorService.getClassDescriptor(Foo.class);
 
 		Foo foo = new Foo();
 		foo.setId(new Integer(1));

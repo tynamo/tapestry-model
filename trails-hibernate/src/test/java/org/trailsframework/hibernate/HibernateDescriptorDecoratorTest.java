@@ -25,7 +25,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.orm.hibernate3.LocalSessionFactoryBean;
 import org.trails.descriptor.CollectionDescriptor;
 import org.trails.descriptor.DescriptorDecorator;
-import org.trails.descriptor.IClassDescriptor;
+import org.trails.descriptor.TrailsClassDescriptor;
 import org.trails.descriptor.IPropertyDescriptor;
 import org.trails.descriptor.IdentifierDescriptor;
 import org.trails.descriptor.TrailsClassDescriptor;
@@ -50,7 +50,7 @@ public class HibernateDescriptorDecoratorTest extends TestCase
 {
 	ApplicationContext appContext;
 	DescriptorDecorator hibernateDescriptorDecorator;
-	IClassDescriptor classDescriptor;
+	TrailsClassDescriptor classDescriptor;
 
 	public void setUp()
 	{
@@ -141,7 +141,7 @@ public class HibernateDescriptorDecoratorTest extends TestCase
 //    public void testischild() throws exception
 //    {
 //        descriptorservice descriptorservice = (descriptorservice)appcontext.getbean("descriptorservice");
-//        iclassdescriptor bazdescriptor = descriptorservice.getclassdescriptor(baz.class);
+//        TrailsClassDescriptor bazdescriptor = descriptorservice.getclassdescriptor(baz.class);
 //        asserttrue("is a child", bazdescriptor.ischild());
 //    }
 
@@ -187,7 +187,7 @@ public class HibernateDescriptorDecoratorTest extends TestCase
 		descendantDescriptor.getPropertyDescriptors().add(new TrailsPropertyDescriptor(Foo.class, "extra", String.class));
 		descendantDescriptor.getPropertyDescriptors().add(new TrailsPropertyDescriptor(Foo.class, "id", Integer.class));
 		descendantDescriptor.getPropertyDescriptors().add(new TrailsPropertyDescriptor(Foo.class, "name", String.class));
-		IClassDescriptor decorated = (IClassDescriptor) hibernateDescriptorDecorator.decorate(descendantDescriptor);
+		TrailsClassDescriptor decorated = (TrailsClassDescriptor) hibernateDescriptorDecorator.decorate(descendantDescriptor);
 		assertEquals(4, decorated.getPropertyDescriptors().size());
 	}
 
@@ -195,7 +195,7 @@ public class HibernateDescriptorDecoratorTest extends TestCase
 	{
 		TrailsClassDescriptor embeddorDescriptor = new TrailsClassDescriptor(Embeddor.class);
 		embeddorDescriptor.getPropertyDescriptors().add(new TrailsPropertyDescriptor(Embeddor.class, "embeddee", Embeddee.class));
-		IClassDescriptor decorated = (IClassDescriptor) hibernateDescriptorDecorator.decorate(embeddorDescriptor);
+		TrailsClassDescriptor decorated = (TrailsClassDescriptor) hibernateDescriptorDecorator.decorate(embeddorDescriptor);
 		IPropertyDescriptor propertyDescriptor = (IPropertyDescriptor) decorated.getPropertyDescriptors().get(0);
 		assertTrue(propertyDescriptor.isEmbedded());
 		EmbeddedDescriptor embeddedDescriptor = (EmbeddedDescriptor) propertyDescriptor;
@@ -209,7 +209,7 @@ public class HibernateDescriptorDecoratorTest extends TestCase
 		TrailsClassDescriptor descriptor = new TrailsClassDescriptor(Bar.class);
 		descriptor.getPropertyDescriptors().add(new TrailsPropertyDescriptor(Bar.class, "name", String.class));
 		descriptor.getPropertyDescriptors().add(new TrailsPropertyDescriptor(Bar.class, "transientProperty", String.class));
-		IClassDescriptor decorated = (IClassDescriptor) hibernateDescriptorDecorator.decorate(descriptor);
+		TrailsClassDescriptor decorated = (TrailsClassDescriptor) hibernateDescriptorDecorator.decorate(descriptor);
 		assertFalse(decorated.getPropertyDescriptor("transientProperty").isSearchable());
 		assertTrue(decorated.getPropertyDescriptor("name").isSearchable());
 	}

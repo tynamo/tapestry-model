@@ -12,7 +12,7 @@
 package org.trailsframework.hibernate.services;
 
 import org.hibernate.criterion.DetachedCriteria;
-import org.trailsframework.descriptor.IClassDescriptor;
+import org.trailsframework.descriptor.TrailsClassDescriptor;
 import org.trailsframework.services.PersistenceService;
 import org.apache.tapestry5.hibernate.annotations.CommitAfter;
 
@@ -46,7 +46,7 @@ public interface HibernatePersistenceService extends PersistenceService
 	 * @param example
 	 * @return
 	 */
-	public <T> List<T> getInstances(T example, IClassDescriptor classDescriptor);
+	public <T> List<T> getInstances(T example, TrailsClassDescriptor classDescriptor);
 
 	public <T> T merge(T instance);
 
