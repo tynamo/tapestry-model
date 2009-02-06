@@ -5,12 +5,12 @@ import ognl.OgnlException;
 import org.apache.commons.lang.Validate;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.trailsframework.descriptor.IDescriptorExtension;
+import org.trailsframework.descriptor.DescriptorExtension;
 
 import java.util.Map;
 
 
-public abstract class ExpressionExtension implements IDescriptorExtension
+public abstract class ExpressionExtension implements DescriptorExtension
 {
 	private static Log LOG = LogFactory.getLog(PossibleValuesDescriptorExtension.class);
 

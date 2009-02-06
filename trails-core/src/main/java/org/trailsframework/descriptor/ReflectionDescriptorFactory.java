@@ -43,11 +43,11 @@ public class ReflectionDescriptorFactory implements DescriptorFactory
 	 * @param type The type to build for
 	 * @return a completed class descriptor
 	 */
-	public IClassDescriptor buildClassDescriptor(Class type)
+	public TrailsClassDescriptor buildClassDescriptor(Class type)
 	{
 		try
 		{
-			IClassDescriptor descriptor = new TrailsClassDescriptor(type);
+			TrailsClassDescriptor descriptor = new TrailsClassDescriptorImpl(type);
 			BeanInfo beanInfo = Introspector.getBeanInfo(type);
 
 			BeanUtils.copyProperties(descriptor, beanInfo.getBeanDescriptor());
@@ -81,7 +81,7 @@ public class ReflectionDescriptorFactory implements DescriptorFactory
 	 * @param decorators
 	 * @return The resulting descriptor after all decorators are applied
 	 */
-	private IClassDescriptor applyDecorators(IClassDescriptor descriptor)
+	private TrailsClassDescriptor applyDecorators(TrailsClassDescriptor descriptor)
 	{
 		for (DescriptorDecorator decorator : decorators)
 		{

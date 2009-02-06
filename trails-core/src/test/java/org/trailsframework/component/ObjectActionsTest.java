@@ -5,7 +5,7 @@
 package org.trails.component;
 
 import org.apache.tapestry.test.Creator;
-import org.trails.descriptor.IClassDescriptor;
+import org.trails.descriptor.TrailsClassDescriptor;
 import org.trails.descriptor.IdentifierDescriptor;
 import org.trails.descriptor.TrailsClassDescriptor;
 import org.trails.page.EditPage;
@@ -16,7 +16,7 @@ public class ObjectActionsTest extends ComponentTest
 
 	private ObjectActions objectActions;
 	private Creator creator = new Creator();
-	private IClassDescriptor descriptor;
+	private TrailsClassDescriptor descriptor;
 	private EditPage editPage;
 
 	@Override

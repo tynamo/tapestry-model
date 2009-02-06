@@ -1,14 +1,14 @@
 package org.trailsframework.exception;
 
-import org.trailsframework.descriptor.IPropertyDescriptor;
+import org.trailsframework.descriptor.TrailsPropertyDescriptor;
 
 public class ValidationException extends PersistenceException
 {
 
-	private IPropertyDescriptor descriptor;
+	private TrailsPropertyDescriptor descriptor;
 	private String message;
 
-	public ValidationException(IPropertyDescriptor descriptor, String message)
+	public ValidationException(TrailsPropertyDescriptor descriptor, String message)
 	{
 		this.descriptor = descriptor;
 		this.message = message;

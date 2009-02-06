@@ -16,7 +16,7 @@ import org.apache.tapestry.contrib.palette.SortMode;
 import org.apache.tapestry.form.IPropertySelectionModel;
 import org.jmock.Mock;
 import org.trails.descriptor.CollectionDescriptor;
-import org.trails.descriptor.IClassDescriptor;
+import org.trails.descriptor.TrailsClassDescriptor;
 import org.trails.descriptor.IdentifierDescriptor;
 import org.trails.descriptor.TrailsClassDescriptor;
 import org.trails.page.PageResolver;
@@ -125,7 +125,7 @@ public class EditCollectionTest extends ComponentTest
 		editCollection.getCollectionDescriptor().setChildRelationship(true);
 		editCollection.getCollection().add(bing1);
 
-		IClassDescriptor classDescriptor = new TrailsClassDescriptor(Bing.class);
+		TrailsClassDescriptor classDescriptor = new TrailsClassDescriptor(Bing.class);
 		classDescriptor.getPropertyDescriptors().add(new IdentifierDescriptor(Foo.class, Bing.class));
 		descriptorServiceMock.expects(once()).method("getClassDescriptor")
 				.with(eq(Bing.class)).will(returnValue(classDescriptor));

@@ -38,7 +38,7 @@ public class ObjectTableTest extends MockObjectTestCase
 	PersistenceService persistenceService;
 
 	Map components = new HashMap();
-	IClassDescriptor classDescriptor;
+	TrailsClassDescriptor classDescriptor;
 
 	public void setUp() throws Exception
 	{

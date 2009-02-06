@@ -3,7 +3,7 @@ package org.trailsframework.descriptor;
 import java.lang.reflect.Method;
 
 
-public interface IMethodDescriptor extends IDescriptor
+public interface IMethodDescriptor extends Descriptor
 {
 
 	Class[] getArgumentTypes();

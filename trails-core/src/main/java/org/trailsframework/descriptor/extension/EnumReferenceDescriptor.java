@@ -1,9 +1,9 @@
 package org.trailsframework.descriptor.extension;
 
-import org.trailsframework.descriptor.IDescriptorExtension;
+import org.trailsframework.descriptor.DescriptorExtension;
 
 
-public class EnumReferenceDescriptor implements IDescriptorExtension
+public class EnumReferenceDescriptor implements DescriptorExtension
 {
 
 	private Class actualType;

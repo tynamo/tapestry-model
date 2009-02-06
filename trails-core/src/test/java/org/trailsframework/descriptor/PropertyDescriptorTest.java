@@ -49,7 +49,7 @@ public class PropertyDescriptorTest extends TestCase
 	public void testDisplayName() throws Exception
 	{
 		ReflectionDescriptorFactory descriptorFactory = new ReflectionDescriptorFactory();
-		IClassDescriptor classDescriptor = descriptorFactory.buildClassDescriptor(Foo.class);
+		TrailsClassDescriptor classDescriptor = descriptorFactory.buildClassDescriptor(Foo.class);
 		IPropertyDescriptor propertyDescriptor = classDescriptor.getPropertyDescriptor("multiWordProperty");
 		// By default, unCamelCase class and property names
 		assertEquals("display name", "Multi Word Property", propertyDescriptor.getDisplayName());

@@ -32,7 +32,7 @@ import ognl.OgnlException;
  */
 public class TrailsClassDescriptorTest extends TestCase
 {
-	IClassDescriptor classDescriptor;
+	TrailsClassDescriptor classDescriptor;
 	IdentifierDescriptor idProp;
 	IPropertyDescriptor multiWordProp;
 
@@ -102,7 +102,7 @@ public class TrailsClassDescriptorTest extends TestCase
 	public void testDisplayName() throws Exception
 	{
 		ReflectionDescriptorFactory descriptorFactory = new ReflectionDescriptorFactory();
-		IClassDescriptor classDescriptor = descriptorFactory.buildClassDescriptor(BlogEntry.class);
+		TrailsClassDescriptor classDescriptor = descriptorFactory.buildClassDescriptor(BlogEntry.class);
 		assertEquals("Blog Entry", classDescriptor.getDisplayName());
 	}
 

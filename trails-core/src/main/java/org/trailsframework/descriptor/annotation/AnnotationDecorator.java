@@ -26,11 +26,11 @@ public class AnnotationDecorator implements DescriptorDecorator
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(AnnotationDecorator.class);
 
-	public IClassDescriptor decorate(IClassDescriptor descriptor)
+	public TrailsClassDescriptor decorate(TrailsClassDescriptor descriptor)
 	{
 
 		Annotation[] classAnnotations = descriptor.getType().getAnnotations();
-		IClassDescriptor decoratedDescriptor = (IClassDescriptor) decorateFromAnnotations(descriptor, classAnnotations);
+		TrailsClassDescriptor decoratedDescriptor = (TrailsClassDescriptor) decorateFromAnnotations(descriptor, classAnnotations);
 
 		decoratedDescriptor.setPropertyDescriptors(decoratePropertyDescriptors(descriptor));
 		sortDescriptors(decoratedDescriptor.getPropertyDescriptors());
@@ -40,12 +40,12 @@ public class AnnotationDecorator implements DescriptorDecorator
 		return decoratedDescriptor;
 	}
 
-	private List<IPropertyDescriptor> decoratePropertyDescriptors(IClassDescriptor descriptor)
+	private List<TrailsPropertyDescriptor> decoratePropertyDescriptors(TrailsClassDescriptor descriptor)
 	{
-		List<IPropertyDescriptor> decoratedPropertyDescriptors = new ArrayList<IPropertyDescriptor>();
-		for (IPropertyDescriptor propertyDescriptor : descriptor.getPropertyDescriptors())
+		List<TrailsPropertyDescriptor> decoratedPropertyDescriptors = new ArrayList<TrailsPropertyDescriptor>();
+		for (TrailsPropertyDescriptor propertyDescriptor : descriptor.getPropertyDescriptors())
 		{
-			IPropertyDescriptor clonedDescriptor = decoratePropertyDescriptor(propertyDescriptor);
+			TrailsPropertyDescriptor clonedDescriptor = decoratePropertyDescriptor(propertyDescriptor);
 			// recursively decorate components
 			if (clonedDescriptor.isEmbedded())
 			{
@@ -56,7 +56,7 @@ public class AnnotationDecorator implements DescriptorDecorator
 		return decoratedPropertyDescriptors;
 	}
 
-	private List<IMethodDescriptor> decorateMethodDescriptors(IClassDescriptor descriptor)
+	private List<IMethodDescriptor> decorateMethodDescriptors(TrailsClassDescriptor descriptor)
 	{
 		List<IMethodDescriptor> decoratedMethodDescriptors = new ArrayList<IMethodDescriptor>();
 		for (IMethodDescriptor methodDescriptor : descriptor.getMethodDescriptors())
@@ -67,13 +67,13 @@ public class AnnotationDecorator implements DescriptorDecorator
 		return decoratedMethodDescriptors;
 	}
 
-	protected IPropertyDescriptor decoratePropertyDescriptor(IPropertyDescriptor propertyDescriptor)
+	protected TrailsPropertyDescriptor decoratePropertyDescriptor(TrailsPropertyDescriptor propertyDescriptor)
 	{
-		IPropertyDescriptor clonedDescriptor = (IPropertyDescriptor) propertyDescriptor.clone();
+		TrailsPropertyDescriptor clonedDescriptor = (TrailsPropertyDescriptor) propertyDescriptor.clone();
 		try
 		{
 			Field propertyField = clonedDescriptor.getBeanType().getDeclaredField(propertyDescriptor.getName());
-			clonedDescriptor = (IPropertyDescriptor) decorateFromAnnotations(clonedDescriptor, propertyField.getAnnotations());
+			clonedDescriptor = (TrailsPropertyDescriptor) decorateFromAnnotations(clonedDescriptor, propertyField.getAnnotations());
 
 		} catch (Exception ex)
 		{
@@ -85,7 +85,7 @@ public class AnnotationDecorator implements DescriptorDecorator
 					Introspector.getBeanInfo(clonedDescriptor.getBeanType()));
 
 			Method readMethod = beanPropDescriptor.getReadMethod();
-			clonedDescriptor = (IPropertyDescriptor) decorateFromAnnotations(clonedDescriptor, readMethod.getAnnotations());
+			clonedDescriptor = (TrailsPropertyDescriptor) decorateFromAnnotations(clonedDescriptor, readMethod.getAnnotations());
 		}
 		catch (Exception ex)
 		{
@@ -115,11 +115,11 @@ public class AnnotationDecorator implements DescriptorDecorator
 	 *
 	 * @param propertyDescriptors
 	 */
-	private void sortDescriptors(List<IPropertyDescriptor> propertyDescriptors)
+	private void sortDescriptors(List<TrailsPropertyDescriptor> propertyDescriptors)
 	{
-		for (IPropertyDescriptor propertyDescriptor : Collections.unmodifiableList(propertyDescriptors))
+		for (TrailsPropertyDescriptor propertyDescriptor : Collections.unmodifiableList(propertyDescriptors))
 		{
-			if (propertyDescriptor.getIndex() != IPropertyDescriptor.UNDEFINED_INDEX)
+			if (propertyDescriptor.getIndex() != TrailsPropertyDescriptor.UNDEFINED_INDEX)
 			{
 				Collections.swap(propertyDescriptors, propertyDescriptor.getIndex(),
 						propertyDescriptors.indexOf(propertyDescriptor));
@@ -127,9 +127,9 @@ public class AnnotationDecorator implements DescriptorDecorator
 		}
 	}
 
-	private IDescriptor decorateFromAnnotations(IDescriptor descriptor, Annotation[] annotations)
+	private Descriptor decorateFromAnnotations(Descriptor descriptor, Annotation[] annotations)
 	{
-		IDescriptor clonedDescriptor = (IDescriptor) descriptor.clone();
+		Descriptor clonedDescriptor = (Descriptor) descriptor.clone();
 		for (Annotation annotation : annotations)
 		{
 			// If the annotation type itself has a DescriptorAnnotation, it's one of ours

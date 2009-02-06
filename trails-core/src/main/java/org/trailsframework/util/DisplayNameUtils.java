@@ -3,8 +3,8 @@ package org.trailsframework.util;
 import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.internal.TapestryInternalUtils;
 import org.apache.tapestry5.ioc.Messages;
-import org.trailsframework.descriptor.IClassDescriptor;
-import org.trailsframework.descriptor.IPropertyDescriptor;
+import org.trailsframework.descriptor.TrailsClassDescriptor;
+import org.trailsframework.descriptor.TrailsPropertyDescriptor;
 
 
 public class DisplayNameUtils
@@ -19,7 +19,7 @@ public class DisplayNameUtils
 	 * If found, it is used, otherwise the name is "linguistically pluralized" (only works in English)
 	 * The message key is the full or the simple name of the entity suffixed with "-plural".
 	 */
-	public static String getPluralDisplayName(IClassDescriptor classDescriptor, Messages messages)
+	public static String getPluralDisplayName(TrailsClassDescriptor classDescriptor, Messages messages)
 	{
 		String fullName = classDescriptor.getType().getName() + PLURAL_SUFIX;
 		String shortName = classDescriptor.getType().getSimpleName() + PLURAL_SUFIX;
@@ -31,7 +31,7 @@ public class DisplayNameUtils
 	 * If found, it is used, otherwise the name is converted to a user presentable form.
 	 * The message key is either the full name of the entity or the simpleName
 	 */
-	public static String getDisplayName(IClassDescriptor classDescriptor, Messages messages)
+	public static String getDisplayName(TrailsClassDescriptor classDescriptor, Messages messages)
 	{
 		String fullName = classDescriptor.getType().getName();
 		String shortName = classDescriptor.getType().getSimpleName();
@@ -43,7 +43,7 @@ public class DisplayNameUtils
 	 * If found, it is used, otherwise the name is converted to a user presentable form.
 	 * The message key is the property name suffixed with "-label".
 	 */
-	public static String getDisplayName(IPropertyDescriptor propertyDescriptor, Messages messages)
+	public static String getDisplayName(TrailsPropertyDescriptor propertyDescriptor, Messages messages)
 	{
 		return TapestryInternalUtils.defaultLabel(propertyDescriptor.getName(), messages, propertyDescriptor.getName());
 	}
@@ -53,7 +53,7 @@ public class DisplayNameUtils
 	 * If found, it is used, otherwise an empty string is returned
 	 * The message key is the property name suffixed with "-shortDescription".
 	 */
-	public static String getShortDescription(IClassDescriptor classDescriptor, Messages messages)
+	public static String getShortDescription(TrailsClassDescriptor classDescriptor, Messages messages)
 	{
 		String fullName = classDescriptor.getType().getName() + SHORTDESC_SUFIX;
 		String shortName = classDescriptor.getType().getSimpleName() + SHORTDESC_SUFIX;
@@ -65,7 +65,7 @@ public class DisplayNameUtils
 	 * If found, it is used, otherwise an empty string is returned
 	 * The message key is the full or the simple name of the entity suffixed with "-shortDescription".
 	 */
-	public static String getShortDescription(IPropertyDescriptor propertyDescriptor, Messages messages)
+	public static String getShortDescription(TrailsPropertyDescriptor propertyDescriptor, Messages messages)
 	{
 		String fullName = propertyDescriptor.getBeanType().getName() + "." + propertyDescriptor.getName() + SHORTDESC_SUFIX;
 		String shortName = propertyDescriptor.getName() + SHORTDESC_SUFIX;

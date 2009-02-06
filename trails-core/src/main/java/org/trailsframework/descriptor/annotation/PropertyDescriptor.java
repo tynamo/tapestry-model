@@ -1,6 +1,6 @@
 package org.trailsframework.descriptor.annotation;
 
-import org.trailsframework.descriptor.IPropertyDescriptor;
+import org.trailsframework.descriptor.TrailsPropertyDescriptor;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
 public @interface PropertyDescriptor
 {
 
-	public static final int DEFAULT_index = IPropertyDescriptor.UNDEFINED_INDEX;
+	public static final int DEFAULT_index = TrailsPropertyDescriptor.UNDEFINED_INDEX;
 	public static final String DEFAULT_format = "no_format";
 
 	/**
@@ -27,7 +27,7 @@ public @interface PropertyDescriptor
 	 * Specifies if a property should appear on both edit and list pages
 	 *
 	 * @return
-	 * @see org.trailsframework.descriptor.IDescriptor#isHidden()
+	 * @see org.trailsframework.descriptor.Descriptor#isHidden()
 	 */
 	boolean hidden() default false;
 
@@ -57,5 +57,5 @@ public @interface PropertyDescriptor
 	 */
 	String format() default "no_format";
 
-	int index() default IPropertyDescriptor.UNDEFINED_INDEX;
+	int index() default TrailsPropertyDescriptor.UNDEFINED_INDEX;
 }

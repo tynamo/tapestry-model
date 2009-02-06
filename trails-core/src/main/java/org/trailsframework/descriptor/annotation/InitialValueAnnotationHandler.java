@@ -1,7 +1,7 @@
 package org.trailsframework.descriptor.annotation;
 
 import org.apache.commons.lang.Validate;
-import org.trailsframework.descriptor.IPropertyDescriptor;
+import org.trailsframework.descriptor.TrailsPropertyDescriptor;
 
 /**
  * Creates a {@link InitialValueDescriptorExtension} using the
@@ -10,7 +10,7 @@ import org.trailsframework.descriptor.IPropertyDescriptor;
  * @author pruggia
  */
 public class InitialValueAnnotationHandler extends AbstractAnnotationHandler
-		implements DescriptorAnnotationHandler<InitialValue, IPropertyDescriptor>
+		implements DescriptorAnnotationHandler<InitialValue, TrailsPropertyDescriptor>
 {
 
 	/**
@@ -21,8 +21,8 @@ public class InitialValueAnnotationHandler extends AbstractAnnotationHandler
 	 * @param descriptor The property descriptor. It cannot be null.
 	 * @return The provided descriptor with the extension added.
 	 */
-	public IPropertyDescriptor decorateFromAnnotation(final InitialValue annotation,
-													  final IPropertyDescriptor descriptor)
+	public TrailsPropertyDescriptor decorateFromAnnotation(final InitialValue annotation,
+													  final TrailsPropertyDescriptor descriptor)
 	{
 		Validate.notNull(annotation, "The annotation cannot be null");
 		Validate.notNull(descriptor, "The descriptor cannot be null");

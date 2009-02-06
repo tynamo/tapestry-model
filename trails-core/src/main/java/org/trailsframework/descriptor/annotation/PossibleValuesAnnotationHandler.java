@@ -3,7 +3,7 @@
 package org.trailsframework.descriptor.annotation;
 
 import org.apache.commons.lang.Validate;
-import org.trailsframework.descriptor.IPropertyDescriptor;
+import org.trailsframework.descriptor.TrailsPropertyDescriptor;
 
 /**
  * Creates a {@link PossibleValuesDescriptorExtension} using the
@@ -12,7 +12,7 @@ import org.trailsframework.descriptor.IPropertyDescriptor;
  * @author pruggia
  */
 public class PossibleValuesAnnotationHandler extends AbstractAnnotationHandler
-		implements DescriptorAnnotationHandler<PossibleValues, IPropertyDescriptor>
+		implements DescriptorAnnotationHandler<PossibleValues, TrailsPropertyDescriptor>
 {
 
 	/**
@@ -23,8 +23,8 @@ public class PossibleValuesAnnotationHandler extends AbstractAnnotationHandler
 	 * @param descriptor The property descriptor. It cannot be null.
 	 * @return Returns descriptor, with the possible values extension.
 	 */
-	public IPropertyDescriptor decorateFromAnnotation(final PossibleValues annotation,
-													  final IPropertyDescriptor descriptor)
+	public TrailsPropertyDescriptor decorateFromAnnotation(final PossibleValues annotation,
+													  final TrailsPropertyDescriptor descriptor)
 	{
 		Validate.notNull(annotation, "The annotation cannot be null");
 		Validate.notNull(descriptor, "The descriptor cannot be null");

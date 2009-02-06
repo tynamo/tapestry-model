@@ -10,7 +10,7 @@ import org.jmock.MockObjectTestCase;
 public class TrailsDescriptorServiceTest extends MockObjectTestCase
 {
 	TrailsDescriptorService descriptorService = new TrailsDescriptorService();
-	IClassDescriptor descriptor;
+	TrailsClassDescriptor descriptor;
 
 	public void setUp() throws Exception
 	{
@@ -59,7 +59,7 @@ public class TrailsDescriptorServiceTest extends MockObjectTestCase
 
 		TrailsClassDescriptor decoratedDescriptor = new TrailsClassDescriptor(TestBean.class);
 		decoratedDescriptor.setDisplayName("Decorated");
-		decoratorMock.expects(atLeastOnce()).method("decorate").with(isA(IClassDescriptor.class)).will(returnValue(decoratedDescriptor));
+		decoratorMock.expects(atLeastOnce()).method("decorate").with(isA(TrailsClassDescriptor.class)).will(returnValue(decoratedDescriptor));
 		descriptorService.getDecorators().add(decorator);
 		descriptorService.init();
 		assertEquals("was decorated", "Decorated",
@@ -70,7 +70,7 @@ public class TrailsDescriptorServiceTest extends MockObjectTestCase
 	public void testGetAllDescriptors() throws Exception
 	{
 		List descriptors = descriptorService.getAllDescriptors();
-		IClassDescriptor aDescriptor = (IClassDescriptor) descriptors.get(0);
+		TrailsClassDescriptor aDescriptor = (TrailsClassDescriptor) descriptors.get(0);
 		assertEquals("A is first", ABean.class, aDescriptor.getType());
 	}
 

@@ -10,7 +10,7 @@ import java.lang.reflect.Method;
 import java.util.List;
 
 
-public class CollectionDescriptor extends TrailsPropertyDescriptor
+public class CollectionDescriptor extends TrailsPropertyDescriptorImpl
 {
 	protected static final Log LOG = LogFactory.getLog(CollectionDescriptor.class);
 
@@ -30,7 +30,7 @@ public class CollectionDescriptor extends TrailsPropertyDescriptor
 
 	private boolean allowRemove = true;
 
-	public CollectionDescriptor(Class beanType, IPropertyDescriptor descriptor)
+	public CollectionDescriptor(Class beanType, TrailsPropertyDescriptor descriptor)
 	{
 		super(beanType, descriptor);
 	}
@@ -51,7 +51,7 @@ public class CollectionDescriptor extends TrailsPropertyDescriptor
 	/**
 	 * (non-Javadoc)
 	 *
-	 * @see org.trailsframework.descriptor.TrailsPropertyDescriptor#isCollection()
+	 * @see org.trailsframework.descriptor.TrailsPropertyDescriptorImpl#isCollection()
 	 */
 	public boolean isCollection()
 	{
