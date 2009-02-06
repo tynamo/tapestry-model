@@ -3,7 +3,7 @@ package org.trailsframework.examples.recipe.pages;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
-import org.trailsframework.descriptor.IClassDescriptor;
+import org.trailsframework.descriptor.TrailsClassDescriptor;
 import org.trailsframework.services.DescriptorService;
 import org.trailsframework.services.PersistenceService;
 import org.trailsframework.util.DisplayNameUtils;
@@ -25,7 +25,7 @@ public class List
 	private Identifiable model;
 
 	@Property(write = false)
-	private IClassDescriptor classDescriptor;
+	private TrailsClassDescriptor classDescriptor;
 
 	void onActivate(Class clazz) throws Exception
 	{

@@ -15,8 +15,8 @@ import org.apache.tapestry5.services.ContextValueEncoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.trailsframework.descriptor.CollectionDescriptor;
-import org.trailsframework.descriptor.IClassDescriptor;
-import org.trailsframework.descriptor.IPropertyDescriptor;
+import org.trailsframework.descriptor.TrailsClassDescriptor;
+import org.trailsframework.descriptor.TrailsPropertyDescriptor;
 import org.trailsframework.services.DescriptorService;
 import org.trailsframework.services.PersistenceService;
 
@@ -44,7 +44,7 @@ public class EditCompositionPage
 	private ComponentResources resources;
 
 	@Property(write = false)
-	private IClassDescriptor classDescriptor;
+	private TrailsClassDescriptor classDescriptor;
 
 	@Property(write = false)
 	private CollectionDescriptor collectionDescriptor;
@@ -71,7 +71,7 @@ public class EditCompositionPage
 
 	void onActivate(Class clazz, String parentId, String property, String id) throws Exception
 	{
-		IPropertyDescriptor propertyDescriptor = descriptorService.getClassDescriptor(clazz).getPropertyDescriptor(property);
+		TrailsPropertyDescriptor propertyDescriptor = descriptorService.getClassDescriptor(clazz).getPropertyDescriptor(property);
 		collectionDescriptor = ((CollectionDescriptor) propertyDescriptor);
 		classDescriptor = descriptorService.getClassDescriptor(collectionDescriptor.getElementType());
 		bean = contextValueEncoder.toValue(classDescriptor.getType(), id);
