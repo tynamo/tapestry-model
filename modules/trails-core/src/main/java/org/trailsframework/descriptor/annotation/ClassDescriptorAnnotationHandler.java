@@ -1,8 +1,8 @@
 package org.trailsframework.descriptor.annotation;
 
-import org.trailsframework.descriptor.IClassDescriptor;
+import org.trailsframework.descriptor.TrailsClassDescriptor;
 
-public class ClassDescriptorAnnotationHandler extends AbstractAnnotationHandler implements DescriptorAnnotationHandler<ClassDescriptor, IClassDescriptor>
+public class ClassDescriptorAnnotationHandler extends AbstractAnnotationHandler implements DescriptorAnnotationHandler<ClassDescriptor, TrailsClassDescriptor>
 {
 
 	public ClassDescriptorAnnotationHandler()
@@ -11,7 +11,7 @@ public class ClassDescriptorAnnotationHandler extends AbstractAnnotationHandler 
 		// TODO Auto-generated constructor stub
 	}
 
-	public IClassDescriptor decorateFromAnnotation(ClassDescriptor annotation, IClassDescriptor descriptor)
+	public TrailsClassDescriptor decorateFromAnnotation(ClassDescriptor annotation, TrailsClassDescriptor descriptor)
 	{
 		/**
 		 * !! This is how we get our properties migrated from our

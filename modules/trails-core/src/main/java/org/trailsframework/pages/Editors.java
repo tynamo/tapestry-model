@@ -15,7 +15,7 @@ import org.chenillekit.tapestry.core.components.DateTimeField;
 import org.chenillekit.tapestry.core.components.Editor;
 import org.trailsframework.components.EditComposition;
 import org.trailsframework.descriptor.CollectionDescriptor;
-import org.trailsframework.descriptor.IPropertyDescriptor;
+import org.trailsframework.descriptor.TrailsPropertyDescriptor;
 import org.trailsframework.services.DescriptorService;
 import org.trailsframework.services.PersistenceService;
 import org.trailsframework.util.GenericSelectionModel;
@@ -54,14 +54,14 @@ public class Editors
 			"clientId=prop:propertyEditContext.propertyId", "collectionDescriptor=propertyDescriptor"})//, "owner=beanEditContext.object"})
 	private EditComposition editComposition;
 
-	public IPropertyDescriptor getPropertyDescriptor()
+	public TrailsPropertyDescriptor getPropertyDescriptor()
 	{
 		return descriptorService.getClassDescriptor(beanEditContext.getBeanClass()).getPropertyDescriptor(propertyEditContext.getPropertyId());
 	}
 
 	public SelectModel getSelectModel()
 	{
-		IPropertyDescriptor propertyDescriptor = getPropertyDescriptor();
+		TrailsPropertyDescriptor propertyDescriptor = getPropertyDescriptor();
 
 		if (propertyDescriptor.isCollection())
 		{
@@ -80,7 +80,7 @@ public class Editors
 	 */
 	public ValueEncoder getValueEncoderForProperty()
 	{
-		IPropertyDescriptor propertyDescriptor = getPropertyDescriptor();
+		TrailsPropertyDescriptor propertyDescriptor = getPropertyDescriptor();
 		if (propertyDescriptor.isCollection())
 		{
 			CollectionDescriptor collectionDescriptor = (CollectionDescriptor) propertyDescriptor;

@@ -4,8 +4,8 @@ import ognl.Ognl;
 import ognl.OgnlException;
 import org.apache.tapestry5.ioc.services.PropertyAdapter;
 import org.apache.tapestry5.services.DataTypeAnalyzer;
-import org.trailsframework.descriptor.IClassDescriptor;
-import org.trailsframework.descriptor.IPropertyDescriptor;
+import org.trailsframework.descriptor.TrailsClassDescriptor;
+import org.trailsframework.descriptor.TrailsPropertyDescriptor;
 
 import java.util.Map;
 
@@ -28,7 +28,7 @@ public class TrailsDataTypeAnalyzer implements DataTypeAnalyzer
 
 	public String identifyDataType(PropertyAdapter adapter)
 	{
-		IPropertyDescriptor propertyDescriptor = getPropertyDescriptor(adapter);
+		TrailsPropertyDescriptor propertyDescriptor = getPropertyDescriptor(adapter);
 		for (Map.Entry<String, String> entry : editorMap.entrySet())
 		{
 			try
@@ -48,11 +48,11 @@ public class TrailsDataTypeAnalyzer implements DataTypeAnalyzer
 		return null;
 	}
 
-	private IPropertyDescriptor getPropertyDescriptor(PropertyAdapter adapter)
+	private TrailsPropertyDescriptor getPropertyDescriptor(PropertyAdapter adapter)
 	{
 
-		IClassDescriptor classDescriptor = descriptorService.getClassDescriptor(adapter.getBeanType());
-		IPropertyDescriptor propertyDescriptor = null;
+		TrailsClassDescriptor classDescriptor = descriptorService.getClassDescriptor(adapter.getBeanType());
+		TrailsPropertyDescriptor propertyDescriptor = null;
 
 		if (classDescriptor != null)
 		{

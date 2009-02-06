@@ -2,7 +2,7 @@ package org.trailsframework.descriptor;
 
 import java.lang.reflect.Method;
 
-public class TrailsMethodDescriptor extends TrailsDescriptor implements IMethodDescriptor
+public class TrailsMethodDescriptorImpl extends TrailsDescriptor implements IMethodDescriptor
 {
 
 	private String name;
@@ -12,12 +12,12 @@ public class TrailsMethodDescriptor extends TrailsDescriptor implements IMethodD
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// constructors
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////
-	public TrailsMethodDescriptor(IMethodDescriptor methodDescriptor)
+	public TrailsMethodDescriptorImpl(IMethodDescriptor methodDescriptor)
 	{
 		super(methodDescriptor);
 	}
 
-	public TrailsMethodDescriptor(Class beanType, String name, Class returnType, Class[] argumentTypes)
+	public TrailsMethodDescriptorImpl(Class beanType, String name, Class returnType, Class[] argumentTypes)
 	{
 		super(returnType);
 		this.beanType = beanType;
@@ -97,6 +97,6 @@ public class TrailsMethodDescriptor extends TrailsDescriptor implements IMethodD
 	@Override
 	public Object clone()
 	{
-		return new TrailsMethodDescriptor(this);
+		return new TrailsMethodDescriptorImpl(this);
 	}
 }

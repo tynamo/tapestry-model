@@ -17,11 +17,11 @@ package org.trailsframework.descriptor;
  * @author Chris Nelson
  * @see HibernateDescriptorDecorator
  */
-public class ObjectReferenceDescriptor extends TrailsPropertyDescriptor
+public class ObjectReferenceDescriptor extends TrailsPropertyDescriptorImpl
 {
 	private Class actualType;
 
-	public ObjectReferenceDescriptor(Class beanType, IPropertyDescriptor descriptor,
+	public ObjectReferenceDescriptor(Class beanType, TrailsPropertyDescriptor descriptor,
 									 Class actualType)
 	{
 		this(beanType, descriptor.getPropertyType(), actualType);

@@ -17,7 +17,7 @@ import org.jmock.Mock;
 import org.trails.callback.UrlCallback;
 import org.trails.component.ComponentTest;
 import org.trails.descriptor.CollectionDescriptor;
-import org.trails.descriptor.IClassDescriptor;
+import org.trails.descriptor.TrailsClassDescriptor;
 import org.trails.descriptor.TrailsClassDescriptor;
 import org.trails.persistence.PersistenceException;
 import org.trails.test.Baz;
@@ -41,8 +41,8 @@ public class EditPageTest extends ComponentTest
 	final UrlCallback callback = new UrlCallback(CALLBACK_URL);
 
 	CollectionDescriptor bazzesDescriptor = new CollectionDescriptor(Foo.class, "bazzes", Set.class);
-	IClassDescriptor fooDescriptor = new TrailsClassDescriptor(Foo.class, "Foo");
-	IClassDescriptor bazDescriptor = new TrailsClassDescriptor(Baz.class, "Baz");
+	TrailsClassDescriptor fooDescriptor = new TrailsClassDescriptor(Foo.class, "Foo");
+	TrailsClassDescriptor bazDescriptor = new TrailsClassDescriptor(Baz.class, "Baz");
 
 	public void setUp() throws Exception
 	{

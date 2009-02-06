@@ -1,4 +1,6 @@
 /*
+ * Created on Mar 18, 2005
+ *
  * Copyright 2004 Chris Nelson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -11,340 +13,109 @@
  */
 package org.trailsframework.descriptor;
 
-import org.apache.commons.beanutils.BeanUtils;
-import org.apache.commons.lang.builder.EqualsBuilder;
-
-import java.lang.reflect.InvocationTargetException;
 
 /**
  * @author fus8882
  *         <p/>
- *         TODO To change the template for this generated type comment go to Window -
- *         Preferences - Java - Code Style - Code Templates
+ *         TODO To change the template for this generated type comment go to
+ *         Window - Preferences - Java - Code Style - Code Templates
  */
-public class TrailsPropertyDescriptor extends TrailsDescriptor implements
-	IPropertyDescriptor
+public interface TrailsPropertyDescriptor extends Descriptor
 {
-	private Class beanType;
+	public static final int UNDEFINED_INDEX = -1;
 
-	private String name;
+	public static final int DEFAULT_LENGTH = 255;
 
-	private boolean searchable = true;
+	public void setIndex(int index);
 
-	private boolean required;
-
-	private boolean readOnly;
-
-	private int index = UNDEFINED_INDEX;
-
-	private int length = DEFAULT_LENGTH;
-
-	private boolean large;
-
-	private String format;
-
-	private boolean summary = true;
-
-	private boolean richText;
-
-	// ///////////////////////////////////////////////////////////////////////////////////////////////////////
-	// constructors
-	// ///////////////////////////////////////////////////////////////////////////////////////////////////////
-	/**
-	 * It's kinda like an old-skool C++ copy constructor
-	 */
-	public TrailsPropertyDescriptor(Class beanType,
-									IPropertyDescriptor descriptor)
-	{
-		this(beanType, descriptor.getPropertyType());
-
-		try
-		{
-			BeanUtils.copyProperties(this,
-				(TrailsPropertyDescriptor) descriptor);
-		} catch (IllegalAccessException e)
-		{
-			LOG.error(e.getMessage());
-			e.printStackTrace();
-		} catch (InvocationTargetException e)
-		{
-			LOG.error(e.getMessage());
-			e.printStackTrace();
-		} catch (Exception e)
-		{
-			LOG.error(e.toString());
-			e.printStackTrace();
-		}
-	}
-
-	public TrailsPropertyDescriptor(Class beanType, Class type)
-	{
-		super(type);
-		this.beanType = beanType;
-	}
-
-	/**
-	 * @param dto
-	 */
-	public TrailsPropertyDescriptor(TrailsPropertyDescriptor dto)
-	{
-		super(dto);
-
-		try
-		{
-			BeanUtils.copyProperties(this, dto);
-		} catch (IllegalAccessException e)
-		{
-			LOG.error(e.getMessage());
-			e.printStackTrace();
-		} catch (InvocationTargetException e)
-		{
-			LOG.error(e.getMessage());
-			e.printStackTrace();
-		} catch (Exception e)
-		{
-			LOG.error(e.toString());
-			e.printStackTrace();
-		}
-	}
-
-	// ///////////////////////////////////////////////////////////////////////////////////////////////////////
-	// methods
-	// ///////////////////////////////////////////////////////////////////////////////////////////////////////
+	public int getIndex();
 
 	/**
 	 * @return
 	 */
-	public Class getPropertyType()
-	{
-		return getType();
-	}
+	public Class getPropertyType();
 
 	/**
 	 * @return
 	 */
-	public boolean isNumeric()
-	{
-		return getPropertyType().getName().endsWith("Double")
-			|| getPropertyType().getName().endsWith("Integer")
-			|| getPropertyType().getName().endsWith("Float")
-			|| getPropertyType().getName().endsWith("double")
-			|| getPropertyType().getName().endsWith("int")
-			|| getPropertyType().getName().endsWith("float")
-			|| getPropertyType().getName().endsWith("BigDecimal");
-	}
+	public boolean isNumeric();
 
-	public boolean isBoolean()
-	{
-		return getPropertyType().getName().endsWith("boolean")
-			|| getPropertyType().getName().endsWith("Boolean");
-	}
+	public boolean isBoolean();
 
 	/**
 	 * @return
 	 */
-	public boolean isDate()
-	{
-		// TODO Auto-generated method stub
-		return getPropertyType().getName().endsWith("Date");
-	}
+	public boolean isDate();
 
 	/**
 	 * @return
 	 */
-	public boolean isString()
-	{
-		// TODO Auto-generated method stub
-		return getPropertyType().getName().endsWith("String");
-	}
+	public boolean isString();
 
-	public boolean isObjectReference()
-	{
-		return false;
-	}
-
-	// ///////////////////////////////////////////////////////////////////////////////////////////////////////
-	// bean setters / getters
-	// ///////////////////////////////////////////////////////////////////////////////////////////////////////
-
-	public int getIndex()
-	{
-		return index;
-	}
-
-	public void setIndex(int index)
-	{
-		this.index = index;
-	}
+	/**
+	 * @return
+	 */
+	public boolean isObjectReference();
 
 	/**
 	 * @return Returns the required.
 	 */
-	public boolean isRequired()
-	{
-		return required;
-	}
+	public boolean isRequired();
 
 	/**
 	 * @param required The required to set.
 	 */
-	public void setRequired(boolean required)
-	{
-		this.required = required;
-	}
+	public void setRequired(boolean required);
 
 	/**
 	 * @return
 	 */
-	public boolean isReadOnly()
-	{
-		return readOnly;
-	}
+	public boolean isReadOnly();
 
 	/**
 	 * @param readOnly The readOnly to set.
 	 */
-	public void setReadOnly(boolean readOnly)
-	{
-		this.readOnly = readOnly;
-	}
+	public void setReadOnly(boolean readOnly);
 
 	/**
-	 * @return Returns the identifier.
+	 * @return
 	 */
-	public boolean isIdentifier()
-	{
-		return false;
-	}
+	public String getName();
 
-	/**
-	 * @return Returns the collection.
-	 */
-	public boolean isCollection()
-	{
-		return false;
-	}
+	public void setName(String name);
 
-	@Override
-	public Object clone()
-	{
-		return new TrailsPropertyDescriptor(this);
-	}
+	public int getLength();
 
-	@Override
-	public void copyFrom(IDescriptor descriptor)
-	{
-		super.copyFrom(descriptor);
+	public void setLength(int length);
 
-		if (descriptor instanceof TrailsPropertyDescriptor)
-		{
-			try
-			{
-				BeanUtils.copyProperties(this,
-					(TrailsPropertyDescriptor) descriptor);
-			} catch (IllegalAccessException e)
-			{
-				LOG.error(e.getMessage());
-				e.printStackTrace();
-			} catch (InvocationTargetException e)
-			{
-				LOG.error(e.getMessage());
-				e.printStackTrace();
-			} catch (Exception e)
-			{
-				LOG.error(e.toString());
-				e.printStackTrace();
-			}
-		}
-	}
+	public abstract boolean isLarge();
 
-	public boolean equals(Object obj)
-	{
-		return EqualsBuilder.reflectionEquals(this, obj);
-	}
+	public abstract void setLarge(boolean Large);
 
-	public int getLength()
-	{
-		return length;
-	}
+	public String getFormat();
 
-	public void setLength(int length)
-	{
-		this.length = length;
-	}
+	public void setFormat(String format);
 
-	public boolean isLarge()
-	{
-		return large;
-	}
+	public boolean isSearchable();
 
-	public void setLarge(boolean large)
-	{
-		this.large = large;
-	}
+	public void setSearchable(boolean searchable);
 
-	public String getFormat()
-	{
-		return format;
-	}
+	public boolean isSummary();
 
-	public void setFormat(String format)
-	{
-		this.format = format;
-	}
+	public boolean isCollection();
 
-	public boolean isSearchable()
-	{
-		return searchable;
-	}
+	public void setSummary(boolean summary);
 
-	public void setSearchable(boolean searchable)
-	{
-		this.searchable = searchable;
-	}
+	public boolean isEmbedded();
 
-	public boolean isSummary()
-	{
-		return summary;
-	}
+	public boolean isRichText();
 
-	public void setSummary(boolean summary)
-	{
-		this.summary = summary;
-	}
+	public boolean isIdentifier();
 
-	public boolean isRichText()
-	{
-		return richText;
-	}
+	public void setRichText(boolean richText);
 
-	public void setRichText(boolean richText)
-	{
-		this.richText = richText;
-	}
+	public Class getBeanType();
 
-	public boolean isEmbedded()
-	{
-		return false;
-	}
+	public void setBeanType(Class beanType);
 
-	public Class getBeanType()
-	{
-		return beanType;
-	}
-
-	public void setBeanType(Class beanType)
-	{
-		this.beanType = beanType;
-	}
-
-	public String getName()
-	{
-		return name;
-	}
-
-	public void setName(String name)
-	{
-		this.name = name;
-	}
 }

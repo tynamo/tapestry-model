@@ -28,7 +28,7 @@ import java.util.Map;
  *         TODO To change the template for this generated type comment go to Window -
  *         Preferences - Java - Code Style - Code Templates
  */
-public class TrailsDescriptor implements IDescriptor, Serializable
+public class TrailsDescriptor implements Descriptor, Serializable
 {
 	protected static final Log LOG = LogFactory.getLog(TrailsDescriptor.class);
 
@@ -36,7 +36,7 @@ public class TrailsDescriptor implements IDescriptor, Serializable
 
 	private boolean hidden;
 
-	Map<String, IDescriptorExtension> extensions = new Hashtable<String, IDescriptorExtension>();
+	Map<String, DescriptorExtension> extensions = new Hashtable<String, DescriptorExtension>();
 
 	/**
 	 * @param dto
@@ -61,7 +61,7 @@ public class TrailsDescriptor implements IDescriptor, Serializable
 		}
 	}
 
-	public TrailsDescriptor(IDescriptor descriptor)
+	public TrailsDescriptor(Descriptor descriptor)
 	{
 		try
 		{
@@ -93,7 +93,7 @@ public class TrailsDescriptor implements IDescriptor, Serializable
 		return new TrailsDescriptor(this);
 	}
 
-	public void copyFrom(IDescriptor descriptor)
+	public void copyFrom(Descriptor descriptor)
 	{
 		try
 		{
@@ -114,17 +114,17 @@ public class TrailsDescriptor implements IDescriptor, Serializable
 		}
 	}
 
-	public void copyExtensionsFrom(IDescriptor descriptor)
+	public void copyExtensionsFrom(Descriptor descriptor)
 	{
-		Map<String, IDescriptorExtension> exts = descriptor.getExtensions();
+		Map<String, DescriptorExtension> exts = descriptor.getExtensions();
 
-		for (Map.Entry<String, IDescriptorExtension> entry : exts.entrySet())
+		for (Map.Entry<String, DescriptorExtension> entry : exts.entrySet())
 		{
 			String keye = entry.getKey();
-			IDescriptorExtension value = entry.getValue();
+			DescriptorExtension value = entry.getValue();
 			try
 			{
-				this.addExtension(keye, (IDescriptorExtension) BeanUtils.cloneBean(value));
+				this.addExtension(keye, (DescriptorExtension) BeanUtils.cloneBean(value));
 			} catch (Exception e)
 			{
 				//@todo fix clone methods.
@@ -168,7 +168,7 @@ public class TrailsDescriptor implements IDescriptor, Serializable
 	/**
 	 * Keye is property name preceded by package name
 	 */
-	public IDescriptorExtension getExtension(String keye)
+	public DescriptorExtension getExtension(String keye)
 	{
 		return extensions.get(keye);
 	}
@@ -176,12 +176,12 @@ public class TrailsDescriptor implements IDescriptor, Serializable
 	/**
 	 * Keye is property name preceded by package name
 	 */
-	public void addExtension(String keye, IDescriptorExtension extension)
+	public void addExtension(String keye, DescriptorExtension extension)
 	{
 		extensions.put(keye, extension);
 	}
 
-	public void addExtension(Class extensionType, IDescriptorExtension extension)
+	public void addExtension(Class extensionType, DescriptorExtension extension)
 	{
 		addExtension(extensionType.getName(), extension);
 	}
@@ -199,7 +199,7 @@ public class TrailsDescriptor implements IDescriptor, Serializable
 		removeExtension(extensionType.getName());
 	}
 
-	public <E extends IDescriptorExtension> E getExtension(Class<E> extensionType)
+	public <E extends DescriptorExtension> E getExtension(Class<E> extensionType)
 	{
 		return (E) extensions.get(extensionType.getName());
 	}
@@ -208,7 +208,7 @@ public class TrailsDescriptor implements IDescriptor, Serializable
 	 * This getter method is here just to allow clone(), copyFrom() and
 	 * BeanUtils.copyProperties(this, descriptor); to work correctly
 	 */
-	public Map<String, IDescriptorExtension> getExtensions()
+	public Map<String, DescriptorExtension> getExtensions()
 	{
 		return extensions;
 	}
@@ -217,7 +217,7 @@ public class TrailsDescriptor implements IDescriptor, Serializable
 	 * This setter method is here just to allow clone(), copyFrom() and
 	 * BeanUtils.copyProperties(this, descriptor); to work correctly
 	 */
-	public void setExtensions(Map<String, IDescriptorExtension> extensions)
+	public void setExtensions(Map<String, DescriptorExtension> extensions)
 	{
 		this.extensions = extensions;
 	}

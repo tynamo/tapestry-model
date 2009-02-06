@@ -1,6 +1,6 @@
 package org.trailsframework.descriptor;
 
-public class EmbeddedDescriptor extends TrailsClassDescriptor implements IIdentifierDescriptor
+public class EmbeddedDescriptor extends TrailsClassDescriptorImpl implements IdentifierDescriptor
 {
 
 	private int index;
@@ -17,7 +17,7 @@ public class EmbeddedDescriptor extends TrailsClassDescriptor implements IIdenti
 	// constructors
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	public EmbeddedDescriptor(Class beanType, IClassDescriptor descriptor)
+	public EmbeddedDescriptor(Class beanType, TrailsClassDescriptor descriptor)
 	{
 		super(descriptor);
 		this.beanType = beanType;
@@ -220,7 +220,7 @@ public class EmbeddedDescriptor extends TrailsClassDescriptor implements IIdenti
 	}
 
 	@Override
-	public void copyFrom(IDescriptor descriptor)
+	public void copyFrom(Descriptor descriptor)
 	{
 
 		super.copyFrom(descriptor);

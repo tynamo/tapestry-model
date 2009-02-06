@@ -7,7 +7,7 @@ package org.trails.i18n;
 import java.util.Locale;
 
 import org.trails.component.ComponentTest;
-import org.trails.descriptor.IClassDescriptor;
+import org.trails.descriptor.TrailsClassDescriptor;
 import org.trails.descriptor.IDescriptor;
 import org.trails.descriptor.IPropertyDescriptor;
 import org.trails.descriptor.ReflectionDescriptorFactory;
@@ -19,7 +19,7 @@ public class DescriptorInternationalizationTest extends ComponentTest
 {
 
 	private IPropertyDescriptor propertyDescriptor;
-	private IClassDescriptor classDescriptor;
+	private TrailsClassDescriptor classDescriptor;
 	private Locale pt = new Locale("pt");
 	private Locale ptBR = new Locale("pt", "BR");
 	private Locale en = Locale.ENGLISH;
@@ -48,7 +48,7 @@ public class DescriptorInternationalizationTest extends ComponentTest
 		assertEquals(expected, displayName);
 	}
 
-	private void pluralDisplayNameTest(Locale locale, IClassDescriptor descriptor, String expected)
+	private void pluralDisplayNameTest(Locale locale, TrailsClassDescriptor descriptor, String expected)
 	{
 		threadLocale.setLocale(locale);
 		String displayName = descriptor.getPluralDisplayName();

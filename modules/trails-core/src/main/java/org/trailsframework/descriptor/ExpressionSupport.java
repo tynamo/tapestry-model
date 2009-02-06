@@ -8,7 +8,7 @@ package org.trailsframework.descriptor;
  * 
  * @see CollectionDescriptor
  */
-public interface IExpressionSupport {
+public interface ExpressionSupport {
 
 	public String findAddExpression();
 

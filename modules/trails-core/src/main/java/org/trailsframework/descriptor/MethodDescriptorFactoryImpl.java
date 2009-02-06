@@ -27,7 +27,7 @@ public class MethodDescriptorFactoryImpl implements MethodDescriptorFactory
 		{
 			if (!Utils.isExcluded(beanMethodDescriptor.getMethod().getName(), methodExcludes))
 			{
-				TrailsMethodDescriptor methodDescriptor = new TrailsMethodDescriptor(type,
+				TrailsMethodDescriptorImpl methodDescriptor = new TrailsMethodDescriptorImpl(type,
 						beanMethodDescriptor.getMethod().getName(), beanMethodDescriptor.getMethod().getReturnType(),
 						beanMethodDescriptor.getMethod().getParameterTypes());
 //				methodDescriptor.setDisplayName(Utils.unCamelCase(beanMethodDescriptor.getDisplayName()));

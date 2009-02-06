@@ -17,7 +17,7 @@ import java.util.Date;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import org.trails.descriptor.IClassDescriptor;
+import org.trails.descriptor.TrailsClassDescriptor;
 import org.trails.descriptor.IPropertyDescriptor;
 import org.trails.descriptor.TrailsClassDescriptor;
 import org.trails.descriptor.TrailsPropertyDescriptor;
@@ -34,7 +34,7 @@ public class EditPropertiesTest extends ComponentTest
 
 	public void testGetPropertyDescriptors() throws Exception
 	{
-		IClassDescriptor classDescriptor = new TrailsClassDescriptor(Foo.class);
+		TrailsClassDescriptor classDescriptor = new TrailsClassDescriptor(Foo.class);
 		IPropertyDescriptor nameDescriptor = new TrailsPropertyDescriptor(Foo.class,
 			"name", String.class);
 		IPropertyDescriptor dateDescriptor = new TrailsPropertyDescriptor(Foo.class,

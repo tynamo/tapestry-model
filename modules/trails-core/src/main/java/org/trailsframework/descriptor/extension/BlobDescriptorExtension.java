@@ -2,10 +2,10 @@ package org.trailsframework.descriptor.extension;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.trailsframework.descriptor.IDescriptorExtension;
+import org.trailsframework.descriptor.DescriptorExtension;
 import org.trailsframework.exception.TrailsRuntimeException;
 
-public class BlobDescriptorExtension implements IDescriptorExtension
+public class BlobDescriptorExtension implements DescriptorExtension
 {
 	protected static final Log LOG = LogFactory.getLog(BlobDescriptorExtension.class);
 

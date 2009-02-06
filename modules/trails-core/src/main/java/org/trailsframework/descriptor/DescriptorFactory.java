@@ -3,6 +3,6 @@ package org.trailsframework.descriptor;
 public interface DescriptorFactory
 {
 
-	public IClassDescriptor buildClassDescriptor(Class type);
+	public TrailsClassDescriptor buildClassDescriptor(Class type);
 
 }

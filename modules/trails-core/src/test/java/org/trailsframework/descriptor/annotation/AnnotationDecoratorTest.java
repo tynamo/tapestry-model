@@ -2,7 +2,7 @@ package org.trails.descriptor.annotation;
 
 
 import junit.framework.TestCase;
-import org.trails.descriptor.IClassDescriptor;
+import org.trails.descriptor.TrailsClassDescriptor;
 import org.trails.descriptor.IPropertyDescriptor;
 import org.trails.descriptor.IdentifierDescriptor;
 import org.trails.descriptor.TrailsClassDescriptor;
@@ -20,7 +20,7 @@ public class AnnotationDecoratorTest extends TestCase
 	{
 
 
-		IClassDescriptor descriptor = new TrailsClassDescriptor(Annotated.class, "Annotated");
+		TrailsClassDescriptor descriptor = new TrailsClassDescriptor(Annotated.class, "Annotated");
 		IPropertyDescriptor fieldPropDescriptor = new TrailsPropertyDescriptor(Annotated.class, "notBloppity", String.class);
 
 		descriptor.getPropertyDescriptors().add(fieldPropDescriptor);
@@ -53,7 +53,7 @@ public class AnnotationDecoratorTest extends TestCase
 
 	public void testDecorateEmbedded() throws Exception
 	{
-		IClassDescriptor embeddorDescriptor = new TrailsClassDescriptor(Embeddor.class, "Embeddor");
+		TrailsClassDescriptor embeddorDescriptor = new TrailsClassDescriptor(Embeddor.class, "Embeddor");
 		EmbeddedDescriptor embeddeeDescriptor = new EmbeddedDescriptor(Embeddor.class, "embeddee", Embeddee.class);
 		embeddeeDescriptor.getPropertyDescriptors().add(new TrailsPropertyDescriptor(Embeddee.class, "title", String.class));
 		embeddeeDescriptor.getPropertyDescriptors().add(new TrailsPropertyDescriptor(Embeddee.class, "description", String.class));

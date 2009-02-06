@@ -3,7 +3,7 @@ package org.trailsframework.components;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
-import org.trailsframework.descriptor.IClassDescriptor;
+import org.trailsframework.descriptor.TrailsClassDescriptor;
 import org.trailsframework.services.DescriptorService;
 import org.trailsframework.util.DisplayNameUtils;
 
@@ -18,18 +18,18 @@ public class ListPageLinkList
 	private DescriptorService descriptorService;
 
 	@Property
-	private IClassDescriptor descriptorIterator;
+	private TrailsClassDescriptor descriptorIterator;
 
 	@Inject
 	private Messages messages;
 
-	public List<IClassDescriptor> getAllDescriptors()
+	public List<TrailsClassDescriptor> getAllDescriptors()
 	{
-		List<IClassDescriptor> descriptors = descriptorService.getAllDescriptors();
+		List<TrailsClassDescriptor> descriptors = descriptorService.getAllDescriptors();
 
-		List<IClassDescriptor> result = new ArrayList<IClassDescriptor>(descriptors.size());
+		List<TrailsClassDescriptor> result = new ArrayList<TrailsClassDescriptor>(descriptors.size());
 
-		for (IClassDescriptor descriptor : descriptors)
+		for (TrailsClassDescriptor descriptor : descriptors)
 		{
 			if (!descriptor.isHidden())
 			{
@@ -37,9 +37,9 @@ public class ListPageLinkList
 			}
 		}
 
-		Collections.sort(result, new Comparator<IClassDescriptor>()
+		Collections.sort(result, new Comparator<TrailsClassDescriptor>()
 		{
-			public int compare(IClassDescriptor o1, IClassDescriptor o2)
+			public int compare(TrailsClassDescriptor o1, TrailsClassDescriptor o2)
 			{
 				return DisplayNameUtils.getDisplayName(o1, messages).compareTo(DisplayNameUtils.getDisplayName(o2, messages));
 			}

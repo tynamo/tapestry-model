@@ -11,7 +11,7 @@
  */
 package org.trailsframework.services;
 
-import org.trailsframework.descriptor.IClassDescriptor;
+import org.trailsframework.descriptor.TrailsClassDescriptor;
 
 import java.util.List;
 
@@ -19,8 +19,8 @@ import java.util.List;
 public interface DescriptorService
 {
 
-	public IClassDescriptor getClassDescriptor(Class type);
+	public TrailsClassDescriptor getClassDescriptor(Class type);
 
-	public List<IClassDescriptor> getAllDescriptors();
+	public List<TrailsClassDescriptor> getAllDescriptors();
 
 }

@@ -22,7 +22,7 @@ import org.jmock.integration.junit3.MockObjectTestCase;
 import org.trails.finder.BlockFinder;
 import org.trails.descriptor.IPropertyDescriptor;
 import org.trails.descriptor.TrailsPropertyDescriptor;
-import org.trails.descriptor.IClassDescriptor;
+import org.trails.descriptor.TrailsClassDescriptor;
 import org.trails.descriptor.TrailsClassDescriptor;
 import org.trails.page.IEditorBlockPage;
 import org.trails.test.Foo;
@@ -33,7 +33,7 @@ public class PropertyEditorTest extends MockObjectTestCase
 
 	PropertyEditor propertyEditor;
 	IPropertyDescriptor descriptor;
-	IClassDescriptor classDescriptor;
+	TrailsClassDescriptor classDescriptor;
 	BlockFinder blockFinder;
 	Messages messages;
 	Foo model;

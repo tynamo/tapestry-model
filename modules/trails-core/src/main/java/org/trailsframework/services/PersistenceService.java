@@ -15,7 +15,7 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 
-import org.trailsframework.descriptor.IClassDescriptor;
+import org.trailsframework.descriptor.TrailsClassDescriptor;
 
 public interface PersistenceService
 {
@@ -48,7 +48,7 @@ public interface PersistenceService
 	 */
 	public <T> T getInstance(final Class<T> type);
 
-	boolean isTransient(Object data, IClassDescriptor classDescriptor);
+	boolean isTransient(Object data, TrailsClassDescriptor classDescriptor);
 
 	<T> T saveCollectionElement(String addExpression, T member, Object parent);
 

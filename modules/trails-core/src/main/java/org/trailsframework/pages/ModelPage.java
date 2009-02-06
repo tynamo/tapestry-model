@@ -10,7 +10,7 @@ import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.BeanModelSource;
 import org.apache.tapestry5.services.ContextValueEncoder;
-import org.trailsframework.descriptor.IClassDescriptor;
+import org.trailsframework.descriptor.TrailsClassDescriptor;
 import org.trailsframework.services.DescriptorService;
 import org.trailsframework.services.PersistenceService;
 import org.trailsframework.util.DisplayNameUtils;
@@ -97,7 +97,7 @@ public abstract class ModelPage
 		return form;
 	}
 
-	public abstract IClassDescriptor getClassDescriptor();
+	public abstract TrailsClassDescriptor getClassDescriptor();
 
 	public abstract Object getBean();
 

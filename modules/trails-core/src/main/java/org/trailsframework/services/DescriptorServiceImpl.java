@@ -11,13 +11,13 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * This class builds and caches IClassDescriptors.
+ * This class builds and caches TrailsClassDescriptors.
  * Descriptors are build during application startup.
  */
 public class DescriptorServiceImpl implements DescriptorService
 {
-	private final StrategyRegistry<IClassDescriptor> descriptorsRegistry;
-	private final List<IClassDescriptor> descriptors;
+	private final StrategyRegistry<TrailsClassDescriptor> descriptorsRegistry;
+	private final List<TrailsClassDescriptor> descriptors;
 
 	/**
 	 * For each class in types, a descriptor is built by the DescriptorFactory.  Next it is decorated
@@ -30,48 +30,48 @@ public class DescriptorServiceImpl implements DescriptorService
 	 */
 	public DescriptorServiceImpl(final Collection<Class> types, DescriptorFactory descriptorFactory)
 	{
-		Map<Class, IClassDescriptor> descriptorsMap = new HashMap<Class, IClassDescriptor>();
+		Map<Class, TrailsClassDescriptor> descriptorsMap = new HashMap<Class, TrailsClassDescriptor>();
 		for (Class type : types)
 		{
 			descriptorsMap.put(type, descriptorFactory.buildClassDescriptor(type));
 		}
 
 		this.descriptors = CollectionFactory.newList(descriptorsMap.values());
-		this.descriptorsRegistry = StrategyRegistry.newInstance(IClassDescriptor.class, descriptorsMap);
+		this.descriptorsRegistry = StrategyRegistry.newInstance(TrailsClassDescriptor.class, descriptorsMap);
 
 		// second pass to find children
-		for (IClassDescriptor iClassDescriptor : descriptorsMap.values())
+		for (TrailsClassDescriptor TrailsClassDescriptor : descriptorsMap.values())
 		{
-			findChildren(iClassDescriptor);
+			findChildren(TrailsClassDescriptor);
 		}
 
 	}
 
-	public List<IClassDescriptor> getAllDescriptors()
+	public List<TrailsClassDescriptor> getAllDescriptors()
 	{
 		return descriptors;
 	}
 
-	public IClassDescriptor getClassDescriptor(Class type)
+	public TrailsClassDescriptor getClassDescriptor(Class type)
 	{
 		Defense.notNull(type, "type");
 		return descriptorsRegistry.get(type);
 	}
 
-	private void findChildren(IClassDescriptor iClassDescriptor)
+	private void findChildren(TrailsClassDescriptor TrailsClassDescriptor)
 	{
-		for (IPropertyDescriptor propertyDescriptor : iClassDescriptor.getPropertyDescriptors())
+		for (TrailsPropertyDescriptor propertyDescriptor : TrailsClassDescriptor.getPropertyDescriptors())
 		{
 			if (propertyDescriptor.isCollection())
 			{
 				if (((CollectionDescriptor) propertyDescriptor).isChildRelationship())
 				{
-					IClassDescriptor collectionClassDescriptor = getClassDescriptor(((CollectionDescriptor) propertyDescriptor).getElementType());
+					TrailsClassDescriptor collectionClassDescriptor = getClassDescriptor(((CollectionDescriptor) propertyDescriptor).getElementType());
 					collectionClassDescriptor.setChild(true);
 				}
 				if (((CollectionDescriptor) propertyDescriptor).getInverseProperty() != null)
 				{
-					iClassDescriptor.setHasCyclicRelationships(true);
+					TrailsClassDescriptor.setHasCyclicRelationships(true);
 				}
 			}
 		}
