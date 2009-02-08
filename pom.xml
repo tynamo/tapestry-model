@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
 	<name>Trails</name>
 	<url>http://www.trailsframework.org/</url>
@@ -8,7 +9,7 @@
 	<artifactId>trails</artifactId>
 	<packaging>pom</packaging>
 	<version>2.0.1-SNAPSHOT</version>
-	
+
 	<parent>
 		<groupId>org.trailsframework</groupId>
 		<artifactId>trails-parent</artifactId>
@@ -26,6 +27,7 @@
 		-->
 		<module>modules</module>
 		<module>examples</module>
+		<module>archetypes</module>
 	</modules>
 
 	<distributionManagement>
@@ -45,7 +47,7 @@
 			<url>dav:https://dav.codehaus.org/snapshots.repository/trails/</url>
 		</snapshotRepository>
 	</distributionManagement>
-	
+
 	<!-- We have to specify repositories here, otherwise the build won't find trails-parent (at least before in sycnhed up to repo1 -->
 	<repositories>
 		<repository>
