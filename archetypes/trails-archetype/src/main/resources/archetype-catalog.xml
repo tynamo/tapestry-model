@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<archetype-catalog>
+	<archetypes>
+		<archetype>
+			<groupId>org.trailsframework</groupId>
+			<artifactId>trails-archetype</artifactId>
+			<version>@project.version@</version>
+			<repository>http://snapshots.repository.codehaus.org/org/trailsframework/</repository>
+			<description>Trails @project.version@ Archetype</description>
+		</archetype>
+	</archetypes>
+</archetype-catalog>

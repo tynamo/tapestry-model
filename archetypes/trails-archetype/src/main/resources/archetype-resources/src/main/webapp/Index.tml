@@ -1,0 +1,20 @@
+<t:layout title="literal:Trails!" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_0_0.xsd">
+	<t:parameter name="subMenuBlock">
+		<ul>
+			<li>
+			</li>
+		</ul>
+	</t:parameter>
+	<t:parameter name="navBlock">
+		<ul>
+			<li>
+			</li>
+		</ul>
+	</t:parameter>
+	
+
+	<h1>${message:org.trails.welcome}</h1>
+
+	<t:trails.ListPageLinkList/>
+
+</t:layout>

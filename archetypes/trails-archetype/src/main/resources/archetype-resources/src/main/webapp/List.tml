@@ -1,0 +1,25 @@
+<t:layout title="title" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_0_0.xsd">
+	<t:parameter name="subMenuBlock">
+		<ul id="local">
+			<t:if test="classDescriptor.allowSave">
+				<li>
+					<t:pagelink class="newlink" page="New" context="classDescriptor.type">${newlinkMessage}</t:pagelink>
+				</li>
+			</t:if>
+<!--
+			<li>
+				<a class="searchlink" href="#" jwcid="@trails:SearchLink" type="ognl:type"></a>
+			</li>
+-->
+		</ul>
+	</t:parameter>
+
+	<h1>${title}</h1>
+
+		<t:grid source="instances" row="model">
+			<t:parameter name="idcell">
+				<t:pagelink t:page="Edit" context="editPageContext">${model.id}</t:pagelink>
+			</t:parameter>
+		</t:grid>
+
+</t:layout>
