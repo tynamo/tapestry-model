@@ -4,9 +4,9 @@
 		<archetype>
 			<groupId>org.trailsframework</groupId>
 			<artifactId>trails-archetype</artifactId>
-			<version>@project.version@</version>
+			<version>2.0.1-SNAPSHOT</version>
 			<repository>http://snapshots.repository.codehaus.org/</repository>
-			<description>Trails @project.version@ Archetype</description>
+			<description>Trails 2.0.1-SNAPSHOT Archetype</description>
 		</archetype>
 	</archetypes>
 </archetype-catalog>
