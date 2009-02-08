@@ -233,6 +233,15 @@ input.btTxt {
 	margin-right: 5px;
 }
 
+/* @ascandroli: idea taken from: http://stopdesign.com/eg/buttons/3.0/code.html 
+ * use if one button should be the 'primary' button
+ */
+button.primary {
+	font-weight: bold;
+	color: #000;
+}
+
+
 .rtl .info h2, .rtl .info div, .rtl label, .rtl label.choice, .rtl div label, .rtl span label, .rtl input.text, .rtl textarea.textarea, .rtl select.select, .rtl p.instruct, .rtl .section h3, .rtl .section div, .rtl input.btTxt {
 	direction: rtl;
 }

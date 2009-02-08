@@ -27,7 +27,7 @@
 				<button t:type="any" class="button" type="submit" id="save">
 					${message:org.trails.i18n.apply}
 				</button>
-				<button t:type="any" class="button" type="submit" id="saveAndReturnButton">
+				<button t:type="any" class="button primary" type="submit" id="saveAndReturnButton">
 					${message:org.trails.i18n.applyAndReturn}
 				</button>
 				&nbsp; or &nbsp;
