@@ -17,8 +17,9 @@ import org.trailsframework.descriptor.DescriptorDecorator;
 import org.trailsframework.descriptor.annotation.AnnotationDecorator;
 import org.trailsframework.hibernate.validation.HibernateClassValidatorFactory;
 import org.trailsframework.hibernate.validation.HibernateValidationDelegate;
+import org.trailsframework.VersionedModule;
 
-public class TrailsHibernateModule {
+public class TrailsHibernateModule extends VersionedModule {
 
 	public static void bind(ServiceBinder binder) {
 		// Make bind() calls on the binder object to define most IoC services.
@@ -39,6 +40,10 @@ public class TrailsHibernateModule {
 	public static void contributeComponentClassResolver(Configuration<LibraryMapping> configuration) {
 		configuration.add(new LibraryMapping("trails-hibernate", "org.trailsframework.hibernate"));
 	}
+	
+    public static void contributeClasspathAssetAliasManager(MappedConfiguration<String, String> configuration) {
+        configuration.add("trails-hibernate/" + version, "org/trailsframework/hibernate");
+    }
 	
 	public static void contributeValidationMessagesSource(OrderedConfiguration<String> configuration)
 	{
