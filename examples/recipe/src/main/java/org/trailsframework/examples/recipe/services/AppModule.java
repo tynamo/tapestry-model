@@ -7,11 +7,13 @@ import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.ioc.ServiceBinder;
 import org.apache.tapestry5.ioc.annotations.SubModule;
 import org.apache.tapestry5.upload.services.UploadSymbols;
+import org.trailsframework.builder.Builder;
+import org.trailsframework.examples.recipe.RecipeBuilder;
 import org.trailsframework.services.TrailsCoreModule;
 
 /**
  * This module is automatically included as part of the Tapestry IoC Registry, it's a good place to configure and extend
- * Tapestry, or to place your own service definitions.
+ * Trails, or to place your own service definitions.
  */
 @SubModule(value = {TrailsCoreModule.class, HibernateModule.class})
 public class AppModule
@@ -26,10 +28,8 @@ public class AppModule
 
 	}
 
-
 	public static void contributeApplicationDefaults(MappedConfiguration<String, String> configuration)
 	{
-
 		// Contributions to ApplicationDefaults will override any contributions to
 		// FactoryDefaults (with the same key). Here we're restricting the supported
 		// locales to just "en" (English). As you add localised message catalogs and other assets,
@@ -47,10 +47,22 @@ public class AppModule
 		configuration.add(UploadSymbols.FILESIZE_MAX, "2048000");
 
 	}
-	
+
+	/**
+	 * Contributes the package "org.trailsframework.examples.recipe.model" to the configuration, so that it will be
+	 * scanned for annotated entity classes.
+	 */
 	public static void contributeHibernateEntityPackageManager(Configuration<String> configuration)
 	{
 		configuration.add("org.trailsframework.examples.recipe.model");
 	}
-	
+
+	/**
+	 * Contributes Builders to the BuilderDirector's builders map.
+	 * Check GOF's <a href="http://en.wikipedia.org/wiki/Builder_pattern">Builder pattern</a>
+	 */
+	public static void contributeBuilderDirector(MappedConfiguration<Class, Builder> configuration)
+	{
+		configuration.add(org.trailsframework.examples.recipe.model.Recipe.class, new RecipeBuilder());
+	}
 }
