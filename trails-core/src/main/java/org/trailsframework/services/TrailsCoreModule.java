@@ -1,6 +1,7 @@
 package org.trailsframework.services;
 
 import org.apache.tapestry5.ioc.Configuration;
+import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.ioc.OrderedConfiguration;
 import org.apache.tapestry5.ioc.ServiceBinder;
 import org.apache.tapestry5.ioc.ServiceResources;
@@ -9,6 +10,7 @@ import org.apache.tapestry5.ioc.services.CoercionTuple;
 import org.apache.tapestry5.services.BeanBlockContribution;
 import org.apache.tapestry5.services.DataTypeAnalyzer;
 import org.apache.tapestry5.services.LibraryMapping;
+import org.trailsframework.VersionedModule;
 import org.trailsframework.builder.BuilderDirector;
 import org.trailsframework.descriptor.DescriptorFactory;
 import org.trailsframework.descriptor.MethodDescriptorFactory;
@@ -17,7 +19,7 @@ import org.trailsframework.descriptor.PropertyDescriptorFactory;
 import org.trailsframework.descriptor.PropertyDescriptorFactoryImpl;
 import org.trailsframework.descriptor.ReflectionDescriptorFactory;
 
-public class TrailsCoreModule {
+public class TrailsCoreModule extends VersionedModule {
 
 	public static void bind(ServiceBinder binder) {
 		// Make bind() calls on the binder object to define most IoC services.
@@ -41,6 +43,11 @@ public class TrailsCoreModule {
 		configuration.add(new LibraryMapping("trails", "org.trailsframework"));
 	}
 
+	public static void contributeClasspathAssetAliasManager(MappedConfiguration<String, String> configuration) {
+		configuration.add("trails/" + version, "org/trailsframework");
+	}
+	
+	
 	/**
 	 * Contribution to the BeanBlockSource service to tell the BeanEditForm component about the editors.
 	 */
@@ -77,6 +84,7 @@ public class TrailsCoreModule {
 	 * <li>String to Double</li>
 	 * </ul>
 	 */
+	@SuppressWarnings("unchecked")
 	public static void contributeTypeCoercer(final Configuration<CoercionTuple> configuration,
 			@InjectService("EntityCoercerService") EntityCoercerService entityCoercerService) {
 		configuration.add(new CoercionTuple<Class, String>(Class.class, String.class, new ClassToStringCoercion(entityCoercerService)));
