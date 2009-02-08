@@ -15,7 +15,17 @@ import java.util.Map;
 public class BuilderDirector
 {
 
-	Map<Class, Builder> map = new HashMap<Class, Builder>();
+	Map<Class, Builder> builders;
+
+	public BuilderDirector()
+	{
+		builders = new HashMap<Class, Builder>();
+	}
+
+	public BuilderDirector(Map<Class, Builder> builders)
+	{
+		this.builders = builders;
+	}
 
 	/**
 	 * Create a new instance of an object of class 'type' using a Builder.
@@ -25,7 +35,7 @@ public class BuilderDirector
 	 */
 	public <T> T createNewInstance(final Class<T> type)
 	{
-		Builder<T> builder = (Builder<T>) map.get(type);
+		Builder<T> builder = (Builder<T>) builders.get(type);
 		if (builder != null)
 		{
 			return builder.build();
