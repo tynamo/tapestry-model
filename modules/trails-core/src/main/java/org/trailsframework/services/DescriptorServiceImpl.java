@@ -37,7 +37,7 @@ public class DescriptorServiceImpl implements DescriptorService
 		}
 
 		this.descriptors = CollectionFactory.newList(descriptorsMap.values());
-		this.descriptorsRegistry = StrategyRegistry.newInstance(TrailsClassDescriptor.class, descriptorsMap);
+		this.descriptorsRegistry = StrategyRegistry.newInstance(TrailsClassDescriptor.class, descriptorsMap, true);
 
 		// second pass to find children
 		for (TrailsClassDescriptor TrailsClassDescriptor : descriptorsMap.values())
