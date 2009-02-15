@@ -71,7 +71,6 @@ public class TrailsCoreModule extends VersionedModule {
 	 * </dl>
 	 */
 	public static void contributeDataTypeAnalyzer(OrderedConfiguration<DataTypeAnalyzer> configuration,
-			@InjectService("DefaultDataTypeAnalyzer") DataTypeAnalyzer defaultDataTypeAnalyzer,
 			@InjectService("TrailsDataTypeAnalyzer") DataTypeAnalyzer trailsDataTypeAnalyzer) {
 		configuration.add("Trails", trailsDataTypeAnalyzer, "before:Default");
 	}
