@@ -1,6 +1,7 @@
 package org.trailsframework.services;
 
 import org.apache.tapestry5.ioc.services.Coercion;
+import org.trailsframework.descriptor.TrailsClassDescriptor;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,10 +12,19 @@ public class EntityCoercerServiceImpl implements EntityCoercerService
 	Map<String, Class> stringToClass;
 	Map<Class, String> classToString;
 
-	public EntityCoercerServiceImpl()
+	/**
+	 *
+	 * @param descriptorService used to initialize the mappings to avoid TRAILS-173
+	 */
+	public EntityCoercerServiceImpl(DescriptorService descriptorService)
 	{
 		stringToClass = new HashMap<String, Class>();
 		classToString = new HashMap<Class, String>();
+
+		for (TrailsClassDescriptor classDescriptor : descriptorService.getAllDescriptors())
+		{
+			classToString(classDescriptor.getType());
+		}
 	}
 
 	public String classToString(Class clazz)
