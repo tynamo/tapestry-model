@@ -1,0 +1,45 @@
+<html xmlns:t="http://tapestry.apache.org/schema/tapestry_5_0_0.xsd">
+  <head>
+    <title>Guess A Number</title>
+  </head>
+  <body>
+  
+  <t:zone t:id="gameZone">
+		<t:delegate to="gameBlock"/>  
+  </t:zone>
+    
+	<t:zone t:id="messageZone"/>    
+  
+	<t:block t:id="gameBlock">
+	  <p>Make a guess between one and ten:</p>
+	  
+	  <t:loop source="1..10" value="guess" xml:space="preserve">
+	    <t:actionlink t:id="guessLink" zone="gameZone" context="guess">${guess}</t:actionlink>
+	  </t:loop>
+		
+	  <p>${message}</p>
+		
+	</t:block>
+
+  <t:block t:id="messageBlock">
+	  <p>${message}</p>
+	</t:block>
+	
+  <t:block id="gameEndBlock">
+    <h1>Game Over</h1>
+
+    <p> You guessed the secret number!  </p>
+
+    <t:actionlink t:id="restartLink" zone="gameZone">Play again</t:actionlink>
+	</t:block>
+
+	<a href="/guess" target="_blank">Start another game on a new page!</a>
+	
+	<p/>
+	
+	<!-- 
+	 -->
+	<t:conversation.moderator t:warnBefore="15" t:warnBeforeHandler="myObject.helloWorld()" t:endedHandler="myObject.helloMe" />
+	
+  </body>
+</html>
