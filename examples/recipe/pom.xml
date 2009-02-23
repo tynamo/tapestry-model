@@ -86,13 +86,11 @@
 		<dependency>
 			<groupId>org.trailsframework</groupId>
 			<artifactId>trails-hibernate</artifactId>
-			<version>${trails-release-version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.trailsframework</groupId>
 			<artifactId>trails-web</artifactId>
-			<version>${trails-release-version}</version>
 			<type>war</type>
 		</dependency>
 		<!--

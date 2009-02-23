@@ -13,6 +13,7 @@
 		<module>simple</module>
 -->
 		<module>recipe</module>
+		<module>trails-examples-conversations</module>
 <!--
 		<module>roster</module>
 		<module>security</module>
