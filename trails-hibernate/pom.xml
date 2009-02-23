@@ -34,7 +34,6 @@
 		<dependency>
 			<groupId>org.trailsframework</groupId>
 			<artifactId>trails-core</artifactId>
-			<version>${trails-release-version}</version>
 		</dependency>
 <!--
 		<dependency>
