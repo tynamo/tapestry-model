@@ -11,10 +11,10 @@
  */
 package org.trailsframework.hibernate.services;
 
+import org.apache.tapestry5.hibernate.HibernateSessionManager;
 import org.hibernate.*;
 import org.hibernate.criterion.*;
 import org.trailsframework.services.DescriptorService;
-import org.trailsframework.services.PersistenceService;
 import org.trailsframework.util.Utils;
 import org.trailsframework.descriptor.TrailsClassDescriptor;
 import org.trailsframework.descriptor.TrailsPropertyDescriptor;
@@ -26,18 +26,22 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+@SuppressWarnings("unchecked")
 public class HibernatePersistenceServiceImpl implements HibernatePersistenceService
 {
 
 	private Logger logger;
 	private DescriptorService descriptorService;
 	private Session session;
+	private HibernateSessionManager sessionManager;
 
-	public HibernatePersistenceServiceImpl(Logger logger, DescriptorService descriptorService, Session session)
+	public HibernatePersistenceServiceImpl(Logger logger, DescriptorService descriptorService, Session session, HibernateSessionManager sessionManager)
 	{
 		this.logger = logger;
 		this.descriptorService = descriptorService;
 		this.session = session;
+		// we need a sessionmanager as well (only?) because Tapestry session proxy doesn't implement Hibernate's SessionImplementator interface
+		this.sessionManager = sessionManager;
 	}
 
 	/**
@@ -56,11 +60,10 @@ public class HibernatePersistenceServiceImpl implements HibernatePersistenceServ
 	 * @param detachedCriteria
 	 * @return
 	 */
-
 	public <T> T getInstance(final Class<T> type, DetachedCriteria detachedCriteria)
 	{
 		final DetachedCriteria criteria = alterCriteria(type, detachedCriteria);
-		return (T) criteria.getExecutableCriteria(session).uniqueResult();
+		return (T) criteria.getExecutableCriteria(sessionManager.getSession()).uniqueResult();
 	}
 
 	/**
@@ -71,7 +74,7 @@ public class HibernatePersistenceServiceImpl implements HibernatePersistenceServ
 
 	public <T> T getInstance(final Class<T> type, final Serializable id)
 	{
-		DetachedCriteria criteria = DetachedCriteria.forClass(Utils.checkForCGLIB(type)).add(Expression.idEq(id));
+		DetachedCriteria criteria = DetachedCriteria.forClass(Utils.checkForCGLIB(type)).add(Restrictions.idEq(id));
 		return getInstance(type, criteria);
 	}
 
@@ -217,7 +220,7 @@ public class HibernatePersistenceServiceImpl implements HibernatePersistenceServ
 	{
 		criteria = alterCriteria(type, criteria);
 		criteria.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
-		return criteria.getExecutableCriteria(session).list();
+		return criteria.getExecutableCriteria(sessionManager.getSession()).list();
 	}
 
 	/**
@@ -370,7 +373,7 @@ public class HibernatePersistenceServiceImpl implements HibernatePersistenceServ
 		// FIXME This won't work because the shadow proxy doesn't implement SessionImplementor
 		// that session is casted to. Maybe we should inject SessionManager instead 
 		// and obtain the Session from it
-		return searchCriteria.getExecutableCriteria(session).list();
+		return searchCriteria.getExecutableCriteria(sessionManager.getSession()).list();
 	}
 
 
@@ -378,7 +381,7 @@ public class HibernatePersistenceServiceImpl implements HibernatePersistenceServ
 	{
 		detachedCriteria.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 		final DetachedCriteria criteria = alterCriteria(type, detachedCriteria);
-		Criteria executableCriteria = criteria.getExecutableCriteria(session).setProjection(Projections.rowCount());
+		Criteria executableCriteria = criteria.getExecutableCriteria(sessionManager.getSession()).setProjection(Projections.rowCount());
 		return (Integer) executableCriteria.uniqueResult();
 	}
 
@@ -392,7 +395,7 @@ public class HibernatePersistenceServiceImpl implements HibernatePersistenceServ
 	public List getInstances(final DetachedCriteria detachedCriteria, final int startIndex, final int maxResults)
 	{
 		detachedCriteria.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
-		Criteria executableCriteria = detachedCriteria.getExecutableCriteria(session);
+		Criteria executableCriteria = detachedCriteria.getExecutableCriteria(sessionManager.getSession());
 		if (startIndex >= 0)
 		{
 			executableCriteria.setFirstResult(startIndex);
