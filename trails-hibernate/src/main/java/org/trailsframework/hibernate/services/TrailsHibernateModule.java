@@ -140,6 +140,13 @@ public class TrailsHibernateModule extends VersionedModule {
 		configuration.add("hashCode");
 	}
 
+/**
+ * We don't need this just yet, and it gives an error under Tapestry 5.1.0.2
+ *
+ * [INFO] [talledLocalContainer] java.lang.IllegalArgumentException:
+ * Contribution org.trailsframework.hibernate.services.TrailsHibernateModule.contributeTrailsEntityPackageManager(Configuration, HibernateEntityPackageManager)
+ * (at TrailsHibernateModule.java:145) is for service 'TrailsEntityPackageManager', which does not exist.
+ * 
 	public static void contributeTrailsEntityPackageManager(Configuration<String> configuration, HibernateEntityPackageManager packageManager)
 	{
 		for (String packageName : packageManager.getPackageNames())
@@ -147,6 +154,7 @@ public class TrailsHibernateModule extends VersionedModule {
 			configuration.add(packageName);
 		}
 	}
+*/
 
 
 /*
@@ -155,5 +163,4 @@ public class TrailsHibernateModule extends VersionedModule {
 	}
 */
 
-	
 }
