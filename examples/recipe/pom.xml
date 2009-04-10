@@ -98,6 +98,15 @@
 							<url>http://apache.org/dist/tomcat/tomcat-5/v5.5.27/bin/apache-tomcat-5.5.27.zip</url>
 						</zipUrlInstaller>
 					</container>
+					<configuration>
+						<properties>
+							<!--
+								Can't use 8080 on Bamboo
+							   java.net.BindException: Address already in use:8080
+							-->
+							<cargo.servlet.port>9080</cargo.servlet.port>
+						</properties>
+					</configuration>
 				</configuration>
 				<executions>
 					<execution>
