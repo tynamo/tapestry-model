@@ -22,7 +22,7 @@
 				<filtering>true</filtering>
 			</resource>
 		</resources>
-	
+
 		<testSourceDirectory>src/test/resources</testSourceDirectory>
 
 		<plugins>
@@ -93,6 +93,22 @@
 			<groupId>org.chenillekit</groupId>
 			<artifactId>chenillekit-tapestry</artifactId>
 			<version>1.0.0</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.apache.tapestry</groupId>
+					<artifactId>tapestry-ioc</artifactId>
+				</exclusion>
+
+				<exclusion>
+					<groupId>org.apache.tapestry</groupId>
+					<artifactId>tapestry-core</artifactId>
+				</exclusion>
+
+				<exclusion>
+					<groupId>org.apache.tapestry</groupId>
+					<artifactId>tapestry-hibernate</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 	</dependencies>
@@ -106,7 +122,7 @@
 			</snapshots>
 		</repository>
 		<repository>
-			<id>chenillekit-snapshots	</id>
+			<id>chenillekit-snapshots</id>
 			<url>http://www.chenillekit.org/mvnrepo/snapshot</url>
 			<snapshots>
 				<enabled>true</enabled>
