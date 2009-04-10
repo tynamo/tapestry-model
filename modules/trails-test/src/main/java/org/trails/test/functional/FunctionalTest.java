@@ -24,12 +24,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Properties;
 
-/**
- * @author fus8882
- *         <p/>
- *         TODO To change the template for this generated type comment go to
- *         Window - Preferences - Java - Code Style - Code Templates
- */
 public class FunctionalTest extends TestCase
 {
 
@@ -128,5 +122,4 @@ public class FunctionalTest extends TestCase
 		 */
 		webClient.setJavaScriptEnabled(false);
 	}
-
 }

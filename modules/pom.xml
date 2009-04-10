@@ -12,11 +12,12 @@
 	</parent>
 
 	<modules>
-<!--		<module>trails-test</module>-->
+		<module>trails-test</module>
 		<module>trails-core</module>
 		<module>trails-hibernate</module>
 <!--		<module>trails-security</module>-->
 		<module>trails-web</module>
+<!--	<module>trails-jbpm</module>  -->
 	</modules>
 
 	<build>
