@@ -13,11 +13,11 @@
 	<parent>
 		<groupId>org.trailsframework</groupId>
 		<artifactId>trails-parent</artifactId>
-		<version>2.0.4</version>
+		<version>2.0.6-SNAPSHOT</version>
 	</parent>
 
 	<properties>
-		<tapestry-release-version>5.1.0.2</tapestry-release-version>
+		<tapestry-release-version>5.1.0.5</tapestry-release-version>
 	</properties>
 
 	<modules>

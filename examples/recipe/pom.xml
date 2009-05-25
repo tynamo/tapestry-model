@@ -164,23 +164,17 @@
 
 		<dependency>
 			<groupId>org.trailsframework</groupId>
-			<artifactId>trails-test</artifactId>
-			<version>2.0.1-SNAPSHOT</version>
+			<artifactId>trails-web</artifactId>
+			<type>war</type>
 		</dependency>
 
 		<dependency>
 			<groupId>org.trailsframework</groupId>
-			<artifactId>trails-web</artifactId>
-			<type>war</type>
+			<artifactId>trails-test</artifactId>
+			<version>2.0.1-SNAPSHOT</version>
+			<scope>test</scope>
 		</dependency>
-		<!--
-		  <dependency>
-			  <groupId>org.trailsframework</groupId>
-			  <artifactId>trails-test</artifactId>
-			  <version>${trails-release-version}</version>
-			  <scope>test</scope>
-		  </dependency>
-  -->
+
 	</dependencies>
 
 </project>
