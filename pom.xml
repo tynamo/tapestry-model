@@ -64,4 +64,20 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
+	
+	<repositories>
+		<!-- Don't use snapshots unless absolutely necessary -->
+		<repository>
+			<id>snapshots.codehaus.org</id>
+			<name>Codehaus Snapshots</name>
+			<url>http://snapshots.repository.codehaus.org</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+		</repository>
+	</repositories>
+	
 </project>
