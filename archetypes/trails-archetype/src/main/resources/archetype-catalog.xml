@@ -5,7 +5,7 @@
 			<groupId>org.trailsframework</groupId>
 			<artifactId>trails-archetype</artifactId>
 			<version>2.0.1-SNAPSHOT</version>
-			<repository>http://snapshots.repository.codehaus.org/</repository>
+			<repository>http://ci.repository.codehaus.org/</repository>
 			<description>Trails 2.0.1-SNAPSHOT Archetype</description>
 		</archetype>
 	</archetypes>

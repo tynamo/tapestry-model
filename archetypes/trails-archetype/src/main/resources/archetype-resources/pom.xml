@@ -12,7 +12,7 @@
 <!-- #set( $D = '$' ) -->
 
 	<properties>
-		<tapestry-release-version>5.0.18</tapestry-release-version>
+		<tapestry-release-version>5.1.0.5</tapestry-release-version>
 		<trails-release-version>2.0.1-SNAPSHOT</trails-release-version>
 	</properties>
 
@@ -35,8 +35,15 @@
 					<source>1.5</source>
 					<target>1.5</target>
 					<optimize>true</optimize>
+					<encoding>UTF-8</encoding>
 				</configuration>
-
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<configuration>
+					<encoding>UTF-8</encoding>
+				</configuration>
 			</plugin>
 
 			<!-- Run the application using "mvn jetty:run" -->
@@ -147,12 +154,20 @@
 			<type>war</type>
 		</dependency>
 
+		<dependency>
+			<groupId>hsqldb</groupId>
+			<artifactId>hsqldb</artifactId>
+			<version>1.8.0.7</version>
+		</dependency>
+
 	</dependencies>
 
 	<repositories>
+		<!-- Don't use snapshots unless absolutely necessary -->
 		<repository>
-			<id>snapshots.codehaus.org</id>
-			<url>http://snapshots.repository.codehaus.org/</url>
+			<id>trails-codehaus-ci</id>
+			<name>Official snapshot repository available from Codehaus' Bamboo server</name>
+			<url>http://ci.repository.codehaus.org</url>
 			<snapshots>
 				<enabled>true</enabled>
 			</snapshots>
