@@ -55,20 +55,7 @@ public class SeedEntityImpl implements SeedEntity {
 
 			// Try to find if a persistent entity already exists based on unique property or manually set id
 			ValidateUniqueness validateUniqueness = entity.getClass().getAnnotation(ValidateUniqueness.class);
-			if (validateUniqueness == null && id == null) {
-				LOGGER.info("Entity of type " + entity.getClass() + " doesn't have uniquely identifying property. Searching using the whole entity as an example "
-						+ entity);
-				List existingEntities = persistenceService.getInstances(entity.getClass());
-				if (existingEntities.size() == 0) LOGGER.info("Couldn't find an existing seed entity");
-				else if (existingEntities.size() == 1) {
-					LOGGER.info("Found exactly one existing matching entity, assuming it is an earlier seeded entity");
-					savedObject = existingEntities.get(0);
-				} else {
-					LOGGER
-							.warn("Found more than one existing entity based on the seed entity example, won't add a new one. You should make sure seed entities can be uniquely identified.");
-					continue;
-				}
-			} else {
+			if (validateUniqueness != null || id != null) {
 				DetachedCriteria criteria = DetachedCriteria.forClass(entity.getClass());
 				if (validateUniqueness != null) {
 					propertyName = validateUniqueness.property();
