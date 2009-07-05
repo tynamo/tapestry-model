@@ -33,6 +33,7 @@ public class TrailsCoreModule extends VersionedModule {
 		binder.bind(MethodDescriptorFactory.class, MethodDescriptorFactoryImpl.class);
 		binder.bind(EntityCoercerService.class, EntityCoercerServiceImpl.class);
 		binder.bind(DescriptorService.class, DescriptorServiceImpl.class);
+		binder.bind(TrailsDataTypeAnalyzer.class, TrailsDataTypeAnalyzer.class);
 
 	}
 
@@ -87,10 +88,6 @@ public class TrailsCoreModule extends VersionedModule {
 			@InjectService("EntityCoercerService") EntityCoercerService entityCoercerService) {
 		configuration.add(new CoercionTuple<Class, String>(Class.class, String.class, new ClassToStringCoercion(entityCoercerService)));
 		configuration.add(new CoercionTuple<String, Class>(String.class, Class.class, new StringToClassCoercion(entityCoercerService)));
-	}
-
-	public static TrailsDataTypeAnalyzer buildTrailsDataTypeAnalyzer(ServiceResources resources) {
-		return resources.autobuild(TrailsDataTypeAnalyzer.class);
 	}
 
 }

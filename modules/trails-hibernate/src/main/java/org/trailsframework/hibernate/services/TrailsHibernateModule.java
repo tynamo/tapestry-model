@@ -1,23 +1,24 @@
 package org.trailsframework.hibernate.services;
 
-import org.apache.tapestry5.hibernate.HibernateEntityPackageManager;
 import org.apache.tapestry5.hibernate.HibernateSessionSource;
 import org.apache.tapestry5.hibernate.HibernateTransactionDecorator;
 import org.apache.tapestry5.ioc.Configuration;
 import org.apache.tapestry5.ioc.MappedConfiguration;
-import org.apache.tapestry5.ioc.ObjectLocator;
 import org.apache.tapestry5.ioc.OrderedConfiguration;
 import org.apache.tapestry5.ioc.ServiceBinder;
 import org.apache.tapestry5.ioc.annotations.Match;
+import org.apache.tapestry5.ioc.annotations.Symbol;
 import org.apache.tapestry5.services.BeanBlockContribution;
 import org.apache.tapestry5.services.LibraryMapping;
 import org.hibernate.EntityMode;
 import org.hibernate.metadata.ClassMetadata;
+import org.trailsframework.VersionedModule;
 import org.trailsframework.descriptor.DescriptorDecorator;
+import org.trailsframework.descriptor.DescriptorFactory;
 import org.trailsframework.descriptor.annotation.AnnotationDecorator;
+import org.trailsframework.hibernate.TrailsHibernateSymbols;
 import org.trailsframework.hibernate.validation.HibernateClassValidatorFactory;
 import org.trailsframework.hibernate.validation.HibernateValidationDelegate;
-import org.trailsframework.VersionedModule;
 
 public class TrailsHibernateModule extends VersionedModule {
 
@@ -81,9 +82,9 @@ public class TrailsHibernateModule extends VersionedModule {
 	}
 
 	public static void contributeDescriptorFactory(OrderedConfiguration<DescriptorDecorator> configuration,
-												   ObjectLocator locator)
+												   HibernateDescriptorDecorator hibernateDescriptorDecorator)
 	{
-		configuration.add("Hibernate", locator.autobuild(HibernateDescriptorDecorator.class));
+		configuration.add("Hibernate", hibernateDescriptorDecorator);
 		configuration.add("Annotation", new AnnotationDecorator());
 	}
 
@@ -116,7 +117,7 @@ public class TrailsHibernateModule extends VersionedModule {
 // @todo: configuration.add("supportsExtension('org.trails.descriptor.extension.BlobDescriptorExtension')", "blobEditor");
 		configuration.add("objectReference", "referenceEditor");
 		configuration.add("collection && not(childRelationship)", "collectionEditor");
-//		configuration.add("collection && childRelationship", "editComposition");
+		configuration.add("collection && childRelationship", "editComposition");
 // @todo: configuration.add("embedded", "embedded");
 
 	}
@@ -138,6 +139,23 @@ public class TrailsHibernateModule extends VersionedModule {
 		configuration.add("toString");
 		configuration.add("notify.*");
 		configuration.add("hashCode");
+	}
+
+	public static HibernateDescriptorDecorator buildHibernateDescriptorDecorator(
+												HibernateSessionSource hibernateSessionSource,
+												DescriptorFactory descriptorFactory,
+												@Symbol(TrailsHibernateSymbols.LARGE_COLUMN_LENGTH)
+												final int largeColumnLength,
+												@Symbol(TrailsHibernateSymbols.IGNORE_NON_HIBERNATE_TYPES)
+												final boolean ignoreNonHibernateTypes)
+	{
+		return new HibernateDescriptorDecorator(hibernateSessionSource, descriptorFactory, largeColumnLength, ignoreNonHibernateTypes);
+	}
+
+	public static void contributeFactoryDefaults(MappedConfiguration<String, String> configuration)
+	{
+		configuration.add(TrailsHibernateSymbols.LARGE_COLUMN_LENGTH, "100");
+		configuration.add(TrailsHibernateSymbols.IGNORE_NON_HIBERNATE_TYPES, "false");
 	}
 
 /**
