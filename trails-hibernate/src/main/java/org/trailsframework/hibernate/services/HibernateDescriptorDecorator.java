@@ -65,14 +65,19 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 
 	private DescriptorFactory descriptorFactory;
 
-	private int largeColumnLength = 100;
+	/**
+	 * Columns longer than this will have their large property set to true.
+	 */
+	private final int largeColumnLength;
 
-	private boolean ignoreNonHibernateTypes = false;
+	private final boolean ignoreNonHibernateTypes;
 
-	public HibernateDescriptorDecorator(HibernateSessionSource hibernateSessionSource, DescriptorFactory descriptorFactory)
+	public HibernateDescriptorDecorator(HibernateSessionSource hibernateSessionSource, DescriptorFactory descriptorFactory, int largeColumnLength, boolean ignoreNonHibernateTypes)
 	{
 		this.hibernateSessionSource = hibernateSessionSource;
 		this.descriptorFactory = descriptorFactory;
+		this.largeColumnLength = largeColumnLength;
+		this.ignoreNonHibernateTypes = ignoreNonHibernateTypes;
 	}
 
 	public TrailsClassDescriptor decorate(TrailsClassDescriptor descriptor)
@@ -88,6 +93,7 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 		} catch (MetadataNotFoundException e)
 		{
 			if (ignoreNonHibernateTypes) {
+				LOG.warn("MetadataNotFound! Ignoring:" + descriptor.getType().toString());
 				return descriptor;
 			} else {
 				throw new TrailsRuntimeException(e);
@@ -152,9 +158,7 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 		Type hibernateType = mappingProperty.getType();
 		if (mappingProperty.getType() instanceof ComponentType)
 		{
-			EmbeddedDescriptor embeddedDescriptor = buildEmbeddedDescriptor(type, mappingProperty, descriptor,
-					parentClassDescriptor);
-			descriptorReference = embeddedDescriptor;
+			descriptorReference = buildEmbeddedDescriptor(type, mappingProperty, descriptor, parentClassDescriptor);
 		} else if (Collection.class.isAssignableFrom(descriptor.getPropertyType()))
 		{
 			descriptorReference = decorateCollectionDescriptor(type, descriptor, parentClassDescriptor);
@@ -288,7 +292,7 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 		// Hack to avoid setting large property if length
 		// is exactly equal to Hibernate default column length
 		return findColumnLength(mappingProperty) != Column.DEFAULT_LENGTH
-				&& findColumnLength(mappingProperty) > getLargeColumnLength();
+				&& findColumnLength(mappingProperty) > largeColumnLength;
 	}
 
 	private int findColumnLength(Property mappingProperty)
@@ -543,25 +547,5 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 		{
 			throw new TrailsRuntimeException(e);
 		}
-	}
-
-	public int getLargeColumnLength()
-	{
-		return largeColumnLength;
-	}
-
-	/**
-	 * Columns longer than this will have their large property set to true.
-	 * 
-	 * @param largeColumnLength
-	 */
-	public void setLargeColumnLength(int largeColumnLength)
-	{
-		this.largeColumnLength = largeColumnLength;
-	}
-
-	public void setIgnoreNonHibernateTypes(boolean ignoreNonHibernateTypes)
-	{
-		this.ignoreNonHibernateTypes = ignoreNonHibernateTypes;
 	}
 }

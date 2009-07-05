@@ -40,9 +40,9 @@ public class DescriptorServiceImpl implements DescriptorService
 		this.descriptorsRegistry = StrategyRegistry.newInstance(TrailsClassDescriptor.class, descriptorsMap, true);
 
 		// second pass to find children
-		for (TrailsClassDescriptor TrailsClassDescriptor : descriptorsMap.values())
+		for (TrailsClassDescriptor classDescriptor : descriptorsMap.values())
 		{
-			findChildren(TrailsClassDescriptor);
+			findChildren(classDescriptor);
 		}
 
 	}
@@ -58,9 +58,9 @@ public class DescriptorServiceImpl implements DescriptorService
 		return descriptorsRegistry.get(type);
 	}
 
-	private void findChildren(TrailsClassDescriptor TrailsClassDescriptor)
+	private void findChildren(TrailsClassDescriptor classDescriptor)
 	{
-		for (TrailsPropertyDescriptor propertyDescriptor : TrailsClassDescriptor.getPropertyDescriptors())
+		for (TrailsPropertyDescriptor propertyDescriptor : classDescriptor.getPropertyDescriptors())
 		{
 			if (propertyDescriptor.isCollection())
 			{
@@ -71,7 +71,7 @@ public class DescriptorServiceImpl implements DescriptorService
 				}
 				if (((CollectionDescriptor) propertyDescriptor).getInverseProperty() != null)
 				{
-					TrailsClassDescriptor.setHasCyclicRelationships(true);
+					classDescriptor.setHasCyclicRelationships(true);
 				}
 			}
 		}
