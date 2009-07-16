@@ -18,7 +18,7 @@
 
 		<t:grid source="instances" row="model">
 			<t:parameter name="idcell">
-				<t:pagelink t:page="Edit" context="editPageContext">${model.id}</t:pagelink>
+				<t:pagelink t:page="Show" context="editPageContext">${model.id}</t:pagelink>
 			</t:parameter>
 		</t:grid>
 

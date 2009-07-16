@@ -2,32 +2,27 @@ package org.trailsframework.hibernate.pages;
 
 
 import org.apache.tapestry5.Link;
-import org.apache.tapestry5.annotations.Property;
-import org.apache.tapestry5.beaneditor.BeanModel;
+import org.apache.tapestry5.ValidationException;
+import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.corelib.components.Form;
+import org.apache.tapestry5.annotations.Component;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.trailsframework.descriptor.TrailsClassDescriptor;
+import org.trailsframework.hibernate.validation.HibernateClassValidatorFactory;
+import org.trailsframework.hibernate.validation.HibernateValidationDelegate;
+import org.hibernate.validator.InvalidStateException;
 
 public abstract class HibernateEditPage extends HibernateModelPage
 {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(HibernateEditPage.class);
 
-	private TrailsClassDescriptor classDescriptor;
+	@Component
+	private Form form;
 
-	@Property(write = false)
-	private BeanModel beanModel;
-
-	private Object bean;
-
-	public TrailsClassDescriptor getClassDescriptor()
+	public Form getForm()
 	{
-		return classDescriptor;
-	}
-
-	public Object getBean()
-	{
-		return bean;
+		return form;
 	}
 
 	void pageLoaded()
@@ -35,36 +30,59 @@ public abstract class HibernateEditPage extends HibernateModelPage
 		// Make other changes to the bean here.
 	}
 
-	void onActivate(Class clazz, String id) throws Exception
-	{
-		bean = getContextValueEncoder().toValue(clazz, id);
-		classDescriptor = getDescriptorService().getClassDescriptor(clazz);
-		beanModel = getBeanModelSource().create(clazz, true, getMessages());
-//		BeanModelUtils.modify(_beanModel, null, null, null, null);
-	}
-
-	/**
-	 * This tells Tapestry to put type & id into the URL, making it bookmarkable.
-	 *
-	 * @return
-	 */
-	Object[] onPassivate()
-	{
-		return new Object[]{classDescriptor.getType(), bean};
-	}
-
-
-	void cleanupRender()
-	{
-		bean = null;
-		classDescriptor = null;
-		beanModel = null;
-	}
 
 	public Link onActionFromDelete()
 	{
-		getPersitenceService().remove(bean);
+		getPersitenceService().remove(getBean());
 		return back();
 	}
+
+	@Inject
+	private HibernateClassValidatorFactory hibernateClassValidatorFactory;
+
+	@Inject
+	private HibernateValidationDelegate hibernateValidationDelegate;
+
+	protected void onValidateFormFromForm() throws ValidationException
+	{
+		LOGGER.debug("validating");
+		//add more validation logic here
+		try
+		{
+			/**
+			 * The hibernate validate listener is enabled by default, so if nothing is wrong this entity will be
+			 * validated twice, once here, and once in session.saveOrUpdate(instance);
+			 */
+			hibernateClassValidatorFactory.validateEntity(getBean());
+		} catch (InvalidStateException ise)
+		{
+			hibernateValidationDelegate.record(getClassDescriptor(), ise, getForm().getDefaultTracker(), getMessages());
+		}
+	}
+
+	protected Object onSuccess()
+	{
+		try
+		{
+
+			LOGGER.debug("saving....");
+			getPersitenceService().save(getBean());
+			return back();
+
+		} catch (InvalidStateException ise)
+		{
+			hibernateValidationDelegate.record(getClassDescriptor(), ise, getForm().getDefaultTracker(), getMessages());
+		} catch (Exception e)
+		{
+//			missing ExceptionUtils (Lang 2.3 API)
+//			form.recordError(ExceptionUtil.getRootCause(e));
+			getForm().recordError(e.getMessage());
+			LOGGER.error(e.getMessage());
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
 
 }
