@@ -1,13 +1,11 @@
 package org.trailsframework.hibernate.pages;
 
-import org.apache.tapestry5.ValidationException;
-import org.apache.tapestry5.ioc.annotations.Inject;
-import org.hibernate.validator.InvalidStateException;
+import org.apache.tapestry5.annotations.Property;
+import org.apache.tapestry5.beaneditor.BeanModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.trailsframework.descriptor.TrailsClassDescriptor;
 import org.trailsframework.pages.ModelPage;
-import org.trailsframework.hibernate.validation.HibernateClassValidatorFactory;
-import org.trailsframework.hibernate.validation.HibernateValidationDelegate;
 
 
 public abstract class HibernateModelPage extends ModelPage
@@ -15,53 +13,53 @@ public abstract class HibernateModelPage extends ModelPage
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(HibernateModelPage.class);
 
-	@Inject
-	private HibernateClassValidatorFactory hibernateClassValidatorFactory;
+	private TrailsClassDescriptor classDescriptor;
 
-	@Inject
-	private HibernateValidationDelegate hibernateValidationDelegate;
+	@Property(write = false)
+	private BeanModel beanModel;
 
-	@Override
-	protected void onValidateFormFromForm() throws ValidationException
+	private Object bean;
+
+
+	public TrailsClassDescriptor getClassDescriptor()
 	{
-		LOGGER.debug("validating");
-		//add more validation logic here
-		try
-		{
-			/**
-			 * The hibernate validate listener is enabled by default, so if nothing is wrong this entity will be
-			 * validated twice, once here, and once in session.saveOrUpdate(instance);
-			 */
-			hibernateClassValidatorFactory.validateEntity(getBean());
-		} catch (InvalidStateException ise)
-		{
-			hibernateValidationDelegate.record(getClassDescriptor(), ise, getForm().getDefaultTracker(), getMessages());
-		}
+		return classDescriptor;
 	}
 
-	@Override
-	protected Object onSuccess()
+	public Object getBean()
 	{
-		try
-		{
-
-			LOGGER.debug("saving....");
-			getPersitenceService().save(getBean());
-			return back();
-
-		} catch (InvalidStateException ise)
-		{
-			hibernateValidationDelegate.record(getClassDescriptor(), ise, getForm().getDefaultTracker(), getMessages());
-		} catch (Exception e)
-		{
-//			missing ExceptionUtils (Lang 2.3 API)
-//			form.recordError(ExceptionUtil.getRootCause(e));
-			getForm().recordError(e.getMessage());
-			LOGGER.error(e.getMessage());
-			e.printStackTrace();
-		}
-
-		return null;
+		return bean;
 	}
 
+	protected void activate(Object bean, TrailsClassDescriptor classDescriptor, BeanModel beanModel)
+	{
+		this.bean = bean;
+		this.classDescriptor = classDescriptor;
+		this.beanModel = beanModel;
+	}
+
+	void cleanupRender()
+	{
+		bean = null;
+		classDescriptor = null;
+		beanModel = null;
+	}
+
+	void onActivate(Class clazz, String id) throws Exception
+	{
+		activate(getContextValueEncoder().toValue(clazz, id),
+				getDescriptorService().getClassDescriptor(clazz),
+				getBeanModelSource().create(clazz, true, getMessages()));
+//		BeanModelUtils.modify(_beanModel, null, null, null, null);
+	}
+
+	/**
+	 * This tells Tapestry to put type & id into the URL, making it bookmarkable.
+	 *
+	 * @return
+	 */
+	protected Object[] onPassivate()
+	{
+		return new Object[]{getClassDescriptor().getType(), getBean()};
+	}
 }

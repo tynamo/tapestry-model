@@ -2,9 +2,7 @@ package org.trailsframework.pages;
 
 import org.apache.tapestry5.ComponentResources;
 import org.apache.tapestry5.Link;
-import org.apache.tapestry5.ValidationException;
 import org.apache.tapestry5.annotations.Component;
-import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.corelib.components.PageLink;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -38,14 +36,7 @@ public abstract class ModelPage
 	private ComponentResources resources;
 
 	@Component
-	private Form form;
-
-	@Component
 	private PageLink link;
-
-	protected abstract void onValidateFormFromForm() throws ValidationException;
-
-	protected abstract Object onSuccess();
 
 	public Link onActionFromCancel()
 	{
@@ -90,11 +81,6 @@ public abstract class ModelPage
 	public ComponentResources getResources()
 	{
 		return resources;
-	}
-
-	public Form getForm()
-	{
-		return form;
 	}
 
 	public abstract TrailsClassDescriptor getClassDescriptor();
