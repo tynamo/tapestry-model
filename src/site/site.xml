@@ -2,7 +2,7 @@
 	<bannerLeft>
 		<name>Trails</name>
 		<src>images/trails-header94.jpg</src>
-		<href>http://www.trailsframework.org/</href>
+		<href>http://trails.codehaus.org/</href>
 	</bannerLeft>
 	<skin>
 		<groupId>org.trailsframework</groupId>
@@ -22,7 +22,7 @@
 
 	<body>
 		<links>
-			<item name="Trails" href="http://www.trailsframework.org/"/>
+			<item name="Trails" href="http://trails.codehaus.org/"/>
 			<item name="Codehaus" href="http://www.codehaus.org/"/>
 		</links>
 
@@ -32,8 +32,8 @@
 		</menu>
 
 		<menu name="Quick Links">
-			<item name="Quick Start (read this first!)" href="http://www.trailsframework.org/Quick+Start"/>
-			<item name="User Guide" href="http://www.trailsframework.org/User%27s+Guide"/>
+			<item name="Quick Start (read this first!)" href="http://trails.codehaus.org/Quick+Start"/>
+			<item name="User Guide" href="http://trails.codehaus.org/User%27s+Guide"/>
 		</menu>
 
 		<menu ref="parent"/>

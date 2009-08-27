@@ -7,7 +7,7 @@
 	<packaging>war</packaging>
 	<version>${version}</version>
 	<name>A simple trails project</name>
-	<url>http://www.trailsframework.org/</url>
+	<url>http://trails.codehaus.org/</url>
 
 <!-- #set( $D = '$' ) -->
 
