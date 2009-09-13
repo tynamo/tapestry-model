@@ -3,9 +3,6 @@
 	<t:parameter name="subMenuBlock">
 		<ul>
 			<ul id="local">
-				<li>
-					<t:actionlink class="deletelink" t:id="delete">${message:org.trails.i18n.remove}</t:actionlink>
-				</li>
 			</ul>
 		</ul>
 	</t:parameter>

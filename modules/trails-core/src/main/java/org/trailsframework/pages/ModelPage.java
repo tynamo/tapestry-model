@@ -43,11 +43,6 @@ public abstract class ModelPage
 		return back();
 	}
 
-	public String getTitle()
-	{
-		return messages.format("org.trails.i18n.edit", DisplayNameUtils.getDisplayName(getClassDescriptor(), messages));
-	}
-
 	public String getListAllLinkMessage()
 	{
 		return messages.format("org.trails.component.listalllink", DisplayNameUtils.getPluralDisplayName(getClassDescriptor(), messages));
@@ -82,6 +77,8 @@ public abstract class ModelPage
 	{
 		return resources;
 	}
+
+	public abstract String getTitle();
 
 	public abstract TrailsClassDescriptor getClassDescriptor();
 

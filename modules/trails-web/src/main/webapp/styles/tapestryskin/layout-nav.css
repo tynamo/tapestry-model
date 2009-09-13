@@ -235,4 +235,12 @@ ul.locales {
 	color: red;
 }
 
+.editlink {
+	background: url( images/edit.png ) left center no-repeat;
+	background-color: transparent;
+	padding-left: 20px;
+	line-height: 20px;
+	color: red;
+}
+
 /* END NAV */

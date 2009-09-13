@@ -1,4 +1,4 @@
-package org.trailsframework.examples.recipe.pages;
+package ${package}.pages;
 
 
 import org.apache.tapestry5.Link;

@@ -82,3 +82,14 @@ span.fieldError, .errorMessage {
     font-weight: bold;
     display: block;
 }
+
+dl.t-beandisplay {
+    text-align: left !important;
+    background:#FFFFDD none repeat scroll 0 0;
+    border:1px solid #D7D7D7;
+}
+
+dl.t-beandisplay dt {
+    margin-left: 15px;
+    text-align:left;
+}
