@@ -31,12 +31,6 @@ public abstract class HibernateEditPage extends HibernateModelPage
 	}
 
 
-	public Link onActionFromDelete()
-	{
-		getPersitenceService().remove(getBean());
-		return back();
-	}
-
 	@Inject
 	private HibernateClassValidatorFactory hibernateClassValidatorFactory;
 
