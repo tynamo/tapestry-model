@@ -125,6 +125,12 @@ public class Editors
 		}
 		return selected;
 	}
+*/
+
+	public boolean isPropertyValueInstanceOfList()
+	{
+		return propertyEditContext.getPropertyValue() instanceof List;
+	}
 
 	/**
 	 *
