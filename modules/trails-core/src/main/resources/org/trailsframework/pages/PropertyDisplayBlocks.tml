@@ -6,6 +6,14 @@
 		</t:if>
 	</t:block>
 
+	<t:block id="showPageLinks">
+		<t:if test="context.propertyValue">
+			<t:loop source="context.propertyValue" value="loopIterator" index="loopIndex">
+				<t:pagelink t:page="Show" context="loopShowPageContext">${loopIterator}</t:pagelink><t:if test="lastElement" negate="true">, </t:if>
+			</t:loop>
+		</t:if>
+	</t:block>
+	
 	<!--
 	 <span jwcid="hidden@Block"/>
 

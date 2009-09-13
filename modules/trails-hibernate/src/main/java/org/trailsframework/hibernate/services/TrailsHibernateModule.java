@@ -20,9 +20,11 @@ import org.trailsframework.hibernate.TrailsHibernateSymbols;
 import org.trailsframework.hibernate.validation.HibernateClassValidatorFactory;
 import org.trailsframework.hibernate.validation.HibernateValidationDelegate;
 
-public class TrailsHibernateModule extends VersionedModule {
+public class TrailsHibernateModule extends VersionedModule
+{
 
-	public static void bind(ServiceBinder binder) {
+	public static void bind(ServiceBinder binder)
+	{
 		// Make bind() calls on the binder object to define most IoC services.
 		// Use service builder methods (example below) when the implementation
 		// is provided inline, or requires more initialization than simply
@@ -32,20 +34,22 @@ public class TrailsHibernateModule extends VersionedModule {
 		binder.bind(HibernateClassValidatorFactory.class, HibernateClassValidatorFactory.class);
 		binder.bind(HibernateValidationDelegate.class, HibernateValidationDelegate.class);
 		binder.bind(SeedEntity.class, SeedEntityImpl.class);
-		
+
 	}
 
 	/**
 	 * Add our components and pages to the "trails" library.
 	 */
-	public static void contributeComponentClassResolver(Configuration<LibraryMapping> configuration) {
+	public static void contributeComponentClassResolver(Configuration<LibraryMapping> configuration)
+	{
 		configuration.add(new LibraryMapping("trails-hibernate", "org.trailsframework.hibernate"));
 	}
-	
-    public static void contributeClasspathAssetAliasManager(MappedConfiguration<String, String> configuration) {
-        configuration.add("trails-hibernate/" + version, "org/trailsframework/hibernate");
-    }
-	
+
+	public static void contributeClasspathAssetAliasManager(MappedConfiguration<String, String> configuration)
+	{
+		configuration.add("trails-hibernate/" + version, "org/trailsframework/hibernate");
+	}
+
 	public static void contributeValidationMessagesSource(OrderedConfiguration<String> configuration)
 	{
 		configuration.add("Trails", "ValidationMessages");
@@ -115,8 +119,9 @@ public class TrailsHibernateModule extends VersionedModule {
 //		configuration.add("boolean", "booleanEditor"); //managed by Tapestry
 //		configuration.add("supportsExtension('org.trails.descriptor.extension.EnumReferenceDescriptor')", "enumEditor"); //managed by Tapestry
 // @todo: configuration.add("supportsExtension('org.trails.descriptor.extension.BlobDescriptorExtension')", "blobEditor");
-		configuration.add("objectReference", "single-valued-association" /* (aka: ManyToOne) */); 
-		configuration.add("collection && not(childRelationship)", "collectionEditor");
+
+		configuration.add("objectReference", "single-valued-association" /* (aka: ManyToOne) */);
+		configuration.add("collection && not(childRelationship)", "many-valued-association" /* (aka: ManyToMany) */);
 		configuration.add("collection && childRelationship", "editComposition");
 // @todo: configuration.add("embedded", "embedded");
 
@@ -164,7 +169,7 @@ public class TrailsHibernateModule extends VersionedModule {
  * [INFO] [talledLocalContainer] java.lang.IllegalArgumentException:
  * Contribution org.trailsframework.hibernate.services.TrailsHibernateModule.contributeTrailsEntityPackageManager(Configuration, HibernateEntityPackageManager)
  * (at TrailsHibernateModule.java:145) is for service 'TrailsEntityPackageManager', which does not exist.
- * 
+ *
 	public static void contributeTrailsEntityPackageManager(Configuration<String> configuration, HibernateEntityPackageManager packageManager)
 	{
 		for (String packageName : packageManager.getPackageNames())

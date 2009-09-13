@@ -20,6 +20,10 @@ import org.trailsframework.services.DescriptorService;
 import org.trailsframework.services.PersistenceService;
 import org.trailsframework.util.GenericSelectionModel;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 
 public class Editors
 {
@@ -51,7 +55,8 @@ public class Editors
 	private Editor fckEditor;
 
 	@Component(parameters = {"collection=propertyEditContext.propertyValue", "label=prop:propertyEditContext.label",
-			"clientId=prop:propertyEditContext.propertyId", "collectionDescriptor=propertyDescriptor"})//, "owner=beanEditContext.object"})
+			"clientId=prop:propertyEditContext.propertyId", "collectionDescriptor=propertyDescriptor"})
+//, "owner=beanEditContext.object"})
 	private EditComposition editComposition;
 
 	public TrailsPropertyDescriptor getPropertyDescriptor()
@@ -121,21 +126,27 @@ public class Editors
 		return selected;
 	}
 
-	public List getSelectedList()
+	/**
+	 *
+	 * Palette's parameter "selected" only accepts java.util.List
+	 * If the collection is a java.util.Set it needs to get converted
+	 *
+	 */
+	public List getSelected()
 	{
 		ArrayList selectedList = new ArrayList();
-		selectedList.addAll(getCollection());
+		selectedList.addAll((Collection) propertyEditContext.getPropertyValue());
 		return selectedList;
 	}
 
-	public void setSelectedList(List selected)
+	public void setSelected(List selected)
 	{
+		Collection collection = (Collection) propertyEditContext.getPropertyValue();
 		if (selected != null)
 		{
-			getCollection().clear();
-			getCollection().addAll(selected);
+//			collection.clear();
+			collection.addAll(selected);
 		}
 	}
-*/
 
 }

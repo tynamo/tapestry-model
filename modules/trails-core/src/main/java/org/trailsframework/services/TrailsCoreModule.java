@@ -21,6 +21,9 @@ import org.trailsframework.descriptor.ReflectionDescriptorFactory;
 
 public class TrailsCoreModule extends VersionedModule {
 
+	public final static String PROPERTY_DISPLAY_BLOCKS = "trails/PropertyDisplayBlocks";
+	public final static String PROPERTY_EDIT_BLOCKS = "trails/Editors";
+
 	public static void bind(ServiceBinder binder) {
 		// Make bind() calls on the binder object to define most IoC services.
 		// Use service builder methods (example below) when the implementation
@@ -53,15 +56,18 @@ public class TrailsCoreModule extends VersionedModule {
 	 * Contribution to the BeanBlockSource service to tell the BeanEditForm component about the editors.
 	 */
 	public static void contributeBeanBlockSource(Configuration<BeanBlockContribution> configuration) {
-		configuration.add(new BeanBlockContribution("dateEditor", "trails/Editors", "date", true));
-		configuration.add(new BeanBlockContribution("fckEditor", "trails/Editors", "fckEditor", true));
-		configuration.add(new BeanBlockContribution("readOnly", "trails/Editors", "readOnly", true));
-		configuration.add(new BeanBlockContribution("single-valued-association", "trails/Editors", "select", true));
-		configuration.add(new BeanBlockContribution("identifierEditor", "trails/Editors", "identifierEditor", true));
-		configuration.add(new BeanBlockContribution("collectionEditor", "trails/Editors", "palette", true));
-		configuration.add(new BeanBlockContribution("editComposition", "trails/Editors", "editComposition", true));
+		configuration.add(new BeanBlockContribution("dateEditor", PROPERTY_EDIT_BLOCKS, "date", true));
+		configuration.add(new BeanBlockContribution("fckEditor", PROPERTY_EDIT_BLOCKS, "fckEditor", true));
+		configuration.add(new BeanBlockContribution("readOnly", PROPERTY_EDIT_BLOCKS, "readOnly", true));
+		configuration.add(new BeanBlockContribution("single-valued-association", PROPERTY_EDIT_BLOCKS, "select", true));
+		configuration.add(new BeanBlockContribution("identifierEditor", PROPERTY_EDIT_BLOCKS, "identifierEditor", true));
+		configuration.add(new BeanBlockContribution("many-valued-association", PROPERTY_EDIT_BLOCKS, "palette", true));
+		configuration.add(new BeanBlockContribution("composition", PROPERTY_EDIT_BLOCKS, "editComposition", true));
 
-		configuration.add(new BeanBlockContribution("single-valued-association", "trails/PropertyDisplayBlocks", "showPageLink", false));
+		configuration.add(new BeanBlockContribution("single-valued-association", PROPERTY_DISPLAY_BLOCKS, "showPageLink", false));
+		configuration.add(new BeanBlockContribution("many-valued-association", PROPERTY_DISPLAY_BLOCKS, "showPageLinks", false));
+		configuration.add(new BeanBlockContribution("composition", PROPERTY_DISPLAY_BLOCKS, "showPageLinks", false));
+
 	}
 
 	/**

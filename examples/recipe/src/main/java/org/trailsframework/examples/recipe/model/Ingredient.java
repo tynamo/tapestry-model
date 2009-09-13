@@ -11,7 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-@ClassDescriptor(hidden = true)
+//@ClassDescriptor(hidden = true)
 public class Ingredient implements Identifiable
 {
 
@@ -54,13 +54,27 @@ public class Ingredient implements Identifiable
 		this.name = name;
 	}
 
-	public boolean equals(Object obj)
-	{
-		return EqualsBuilder.reflectionEquals(this, obj);
-	}
-
 	public String toString()
 	{
 		return getAmount() + " " + getName();
+	}
+
+
+	@Override
+	public boolean equals(Object o)
+	{
+		if (this == o) return true;
+		if (!(o instanceof Ingredient)) return false;
+
+		Ingredient that = (Ingredient) o;
+
+		return getId() != null ? getId().equals(that.getId()) : that.getId() == null;
+
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return getId() != null ? getId().hashCode() : 0;
 	}
 }
