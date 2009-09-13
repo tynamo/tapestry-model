@@ -1,4 +1,4 @@
-<html xmlns:t="http://tapestry.apache.org/schema/tapestry_5_0_0.xsd">
+<html xmlns:t="http://tapestry.apache.org/schema/tapestry_5_0_0.xsd" xmlns:p="tapestry:parameter">
 
 <t:block id="date">
 	<t:label for="dateField"/>
@@ -27,8 +27,14 @@
 </t:block>
 
 <t:block id="palette">
-	<t:label for="palette"/>
-	<t:palette t:id="palette" model="selectModel" selected="propertyEditContext.propertyValue"  encoder="valueEncoderForProperty"/>
+	<t:if test="propertyValueInstanceOfList">
+		<t:label for="palette_list"/>
+		<t:palette t:id="palette_list" model="selectModel" selected="propertyEditContext.propertyValue"  encoder="valueEncoderForProperty" reorder="true"/>
+		<p:else>
+			<t:label for="palette_set"/>
+			<t:palette t:id="palette_set" model="selectModel" selected="selected" encoder="valueEncoderForProperty"/>
+		</p:else>
+	</t:if>
 	<em>
 		help message here
 	</em>
