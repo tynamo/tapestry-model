@@ -1,6 +1,5 @@
 package org.trailsframework.examples.recipe.model;
 
-import org.apache.commons.lang.builder.EqualsBuilder;
 import org.trailsframework.descriptor.annotation.ClassDescriptor;
 import org.trailsframework.descriptor.annotation.PropertyDescriptor;
 import org.trailsframework.util.Identifiable;
@@ -11,7 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-//@ClassDescriptor(hidden = true)
+@ClassDescriptor(hidden = true)
 public class Ingredient implements Identifiable
 {
 

@@ -16,7 +16,7 @@
 
 	<h1>${title}</h1>
 
-		<t:grid source="instances" row="model">
+		<t:grid t:id="grid" source="instances" row="model" inPlace="true">
 			<t:parameter name="idcell">
 				<t:pagelink t:page="Show" context="editPageContext">${model.id}</t:pagelink>
 			</t:parameter>
