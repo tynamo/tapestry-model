@@ -115,7 +115,7 @@ public class TrailsHibernateModule extends VersionedModule {
 //		configuration.add("boolean", "booleanEditor"); //managed by Tapestry
 //		configuration.add("supportsExtension('org.trails.descriptor.extension.EnumReferenceDescriptor')", "enumEditor"); //managed by Tapestry
 // @todo: configuration.add("supportsExtension('org.trails.descriptor.extension.BlobDescriptorExtension')", "blobEditor");
-		configuration.add("objectReference", "referenceEditor");
+		configuration.add("objectReference", "single-valued-association" /* (aka: ManyToOne) */); 
 		configuration.add("collection && not(childRelationship)", "collectionEditor");
 		configuration.add("collection && childRelationship", "editComposition");
 // @todo: configuration.add("embedded", "embedded");
