@@ -9,23 +9,28 @@ import org.trailsframework.descriptor.TrailsPropertyDescriptor;
 
 import java.util.Map;
 
-/**
- * The default data type analyzer, which is based entirely on the type of the property (and not on annotations or naming
- * conventions). This is based on a configuration of property type class to string provided as an IoC service
- * configuration.
- */
 public class TrailsDataTypeAnalyzer implements DataTypeAnalyzer
 {
 
 	private final DescriptorService descriptorService;
 	private final Map<String, String> editorMap;
 
+	/**
+	 * @param descriptorService
+	 * @param editorMap A map where the keys are OGNL expressions and the values are data type identifier used to select editor (or display) blocks
+	 */
 	public TrailsDataTypeAnalyzer(final DescriptorService descriptorService, final Map<String, String> editorMap)
 	{
 		this.descriptorService = descriptorService;
 		this.editorMap = editorMap;
 	}
 
+	/**
+	 * The first data type identifier in the editorMap whose "key" evaluates to true for the descriptor will be used
+	 * to load an editor (or display) block for the descriptor. Returns null if no match is found.
+	 *
+	 * @return returns the data type identifier, if known, or returns null if not known.
+	 */
 	public String identifyDataType(PropertyAdapter adapter)
 	{
 		TrailsPropertyDescriptor propertyDescriptor = getPropertyDescriptor(adapter);
