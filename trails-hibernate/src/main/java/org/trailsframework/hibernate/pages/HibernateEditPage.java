@@ -3,6 +3,7 @@ package org.trailsframework.hibernate.pages;
 
 import org.apache.tapestry5.Link;
 import org.apache.tapestry5.ValidationException;
+import org.apache.tapestry5.beaneditor.BeanModel;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.annotations.Component;
@@ -78,5 +79,9 @@ public abstract class HibernateEditPage extends HibernateModelPage
 		return null;
 	}
 
-
+	@Override
+	public BeanModel createBeanModel(Class clazz)
+	{
+		return getBeanModelSource().createEditModel(clazz, getMessages());
+	}
 }

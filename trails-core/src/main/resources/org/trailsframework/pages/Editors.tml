@@ -19,7 +19,14 @@
 </t:block>
 
 <t:block id="identifierEditor">
-	<label>${propertyEditContext.label}</label><p>${propertyEditContext.propertyValue}</p>
+	<t:if test="notEditable">
+		<label>${propertyEditContext.label}</label>
+		<p>${propertyEditContext.propertyValue}</p>
+		<p:else>
+			<t:label for="textField"/>
+			<input t:id="textField"/>
+		</p:else>
+	</t:if>
 </t:block>
 
 <t:block id="readOnly">
@@ -48,6 +55,11 @@
 	<div t:id="editComposition"/>
 </t:block>
 
-
+<t:block id="embedded">
+	<fieldset class="group">
+		<legend>${propertyEditContext.label}</legend>
+		<t:beaneditor t:id="editor" object="propertyEditContext.propertyValue" model="embeddedModel" />
+	</fieldset>
+</t:block>
 
 </html>

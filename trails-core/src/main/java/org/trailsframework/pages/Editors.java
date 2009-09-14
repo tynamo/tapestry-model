@@ -1,20 +1,21 @@
 package org.trailsframework.pages;
 
-import org.apache.tapestry5.FieldTranslator;
-import org.apache.tapestry5.FieldValidator;
-import org.apache.tapestry5.SelectModel;
-import org.apache.tapestry5.ValueEncoder;
+import org.apache.tapestry5.*;
 import org.apache.tapestry5.annotations.Component;
 import org.apache.tapestry5.annotations.Environmental;
 import org.apache.tapestry5.annotations.Property;
+import org.apache.tapestry5.beaneditor.BeanModel;
+import org.apache.tapestry5.corelib.components.TextField;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.BeanEditContext;
+import org.apache.tapestry5.services.BeanModelSource;
 import org.apache.tapestry5.services.PropertyEditContext;
 import org.apache.tapestry5.services.ValueEncoderSource;
 import org.chenillekit.tapestry.core.components.DateTimeField;
 import org.chenillekit.tapestry.core.components.Editor;
 import org.trailsframework.components.EditComposition;
 import org.trailsframework.descriptor.CollectionDescriptor;
+import org.trailsframework.descriptor.IdentifierDescriptor;
 import org.trailsframework.descriptor.TrailsPropertyDescriptor;
 import org.trailsframework.services.DescriptorService;
 import org.trailsframework.services.PersistenceService;
@@ -44,6 +45,17 @@ public class Editors
 
 	@Inject
 	private ValueEncoderSource valueEncoderSource;
+
+	@Inject
+	private ComponentResources resources;
+
+	@Inject
+	private BeanModelSource beanModelSource;
+
+	@Component(parameters = {"value=propertyEditContext.propertyValue", "label=prop:propertyEditContext.label",
+			"translate=prop:textFieldTranslator", "validate=prop:textFieldValidator",
+			"clientId=prop:propertyEditContext.propertyId", "annotationProvider=propertyEditContext"})
+	private TextField textField;
 
 	@Component(parameters = {"value=propertyEditContext.propertyValue", "label=prop:propertyEditContext.label",
 			"clientId=propertyEditContext.propertyid", "validate=prop:dateFieldValidator"})
@@ -111,6 +123,17 @@ public class Editors
 		return propertyEditContext.getTranslator(fckEditor);
 	}
 
+	public FieldTranslator getTextFieldTranslator()
+	{
+		return propertyEditContext.getTranslator(textField);
+	}
+
+	public FieldValidator getTextFieldValidator()
+	{
+		return propertyEditContext.getValidator(textField);
+	}
+
+
 
 /*	public List<Boolean> buildSelectedList()
 	{
@@ -153,6 +176,18 @@ public class Editors
 //			collection.clear();
 			collection.addAll(selected);
 		}
+	}
+
+	public boolean isNotEditable()
+	{
+		IdentifierDescriptor descriptor = (IdentifierDescriptor) getPropertyDescriptor();
+		return descriptor.isGenerated() || propertyEditContext.getPropertyValue() != null;
+	}
+
+	public BeanModel getEmbeddedModel()
+	{
+		return beanModelSource.createEditModel(propertyEditContext.getPropertyType(),
+				resources.getContainerMessages() != null ? resources.getContainerMessages() : resources.getMessages());
 	}
 
 }

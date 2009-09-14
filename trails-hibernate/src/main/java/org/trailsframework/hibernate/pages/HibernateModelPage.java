@@ -47,10 +47,7 @@ public abstract class HibernateModelPage extends ModelPage
 
 	void onActivate(Class clazz, String id) throws Exception
 	{
-		activate(getContextValueEncoder().toValue(clazz, id),
-				getDescriptorService().getClassDescriptor(clazz),
-				getBeanModelSource().create(clazz, true, getMessages()));
-//		BeanModelUtils.modify(_beanModel, null, null, null, null);
+		activate(getContextValueEncoder().toValue(clazz, id), getDescriptorService().getClassDescriptor(clazz), createBeanModel(clazz));
 	}
 
 	/**
