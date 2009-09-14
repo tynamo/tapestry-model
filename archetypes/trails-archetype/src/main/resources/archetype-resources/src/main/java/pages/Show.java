@@ -33,4 +33,10 @@ public class Show extends HibernateModelPage
 		getPersitenceService().remove(getBean());
 		return back();
 	}
+
+	@Override
+	public BeanModel createBeanModel(Class clazz)
+	{
+		return getBeanModelSource().createDisplayModel(clazz, getMessages());
+	}
 }

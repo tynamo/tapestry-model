@@ -2,6 +2,7 @@ package org.trailsframework.pages;
 
 import org.apache.tapestry5.ComponentResources;
 import org.apache.tapestry5.Link;
+import org.apache.tapestry5.beaneditor.BeanModel;
 import org.apache.tapestry5.annotations.Component;
 import org.apache.tapestry5.corelib.components.PageLink;
 import org.apache.tapestry5.ioc.Messages;
@@ -85,5 +86,7 @@ public abstract class ModelPage
 	public abstract Object getBean();
 
 	public abstract Link back();
+
+	protected abstract BeanModel createBeanModel(Class clazz);
 
 }

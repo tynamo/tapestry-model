@@ -50,8 +50,8 @@ public class TrailsCoreModule extends VersionedModule {
 	public static void contributeClasspathAssetAliasManager(MappedConfiguration<String, String> configuration) {
 		configuration.add("trails/" + version, "org/trailsframework");
 	}
-	
-	
+
+
 	/**
 	 * Contribution to the BeanBlockSource service to tell the BeanEditForm component about the editors.
 	 */
@@ -63,6 +63,7 @@ public class TrailsCoreModule extends VersionedModule {
 		configuration.add(new BeanBlockContribution("identifierEditor", PROPERTY_EDIT_BLOCKS, "identifierEditor", true));
 		configuration.add(new BeanBlockContribution("many-valued-association", PROPERTY_EDIT_BLOCKS, "palette", true));
 		configuration.add(new BeanBlockContribution("composition", PROPERTY_EDIT_BLOCKS, "editComposition", true));
+		configuration.add(new BeanBlockContribution("embedded", PROPERTY_EDIT_BLOCKS, "embedded", true));
 
 		configuration.add(new BeanBlockContribution("single-valued-association", PROPERTY_DISPLAY_BLOCKS, "showPageLink", false));
 		configuration.add(new BeanBlockContribution("many-valued-association", PROPERTY_DISPLAY_BLOCKS, "showPageLinks", false));

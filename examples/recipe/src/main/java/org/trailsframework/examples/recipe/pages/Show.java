@@ -2,6 +2,7 @@ package org.trailsframework.examples.recipe.pages;
 
 
 import org.apache.tapestry5.Link;
+import org.apache.tapestry5.beaneditor.BeanModel;
 import org.trailsframework.hibernate.pages.HibernateModelPage;
 import org.trailsframework.util.DisplayNameUtils;
 
@@ -32,5 +33,11 @@ public class Show extends HibernateModelPage
 	{
 		getPersitenceService().remove(getBean());
 		return back();
+	}
+
+	@Override
+	public BeanModel createBeanModel(Class clazz)
+	{
+		return getBeanModelSource().createDisplayModel(clazz, getMessages());
 	}
 }

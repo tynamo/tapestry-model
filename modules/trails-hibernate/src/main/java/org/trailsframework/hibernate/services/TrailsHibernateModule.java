@@ -115,7 +115,9 @@ public class TrailsHibernateModule extends VersionedModule
 		configuration.add("string and large and !identifier", "longtext");
 		configuration.add("date", "dateEditor");
 //		configuration.add("numeric and !identifier", "numberEditor"); //managed by Tapestry
-		configuration.add("identifier", "identifierEditor");
+		configuration.add("identifier && generated", "readOnly");
+		configuration.add("identifier && not(generated) && string", "identifierEditor");
+//		configuration.add("identifier && objectReference", "objectReferenceIdentifierEditor");
 //		configuration.add("boolean", "booleanEditor"); //managed by Tapestry
 //		configuration.add("supportsExtension('org.trails.descriptor.extension.EnumReferenceDescriptor')", "enumEditor"); //managed by Tapestry
 // @todo: configuration.add("supportsExtension('org.trails.descriptor.extension.BlobDescriptorExtension')", "blobEditor");
@@ -123,7 +125,8 @@ public class TrailsHibernateModule extends VersionedModule
 		configuration.add("objectReference", "single-valued-association" /* (aka: ManyToOne) */);
 		configuration.add("collection && not(childRelationship)", "many-valued-association" /* (aka: ManyToMany) */);
 		configuration.add("collection && childRelationship", "editComposition");
-// @todo: configuration.add("embedded", "embedded");
+		configuration.add("name == 'id'", "readOnly");
+		configuration.add("embedded", "embedded");
 
 	}
 
