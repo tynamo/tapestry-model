@@ -3,8 +3,9 @@
 		"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
 	<session-factory>
+		<!-- for more Database configuration options check: http://trails.codehaus.org/DatabaseConfigurations -->
 		<property name="hibernate.connection.driver_class">org.hsqldb.jdbcDriver</property>
-		<property name="hibernate.connection.url">jdbc:hsqldb:mem:recipe</property>
+		<property name="hibernate.connection.url">jdbc:hsqldb:mem:${artifactId}</property>
 		<property name="hibernate.dialect">org.hibernate.dialect.HSQLDialect</property>
 		<property name="hibernate.connection.username">sa</property>
 		<property name="hibernate.connection.password"></property>

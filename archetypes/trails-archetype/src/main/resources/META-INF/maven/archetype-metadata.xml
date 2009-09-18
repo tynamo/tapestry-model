@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <archetype-descriptor name="Trails 2 Archetype">
-	
+
 	<fileSets>
 		<fileSet filtered="true" packaged="true">
 			<directory>src/main/java</directory>
@@ -40,6 +40,7 @@
 			<directory>src/main/resources</directory>
 			<includes>
 				<include>log4j.properties</include>
+				<include>hibernate.cfg.xml</include>
 			</includes>
 			<excludes>
 				<exclude>**/*.tml</exclude>
@@ -50,7 +51,6 @@
 		<fileSet filtered="false" packaged="false">
 			<directory>src/main/resources</directory>
 			<includes>
-				<include>hibernate.cfg.xml</include>
 				<include>ValidationMessages.properties</include>
 			</includes>
 		</fileSet>
@@ -60,6 +60,8 @@
 			<directory>src/main/resources</directory>
 			<excludes>
 				<exclude>log4j.properties</exclude>
+				<exclude>hibernate.cfg.xml</exclude>
+				<exclude>ValidationMessages.properties</exclude>
 			</excludes>
 		</fileSet>
 

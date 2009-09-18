@@ -1,7 +1,7 @@
 package ${package}.pages;
 
-
 import org.apache.tapestry5.Link;
+import org.apache.tapestry5.beaneditor.BeanModel;
 import org.trailsframework.hibernate.pages.HibernateModelPage;
 import org.trailsframework.util.DisplayNameUtils;
 

@@ -48,12 +48,17 @@ public class AppModule
 	}
 
 	/**
-	 * Contributes the package "org.trailsframework.examples.recipe.model" to the configuration, so that it will be
+	 * By default tapestry-hibernate will scan
+	 * InternalConstants.TAPESTRY_APP_PACKAGE_PARAM + ".entities" (witch is equal to "${package}.${artifactId}.entities")
+	 * for annotated entity classes.
+	 *
+	 * Contributes the package "${package}.${artifactId}.model" to the configuration, so that it will be
 	 * scanned for annotated entity classes.
 	 */
 	public static void contributeHibernateEntityPackageManager(Configuration<String> configuration)
 	{
-		configuration.add("org.trailsframework.examples.recipe.model");
+//		If you want to scan other packages add them here:
+//		configuration.add("${package}.${artifactId}.model");
 	}
 
 	/**
