@@ -4,6 +4,7 @@ import ognl.Ognl;
 import ognl.OgnlException;
 import org.apache.tapestry5.ioc.services.PropertyAdapter;
 import org.apache.tapestry5.services.DataTypeAnalyzer;
+import org.apache.tapestry5.beaneditor.DataType;
 import org.trailsframework.descriptor.TrailsClassDescriptor;
 import org.trailsframework.descriptor.TrailsPropertyDescriptor;
 
@@ -33,18 +34,21 @@ public class TrailsDataTypeAnalyzer implements DataTypeAnalyzer
 	 */
 	public String identifyDataType(PropertyAdapter adapter)
 	{
-		TrailsPropertyDescriptor propertyDescriptor = getPropertyDescriptor(adapter);
-		for (Map.Entry<String, String> entry : editorMap.entrySet())
+		if (adapter.getAnnotation(DataType.class) == null)
 		{
-			try
+			TrailsPropertyDescriptor propertyDescriptor = getPropertyDescriptor(adapter);
+			for (Map.Entry<String, String> entry : editorMap.entrySet())
 			{
-				if ((Boolean) Ognl.getValue(entry.getKey(), propertyDescriptor))
+				try
 				{
-					return entry.getValue();
+					if ((Boolean) Ognl.getValue(entry.getKey(), propertyDescriptor))
+					{
+						return entry.getValue();
+					}
+				} catch (OgnlException e)
+				{
+					//do nothing;
 				}
-			} catch (OgnlException e)
-			{
-				//do nothing;
 			}
 		}
 
