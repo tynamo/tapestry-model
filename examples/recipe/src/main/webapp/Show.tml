@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 		"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<t:layout title="title" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_0_0.xsd">
-	<t:parameter name="subMenuBlock">
+<t:layout title="title" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_0_0.xsd" xmlns:p="tapestry:parameter">
+	<p:subMenuBlock>
 		<ul>
 			<ul id="local">
 				<li>
@@ -15,10 +15,10 @@
 				</li>
 			</ul>
 		</ul>
-	</t:parameter>
-	<t:parameter name="navBlock">
+	</p:subMenuBlock>
+	<p:navBlock>
 		<a style="font-weight:bolder;margin-left:10px" t:id="link" page="List" context="classDescriptor.type">${listAllLinkMessage}</a>
-	</t:parameter>
+	</p:navBlock>
 
 	<h1>${title}</h1>
 

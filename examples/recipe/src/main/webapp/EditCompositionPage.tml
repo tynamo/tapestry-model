@@ -1,5 +1,5 @@
-<t:layout title="literal:Trails!" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_0_0.xsd">
-	<t:parameter name="subMenuBlock">
+<t:layout title="literal:Trails!" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_0_0.xsd" xmlns:p="tapestry:parameter">
+	<p:subMenuBlock>
 		<ul>
 			<ul id="local">
 				<li>
@@ -7,7 +7,7 @@
 				</li>
 			</ul>
 		</ul>
-	</t:parameter>
+	</p:subMenuBlock>
 
 	<h1>Edit Page</h1>
 
