@@ -1,6 +1,6 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 
-<div id="${clientId}" class="editcomposition" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_0_0.xsd">
+<div id="${clientId}" class="editcomposition" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_0_0.xsd" xmlns:p="tapestry:parameter">
 
 	<table class="field editCollection">
 		<tr>
@@ -22,9 +22,9 @@
 				</table>
 -->
 				<t:grid source="collection" row="collectionIterator" columnIndex="index" model="beanModel" volatile="true">
-					<t:parameter name="idcell">
+					<p:idcell>
 						<t:pagelink t:page="EditCompositionPage" context="editPageContext">${collectionIterator.id}</t:pagelink>
-					</t:parameter>
+					</p:idcell>
 				</t:grid>
 
 				<!--
