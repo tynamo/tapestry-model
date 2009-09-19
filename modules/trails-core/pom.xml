@@ -40,11 +40,12 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
 				<configuration>
-				<archive>
-					<manifestEntries>
-					<Tapestry-Module-Classes>org.trailsframework.services.TrailsCoreModule</Tapestry-Module-Classes>
-					</manifestEntries>
-				</archive>
+					<archive>
+						<manifestEntries>
+							<Tapestry-Module-Classes>org.trailsframework.services.TrailsCoreModule
+							</Tapestry-Module-Classes>
+						</manifestEntries>
+					</archive>
 				</configuration>
 			</plugin>
 
@@ -92,7 +93,7 @@
 		<dependency>
 			<groupId>org.chenillekit</groupId>
 			<artifactId>chenillekit-tapestry</artifactId>
-			<version>1.0.0</version>
+			<version>1.2.0</version>
 			<exclusions>
 				<exclusion>
 					<groupId>org.apache.tapestry</groupId>
@@ -108,33 +109,13 @@
 					<groupId>org.apache.tapestry</groupId>
 					<artifactId>tapestry-hibernate</artifactId>
 				</exclusion>
+				<exclusion>
+					<artifactId>javassist</artifactId>
+					<groupId>jboss</groupId>
+				</exclusion>
 			</exclusions>
 		</dependency>
 
 	</dependencies>
-
-	<repositories>
-		<repository>
-			<id>chenillekit-releases</id>
-			<url>http://www.chenillekit.org/mvnrepo/release</url>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-		</repository>
-		<repository>
-			<id>chenillekit-snapshots</id>
-			<url>http://www.chenillekit.org/mvnrepo/snapshot</url>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
-		</repository>
-	</repositories>
-
 
 </project>
