@@ -2,7 +2,6 @@ package ${package}.entities;
 
 import org.hibernate.validator.NotNull;
 import org.trailsframework.descriptor.annotation.PropertyDescriptor;
-import org.trailsframework.util.Identifiable;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,7 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class MyDomainObject implements Identifiable
+public class MyDomainObject
 {
 	private Long id;
 

@@ -21,10 +21,13 @@
 					</tr>
 				</table>
 -->
-				<t:grid source="collection" row="collectionIterator" columnIndex="index" model="beanModel" volatile="true">
-					<p:idcell>
-						<t:pagelink t:page="EditCompositionPage" context="editPageContext">${collectionIterator.id}</t:pagelink>
-					</p:idcell>
+				<t:grid source="collection" row="collectionIterator" columnIndex="index" model="beanModel"
+						volatile="true" inPlace="true" add="__id__" reorder="__id__" >
+					<p:__id__header>
+					</p:__id__header>
+					<p:__id__cell>
+						<t:pagelink t:page="EditCompositionPage" context="editPageContext">${modelId}</t:pagelink>
+					</p:__id__cell>
 				</t:grid>
 
 				<!--

@@ -80,7 +80,7 @@ public abstract class HibernateEditPage extends HibernateModelPage
 	}
 
 	@Override
-	public BeanModel createBeanModel(Class clazz)
+	protected BeanModel createBeanModel(Class clazz)
 	{
 		return getBeanModelSource().createEditModel(clazz, getMessages());
 	}

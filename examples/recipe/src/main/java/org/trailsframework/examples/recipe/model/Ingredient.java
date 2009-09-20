@@ -2,7 +2,6 @@ package org.trailsframework.examples.recipe.model;
 
 import org.trailsframework.descriptor.annotation.ClassDescriptor;
 import org.trailsframework.descriptor.annotation.PropertyDescriptor;
-import org.trailsframework.util.Identifiable;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,7 +10,7 @@ import javax.persistence.Id;
 
 @Entity
 @ClassDescriptor(hidden = true)
-public class Ingredient implements Identifiable
+public class Ingredient
 {
 
 	private Long id;

@@ -20,17 +20,6 @@ public abstract class HibernateModelPage extends ModelPage
 
 	private Object bean;
 
-
-	public TrailsClassDescriptor getClassDescriptor()
-	{
-		return classDescriptor;
-	}
-
-	public Object getBean()
-	{
-		return bean;
-	}
-
 	protected void activate(Object bean, TrailsClassDescriptor classDescriptor, BeanModel beanModel)
 	{
 		this.bean = bean;
@@ -38,14 +27,14 @@ public abstract class HibernateModelPage extends ModelPage
 		this.beanModel = beanModel;
 	}
 
-	void cleanupRender()
+	protected void cleanupRender()
 	{
 		bean = null;
 		classDescriptor = null;
 		beanModel = null;
 	}
 
-	void onActivate(Class clazz, String id) throws Exception
+	final void onActivate(Class clazz, String id) throws Exception
 	{
 		activate(getContextValueEncoder().toValue(clazz, id), getDescriptorService().getClassDescriptor(clazz), createBeanModel(clazz));
 	}
@@ -58,5 +47,20 @@ public abstract class HibernateModelPage extends ModelPage
 	protected Object[] onPassivate()
 	{
 		return new Object[]{getClassDescriptor().getType(), getBean()};
+	}
+
+	public final TrailsClassDescriptor getClassDescriptor()
+	{
+		return classDescriptor;
+	}
+
+	public final Object getBean()
+	{
+		return bean;
+	}
+
+	public final void setBean(Object bean)
+	{
+		this.bean = bean;
 	}
 }

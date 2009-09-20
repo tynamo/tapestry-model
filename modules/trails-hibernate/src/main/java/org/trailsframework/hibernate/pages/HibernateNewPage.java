@@ -14,12 +14,9 @@ public abstract class HibernateNewPage extends HibernateEditPage
 	@Inject
 	private BuilderDirector builderDirector;
 
-	void onActivate(Class clazz) throws Exception
+	protected void onActivate(Class clazz) throws Exception
 	{
-		activate(builderDirector.createNewInstance(clazz),
-				getDescriptorService().getClassDescriptor(clazz),
-				getBeanModelSource().create(clazz, true, getMessages()));
-//		BeanModelUtils.modify(_beanModel, null, null, null, null);
+		activate(builderDirector.createNewInstance(clazz), getDescriptorService().getClassDescriptor(clazz), createBeanModel(clazz));
 	}
 
 	@Override
