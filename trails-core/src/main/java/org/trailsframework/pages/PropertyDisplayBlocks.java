@@ -1,12 +1,9 @@
 package org.trailsframework.pages;
 
-import org.trailsframework.descriptor.TrailsPropertyDescriptor;
-import org.trailsframework.util.Identifiable;
-import org.apache.tapestry5.services.PropertyOutputContext;
 import org.apache.tapestry5.annotations.Environmental;
 import org.apache.tapestry5.annotations.Property;
+import org.apache.tapestry5.services.PropertyOutputContext;
 
-import java.util.Set;
 import java.util.Collection;
 
 public class PropertyDisplayBlocks
@@ -17,7 +14,7 @@ public class PropertyDisplayBlocks
 	private PropertyOutputContext context;
 
 	@Property
-	private Identifiable loopIterator;
+	private Object loopIterator;
 
 	@Property
 	private int loopIndex;

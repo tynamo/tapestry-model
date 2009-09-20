@@ -2,19 +2,19 @@ package org.trailsframework.components;
 
 import org.apache.tapestry5.Asset;
 import org.apache.tapestry5.BindingConstants;
-import org.apache.tapestry5.beaneditor.BeanModel;
-import org.apache.tapestry5.beaneditor.PropertyModel;
-import org.apache.tapestry5.services.BeanModelSource;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
-import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.beaneditor.BeanModel;
 import org.apache.tapestry5.ioc.Messages;
+import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.ioc.services.PropertyAccess;
+import org.apache.tapestry5.services.BeanModelSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.trailsframework.descriptor.CollectionDescriptor;
+import org.trailsframework.descriptor.TrailsClassDescriptor;
 import org.trailsframework.services.DescriptorService;
 import org.trailsframework.services.PersistenceService;
-import org.trailsframework.util.Identifiable;
 
 import java.util.Collection;
 import java.util.List;
@@ -28,6 +28,21 @@ public class EditComposition
 {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(EditComposition.class);
+
+	@Inject
+	private DescriptorService descriptorService;
+
+	@Inject
+	private PersistenceService persitenceService;
+
+	@Inject
+	private PropertyAccess propertyAccess;
+
+	@Inject
+	private BeanModelSource beanModelSource;
+
+	@Inject
+	private Messages messages;
 
 	/**
 	 * The id used to generate a page-unique client-side identifier for the component. If a component renders multiple
@@ -65,13 +80,7 @@ public class EditComposition
 	private CollectionDescriptor collectionDescriptor;
 
 	@Property
-	private Identifiable collectionIterator;
-
-	@Inject
-	private DescriptorService descriptorService;
-
-	@Inject
-	private PersistenceService persitenceService;
+	private Object collectionIterator;
 
 	@Parameter(value = "true")
 	private boolean allowCreate;
@@ -89,12 +98,6 @@ public class EditComposition
 	@Parameter(value = "asset:move_down.gif")
 	@Property(write = false)
 	private Asset downImage;
-
-	@Inject
-	private BeanModelSource beanModelSource;
-
-	@Inject
-	private Messages messages;
 
 	@Property(write = false)
 	private BeanModel beanModel;
@@ -182,7 +185,14 @@ public class EditComposition
 
 	public Object[] getEditPageContext()
 	{
-		return new Object[]{collectionDescriptor.getBeanType(), owner, collectionDescriptor.getName(), collectionIterator};
+		return new Object[]{collectionDescriptor.getBeanType(), owner, collectionDescriptor.getName(),
+				collectionIterator};
 	}
 
+	public final String getModelId()
+	{
+		TrailsClassDescriptor classDescriptor =
+				descriptorService.getClassDescriptor(collectionDescriptor.getBeanType());
+		return propertyAccess.get(collectionIterator, classDescriptor.getIdentifierDescriptor().getName()).toString();
+	}
 }

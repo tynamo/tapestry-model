@@ -124,7 +124,7 @@ public class TrailsHibernateModule extends VersionedModule
 
 		configuration.add("objectReference", "single-valued-association" /* (aka: ManyToOne) */);
 		configuration.add("collection && not(childRelationship)", "many-valued-association" /* (aka: ManyToMany) */);
-		configuration.add("collection && childRelationship", "editComposition");
+		configuration.add("collection && childRelationship", "composition");
 		configuration.add("name == 'id'", "readOnly");
 		configuration.add("embedded", "embedded");
 
