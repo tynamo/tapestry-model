@@ -1,5 +1,7 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_0_0.xsd" xmlns:p="tapestry:parameter">
 
+	<t:block id="hidden"/>
+
 	<t:block id="showPageLink">
 		<t:if test="context.propertyValue">
 			<t:pagelink t:page="Show" context="showPageContext">${context.propertyValue}</t:pagelink>
@@ -15,8 +17,6 @@
 	</t:block>
 
 	<!--
-	 <span jwcid="hidden@Block"/>
-
 	 <span jwcid="stringViewer@Block">
 		 <li><label class="desc"><span jwcid="@Insert" value="ognl:descriptor.displayName"/></label>
 			 <span jwcid="insertText@Insert" value="ognl:model[#this.descriptor.name]"/>

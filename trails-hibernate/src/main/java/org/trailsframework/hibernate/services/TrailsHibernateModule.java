@@ -106,8 +106,7 @@ public class TrailsHibernateModule extends VersionedModule
 
 	public static void contributeTrailsDataTypeAnalyzer(MappedConfiguration<String, String> configuration)
 	{
-
-// @todo: configuration.add("hidden", "hidden");
+		configuration.add("hidden", "hidden");
 		configuration.add("readOnly", "readOnly");
 		configuration.add("richText", "fckEditor");
 //		configuration.add("name.toLowerCase().endsWith('password')", "passwordEditor"); //USE @DataType("password")

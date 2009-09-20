@@ -56,6 +56,7 @@ public class TrailsCoreModule extends VersionedModule {
 	 * Contribution to the BeanBlockSource service to tell the BeanEditForm component about the editors.
 	 */
 	public static void contributeBeanBlockSource(Configuration<BeanBlockContribution> configuration) {
+		configuration.add(new BeanBlockContribution("hidden", PROPERTY_EDIT_BLOCKS, "hidden", true));
 		configuration.add(new BeanBlockContribution("dateEditor", PROPERTY_EDIT_BLOCKS, "date", true));
 		configuration.add(new BeanBlockContribution("fckEditor", PROPERTY_EDIT_BLOCKS, "fckEditor", true));
 		configuration.add(new BeanBlockContribution("readOnly", PROPERTY_EDIT_BLOCKS, "readOnly", true));
@@ -65,6 +66,7 @@ public class TrailsCoreModule extends VersionedModule {
 		configuration.add(new BeanBlockContribution("composition", PROPERTY_EDIT_BLOCKS, "editComposition", true));
 		configuration.add(new BeanBlockContribution("embedded", PROPERTY_EDIT_BLOCKS, "embedded", true));
 
+		configuration.add(new BeanBlockContribution("hidden", PROPERTY_DISPLAY_BLOCKS, "hidden", false));
 		configuration.add(new BeanBlockContribution("single-valued-association", PROPERTY_DISPLAY_BLOCKS, "showPageLink", false));
 		configuration.add(new BeanBlockContribution("many-valued-association", PROPERTY_DISPLAY_BLOCKS, "showPageLinks", false));
 		configuration.add(new BeanBlockContribution("composition", PROPERTY_DISPLAY_BLOCKS, "showPageLinks", false));
