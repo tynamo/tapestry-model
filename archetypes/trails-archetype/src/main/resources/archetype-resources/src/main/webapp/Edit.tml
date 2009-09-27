@@ -1,5 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <t:layout title="title" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_0_0.xsd" xmlns:p="tapestry:parameter">
+	#set( $D = '$' )
 	<p:subMenuBlock>
 		<ul>
 			<ul id="local">
@@ -7,10 +8,10 @@
 		</ul>
 	</p:subMenuBlock>
 	<p:navBlock>
-		<a style="font-weight:bolder;margin-left:10px" t:id="link" page="List" context="classDescriptor.type">${listAllLinkMessage}</a>
+		<a style="font-weight:bolder;margin-left:10px" t:id="link" page="List" context="classDescriptor.type">${D}{listAllLinkMessage}</a>
 	</p:navBlock>
 
-	<h1>${title}</h1>
+	<h1>${D}{title}</h1>
 
 	<br/>
 
@@ -20,15 +21,18 @@
 		<div class="t-beaneditor">
 			<t:beaneditor object="bean" model="beanModel"/>
 			<br/>
+
 			<div class="t-beaneditor-row">
 				<button t:type="any" class="button" type="submit" id="save">
-					${message:org.trails.i18n.apply}
+					${D}{message:org.trails.i18n.apply}
 				</button>
 				<button t:type="any" class="button" type="submit" id="saveAndReturnButton">
-					${message:org.trails.i18n.applyAndReturn}
+					${D}{message:org.trails.i18n.applyAndReturn}
 				</button>
 				&nbsp; or &nbsp;
-				<t:actionlink class="button" style="color:red; font-weight:bold;" t:id="cancel">${message:org.trails.i18n.cancel}</t:actionlink>
+				<t:actionlink class="button" style="color:red; font-weight:bold;" t:id="cancel">
+					${D}{message:org.trails.i18n.cancel}
+				</t:actionlink>
 			</div>
 		</div>
 	</form>

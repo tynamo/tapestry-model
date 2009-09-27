@@ -1,9 +1,10 @@
 <t:layout title="title" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_0_0.xsd" xmlns:p="tapestry:parameter">
+	#set( $D = '$' )
 	<p:subMenuBlock>
 		<ul id="local">
 			<t:if test="classDescriptor.allowSave">
 				<li>
-					<t:pagelink class="newlink" page="New" context="classDescriptor.type">${newlinkMessage}</t:pagelink>
+					<t:pagelink class="newlink" page="New" context="classDescriptor.type">${D}{newlinkMessage}</t:pagelink>
 				</li>
 			</t:if>
 <!--
@@ -14,13 +15,13 @@
 		</ul>
 	</p:subMenuBlock>
 
-	<h1>${title}</h1>
+	<h1>${D}{title}</h1>
 
 	<t:grid t:id="grid" source="instances" row="model" inPlace="true" add="__id__" reorder="__id__" exclude="prop:excludelist">
 		<p:__id__header>
 		</p:__id__header>
 		<p:__id__cell>
-			<t:pagelink t:page="Show" context="editPageContext">${modelId}</t:pagelink>
+			<t:pagelink t:page="Show" context="editPageContext">${D}{modelId}</t:pagelink>
 		</p:__id__cell>
 	</t:grid>
 

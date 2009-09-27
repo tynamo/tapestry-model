@@ -1,4 +1,5 @@
 <t:layout title="literal:Trails!" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_0_0.xsd" xmlns:p="tapestry:parameter">
+	#set( $D = '$' )
 	<p:subMenuBlock>
 		<ul>
 			<li>
@@ -13,7 +14,7 @@
 	</p:navBlock>
 	
 
-	<h1>${message:org.trails.welcome}</h1>
+	<h1>${D}{message:org.trails.welcome}</h1>
 
 	<t:trails.ListPageLinkList/>
 

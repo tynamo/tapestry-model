@@ -41,6 +41,12 @@ public class AppModule
 		// on the command line as -Dtapestry.production-mode=false
 		configuration.add(SymbolConstants.PRODUCTION_MODE, "false");
 
+		// The application version number is incorprated into URLs for some
+		// assets. Web browsers will cache assets because of the far future expires
+		// header. If existing assets are changed, the version number should also
+		// change, to force the browser to download new versions.
+		configuration.add(SymbolConstants.APPLICATION_VERSION, "1.0-SNAPSHOT");
+
 		// Set filesize limit to 2 MB
 		configuration.add(UploadSymbols.REQUESTSIZE_MAX, "2048000");
 		configuration.add(UploadSymbols.FILESIZE_MAX, "2048000");

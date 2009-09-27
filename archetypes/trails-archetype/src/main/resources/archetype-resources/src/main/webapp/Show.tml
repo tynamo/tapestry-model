@@ -1,26 +1,27 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 		"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <t:layout title="title" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_0_0.xsd" xmlns:p="tapestry:parameter">
+	#set( $D = '$' )
 	<p:subMenuBlock>
 		<ul>
 			<ul id="local">
 				<li>
-					<t:pagelink class="editlink" t:page="Edit" context="editPageContext">${editlinkMessage}</t:pagelink>
+					<t:pagelink class="editlink" t:page="Edit" context="editPageContext">${D}{editlinkMessage}</t:pagelink>
 				</li>
 				<li>
 					
 				</li>
 				<li>
-					<t:actionlink class="deletelink" t:id="delete">${message:org.trails.i18n.remove}</t:actionlink>
+					<t:actionlink class="deletelink" t:id="delete">${D}{message:org.trails.i18n.remove}</t:actionlink>
 				</li>
 			</ul>
 		</ul>
 	</p:subMenuBlock>
 	<p:navBlock>
-		<a style="font-weight:bolder;margin-left:10px" t:id="link" page="List" context="classDescriptor.type">${listAllLinkMessage}</a>
+		<a style="font-weight:bolder;margin-left:10px" t:id="link" page="List" context="classDescriptor.type">${D}{listAllLinkMessage}</a>
 	</p:navBlock>
 
-	<h1>${title}</h1>
+	<h1>${D}{title}</h1>
 
 	<br/>
 

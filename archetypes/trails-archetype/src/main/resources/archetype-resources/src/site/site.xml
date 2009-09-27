@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project name="Generated site for ${artifactId}">
+
+	<skin>
+		<groupId>org.apache.tapestry</groupId>
+		<artifactId>maven-skin</artifactId>
+		<version>1.1</version>
+	</skin>
+
+	<publishDate format="dd MMM yyyy"/>
+
+	<version/>
+
+	<body>
+
+		<menu name="${artifactId} Project">
+			<item name="About" href="index.html"/>
+		</menu>
+
+		<menu ref="reports"/>
+
+		<menu name="Powered by">
+			<item name="Tynamo" href="http://tynamo.org/"/>
+			<item name="Tapestry" href="http://tapestry.apache.org/"/>
+			<item name="Hibernate" href="https://www.hibernate.org/"/>
+			<item name="RESTeasy" href="http://www.jboss.org/resteasy/"/>
+		</menu>
+
+	</body>
+
+</project>

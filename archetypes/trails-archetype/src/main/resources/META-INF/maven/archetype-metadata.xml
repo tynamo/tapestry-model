@@ -9,8 +9,7 @@
 			</includes>
 		</fileSet>
 
-		<!-- Currently just a placeholder. -->
-		<fileSet filtered="true" packaged="false">
+		<fileSet filtered="true" packaged="true">
 			<directory>src/test/java</directory>
 		</fileSet>
 
@@ -20,7 +19,6 @@
 				<exclude>*.ico</exclude>
 				<exclude>**/*.jpg</exclude>
 				<exclude>**/*.gif</exclude>
-				<exclude>**/*.tml</exclude>
 			</excludes>
 		</fileSet>
 
@@ -31,7 +29,6 @@
 				<include>*.ico</include>
 				<include>**/*.jpg</include>
 				<include>**/*.gif</include>
-				<include>**/*.tml</include>
 			</includes>
 		</fileSet>
 
@@ -67,6 +64,18 @@
 
 		<fileSet filtered="true" packaged="false">
 			<directory>src/test/resources</directory>
+		</fileSet>
+
+		<fileSet filtered="true" packaged="false">
+			<directory>src/test/conf</directory>
+		</fileSet>
+
+		<fileSet filtered="true" packaged="false">
+			<directory>src/site</directory>
+		</fileSet>
+
+		<fileSet filtered="true" packaged="false">
+			<directory>src/test/selenium</directory>
 		</fileSet>
 
 	</fileSets>
