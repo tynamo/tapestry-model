@@ -30,8 +30,7 @@ public class HiddenAndReadonlyTest extends FunctionalTest
 		//assertNull("no hidden column", new HtmlUnitXPath("//td/a[contains(text(), 'Hidden')]").selectSingleNode(listThing2sPage));
 		HtmlPage newThing2Page = clickLinkOnPage(listThing2sPage, "New Thing2");
 		assertNull("no hidden editor", new HtmlUnitXPath("//label[text() = 'Hidden']").selectSingleNode(newThing2Page));
-		assertXPathPresent(newThing2Page,
-			"//li[contains(text(), 'foo')]//label[contains(text(), 'Read Only')]");
+		assertXPathPresent(newThing2Page, "//div[@class='t-beaneditor-row']//label[contains(text(), 'Read Only')]/following-sibling::p[contains(text(), 'foo')]");
 
 	}
 }

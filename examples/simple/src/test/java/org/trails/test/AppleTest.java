@@ -1,10 +1,9 @@
 package org.trails.test;
 
-import org.springframework.test.AbstractTransactionalDataSourceSpringContextTests;
-import org.trails.demo.Apple;
-import org.trails.persistence.PersistenceService;
+import org.trailsframework.examples.simple.entities.Apple;
+import org.trailsframework.services.PersistenceService;
 
-public class AppleTest extends AbstractTransactionalDataSourceSpringContextTests
+public class AppleTest //extends AbstractTransactionalDataSourceSpringContextTests
 {
 	PersistenceService persistenceService;
 
@@ -15,7 +14,7 @@ public class AppleTest extends AbstractTransactionalDataSourceSpringContextTests
 		apple = persistenceService.save(apple);
 	}
 
-	@Override
+	//	@Override
 	protected String[] getConfigLocations()
 	{
 		return new String[]{"applicationContext.xml"};

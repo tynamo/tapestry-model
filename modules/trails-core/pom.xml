@@ -23,6 +23,7 @@
 			</resource>
 		</resources>
 
+		<!-- IGNORE THE TESTS (just until we have time to port them to T5) -->
 		<testSourceDirectory>src/test/resources</testSourceDirectory>
 
 		<plugins>
