@@ -19,6 +19,16 @@ public class Ingredient
 
 	private String name;
 
+	public Ingredient()
+	{
+	}
+
+	public Ingredient(String amount, String name)
+	{
+		this.amount = amount;
+		this.name = name;
+	}
+
 	public String getAmount()
 	{
 		return amount;

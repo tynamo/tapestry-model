@@ -4,7 +4,17 @@
 
 	<br/>
 
-	<form t:id="form" />
+	<form t:id="form">
+		<p:ingredients>
+			<div t:type="trails/EditComposition"
+				 collection="recipe.ingredients"
+				 label="message:ingredients"
+				 clientId="literal:ingredients"
+				 collectionDescriptor="collectionDescriptor"
+				 owner="recipe"
+					/>
+		</p:ingredients>
+	</form>
 
 
 </t:layout>

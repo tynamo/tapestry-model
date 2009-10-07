@@ -1,23 +1,34 @@
-<t:layout title="literal:Trails!" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_0_0.xsd" xmlns:p="tapestry:parameter">
+<t:layout title="title" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_0_0.xsd" xmlns:p="tapestry:parameter">
 	<p:subMenuBlock>
 		<ul>
 			<ul id="local">
-				<li>
-					<a t:id="link" page="List" context="classDescriptor.type">List ${classDescriptor.pluralDisplayName}</a>
-				</li>
 			</ul>
 		</ul>
 	</p:subMenuBlock>
+	<p:navBlock>
+		<a style="font-weight:bolder;margin-left:10px" t:id="link" page="List" context="classDescriptor.type">${listAllLinkMessage}</a>
+	</p:navBlock>
 
-	<h1>Edit Page</h1>
+	<h1>${title}</h1>
 
 	<br/>
 
-	<t:beaneditform t:id="form" object="bean" model="beanModel"/>
+	<form t:id="form" clientValidation="true">
+		<t:errors/>
 
-	<t:actionlink t:id="delete">Delete</t:actionlink>
-	<t:actionlink t:id="cancel">Cancel</t:actionlink>
-
-
+		<div class="t-beaneditor">
+			<t:beaneditor object="bean" model="beanModel"/>
+			<br/>
+			<div class="t-beaneditor-row">
+				<button t:type="any" class="button" type="submit" id="save">
+					${message:org.trails.i18n.apply}
+				</button>
+				<button t:type="any" class="button" type="submit" id="saveAndReturnButton">
+					${message:org.trails.i18n.applyAndReturn}
+				</button>
+				<t:actionlink class="button" style="color:red; font-weight:bold;" t:id="cancel">${message:org.trails.i18n.cancel}</t:actionlink>
+			</div>
+		</div>
+	</form>
 
 </t:layout>
