@@ -1,7 +1,7 @@
-package org.trails.test;
+package org.tynamo.test;
 
 import junit.framework.TestCase;
-import org.trailsframework.examples.simple.entities.Thing;
+import org.tynamo.examples.simple.entities.Thing;
 
 public class ThingTest //extends TestCase
 {

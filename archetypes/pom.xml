@@ -4,16 +4,16 @@
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>archetypes</artifactId>
 	<packaging>pom</packaging>
-	<name>Trails Archetypes</name>
+	<name>Tynamo Archetypes</name>
 
 	<parent>
-		<groupId>org.trailsframework</groupId>
-		<artifactId>trails</artifactId>
-		<version>2.0.1-SNAPSHOT</version>
+		<groupId>org.tynamo</groupId>
+		<artifactId>tynamo-crud</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 
 	<modules>
-		<module>trails-archetype</module>
+		<module>tynamo-archetype</module>
 <!--
 		<module>trails-secure-archetype</module>
 -->

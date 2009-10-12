@@ -1,4 +1,4 @@
-package org.trails.test.functional;
+package org.tynamo.test.functional;
 
 import com.gargoylesoftware.htmlunit.html.HtmlOption;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;

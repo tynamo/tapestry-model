@@ -10,10 +10,10 @@
 	<moduleSets>
 		<moduleSet>
 			<includes>
-				<include>org.trailsframework:trails-core</include>
-				<include>org.trailsframework:trails-hibernate</include>
-				<include>org.trailsframework:trails-test</include>
-				<include>org.trailsframework:trails-security</include>
+				<include>org.tynamo:tynamo-crud-core</include>
+				<include>org.tynamo:tynamo-crud-hibernate</include>
+				<include>org.tynamo:tynamo-crud-test</include>
+				<include>org.tynamo:tynamo-crud-security</include>
 			</includes>
 
 			<binaries>

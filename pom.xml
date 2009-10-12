@@ -1,35 +1,32 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
-	<name>Trails</name>
-	<url>http://trails.codehaus.org/</url>
+	<name>Tynamo Model-Driven CRUD web framework</name>
+	<url>http://tynamo.codehaus.org/</url>
 
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.trailsframework</groupId>
-	<artifactId>trails</artifactId>
+	<groupId>org.tynamo</groupId>
+	<artifactId>tynamo-crud</artifactId>
 	<packaging>pom</packaging>
-	<version>2.0.1-SNAPSHOT</version>
+	<version>0.0.1-SNAPSHOT</version>
 
 	<parent>
-		<groupId>org.trailsframework</groupId>
-		<artifactId>trails-parent</artifactId>
-		<version>2.1.0</version>
+		<groupId>org.tynamo</groupId>
+		<artifactId>tynamo-parent</artifactId>
+		<version>0.0.1</version>
 	</parent>
 
 	<modules>
-	<!--
-		<module>codehaus-unity-skin</module>
-		-->
-		<module>modules</module>
+		<module>tynamo-crud-modules</module>
 		<module>examples</module>
 		<module>archetypes</module>
 	</modules>
 
 	<distributionManagement>
 		<site>
-			<id>trails-site</id>
+			<id>tynamo-site</id>
 			<!-- Note the url. Only static files deployed in /constant/ can be decorated by Unity -->
-			<url>dav:https://dav.codehaus.org/trails/constant/site/</url>
+			<url>dav:https://dav.codehaus.org/tynamo/constant/</url>
 		</site>
 	</distributionManagement>
 	
@@ -37,26 +34,26 @@
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
-				<groupId>org.trailsframework</groupId>
-				<artifactId>trails-core</artifactId>
-				<version>2.0.1-SNAPSHOT</version>
+				<groupId>org.tynamo</groupId>
+				<artifactId>tynamo-crud-core</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
 			<dependency>
-				<groupId>org.trailsframework</groupId>
-				<artifactId>trails-hibernate</artifactId>
-				<version>2.0.1-SNAPSHOT</version>
+				<groupId>org.tynamo</groupId>
+				<artifactId>tynamo-crud-hibernate</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
 			<dependency>
-				<groupId>org.trailsframework.examples</groupId>
+				<groupId>org.tynamo.examples</groupId>
 				<artifactId>recipe</artifactId>
 				<type>war</type>
-				<version>2.0.1-SNAPSHOT</version>
+				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
 			<dependency>
-				<groupId>org.trailsframework</groupId>
-				<artifactId>trails-web</artifactId>
+				<groupId>org.tynamo</groupId>
+				<artifactId>tynamo-crud-web</artifactId>
 				<type>war</type>
-				<version>2.0.1-SNAPSHOT</version>
+				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

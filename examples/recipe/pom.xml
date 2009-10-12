@@ -3,15 +3,15 @@
 
 	<parent>
 		<artifactId>examples</artifactId>
-		<groupId>org.trailsframework</groupId>
-		<version>2.0.1-SNAPSHOT</version>
+		<groupId>org.tynamo</groupId>
+		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.trailsframework.examples</groupId>
+	<groupId>org.tynamo.examples</groupId>
 	<artifactId>recipe</artifactId>
 	<packaging>war</packaging>
-	<name>Trails Example - Recipe</name>
+	<name>Tynamo Example - Recipe</name>
 
 	<build>
 		<finalName>recipe</finalName>
@@ -96,7 +96,7 @@
 				<artifactId>tapestry-component-report</artifactId>
 				<version>${tapestry-release-version}</version>
 				<configuration>
-					<rootPackage>org.trailsframework.examples.recipe</rootPackage>
+					<rootPackage>org.tynamo.examples.recipe</rootPackage>
 				</configuration>
 			</plugin>
 		</plugins>
@@ -117,20 +117,20 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.trailsframework</groupId>
-			<artifactId>trails-hibernate</artifactId>
+			<groupId>org.tynamo</groupId>
+			<artifactId>tynamo-crud-hibernate</artifactId>
 		</dependency>
 
 		<dependency>
-			<groupId>org.trailsframework</groupId>
-			<artifactId>trails-web</artifactId>
+			<groupId>org.tynamo</groupId>
+			<artifactId>tynamo-crud-web</artifactId>
 			<type>war</type>
 		</dependency>
 
 		<dependency>
-			<groupId>org.trailsframework</groupId>
-			<artifactId>trails-test</artifactId>
-			<version>2.0.1-SNAPSHOT</version>
+			<groupId>org.tynamo</groupId>
+			<artifactId>tynamo-crud-test</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
 			<scope>test</scope>
 		</dependency>
 

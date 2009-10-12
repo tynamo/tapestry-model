@@ -2,15 +2,15 @@
 
 	<parent>
 		<artifactId>examples</artifactId>
-		<groupId>org.trailsframework</groupId>
+		<groupId>org.tynamo</groupId>
 		<version>1.3-SNAPSHOT</version>
 	</parent>
 
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.trailsframework.examples</groupId>
+	<groupId>org.tynamo.examples</groupId>
 	<artifactId>security</artifactId>
 	<packaging>war</packaging>
-	<name>Trails Example - Security</name>
+	<name>Tynamo Example - Security</name>
 
 	<build>
 		<finalName>security</finalName>
@@ -83,13 +83,13 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>org.trailsframework</groupId>
-			<artifactId>trails-security</artifactId>
+			<groupId>org.tynamo</groupId>
+			<artifactId>tynamo-security</artifactId>
 			<version>1.3-SNAPSHOT</version>
 		</dependency>
 		<dependency>
-			<groupId>org.trailsframework</groupId>
-			<artifactId>trails-test</artifactId>
+			<groupId>org.tynamo</groupId>
+			<artifactId>tynamo-test</artifactId>
 			<version>1.3-SNAPSHOT</version>
 			<scope>test</scope>
 		</dependency>

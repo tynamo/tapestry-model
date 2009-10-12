@@ -1,7 +1,7 @@
-package org.trails.test;
+package org.tynamo.test;
 
-import org.trailsframework.examples.simple.entities.Apple;
-import org.trailsframework.services.PersistenceService;
+import org.tynamo.examples.simple.entities.Apple;
+import org.tynamo.services.PersistenceService;
 
 public class AppleTest //extends AbstractTransactionalDataSourceSpringContextTests
 {

@@ -10,11 +10,11 @@
 	<moduleSets>
 		<moduleSet>
 			<includes>
-				<include>org.trailsframework.examples:simple</include>
-				<include>org.trailsframework.examples:recipe</include>
-				<include>org.trailsframework.examples:security</include>
-				<include>org.trailsframework.examples:ajaxlist</include>
-				<include>org.trailsframework.examples:compass-library</include>
+				<include>org.tynamo.examples:simple</include>
+				<include>org.tynamo.examples:recipe</include>
+				<include>org.tynamo.examples:security</include>
+				<include>org.tynamo.examples:ajaxlist</include>
+				<include>org.tynamo.examples:compass-library</include>
 			</includes>
 
 			<binaries>
