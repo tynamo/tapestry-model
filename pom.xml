@@ -3,21 +3,21 @@
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>modules</artifactId>
 	<packaging>pom</packaging>
-	<name>Trails Modules</name>
+	<name>Tynamo Modules</name>
 
 	<parent>
-		<groupId>org.trailsframework</groupId>
-		<artifactId>trails</artifactId>
-		<version>2.0.1-SNAPSHOT</version>
+		<groupId>org.tynamo</groupId>
+		<artifactId>tynamo-crud</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 
 	<modules>
-		<module>trails-test</module>
-		<module>trails-core</module>
-		<module>trails-hibernate</module>
-<!--		<module>trails-security</module>-->
-		<module>trails-web</module>
-<!--	<module>trails-jbpm</module>  -->
+		<module>tynamo-crud-test</module>
+		<module>tynamo-crud-core</module>
+		<module>tynamo-crud-hibernate</module>
+<!--		<module>tynamo-security</module>-->
+		<module>tynamo-crud-web</module>
+<!--	<module>tynamo-jbpm</module>  -->
 	</modules>
 
 	<build>
@@ -138,7 +138,7 @@
 				-->
 				<inherited>true</inherited>
 				<configuration>
-					<configLocation>trails-checkstyle.xml</configLocation>
+					<configLocation>tynamo-checkstyle.xml</configLocation>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -202,7 +202,7 @@
 						<version>2.2-SNAPSHOT</version>
 						<inherited>true</inherited>
 						<configuration>
-							<configLocation>../trails-checkstyle.xml</configLocation>
+							<configLocation>../tynamo-checkstyle.xml</configLocation>
 						</configuration>
 					</plugin>
 				</plugins>

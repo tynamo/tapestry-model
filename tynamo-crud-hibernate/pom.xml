@@ -1,0 +1,82 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>tynamo-crud-hibernate</artifactId>
+	<name>Tynamo CRUD Hibernate</name>
+	<packaging>jar</packaging>
+
+	<parent>
+		<artifactId>modules</artifactId>
+		<groupId>org.tynamo</groupId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+
+	<build>
+		<testSourceDirectory>src/test/resources</testSourceDirectory>
+	
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+				<archive>
+					<manifestEntries>
+					<Tapestry-Module-Classes>org.tynamo.hibernate.services.TrailsHibernateModule</Tapestry-Module-Classes>
+					</manifestEntries>
+				</archive>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.tynamo</groupId>
+			<artifactId>tynamo-crud-core</artifactId>
+		</dependency>
+<!--
+		<dependency>
+			<groupId>org.tynamo</groupId>
+			<artifactId>tynamo-crud-test</artifactId>
+			<version>${tynamo-release-version}</version>
+			<scope>test</scope>
+		</dependency>
+-->
+		<dependency>
+			<groupId>org.apache.tapestry</groupId>
+			<artifactId>tapestry-hibernate</artifactId>
+			<version>${tapestry-release-version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>hsqldb</groupId>
+			<artifactId>hsqldb</artifactId>
+			<version>1.8.0.7</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>3.1.0.GA</version>
+			<exclusions>
+				<!-- Make sure we use the version defined by tapestry-ioc. -->
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-api</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>org.testng</groupId>
+			<artifactId>testng</artifactId>
+			<version>5.1</version>
+			<classifier>jdk15</classifier>
+			<scope>test</scope>
+		</dependency>
+
+	</dependencies>
+
+</project>
