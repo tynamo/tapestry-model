@@ -1,9 +1,9 @@
 package org.tynamo.descriptor.annotation;
 
 import org.tynamo.descriptor.extension.BlobDescriptorExtension;
-import org.tynamo.descriptor.TrailsPropertyDescriptor;
+import org.tynamo.descriptor.TynamoPropertyDescriptor;
 
-public class BlobDescriptorAnnotationHandler extends AbstractAnnotationHandler implements DescriptorAnnotationHandler<BlobDescriptor, TrailsPropertyDescriptor>
+public class BlobDescriptorAnnotationHandler extends AbstractAnnotationHandler implements DescriptorAnnotationHandler<BlobDescriptor, TynamoPropertyDescriptor>
 {
 
 	public BlobDescriptorAnnotationHandler()
@@ -11,7 +11,7 @@ public class BlobDescriptorAnnotationHandler extends AbstractAnnotationHandler i
 		super();
 	}
 
-	public TrailsPropertyDescriptor decorateFromAnnotation(BlobDescriptor propertyDescriptorAnno, TrailsPropertyDescriptor descriptor)
+	public TynamoPropertyDescriptor decorateFromAnnotation(BlobDescriptor propertyDescriptorAnno, TynamoPropertyDescriptor descriptor)
 	{
 		BlobDescriptorExtension blobDescriptor = new BlobDescriptorExtension(descriptor.getPropertyType());
 		setPropertiesFromAnnotation(propertyDescriptorAnno, blobDescriptor);

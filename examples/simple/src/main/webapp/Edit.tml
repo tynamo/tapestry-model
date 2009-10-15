@@ -22,13 +22,13 @@
 			<br/>
 			<div class="t-beaneditor-row">
 				<button t:type="any" class="button" type="submit" id="save">
-					${message:org.trails.i18n.apply}
+					${message:org.tynamo.i18n.apply}
 				</button>
 				<button t:type="any" class="button" type="submit" id="saveAndReturnButton">
-					${message:org.trails.i18n.applyAndReturn}
+					${message:org.tynamo.i18n.applyAndReturn}
 				</button>
 				&nbsp; or &nbsp;
-				<t:actionlink class="button" style="color:red; font-weight:bold;" t:id="cancel">${message:org.trails.i18n.cancel}</t:actionlink>
+				<t:actionlink class="button" style="color:red; font-weight:bold;" t:id="cancel">${message:org.tynamo.i18n.cancel}</t:actionlink>
 			</div>
 		</div>
 	</form>

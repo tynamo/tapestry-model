@@ -9,8 +9,8 @@ import org.apache.tapestry5.services.ContextValueEncoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.tynamo.descriptor.CollectionDescriptor;
-import org.tynamo.descriptor.TrailsClassDescriptor;
-import org.tynamo.descriptor.TrailsPropertyDescriptor;
+import org.tynamo.descriptor.TynamoClassDescriptor;
+import org.tynamo.descriptor.TynamoPropertyDescriptor;
 import org.tynamo.hibernate.pages.HibernateEditPage;
 import org.tynamo.util.DisplayNameUtils;
 
@@ -30,11 +30,11 @@ public class EditCompositionPage extends HibernateEditPage
 
 	final void onActivate(Class clazz, String parentId, String property, String id) throws Exception
 	{
-		TrailsPropertyDescriptor propertyDescriptor =
+		TynamoPropertyDescriptor propertyDescriptor =
 				getDescriptorService().getClassDescriptor(clazz).getPropertyDescriptor(property);
 		collectionDescriptor = ((CollectionDescriptor) propertyDescriptor);
 
-		TrailsClassDescriptor classDescriptor =
+		TynamoClassDescriptor classDescriptor =
 				getDescriptorService().getClassDescriptor(collectionDescriptor.getElementType());
 		Object bean = contextValueEncoder.toValue(classDescriptor.getType(), id);
 		BeanModel beanModel = createBeanModel(classDescriptor.getType());

@@ -1,8 +1,8 @@
 package org.tynamo.descriptor.annotation;
 
-import org.tynamo.descriptor.TrailsClassDescriptor;
+import org.tynamo.descriptor.TynamoClassDescriptor;
 
-public class ClassDescriptorAnnotationHandler extends AbstractAnnotationHandler implements DescriptorAnnotationHandler<ClassDescriptor, TrailsClassDescriptor>
+public class ClassDescriptorAnnotationHandler extends AbstractAnnotationHandler implements DescriptorAnnotationHandler<ClassDescriptor, TynamoClassDescriptor>
 {
 
 	public ClassDescriptorAnnotationHandler()
@@ -11,7 +11,7 @@ public class ClassDescriptorAnnotationHandler extends AbstractAnnotationHandler 
 		// TODO Auto-generated constructor stub
 	}
 
-	public TrailsClassDescriptor decorateFromAnnotation(ClassDescriptor annotation, TrailsClassDescriptor descriptor)
+	public TynamoClassDescriptor decorateFromAnnotation(ClassDescriptor annotation, TynamoClassDescriptor descriptor)
 	{
 		/**
 		 * !! This is how we get our properties migrated from our

@@ -8,14 +8,14 @@ import org.apache.tapestry5.ioc.ServiceBinder;
 import org.apache.tapestry5.ioc.annotations.SubModule;
 import org.apache.tapestry5.upload.services.UploadSymbols;
 import org.tynamo.builder.Builder;
-import org.tynamo.services.TrailsCoreModule;
-import org.tynamo.hibernate.TrailsHibernateSymbols;
+import org.tynamo.services.TynamoCoreModule;
+import org.tynamo.hibernate.TynamoHibernateSymbols;
 
 /**
  * This module is automatically included as part of the Tapestry IoC Registry, it's a good place to configure and extend
- * Trails, or to place your own service definitions.
+ * Tynamo, or to place your own service definitions.
  */
-@SubModule(value = {TrailsCoreModule.class, HibernateModule.class})
+@SubModule(value = {TynamoCoreModule.class, HibernateModule.class})
 public class AppModule
 {
 
@@ -46,7 +46,7 @@ public class AppModule
 		configuration.add(UploadSymbols.REQUESTSIZE_MAX, "2048000");
 		configuration.add(UploadSymbols.FILESIZE_MAX, "2048000");
 
-		configuration.add(TrailsHibernateSymbols.IGNORE_NON_HIBERNATE_TYPES, "true");
+		configuration.add(TynamoHibernateSymbols.IGNORE_NON_HIBERNATE_TYPES, "true");
 	}
 
 	/**

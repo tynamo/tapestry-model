@@ -30,7 +30,7 @@
 
 			<div id="navcolumn">
 				<h5>Trails</h5>
-				<t:trails.ListPageLinkList/>
+				<t:tynamo.ListPageLinkList/>
 			</div>
 
 			<div id="nav">
@@ -38,7 +38,7 @@
 					<h2 class="accessibility">${message:navigationMenu}</h2>
 					<ul id="primary-nav" class="menuList">
 						<li class="selected">
-							<t:pagelink page="Start">${message:org.trails.i18n.home}</t:pagelink>
+							<t:pagelink page="Start">${message:org.tynamo.i18n.home}</t:pagelink>
 						</li>
 						<t:delegate to="navBlock" />
 				  </ul>
@@ -64,7 +64,7 @@
 			</div>
 		<span class="left">Powered by Trails</span>
 		<span class="right" style="margin-right: 10px;">
-			© 2004-2008 <a href="http://trails.codehaus.org/">Trails Framework</a>
+			© 2004-2008 <a href="http://tynamo.codehaus.org/">Trails Framework</a>
 		</span>
 
 		</div>

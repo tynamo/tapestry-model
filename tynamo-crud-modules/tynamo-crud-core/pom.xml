@@ -43,7 +43,7 @@
 				<configuration>
 					<archive>
 						<manifestEntries>
-							<Tapestry-Module-Classes>org.tynamo.services.TrailsCoreModule
+							<Tapestry-Module-Classes>org.tynamo.services.TynamoCoreModule
 							</Tapestry-Module-Classes>
 						</manifestEntries>
 					</archive>

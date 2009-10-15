@@ -1,14 +1,14 @@
 package org.tynamo.builder;
 
 import org.slf4j.Logger;
-import org.tynamo.exception.TrailsRuntimeException;
+import org.tynamo.exception.TynamoRuntimeException;
 
 import java.lang.reflect.Constructor;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Fulfils the "Director" role in the Trails implementation of
+ * Fulfils the "Director" role in the Tynamo implementation of
  * GOF's <a href="http://en.wikipedia.org/wiki/Builder_pattern">Builder pattern</a>
  *
  * Constructs an object using the Builder interface
@@ -67,7 +67,7 @@ public class BuilderDirector
 		} catch (Exception ex)
 		{
 			logger.error(String.format("Can't create an instance of %s using an empty constructor.", type));
-			throw new TrailsRuntimeException(ex, type);
+			throw new TynamoRuntimeException(ex, type);
 		}
 	}
 }

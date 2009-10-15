@@ -5,12 +5,12 @@ import ognl.OgnlException;
 import org.apache.tapestry5.ioc.services.PropertyAdapter;
 import org.apache.tapestry5.services.DataTypeAnalyzer;
 import org.apache.tapestry5.beaneditor.DataType;
-import org.tynamo.descriptor.TrailsClassDescriptor;
-import org.tynamo.descriptor.TrailsPropertyDescriptor;
+import org.tynamo.descriptor.TynamoClassDescriptor;
+import org.tynamo.descriptor.TynamoPropertyDescriptor;
 
 import java.util.Map;
 
-public class TrailsDataTypeAnalyzer implements DataTypeAnalyzer
+public class TynamoDataTypeAnalyzer implements DataTypeAnalyzer
 {
 
 	private final DescriptorService descriptorService;
@@ -20,7 +20,7 @@ public class TrailsDataTypeAnalyzer implements DataTypeAnalyzer
 	 * @param descriptorService
 	 * @param editorMap A map where the keys are OGNL expressions and the values are data type identifier used to select editor (or display) blocks
 	 */
-	public TrailsDataTypeAnalyzer(final DescriptorService descriptorService, final Map<String, String> editorMap)
+	public TynamoDataTypeAnalyzer(final DescriptorService descriptorService, final Map<String, String> editorMap)
 	{
 		this.descriptorService = descriptorService;
 		this.editorMap = editorMap;
@@ -36,7 +36,7 @@ public class TrailsDataTypeAnalyzer implements DataTypeAnalyzer
 	{
 		if (adapter.getAnnotation(DataType.class) == null)
 		{
-			TrailsPropertyDescriptor propertyDescriptor = getPropertyDescriptor(adapter);
+			TynamoPropertyDescriptor propertyDescriptor = getPropertyDescriptor(adapter);
 			for (Map.Entry<String, String> entry : editorMap.entrySet())
 			{
 				try
@@ -57,11 +57,11 @@ public class TrailsDataTypeAnalyzer implements DataTypeAnalyzer
 		return null;
 	}
 
-	private TrailsPropertyDescriptor getPropertyDescriptor(PropertyAdapter adapter)
+	private TynamoPropertyDescriptor getPropertyDescriptor(PropertyAdapter adapter)
 	{
 
-		TrailsClassDescriptor classDescriptor = descriptorService.getClassDescriptor(adapter.getBeanType());
-		TrailsPropertyDescriptor propertyDescriptor = null;
+		TynamoClassDescriptor classDescriptor = descriptorService.getClassDescriptor(adapter.getBeanType());
+		TynamoPropertyDescriptor propertyDescriptor = null;
 
 		if (classDescriptor != null)
 		{

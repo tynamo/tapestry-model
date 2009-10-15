@@ -9,7 +9,7 @@ import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.services.PropertyAccess;
-import org.tynamo.descriptor.TrailsClassDescriptor;
+import org.tynamo.descriptor.TynamoClassDescriptor;
 import org.tynamo.services.DescriptorService;
 import org.tynamo.services.PersistenceService;
 import org.tynamo.util.DisplayNameUtils;
@@ -48,7 +48,7 @@ public class HibernateListPage
 	private Object model;
 
 	@Property(write = false)
-	private TrailsClassDescriptor classDescriptor;
+	private TynamoClassDescriptor classDescriptor;
 
 	protected void onActivate(Class clazz) throws Exception
 	{

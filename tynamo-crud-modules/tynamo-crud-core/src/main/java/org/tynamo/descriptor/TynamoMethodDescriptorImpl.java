@@ -2,7 +2,7 @@ package org.tynamo.descriptor;
 
 import java.lang.reflect.Method;
 
-public class TrailsMethodDescriptorImpl extends TrailsDescriptor implements IMethodDescriptor
+public class TynamoMethodDescriptorImpl extends TynamoDescriptor implements IMethodDescriptor
 {
 
 	private String name;
@@ -12,12 +12,12 @@ public class TrailsMethodDescriptorImpl extends TrailsDescriptor implements IMet
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// constructors
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////
-	public TrailsMethodDescriptorImpl(IMethodDescriptor methodDescriptor)
+	public TynamoMethodDescriptorImpl(IMethodDescriptor methodDescriptor)
 	{
 		super(methodDescriptor);
 	}
 
-	public TrailsMethodDescriptorImpl(Class beanType, String name, Class returnType, Class[] argumentTypes)
+	public TynamoMethodDescriptorImpl(Class beanType, String name, Class returnType, Class[] argumentTypes)
 	{
 		super(returnType);
 		this.beanType = beanType;
@@ -97,6 +97,6 @@ public class TrailsMethodDescriptorImpl extends TrailsDescriptor implements IMet
 	@Override
 	public Object clone()
 	{
-		return new TrailsMethodDescriptorImpl(this);
+		return new TynamoMethodDescriptorImpl(this);
 	}
 }

@@ -4,7 +4,7 @@ import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.beaneditor.BeanModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.tynamo.descriptor.TrailsClassDescriptor;
+import org.tynamo.descriptor.TynamoClassDescriptor;
 import org.tynamo.pages.ModelPage;
 
 
@@ -13,14 +13,14 @@ public abstract class HibernateModelPage extends ModelPage
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(HibernateModelPage.class);
 
-	private TrailsClassDescriptor classDescriptor;
+	private TynamoClassDescriptor classDescriptor;
 
 	@Property(write = false)
 	private BeanModel beanModel;
 
 	private Object bean;
 
-	protected void activate(Object bean, TrailsClassDescriptor classDescriptor, BeanModel beanModel)
+	protected void activate(Object bean, TynamoClassDescriptor classDescriptor, BeanModel beanModel)
 	{
 		this.bean = bean;
 		this.classDescriptor = classDescriptor;
@@ -49,7 +49,7 @@ public abstract class HibernateModelPage extends ModelPage
 		return new Object[]{getClassDescriptor().getType(), getBean()};
 	}
 
-	public final TrailsClassDescriptor getClassDescriptor()
+	public final TynamoClassDescriptor getClassDescriptor()
 	{
 		return classDescriptor;
 	}

@@ -3,7 +3,7 @@ package org.tynamo.examples.simple.entities;
 import org.tynamo.descriptor.annotation.BlobDescriptor;
 import org.tynamo.descriptor.annotation.PropertyDescriptor;
 import org.tynamo.descriptor.extension.BlobDescriptorExtension;
-import org.tynamo.descriptor.extension.ITrailsBlob;
+import org.tynamo.descriptor.extension.ITynamoBlob;
 
 import javax.persistence.*;
 
@@ -17,7 +17,7 @@ public class Person
 
 	private String lastName;
 
-//	private ITrailsBlob photo = new TrailsBlobImpl();
+//	private ITynamoBlob photo = new TynamoBlobImpl();
 
 	private Car car;
 
@@ -95,12 +95,12 @@ public class Person
 	@BlobDescriptor(renderType = BlobDescriptorExtension.RenderType.ICON)
 	@Lob
 	@Column(length = 1048576)  // Use 1Mb maximum length. (MEDIUMBLOB in MySQL.)
-	public ITrailsBlob getPhoto()
+	public ITynamoBlob getPhoto()
 	{
 		return photo;
 	}
 
-	public void setPhoto(ITrailsBlob photo)
+	public void setPhoto(ITynamoBlob photo)
 	{
 		this.photo = photo;
 	}

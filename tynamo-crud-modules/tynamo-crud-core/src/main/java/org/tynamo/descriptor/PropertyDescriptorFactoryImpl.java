@@ -28,15 +28,15 @@ public class PropertyDescriptorFactoryImpl implements PropertyDescriptorFactory
 	 * @return
 	 * @throws Exception
 	 */
-	public ArrayList<TrailsPropertyDescriptor> buildPropertyDescriptors(Class beanType, BeanInfo beanInfo) throws Exception
+	public ArrayList<TynamoPropertyDescriptor> buildPropertyDescriptors(Class beanType, BeanInfo beanInfo) throws Exception
 	{
-		ArrayList<TrailsPropertyDescriptor> result = new ArrayList<TrailsPropertyDescriptor>();
+		ArrayList<TynamoPropertyDescriptor> result = new ArrayList<TynamoPropertyDescriptor>();
 		for (PropertyDescriptor beanPropDescriptor : beanInfo.getPropertyDescriptors())
 		{
 			if (!Utils.isExcluded(beanPropDescriptor.getName(), propertyExcludes))
 			{
 				Class<?> propertyType = beanPropDescriptor.getPropertyType();
-				TrailsPropertyDescriptorImpl propDescriptor = new TrailsPropertyDescriptorImpl(beanType, propertyType);
+				TynamoPropertyDescriptorImpl propDescriptor = new TynamoPropertyDescriptorImpl(beanType, propertyType);
 				BeanUtils.copyProperties(propDescriptor, beanPropDescriptor);
 				result.add(propDescriptor);
 			}

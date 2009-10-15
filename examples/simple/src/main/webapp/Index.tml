@@ -13,8 +13,8 @@
 	</p:navBlock>
 	
 
-	<h1>${message:org.trails.welcome}</h1>
+	<h1>${message:org.tynamo.welcome}</h1>
 
-	<t:trails.ListPageLinkList/>
+	<t:tynamo.ListPageLinkList/>
 
 </t:layout>

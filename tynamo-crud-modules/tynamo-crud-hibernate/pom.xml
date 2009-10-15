@@ -22,7 +22,7 @@
 				<configuration>
 				<archive>
 					<manifestEntries>
-					<Tapestry-Module-Classes>org.tynamo.hibernate.services.TrailsHibernateModule</Tapestry-Module-Classes>
+					<Tapestry-Module-Classes>org.tynamo.hibernate.services.TynamoHibernateModule</Tapestry-Module-Classes>
 					</manifestEntries>
 				</archive>
 				</configuration>

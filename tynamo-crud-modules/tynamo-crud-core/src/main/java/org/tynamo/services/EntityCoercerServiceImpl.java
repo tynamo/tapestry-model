@@ -1,7 +1,7 @@
 package org.tynamo.services;
 
 import org.apache.tapestry5.ioc.services.Coercion;
-import org.tynamo.descriptor.TrailsClassDescriptor;
+import org.tynamo.descriptor.TynamoClassDescriptor;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,7 +21,7 @@ public class EntityCoercerServiceImpl implements EntityCoercerService
 		stringToClass = new HashMap<String, Class>();
 		classToString = new HashMap<Class, String>();
 
-		for (TrailsClassDescriptor classDescriptor : descriptorService.getAllDescriptors())
+		for (TynamoClassDescriptor classDescriptor : descriptorService.getAllDescriptors())
 		{
 			classToString(classDescriptor.getType());
 		}

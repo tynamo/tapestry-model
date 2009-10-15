@@ -3,14 +3,14 @@ package org.tynamo.descriptor;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.tynamo.exception.TrailsRuntimeException;
+import org.tynamo.exception.TynamoRuntimeException;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
 
 
-public class CollectionDescriptor extends TrailsPropertyDescriptorImpl
+public class CollectionDescriptor extends TynamoPropertyDescriptorImpl
 {
 	protected static final Log LOG = LogFactory.getLog(CollectionDescriptor.class);
 
@@ -30,7 +30,7 @@ public class CollectionDescriptor extends TrailsPropertyDescriptorImpl
 
 	private boolean allowRemove = true;
 
-	public CollectionDescriptor(Class beanType, TrailsPropertyDescriptor descriptor)
+	public CollectionDescriptor(Class beanType, TynamoPropertyDescriptor descriptor)
 	{
 		super(beanType, descriptor);
 	}
@@ -51,7 +51,7 @@ public class CollectionDescriptor extends TrailsPropertyDescriptorImpl
 	/**
 	 * (non-Javadoc)
 	 *
-	 * @see org.tynamo.descriptor.TrailsPropertyDescriptorImpl#isCollection()
+	 * @see org.tynamo.descriptor.TynamoPropertyDescriptorImpl#isCollection()
 	 */
 	public boolean isCollection()
 	{
@@ -218,7 +218,7 @@ public class CollectionDescriptor extends TrailsPropertyDescriptorImpl
 			return defaultValue;
 		} catch (Exception e)
 		{
-			throw new TrailsRuntimeException(e);
+			throw new TynamoRuntimeException(e);
 		}
 
 		return addMethod.getName();

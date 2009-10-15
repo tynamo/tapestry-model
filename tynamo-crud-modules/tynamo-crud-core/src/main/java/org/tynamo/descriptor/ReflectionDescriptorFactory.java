@@ -26,7 +26,7 @@ public class ReflectionDescriptorFactory implements DescriptorFactory
 	private final List<DescriptorDecorator> decorators;
 
 	/**
-	 * @param decorators				In the default Trails configuration this will contain a HibernateDescriptorDecorator and an AnnotationDecorator
+	 * @param decorators				In the default Tynamo configuration this will contain a HibernateDescriptorDecorator and an AnnotationDecorator
 	 * @param methodDescriptorFactory
 	 * @param propertyDescriptorFactory
 	 */
@@ -43,11 +43,11 @@ public class ReflectionDescriptorFactory implements DescriptorFactory
 	 * @param type The type to build for
 	 * @return a completed class descriptor
 	 */
-	public TrailsClassDescriptor buildClassDescriptor(Class type)
+	public TynamoClassDescriptor buildClassDescriptor(Class type)
 	{
 		try
 		{
-			TrailsClassDescriptor descriptor = new TrailsClassDescriptorImpl(type);
+			TynamoClassDescriptor descriptor = new TynamoClassDescriptorImpl(type);
 			BeanInfo beanInfo = Introspector.getBeanInfo(type);
 
 			BeanUtils.copyProperties(descriptor, beanInfo.getBeanDescriptor());
@@ -81,7 +81,7 @@ public class ReflectionDescriptorFactory implements DescriptorFactory
 	 * @param decorators
 	 * @return The resulting descriptor after all decorators are applied
 	 */
-	private TrailsClassDescriptor applyDecorators(TrailsClassDescriptor descriptor)
+	private TynamoClassDescriptor applyDecorators(TynamoClassDescriptor descriptor)
 	{
 		for (DescriptorDecorator decorator : decorators)
 		{

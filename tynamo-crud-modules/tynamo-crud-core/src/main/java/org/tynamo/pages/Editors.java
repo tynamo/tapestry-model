@@ -16,7 +16,7 @@ import org.chenillekit.tapestry.core.components.Editor;
 import org.tynamo.components.EditComposition;
 import org.tynamo.descriptor.CollectionDescriptor;
 import org.tynamo.descriptor.IdentifierDescriptor;
-import org.tynamo.descriptor.TrailsPropertyDescriptor;
+import org.tynamo.descriptor.TynamoPropertyDescriptor;
 import org.tynamo.services.DescriptorService;
 import org.tynamo.services.PersistenceService;
 import org.tynamo.util.GenericSelectionModel;
@@ -71,14 +71,14 @@ public class Editors
 //, "owner=beanEditContext.object"})
 	private EditComposition editComposition;
 
-	public TrailsPropertyDescriptor getPropertyDescriptor()
+	public TynamoPropertyDescriptor getPropertyDescriptor()
 	{
 		return descriptorService.getClassDescriptor(beanEditContext.getBeanClass()).getPropertyDescriptor(propertyEditContext.getPropertyId());
 	}
 
 	public SelectModel getSelectModel()
 	{
-		TrailsPropertyDescriptor propertyDescriptor = getPropertyDescriptor();
+		TynamoPropertyDescriptor propertyDescriptor = getPropertyDescriptor();
 
 		if (propertyDescriptor.isCollection())
 		{
@@ -97,7 +97,7 @@ public class Editors
 	 */
 	public ValueEncoder getValueEncoderForProperty()
 	{
-		TrailsPropertyDescriptor propertyDescriptor = getPropertyDescriptor();
+		TynamoPropertyDescriptor propertyDescriptor = getPropertyDescriptor();
 		if (propertyDescriptor.isCollection())
 		{
 			CollectionDescriptor collectionDescriptor = (CollectionDescriptor) propertyDescriptor;

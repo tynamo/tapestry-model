@@ -37,7 +37,7 @@ public class PropertyDisplayBlocks
 
 /*
 // We can't do fancy stuff until http://issues.apache.org/jira/browse/TAP5-829 is fixed
-	public TrailsPropertyDescriptor getPropertyDescriptor()
+	public TynamoPropertyDescriptor getPropertyDescriptor()
 	{
 		return descriptorService.getClassDescriptor(beanEditContext.getBeanClass()).getPropertyDescriptor(propertyOutputContext.getPropertyId());
 	}

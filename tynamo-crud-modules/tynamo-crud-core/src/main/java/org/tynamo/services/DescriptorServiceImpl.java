@@ -11,62 +11,62 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * This class builds and caches TrailsClassDescriptors.
+ * This class builds and caches TynamoClassDescriptors.
  * Descriptors are build during application startup.
  */
 public class DescriptorServiceImpl implements DescriptorService
 {
-	private final StrategyRegistry<TrailsClassDescriptor> descriptorsRegistry;
-	private final List<TrailsClassDescriptor> descriptors;
+	private final StrategyRegistry<TynamoClassDescriptor> descriptorsRegistry;
+	private final List<TynamoClassDescriptor> descriptors;
 
 	/**
 	 * For each class in types, a descriptor is built by the DescriptorFactory.  Next it is decorated
 	 * by each DescriptorDecorator in turn.  Finally it is cached.
 	 *
-	 * @param types			 In the Trails default configuration this will be set to all classes in the Hibernate config
-	 * @param descriptorFactory In default Trails this will be a ReflectionDescriptorFactory
+	 * @param types			 In the Tynamo default configuration this will be set to all classes in the Hibernate config
+	 * @param descriptorFactory In default Tynamo this will be a ReflectionDescriptorFactory
 	 * @see DescriptorFactory
 	 * @see DescriptorDecorator
 	 */
 	public DescriptorServiceImpl(final Collection<Class> types, DescriptorFactory descriptorFactory)
 	{
-		Map<Class, TrailsClassDescriptor> descriptorsMap = new HashMap<Class, TrailsClassDescriptor>();
+		Map<Class, TynamoClassDescriptor> descriptorsMap = new HashMap<Class, TynamoClassDescriptor>();
 		for (Class type : types)
 		{
 			descriptorsMap.put(type, descriptorFactory.buildClassDescriptor(type));
 		}
 
 		this.descriptors = CollectionFactory.newList(descriptorsMap.values());
-		this.descriptorsRegistry = StrategyRegistry.newInstance(TrailsClassDescriptor.class, descriptorsMap, true);
+		this.descriptorsRegistry = StrategyRegistry.newInstance(TynamoClassDescriptor.class, descriptorsMap, true);
 
 		// second pass to find children
-		for (TrailsClassDescriptor classDescriptor : descriptorsMap.values())
+		for (TynamoClassDescriptor classDescriptor : descriptorsMap.values())
 		{
 			findChildren(classDescriptor);
 		}
 
 	}
 
-	public List<TrailsClassDescriptor> getAllDescriptors()
+	public List<TynamoClassDescriptor> getAllDescriptors()
 	{
 		return descriptors;
 	}
 
-	public TrailsClassDescriptor getClassDescriptor(Class type)
+	public TynamoClassDescriptor getClassDescriptor(Class type)
 	{
 		Defense.notNull(type, "type");
 		return descriptorsRegistry.get(type);
 	}
 
-	private void findChildren(TrailsClassDescriptor classDescriptor)
+	private void findChildren(TynamoClassDescriptor classDescriptor)
 	{
-		for (TrailsPropertyDescriptor propertyDescriptor : classDescriptor.getPropertyDescriptors())
+		for (TynamoPropertyDescriptor propertyDescriptor : classDescriptor.getPropertyDescriptors())
 		{
 			if (propertyDescriptor.isCollection())
 			{
 				if (((CollectionDescriptor) propertyDescriptor).isChildRelationship())
 				{
-					TrailsClassDescriptor collectionClassDescriptor = getClassDescriptor(((CollectionDescriptor) propertyDescriptor).getElementType());
+					TynamoClassDescriptor collectionClassDescriptor = getClassDescriptor(((CollectionDescriptor) propertyDescriptor).getElementType());
 					collectionClassDescriptor.setChild(true);
 				}
 				if (((CollectionDescriptor) propertyDescriptor).getInverseProperty() != null)

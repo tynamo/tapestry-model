@@ -65,7 +65,7 @@
 <!--
 	<span jwcid="@If" condition="ognl:allowRemove">
 		<input class="button" jwcid="removeButton@Submit" type="button"
-			   value="ognl:getMessage(@org.trails.util.Utils@REMOVE_MESSAGE)"
+			   value="ognl:getMessage(@org.tynamo.util.Utils@REMOVE_MESSAGE)"
 			   listener="listener:remove" disabled="ognl:page.modelNew"/>
 	</span>
 -->

@@ -7,12 +7,12 @@ import org.apache.tapestry5.ioc.services.ThreadLocale;
 import org.apache.tapestry5.services.ValidationMessagesSource;
 import org.hibernate.validator.InvalidStateException;
 import org.hibernate.validator.InvalidValue;
-import org.tynamo.descriptor.TrailsClassDescriptor;
-import org.tynamo.descriptor.TrailsPropertyDescriptor;
+import org.tynamo.descriptor.TynamoClassDescriptor;
+import org.tynamo.descriptor.TynamoPropertyDescriptor;
 import org.tynamo.util.DisplayNameUtils;
 
 
-public class HibernateValidationDelegate //extends TrailsValidationDelegate
+public class HibernateValidationDelegate //extends TynamoValidationDelegate
 {
 
 	private ValidationMessagesSource messagesSource;
@@ -27,12 +27,12 @@ public class HibernateValidationDelegate //extends TrailsValidationDelegate
 	/**
 	 * Records error messages for all the class level or method level constraints violations.
 	 */
-	public void record(TrailsClassDescriptor descriptor, InvalidStateException invalidStateException, ValidationTracker validationTracker, Messages componentMessages)
+	public void record(TynamoClassDescriptor descriptor, InvalidStateException invalidStateException, ValidationTracker validationTracker, Messages componentMessages)
 	{
 		for (InvalidValue invalidValue : invalidStateException.getInvalidValues())
 		{
 			String key = invalidValue.getMessage();
-			TrailsPropertyDescriptor propertyDescriptor = descriptor.getPropertyDescriptor(invalidValue.getPropertyName());
+			TynamoPropertyDescriptor propertyDescriptor = descriptor.getPropertyDescriptor(invalidValue.getPropertyName());
 			MessageFormatter messageFormatter = messagesSource.getValidationMessages(threadLocale.getLocale()).getFormatter(key);
 			if (propertyDescriptor != null)
 			{

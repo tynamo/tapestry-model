@@ -11,7 +11,7 @@
  */
 package org.tynamo.services;
 
-import org.tynamo.descriptor.TrailsClassDescriptor;
+import org.tynamo.descriptor.TynamoClassDescriptor;
 
 import java.util.List;
 
@@ -19,8 +19,8 @@ import java.util.List;
 public interface DescriptorService
 {
 
-	public TrailsClassDescriptor getClassDescriptor(Class type);
+	public TynamoClassDescriptor getClassDescriptor(Class type);
 
-	public List<TrailsClassDescriptor> getAllDescriptors();
+	public List<TynamoClassDescriptor> getAllDescriptors();
 
 }

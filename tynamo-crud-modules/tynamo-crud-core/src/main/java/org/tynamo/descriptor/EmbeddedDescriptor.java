@@ -1,6 +1,6 @@
 package org.tynamo.descriptor;
 
-public class EmbeddedDescriptor extends TrailsClassDescriptorImpl implements IdentifierDescriptor
+public class EmbeddedDescriptor extends TynamoClassDescriptorImpl implements IdentifierDescriptor
 {
 
 	private int index;
@@ -17,7 +17,7 @@ public class EmbeddedDescriptor extends TrailsClassDescriptorImpl implements Ide
 	// constructors
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	public EmbeddedDescriptor(Class beanType, TrailsClassDescriptor descriptor)
+	public EmbeddedDescriptor(Class beanType, TynamoClassDescriptor descriptor)
 	{
 		super(descriptor);
 		this.beanType = beanType;

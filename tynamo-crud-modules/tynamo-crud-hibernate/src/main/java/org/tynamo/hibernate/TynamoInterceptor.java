@@ -29,7 +29,7 @@ import java.io.Serializable;
  * Class required by Hibernate when you have an object with composite primary key. The isUnsaved() method is what we're
  * interested in here.
  */
-public class TrailsInterceptor extends EmptyInterceptor implements Interceptor, Serializable
+public class TynamoInterceptor extends EmptyInterceptor implements Interceptor, Serializable
 {
 
 	/**

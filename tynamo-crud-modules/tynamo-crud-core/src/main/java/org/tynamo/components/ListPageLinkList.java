@@ -3,7 +3,7 @@ package org.tynamo.components;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
-import org.tynamo.descriptor.TrailsClassDescriptor;
+import org.tynamo.descriptor.TynamoClassDescriptor;
 import org.tynamo.services.DescriptorService;
 import org.tynamo.util.DisplayNameUtils;
 
@@ -18,18 +18,18 @@ public class ListPageLinkList
 	private DescriptorService descriptorService;
 
 	@Property
-	private TrailsClassDescriptor descriptorIterator;
+	private TynamoClassDescriptor descriptorIterator;
 
 	@Inject
 	private Messages messages;
 
-	public List<TrailsClassDescriptor> getAllDescriptors()
+	public List<TynamoClassDescriptor> getAllDescriptors()
 	{
-		List<TrailsClassDescriptor> descriptors = descriptorService.getAllDescriptors();
+		List<TynamoClassDescriptor> descriptors = descriptorService.getAllDescriptors();
 
-		List<TrailsClassDescriptor> result = new ArrayList<TrailsClassDescriptor>(descriptors.size());
+		List<TynamoClassDescriptor> result = new ArrayList<TynamoClassDescriptor>(descriptors.size());
 
-		for (TrailsClassDescriptor descriptor : descriptors)
+		for (TynamoClassDescriptor descriptor : descriptors)
 		{
 			if (!descriptor.isHidden())
 			{
@@ -37,9 +37,9 @@ public class ListPageLinkList
 			}
 		}
 
-		Collections.sort(result, new Comparator<TrailsClassDescriptor>()
+		Collections.sort(result, new Comparator<TynamoClassDescriptor>()
 		{
-			public int compare(TrailsClassDescriptor o1, TrailsClassDescriptor o2)
+			public int compare(TynamoClassDescriptor o1, TynamoClassDescriptor o2)
 			{
 				return DisplayNameUtils.getDisplayName(o1, messages).compareTo(DisplayNameUtils.getDisplayName(o2, messages));
 			}

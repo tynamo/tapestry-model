@@ -12,7 +12,7 @@
 					
 				</li>
 				<li>
-					<t:actionlink class="deletelink" t:id="delete">${D}{message:org.trails.i18n.remove}</t:actionlink>
+					<t:actionlink class="deletelink" t:id="delete">${D}{message:org.tynamo.i18n.remove}</t:actionlink>
 				</li>
 			</ul>
 		</ul>

@@ -13,7 +13,7 @@ package org.tynamo.util;
 
 import ognl.Ognl;
 import ognl.OgnlException;
-import org.tynamo.exception.TrailsRuntimeException;
+import org.tynamo.exception.TynamoRuntimeException;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -22,7 +22,7 @@ import java.util.HashMap;
 public class Utils
 {
 
-	/* key used to internationalize Trails in Tapestry components and pages */
+	/* key used to internationalize Tynamo in Tapestry components and pages */
 	public static final String APPLY_MESSAGE = "org.tynamo.i18n.apply";
 	public static final String APPLY_AND_RETURN_MESSAGE = "org.tynamo.i18n.applyAndReturn";
 	public static final String REMOVE_MESSAGE = "org.tynamo.i18n.remove";
@@ -37,7 +37,7 @@ public class Utils
 			return Class.forName(className);
 		} catch (ClassNotFoundException e)
 		{
-			throw new TrailsRuntimeException(e, null);
+			throw new TynamoRuntimeException(e, null);
 		}
 	}
 
@@ -133,7 +133,7 @@ public class Utils
 			Ognl.getValue(ognlExpression + "(#member)", context, model);
 		} catch (OgnlException e)
 		{
-			throw new TrailsRuntimeException(e, model.getClass());
+			throw new TynamoRuntimeException(e, model.getClass());
 		}
 	}
 

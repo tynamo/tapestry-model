@@ -1,6 +1,6 @@
 package org.tynamo.hibernate.validation;
 
-import org.tynamo.descriptor.TrailsPropertyDescriptor;
+import org.tynamo.descriptor.TynamoPropertyDescriptor;
 import org.tynamo.exception.ValidationException;
 
 public class OrphanException extends ValidationException
@@ -11,7 +11,7 @@ public class OrphanException extends ValidationException
 		super();
 	}
 
-	public OrphanException(TrailsPropertyDescriptor descriptor, String message)
+	public OrphanException(TynamoPropertyDescriptor descriptor, String message)
 	{
 		super(descriptor, message);
 	}

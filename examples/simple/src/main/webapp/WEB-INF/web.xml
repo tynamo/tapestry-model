@@ -22,7 +22,7 @@
 		<!-- The only significant configuration for Tapestry 5, this informs Tapestry
 			of where to look for pages, components, mixins and entities. -->
 		<param-name>tapestry.app-package</param-name>
-		<param-value>org.trailsframework.examples.simple</param-value>
+		<param-value>org.tynamo.examples.simple</param-value>
 	</context-param>
 
 	<filter>

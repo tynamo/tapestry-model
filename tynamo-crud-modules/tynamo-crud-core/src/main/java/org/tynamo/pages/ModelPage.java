@@ -9,7 +9,7 @@ import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.BeanModelSource;
 import org.apache.tapestry5.services.ContextValueEncoder;
-import org.tynamo.descriptor.TrailsClassDescriptor;
+import org.tynamo.descriptor.TynamoClassDescriptor;
 import org.tynamo.services.DescriptorService;
 import org.tynamo.services.PersistenceService;
 import org.tynamo.util.DisplayNameUtils;
@@ -81,7 +81,7 @@ public abstract class ModelPage
 
 	public abstract String getTitle();
 
-	public abstract TrailsClassDescriptor getClassDescriptor();
+	public abstract TynamoClassDescriptor getClassDescriptor();
 
 	public abstract Object getBean();
 

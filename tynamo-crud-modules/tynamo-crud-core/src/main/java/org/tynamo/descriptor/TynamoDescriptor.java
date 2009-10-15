@@ -28,9 +28,9 @@ import java.util.Map;
  *         TODO To change the template for this generated type comment go to Window -
  *         Preferences - Java - Code Style - Code Templates
  */
-public class TrailsDescriptor implements Descriptor, Serializable
+public class TynamoDescriptor implements Descriptor, Serializable
 {
-	protected static final Log LOG = LogFactory.getLog(TrailsDescriptor.class);
+	protected static final Log LOG = LogFactory.getLog(TynamoDescriptor.class);
 
 	protected Class type;
 
@@ -41,7 +41,7 @@ public class TrailsDescriptor implements Descriptor, Serializable
 	/**
 	 * @param dto
 	 */
-	public TrailsDescriptor(TrailsDescriptor dto)
+	public TynamoDescriptor(TynamoDescriptor dto)
 	{
 		try
 		{
@@ -61,7 +61,7 @@ public class TrailsDescriptor implements Descriptor, Serializable
 		}
 	}
 
-	public TrailsDescriptor(Descriptor descriptor)
+	public TynamoDescriptor(Descriptor descriptor)
 	{
 		try
 		{
@@ -82,7 +82,7 @@ public class TrailsDescriptor implements Descriptor, Serializable
 		}
 	}
 
-	public TrailsDescriptor(Class type)
+	public TynamoDescriptor(Class type)
 	{
 		this.type = type;
 	}
@@ -90,7 +90,7 @@ public class TrailsDescriptor implements Descriptor, Serializable
 	@Override
 	public Object clone()
 	{
-		return new TrailsDescriptor(this);
+		return new TynamoDescriptor(this);
 	}
 
 	public void copyFrom(Descriptor descriptor)

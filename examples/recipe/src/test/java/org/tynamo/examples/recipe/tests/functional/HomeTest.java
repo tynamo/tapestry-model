@@ -7,7 +7,7 @@ public class HomeTest extends FunctionalTest
 
 	public void testStartPage() throws Exception
 	{
-		assertXPathPresent(startPage, "//h1[contains(text(),'Welcome to Trails')]");
+		assertXPathPresent(startPage, "//h1[contains(text(),'Welcome to Tynamo')]");
 	}
 
 }

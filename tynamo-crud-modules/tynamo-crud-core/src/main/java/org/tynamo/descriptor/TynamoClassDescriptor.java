@@ -15,7 +15,7 @@ package org.tynamo.descriptor;
 
 import java.util.List;
 
-public interface TrailsClassDescriptor extends Descriptor
+public interface TynamoClassDescriptor extends Descriptor
 {
 	public Class getType();
 
@@ -32,20 +32,20 @@ public interface TrailsClassDescriptor extends Descriptor
 	/**
 	 * @return Returns the propertyDescriptors.
 	 */
-	public List<TrailsPropertyDescriptor> getPropertyDescriptors();
+	public List<TynamoPropertyDescriptor> getPropertyDescriptors();
 
 	/**
 	 * @param propertyDescriptors The propertyDescriptors to set.
 	 */
-	public void setPropertyDescriptors(List<TrailsPropertyDescriptor> propertyDescriptors);
+	public void setPropertyDescriptors(List<TynamoPropertyDescriptor> propertyDescriptors);
 
-	public TrailsPropertyDescriptor getIdentifierDescriptor();
+	public TynamoPropertyDescriptor getIdentifierDescriptor();
 
 	/**
 	 * @param string
 	 * @return
 	 */
-	public TrailsPropertyDescriptor getPropertyDescriptor(String name);
+	public TynamoPropertyDescriptor getPropertyDescriptor(String name);
 
 	/**
 	 * @return
@@ -57,7 +57,7 @@ public interface TrailsClassDescriptor extends Descriptor
 	 */
 	public void setChild(boolean child);
 
-	public List<TrailsPropertyDescriptor> getPropertyDescriptors(List<String> propertyNames);
+	public List<TynamoPropertyDescriptor> getPropertyDescriptors(List<String> propertyNames);
 
 	public boolean isAllowSave();
 
