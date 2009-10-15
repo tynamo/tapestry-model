@@ -12,7 +12,7 @@ import org.apache.tapestry5.services.BeanModelSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.tynamo.descriptor.CollectionDescriptor;
-import org.tynamo.descriptor.TrailsClassDescriptor;
+import org.tynamo.descriptor.TynamoClassDescriptor;
 import org.tynamo.services.DescriptorService;
 import org.tynamo.services.PersistenceService;
 
@@ -191,7 +191,7 @@ public class EditComposition
 
 	public final String getModelId()
 	{
-		TrailsClassDescriptor classDescriptor =
+		TynamoClassDescriptor classDescriptor =
 				descriptorService.getClassDescriptor(collectionDescriptor.getBeanType());
 		return propertyAccess.get(collectionIterator, classDescriptor.getIdentifierDescriptor().getName()).toString();
 	}

@@ -1,6 +1,6 @@
 package org.tynamo.exception;
 
-public class MetadataNotFoundException extends TrailsRuntimeException
+public class MetadataNotFoundException extends TynamoRuntimeException
 {
 
 	public MetadataNotFoundException(String message)

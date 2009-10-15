@@ -18,11 +18,11 @@ package org.tynamo.descriptor;
  *         TODO To change the template for this generated type comment go to
  *         Window - Preferences - Java - Code Style - Code Templates
  */
-public class IdentifierDescriptorImpl extends TrailsPropertyDescriptorImpl implements IdentifierDescriptor
+public class IdentifierDescriptorImpl extends TynamoPropertyDescriptorImpl implements IdentifierDescriptor
 {
 	private boolean generated = true;
 
-	public IdentifierDescriptorImpl(Class beanType, TrailsPropertyDescriptor descriptor)
+	public IdentifierDescriptorImpl(Class beanType, TynamoPropertyDescriptor descriptor)
 	{
 		super(beanType, descriptor.getPropertyType());
 		copyFrom(descriptor);

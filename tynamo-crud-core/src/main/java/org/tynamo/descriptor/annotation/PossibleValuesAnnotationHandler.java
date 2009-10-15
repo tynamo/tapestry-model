@@ -3,7 +3,7 @@
 package org.tynamo.descriptor.annotation;
 
 import org.apache.commons.lang.Validate;
-import org.tynamo.descriptor.TrailsPropertyDescriptor;
+import org.tynamo.descriptor.TynamoPropertyDescriptor;
 
 /**
  * Creates a {@link PossibleValuesDescriptorExtension} using the
@@ -12,7 +12,7 @@ import org.tynamo.descriptor.TrailsPropertyDescriptor;
  * @author pruggia
  */
 public class PossibleValuesAnnotationHandler extends AbstractAnnotationHandler
-		implements DescriptorAnnotationHandler<PossibleValues, TrailsPropertyDescriptor>
+		implements DescriptorAnnotationHandler<PossibleValues, TynamoPropertyDescriptor>
 {
 
 	/**
@@ -23,8 +23,8 @@ public class PossibleValuesAnnotationHandler extends AbstractAnnotationHandler
 	 * @param descriptor The property descriptor. It cannot be null.
 	 * @return Returns descriptor, with the possible values extension.
 	 */
-	public TrailsPropertyDescriptor decorateFromAnnotation(final PossibleValues annotation,
-													  final TrailsPropertyDescriptor descriptor)
+	public TynamoPropertyDescriptor decorateFromAnnotation(final PossibleValues annotation,
+													  final TynamoPropertyDescriptor descriptor)
 	{
 		Validate.notNull(annotation, "The annotation cannot be null");
 		Validate.notNull(descriptor, "The descriptor cannot be null");

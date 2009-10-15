@@ -1,7 +1,7 @@
 package org.tynamo.descriptor.annotation;
 
 import org.apache.commons.lang.Validate;
-import org.tynamo.descriptor.TrailsPropertyDescriptor;
+import org.tynamo.descriptor.TynamoPropertyDescriptor;
 
 /**
  * Creates a {@link InitialValueDescriptorExtension} using the
@@ -10,7 +10,7 @@ import org.tynamo.descriptor.TrailsPropertyDescriptor;
  * @author pruggia
  */
 public class InitialValueAnnotationHandler extends AbstractAnnotationHandler
-		implements DescriptorAnnotationHandler<InitialValue, TrailsPropertyDescriptor>
+		implements DescriptorAnnotationHandler<InitialValue, TynamoPropertyDescriptor>
 {
 
 	/**
@@ -21,8 +21,8 @@ public class InitialValueAnnotationHandler extends AbstractAnnotationHandler
 	 * @param descriptor The property descriptor. It cannot be null.
 	 * @return The provided descriptor with the extension added.
 	 */
-	public TrailsPropertyDescriptor decorateFromAnnotation(final InitialValue annotation,
-													  final TrailsPropertyDescriptor descriptor)
+	public TynamoPropertyDescriptor decorateFromAnnotation(final InitialValue annotation,
+													  final TynamoPropertyDescriptor descriptor)
 	{
 		Validate.notNull(annotation, "The annotation cannot be null");
 		Validate.notNull(descriptor, "The descriptor cannot be null");

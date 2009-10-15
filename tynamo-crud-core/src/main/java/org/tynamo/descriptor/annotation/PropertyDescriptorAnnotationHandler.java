@@ -1,6 +1,6 @@
 package org.tynamo.descriptor.annotation;
 
-import org.tynamo.descriptor.TrailsPropertyDescriptor;
+import org.tynamo.descriptor.TynamoPropertyDescriptor;
 
 /**
  * @author fus8882
@@ -8,7 +8,7 @@ import org.tynamo.descriptor.TrailsPropertyDescriptor;
  *         Applies the annotation to a given property.
  * @see org.tynamo.descriptor.annotation.AbstractAnnotationHandler.setDescriptorPropertiesFromAnnotation
  */
-public class PropertyDescriptorAnnotationHandler extends AbstractAnnotationHandler implements DescriptorAnnotationHandler<PropertyDescriptor, TrailsPropertyDescriptor>
+public class PropertyDescriptorAnnotationHandler extends AbstractAnnotationHandler implements DescriptorAnnotationHandler<PropertyDescriptor, TynamoPropertyDescriptor>
 {
 	/**
 	 * @param propertyDescriptorAnno
@@ -16,8 +16,8 @@ public class PropertyDescriptorAnnotationHandler extends AbstractAnnotationHandl
 	 * @return
 	 * @see AbstractAnnotationHandler.setDescriptorPropertiesFromAnnotation
 	 */
-	public TrailsPropertyDescriptor decorateFromAnnotation(PropertyDescriptor propertyDescriptorAnno,
-													  TrailsPropertyDescriptor descriptor)
+	public TynamoPropertyDescriptor decorateFromAnnotation(PropertyDescriptor propertyDescriptorAnno,
+													  TynamoPropertyDescriptor descriptor)
 	{
 		setPropertiesFromAnnotation(propertyDescriptorAnno, descriptor);
 		return descriptor;

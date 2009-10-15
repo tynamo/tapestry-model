@@ -19,10 +19,10 @@ import org.tynamo.descriptor.PropertyDescriptorFactory;
 import org.tynamo.descriptor.PropertyDescriptorFactoryImpl;
 import org.tynamo.descriptor.ReflectionDescriptorFactory;
 
-public class TrailsCoreModule extends VersionedModule {
+public class TynamoCoreModule extends VersionedModule {
 
-	public final static String PROPERTY_DISPLAY_BLOCKS = "trails/PropertyDisplayBlocks";
-	public final static String PROPERTY_EDIT_BLOCKS = "trails/Editors";
+	public final static String PROPERTY_DISPLAY_BLOCKS = "tynamo/PropertyDisplayBlocks";
+	public final static String PROPERTY_EDIT_BLOCKS = "tynamo/Editors";
 
 	public static void bind(ServiceBinder binder) {
 		// Make bind() calls on the binder object to define most IoC services.
@@ -36,19 +36,19 @@ public class TrailsCoreModule extends VersionedModule {
 		binder.bind(MethodDescriptorFactory.class, MethodDescriptorFactoryImpl.class);
 		binder.bind(EntityCoercerService.class, EntityCoercerServiceImpl.class);
 		binder.bind(DescriptorService.class, DescriptorServiceImpl.class);
-		binder.bind(TrailsDataTypeAnalyzer.class, TrailsDataTypeAnalyzer.class);
+		binder.bind(TynamoDataTypeAnalyzer.class, TynamoDataTypeAnalyzer.class);
 
 	}
 
 	/**
-	 * Add our components and pages to the "trails" library.
+	 * Add our components and pages to the "Tynamo" library.
 	 */
 	public static void contributeComponentClassResolver(Configuration<LibraryMapping> configuration) {
-		configuration.add(new LibraryMapping("trails", "org.tynamo"));
+		configuration.add(new LibraryMapping("tynamo", "org.tynamo"));
 	}
 
 	public static void contributeClasspathAssetAliasManager(MappedConfiguration<String, String> configuration) {
-		configuration.add("trails/" + version, "org/trailsframework");
+		configuration.add("tynamo/" + version, "org/tynamo");
 	}
 
 
@@ -83,8 +83,8 @@ public class TrailsCoreModule extends VersionedModule {
 	 * </dl>
 	 */
 	public static void contributeDataTypeAnalyzer(OrderedConfiguration<DataTypeAnalyzer> configuration,
-			@InjectService("TrailsDataTypeAnalyzer") DataTypeAnalyzer trailsDataTypeAnalyzer) {
-		configuration.add("Trails", trailsDataTypeAnalyzer, "before:Default");
+			@InjectService("TynamoDataTypeAnalyzer") DataTypeAnalyzer tynamoDataTypeAnalyzer) {
+		configuration.add("Tynamo", tynamoDataTypeAnalyzer, "before:Default");
 	}
 
 	/**

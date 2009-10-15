@@ -1,7 +1,7 @@
 package org.tynamo.hibernate;
 
 
-public class TrailsHibernateSymbols
+public class TynamoHibernateSymbols
 {
 
 	/**

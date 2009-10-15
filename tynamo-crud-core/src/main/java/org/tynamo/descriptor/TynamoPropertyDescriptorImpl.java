@@ -22,8 +22,8 @@ import java.lang.reflect.InvocationTargetException;
  *         TODO To change the template for this generated type comment go to Window -
  *         Preferences - Java - Code Style - Code Templates
  */
-public class TrailsPropertyDescriptorImpl extends TrailsDescriptor implements
-	TrailsPropertyDescriptor
+public class TynamoPropertyDescriptorImpl extends TynamoDescriptor implements
+	TynamoPropertyDescriptor
 {
 	private Class beanType;
 
@@ -53,15 +53,15 @@ public class TrailsPropertyDescriptorImpl extends TrailsDescriptor implements
 	/**
 	 * It's kinda like an old-skool C++ copy constructor
 	 */
-	public TrailsPropertyDescriptorImpl(Class beanType,
-									TrailsPropertyDescriptor descriptor)
+	public TynamoPropertyDescriptorImpl(Class beanType,
+									TynamoPropertyDescriptor descriptor)
 	{
 		this(beanType, descriptor.getPropertyType());
 
 		try
 		{
 			BeanUtils.copyProperties(this,
-				(TrailsPropertyDescriptorImpl) descriptor);
+				(TynamoPropertyDescriptorImpl) descriptor);
 		} catch (IllegalAccessException e)
 		{
 			LOG.error(e.getMessage());
@@ -77,7 +77,7 @@ public class TrailsPropertyDescriptorImpl extends TrailsDescriptor implements
 		}
 	}
 
-	public TrailsPropertyDescriptorImpl(Class beanType, Class type)
+	public TynamoPropertyDescriptorImpl(Class beanType, Class type)
 	{
 		super(type);
 		this.beanType = beanType;
@@ -86,7 +86,7 @@ public class TrailsPropertyDescriptorImpl extends TrailsDescriptor implements
 	/**
 	 * @param dto
 	 */
-	public TrailsPropertyDescriptorImpl(TrailsPropertyDescriptorImpl dto)
+	public TynamoPropertyDescriptorImpl(TynamoPropertyDescriptorImpl dto)
 	{
 		super(dto);
 
@@ -228,7 +228,7 @@ public class TrailsPropertyDescriptorImpl extends TrailsDescriptor implements
 	@Override
 	public Object clone()
 	{
-		return new TrailsPropertyDescriptorImpl(this);
+		return new TynamoPropertyDescriptorImpl(this);
 	}
 
 	@Override
@@ -236,12 +236,12 @@ public class TrailsPropertyDescriptorImpl extends TrailsDescriptor implements
 	{
 		super.copyFrom(descriptor);
 
-		if (descriptor instanceof TrailsPropertyDescriptorImpl)
+		if (descriptor instanceof TynamoPropertyDescriptorImpl)
 		{
 			try
 			{
 				BeanUtils.copyProperties(this,
-					(TrailsPropertyDescriptorImpl) descriptor);
+					(TynamoPropertyDescriptorImpl) descriptor);
 			} catch (IllegalAccessException e)
 			{
 				LOG.error(e.getMessage());

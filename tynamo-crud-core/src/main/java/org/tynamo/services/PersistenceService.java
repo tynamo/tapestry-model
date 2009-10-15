@@ -15,7 +15,7 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 
-import org.tynamo.descriptor.TrailsClassDescriptor;
+import org.tynamo.descriptor.TynamoClassDescriptor;
 
 public interface PersistenceService
 {
@@ -48,7 +48,7 @@ public interface PersistenceService
 	 */
 	public <T> T getInstance(final Class<T> type);
 
-	boolean isTransient(Object data, TrailsClassDescriptor classDescriptor);
+	boolean isTransient(Object data, TynamoClassDescriptor classDescriptor);
 
 	<T> T saveCollectionElement(String addExpression, T member, Object parent);
 

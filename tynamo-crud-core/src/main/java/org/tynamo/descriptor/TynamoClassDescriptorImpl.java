@@ -21,11 +21,11 @@ import java.util.List;
 
 
 /**
- * This represents all the Trails metadata for a single class.
+ * This represents all the Tynamo metadata for a single class.
  */
-public class TrailsClassDescriptorImpl extends TrailsDescriptor implements TrailsClassDescriptor
+public class TynamoClassDescriptorImpl extends TynamoDescriptor implements TynamoClassDescriptor
 {
-	private List<TrailsPropertyDescriptor> propertyDescriptors = new ArrayList<TrailsPropertyDescriptor>();
+	private List<TynamoPropertyDescriptor> propertyDescriptors = new ArrayList<TynamoPropertyDescriptor>();
 
 	private List<IMethodDescriptor> methodDescriptors = new ArrayList<IMethodDescriptor>();
 
@@ -46,14 +46,14 @@ public class TrailsClassDescriptorImpl extends TrailsDescriptor implements Trail
 	 * aspect to be able to copy them, so if new properties are added they
 	 * should be added here too.
 	 */
-	public TrailsClassDescriptorImpl(TrailsClassDescriptor descriptor)
+	public TynamoClassDescriptorImpl(TynamoClassDescriptor descriptor)
 	{
 		super(descriptor);
 		copyPropertyDescriptorsFrom(descriptor);
 		copyMethodDescriptorsFrom(descriptor);
 	}
 
-	public TrailsClassDescriptorImpl(Class type)
+	public TynamoClassDescriptorImpl(Class type)
 	{
 		super(type);
 	}
@@ -61,7 +61,7 @@ public class TrailsClassDescriptorImpl extends TrailsDescriptor implements Trail
 	/**
 	 * @param dto
 	 */
-	public TrailsClassDescriptorImpl(TrailsClassDescriptorImpl dto)
+	public TynamoClassDescriptorImpl(TynamoClassDescriptorImpl dto)
 	{
 		super(dto);
 
@@ -86,7 +86,7 @@ public class TrailsClassDescriptorImpl extends TrailsDescriptor implements Trail
 	// ///////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Methods
 	// ///////////////////////////////////////////////////////////////////////////////////////////////////////
-	private void copyMethodDescriptorsFrom(TrailsClassDescriptor descriptor)
+	private void copyMethodDescriptorsFrom(TynamoClassDescriptor descriptor)
 	{
 		for (IMethodDescriptor methodDescriptor : descriptor
 			.getMethodDescriptors())
@@ -96,14 +96,14 @@ public class TrailsClassDescriptorImpl extends TrailsDescriptor implements Trail
 		}
 	}
 
-	protected void copyPropertyDescriptorsFrom(TrailsClassDescriptor descriptor)
+	protected void copyPropertyDescriptorsFrom(TynamoClassDescriptor descriptor)
 	{
-		for (TrailsPropertyDescriptor iPropertyDescriptor : descriptor
+		for (TynamoPropertyDescriptor iPropertyDescriptor : descriptor
 			.getPropertyDescriptors())
 		{
 			getPropertyDescriptors()
 				.add(
-					TrailsPropertyDescriptor.class.cast(iPropertyDescriptor
+					TynamoPropertyDescriptor.class.cast(iPropertyDescriptor
 						.clone()));
 		}
 	}
@@ -112,11 +112,11 @@ public class TrailsClassDescriptorImpl extends TrailsDescriptor implements Trail
 	 * @param ognl
 	 * @return
 	 */
-	private TrailsPropertyDescriptor findDescriptor(String ognl)
+	private TynamoPropertyDescriptor findDescriptor(String ognl)
 	{
 		try
 		{
-			return (TrailsPropertyDescriptor) Ognl.getValue(ognl, this);
+			return (TynamoPropertyDescriptor) Ognl.getValue(ognl, this);
 		} catch (OgnlException oe)
 		{
 			// oe.printStackTrace();
@@ -132,13 +132,13 @@ public class TrailsClassDescriptorImpl extends TrailsDescriptor implements Trail
 	 * @param string
 	 * @return
 	 */
-	public TrailsPropertyDescriptor getPropertyDescriptor(String name)
+	public TynamoPropertyDescriptor getPropertyDescriptor(String name)
 	{
 		return findDescriptor("propertyDescriptors.{? name == '" + name + "'}[0]");
 	}
 
-	public List<TrailsPropertyDescriptor> getPropertyDescriptors(List<String> properties) {
-		ArrayList<TrailsPropertyDescriptor> descriptors = new ArrayList<TrailsPropertyDescriptor>();
+	public List<TynamoPropertyDescriptor> getPropertyDescriptors(List<String> properties) {
+		ArrayList<TynamoPropertyDescriptor> descriptors = new ArrayList<TynamoPropertyDescriptor>();
 		for (String property : properties) {
 			descriptors.add(getPropertyDescriptor(property));
 		}
@@ -167,7 +167,7 @@ public class TrailsClassDescriptorImpl extends TrailsDescriptor implements Trail
 	/**
 	 * @return Returns the propertyDescriptors.
 	 */
-	public List<TrailsPropertyDescriptor> getPropertyDescriptors()
+	public List<TynamoPropertyDescriptor> getPropertyDescriptors()
 	{
 		return propertyDescriptors;
 	}
@@ -176,12 +176,12 @@ public class TrailsClassDescriptorImpl extends TrailsDescriptor implements Trail
 	 * @param propertyDescriptors The propertyDescriptors to set.
 	 */
 	public void setPropertyDescriptors(
-		List<TrailsPropertyDescriptor> propertyDescriptors)
+		List<TynamoPropertyDescriptor> propertyDescriptors)
 	{
 		this.propertyDescriptors = propertyDescriptors;
 	}
 
-	public TrailsPropertyDescriptor getIdentifierDescriptor()
+	public TynamoPropertyDescriptor getIdentifierDescriptor()
 	{
 		String ognl = "propertyDescriptors.{? identifier}[0]";
 
@@ -207,7 +207,7 @@ public class TrailsClassDescriptorImpl extends TrailsDescriptor implements Trail
 	@Override
 	public Object clone()
 	{
-		return new TrailsClassDescriptorImpl(this);
+		return new TynamoClassDescriptorImpl(this);
 	}
 
 	@Override
@@ -215,15 +215,15 @@ public class TrailsClassDescriptorImpl extends TrailsDescriptor implements Trail
 	{
 		super.copyFrom(descriptor);
 
-		if (descriptor instanceof TrailsClassDescriptorImpl)
+		if (descriptor instanceof TynamoClassDescriptorImpl)
 		{
 
 			try
 			{
 				BeanUtils.copyProperties(this,
-					(TrailsClassDescriptorImpl) descriptor);
-				copyPropertyDescriptorsFrom((TrailsClassDescriptorImpl) descriptor);
-				copyMethodDescriptorsFrom((TrailsClassDescriptorImpl) descriptor);
+					(TynamoClassDescriptorImpl) descriptor);
+				copyPropertyDescriptorsFrom((TynamoClassDescriptorImpl) descriptor);
+				copyMethodDescriptorsFrom((TynamoClassDescriptorImpl) descriptor);
 			} catch (IllegalAccessException e)
 			{
 				LOG.error(e.getMessage());
@@ -275,7 +275,7 @@ public class TrailsClassDescriptorImpl extends TrailsDescriptor implements Trail
 	 */
 	public String toString()
 	{
-		return "{TrailsClassDescriptor - Type: " + getType() + "}";
+		return "{TynamoClassDescriptor - Type: " + getType() + "}";
 	}
 
 }

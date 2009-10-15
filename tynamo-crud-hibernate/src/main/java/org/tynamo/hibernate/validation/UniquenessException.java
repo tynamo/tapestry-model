@@ -1,6 +1,6 @@
 package org.tynamo.hibernate.validation;
 
-import org.tynamo.descriptor.TrailsPropertyDescriptor;
+import org.tynamo.descriptor.TynamoPropertyDescriptor;
 import org.tynamo.exception.ValidationException;
 
 public class UniquenessException extends ValidationException
@@ -12,12 +12,12 @@ public class UniquenessException extends ValidationException
 		super();
 	}
 
-	public UniquenessException(TrailsPropertyDescriptor descriptor, String message)
+	public UniquenessException(TynamoPropertyDescriptor descriptor, String message)
 	{
 		super(descriptor, message);
 	}
 
-	public UniquenessException(TrailsPropertyDescriptor descriptor)
+	public UniquenessException(TynamoPropertyDescriptor descriptor)
 	{
 		super(descriptor, DEFAULT_MESSAGE);
 	}

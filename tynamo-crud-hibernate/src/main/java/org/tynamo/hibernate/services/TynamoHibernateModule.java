@@ -16,11 +16,11 @@ import org.tynamo.VersionedModule;
 import org.tynamo.descriptor.DescriptorDecorator;
 import org.tynamo.descriptor.DescriptorFactory;
 import org.tynamo.descriptor.annotation.AnnotationDecorator;
-import org.tynamo.hibernate.TrailsHibernateSymbols;
+import org.tynamo.hibernate.TynamoHibernateSymbols;
 import org.tynamo.hibernate.validation.HibernateClassValidatorFactory;
 import org.tynamo.hibernate.validation.HibernateValidationDelegate;
 
-public class TrailsHibernateModule extends VersionedModule
+public class TynamoHibernateModule extends VersionedModule
 {
 
 	public static void bind(ServiceBinder binder)
@@ -52,7 +52,7 @@ public class TrailsHibernateModule extends VersionedModule
 
 	public static void contributeValidationMessagesSource(OrderedConfiguration<String> configuration)
 	{
-		configuration.add("Trails", "ValidationMessages");
+		configuration.add("Tynamo", "ValidationMessages");
 	}
 
 	@Match("HibernatePersistenceService")
@@ -104,7 +104,7 @@ public class TrailsHibernateModule extends VersionedModule
 
 	}
 
-	public static void contributeTrailsDataTypeAnalyzer(MappedConfiguration<String, String> configuration)
+	public static void contributeTynamoDataTypeAnalyzer(MappedConfiguration<String, String> configuration)
 	{
 		configuration.add("hidden", "hidden");
 		configuration.add("readOnly", "readOnly");
@@ -151,9 +151,9 @@ public class TrailsHibernateModule extends VersionedModule
 	public static HibernateDescriptorDecorator buildHibernateDescriptorDecorator(
 												HibernateSessionSource hibernateSessionSource,
 												DescriptorFactory descriptorFactory,
-												@Symbol(TrailsHibernateSymbols.LARGE_COLUMN_LENGTH)
+												@Symbol(TynamoHibernateSymbols.LARGE_COLUMN_LENGTH)
 												final int largeColumnLength,
-												@Symbol(TrailsHibernateSymbols.IGNORE_NON_HIBERNATE_TYPES)
+												@Symbol(TynamoHibernateSymbols.IGNORE_NON_HIBERNATE_TYPES)
 												final boolean ignoreNonHibernateTypes)
 	{
 		return new HibernateDescriptorDecorator(hibernateSessionSource, descriptorFactory, largeColumnLength, ignoreNonHibernateTypes);
@@ -161,18 +161,18 @@ public class TrailsHibernateModule extends VersionedModule
 
 	public static void contributeFactoryDefaults(MappedConfiguration<String, String> configuration)
 	{
-		configuration.add(TrailsHibernateSymbols.LARGE_COLUMN_LENGTH, "100");
-		configuration.add(TrailsHibernateSymbols.IGNORE_NON_HIBERNATE_TYPES, "false");
+		configuration.add(TynamoHibernateSymbols.LARGE_COLUMN_LENGTH, "100");
+		configuration.add(TynamoHibernateSymbols.IGNORE_NON_HIBERNATE_TYPES, "false");
 	}
 
 /**
  * We don't need this just yet, and it gives an error under Tapestry 5.1.0.2
  *
  * [INFO] [talledLocalContainer] java.lang.IllegalArgumentException:
- * Contribution org.tynamo.hibernate.services.TrailsHibernateModule.contributeTrailsEntityPackageManager(Configuration, HibernateEntityPackageManager)
- * (at TrailsHibernateModule.java:145) is for service 'TrailsEntityPackageManager', which does not exist.
+ * Contribution org.tynamo.hibernate.services.TynamoHibernateModule.contributeTynamoEntityPackageManager(Configuration, HibernateEntityPackageManager)
+ * (at TynamoHibernateModule.java:145) is for service 'TynamoEntityPackageManager', which does not exist.
  *
-	public static void contributeTrailsEntityPackageManager(Configuration<String> configuration, HibernateEntityPackageManager packageManager)
+	public static void contributeTynamoEntityPackageManager(Configuration<String> configuration, HibernateEntityPackageManager packageManager)
 	{
 		for (String packageName : packageManager.getPackageNames())
 		{

@@ -25,15 +25,15 @@ public class OgnlAnnotationsDecorator implements DescriptorDecorator
 	/**
 	 * {@inheritDoc}
 	 */
-	public TrailsClassDescriptor decorate(TrailsClassDescriptor descriptor)
+	public TynamoClassDescriptor decorate(TynamoClassDescriptor descriptor)
 	{
 		decoratePropertyDescriptors(descriptor);
 		return descriptor;
 	}
 
-	private void decoratePropertyDescriptors(TrailsClassDescriptor descriptor)
+	private void decoratePropertyDescriptors(TynamoClassDescriptor descriptor)
 	{
-		for (TrailsPropertyDescriptor propertyDescriptor : descriptor.getPropertyDescriptors())
+		for (TynamoPropertyDescriptor propertyDescriptor : descriptor.getPropertyDescriptors())
 		{
 			decoratePropertyDescriptor(propertyDescriptor);
 			// recursively decorate components
@@ -44,7 +44,7 @@ public class OgnlAnnotationsDecorator implements DescriptorDecorator
 		}
 	}
 
-	private void decoratePropertyDescriptor(TrailsPropertyDescriptor propertyDescriptor)
+	private void decoratePropertyDescriptor(TynamoPropertyDescriptor propertyDescriptor)
 	{
 		try
 		{

@@ -1,14 +1,14 @@
 package org.tynamo.exception;
 
-import org.tynamo.descriptor.TrailsPropertyDescriptor;
+import org.tynamo.descriptor.TynamoPropertyDescriptor;
 
 public class ValidationException extends PersistenceException
 {
 
-	private TrailsPropertyDescriptor descriptor;
+	private TynamoPropertyDescriptor descriptor;
 	private String message;
 
-	public ValidationException(TrailsPropertyDescriptor descriptor, String message)
+	public ValidationException(TynamoPropertyDescriptor descriptor, String message)
 	{
 		this.descriptor = descriptor;
 		this.message = message;

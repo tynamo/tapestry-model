@@ -15,8 +15,8 @@ import org.hibernate.validator.InvalidStateException;
 import org.hibernate.validator.InvalidValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.tynamo.descriptor.TrailsClassDescriptor;
-import org.tynamo.descriptor.TrailsPropertyDescriptor;
+import org.tynamo.descriptor.TynamoClassDescriptor;
+import org.tynamo.descriptor.TynamoPropertyDescriptor;
 import org.tynamo.exception.PersistenceException;
 import org.tynamo.hibernate.services.HibernatePersistenceService;
 import org.tynamo.hibernate.validation.ValidateUniqueness;
@@ -33,7 +33,7 @@ public class SeedEntityImpl implements SeedEntity {
 				LOGGER.warn("Contributed object '" + entity + "' is not an entity, cannot be used a seed");
 				continue;
 			}
-			TrailsClassDescriptor classDescriptor = null;
+			TynamoClassDescriptor classDescriptor = null;
 			try {
 				classDescriptor = descriptorService.getClassDescriptor(entity.getClass());
 			} catch (IllegalArgumentException e) {
@@ -44,7 +44,7 @@ public class SeedEntityImpl implements SeedEntity {
 				LOGGER.error("Cannot handle entity of type " + entity.getClass() + " because of non-existent class descriptor");
 				continue;
 			}
-			TrailsPropertyDescriptor identifierDescriptor = classDescriptor.getIdentifierDescriptor();
+			TynamoPropertyDescriptor identifierDescriptor = classDescriptor.getIdentifierDescriptor();
 			Object id = null, savedObject = null;
 			String propertyName = identifierDescriptor.getName();
 			try {

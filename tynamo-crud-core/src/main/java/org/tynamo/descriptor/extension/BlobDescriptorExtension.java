@@ -3,7 +3,7 @@ package org.tynamo.descriptor.extension;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.tynamo.descriptor.DescriptorExtension;
-import org.tynamo.exception.TrailsRuntimeException;
+import org.tynamo.exception.TynamoRuntimeException;
 
 public class BlobDescriptorExtension implements DescriptorExtension
 {
@@ -64,7 +64,7 @@ public class BlobDescriptorExtension implements DescriptorExtension
 	 */
 	public BlobDescriptorExtension(Class beanType)
 	{
-		if (ITrailsBlob.class.isAssignableFrom(beanType))
+		if (ITynamoBlob.class.isAssignableFrom(beanType))
 		{
 			blobType = BlobType.ITRAILSBLOB;
 		} else if (beanType.isArray())
@@ -72,7 +72,7 @@ public class BlobDescriptorExtension implements DescriptorExtension
 			blobType = BlobType.BYTES;
 		} else
 		{
-			throw new TrailsRuntimeException("type: " + beanType + " - Not supported");
+			throw new TynamoRuntimeException("type: " + beanType + " - Not supported");
 		}
 	}
 
@@ -81,7 +81,7 @@ public class BlobDescriptorExtension implements DescriptorExtension
 		return blobType == BlobType.BYTES;
 	}
 
-	public boolean isITrailsBlob()
+	public boolean isITynamoBlob()
 	{
 		return blobType == BlobType.ITRAILSBLOB;
 	}

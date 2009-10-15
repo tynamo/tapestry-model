@@ -26,7 +26,7 @@ import org.hibernate.type.Type;
 import org.tynamo.descriptor.*;
 import org.tynamo.descriptor.extension.EnumReferenceDescriptor;
 import org.tynamo.exception.MetadataNotFoundException;
-import org.tynamo.exception.TrailsRuntimeException;
+import org.tynamo.exception.TynamoRuntimeException;
 
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
@@ -40,19 +40,19 @@ import java.util.List;
 
 /**
  * This decorator will add metadata information. It will replace simple
- * reflection based TrailsPropertyTrailsPropertyDescriptors with appropriate
- * Hibernate descriptors <p/> Background... TrailsDescriptorService operates one
- * ReflectorDescriptorFactory - TrailsDescriptorService iterates/scans all class
+ * reflection based TynamoPropertyTynamoPropertyDescriptors with appropriate
+ * Hibernate descriptors <p/> Background... TynamoDescriptorService operates one
+ * ReflectorDescriptorFactory - TynamoDescriptorService iterates/scans all class
  * types encountered - ReflectorDescriptorFactory allocates property descriptor
- * instance for the class type - TrailsDescriptorService decorates property
+ * instance for the class type - TynamoDescriptorService decorates property
  * descriptor by calling this module HibernateDescriptorDecorator -
  * HibernateDescriptorDecorator caches the decorated property descriptor into a
  * decorated descriptor list - decorated descriptor list gets populated into
- * class descriptor for class type - TrailsDescriptorService finally populates
+ * class descriptor for class type - TynamoDescriptorService finally populates
  * decorated class descriptor and it's aggregated list of decorated property
  * descriptors into it's own list/cache of referenced class descriptors
  * 
- * @see TrailsPropertyDescriptor
+ * @see TynamoPropertyDescriptor
  * @see ObjectReferenceDescriptor
  * @see CollectionDescriptor
  * @see EmbeddedDescriptor
@@ -80,9 +80,9 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 		this.ignoreNonHibernateTypes = ignoreNonHibernateTypes;
 	}
 
-	public TrailsClassDescriptor decorate(TrailsClassDescriptor descriptor)
+	public TynamoClassDescriptor decorate(TynamoClassDescriptor descriptor)
 	{
-		ArrayList<TrailsPropertyDescriptor> decoratedPropertyDescriptors = new ArrayList<TrailsPropertyDescriptor>();
+		ArrayList<TynamoPropertyDescriptor> decoratedPropertyDescriptors = new ArrayList<TynamoPropertyDescriptor>();
 
 		Class type = descriptor.getType();
 		ClassMetadata classMetaData = null;
@@ -96,15 +96,15 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 				LOG.warn("MetadataNotFound! Ignoring:" + descriptor.getType().toString());
 				return descriptor;
 			} else {
-				throw new TrailsRuntimeException(e);
+				throw new TynamoRuntimeException(e);
 			}
 		}
 
-		for (TrailsPropertyDescriptor propertyDescriptor : descriptor.getPropertyDescriptors())
+		for (TynamoPropertyDescriptor propertyDescriptor : descriptor.getPropertyDescriptors())
 		{
 			try
 			{
-				TrailsPropertyDescriptor descriptorReference;
+				TynamoPropertyDescriptor descriptorReference;
 
 				if (propertyDescriptor.getName().equals(getIdentifierProperty(type)))
 				{
@@ -127,15 +127,15 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 
 			} catch (HibernateException e)
 			{
-				throw new TrailsRuntimeException(e);
+				throw new TynamoRuntimeException(e);
 			}
 		}
 		descriptor.setPropertyDescriptors(decoratedPropertyDescriptors);
 		return descriptor;
 	}
 
-	protected TrailsPropertyDescriptor decoratePropertyDescriptor(Class type, Property mappingProperty,
-			TrailsPropertyDescriptor descriptor, TrailsClassDescriptor parentClassDescriptor)
+	protected TynamoPropertyDescriptor decoratePropertyDescriptor(Class type, Property mappingProperty,
+			TynamoPropertyDescriptor descriptor, TynamoClassDescriptor parentClassDescriptor)
 	{
 		if (isFormula(mappingProperty))
 		{
@@ -154,7 +154,7 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 			descriptor.setReadOnly(true);
 		}
 
-		TrailsPropertyDescriptor descriptorReference = descriptor;
+		TynamoPropertyDescriptor descriptorReference = descriptor;
 		Type hibernateType = mappingProperty.getType();
 		if (mappingProperty.getType() instanceof ComponentType)
 		{
@@ -176,17 +176,17 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 	}
 
 	private EmbeddedDescriptor buildEmbeddedDescriptor(Class type, Property mappingProperty,
-			TrailsPropertyDescriptor descriptor, TrailsClassDescriptor parentClassDescriptor)
+			TynamoPropertyDescriptor descriptor, TynamoClassDescriptor parentClassDescriptor)
 	{
 		Component componentMapping = (Component) mappingProperty.getValue();
-		TrailsClassDescriptor baseDescriptor = descriptorFactory.buildClassDescriptor(descriptor.getPropertyType());
+		TynamoClassDescriptor baseDescriptor = descriptorFactory.buildClassDescriptor(descriptor.getPropertyType());
 		// build from base descriptor
 		EmbeddedDescriptor embeddedDescriptor = new EmbeddedDescriptor(type, baseDescriptor);
 		// and copy from property descriptor
 		embeddedDescriptor.copyFrom(descriptor);
-		ArrayList<TrailsPropertyDescriptor> decoratedProperties = new ArrayList<TrailsPropertyDescriptor>();
+		ArrayList<TynamoPropertyDescriptor> decoratedProperties = new ArrayList<TynamoPropertyDescriptor>();
 		// go thru each property and decorate it with Hibernate info
-		for (TrailsPropertyDescriptor propertyDescriptor : embeddedDescriptor.getPropertyDescriptors())
+		for (TynamoPropertyDescriptor propertyDescriptor : embeddedDescriptor.getPropertyDescriptors())
 		{
 			if (notAHibernateProperty(componentMapping, propertyDescriptor))
 			{
@@ -194,9 +194,9 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 			} else
 			{
 				Property property = componentMapping.getProperty(propertyDescriptor.getName());
-				TrailsPropertyDescriptor TrailsPropertyDescriptor = decoratePropertyDescriptor(embeddedDescriptor.getBeanType(),
+				TynamoPropertyDescriptor TynamoPropertyDescriptor = decoratePropertyDescriptor(embeddedDescriptor.getBeanType(),
 						property, propertyDescriptor, parentClassDescriptor);
-				decoratedProperties.add(TrailsPropertyDescriptor);
+				decoratedProperties.add(TynamoPropertyDescriptor);
 			}
 		}
 		embeddedDescriptor.setPropertyDescriptors(decoratedProperties);
@@ -226,7 +226,7 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 			}
 		} catch (Exception ex)
 		{
-			throw new TrailsRuntimeException(ex);
+			throw new TynamoRuntimeException(ex);
 		}
 		return sortedPropertyDescriptors;
 	}
@@ -274,7 +274,7 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 	 * @param propertyDescriptor
 	 * @return true if the propertyDescriptor property is in componentMapping
 	 */
-	protected boolean notAHibernateProperty(Component componentMapping, TrailsPropertyDescriptor propertyDescriptor)
+	protected boolean notAHibernateProperty(Component componentMapping, TynamoPropertyDescriptor propertyDescriptor)
 	{
 		for (Iterator iter = componentMapping.getPropertyIterator(); iter.hasNext();)
 		{
@@ -311,7 +311,7 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 	 * @param descriptor
 	 * @return
 	 */
-	protected boolean notAHibernateProperty(ClassMetadata classMetaData, TrailsPropertyDescriptor descriptor)
+	protected boolean notAHibernateProperty(ClassMetadata classMetaData, TynamoPropertyDescriptor descriptor)
 	{
 		try
 		{
@@ -319,7 +319,7 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 					classMetaData);
 		} catch (OgnlException oe)
 		{
-			throw new TrailsRuntimeException(oe);
+			throw new TynamoRuntimeException(oe);
 		}
 	}
 
@@ -329,7 +329,7 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 	 * @param parentClassDescriptor
 	 * @return
 	 */
-	private IdentifierDescriptor createIdentifierDescriptor(Class type, TrailsPropertyDescriptor descriptor, TrailsClassDescriptor parentClassDescriptor)
+	private IdentifierDescriptor createIdentifierDescriptor(Class type, TynamoPropertyDescriptor descriptor, TynamoClassDescriptor parentClassDescriptor)
 	{
 		IdentifierDescriptor identifierDescriptor;
 		PersistentClass mapping = getMapping(type);
@@ -372,8 +372,8 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 	 * @param descriptor
 	 * @param parentClassDescriptor 
 	 */
-	private CollectionDescriptor decorateCollectionDescriptor(Class type, TrailsPropertyDescriptor descriptor,
-			TrailsClassDescriptor parentClassDescriptor)
+	private CollectionDescriptor decorateCollectionDescriptor(Class type, TynamoPropertyDescriptor descriptor,
+			TynamoClassDescriptor parentClassDescriptor)
 	{
 		try
 		{
@@ -395,12 +395,12 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 
 		} catch (HibernateException e)
 		{
-			throw new TrailsRuntimeException(e);
+			throw new TynamoRuntimeException(e);
 		}
 	}
 
-	public TrailsPropertyDescriptor decorateAssociationDescriptor(Class type, Property mappingProperty,
-			TrailsPropertyDescriptor descriptor, TrailsClassDescriptor parentClassDescriptor)
+	public TynamoPropertyDescriptor decorateAssociationDescriptor(Class type, Property mappingProperty,
+			TynamoPropertyDescriptor descriptor, TynamoClassDescriptor parentClassDescriptor)
 	{
 		Type hibernateType = mappingProperty.getType();
 		Class parentClassType = parentClassDescriptor.getType();
@@ -469,7 +469,7 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 	 * I couldn't find a way to get the "mappedBy" value from the collection
 	 * metadata, so I'm getting it from the OneToMany annotation.
 	 */
-	private void decorateOneToManyCollection(TrailsClassDescriptor parentClassDescriptor,
+	private void decorateOneToManyCollection(TynamoClassDescriptor parentClassDescriptor,
 			CollectionDescriptor collectionDescriptor, org.hibernate.mapping.Collection collectionMapping)
 	{
 		Class type = parentClassDescriptor.getType();
@@ -545,7 +545,7 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 			return hibernateSessionSource.getSessionFactory().getClassMetadata(type).getIdentifierPropertyName();
 		} catch (HibernateException e)
 		{
-			throw new TrailsRuntimeException(e);
+			throw new TynamoRuntimeException(e);
 		}
 	}
 }

@@ -1,6 +1,6 @@
 package org.tynamo.descriptor.annotation;
 
-import org.tynamo.descriptor.TrailsPropertyDescriptor;
+import org.tynamo.descriptor.TynamoPropertyDescriptor;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
 public @interface PropertyDescriptor
 {
 
-	public static final int DEFAULT_index = TrailsPropertyDescriptor.UNDEFINED_INDEX;
+	public static final int DEFAULT_index = TynamoPropertyDescriptor.UNDEFINED_INDEX;
 	public static final String DEFAULT_format = "no_format";
 
 	/**
@@ -57,5 +57,5 @@ public @interface PropertyDescriptor
 	 */
 	String format() default "no_format";
 
-	int index() default TrailsPropertyDescriptor.UNDEFINED_INDEX;
+	int index() default TynamoPropertyDescriptor.UNDEFINED_INDEX;
 }

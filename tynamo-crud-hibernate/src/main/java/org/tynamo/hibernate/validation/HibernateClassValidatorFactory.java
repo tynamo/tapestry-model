@@ -12,7 +12,7 @@ public class HibernateClassValidatorFactory
 {
 
 	private static Map classValidator = new HashMap();
-	private TrailsMessageInterpolator messageInterpolator = new TrailsMessageInterpolator();
+	private TynamoMessageInterpolator messageInterpolator = new TynamoMessageInterpolator();
 	ThreadLocale threadLocale;
 
 	public HibernateClassValidatorFactory(ThreadLocale threadLocale)
@@ -60,7 +60,7 @@ public class HibernateClassValidatorFactory
 	 * This inner class doesn't return exceptions when some key is searched in the bundle. This is nice so we don't have
 	 * exceptions thrown in the screen by hibernate ClassValidator.
 	 */
-	private class TrailsMessageInterpolator implements MessageInterpolator
+	private class TynamoMessageInterpolator implements MessageInterpolator
 	{
 		public String interpolate(String key, Validator validator, MessageInterpolator messageInterpolator)
 		{

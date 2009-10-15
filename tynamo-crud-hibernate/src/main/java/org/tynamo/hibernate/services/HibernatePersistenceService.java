@@ -12,7 +12,7 @@
 package org.tynamo.hibernate.services;
 
 import org.hibernate.criterion.DetachedCriteria;
-import org.tynamo.descriptor.TrailsClassDescriptor;
+import org.tynamo.descriptor.TynamoClassDescriptor;
 import org.tynamo.services.PersistenceService;
 import org.apache.tapestry5.hibernate.annotations.CommitAfter;
 
@@ -46,7 +46,7 @@ public interface HibernatePersistenceService extends PersistenceService
 	 * @param example
 	 * @return
 	 */
-	public <T> List<T> getInstances(T example, TrailsClassDescriptor classDescriptor);
+	public <T> List<T> getInstances(T example, TynamoClassDescriptor classDescriptor);
 
 	public <T> T merge(T instance);
 

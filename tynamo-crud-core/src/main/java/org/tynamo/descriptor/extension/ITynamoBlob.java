@@ -4,10 +4,10 @@ import java.io.Serializable;
 
 /**
  * Represents an uploaded file.
- * It's kind of a Trails clone of {@link org.apache.tapestry.request.IUploadFile}
+ * It's kind of a Tynamo clone of {@link org.apache.tapestry.request.IUploadFile}
  *
  */
-public interface ITrailsBlob extends Serializable
+public interface ITynamoBlob extends Serializable
 {
 
 	/**

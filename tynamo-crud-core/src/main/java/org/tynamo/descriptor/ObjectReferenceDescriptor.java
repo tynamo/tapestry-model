@@ -17,11 +17,11 @@ package org.tynamo.descriptor;
  * @author Chris Nelson
  * @see HibernateDescriptorDecorator
  */
-public class ObjectReferenceDescriptor extends TrailsPropertyDescriptorImpl
+public class ObjectReferenceDescriptor extends TynamoPropertyDescriptorImpl
 {
 	private Class actualType;
 
-	public ObjectReferenceDescriptor(Class beanType, TrailsPropertyDescriptor descriptor,
+	public ObjectReferenceDescriptor(Class beanType, TynamoPropertyDescriptor descriptor,
 									 Class actualType)
 	{
 		this(beanType, descriptor.getPropertyType(), actualType);

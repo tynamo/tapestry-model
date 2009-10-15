@@ -26,11 +26,11 @@ public class AnnotationDecorator implements DescriptorDecorator
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(AnnotationDecorator.class);
 
-	public TrailsClassDescriptor decorate(TrailsClassDescriptor descriptor)
+	public TynamoClassDescriptor decorate(TynamoClassDescriptor descriptor)
 	{
 
 		Annotation[] classAnnotations = descriptor.getType().getAnnotations();
-		TrailsClassDescriptor decoratedDescriptor = (TrailsClassDescriptor) decorateFromAnnotations(descriptor, classAnnotations);
+		TynamoClassDescriptor decoratedDescriptor = (TynamoClassDescriptor) decorateFromAnnotations(descriptor, classAnnotations);
 
 		decoratedDescriptor.setPropertyDescriptors(decoratePropertyDescriptors(descriptor));
 		sortDescriptors(decoratedDescriptor.getPropertyDescriptors());
@@ -40,12 +40,12 @@ public class AnnotationDecorator implements DescriptorDecorator
 		return decoratedDescriptor;
 	}
 
-	private List<TrailsPropertyDescriptor> decoratePropertyDescriptors(TrailsClassDescriptor descriptor)
+	private List<TynamoPropertyDescriptor> decoratePropertyDescriptors(TynamoClassDescriptor descriptor)
 	{
-		List<TrailsPropertyDescriptor> decoratedPropertyDescriptors = new ArrayList<TrailsPropertyDescriptor>();
-		for (TrailsPropertyDescriptor propertyDescriptor : descriptor.getPropertyDescriptors())
+		List<TynamoPropertyDescriptor> decoratedPropertyDescriptors = new ArrayList<TynamoPropertyDescriptor>();
+		for (TynamoPropertyDescriptor propertyDescriptor : descriptor.getPropertyDescriptors())
 		{
-			TrailsPropertyDescriptor clonedDescriptor = decoratePropertyDescriptor(propertyDescriptor);
+			TynamoPropertyDescriptor clonedDescriptor = decoratePropertyDescriptor(propertyDescriptor);
 			// recursively decorate components
 			if (clonedDescriptor.isEmbedded())
 			{
@@ -56,7 +56,7 @@ public class AnnotationDecorator implements DescriptorDecorator
 		return decoratedPropertyDescriptors;
 	}
 
-	private List<IMethodDescriptor> decorateMethodDescriptors(TrailsClassDescriptor descriptor)
+	private List<IMethodDescriptor> decorateMethodDescriptors(TynamoClassDescriptor descriptor)
 	{
 		List<IMethodDescriptor> decoratedMethodDescriptors = new ArrayList<IMethodDescriptor>();
 		for (IMethodDescriptor methodDescriptor : descriptor.getMethodDescriptors())
@@ -67,13 +67,13 @@ public class AnnotationDecorator implements DescriptorDecorator
 		return decoratedMethodDescriptors;
 	}
 
-	protected TrailsPropertyDescriptor decoratePropertyDescriptor(TrailsPropertyDescriptor propertyDescriptor)
+	protected TynamoPropertyDescriptor decoratePropertyDescriptor(TynamoPropertyDescriptor propertyDescriptor)
 	{
-		TrailsPropertyDescriptor clonedDescriptor = (TrailsPropertyDescriptor) propertyDescriptor.clone();
+		TynamoPropertyDescriptor clonedDescriptor = (TynamoPropertyDescriptor) propertyDescriptor.clone();
 		try
 		{
 			Field propertyField = clonedDescriptor.getBeanType().getDeclaredField(propertyDescriptor.getName());
-			clonedDescriptor = (TrailsPropertyDescriptor) decorateFromAnnotations(clonedDescriptor, propertyField.getAnnotations());
+			clonedDescriptor = (TynamoPropertyDescriptor) decorateFromAnnotations(clonedDescriptor, propertyField.getAnnotations());
 
 		} catch (Exception ex)
 		{
@@ -85,7 +85,7 @@ public class AnnotationDecorator implements DescriptorDecorator
 					Introspector.getBeanInfo(clonedDescriptor.getBeanType()));
 
 			Method readMethod = beanPropDescriptor.getReadMethod();
-			clonedDescriptor = (TrailsPropertyDescriptor) decorateFromAnnotations(clonedDescriptor, readMethod.getAnnotations());
+			clonedDescriptor = (TynamoPropertyDescriptor) decorateFromAnnotations(clonedDescriptor, readMethod.getAnnotations());
 		}
 		catch (Exception ex)
 		{
@@ -115,11 +115,11 @@ public class AnnotationDecorator implements DescriptorDecorator
 	 *
 	 * @param propertyDescriptors
 	 */
-	private void sortDescriptors(List<TrailsPropertyDescriptor> propertyDescriptors)
+	private void sortDescriptors(List<TynamoPropertyDescriptor> propertyDescriptors)
 	{
-		for (TrailsPropertyDescriptor propertyDescriptor : Collections.unmodifiableList(propertyDescriptors))
+		for (TynamoPropertyDescriptor propertyDescriptor : Collections.unmodifiableList(propertyDescriptors))
 		{
-			if (propertyDescriptor.getIndex() != TrailsPropertyDescriptor.UNDEFINED_INDEX)
+			if (propertyDescriptor.getIndex() != TynamoPropertyDescriptor.UNDEFINED_INDEX)
 			{
 				Collections.swap(propertyDescriptors, propertyDescriptor.getIndex(),
 						propertyDescriptors.indexOf(propertyDescriptor));
