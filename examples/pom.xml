@@ -10,7 +10,11 @@
 	<modules>
 		<module>simple</module>
 		<module>recipe</module>
+<!--
+		Not sure if conversations example should be here or a separately released module (or released as part of tapestry-conversations)
+		Disable for now at least until we've release a first version of tapestry-conversations under org.tynamo
 		<module>tynamo-examples-conversations</module>
+-->
 <!--
 		<module>security</module>
 -->
