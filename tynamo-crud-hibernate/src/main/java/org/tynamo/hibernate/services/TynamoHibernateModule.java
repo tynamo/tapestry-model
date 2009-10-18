@@ -19,6 +19,7 @@ import org.tynamo.descriptor.DescriptorDecorator;
 import org.tynamo.descriptor.DescriptorFactory;
 import org.tynamo.descriptor.annotation.AnnotationDecorator;
 import org.tynamo.hibernate.TynamoHibernateSymbols;
+import org.tynamo.hibernate.TynamoInterceptor;
 import org.tynamo.hibernate.TynamoInterceptorConfigurer;
 import org.tynamo.hibernate.validation.HibernateClassValidatorFactory;
 import org.tynamo.hibernate.validation.HibernateValidationDelegate;
@@ -37,6 +38,7 @@ public class TynamoHibernateModule extends VersionedModule
 		binder.bind(HibernateClassValidatorFactory.class, HibernateClassValidatorFactory.class);
 		binder.bind(HibernateValidationDelegate.class, HibernateValidationDelegate.class);
 		binder.bind(SeedEntity.class, SeedEntityImpl.class);
+		binder.bind(TynamoInterceptor.class);
 		binder.bind(HibernateConfigurer.class, TynamoInterceptorConfigurer.class).withId("TynamoInterceptorConfigurer");
 
 	}
