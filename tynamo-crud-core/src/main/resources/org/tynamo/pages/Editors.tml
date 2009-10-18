@@ -15,7 +15,8 @@
 
 <t:block id="select">
 	<t:label for="select"/>
-	<t:select t:id="select" model="selectModel" value="propertyEditContext.propertyValue" encoder="valueEncoderForProperty"/>
+	<t:select t:id="select" model="selectModel" value="propertyEditContext.propertyValue"
+			  label="prop:propertyEditContext.label" encoder="valueEncoderForProperty"/>
 	<em>
 		help message here
 	</em>
@@ -39,10 +40,12 @@
 <t:block id="palette">
 	<t:if test="propertyValueInstanceOfList">
 		<t:label for="palette_list"/>
-		<t:palette t:id="palette_list" model="selectModel" selected="propertyEditContext.propertyValue"  encoder="valueEncoderForProperty" reorder="true"/>
+		<t:palette t:id="palette_list" model="selectModel" selected="propertyEditContext.propertyValue"
+				   label="prop:propertyEditContext.label" encoder="valueEncoderForProperty" reorder="true"/>
 		<p:else>
 			<t:label for="palette_set"/>
-			<t:palette t:id="palette_set" model="selectModel" selected="selected" encoder="valueEncoderForProperty"/>
+			<t:palette t:id="palette_set" model="selectModel" selected="selected" label="prop:propertyEditContext.label"
+					   encoder="valueEncoderForProperty"/>
 		</p:else>
 	</t:if>
 	<em>
