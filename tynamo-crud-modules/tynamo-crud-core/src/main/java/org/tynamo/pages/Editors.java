@@ -173,7 +173,7 @@ public class Editors
 		Collection collection = (Collection) propertyEditContext.getPropertyValue();
 		if (selected != null)
 		{
-//			collection.clear();
+			collection.clear();
 			collection.addAll(selected);
 		}
 	}
