@@ -1,11 +1,13 @@
 package org.tynamo.hibernate.services;
 
+import org.apache.tapestry5.hibernate.HibernateConfigurer;
 import org.apache.tapestry5.hibernate.HibernateSessionSource;
 import org.apache.tapestry5.hibernate.HibernateTransactionDecorator;
 import org.apache.tapestry5.ioc.Configuration;
 import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.ioc.OrderedConfiguration;
 import org.apache.tapestry5.ioc.ServiceBinder;
+import org.apache.tapestry5.ioc.annotations.InjectService;
 import org.apache.tapestry5.ioc.annotations.Match;
 import org.apache.tapestry5.ioc.annotations.Symbol;
 import org.apache.tapestry5.services.BeanBlockContribution;
@@ -17,6 +19,7 @@ import org.tynamo.descriptor.DescriptorDecorator;
 import org.tynamo.descriptor.DescriptorFactory;
 import org.tynamo.descriptor.annotation.AnnotationDecorator;
 import org.tynamo.hibernate.TynamoHibernateSymbols;
+import org.tynamo.hibernate.TynamoInterceptorConfigurer;
 import org.tynamo.hibernate.validation.HibernateClassValidatorFactory;
 import org.tynamo.hibernate.validation.HibernateValidationDelegate;
 
@@ -34,6 +37,7 @@ public class TynamoHibernateModule extends VersionedModule
 		binder.bind(HibernateClassValidatorFactory.class, HibernateClassValidatorFactory.class);
 		binder.bind(HibernateValidationDelegate.class, HibernateValidationDelegate.class);
 		binder.bind(SeedEntity.class, SeedEntityImpl.class);
+		binder.bind(HibernateConfigurer.class, TynamoInterceptorConfigurer.class).withId("TynamoInterceptorConfigurer");
 
 	}
 
@@ -164,6 +168,21 @@ public class TynamoHibernateModule extends VersionedModule
 		configuration.add(TynamoHibernateSymbols.LARGE_COLUMN_LENGTH, "100");
 		configuration.add(TynamoHibernateSymbols.IGNORE_NON_HIBERNATE_TYPES, "false");
 	}
+
+
+	/**
+	 * Adds the following configurers:
+	 * <dl>
+	 * <dt>TynamoInterceptorConfigurer
+	 * <dd>add the TynamoInterceptor to the hibernate configuration
+	 */
+	public static void contributeHibernateSessionSource(OrderedConfiguration<HibernateConfigurer> config,
+														@InjectService("TynamoInterceptorConfigurer")
+														HibernateConfigurer trailsInterceptorConfigurer)
+	{
+		config.add("TynamoInterceptorConfigurer", trailsInterceptorConfigurer);
+	}
+
 
 /**
  * We don't need this just yet, and it gives an error under Tapestry 5.1.0.2
