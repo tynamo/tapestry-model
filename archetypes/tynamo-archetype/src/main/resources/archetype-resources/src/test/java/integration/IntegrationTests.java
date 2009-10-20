@@ -9,7 +9,7 @@ public class IntegrationTests extends AbstractIntegrationTestSuite
 	public void integration_test() throws Exception
 	{
 		open(BASE_URL);
-		assertEquals("Trails!", getTitle());
+		assertEquals("Tynamo!", getTitle());
 
 
 	}

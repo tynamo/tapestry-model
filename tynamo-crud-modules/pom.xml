@@ -25,7 +25,6 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>cobertura-maven-plugin</artifactId>
-				<version>2.0</version>
 				<inherited>true</inherited>
 				<executions>
 					<execution>
@@ -76,13 +75,6 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>cobertura-maven-plugin</artifactId>
-				<version>2.0</version>
-				<configuration>
-					<formats>
-						<format>xml</format>
-						<format>html</format>
-					</formats>
-				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -162,30 +154,6 @@
 		</plugins>
 	</reporting>
 
-	<pluginRepositories>
-		<pluginRepository>
-			<id>tacos.stable</id>
-			<url>http://tacos.sourceforge.net/repository/</url>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-		</pluginRepository>
-		<pluginRepository>
-			<id>tacos-snapshot</id>
-			<name>Tacos Snapshot Repo</name>
-			<url>http://tacos.sourceforge.net/nightly/</url>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
-		</pluginRepository>
-	</pluginRepositories>
-
 	<profiles>
 		<profile>
 			<id>checkstyle.modules</id>
@@ -199,7 +167,6 @@
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-checkstyle-plugin</artifactId>
-						<version>2.2-SNAPSHOT</version>
 						<inherited>true</inherited>
 						<configuration>
 							<configLocation>../tynamo-checkstyle.xml</configLocation>

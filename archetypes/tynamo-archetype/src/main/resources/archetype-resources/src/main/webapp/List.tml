@@ -7,11 +7,6 @@
 					<t:pagelink class="newlink" page="New" context="classDescriptor.type">${D}{newlinkMessage}</t:pagelink>
 				</li>
 			</t:if>
-<!--
-			<li>
-				<a class="searchlink" href="#" jwcid="@trails:SearchLink" type="ognl:type"></a>
-			</li>
--->
 		</ul>
 	</p:subMenuBlock>
 

@@ -16,7 +16,7 @@
 
 	<div id="page">
 		<div id="header" class="clearfix">
-			<h1 style="padding: 5px;">Trails Framework</h1>
+			<h1 style="padding: 5px;">Tynamo!</h1>
 		</div>
 		<div id="content" class="clearfix">
 			<div id="main">
@@ -29,7 +29,7 @@
 			</div>
 
 			<div id="navcolumn">
-				<h5>Trails</h5>
+				<h5>Tynamo</h5>
 				<t:tynamo.ListPageLinkList/>
 			</div>
 
@@ -62,9 +62,9 @@
 			<div id="divider">
 				<div></div>
 			</div>
-		<span class="left">Powered by Trails</span>
+		<span class="left">Powered by Tynamo</span>
 		<span class="right" style="margin-right: 10px;">
-			© 2004-2008 <a href="http://tynamo.codehaus.org/">Trails Framework</a>
+			© 2009 <a href="http://tynamo.codehaus.org/">Tynamo</a>
 		</span>
 
 		</div>

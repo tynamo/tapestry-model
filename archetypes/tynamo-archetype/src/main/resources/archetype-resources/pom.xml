@@ -6,14 +6,14 @@
 	<artifactId>${artifactId}</artifactId>
 	<packaging>war</packaging>
 	<version>${version}</version>
-	<name>A simple trails project</name>
-	<url>http://trails.codehaus.org/</url>
+	<name>A Tynamo project</name>
+	<url>http://tynamo.codehaus.org/</url>
 
 <!-- #set( $D = '$' ) -->
 
 	<properties>
-		<tapestry-release-version>5.1.0.5</tapestry-release-version>
-		<trails-release-version>2.0.1-SNAPSHOT</trails-release-version>
+		<tapestry-version>5.1.0.5</tapestry-version>
+		<tynamo-version>0.0.1-SNAPSHOT</tynamo-version>
 		<selenium-version>1.0.1</selenium-version>
 	</properties>
 
@@ -120,7 +120,7 @@
 
 <!--
 			Tapestry's AbstractIntegrationTestSuite doesn't work with WAR overlays
-			if you want to use this plugin, remove the "trails-web" (war overlay) dependency 
+			if you want to use this plugin, remove the "tynamo-crud-web" (war overlay) dependency 
 -->
 <!--
 			<plugin>
@@ -174,7 +174,7 @@
 			<plugin>
 				<groupId>org.apache.tapestry</groupId>
 				<artifactId>tapestry-component-report</artifactId>
-				<version>${D}{tapestry-release-version}</version>
+				<version>${D}{tapestry-version}</version>
 				<configuration>
 					<rootPackage>${package}</rootPackage>
 				</configuration>
@@ -205,19 +205,19 @@
 		<dependency>
 			<groupId>org.apache.tapestry</groupId>
 			<artifactId>tapestry-upload</artifactId>
-			<version>${D}{tapestry-release-version}</version>
+			<version>${D}{tapestry-version}</version>
 		</dependency>
 
 		<dependency>
-			<groupId>org.trailsframework</groupId>
-			<artifactId>trails-hibernate</artifactId>
-			<version>${D}{trails-release-version}</version>
+			<groupId>org.tynamo</groupId>
+			<artifactId>tynamo-crud-hibernate</artifactId>
+			<version>${D}{tynamo-version}</version>
 		</dependency>
 
 		<dependency>
-			<groupId>org.trailsframework</groupId>
-			<artifactId>trails-web</artifactId>
-			<version>${D}{trails-release-version}</version>
+			<groupId>org.tynamo</groupId>
+			<artifactId>tynamo-crud-web</artifactId>
+			<version>${D}{tynamo-version}</version>
 			<type>war</type>
 		</dependency>
 
@@ -230,7 +230,7 @@
 		<dependency>
 			<groupId>org.apache.tapestry</groupId>
 			<artifactId>tapestry-test</artifactId>
-			<version>${tapestry-release-version}</version>
+			<version>${tapestry-version}</version>
 			<scope>test</scope>
 			<!-- Selenium 1.0-beta-2 does not work well on MacOS -->
 			<exclusions>
@@ -280,7 +280,7 @@
 	<repositories>
 		<!-- Don't use snapshots unless absolutely necessary -->
 		<repository>
-			<id>trails-codehaus-ci</id>
+			<id>codehaus-ci</id>
 			<name>Official snapshot repository available from Codehaus' Bamboo server</name>
 			<url>http://ci.repository.codehaus.org</url>
 			<snapshots>

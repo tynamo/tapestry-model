@@ -8,13 +8,13 @@ import org.apache.tapestry5.ioc.ServiceBinder;
 import org.apache.tapestry5.ioc.annotations.SubModule;
 import org.apache.tapestry5.upload.services.UploadSymbols;
 import org.tynamo.builder.Builder;
-import org.tynamo.services.TrailsCoreModule;
+import org.tynamo.services.TynamoCoreModule;
 
 /**
  * This module is automatically included as part of the Tapestry IoC Registry, it's a good place to configure and extend
- * Trails, or to place your own service definitions.
+ * Tynamo, or to place your own service definitions.
  */
-@SubModule(value = {TrailsCoreModule.class, HibernateModule.class})
+@SubModule(value = {TynamoCoreModule.class, HibernateModule.class})
 public class AppModule
 {
 

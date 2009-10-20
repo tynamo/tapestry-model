@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <archetype-catalog>
 	<archetypes>
+<!--
+mvn archetype:generate -DarchetypeCatalog=http://tynamo.codehaus.org/
+mvn archetype:generate -DarchetypeGroupId=org.tynamo -DarchetypeArtifactId=tynamo-archetype -DarchetypeVersion=0.0.1-SNAPSHOT
+-->
 		<archetype>
-			<groupId>org.trailsframework</groupId>
-			<artifactId>trails-archetype</artifactId>
-			<version>2.0.1-SNAPSHOT</version>
+			<groupId>org.tynamo</groupId>
+			<artifactId>tynamo-archetype</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
 			<repository>http://ci.repository.codehaus.org/</repository>
-			<description>Trails 2.0.1-SNAPSHOT Archetype</description>
+			<description>Tynamo 0.0.1-SNAPSHOT Archetype</description>
 		</archetype>
 	</archetypes>
 </archetype-catalog>
