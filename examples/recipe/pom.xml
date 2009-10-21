@@ -15,76 +15,6 @@
 
 	<build>
 		<finalName>recipe</finalName>
-		<plugins>
-			<plugin>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>surefire-it</id>
-						<phase>integration-test</phase>
-						<goals>
-							<goal>test</goal>
-						</goals>
-						<configuration>
-							<includes>
-								<include>
-									**/functional/*Test.java
-								</include>
-							</includes>
-							<excludes>
-								<exclude>
-									**/FunctionalTest.java
-								</exclude>
-							</excludes>
-						</configuration>
-					</execution>
-				</executions>
-				<configuration>
-					<includes>
-						<include>**/ThingTest.java</include>
-					</includes>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.codehaus.cargo</groupId>
-				<artifactId>cargo-maven2-plugin</artifactId>
-				<version>1.0</version>
-				<configuration>
-					<wait>false</wait>
-					<container>
-						<containerId>tomcat5x</containerId>
-						<zipUrlInstaller>
-							<url>http://apache.org/dist/tomcat/tomcat-5/v5.5.27/bin/apache-tomcat-5.5.27.zip</url>
-						</zipUrlInstaller>
-					</container>
-					<configuration>
-						<properties>
-							<!--
-								Can't use 8080 on Bamboo
-							   java.net.BindException: Address already in use:8080
-							-->
-							<cargo.servlet.port>9080</cargo.servlet.port>
-						</properties>
-					</configuration>
-				</configuration>
-				<executions>
-					<execution>
-						<id>start-container</id>
-						<phase>pre-integration-test</phase>
-						<goals>
-							<goal>start</goal>
-						</goals>
-					</execution>
-					<execution>
-						<id>stop-container</id>
-						<phase>post-integration-test</phase>
-						<goals>
-							<goal>stop</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
 	</build>
 
 	<reporting>
@@ -105,9 +35,9 @@
 	<dependencies>
 
 		<dependency>
-			<groupId>hsqldb</groupId>
-			<artifactId>hsqldb</artifactId>
-			<version>1.8.0.7</version>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<version>1.2.121</version>
 		</dependency>
 
 		<dependency>
