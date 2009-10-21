@@ -16,15 +16,13 @@ package org.tynamo.test.functional;
 import com.gargoylesoftware.htmlunit.ElementNotFoundException;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.*;
-import com.gargoylesoftware.htmlunit.html.xpath.HtmlUnitXPath;
-import junit.framework.TestCase;
-import org.jaxen.JaxenException;
+import static org.testng.Assert.*;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.Properties;
 
-public class FunctionalTest extends TestCase
+public class FunctionalTest
 {
 
 	WebClient webClient;
@@ -67,46 +65,46 @@ public class FunctionalTest extends TestCase
 		return (HtmlPage) page.getFirstAnchorByText(linkText).click();
 	}
 
-	protected HtmlDivision getErrorDiv(HtmlPage page) throws JaxenException
-	{
-		return (HtmlDivision) new HtmlUnitXPath("//div[@class='error']").selectSingleNode(page);
-	}
-
-	protected String getId(String idField, HtmlPage savedCategoryPage) throws JaxenException
-	{
-		HtmlListItem span = (HtmlListItem) new HtmlUnitXPath("//li[contains(., '" + idField + "')]").selectSingleNode(savedCategoryPage);
-		return span.asText().replaceAll(idField, "").trim();
-	}
+//	protected HtmlDivision getErrorDiv(HtmlPage page) throws JaxenException
+//	{
+//		return (HtmlDivision) new HtmlUnitXPath("//div[@class='error']").selectSingleNode(page);
+//	}
+//
+//	protected String getId(String idField, HtmlPage savedCategoryPage) throws JaxenException
+//	{
+//		HtmlListItem span = (HtmlListItem) new HtmlUnitXPath("//li[contains(., '" + idField + "')]").selectSingleNode(savedCategoryPage);
+//		return span.asText().replaceAll(idField, "").trim();
+//	}
 
 	protected void assertXPathPresent(HtmlPage page, String xpath) throws Exception
 	{
-		assertNotNull(new HtmlUnitXPath(xpath).selectSingleNode(page));
+		assertNotNull(page.getByXPath(xpath).get(0));
 
 	}
 
-	protected void assertXPathNotPresent(HtmlPage page, String xpath) throws Exception
-	{
-		assertNull(new HtmlUnitXPath(xpath).selectSingleNode(page));
-	}
-
-	protected HtmlTextArea getTextAreaByName(HtmlPage page, String name) throws JaxenException
-	{
-		HtmlTextArea textArea = (HtmlTextArea)
-				new HtmlUnitXPath("//textarea/preceding-sibling::label[contains(text(), '" + name + "')]/following-sibling::textarea").selectSingleNode(page);
-		return textArea;
-	}
-
-	protected HtmlInput getInputByName(HtmlPage page, String name) throws JaxenException
-	{
-		return (HtmlInput)
-				new HtmlUnitXPath("//input/preceding-sibling::label[contains(text(), '" + name + "')]/following-sibling::input").selectSingleNode(page);
-	}
-
-	protected HtmlSelect getSelectByName(HtmlPage page, String name) throws JaxenException
-	{
-		return (HtmlSelect)
-				new HtmlUnitXPath("//select/preceding-sibling::label[contains(text(),  '" + name + "')]/following-sibling::select").selectSingleNode(page);
-	}
+//	protected void assertXPathNotPresent(HtmlPage page, String xpath) throws Exception
+//	{
+//		assertNull(new HtmlUnitXPath(xpath).selectSingleNode(page));
+//	}
+//
+//	protected HtmlTextArea getTextAreaByName(HtmlPage page, String name) throws JaxenException
+//	{
+//		HtmlTextArea textArea = (HtmlTextArea)
+//				new HtmlUnitXPath("//textarea/preceding-sibling::label[contains(text(), '" + name + "')]/following-sibling::textarea").selectSingleNode(page);
+//		return textArea;
+//	}
+//
+//	protected HtmlInput getInputByName(HtmlPage page, String name) throws JaxenException
+//	{
+//		return (HtmlInput)
+//				new HtmlUnitXPath("//input/preceding-sibling::label[contains(text(), '" + name + "')]/following-sibling::input").selectSingleNode(page);
+//	}
+//
+//	protected HtmlSelect getSelectByName(HtmlPage page, String name) throws JaxenException
+//	{
+//		return (HtmlSelect)
+//				new HtmlUnitXPath("//select/preceding-sibling::label[contains(text(),  '" + name + "')]/following-sibling::select").selectSingleNode(page);
+//	}
 
 	/**
 	 * Hook method which is called during setup phase, before the first request.
