@@ -28,6 +28,7 @@ import org.mortbay.jetty.handler.DefaultHandler;
 import org.mortbay.jetty.handler.HandlerCollection;
 import org.mortbay.jetty.nio.SelectChannelConnector;
 import org.mortbay.jetty.webapp.WebAppContext;
+import org.mortbay.resource.ResourceCollection;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeTest;
 import static org.testng.Assert.*;
@@ -50,6 +51,8 @@ public abstract class AbstractContainerTest {
             server.setConnectors(new Connector[]{connector});
 
             WebAppContext context = new WebAppContext("src/main/webapp", "/");
+			ResourceCollection resourceCollection = new ResourceCollection(new String[]{"src/main/webapp", "src/test/webapp"});
+			context.setBaseResource(resourceCollection);
 
             HandlerCollection handlers = new HandlerCollection();
             handlers.setHandlers(new Handler[]{context, new DefaultHandler()});
