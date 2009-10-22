@@ -69,7 +69,7 @@ public class EditCompositionPage extends HibernateEditPage
 
 	public Link back()
 	{
-		return getResources().createPageLink(Edit.class, false, collectionDescriptor.getBeanType(), parentBean);
+		return getPageRenderLinkSource().createPageRenderLinkWithContext(Edit.class, false, collectionDescriptor.getBeanType(), parentBean);
 	}
 
 }

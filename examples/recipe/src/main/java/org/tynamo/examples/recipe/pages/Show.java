@@ -16,7 +16,7 @@ public class Show extends HibernateModelPage
 
 	public Link back()
 	{
-		return getResources().createPageLink(List.class, false, getClassDescriptor().getType());
+		return getPageRenderLinkSource().createPageRenderLinkWithContext(List.class, false, getClassDescriptor().getType());
 	}
 
 	public String getEditLinkMessage()

@@ -15,6 +15,6 @@ public class New extends HibernateNewPage
 
 	public Link back()
 	{
-		return getResources().createPageLink(List.class, false, getClassDescriptor().getType());
+		return getPageRenderLinkSource().createPageRenderLinkWithContext(List.class, false, getClassDescriptor().getType());
 	}
 }
