@@ -9,6 +9,7 @@ import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.BeanModelSource;
 import org.apache.tapestry5.services.ContextValueEncoder;
+import org.apache.tapestry5.services.PageRenderLinkSource;
 import org.tynamo.descriptor.TynamoClassDescriptor;
 import org.tynamo.services.DescriptorService;
 import org.tynamo.services.PersistenceService;
@@ -34,7 +35,7 @@ public abstract class ModelPage
 	private DescriptorService descriptorService;
 
 	@Inject
-	private ComponentResources resources;
+	private PageRenderLinkSource pageRenderLinkSource;
 
 	@Component
 	private PageLink link;
@@ -74,9 +75,9 @@ public abstract class ModelPage
 		return persitenceService;
 	}
 
-	public ComponentResources getResources()
+	public PageRenderLinkSource getPageRenderLinkSource()
 	{
-		return resources;
+		return pageRenderLinkSource;
 	}
 
 	public abstract String getTitle();
