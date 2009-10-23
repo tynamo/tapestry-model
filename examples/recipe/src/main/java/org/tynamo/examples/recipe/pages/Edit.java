@@ -15,6 +15,6 @@ public class Edit extends HibernateEditPage
 
 	public Link back()
 	{
-		return getPageRenderLinkSource().createPageRenderLinkWithContext(Show.class, false, getClassDescriptor().getType(), getBean());
+		return getPageRenderLinkSource().createPageRenderLinkWithContext(Show.class, getClassDescriptor().getType(), getBean());
 	}
 }
