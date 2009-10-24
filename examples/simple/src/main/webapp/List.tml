@@ -3,7 +3,7 @@
 		<ul id="local">
 			<t:if test="classDescriptor.allowSave">
 				<li>
-					<t:pagelink class="newlink" page="New" context="classDescriptor.type">${newlinkMessage}</t:pagelink>
+					<t:pagelink class="newlink" page="Add" context="classDescriptor.type">${newlinkMessage}</t:pagelink>
 				</li>
 			</t:if>
 <!--

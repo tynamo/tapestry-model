@@ -1,11 +1,11 @@
-package org.tynamo.examples.simple.pages;
+package ${package}.pages;
 
 
 import org.apache.tapestry5.Link;
 import org.tynamo.hibernate.pages.HibernateNewPage;
 import org.tynamo.util.DisplayNameUtils;
 
-public class New extends HibernateNewPage
+public class Add extends HibernateNewPage
 {
 
 	public String getTitle()
