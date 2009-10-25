@@ -12,8 +12,7 @@ import org.apache.tapestry5.ioc.annotations.Match;
 import org.apache.tapestry5.ioc.annotations.Symbol;
 import org.apache.tapestry5.services.BeanBlockContribution;
 import org.apache.tapestry5.services.LibraryMapping;
-import org.hibernate.EntityMode;
-import org.hibernate.metadata.ClassMetadata;
+import org.hibernate.mapping.PersistentClass;
 import org.tynamo.VersionedModule;
 import org.tynamo.descriptor.DescriptorDecorator;
 import org.tynamo.descriptor.DescriptorFactory;
@@ -23,6 +22,8 @@ import org.tynamo.hibernate.TynamoInterceptor;
 import org.tynamo.hibernate.TynamoInterceptorConfigurer;
 import org.tynamo.hibernate.validation.HibernateClassValidatorFactory;
 import org.tynamo.hibernate.validation.HibernateValidationDelegate;
+
+import java.util.Iterator;
 
 public class TynamoHibernateModule extends VersionedModule
 {
@@ -48,12 +49,12 @@ public class TynamoHibernateModule extends VersionedModule
 	 */
 	public static void contributeComponentClassResolver(Configuration<LibraryMapping> configuration)
 	{
-		configuration.add(new LibraryMapping("trails-hibernate", "org.tynamo.hibernate"));
+		configuration.add(new LibraryMapping("tynamo-hibernate", "org.tynamo.hibernate"));
 	}
 
 	public static void contributeClasspathAssetAliasManager(MappedConfiguration<String, String> configuration)
 	{
-		configuration.add("trails-hibernate/" + version, "org/trailsframework/hibernate");
+		configuration.add("tynamo-hibernate/" + version, "org/tynamo/hibernate");
 	}
 
 	public static void contributeValidationMessagesSource(OrderedConfiguration<String> configuration)
@@ -103,11 +104,18 @@ public class TynamoHibernateModule extends VersionedModule
 												   HibernateSessionSource hibernateSessionSource)
 	{
 
-		for (Object classMetadata : hibernateSessionSource.getSessionFactory().getAllClassMetadata().values())
+		org.hibernate.cfg.Configuration config = hibernateSessionSource.getConfiguration();
+		Iterator<PersistentClass> mappings = config.getClassMappings();
+		while (mappings.hasNext())
 		{
-			configuration.add(((ClassMetadata) classMetadata).getMappedClass(EntityMode.POJO));
-		}
+			final PersistentClass persistentClass = mappings.next();
+			final Class entityClass = persistentClass.getMappedClass();
 
+			if (entityClass != null)
+			{
+				configuration.add(entityClass);
+			}
+		}
 	}
 
 	public static void contributeTynamoDataTypeAnalyzer(MappedConfiguration<String, String> configuration)
