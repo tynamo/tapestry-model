@@ -8,7 +8,7 @@ import org.tynamo.descriptor.TynamoPropertyDescriptor;
 /**
  * An interface to the persistence mechanism that allows to plug in different strategies for persisting binary files.
  */
-public interface IFilePersister
+public interface BlobManager
 {
 	Asset getAsset(TynamoPropertyDescriptor TynamoPropertyDescriptor, Object model);
 

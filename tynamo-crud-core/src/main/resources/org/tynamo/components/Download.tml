@@ -1,3 +1,9 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<div xmlns:t="http://tapestry.apache.org/schema/tapestry_5_0_0.xsd" xmlns:p="tapestry:parameter">
+
+	<img src="${byteArrayLink}" alt=""/>
+
+<!--
 	<span jwcid="@If" condition="ognl:renderType.image">
 		<span jwcid="@If" condition="ognl:byteArrayAsset">
 			<img jwcid="@Image" image="ognl:byteArrayAsset"/>
@@ -18,3 +24,6 @@
 			</a>
 		</span></span>
 	</span>
+-->
+
+</div>

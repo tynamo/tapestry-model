@@ -1,4 +1,4 @@
-package org.tynamo.blob;
+package org.tynamo.components;
 
 import org.apache.tapestry5.Asset;
 import org.apache.tapestry5.ComponentResources;
@@ -7,7 +7,7 @@ import org.apache.tapestry5.StreamResponse;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Response;
-import org.tynamo.blob.IFilePersister;
+import org.tynamo.blob.BlobManager;
 import org.tynamo.descriptor.TynamoPropertyDescriptor;
 import org.tynamo.descriptor.extension.BlobDescriptorExtension;
 
@@ -15,13 +15,13 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class TrailsDownload
+public class Download
 {
 	private final static String noIcon = "/images/cross.png";
 	private final static String noImage = "/images/noimage.jpg";
 
 	@Inject
-	private IFilePersister filePersister;
+	private BlobManager filePersister;
 
 /*
 	@Inject

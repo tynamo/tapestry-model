@@ -1,15 +1,15 @@
-package org.tynamo.blob;
+package org.tynamo.components;
 
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.upload.services.UploadedFile;
-import org.tynamo.blob.IFilePersister;
+import org.tynamo.blob.BlobManager;
 import org.tynamo.descriptor.TynamoPropertyDescriptor;
 
-public class TrailsUpload
+public class Upload
 {
 	@Inject
-	private IFilePersister filePersister;
+	private BlobManager filePersister;
 
 	@Parameter(required = true)
 	private Object model;

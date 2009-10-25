@@ -1,9 +1,11 @@
 package org.tynamo.blob;
 
-import org.tynamo.descriptor.extension.ITynamoBlob;
+import org.tynamo.descriptor.extension.TynamoBlob;
 
-public class TrailsBlobImpl implements ITynamoBlob
+public class TynamoBlobImpl implements TynamoBlob
 {
+	private static final long serialVersionUID = 283361091832362230L;
+
 	private String fileName;
 	private String filePath;
 	private String contentType;

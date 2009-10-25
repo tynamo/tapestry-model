@@ -7,7 +7,7 @@ import java.io.Serializable;
  * It's kind of a Tynamo clone of {@link org.apache.tapestry.request.IUploadFile}
  *
  */
-public interface ITynamoBlob extends Serializable
+public interface TynamoBlob extends Serializable
 {
 
 	/**

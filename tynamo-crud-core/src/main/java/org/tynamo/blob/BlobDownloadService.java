@@ -1,6 +1,6 @@
 package org.tynamo.blob;
 
-public class BlobDownloadService
+public class BlobDownloadService //implements Dispatcher
 {
 /*
 	private static final Log LOG = LogFactory.getLog(BlobDownloadService.class);
@@ -13,7 +13,7 @@ public class BlobDownloadService
 
 	private PersistenceService persistenceService;
 
-	private IFilePersister filePersister;
+	private BlobManager filePersister;
 
 	DataSqueezer dataSqueezer;
 
@@ -24,9 +24,9 @@ public class BlobDownloadService
 	public ILink getLink(boolean post, Object parameter)
 	{
 
-		Defense.isAssignable(((Object[]) parameter)[0], TrailsBlobAsset.class, "parameter");
+		Defense.isAssignable(((Object[]) parameter)[0], BlobAsset.class, "parameter");
 
-		TrailsBlobAsset asset = (TrailsBlobAsset) ((Object[]) parameter)[0];
+		BlobAsset asset = (BlobAsset) ((Object[]) parameter)[0];
 
 		Map<String, String> parameters = new HashMap<String, String>();
 
@@ -126,7 +126,7 @@ public class BlobDownloadService
 		this.persistenceService = persistenceService;
 	}
 
-	public void setFilePersister(IFilePersister filePersister)
+	public void setFilePersister(BlobManager filePersister)
 	{
 		this.filePersister = filePersister;
 	}

@@ -1,4 +1,4 @@
-package org.tynamo.blob;
+package org.tynamo.components;
 
 import org.apache.tapestry5.annotations.Parameter;
 import org.tynamo.descriptor.annotation.PropertyDescriptor;
