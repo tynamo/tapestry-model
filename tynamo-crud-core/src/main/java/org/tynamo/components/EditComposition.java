@@ -183,15 +183,20 @@ public class EditComposition
 		}
 	}*/
 
-	public Object[] getEditPageContext()
+	public Object[] getEditCompositionPageContext()
 	{
-		return new Object[]{collectionDescriptor.getBeanType(), owner, collectionDescriptor.getName(),
-				collectionIterator};
+		return new Object[]{collectionDescriptor.getBeanType(), owner, collectionDescriptor.getName(), collectionIterator};
 	}
+
+	public Object[] getAddCompositionPageContext()
+	{
+		return new Object[]{collectionDescriptor.getBeanType(), owner, collectionDescriptor.getName()};
+	}
+
 
 	public final String getModelId()
 	{
-		TynamoClassDescriptor classDescriptor =
+		TynamoClassDescriptor classDescriptor = 
 				descriptorService.getClassDescriptor(collectionDescriptor.getBeanType());
 		return propertyAccess.get(collectionIterator, classDescriptor.getIdentifierDescriptor().getName()).toString();
 	}
