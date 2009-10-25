@@ -8,7 +8,7 @@ import org.apache.tapestry5.upload.services.UploadedFile;
 import org.tynamo.descriptor.TynamoClassDescriptor;
 import org.tynamo.descriptor.TynamoPropertyDescriptor;
 import org.tynamo.descriptor.extension.BlobDescriptorExtension;
-import org.tynamo.descriptor.extension.ITynamoBlob;
+import org.tynamo.descriptor.extension.TynamoBlob;
 import org.tynamo.services.DescriptorService;
 import org.tynamo.services.PersistenceService;
 
@@ -18,9 +18,9 @@ import java.io.Serializable;
 
 
 /**
- * The Trails {@link IFilePersister} default implementation.
+ * The Trails {@link BlobManager} default implementation.
  */
-public class DefaultFilePersister implements IFilePersister
+public class DefaultBlobManager implements BlobManager
 {
 
 	private PersistenceService persistenceService;
@@ -28,7 +28,7 @@ public class DefaultFilePersister implements IFilePersister
 //7	private BlobDownloadService blobDownloadService;
 	private PropertyAccess propertyAccess;
 
-	public DefaultFilePersister(PersistenceService persistenceService, DescriptorService descriptorService,
+	public DefaultBlobManager(PersistenceService persistenceService, DescriptorService descriptorService,
 								PropertyAccess propertyAccess)
 	{
 		this.persistenceService = persistenceService;
@@ -59,11 +59,11 @@ public class DefaultFilePersister implements IFilePersister
 				propertyAccess.set(model, propertyDescriptor.getName(), data);
 			} else if (blobDescriptorExtension.isITynamoBlob())
 			{
-				ITynamoBlob trailsBlob = (ITynamoBlob) propertyAccess.get(model, propertyDescriptor.getName());
+				TynamoBlob trailsBlob = (TynamoBlob) propertyAccess.get(model, propertyDescriptor.getName());
 
 				if (trailsBlob == null)
 				{ //trying to avoid an NPE
-					trailsBlob = new TrailsBlobImpl();
+					trailsBlob = new TynamoBlobImpl();
 					propertyAccess.set(model, propertyDescriptor.getName(), trailsBlob);
 				}
 
@@ -85,7 +85,7 @@ public class DefaultFilePersister implements IFilePersister
 
 		} else if (blobDescriptorExtension.isITynamoBlob())
 		{
-			ITynamoBlob trailsBlob = (ITynamoBlob) propertyAccess.get(model, propertyDescriptor.getName());
+			TynamoBlob trailsBlob = (TynamoBlob) propertyAccess.get(model, propertyDescriptor.getName());
 			return trailsBlob != null ? trailsBlob.getBytes() : new byte[0];
 		}
 		return null;
@@ -101,7 +101,7 @@ public class DefaultFilePersister implements IFilePersister
 
 		} else if (blobDescriptorExtension.isITynamoBlob())
 		{
-			ITynamoBlob trailsBlob = (ITynamoBlob) propertyAccess.get(model, propertyDescriptor.getName());
+			TynamoBlob trailsBlob = (TynamoBlob) propertyAccess.get(model, propertyDescriptor.getName());
 			trailsBlob.reset();
 		}
 
@@ -119,7 +119,7 @@ public class DefaultFilePersister implements IFilePersister
 
 			if (bytes != null && bytes.length > 0)
 			{
-//				return new TrailsBlobAsset(blobDownloadService, propertyDescriptor, pk);
+//				return new BlobAsset(blobDownloadService, propertyDescriptor, pk);
 			}
 		}
 		return null;
@@ -137,7 +137,7 @@ public class DefaultFilePersister implements IFilePersister
 
 		if (blobDescriptorExtension.isITynamoBlob())
 		{
-			ITynamoBlob trailsBlob = (ITynamoBlob) propertyAccess.get(model, propertyDescriptor.getName());
+			TynamoBlob trailsBlob = (TynamoBlob) propertyAccess.get(model, propertyDescriptor.getName());
 			if (trailsBlob != null)
 			{
 				return trailsBlob.getContentType();
@@ -158,7 +158,7 @@ public class DefaultFilePersister implements IFilePersister
 
 		if (blobDescriptorExtension.isITynamoBlob())
 		{
-			ITynamoBlob trailsBlob = (ITynamoBlob) propertyAccess.get(model, propertyDescriptor.getName());
+			TynamoBlob trailsBlob = (TynamoBlob) propertyAccess.get(model, propertyDescriptor.getName());
 			if (trailsBlob != null)
 			{
 				return trailsBlob.getFileName();

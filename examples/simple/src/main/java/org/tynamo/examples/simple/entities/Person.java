@@ -1,9 +1,10 @@
 package org.tynamo.examples.simple.entities;
 
+import org.tynamo.blob.TynamoBlobImpl;
 import org.tynamo.descriptor.annotation.BlobDescriptor;
 import org.tynamo.descriptor.annotation.PropertyDescriptor;
 import org.tynamo.descriptor.extension.BlobDescriptorExtension;
-import org.tynamo.descriptor.extension.ITynamoBlob;
+import org.tynamo.descriptor.extension.TynamoBlob;
 
 import javax.persistence.*;
 
@@ -17,7 +18,7 @@ public class Person
 
 	private String lastName;
 
-//	private ITynamoBlob photo = new TynamoBlobImpl();
+	private TynamoBlob photo = new TynamoBlobImpl();
 
 	private Car car;
 
@@ -91,20 +92,18 @@ public class Person
 	 *
 	 * @return
 	 */
-/*
 	@BlobDescriptor(renderType = BlobDescriptorExtension.RenderType.ICON)
 	@Lob
 	@Column(length = 1048576)  // Use 1Mb maximum length. (MEDIUMBLOB in MySQL.)
-	public ITynamoBlob getPhoto()
+	public TynamoBlob getPhoto()
 	{
 		return photo;
 	}
 
-	public void setPhoto(ITynamoBlob photo)
+	public void setPhoto(TynamoBlob photo)
 	{
 		this.photo = photo;
 	}
-*/
 
 	public boolean equals(Object o)
 	{

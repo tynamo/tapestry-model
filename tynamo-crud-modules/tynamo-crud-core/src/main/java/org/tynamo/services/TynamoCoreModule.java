@@ -4,13 +4,14 @@ import org.apache.tapestry5.ioc.Configuration;
 import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.ioc.OrderedConfiguration;
 import org.apache.tapestry5.ioc.ServiceBinder;
-import org.apache.tapestry5.ioc.ServiceResources;
 import org.apache.tapestry5.ioc.annotations.InjectService;
 import org.apache.tapestry5.ioc.services.CoercionTuple;
 import org.apache.tapestry5.services.BeanBlockContribution;
 import org.apache.tapestry5.services.DataTypeAnalyzer;
 import org.apache.tapestry5.services.LibraryMapping;
 import org.tynamo.VersionedModule;
+import org.tynamo.blob.DefaultBlobManager;
+import org.tynamo.blob.BlobManager;
 import org.tynamo.builder.BuilderDirector;
 import org.tynamo.descriptor.DescriptorFactory;
 import org.tynamo.descriptor.MethodDescriptorFactory;
@@ -38,6 +39,8 @@ public class TynamoCoreModule extends VersionedModule {
 		binder.bind(DescriptorService.class, DescriptorServiceImpl.class);
 		binder.bind(TynamoDataTypeAnalyzer.class, TynamoDataTypeAnalyzer.class);
 
+		binder.bind(BlobManager.class, DefaultBlobManager.class);
+
 	}
 
 	/**
@@ -63,7 +66,7 @@ public class TynamoCoreModule extends VersionedModule {
 		configuration.add(new BeanBlockContribution("single-valued-association", PROPERTY_EDIT_BLOCKS, "select", true));
 		configuration.add(new BeanBlockContribution("identifierEditor", PROPERTY_EDIT_BLOCKS, "identifierEditor", true));
 		configuration.add(new BeanBlockContribution("many-valued-association", PROPERTY_EDIT_BLOCKS, "palette", true));
-		configuration.add(new BeanBlockContribution("composition", PROPERTY_EDIT_BLOCKS, "editComposition", true));
+		configuration.add(new BeanBlockContribution("composition", PROPERTY_EDIT_BLOCKS, "hidden", true));
 		configuration.add(new BeanBlockContribution("embedded", PROPERTY_EDIT_BLOCKS, "embedded", true));
 
 		configuration.add(new BeanBlockContribution("hidden", PROPERTY_DISPLAY_BLOCKS, "hidden", false));

@@ -46,7 +46,7 @@ public class BlobDescriptorExtension implements DescriptorExtension
 
 	private enum BlobType
 	{
-		BYTES, ITRAILSBLOB
+		BYTES, TYNAMO_BLOB
 	}
 
 	private BlobType blobType = BlobType.BYTES;
@@ -64,9 +64,9 @@ public class BlobDescriptorExtension implements DescriptorExtension
 	 */
 	public BlobDescriptorExtension(Class beanType)
 	{
-		if (ITynamoBlob.class.isAssignableFrom(beanType))
+		if (TynamoBlob.class.isAssignableFrom(beanType))
 		{
-			blobType = BlobType.ITRAILSBLOB;
+			blobType = BlobType.TYNAMO_BLOB;
 		} else if (beanType.isArray())
 		{
 			blobType = BlobType.BYTES;
@@ -83,7 +83,7 @@ public class BlobDescriptorExtension implements DescriptorExtension
 
 	public boolean isITynamoBlob()
 	{
-		return blobType == BlobType.ITRAILSBLOB;
+		return blobType == BlobType.TYNAMO_BLOB;
 	}
 
 	public String getFileName()

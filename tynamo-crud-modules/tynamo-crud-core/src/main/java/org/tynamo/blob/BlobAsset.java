@@ -1,6 +1,5 @@
 package org.tynamo.blob;
 
-import org.apache.tapestry5.Link;
 import org.apache.tapestry5.internal.services.AbstractAsset;
 import org.apache.tapestry5.ioc.Resource;
 import org.tynamo.descriptor.TynamoPropertyDescriptor;
@@ -9,9 +8,9 @@ import java.io.InputStream;
 import java.io.Serializable;
 
 /**
- * An implementation of {@link org.apache.tapestry.IAsset} for assets that are entity properties.
+ * An implementation of {@link AbstractAsset} for assets that are entity properties.
  */
-public class TrailsBlobAsset extends AbstractAsset
+public class BlobAsset extends AbstractAsset
 {
 
 	private BlobDownloadService bytesService;
@@ -20,13 +19,13 @@ public class TrailsBlobAsset extends AbstractAsset
 
 	private TynamoPropertyDescriptor propertyDescriptor;
 
-	public TrailsBlobAsset(boolean invariant)
+	public BlobAsset(boolean invariant)
 	{
 		super(invariant);
 	}
 
-	public TrailsBlobAsset(BlobDownloadService chartService, TynamoPropertyDescriptor propertyDescriptor,
-						   Serializable id)
+	public BlobAsset(BlobDownloadService chartService, TynamoPropertyDescriptor propertyDescriptor,
+					 Serializable id)
 	{
 		super(false);
 		this.bytesService = chartService;
