@@ -1,5 +1,4 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-
 <div id="${clientId}" class="editcomposition" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_0_0.xsd" xmlns:p="tapestry:parameter">
 
 	<table class="field editCollection">
@@ -26,29 +25,11 @@
 					<p:__id__header>
 					</p:__id__header>
 					<p:__id__cell>
-						<t:pagelink t:page="EditCompositionPage" context="editPageContext">${modelId}</t:pagelink>
+						<t:pagelink t:page="EditC" context="editCompositionPageContext">${modelId}</t:pagelink>
 					</p:__id__cell>
 				</t:grid>
 
-				<!--
-					 <table class="list table contribTable" jwcid="@ObjectTable" instances="ognl:collection"
-							classDescriptor="ognl:descriptorService.getClassDescriptor(collectionDescriptor.elementType)"
-							object="ognl:currentObject"
-							index="ognl:index"
-							extraColumns="!checkbox: :checkbox">
-						 <span jwcid="linkColumnValue@Block">
-							 <a href="#" jwcid="@EditLink" model="ognl:currentObject"
-								collectionProperty="ognl:collectionDescriptor.name">
-								 <span jwcid="insert@Insert" value="ognl:currentObject + 'jguyt'"/>
-							 </a>
-						 </span>
-						 <span jwcid="checkboxColumnValue@Block">
-							 <input jwcid="removeCheckbox@Checkbox" type="checkbox" value="ognl:#this.selected[index]"/>
-						 </span>
-					 </table>
- -->
 			</td>
-
 <!--
 			<td jwcid="@If" condition="ognl:list" renderTag="true">
 				<a jwcid="upLink@LinkSubmit" listener="listener:moveUp" disabled="ognl:page.modelNew">
@@ -69,4 +50,12 @@
 			   listener="listener:remove" disabled="ognl:page.modelNew"/>
 	</span>
 -->
+<!--
+	<div jwcid="allowCreate@If" condition="ognl:allowCreate">
+-->
+	<t:pagelink t:page="AddC" context="addCompositionPageContext">message:org.trails.i18n.addNew</t:pagelink>
+	<!--
+	 </div>
+ -->
+
 </div>
