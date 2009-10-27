@@ -16,7 +16,9 @@
 	<build>
 		<finalName>simple</finalName>
 
-		<!-- IGNORE THE TESTS (just until we have time to port them to T5) -->
+		<!-- IGNORE THE TESTS (just until we have time to port them to T5) 
+		Also, rewrite to use newer version of html unit and extend the AbstractContainerTest base class rather than rely on cargo
+		-->
 		<testSourceDirectory>src/test/resources</testSourceDirectory>
 
 		<plugins>
@@ -91,21 +93,6 @@
 		</plugins>
 	</build>
 
-	<reporting>
-
-		<!-- Adds a report detailing the components, mixins and base classes defined by this module. -->
-		<plugins>
-			<plugin>
-				<groupId>org.apache.tapestry</groupId>
-				<artifactId>tapestry-component-report</artifactId>
-				<version>${tapestry-release-version}</version>
-				<configuration>
-					<rootPackage>org.tynamo.examples.simple</rootPackage>
-				</configuration>
-			</plugin>
-		</plugins>
-	</reporting>
-
 	<dependencies>
 
 		<dependency>
@@ -139,4 +126,33 @@
 		</dependency>
 
 	</dependencies>
+	
+	<profiles>
+		<!-- Do not generate the tapestry-component-report on windows because it will fail with "javadoc: error - cannot find doclet class"
+		see https://issues.apache.org/jira/browse/TAP5-871
+		if you replace backslashes with forward slashes in component-report-javadoc-arguments.txt and run the javadoc manually, it'll work
+		-->
+		<profile>
+			<id>site</id>
+			<activation>
+				<os>
+					<family>!windows</family>
+				</os>
+			</activation>
+			<reporting>
+		
+				<!-- Adds a report detailing the components, mixins and base classes defined by this module. -->
+				<plugins>
+					<plugin>
+						<groupId>org.apache.tapestry</groupId>
+						<artifactId>tapestry-component-report</artifactId>
+						<version>${tapestry-release-version}</version>
+						<configuration>
+							<rootPackage>org.tynamo.examples.simple</rootPackage>
+						</configuration>
+					</plugin>
+				</plugins>
+			</reporting>
+		</profile>
+	</profiles>	
 </project>
