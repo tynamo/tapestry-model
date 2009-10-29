@@ -20,6 +20,14 @@
 <!--	<module>tynamo-jbpm</module>  -->
 	</modules>
 
+	<distributionManagement>
+		<site>
+			<id>tynamo-site</id>
+			<!-- Note the url. Only static files deployed in /constant/ can be decorated by Unity -->
+			<url>dav:https://dav.codehaus.org/tynamo/constant/tynamo-crud</url>
+		</site>
+	</distributionManagement>
+
 	<build>
 		<plugins>
 			<plugin>

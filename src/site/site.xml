@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="tynamo-crud" xmlns="http://maven.apache.org/DECORATION/1.0.0"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation="http://maven.apache.org/DECORATION/1.0.0 http://maven.apache.org/xsd/decoration-1.0.0.xsd">
+
+	<skin>
+		<groupId>org.tynamo</groupId>
+		<artifactId>codehaus-unity-skin</artifactId>
+		<version>0.0.1</version>
+	</skin>
+	<publishDate format="dd MMM yyyy"/>
+</project>
