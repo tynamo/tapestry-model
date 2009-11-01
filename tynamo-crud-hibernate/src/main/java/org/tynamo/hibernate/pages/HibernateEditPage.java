@@ -1,22 +1,22 @@
 package org.tynamo.hibernate.pages;
 
 
-import org.apache.tapestry5.Link;
 import org.apache.tapestry5.ValidationException;
-import org.apache.tapestry5.beaneditor.BeanModel;
-import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.annotations.Component;
+import org.apache.tapestry5.annotations.Log;
+import org.apache.tapestry5.beaneditor.BeanModel;
+import org.apache.tapestry5.corelib.components.Form;
+import org.apache.tapestry5.ioc.annotations.Inject;
+import org.hibernate.validator.InvalidStateException;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.tynamo.hibernate.validation.HibernateClassValidatorFactory;
 import org.tynamo.hibernate.validation.HibernateValidationDelegate;
-import org.hibernate.validator.InvalidStateException;
 
 public abstract class HibernateEditPage extends HibernateModelPage
 {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(HibernateEditPage.class);
+	@Inject
+	private Logger logger;
 
 	@Component
 	private Form form;
@@ -38,9 +38,9 @@ public abstract class HibernateEditPage extends HibernateModelPage
 	@Inject
 	private HibernateValidationDelegate hibernateValidationDelegate;
 
+	@Log
 	protected void onValidateFormFromForm() throws ValidationException
 	{
-		LOGGER.debug("validating");
 		//add more validation logic here
 		try
 		{
@@ -55,12 +55,11 @@ public abstract class HibernateEditPage extends HibernateModelPage
 		}
 	}
 
+	@Log
 	protected Object onSuccess()
 	{
 		try
 		{
-
-			LOGGER.debug("saving....");
 			getPersitenceService().save(getBean());
 			return back();
 
@@ -72,7 +71,7 @@ public abstract class HibernateEditPage extends HibernateModelPage
 //			missing ExceptionUtils (Lang 2.3 API)
 //			form.recordError(ExceptionUtil.getRootCause(e));
 			getForm().recordError(e.getMessage());
-			LOGGER.error(e.getMessage());
+			logger.error(e.getMessage());
 			e.printStackTrace();
 		}
 

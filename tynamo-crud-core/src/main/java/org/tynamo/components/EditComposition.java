@@ -10,7 +10,6 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.services.PropertyAccess;
 import org.apache.tapestry5.services.BeanModelSource;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.tynamo.descriptor.CollectionDescriptor;
 import org.tynamo.descriptor.TynamoClassDescriptor;
 import org.tynamo.services.DescriptorService;
@@ -27,7 +26,8 @@ import java.util.List;
 public class EditComposition
 {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(EditComposition.class);
+	@Inject
+	private Logger logger;
 
 	@Inject
 	private DescriptorService descriptorService;

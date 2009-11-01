@@ -3,8 +3,6 @@ package org.tynamo.hibernate.pages;
 import org.apache.tapestry5.beaneditor.BeanModel;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Environment;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.tynamo.descriptor.TynamoClassDescriptor;
 import org.tynamo.pages.ModelPage;
 import org.tynamo.services.TynamoBeanContext;
@@ -13,8 +11,6 @@ import java.lang.annotation.Annotation;
 
 public abstract class HibernateModelPage extends ModelPage
 {
-
-	private static final Logger LOGGER = LoggerFactory.getLogger(HibernateModelPage.class);
 
 	@Inject
 	private Environment environment;
@@ -64,7 +60,8 @@ public abstract class HibernateModelPage extends ModelPage
 
 	final void onActivate(Class clazz, String id) throws Exception
 	{
-		activate(getContextValueEncoder().toValue(clazz, id), getDescriptorService().getClassDescriptor(clazz), createBeanModel(clazz));
+		activate(getContextValueEncoder().toValue(clazz, id), getDescriptorService().getClassDescriptor(clazz),
+				createBeanModel(clazz));
 	}
 
 	/**

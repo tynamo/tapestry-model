@@ -2,14 +2,10 @@ package org.tynamo.hibernate.pages;
 
 
 import org.apache.tapestry5.ioc.annotations.Inject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.tynamo.builder.BuilderDirector;
 
 public abstract class HibernateNewPage extends HibernateEditPage
 {
-
-	private static final Logger LOGGER = LoggerFactory.getLogger(HibernateNewPage.class);
 
 	@Inject
 	private BuilderDirector builderDirector;
