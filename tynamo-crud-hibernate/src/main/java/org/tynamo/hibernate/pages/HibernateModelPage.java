@@ -1,24 +1,52 @@
 package org.tynamo.hibernate.pages;
 
-import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.beaneditor.BeanModel;
+import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.services.Environment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.tynamo.descriptor.TynamoClassDescriptor;
 import org.tynamo.pages.ModelPage;
+import org.tynamo.services.TynamoBeanContext;
 
+import java.lang.annotation.Annotation;
 
 public abstract class HibernateModelPage extends ModelPage
 {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(HibernateModelPage.class);
 
+	@Inject
+	private Environment environment;
+
 	private TynamoClassDescriptor classDescriptor;
 
-	@Property(write = false)
 	private BeanModel beanModel;
 
 	private Object bean;
+
+	protected void setupRender()
+	{
+		TynamoBeanContext context = new TynamoBeanContext()
+		{
+			public Class<?> getBeanClass()
+			{
+				return classDescriptor.getType();
+
+			}
+
+			public <T extends Annotation> T getAnnotation(Class<T> type)
+			{
+				return getBeanClass().getAnnotation(type);
+			}
+
+			public Object getBean()
+			{
+				return bean;
+			}
+		};
+		environment.push(TynamoBeanContext.class, context);
+	}
 
 	protected void activate(Object bean, TynamoClassDescriptor classDescriptor, BeanModel beanModel)
 	{
@@ -52,6 +80,11 @@ public abstract class HibernateModelPage extends ModelPage
 	public final TynamoClassDescriptor getClassDescriptor()
 	{
 		return classDescriptor;
+	}
+
+	public final BeanModel getBeanModel()
+	{
+		return beanModel;
 	}
 
 	public final Object getBean()

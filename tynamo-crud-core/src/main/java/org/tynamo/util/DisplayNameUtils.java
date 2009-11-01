@@ -33,9 +33,19 @@ public class DisplayNameUtils
 	 */
 	public static String getDisplayName(TynamoClassDescriptor classDescriptor, Messages messages)
 	{
-		String fullName = classDescriptor.getType().getName();
-		String shortName = classDescriptor.getType().getSimpleName();
-		return selectDisplayName(fullName, shortName, TapestryInternalUtils.toUserPresentable(classDescriptor.getType().getSimpleName()), messages);
+		return getDisplayName(classDescriptor.getType(), messages);
+	}
+
+	/**
+	 * Looks for a label within the messages based on the class name.
+	 * If found, it is used, otherwise the name is converted to a user presentable form.
+	 * The message key is either the full name of the entity or the simpleName
+	 */
+	public static String getDisplayName(Class type, Messages messages)
+	{
+		String fullName = type.getName();
+		String shortName = type.getSimpleName();
+		return selectDisplayName(fullName, shortName, TapestryInternalUtils.toUserPresentable(shortName), messages);
 	}
 
 	/**

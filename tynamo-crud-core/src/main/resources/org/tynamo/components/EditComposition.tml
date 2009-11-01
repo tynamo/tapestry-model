@@ -1,6 +1,8 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <div id="${clientId}" class="editcomposition" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_0_0.xsd" xmlns:p="tapestry:parameter">
 
+	<label>${label}</label>
+
 	<table class="field editCollection">
 		<tr>
 			<td>
@@ -53,7 +55,9 @@
 <!--
 	<div jwcid="allowCreate@If" condition="ognl:allowCreate">
 -->
-	<t:pagelink t:page="AddC" context="addCompositionPageContext">message:org.trails.i18n.addNew</t:pagelink>
+	<t:if test="allowCreate">
+		<t:pagelink t:page="AddC" context="addCompositionPageContext">${message:org.tynamo.i18n.add-child}</t:pagelink>
+	</t:if>
 	<!--
 	 </div>
  -->

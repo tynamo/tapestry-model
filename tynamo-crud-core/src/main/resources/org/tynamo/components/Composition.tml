@@ -1,0 +1,53 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<div id="${clientId}" class="composition" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_0_0.xsd" xmlns:p="tapestry:parameter">
+
+	<!--
+	 @note: the add-child link should be here!
+	-->
+
+	<t:zone t:id="compositionzone">
+		<t:if test="collection">
+			<ul style="margin-top: 10px;list-style:none">
+				<t:loop source="collection" value="collectionIterator">
+					<li>
+						<t:pagelink page="Show" context="showPageContext">${collectionIterator}</t:pagelink>
+						<t:actionlink t:id="deletechild" title="message:org.tynamo.i18n.delete-child"
+									  context="deleteContext" zone="compositionzone"
+									  style="float:right; display:inline-block;">
+						<img src="${deleteicon}" alt="${message:deleteicon-label}"/>
+						</t:actionlink>
+					</li>
+				</t:loop>
+			</ul>
+			<p:else>
+				<t:delegate to="empty"/>
+			</p:else>
+		</t:if>
+	</t:zone>
+
+	<t:form t:id="form" zone="compositionzone" style="display:none;">
+		<t:errors/>
+		<fieldset class="group">
+			<legend>${legendMessage}</legend>
+				<t:beaneditor object="formBean" model="beanModel"/>
+			<br/>
+
+			<div class="t-beaneditor-row">
+				<button t:type="any" class="button" type="submit" id="saveAndReturnButton">
+					${message:org.tynamo.i18n.ok}
+				</button>
+				&nbsp; &nbsp;
+				<a onclick="Element.toggle('${form.clientId}'); this.blur(); return false;" href="#">${message:org.tynamo.i18n.cancel}</a>
+			</div>
+		</fieldset>
+	</t:form>
+
+	<div style="text-align:right; display:block; margin-right:5px; margin-top:-20px;">
+		<a onclick="Element.toggle('${form.clientId}'); this.blur(); return false;" href="#">${message:org.tynamo.i18n.add-child}</a>
+	</div>
+
+	<t:block id="empty">
+		${message:no-data-to-display}
+	</t:block>
+
+</div>

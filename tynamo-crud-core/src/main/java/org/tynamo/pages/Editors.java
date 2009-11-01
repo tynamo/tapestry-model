@@ -19,6 +19,7 @@ import org.tynamo.descriptor.IdentifierDescriptor;
 import org.tynamo.descriptor.TynamoPropertyDescriptor;
 import org.tynamo.services.DescriptorService;
 import org.tynamo.services.PersistenceService;
+import org.tynamo.services.TynamoBeanContext;
 import org.tynamo.util.GenericSelectionModel;
 
 import java.util.ArrayList;
@@ -36,6 +37,10 @@ public class Editors
 	@Environmental
 	@Property(write = false)
 	private PropertyEditContext propertyEditContext;
+
+	@Environmental
+	@Property(write = false)
+	private TynamoBeanContext tynamoBeanContext;
 
 	@Inject
 	private PersistenceService persitenceService;
@@ -67,8 +72,8 @@ public class Editors
 	private Editor fckEditor;
 
 	@Component(parameters = {"collection=propertyEditContext.propertyValue", "label=prop:propertyEditContext.label",
-			"clientId=prop:propertyEditContext.propertyId", "collectionDescriptor=propertyDescriptor"})
-//, "owner=beanEditContext.object"})
+			"clientId=prop:propertyEditContext.propertyId", "collectionDescriptor=propertyDescriptor",
+			"owner=tynamoBeanContext.bean"})
 	private EditComposition editComposition;
 
 	public TynamoPropertyDescriptor getPropertyDescriptor()

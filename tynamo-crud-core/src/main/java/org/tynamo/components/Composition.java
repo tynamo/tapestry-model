@@ -1,33 +1,30 @@
 package org.tynamo.components;
 
-import org.apache.tapestry5.Asset;
-import org.apache.tapestry5.BindingConstants;
+import org.apache.tapestry5.*;
+import org.apache.tapestry5.annotations.InjectComponent;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.beaneditor.BeanModel;
+import org.apache.tapestry5.corelib.components.Form;
+import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.services.PropertyAccess;
+import org.apache.tapestry5.ioc.services.TypeCoercer;
 import org.apache.tapestry5.services.BeanModelSource;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.tapestry5.services.ValueEncoderSource;
+import org.tynamo.builder.BuilderDirector;
 import org.tynamo.descriptor.CollectionDescriptor;
-import org.tynamo.descriptor.TynamoClassDescriptor;
 import org.tynamo.services.DescriptorService;
 import org.tynamo.services.PersistenceService;
+import org.tynamo.util.DisplayNameUtils;
+import org.tynamo.util.Utils;
 
 import java.util.Collection;
 import java.util.List;
 
-
-/**
- * This component produces a editor for a Composition (child collection).
- * It allows a user to edit a collection property
- */
-public class EditComposition
+public class Composition
 {
-
-	private static final Logger LOGGER = LoggerFactory.getLogger(EditComposition.class);
 
 	@Inject
 	private DescriptorService descriptorService;
@@ -44,24 +41,31 @@ public class EditComposition
 	@Inject
 	private Messages messages;
 
+	@Inject
+	private BuilderDirector builderDirector;
+
+	@Inject
+	private ComponentResources resources;
+
+	@Inject
+	private ValueEncoderSource valueEncoderSource;
+
 	/**
 	 * The id used to generate a page-unique client-side identifier for the component. If a component renders multiple
 	 * times, a suffix will be appended to the to id to ensure uniqueness. The uniqued value may be accessed via the
 	 * {@link #getClientId() clientId property}.
 	 */
-	@Parameter(value = "prop:componentResources.id", defaultPrefix = BindingConstants.LITERAL)
+	@Parameter(value = "prop:resources.id", defaultPrefix = BindingConstants.LITERAL)
 	@Property(write = false)
 	private String clientId;
 
 	/**
-	 * The user presentable label for the field. If not provided, a reasonable label is generated from the component's
-	 * id, first by looking for a message key named "id-label" (substituting the component's actual id), then by
-	 * converting the actual id to a presentable string (for example, "userId" to "User Id").
+	 * A Block to render when the source is empty. The default is simply the text "There is no data to display".
+	 * This parameter is used to customize that message.
 	 */
-	@Parameter(defaultPrefix = BindingConstants.LITERAL)
+	@Parameter(value = "block:empty", defaultPrefix = BindingConstants.LITERAL)
 	@Property(write = false)
-	private String label;
-
+	private Block empty;
 
 	@Parameter(required = false)
 	private List instances;
@@ -73,7 +77,7 @@ public class EditComposition
 	/**
 	 * The object which owns the collection being edited
 	 */
-	@Parameter(required = false)
+	@Parameter(required = true)
 	private Object owner;
 
 	/**
@@ -92,8 +96,21 @@ public class EditComposition
 	@Property
 	private Object collectionIterator;
 
+	@Property
+	private Object formBean;
+
 	@Parameter(value = "true")
 	private boolean allowCreate;
+
+	@InjectComponent
+	private Zone compositionZone;
+
+	@InjectComponent
+	@Property(write = false)
+	private Form form;
+
+	@Inject
+	private TypeCoercer typeCoercer;
 
 	public boolean isAllowCreate()
 	{
@@ -115,40 +132,52 @@ public class EditComposition
 	@Property(write = false)
 	private Asset downImage;
 
+	/**
+	 * The image to use for the delete icon
+	 */
+	@Parameter(value = "asset:delete.png")
+	@Property(write = false)
+	private Asset deleteIcon;
+
 	@Property(write = false)
 	private BeanModel beanModel;
 
+	void onPrepareFromForm()
+	{
+		resources.triggerEvent(EventConstants.PREPARE, null, null);
+
+		if (beanModel == null)
+		{
+			beanModel = beanModelSource.createEditModel(collectionDescriptor.getElementType(), messages);
+		}
+	}
+
 	void setupRender()
 	{
-		beanModel = beanModelSource.create(collectionDescriptor.getElementType(), false, messages);
-		for (String propertyName : (List<String>) beanModel.getPropertyNames())
-		{
-			beanModel.get(propertyName).sortable(false);
-		}
+		beanModel = beanModelSource.createEditModel(collectionDescriptor.getElementType(), messages);
+		formBean = builderDirector.createNewInstance(collectionDescriptor.getElementType());
 	}
 
-/*	public void remove()
+	public Object onSuccess()
 	{
-		int i = 0;
-		// TODO CN - This code stinks (I wrote it).  Isn't there a better way??
-		ArrayList deleting = new ArrayList();
-		for (Object element : getCollection())
-		{
-			if (getSelected().get(i))
-			{
-				deleting.add(element);
-			}
-			i++;
-		}
-
-		for (Object element : deleting)
-		{
-			Utils.executeOgnlExpression(collectionDescriptor.getRemoveExpression(), element, owner);
-			persitenceService.remove(element);
-		}
+		Utils.executeOgnlExpression(collectionDescriptor.getAddExpression(), formBean, owner);
+		persitenceService.save(owner);
+		return compositionZone.getBody();
 	}
 
-	public boolean isList()
+	public Object onActionFromDeleteChild(String elementid)
+	{
+		ValueEncoder valueEncoder = valueEncoderSource.getValueEncoder(collectionDescriptor.getElementType());
+		Object element = valueEncoder.toValue(elementid);
+		Utils.executeOgnlExpression(collectionDescriptor.getRemoveExpression(), element, owner);
+
+		persitenceService.remove(element);
+		persitenceService.save(owner);
+		return compositionZone.getBody();
+	}
+
+
+/*	public boolean isList()
 	{
 		return collection instanceof List;
 	}
@@ -199,21 +228,20 @@ public class EditComposition
 		}
 	}*/
 
-	public Object[] getEditCompositionPageContext()
+	public Object[] getShowPageContext()
 	{
-		return new Object[]{collectionDescriptor.getBeanType(), owner, collectionDescriptor.getName(), collectionIterator};
+		return new Object[]{collectionIterator.getClass(), collectionIterator};
 	}
 
-	public Object[] getAddCompositionPageContext()
+	public Object[] getDeleteContext()
 	{
-		return new Object[]{collectionDescriptor.getBeanType(), owner, collectionDescriptor.getName()};
+		return new Object[]{collectionIterator};
 	}
 
-
-	public final String getModelId()
+	public String getLegendMessage()
 	{
-		TynamoClassDescriptor classDescriptor = 
-				descriptorService.getClassDescriptor(collectionDescriptor.getBeanType());
-		return propertyAccess.get(collectionIterator, classDescriptor.getIdentifierDescriptor().getName()).toString();
+		return messages.format("org.tynamo.i18n.add",
+				DisplayNameUtils.getDisplayName(collectionDescriptor.getElementType(), messages));
 	}
+
 }
