@@ -71,13 +71,17 @@ body#error #content {
 /* MAIN */
 div#main {
 	float: left;
-	margin-left: 190px;
 	margin-top: 30px;
-	margin-right: 200px;
 	min-height:350px;
 	height:auto;
 	display: inline;
 	position:relative;
+	width: 100%;
+}
+
+div#main_box {
+	margin-left:190px;
+	margin-right:202px;
 }
 
 div#main h1 {
