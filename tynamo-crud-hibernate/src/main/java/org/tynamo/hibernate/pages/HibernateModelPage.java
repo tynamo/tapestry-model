@@ -63,4 +63,10 @@ public abstract class HibernateModelPage extends ModelPage
 	{
 		this.bean = bean;
 	}
+
+	public boolean isAllowRemove()
+	{
+		return getClassDescriptor().isAllowRemove() && !getClassDescriptor().isChild();
+	}
+
 }
