@@ -22,12 +22,16 @@ import java.util.HashMap;
 public class Utils
 {
 
-	/* key used to internationalize Tynamo in Tapestry components and pages */
+	/* keys used to internationalize Tynamo in Tapestry components and pages */
 	public static final String APPLY_MESSAGE = "org.tynamo.i18n.apply";
 	public static final String APPLY_AND_RETURN_MESSAGE = "org.tynamo.i18n.applyAndReturn";
 	public static final String REMOVE_MESSAGE = "org.tynamo.i18n.remove";
 	public static final String CANCEL_MESSAGE = "org.tynamo.i18n.cancel";
 	public static final String ADD_NEW_MESSAGE = "org.tynamo.i18n.addNew";
+
+	public static final String EDIT_MESSAGE = "org.tynamo.i18n.edit";
+	public static final String SHOW_MESSAGE = "org.tynamo.i18n.show";
+
 	public static String DEFAULT = "Default";
 
 	public static Class classForName(String className)
