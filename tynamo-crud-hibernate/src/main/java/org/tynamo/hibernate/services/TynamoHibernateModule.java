@@ -22,6 +22,7 @@ import org.tynamo.hibernate.TynamoInterceptor;
 import org.tynamo.hibernate.TynamoInterceptorConfigurer;
 import org.tynamo.hibernate.validation.HibernateClassValidatorFactory;
 import org.tynamo.hibernate.validation.HibernateValidationDelegate;
+import org.tynamo.util.Pair;
 
 import java.util.Iterator;
 
@@ -118,30 +119,36 @@ public class TynamoHibernateModule extends VersionedModule
 		}
 	}
 
-	public static void contributeTynamoDataTypeAnalyzer(MappedConfiguration<String, String> configuration)
+	public static void contributeTynamoDataTypeAnalyzer(OrderedConfiguration<Pair> configuration)
 	{
-		configuration.add("hidden", "hidden");
-		configuration.add("readOnly", "readOnly");
-		configuration.add("richText", "fckEditor");
-//		configuration.add("name.toLowerCase().endsWith('password')", "passwordEditor"); //USE @DataType("password")
-//		configuration.add("string and !large and !identifier", "stringEditor"); //managed by Tapestry
-		configuration.add("string and large and !identifier", "longtext");
-		configuration.add("date", "dateEditor");
-//		configuration.add("numeric and !identifier", "numberEditor"); //managed by Tapestry
-		configuration.add("identifier && generated", "readOnly");
-		configuration.add("identifier && not(generated) && string", "identifierEditor");
-//		configuration.add("identifier && objectReference", "objectReferenceIdentifierEditor");
-//		configuration.add("boolean", "booleanEditor"); //managed by Tapestry
-//		configuration.add("supportsExtension('org.tynamo.descriptor.extension.EnumReferenceDescriptor')", "enumEditor"); //managed by Tapestry
-// @todo: configuration.add("supportsExtension('org.tynamo.descriptor.extension.BlobDescriptorExtension')", "blobEditor");
 
-		configuration.add("objectReference", "single-valued-association" /* (aka: ManyToOne) */);
-		configuration.add("collection && not(childRelationship)", "many-valued-association" /* (aka: ManyToMany) */);
-		configuration.add("collection && childRelationship", "composition");
-		configuration.add("name == 'id'", "readOnly");
-		configuration.add("embedded", "embedded");
+		addPairToOrderedConfiguration(configuration, "hidden", "hidden");
+		addPairToOrderedConfiguration(configuration, "readOnly", "readOnly");
+		addPairToOrderedConfiguration(configuration, "richText", "fckEditor");
+//		addPairToOrderedConfiguration(configuration, "name.toLowerCase().endsWith('password')", "passwordEditor"); //USE @DataType("password")
+//		addPairToOrderedConfiguration(configuration, "string and !large and !identifier", "stringEditor"); //managed by Tapestry
+		addPairToOrderedConfiguration(configuration, "string and large and !identifier", "longtext");
+		addPairToOrderedConfiguration(configuration, "date", "dateEditor");
+//		addPairToOrderedConfiguration(configuration, "numeric and !identifier", "numberEditor"); //managed by Tapestry
+		addPairToOrderedConfiguration(configuration, "identifier && generated", "readOnly");
+		addPairToOrderedConfiguration(configuration, "identifier && not(generated) && string", "identifierEditor");
+//		addPairToOrderedConfiguration(configuration, "identifier && objectReference", "objectReferenceIdentifierEditor");
+//		addPairToOrderedConfiguration(configuration, "boolean", "booleanEditor"); //managed by Tapestry
+//		addPairToOrderedConfiguration(configuration, "supportsExtension('org.tynamo.descriptor.extension.EnumReferenceDescriptor')", "enumEditor"); //managed by Tapestry
+// @todo: addPairToOrderedConfiguration(configuration, "supportsExtension('org.tynamo.descriptor.extension.BlobDescriptorExtension')", "blobEditor");
 
+		addPairToOrderedConfiguration(configuration, "objectReference", "single-valued-association" /* (aka: ManyToOne) */);
+		addPairToOrderedConfiguration(configuration, "collection && not(childRelationship)", "many-valued-association" /* (aka: ManyToMany) */);
+		addPairToOrderedConfiguration(configuration, "collection && childRelationship", "composition");
+		addPairToOrderedConfiguration(configuration, "name == 'id'", "readOnly");
+		addPairToOrderedConfiguration(configuration, "embedded", "embedded");
 	}
+
+	private static void addPairToOrderedConfiguration(OrderedConfiguration<Pair> configuration, String key, String value)
+	{
+		configuration.add(key, new Pair<String, String>(key, value));
+	}
+
 
 	public static void contributePropertyDescriptorFactory(Configuration<String> configuration)
 	{

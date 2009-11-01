@@ -2,25 +2,26 @@ package org.tynamo.services;
 
 import ognl.Ognl;
 import ognl.OgnlException;
+import org.apache.tapestry5.beaneditor.DataType;
 import org.apache.tapestry5.ioc.services.PropertyAdapter;
 import org.apache.tapestry5.services.DataTypeAnalyzer;
-import org.apache.tapestry5.beaneditor.DataType;
 import org.tynamo.descriptor.TynamoClassDescriptor;
 import org.tynamo.descriptor.TynamoPropertyDescriptor;
+import org.tynamo.util.Pair;
 
-import java.util.Map;
+import java.util.List;
 
 public class TynamoDataTypeAnalyzer implements DataTypeAnalyzer
 {
 
 	private final DescriptorService descriptorService;
-	private final Map<String, String> editorMap;
+	private final List<Pair> editorMap;
 
 	/**
 	 * @param descriptorService
-	 * @param editorMap A map where the keys are OGNL expressions and the values are data type identifier used to select editor (or display) blocks
+	 * @param editorMap		 A map where the keys are OGNL expressions and the values are data type identifier used to select editor (or display) blocks
 	 */
-	public TynamoDataTypeAnalyzer(final DescriptorService descriptorService, final Map<String, String> editorMap)
+	public TynamoDataTypeAnalyzer(final DescriptorService descriptorService, final List<Pair> editorMap)
 	{
 		this.descriptorService = descriptorService;
 		this.editorMap = editorMap;
@@ -37,7 +38,7 @@ public class TynamoDataTypeAnalyzer implements DataTypeAnalyzer
 		if (adapter.getAnnotation(DataType.class) == null)
 		{
 			TynamoPropertyDescriptor propertyDescriptor = getPropertyDescriptor(adapter);
-			for (Map.Entry<String, String> entry : editorMap.entrySet())
+			for (Pair<String, String> entry : editorMap)
 			{
 				try
 				{
