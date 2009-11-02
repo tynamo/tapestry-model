@@ -11,6 +11,7 @@ import org.tynamo.services.DescriptorService;
 import org.tynamo.services.PersistenceService;
 import org.tynamo.util.BeanModelUtils;
 import org.tynamo.util.DisplayNameUtils;
+import org.tynamo.util.Utils;
 
 public class HibernateListPage
 {
@@ -30,7 +31,7 @@ public class HibernateListPage
 	@Inject
 	private BeanModelSource beanModelSource;
 
-	@Property
+	@Property(read = false)
 	private Object bean;
 
 	private TynamoClassDescriptor classDescriptor;
@@ -61,13 +62,12 @@ public class HibernateListPage
 
 	public String getTitle()
 	{
-		return messages
-				.format("org.tynamo.i18n.list", DisplayNameUtils.getPluralDisplayName(classDescriptor, messages));
+		return messages.format(Utils.LIST_MESSAGE, DisplayNameUtils.getPluralDisplayName(classDescriptor, messages));
 	}
 
 	public String getNewLinkMessage()
 	{
-		return messages.format("org.tynamo.i18n.new", DisplayNameUtils.getDisplayName(classDescriptor, messages));
+		return messages.format(Utils.NEW_MESSAGE, DisplayNameUtils.getDisplayName(classDescriptor, messages));
 	}
 
 	public final String getModelId()
@@ -84,5 +84,10 @@ public class HibernateListPage
 	public final BeanModel getBeanModel()
 	{
 		return beanModel;
+	}
+
+	public final Object getBean()
+	{
+		return bean;
 	}
 }

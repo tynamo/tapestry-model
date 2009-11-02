@@ -31,6 +31,8 @@ public class Utils
 
 	public static final String EDIT_MESSAGE = "org.tynamo.i18n.edit";
 	public static final String SHOW_MESSAGE = "org.tynamo.i18n.show";
+	public static final String LIST_MESSAGE = "org.tynamo.i18n.list";
+	public static final String NEW_MESSAGE = "org.tynamo.i18n.new";
 
 	public static String DEFAULT = "Default";
 
