@@ -1,4 +1,0 @@
-<!-- Need this to be able to redeploy on Windoze -->
-<Context antiJARLocking="true" antiResourceLocking="true">
-
-</Context>

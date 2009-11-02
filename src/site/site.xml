@@ -1,50 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="Trails" xmlns="http://maven.apache.org/DECORATION/1.0.0"
+<project name="tynamo-crud" xmlns="http://maven.apache.org/DECORATION/1.0.0"
 		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 		xsi:schemaLocation="http://maven.apache.org/DECORATION/1.0.0 http://maven.apache.org/xsd/decoration-1.0.0.xsd">
 
-	<bannerLeft>
-		<name>Trails</name>
-		<src>images/trails-header94.jpg</src>
-		<href>http://trails.codehaus.org/</href>
-	</bannerLeft>
 	<skin>
-		<groupId>org.trailsframework</groupId>
+		<groupId>org.tynamo</groupId>
 		<artifactId>codehaus-unity-skin</artifactId>
-		<version>2.0.0</version>
+		<version>0.0.1</version>
 	</skin>
-
-	<!--
-		 <skin>
-			 <groupId>org.apache.tapestry</groupId>
-			 <artifactId>maven-skin</artifactId>
-			 <version>1.2</version>
-		 </skin>
-	 -->
-
 	<publishDate format="dd MMM yyyy"/>
-
-	<body>
-		<links>
-			<item name="Trails" href="http://trails.codehaus.org/"/>
-			<item name="Codehaus" href="http://www.codehaus.org/"/>
-		</links>
-
-		<menu name="Trails">
-			<item name="News" href="http://docs.codehaus.org/pages/viewrecentblogposts.action?key=TRAILS"/>
-			<item name="Wiki" href="http://docs.codehaus.org/pages/listpages-dirview.action?key=TRAILS"/>
-		</menu>
-
-		<menu name="Quick Links">
-			<item name="Quick Start (read this first!)" href="http://trails.codehaus.org/Quick+Start"/>
-			<item name="User Guide" href="http://trails.codehaus.org/User%27s+Guide"/>
-		</menu>
-
-		<menu ref="parent"/>
-
-		<menu ref="modules"/>
-
-		<menu ref="reports"/>
-
-	</body>
 </project>
