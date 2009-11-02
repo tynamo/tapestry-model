@@ -1,14 +1,17 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>modules</artifactId>
+	<groupId>org.tynamo</groupId>
+	<artifactId>tynamo-crud</artifactId>
 	<packaging>pom</packaging>
-	<name>Tynamo Modules</name>
+	<name>Tynamo Model-Driven CRUD web framework</name>
+	<url>http://tynamo.org/</url>
+	<version>0.0.1-SNAPSHOT</version>
 
 	<parent>
 		<groupId>org.tynamo</groupId>
-		<artifactId>tynamo-crud</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+		<artifactId>tynamo-parent</artifactId>
+		<version>0.0.3</version>
 	</parent>
 
 	<modules>
@@ -27,6 +30,34 @@
 			<url>dav:https://dav.codehaus.org/tynamo/constant/tynamo-crud</url>
 		</site>
 	</distributionManagement>
+	
+	<!-- note that our own versions are auto-managed by the release plugin -->
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.tynamo</groupId>
+				<artifactId>tynamo-crud-core</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>org.tynamo</groupId>
+				<artifactId>tynamo-crud-hibernate</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>org.tynamo.examples</groupId>
+				<artifactId>recipe</artifactId>
+				<type>war</type>
+				<version>0.0.1-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>org.tynamo</groupId>
+				<artifactId>tynamo-crud-web</artifactId>
+				<type>war</type>
+				<version>0.0.1-SNAPSHOT</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 
 	<build>
 		<plugins>
