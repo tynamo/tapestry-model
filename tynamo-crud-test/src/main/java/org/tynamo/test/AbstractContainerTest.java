@@ -18,7 +18,13 @@
  */
 package org.tynamo.test;
 
+import java.io.IOException;
+
+import com.gargoylesoftware.htmlunit.ElementNotFoundException;
 import com.gargoylesoftware.htmlunit.WebClient;
+import com.gargoylesoftware.htmlunit.html.HtmlButton;
+import com.gargoylesoftware.htmlunit.html.HtmlForm;
+import com.gargoylesoftware.htmlunit.html.HtmlInput;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 
 import org.mortbay.jetty.Connector;
@@ -30,8 +36,10 @@ import org.mortbay.jetty.nio.SelectChannelConnector;
 import org.mortbay.jetty.webapp.WebAppContext;
 import org.mortbay.resource.ResourceCollection;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeTest;
 import static org.testng.Assert.*;
+import static com.gargoylesoftware.htmlunit.WebAssert.*;
 
 public abstract class AbstractContainerTest {
     protected static PauseableServer server;
@@ -41,6 +49,8 @@ public abstract class AbstractContainerTest {
     protected static final String BASEURI = "http://localhost:" + port + "/";
 
     protected final WebClient webClient = new WebClient();
+    
+    static String errorText = "You must correct the following errors before you may continue";
     
     @BeforeClass
     public static void startContainer() throws Exception {
@@ -87,5 +97,52 @@ public abstract class AbstractContainerTest {
 	{
 		assertNotNull(page.getByXPath(xpath).get(0));
 	}
-    
+	
+	protected void assertXPathNotPresent(HtmlPage page, String xpath) throws Exception
+	{
+		assertNull(page.getByXPath(xpath).get(0));
+	}
+	
+
+	protected HtmlPage clickLink(HtmlPage page, String linkText) {
+		try {
+			return (HtmlPage) page.getFirstAnchorByText(linkText).click();
+		} catch (ElementNotFoundException e) {
+			fail("Couldn't find a link with text '" + linkText + "' on page " + page);
+		} catch (IOException e) {
+			fail("Clicking on link '"  + linkText + "' on page " + page + " failed because of: ", e);
+		}
+		return null;
+	}
+	
+	protected HtmlPage clickButton(HtmlPage page, String buttonId) throws IOException {
+		HtmlButton button = (HtmlButton)page.getElementById(buttonId);
+		return button.click();
+	}
+	
+	protected HtmlPage clickButton(HtmlForm form, String buttonValue) throws IOException
+	{
+		try
+		{
+			return form.<HtmlInput>getInputByValue(buttonValue).click();
+		} catch (ElementNotFoundException e)
+		{
+			try
+			{
+				return form.getButtonByName(buttonValue).click();
+			} catch (ElementNotFoundException e1)
+			{
+				fail("Couldn't find a button with text/name '" + buttonValue + "' on form '" + form.getNameAttribute()+"'");
+			}
+		}
+		return null;
+	}
+	
+	protected void assertErrorTextPresent(HtmlPage page) {
+		assertTextPresent(page, errorText);
+	}
+	protected void assertErrorTextNotPresent(HtmlPage page) {
+		assertTextNotPresent(page, errorText);
+	}
+	
 }
