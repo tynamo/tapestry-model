@@ -6,7 +6,7 @@
 	<packaging>jar</packaging>
 
 	<parent>
-		<artifactId>modules</artifactId>
+		<artifactId>tynamo-crud</artifactId>
 		<groupId>org.tynamo</groupId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
