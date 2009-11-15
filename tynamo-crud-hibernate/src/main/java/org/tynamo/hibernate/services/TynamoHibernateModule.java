@@ -39,7 +39,6 @@ public class TynamoHibernateModule extends VersionedModule
 		binder.bind(HibernatePersistenceService.class, HibernatePersistenceServiceImpl.class);
 		binder.bind(HibernateClassValidatorFactory.class, HibernateClassValidatorFactory.class);
 		binder.bind(HibernateValidationDelegate.class, HibernateValidationDelegate.class);
-		binder.bind(SeedEntity.class, SeedEntityImpl.class);
 		binder.bind(TynamoInterceptor.class);
 		binder.bind(HibernateConfigurer.class, TynamoInterceptorConfigurer.class).withId("TynamoInterceptorConfigurer");
 
