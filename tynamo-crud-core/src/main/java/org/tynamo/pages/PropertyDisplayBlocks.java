@@ -6,6 +6,7 @@ import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.PropertyOutputContext;
 import org.tynamo.components.Composition;
+import org.tynamo.components.Download;
 import org.tynamo.descriptor.TynamoPropertyDescriptor;
 import org.tynamo.services.DescriptorService;
 import org.tynamo.services.TynamoBeanContext;
@@ -34,6 +35,9 @@ public class PropertyDisplayBlocks
 	@Component(parameters = {"collection=context.propertyValue", "clientId=prop:context.propertyId",
 			"collectionDescriptor=propertyDescriptor", "owner=tynamoBeanContext.bean"})
 	private Composition composition;
+
+	@Component(parameters = {"model=tynamoBeanContext.bean", "propertyDescriptor=propertyDescriptor"})
+	private Download download;
 
 	public Object[] getShowPageContext()
 	{

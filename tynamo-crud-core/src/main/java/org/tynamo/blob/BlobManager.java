@@ -1,6 +1,6 @@
 package org.tynamo.blob;
 
-import org.apache.tapestry5.Asset;
+import org.apache.tapestry5.Link;
 import org.apache.tapestry5.upload.services.UploadedFile;
 import org.tynamo.descriptor.TynamoPropertyDescriptor;
 
@@ -10,15 +10,17 @@ import org.tynamo.descriptor.TynamoPropertyDescriptor;
  */
 public interface BlobManager
 {
-	Asset getAsset(TynamoPropertyDescriptor TynamoPropertyDescriptor, Object model);
+	Link createBlobLink(TynamoPropertyDescriptor propertyDescriptor, Object model);
 
-	void store(TynamoPropertyDescriptor TynamoPropertyDescriptor, Object model, UploadedFile file);
+	void store(TynamoPropertyDescriptor propertyDescriptor, Object model, UploadedFile file);
 
-	public byte[] getData(TynamoPropertyDescriptor TynamoPropertyDescriptor, Object model);
+	public byte[] getData(TynamoPropertyDescriptor propertyDescriptor, Object model);
 
-	String getContentType(TynamoPropertyDescriptor TynamoPropertyDescriptor, Object model);
+	String getContentType(TynamoPropertyDescriptor propertyDescriptor, Object model);
 
-	String getFileName(TynamoPropertyDescriptor TynamoPropertyDescriptor, Object model);
+	String getFileName(TynamoPropertyDescriptor propertyDescriptor, Object model);
 
-	void delete(TynamoPropertyDescriptor TynamoPropertyDescriptor, Object model);
+	void delete(TynamoPropertyDescriptor propertyDescriptor, Object model);
+
+	boolean isNotNull(TynamoPropertyDescriptor propertyDescriptor, Object model);
 }

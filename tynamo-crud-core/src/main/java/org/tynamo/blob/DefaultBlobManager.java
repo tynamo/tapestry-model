@@ -2,38 +2,35 @@ package org.tynamo.blob;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.tapestry5.Asset;
+import org.apache.tapestry5.Link;
 import org.apache.tapestry5.ioc.services.PropertyAccess;
+import org.apache.tapestry5.services.PageRenderLinkSource;
 import org.apache.tapestry5.upload.services.UploadedFile;
-import org.tynamo.descriptor.TynamoClassDescriptor;
 import org.tynamo.descriptor.TynamoPropertyDescriptor;
 import org.tynamo.descriptor.extension.BlobDescriptorExtension;
 import org.tynamo.descriptor.extension.TynamoBlob;
-import org.tynamo.services.DescriptorService;
 import org.tynamo.services.PersistenceService;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.Serializable;
 
 
 /**
- * The Trails {@link BlobManager} default implementation.
+ * The Tynamo {@link BlobManager} default implementation.
  */
 public class DefaultBlobManager implements BlobManager
 {
 
 	private PersistenceService persistenceService;
-	private DescriptorService descriptorService;
-//7	private BlobDownloadService blobDownloadService;
 	private PropertyAccess propertyAccess;
+	private PageRenderLinkSource pageRenderLinkSource;
 
-	public DefaultBlobManager(PersistenceService persistenceService, DescriptorService descriptorService,
-								PropertyAccess propertyAccess)
+	public DefaultBlobManager(PersistenceService persistenceService, PropertyAccess propertyAccess,
+							  PageRenderLinkSource pageRenderLinkSource)
 	{
 		this.persistenceService = persistenceService;
-		this.descriptorService = descriptorService;
 		this.propertyAccess = propertyAccess;
+		this.pageRenderLinkSource = pageRenderLinkSource;
 	}
 
 	public void store(TynamoPropertyDescriptor propertyDescriptor, Object model, UploadedFile file)
@@ -108,21 +105,10 @@ public class DefaultBlobManager implements BlobManager
 		persistenceService.save(model);
 	}
 
-	public Asset getAsset(TynamoPropertyDescriptor propertyDescriptor, Object model)
+	public Link createBlobLink(TynamoPropertyDescriptor propertyDescriptor, Object model)
 	{
-		TynamoClassDescriptor classDescriptor = descriptorService.getClassDescriptor(propertyDescriptor.getBeanType());
-		Serializable pk = propertyAccess.get(model, classDescriptor.getIdentifierDescriptor().getName()).toString();
-
-		if (pk != null)
-		{
-			byte[] bytes = getData(propertyDescriptor, model);
-
-			if (bytes != null && bytes.length > 0)
-			{
-//				return new BlobAsset(blobDownloadService, propertyDescriptor, pk);
-			}
-		}
-		return null;
+		return pageRenderLinkSource
+				.createPageRenderLinkWithContext("tynamo/Blob", propertyDescriptor.getBeanType(), model, propertyDescriptor.getName());
 	}
 
 	public String getContentType(TynamoPropertyDescriptor propertyDescriptor, Object model)
@@ -166,6 +152,13 @@ public class DefaultBlobManager implements BlobManager
 		}
 
 		return null;
+	}
+
+	public boolean isNotNull(TynamoPropertyDescriptor propertyDescriptor, Object model)
+	{
+		BlobDescriptorExtension blobDescriptorExtension = getBlobDescriptorExtension(propertyDescriptor);
+		TynamoBlob trailsBlob = (TynamoBlob) propertyAccess.get(model, propertyDescriptor.getName());
+		return trailsBlob != null;
 	}
 
 	private BlobDescriptorExtension getBlobDescriptorExtension(TynamoPropertyDescriptor propertyDescriptor)

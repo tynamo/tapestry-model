@@ -21,7 +21,7 @@ public class BlobDescriptorExtension implements DescriptorExtension
 
 	public enum RenderType
 	{
-		IMAGE, LINK, IFRAME, ICON;
+		IMAGE, LINK; //, IFRAME, ICON; not yet supported in Tynamo
 
 		public boolean isImage()
 		{
@@ -35,12 +35,12 @@ public class BlobDescriptorExtension implements DescriptorExtension
 
 		public boolean isIFrame()
 		{
-			return this == IFRAME;
+			return false; // this == IFRAME;
 		}
 
 		public boolean isIcon()
 		{
-			return this == ICON;
+			return false; // this == ICON;
 		}
 	}
 

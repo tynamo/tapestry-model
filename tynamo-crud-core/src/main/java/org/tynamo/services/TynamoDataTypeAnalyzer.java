@@ -5,6 +5,7 @@ import ognl.OgnlException;
 import org.apache.tapestry5.beaneditor.DataType;
 import org.apache.tapestry5.ioc.services.PropertyAdapter;
 import org.apache.tapestry5.services.DataTypeAnalyzer;
+import org.slf4j.Logger;
 import org.tynamo.descriptor.TynamoClassDescriptor;
 import org.tynamo.descriptor.TynamoPropertyDescriptor;
 import org.tynamo.util.Pair;
@@ -16,15 +17,17 @@ public class TynamoDataTypeAnalyzer implements DataTypeAnalyzer
 
 	private final DescriptorService descriptorService;
 	private final List<Pair> editorMap;
+	private final Logger logger;
 
 	/**
 	 * @param descriptorService
 	 * @param editorMap		 A map where the keys are OGNL expressions and the values are data type identifier used to select editor (or display) blocks
 	 */
-	public TynamoDataTypeAnalyzer(final DescriptorService descriptorService, final List<Pair> editorMap)
+	public TynamoDataTypeAnalyzer(final DescriptorService descriptorService, final List<Pair> editorMap, final Logger logger)
 	{
 		this.descriptorService = descriptorService;
 		this.editorMap = editorMap;
+		this.logger = logger;
 	}
 
 	/**
@@ -38,17 +41,21 @@ public class TynamoDataTypeAnalyzer implements DataTypeAnalyzer
 		if (adapter.getAnnotation(DataType.class) == null)
 		{
 			TynamoPropertyDescriptor propertyDescriptor = getPropertyDescriptor(adapter);
-			for (Pair<String, String> entry : editorMap)
+			if (propertyDescriptor != null) //ignore excluded properties
 			{
-				try
+				for (Pair<String, String> entry : editorMap)
 				{
-					if ((Boolean) Ognl.getValue(entry.getKey(), propertyDescriptor))
+					try
 					{
-						return entry.getValue();
+						if ((Boolean) Ognl.getValue(entry.getKey(), propertyDescriptor))
+						{
+							return entry.getValue();
+						}
+					} catch (OgnlException oe)
+					{
+						logger.error(String.format("Error evaluating expression: \"%s\" for the \"%s\" property of %s",
+								entry.getKey(), adapter.getName(), adapter.getBeanType().getName()), oe);
 					}
-				} catch (OgnlException e)
-				{
-					//do nothing;
 				}
 			}
 		}

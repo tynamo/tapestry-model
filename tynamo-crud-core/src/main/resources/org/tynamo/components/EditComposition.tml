@@ -52,14 +52,8 @@
 			   listener="listener:remove" disabled="ognl:page.modelNew"/>
 	</span>
 -->
-<!--
-	<div jwcid="allowCreate@If" condition="ognl:allowCreate">
--->
 	<t:if test="allowCreate">
 		<t:pagelink t:page="AddC" context="addCompositionPageContext">${message:org.tynamo.i18n.add-child}</t:pagelink>
 	</t:if>
-	<!--
-	 </div>
- -->
 
 </div>

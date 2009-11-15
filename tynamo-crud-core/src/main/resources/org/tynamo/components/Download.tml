@@ -1,29 +1,30 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <div xmlns:t="http://tapestry.apache.org/schema/tapestry_5_0_0.xsd" xmlns:p="tapestry:parameter">
 
-	<img src="${byteArrayLink}" alt=""/>
+	<t:if test="renderType.image">
+		<t:if test="notNull">
+			<img src="${blobLink}" alt="${fileName}"/>
+			<p:else>
+				<img src="${noImage}"/>
+			</p:else>
+		</t:if>
+	</t:if>
 
-<!--
-	<span jwcid="@If" condition="ognl:renderType.image">
-		<span jwcid="@If" condition="ognl:byteArrayAsset">
-			<img jwcid="@Image" image="ognl:byteArrayAsset"/>
-		</span><span jwcid="@Else">
-			<img jwcid="@Image" image="ognl:noImage"/>
-		</span>
-	</span><span jwcid="@Else"><span jwcid="@If" condition="ognl:renderType.icon">
-		<span jwcid="@If" condition="ognl:byteArrayAsset">
-			<a jwcid="@Any" href="ognl:byteArrayAsset.buildURL()">
-				<img jwcid="@Image" image="ognl:icon" alt="ognl:fileName" title="ognl:fileName"/>
+	<t:if test="renderType.icon">
+		<t:if test="notNull">
+			<a href="${blobLink}">
+				<img src="${noIcon}"/>
 			</a>
-		</span><span jwcid="@Else">
-			<img jwcid="@Image" image="ognl:noIcon"/>
-		</span>
-	</span><span jwcid="@Else"><span jwcid="@If" condition="ognl:byteArrayAsset">
-			<a jwcid="@Any" href="ognl:byteArrayAsset.buildURL()">
-				<span key="download"/>
-			</a>
-		</span></span>
-	</span>
--->
+			<p:else>
+				<img src="${noIcon}"/>
+			</p:else>
+		</t:if>
+	</t:if>
+
+	<t:if test="notImageNotIconNotNull">
+		<a href="${blobLink}">
+			${fileName}
+		</a>
+	</t:if>
 
 </div>

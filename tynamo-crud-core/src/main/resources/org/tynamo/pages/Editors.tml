@@ -68,4 +68,8 @@
 	</fieldset>
 </t:block>
 
+	<t:block id="blob">
+		<div t:id="blob"/>
+	</t:block>
+
 </html>

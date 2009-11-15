@@ -21,7 +21,12 @@ public abstract class HibernateModelPage extends ModelPage
 
 	private Object bean;
 
-	protected void setupRender()
+	protected void onPrepare()
+	{
+		pushTynamoBeanContext();
+	}
+
+	protected void pushTynamoBeanContext()
 	{
 		TynamoBeanContext context = new TynamoBeanContext()
 		{

@@ -3,25 +3,35 @@ package org.tynamo.components;
 import org.apache.tapestry5.Asset;
 import org.apache.tapestry5.ComponentResources;
 import org.apache.tapestry5.Link;
-import org.apache.tapestry5.StreamResponse;
 import org.apache.tapestry5.annotations.Parameter;
+import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.services.Response;
+import org.apache.tapestry5.ioc.services.PropertyAccess;
 import org.tynamo.blob.BlobManager;
 import org.tynamo.descriptor.TynamoPropertyDescriptor;
 import org.tynamo.descriptor.extension.BlobDescriptorExtension;
-
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import org.tynamo.services.DescriptorService;
+import org.tynamo.services.PersistenceService;
 
 public class Download
 {
-	private final static String noIcon = "/images/cross.png";
-	private final static String noImage = "/images/noimage.jpg";
+
+	@Parameter(value = "asset:cross.png")
+	@Property(write = false)
+	private Asset noIcon;
+
+	@Parameter(value = "asset:noimage.jpg")
+	@Property(write = false)
+	private Asset noImage;
 
 	@Inject
 	private BlobManager filePersister;
+
+	@Inject
+	private DescriptorService descriptorService;
+
+	@Inject
+	private PropertyAccess propertyAccess;
 
 /*
 	@Inject
@@ -45,29 +55,9 @@ public class Download
 		return propertyDescriptor.getExtension(BlobDescriptorExtension.class).getRenderType();
 	}
 
-	public StreamResponse onByteArrayStream()
+	public Link getBlobLink()
 	{
-		return new StreamResponse()
-		{
-			public String getContentType()
-			{
-				return filePersister.getContentType(propertyDescriptor, model);
-			}
-
-			public InputStream getStream() throws IOException
-			{
-				return new ByteArrayInputStream(filePersister.getData(propertyDescriptor, model));
-			}
-
-			public void prepareResponse(Response response)
-			{
-			}
-		};
-	}
-
-	public Link getByteArrayLink()
-	{
-		return resources.createEventLink("byteArrayStream", false, new Object[]{});
+		return filePersister.createBlobLink(propertyDescriptor, model);
 	}
 
 /*
@@ -87,15 +77,19 @@ public class Download
 		return filePersister.getFileName(propertyDescriptor, model);
 	}
 
-	public Asset getNoIcon()
+	public boolean isNotNull()
 	{
-//		return contextAssetFactory.createAbsoluteAsset(noIcon, null, null);
-		return null;
+		return isModelNew() && filePersister.isNotNull(propertyDescriptor, model);
 	}
 
-	public Asset getNoImage()
+	public boolean isModelNew()
 	{
-//		return contextAssetFactory.createAbsoluteAsset(noImage, null, null);
-		return null;
+		return propertyAccess.get(model, descriptorService.getClassDescriptor(propertyDescriptor.getBeanType())
+				.getIdentifierDescriptor().getName()) != null;
+	}
+
+	public boolean isNotImageNotIconNotNull()
+	{
+		return isNotNull() && !getRenderType().isIcon() && !getRenderType().isImage();
 	}
 }

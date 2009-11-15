@@ -39,7 +39,7 @@ public class TynamoCoreModule extends VersionedModule {
 		binder.bind(DescriptorService.class, DescriptorServiceImpl.class);
 		binder.bind(TynamoDataTypeAnalyzer.class, TynamoDataTypeAnalyzer.class);
 
-		binder.bind(BlobManager.class, DefaultBlobManager.class);
+		binder.bind(BlobManager.class, DefaultBlobManager.class).withId("DefaultBlobManager");
 
 	}
 
@@ -68,12 +68,13 @@ public class TynamoCoreModule extends VersionedModule {
 		configuration.add(new BeanBlockContribution("many-valued-association", PROPERTY_EDIT_BLOCKS, "palette", true));
 		configuration.add(new BeanBlockContribution("composition", PROPERTY_EDIT_BLOCKS, "editComposition", true));
 		configuration.add(new BeanBlockContribution("embedded", PROPERTY_EDIT_BLOCKS, "embedded", true));
+		configuration.add(new BeanBlockContribution("blob", PROPERTY_EDIT_BLOCKS, "blob", true));
 
 		configuration.add(new BeanBlockContribution("hidden", PROPERTY_DISPLAY_BLOCKS, "hidden", false));
 		configuration.add(new BeanBlockContribution("single-valued-association", PROPERTY_DISPLAY_BLOCKS, "showPageLink", false));
 		configuration.add(new BeanBlockContribution("many-valued-association", PROPERTY_DISPLAY_BLOCKS, "showPageLinks", false));
 		configuration.add(new BeanBlockContribution("composition", PROPERTY_DISPLAY_BLOCKS, "showPageLinks", false));
-
+		configuration.add(new BeanBlockContribution("blob", PROPERTY_DISPLAY_BLOCKS, "download", false));
 	}
 
 	/**

@@ -13,7 +13,7 @@ import org.apache.tapestry5.services.PropertyEditContext;
 import org.apache.tapestry5.services.ValueEncoderSource;
 import org.chenillekit.tapestry.core.components.DateTimeField;
 import org.chenillekit.tapestry.core.components.Editor;
-import org.tynamo.components.EditComposition;
+import org.tynamo.components.*;
 import org.tynamo.descriptor.CollectionDescriptor;
 import org.tynamo.descriptor.IdentifierDescriptor;
 import org.tynamo.descriptor.TynamoPropertyDescriptor;
@@ -75,6 +75,9 @@ public class Editors
 			"clientId=prop:propertyEditContext.propertyId", "collectionDescriptor=propertyDescriptor",
 			"owner=tynamoBeanContext.bean"})
 	private EditComposition editComposition;
+
+	@Component(parameters = {"model=tynamoBeanContext.bean", "propertyDescriptor=propertyDescriptor"})
+	private org.tynamo.components.Blob blob;
 
 	public TynamoPropertyDescriptor getPropertyDescriptor()
 	{

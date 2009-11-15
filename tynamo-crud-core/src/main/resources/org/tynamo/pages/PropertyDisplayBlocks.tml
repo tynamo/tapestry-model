@@ -40,4 +40,8 @@
 		<div t:id="composition"/>
 	</t:block>
 
+	<t:block id="download">
+		<div t:id="download"/>
+	</t:block>
+
 </t:container>
