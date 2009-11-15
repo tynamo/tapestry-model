@@ -16,6 +16,7 @@ public class BlobDescriptorAnnotationHandler extends AbstractAnnotationHandler i
 		BlobDescriptorExtension blobDescriptor = new BlobDescriptorExtension(descriptor.getPropertyType());
 		setPropertiesFromAnnotation(propertyDescriptorAnno, blobDescriptor);
 		descriptor.addExtension(BlobDescriptorExtension.class.getName(), blobDescriptor);
+		descriptor.setSummary(false);
 		return descriptor;
 	}
 

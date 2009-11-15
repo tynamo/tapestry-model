@@ -158,7 +158,7 @@ public class DefaultBlobManager implements BlobManager
 	{
 		BlobDescriptorExtension blobDescriptorExtension = getBlobDescriptorExtension(propertyDescriptor);
 		TynamoBlob trailsBlob = (TynamoBlob) propertyAccess.get(model, propertyDescriptor.getName());
-		return trailsBlob != null;
+		return trailsBlob != null && trailsBlob.getBytes() != null && trailsBlob.getBytes().length > 0;
 	}
 
 	private BlobDescriptorExtension getBlobDescriptorExtension(TynamoPropertyDescriptor propertyDescriptor)
