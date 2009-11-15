@@ -9,8 +9,12 @@ import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.hibernate.validator.InvalidStateException;
 import org.slf4j.Logger;
+import org.tynamo.FlashMessage;
+import org.tynamo.components.Flash;
+import org.tynamo.descriptor.TynamoClassDescriptor;
 import org.tynamo.hibernate.validation.HibernateClassValidatorFactory;
 import org.tynamo.hibernate.validation.HibernateValidationDelegate;
+import org.tynamo.util.Utils;
 
 public abstract class HibernateEditPage extends HibernateModelPage
 {
@@ -20,6 +24,17 @@ public abstract class HibernateEditPage extends HibernateModelPage
 
 	@Component
 	private Form form;
+
+	@Component
+	private Flash flash;
+
+	private boolean shouldStayHere;
+
+	@Inject
+	private HibernateClassValidatorFactory hibernateClassValidatorFactory;
+
+	@Inject
+	private HibernateValidationDelegate hibernateValidationDelegate;
 
 	public Form getForm()
 	{
@@ -31,12 +46,12 @@ public abstract class HibernateEditPage extends HibernateModelPage
 		// Make other changes to the bean here.
 	}
 
-
-	@Inject
-	private HibernateClassValidatorFactory hibernateClassValidatorFactory;
-
-	@Inject
-	private HibernateValidationDelegate hibernateValidationDelegate;
+	@Override
+	protected void activate(Object bean, TynamoClassDescriptor classDescriptor, BeanModel beanModel)
+	{
+		shouldStayHere = false;
+		super.activate(bean, classDescriptor, beanModel);
+	}
 
 	@Log
 	protected void onValidateFormFromForm() throws ValidationException
@@ -55,13 +70,25 @@ public abstract class HibernateEditPage extends HibernateModelPage
 		}
 	}
 
+	void onApply()
+	{
+		shouldStayHere = true;
+	}
+
 	@Log
 	protected Object onSuccess()
 	{
 		try
 		{
 			getPersitenceService().save(getBean());
-			return back();
+			if (shouldStayHere)
+			{
+				flash.addFlashByKey(getSuccessMessageKey(), FlashMessage.MessageType.SUCCESS, getBean());
+				return this;
+			} else
+			{
+				return back();
+			}
 
 		} catch (InvalidStateException ise)
 		{
@@ -82,5 +109,10 @@ public abstract class HibernateEditPage extends HibernateModelPage
 	protected BeanModel createBeanModel(Class clazz)
 	{
 		return getBeanModelSource().createEditModel(clazz, getMessages());
+	}
+
+	protected String getSuccessMessageKey()
+	{
+		return Utils.SAVED_MESSAGE;
 	}
 }

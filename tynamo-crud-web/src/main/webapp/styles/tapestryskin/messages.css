@@ -93,3 +93,20 @@ dl.t-beandisplay dt {
     margin-left: 15px;
     text-align:left;
 }
+
+div#successMessages {
+	background-color: #DFFFDF;
+	border: 2px solid #9FCF9F;
+	color:#005F00;
+	margin-bottom:12px;
+	padding:4px 7px 4px 4px;
+}
+
+div.message img.message-icon {
+	padding-right: 7px;
+	padding-top: 2px;
+	padding-bottom: 3px;
+	border: 0 !important;
+    vertical-align: middle;
+    background: transparent !important;
+}

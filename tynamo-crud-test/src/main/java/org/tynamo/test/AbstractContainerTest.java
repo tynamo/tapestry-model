@@ -22,10 +22,7 @@ import java.io.IOException;
 
 import com.gargoylesoftware.htmlunit.ElementNotFoundException;
 import com.gargoylesoftware.htmlunit.WebClient;
-import com.gargoylesoftware.htmlunit.html.HtmlButton;
-import com.gargoylesoftware.htmlunit.html.HtmlForm;
-import com.gargoylesoftware.htmlunit.html.HtmlInput;
-import com.gargoylesoftware.htmlunit.html.HtmlPage;
+import com.gargoylesoftware.htmlunit.html.*;
 
 import org.mortbay.jetty.Connector;
 import org.mortbay.jetty.Handler;
@@ -116,7 +113,7 @@ public abstract class AbstractContainerTest {
 	}
 	
 	protected HtmlPage clickButton(HtmlPage page, String buttonId) throws IOException {
-		HtmlButton button = (HtmlButton)page.getElementById(buttonId);
+		ClickableElement button = (ClickableElement)page.getElementById(buttonId);
 		return button.click();
 	}
 	

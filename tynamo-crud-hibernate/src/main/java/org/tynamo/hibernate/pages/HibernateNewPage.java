@@ -3,6 +3,7 @@ package org.tynamo.hibernate.pages;
 
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.tynamo.builder.BuilderDirector;
+import org.tynamo.util.Utils;
 
 public abstract class HibernateNewPage extends HibernateEditPage
 {
@@ -19,6 +20,12 @@ public abstract class HibernateNewPage extends HibernateEditPage
 	protected Object[] onPassivate()
 	{
 		return new Object[]{getClassDescriptor().getType()};
+	}
+
+	@Override
+	protected String getSuccessMessageKey()
+	{
+		return Utils.ADDED_MESSAGE;
 	}
 
 }

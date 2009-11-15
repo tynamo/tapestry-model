@@ -34,6 +34,9 @@ public class Utils
 	public static final String LIST_MESSAGE = "org.tynamo.i18n.list";
 	public static final String NEW_MESSAGE = "org.tynamo.i18n.new";
 
+	public static final String ADDED_MESSAGE = "org.tynamo.i18n.added";
+	public static final String SAVED_MESSAGE = "org.tynamo.i18n.saved";
+
 	public static String DEFAULT = "Default";
 
 	public static Class classForName(String className)
