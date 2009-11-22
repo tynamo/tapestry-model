@@ -6,6 +6,7 @@ import org.apache.tapestry5.annotations.Environmental;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.beaneditor.BeanModel;
 import org.apache.tapestry5.corelib.components.TextField;
+import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.BeanEditContext;
 import org.apache.tapestry5.services.BeanModelSource;
@@ -194,8 +195,23 @@ public class Editors
 
 	public BeanModel getEmbeddedModel()
 	{
-		return beanModelSource.createEditModel(propertyEditContext.getPropertyType(),
-				resources.getContainerMessages() != null ? resources.getContainerMessages() : resources.getMessages());
+		return beanModelSource.createEditModel(propertyEditContext.getPropertyType(), getMessages());
+	}
+
+	private Messages getMessages()
+	{
+		return resources.getContainerMessages() != null ? resources.getContainerMessages() : resources.getMessages();
+	}
+
+	/**
+	 * Looks for a help message within the messages based on the id.
+	 */
+	public String getHelpMessage()
+	{
+		Messages messages = getMessages();
+		String key = propertyEditContext.getPropertyId() + "-help";
+		if (messages.contains(key)) return messages.get(key);
+		return null;
 	}
 
 }

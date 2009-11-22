@@ -1,10 +1,9 @@
-
 html > body div.t-error li {
 	margin-left: 20px;
 	margin-right: 20px;
 }
 
-div.t-error  {
+div.t-error {
 	border-color: #F0C000 !important;
 }
 
@@ -18,8 +17,8 @@ form div.t-beaneditor {
 	margin: 0;
 	padding: 0;
 	width: 100%;
-	background-color:#fff;
-	border:none;
+	background-color: #fff;
+	border: none;
 }
 
 form div.t-beaneditor-row {
@@ -114,11 +113,11 @@ form hr {
 }
 
 div.t-beaneditor-row label {
-	clear:both;
-	display:block;
-	float:none;
-	text-align:left;
-	vertical-align:middle;
+	clear: both;
+	display: block;
+	float: none;
+	text-align: left;
+	vertical-align: middle;
 	line-height: 150%;
 	padding: 0 0 1px 0;
 	border: none;
@@ -163,7 +162,7 @@ form li div label .currently {
 	display: none;
 }
 
-input,  textarea, select {
+input, textarea, select {
 	margin: 0;
 	font-size: 100%;
 	color: #333;
@@ -174,7 +173,7 @@ input[type=text], textarea, .firefox select {
 	border-left: 1px solid #c3c3c3;
 	border-right: 1px solid #c3c3c3;
 	border-bottom: 1px solid #ddd;
-	background: #fff url( /images/fieldbg.gif ) repeat-x top;
+	background: #fff url(/images/fieldbg.gif) repeat-x top;
 }
 
 input {
@@ -240,7 +239,6 @@ button.primary {
 	font-weight: bold;
 	color: #000;
 }
-
 
 .rtl .info h2, .rtl .info div, .rtl label, .rtl label.choice, .rtl div label, .rtl span label, .rtl input.text, .rtl textarea.textarea, .rtl select.select, .rtl p.instruct, .rtl .section h3, .rtl .section div, .rtl input.btTxt {
 	direction: rtl;
@@ -362,10 +360,7 @@ form li.focused, form li:hover {
 	position: relative;
 }
 
-form .instruct {
-	position: absolute;
-	top: 0;
-	left: 0;
+form div.t-beaneditor-row em {
 	z-index: 1000;
 	width: 42%;
 	margin: 0 0 0 8px;
@@ -378,16 +373,16 @@ form .instruct {
 	visibility: hidden;
 }
 
-form .instruct small {
+form div.t-beaneditor-row em small {
 	font-size: 105%;
 }
 
-form li.focused .instruct, form li:hover .instruct {
+form div.t-beaneditor-row:active em, form div.t-beaneditor-row:hover em {
 	left: 100%;
 	visibility: visible;
 }
 
-.altInstruct .instruct, li.leftHalf .instruct, li.rightHalf .instruct {
+.altInstruct em, li.leftHalf em, li.rightHalf em {
 	visibility: visible;
 	position: static;
 	margin: -2px 0 0 0;
@@ -442,12 +437,12 @@ form li.focused .instruct, form li:hover .instruct {
 	width: 97%;
 }
 
-.leftLabel p.instruct, .rightLabel p.instruct {
+.leftLabel pem, .rightLabel pem {
 	width: 27%;
 	margin-left: 5px;
 }
 
-.leftLabel .altInstruct .instruct, .rightLabel .altInstruct .instruct {
+.leftLabel .altInstruct em, .rightLabel .altInstruct em {
 	margin-left: 29% !important;
 	padding-left: 15px;
 	width: 65%;
@@ -473,7 +468,7 @@ form li.focused .instruct, form li:hover .instruct {
 	margin-left: 7px;
 }
 
-.noI .instruct {
+.noI em {
 	display: none !important;
 }
 
@@ -529,13 +524,13 @@ li.leftHalf .medium, li.rightHalf .medium, li.leftHalf .small, li.rightHalf .sma
 		display: none !important;
 	}
 
-	form.wufoo {
+	form {
 		margin: 0;
 		padding: 0;
 		page-break-inside: auto;
 	}
 
-	form.wufoo .instruct {
+	form em {
 		display: block;
 	}
 }

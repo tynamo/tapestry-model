@@ -18,7 +18,7 @@
 	<t:select t:id="select" model="selectModel" value="propertyEditContext.propertyValue"
 			  label="prop:propertyEditContext.label" encoder="valueEncoderForProperty"/>
 	<em>
-		help message here
+		${helpMessage}
 	</em>
 </t:block>
 
@@ -49,7 +49,7 @@
 		</p:else>
 	</t:if>
 	<em>
-		help message here
+		${helpMessage}
 	</em>
 </t:block>
 
