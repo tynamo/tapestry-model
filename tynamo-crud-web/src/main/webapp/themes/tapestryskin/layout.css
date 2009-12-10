@@ -19,7 +19,7 @@ div#header {
 	padding: 0;
 	height: 94px;
 	margin: 5px 5px 5px 5px;
-	background: #fff top left no-repeat;
+	background: #fff url( ../../logo-default.png) top left no-repeat;
 }
 
 div#switchLocale {
