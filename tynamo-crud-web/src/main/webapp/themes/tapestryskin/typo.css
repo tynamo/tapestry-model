@@ -128,7 +128,7 @@ ul {
 }
 
 ul.glassList {
-	list-style: url( ../../images/aquadot.jpg ) disc outside;
+	list-style: url( aquadot.jpg ) disc outside;
 	vertical-align: top;
 	line-height: 1.5em;
 }

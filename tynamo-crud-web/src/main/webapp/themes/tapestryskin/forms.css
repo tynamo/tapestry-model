@@ -173,7 +173,7 @@ input[type=text], textarea, .firefox select {
 	border-left: 1px solid #c3c3c3;
 	border-right: 1px solid #c3c3c3;
 	border-bottom: 1px solid #ddd;
-	background: #fff url(/images/fieldbg.gif) repeat-x top;
+	background: #fff url(fieldbg.gif) repeat-x top;
 }
 
 input {

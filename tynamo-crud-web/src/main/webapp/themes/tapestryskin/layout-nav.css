@@ -112,7 +112,7 @@ div#navcolumn h5 {
 	padding-top: 2px;
 	padding-left: 9px;
 	color: #49635a;
-	background-image: url( images/h5.jpg );
+	background-image: url( h5.jpg );
 	background-repeat: no-repeat;
 	background-position: left bottom;
 	margin: 5px 10px 5px 10px;
@@ -126,7 +126,7 @@ div#nav {
 	width: 100%;
 	display: block;
 	height: 13px;
-	background: url( images/breadcrumbs.jpg ) repeat-x top;
+	background: url( breadcrumbs.jpg ) repeat-x top;
 	padding: 5px 0 14px 0;
 }
 
@@ -207,28 +207,28 @@ ul.locales {
  *
  **/
 .newlink {
-	background: url( images/add.png ) left center no-repeat;
+	background: url( add.png ) left center no-repeat;
 	background-color: transparent;
 	padding-left: 20px;
 	line-height: 20px;
 }
 
 .searchlink {
-	background: url( images/magnifier.png ) left center no-repeat;
+	background: url( magnifier.png ) left center no-repeat;
 	background-color: transparent;
 	padding-left: 20px;
 	line-height: 20px;
 }
 
 .listlink {
-	background: url( images/table.png ) left center no-repeat;
+	background: url( table.png ) left center no-repeat;
 	background-color: transparent;
 	padding-left: 20px;
 	line-height: 20px;
 }
 
 .deletelink {
-	background: url( images/delete.png ) left center no-repeat;
+	background: url( delete.png ) left center no-repeat;
 	background-color: transparent;
 	padding-left: 20px;
 	line-height: 20px;
@@ -236,7 +236,7 @@ ul.locales {
 }
 
 .editlink {
-	background: url( images/edit.png ) left center no-repeat;
+	background: url( edit.png ) left center no-repeat;
 	background-color: transparent;
 	padding-left: 20px;
 	line-height: 20px;
