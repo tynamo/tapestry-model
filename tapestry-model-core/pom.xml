@@ -2,12 +2,12 @@
 		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>tynamo-crud-core</artifactId>
+	<artifactId>tapestry-model-core</artifactId>
 	<name>Tynamo CRUD Core</name>
 	<packaging>jar</packaging>
 
 	<parent>
-		<artifactId>tynamo-crud</artifactId>
+		<artifactId>tapestry-model</artifactId>
 		<groupId>org.tynamo</groupId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>

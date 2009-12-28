@@ -2,7 +2,7 @@
 
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.tynamo</groupId>
-	<artifactId>tynamo-crud</artifactId>
+	<artifactId>tapestry-model</artifactId>
 	<packaging>pom</packaging>
 	<name>Tynamo Model-Driven CRUD web framework</name>
 	<url>http://tynamo.org/</url>
@@ -15,11 +15,11 @@
 	</parent>
 
 	<modules>
-		<module>tynamo-crud-test</module>
-		<module>tynamo-crud-core</module>
-		<module>tynamo-crud-hibernate</module>
+		<module>tapestry-model-test</module>
+		<module>tapestry-model-core</module>
+		<module>tapestry-model-hibernate</module>
 <!--		<module>tynamo-security</module>-->
-		<module>tynamo-crud-web</module>
+		<module>tapestry-model-web</module>
 <!--	<module>tynamo-jbpm</module>  -->
 	</modules>
 
@@ -27,7 +27,7 @@
 		<site>
 			<id>tynamo-site</id>
 			<!-- Note the url. Only static files deployed in /constant/ can be decorated by Unity -->
-			<url>dav:https://dav.codehaus.org/tynamo/constant/tynamo-crud</url>
+			<url>dav:https://dav.codehaus.org/tynamo/constant/tapestry-model</url>
 		</site>
 	</distributionManagement>
 	
@@ -36,12 +36,12 @@
 		<dependencies>
 			<dependency>
 				<groupId>org.tynamo</groupId>
-				<artifactId>tynamo-crud-core</artifactId>
+				<artifactId>tapestry-model-core</artifactId>
 				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>org.tynamo</groupId>
-				<artifactId>tynamo-crud-hibernate</artifactId>
+				<artifactId>tapestry-model-hibernate</artifactId>
 				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
 			<dependency>
@@ -52,7 +52,7 @@
 			</dependency>
 			<dependency>
 				<groupId>org.tynamo</groupId>
-				<artifactId>tynamo-crud-web</artifactId>
+				<artifactId>tapestry-model-web</artifactId>
 				<type>war</type>
 				<version>0.0.1-SNAPSHOT</version>
 			</dependency>

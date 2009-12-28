@@ -2,12 +2,12 @@
 		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>tynamo-crud-hibernate</artifactId>
+	<artifactId>tapestry-model-hibernate</artifactId>
 	<name>Tynamo CRUD Hibernate</name>
 	<packaging>jar</packaging>
 
 	<parent>
-		<artifactId>tynamo-crud</artifactId>
+		<artifactId>tapestry-model</artifactId>
 		<groupId>org.tynamo</groupId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
@@ -33,12 +33,12 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.tynamo</groupId>
-			<artifactId>tynamo-crud-core</artifactId>
+			<artifactId>tapestry-model-core</artifactId>
 		</dependency>
 <!--
 		<dependency>
 			<groupId>org.tynamo</groupId>
-			<artifactId>tynamo-crud-test</artifactId>
+			<artifactId>tapestry-model-test</artifactId>
 			<version>${tynamo-release-version}</version>
 			<scope>test</scope>
 		</dependency>

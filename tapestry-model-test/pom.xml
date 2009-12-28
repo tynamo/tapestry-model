@@ -1,12 +1,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>tynamo-crud-test</artifactId>
+	<artifactId>tapestry-model-test</artifactId>
 	<name>Tynamo Test</name>
 	<packaging>jar</packaging>
 
 	<parent>
-		<artifactId>tynamo-crud</artifactId>
+		<artifactId>tapestry-model</artifactId>
 		<groupId>org.tynamo</groupId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
@@ -14,7 +14,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.tynamo</groupId>
-			<artifactId>tynamo-crud-core</artifactId>
+			<artifactId>tapestry-model-core</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.mortbay.jetty</groupId>
