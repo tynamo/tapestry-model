@@ -23,6 +23,12 @@
 <!--	<module>tynamo-jbpm</module>  -->
 	</modules>
 
+  <scm>
+    <connection>scm:svn:http://svn.codehaus.org/tynamo/trunk/tapestry-model</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/tynamo/trunk/tapestry-model</developerConnection>
+    <url>http://svn.tynamo.codehaus.org/tynamo/trunk/tapestry-model</url>
+  </scm>
+
 	<distributionManagement>
 		<site>
 			<id>tynamo-site</id>
