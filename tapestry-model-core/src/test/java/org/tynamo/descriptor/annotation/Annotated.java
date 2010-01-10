@@ -1,24 +1,17 @@
-/**
- *
- */
 package org.tynamo.descriptor.annotation;
 
 import java.util.Date;
 import java.util.Set;
 
 
-@ClassDescriptor(displayName = "This is annotated", hidden = true, hasCyclicRelationships = true)
+@ClassDescriptor(hidden = true, hasCyclicRelationships = true)
 public class Annotated
 {
-	public static final String CLASS_LABEL = "This is annotated";
-	public static final String NOT_BLOPPITY_LABEL = "Bloppity";
-	public static final String BOOLEAN_LABEL = "True or False";
-
 	private Date date;
 
 	private Set stuff;
 
-	@PropertyDescriptor(displayName = "Bloppity", index = 2)
+	@PropertyDescriptor(index = 2)
 	private String notBloppity;
 
 	String hidden;
@@ -64,7 +57,7 @@ public class Annotated
 		this.notBloppity = notBloppity;
 	}
 
-	@PropertyDescriptor(displayName = "validated label", index = 3)
+	@PropertyDescriptor(index = 3)
 	public String getValidatedString()
 	{
 		return validatedString;
@@ -88,7 +81,6 @@ public class Annotated
 		this.date = date;
 	}
 
-	@PropertyDescriptor(displayName = "True or False")
 	public boolean isBooleanProperty()
 	{
 		return booleanProperty;

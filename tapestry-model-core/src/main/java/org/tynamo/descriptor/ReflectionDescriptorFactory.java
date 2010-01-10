@@ -3,9 +3,7 @@ package org.tynamo.descriptor;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.tynamo.util.Utils;
 
-import java.beans.BeanDescriptor;
 import java.beans.BeanInfo;
 import java.beans.Introspector;
 import java.lang.reflect.InvocationTargetException;
@@ -81,12 +79,15 @@ public class ReflectionDescriptorFactory implements DescriptorFactory
 	 * @param decorators
 	 * @return The resulting descriptor after all decorators are applied
 	 */
-	private TynamoClassDescriptor applyDecorators(TynamoClassDescriptor descriptor)
+	private TynamoClassDescriptor applyDecorators(final TynamoClassDescriptor descriptor)
 	{
+		TynamoClassDescriptor decoratedDescriptor = descriptor;
+
 		for (DescriptorDecorator decorator : decorators)
 		{
-			descriptor = decorator.decorate(descriptor);
+			decoratedDescriptor = decorator.decorate(decoratedDescriptor);
 		}
-		return descriptor;
+
+		return decoratedDescriptor;
 	}
 }

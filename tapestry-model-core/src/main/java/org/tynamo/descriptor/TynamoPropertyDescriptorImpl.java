@@ -16,14 +16,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 
 import java.lang.reflect.InvocationTargetException;
 
-/**
- * @author fus8882
- *         <p/>
- *         TODO To change the template for this generated type comment go to Window -
- *         Preferences - Java - Code Style - Code Templates
- */
-public class TynamoPropertyDescriptorImpl extends TynamoDescriptor implements
-	TynamoPropertyDescriptor
+public class TynamoPropertyDescriptorImpl extends TynamoDescriptor implements TynamoPropertyDescriptor
 {
 	private Class beanType;
 
@@ -47,21 +40,16 @@ public class TynamoPropertyDescriptorImpl extends TynamoDescriptor implements
 
 	private boolean richText;
 
-	// ///////////////////////////////////////////////////////////////////////////////////////////////////////
-	// constructors
-	// ///////////////////////////////////////////////////////////////////////////////////////////////////////
 	/**
 	 * It's kinda like an old-skool C++ copy constructor
 	 */
-	public TynamoPropertyDescriptorImpl(Class beanType,
-									TynamoPropertyDescriptor descriptor)
+	public TynamoPropertyDescriptorImpl(Class beanType, TynamoPropertyDescriptor descriptor)
 	{
 		this(beanType, descriptor.getPropertyType());
 
 		try
 		{
-			BeanUtils.copyProperties(this,
-				(TynamoPropertyDescriptorImpl) descriptor);
+			BeanUtils.copyProperties(this, (TynamoPropertyDescriptorImpl) descriptor);
 		} catch (IllegalAccessException e)
 		{
 			LOG.error(e.getMessage());
@@ -81,6 +69,12 @@ public class TynamoPropertyDescriptorImpl extends TynamoDescriptor implements
 	{
 		super(type);
 		this.beanType = beanType;
+	}
+
+	public TynamoPropertyDescriptorImpl(Class beanType, String name, Class type)
+	{
+		this(beanType, type);
+		this.setName(name);
 	}
 
 	/**
@@ -108,10 +102,6 @@ public class TynamoPropertyDescriptorImpl extends TynamoDescriptor implements
 		}
 	}
 
-	// ///////////////////////////////////////////////////////////////////////////////////////////////////////
-	// methods
-	// ///////////////////////////////////////////////////////////////////////////////////////////////////////
-
 	/**
 	 * @return
 	 */
@@ -126,18 +116,18 @@ public class TynamoPropertyDescriptorImpl extends TynamoDescriptor implements
 	public boolean isNumeric()
 	{
 		return getPropertyType().getName().endsWith("Double")
-			|| getPropertyType().getName().endsWith("Integer")
-			|| getPropertyType().getName().endsWith("Float")
-			|| getPropertyType().getName().endsWith("double")
-			|| getPropertyType().getName().endsWith("int")
-			|| getPropertyType().getName().endsWith("float")
-			|| getPropertyType().getName().endsWith("BigDecimal");
+				|| getPropertyType().getName().endsWith("Integer")
+				|| getPropertyType().getName().endsWith("Float")
+				|| getPropertyType().getName().endsWith("double")
+				|| getPropertyType().getName().endsWith("int")
+				|| getPropertyType().getName().endsWith("float")
+				|| getPropertyType().getName().endsWith("BigDecimal");
 	}
 
 	public boolean isBoolean()
 	{
 		return getPropertyType().getName().endsWith("boolean")
-			|| getPropertyType().getName().endsWith("Boolean");
+				|| getPropertyType().getName().endsWith("Boolean");
 	}
 
 	/**
@@ -162,10 +152,6 @@ public class TynamoPropertyDescriptorImpl extends TynamoDescriptor implements
 	{
 		return false;
 	}
-
-	// ///////////////////////////////////////////////////////////////////////////////////////////////////////
-	// bean setters / getters
-	// ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	public int getIndex()
 	{
@@ -240,8 +226,7 @@ public class TynamoPropertyDescriptorImpl extends TynamoDescriptor implements
 		{
 			try
 			{
-				BeanUtils.copyProperties(this,
-					(TynamoPropertyDescriptorImpl) descriptor);
+				BeanUtils.copyProperties(this, (TynamoPropertyDescriptorImpl) descriptor);
 			} catch (IllegalAccessException e)
 			{
 				LOG.error(e.getMessage());

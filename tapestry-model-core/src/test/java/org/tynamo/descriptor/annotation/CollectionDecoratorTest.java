@@ -1,24 +1,14 @@
 package org.tynamo.descriptor.annotation;
 
-import junit.framework.TestCase;
+import org.testng.Assert;
+import org.testng.annotations.Test;
 import org.tynamo.descriptor.CollectionDescriptor;
 import org.tynamo.test.Foo;
 
-public class CollectionDecoratorTest extends TestCase
+public class CollectionDecoratorTest extends Assert
 {
 
-	public CollectionDecoratorTest()
-	{
-		super();
-		// TODO Auto-generated constructor stub
-	}
-
-	public CollectionDecoratorTest(String arg0)
-	{
-		super(arg0);
-		// TODO Auto-generated constructor stub
-	}
-
+	@Test
 	public void testDecorator() throws Exception
 	{
 		CollectionDescriptorAnnotationHandler decorator = new CollectionDescriptorAnnotationHandler();
@@ -26,8 +16,8 @@ public class CollectionDecoratorTest extends TestCase
 		collectionDescriptor.setOneToMany(true);
 		Collection collectionAnnotation = Annotated.class.getDeclaredMethod("getStuff").getAnnotation(Collection.class);
 		collectionDescriptor = decorator.decorateFromAnnotation(collectionAnnotation, collectionDescriptor);
-		assertTrue("is child", collectionDescriptor.isChildRelationship());
-		assertEquals("Stuff is inversed by 'annotated'", "annotated", collectionDescriptor.getInverseProperty());
+		assertTrue(collectionDescriptor.isChildRelationship(), "is child");
+		assertEquals("annotated", collectionDescriptor.getInverseProperty(), "Stuff is inversed by 'annotated'");
 		assertTrue(collectionDescriptor.isOneToMany());
 	}
 }

@@ -1,67 +1,59 @@
 package org.tynamo.descriptor.annotation;
 
-
-import junit.framework.TestCase;
-import org.tynamo.descriptor.TrailsClassDescriptor;
-import org.tynamo.descriptor.IPropertyDescriptor;
-import org.tynamo.descriptor.IdentifierDescriptor;
-import org.tynamo.descriptor.TrailsClassDescriptor;
-import org.tynamo.descriptor.TrailsPropertyDescriptor;
-import org.tynamo.descriptor.EmbeddedDescriptor;
+import org.testng.Assert;
+import org.testng.annotations.Test;
+import org.tynamo.descriptor.*;
 import org.tynamo.test.Embeddee;
 import org.tynamo.test.Embeddor;
 import org.tynamo.test.Foo;
 
-public class AnnotationDecoratorTest extends TestCase
+
+public class AnnotationDecoratorTest extends Assert
 {
 	AnnotationDecorator decorator = new AnnotationDecorator();
 
+	@Test
 	public void testDecorate()
 	{
 
+		TynamoClassDescriptor descriptor = new TynamoClassDescriptorImpl(Annotated.class);
+		TynamoPropertyDescriptor fieldPropDescriptor = new TynamoPropertyDescriptorImpl(Annotated.class, "notBloppity", String.class);
 
-		TrailsClassDescriptor descriptor = new TrailsClassDescriptor(Annotated.class, "Annotated");
-		IPropertyDescriptor fieldPropDescriptor = new TrailsPropertyDescriptor(Annotated.class, "notBloppity", String.class);
-
-		descriptor.getPropertyDescriptors().add(fieldPropDescriptor);
-		IPropertyDescriptor hiddenDescriptor = new TrailsPropertyDescriptor(Annotated.class, "hidden", String.class);
+		TynamoPropertyDescriptor hiddenDescriptor = new TynamoPropertyDescriptorImpl(Annotated.class, "hidden", String.class);
 		hiddenDescriptor.setIndex(1);
-		descriptor.getPropertyDescriptors().add(hiddenDescriptor);
-		IPropertyDescriptor validatedStringDescriptor = new TrailsPropertyDescriptor(Foo.class, "validatedString", String.class);
+
+		TynamoPropertyDescriptor validatedStringDescriptor = new TynamoPropertyDescriptorImpl(Foo.class, "validatedString", String.class);
 		validatedStringDescriptor.setIndex(3);
 
-		IPropertyDescriptor booleanDescriptor = new TrailsPropertyDescriptor(Annotated.class, "booleanProperty", boolean.class);
+		TynamoPropertyDescriptor booleanDescriptor = new TynamoPropertyDescriptorImpl(Annotated.class, "booleanProperty", boolean.class);
+
+		descriptor.getPropertyDescriptors().add(fieldPropDescriptor);
+		descriptor.getPropertyDescriptors().add(hiddenDescriptor);
 		descriptor.getPropertyDescriptors().add(validatedStringDescriptor);
-		descriptor.getPropertyDescriptors().add(new IdentifierDescriptor(Foo.class, "id", Integer.class));
+		descriptor.getPropertyDescriptors().add(new IdentifierDescriptorImpl(Foo.class, "id", Integer.class));
 		descriptor.getPropertyDescriptors().add(booleanDescriptor);
 
 		descriptor = decorator.decorate(descriptor);
-		assertEquals(Annotated.CLASS_LABEL, descriptor.getDisplayName());
-		assertEquals("right index", "notBloppity",
-			((IPropertyDescriptor) descriptor.getPropertyDescriptors().get(2)).getName());
+
+		assertEquals("notBloppity", descriptor.getPropertyDescriptors().get(2).getName(), "right index");
 		assertTrue(descriptor.getPropertyDescriptor("hidden").isHidden());
-		assertEquals(Annotated.NOT_BLOPPITY_LABEL,
-			descriptor.getPropertyDescriptor("notBloppity").getDisplayName());
-		assertTrue("still an id descriptor",
-			descriptor.getPropertyDescriptor("id") instanceof IdentifierDescriptor);
-		validatedStringDescriptor = descriptor.getPropertyDescriptor("validatedString");
-
-		assertEquals(Annotated.BOOLEAN_LABEL,
-			descriptor.getPropertyDescriptor("booleanProperty").getDisplayName());
-
+		assertTrue(descriptor.getPropertyDescriptor("id") instanceof IdentifierDescriptor, "still an id descriptor");
 	}
 
+	@Test
 	public void testDecorateEmbedded() throws Exception
 	{
-		TrailsClassDescriptor embeddorDescriptor = new TrailsClassDescriptor(Embeddor.class, "Embeddor");
+		TynamoClassDescriptor embeddorDescriptor = new TynamoClassDescriptorImpl(Embeddor.class);
 		EmbeddedDescriptor embeddeeDescriptor = new EmbeddedDescriptor(Embeddor.class, "embeddee", Embeddee.class);
-		embeddeeDescriptor.getPropertyDescriptors().add(new TrailsPropertyDescriptor(Embeddee.class, "title", String.class));
-		embeddeeDescriptor.getPropertyDescriptors().add(new TrailsPropertyDescriptor(Embeddee.class, "description", String.class));
+		embeddeeDescriptor.getPropertyDescriptors().add(new TynamoPropertyDescriptorImpl(Embeddee.class, "title", String.class));
+		embeddeeDescriptor.getPropertyDescriptors().add(new TynamoPropertyDescriptorImpl(Embeddee.class, "description", String.class));
 		embeddorDescriptor.getPropertyDescriptors().add(embeddeeDescriptor);
+
 		embeddorDescriptor = decorator.decorate(embeddorDescriptor);
+
 		assertTrue(embeddorDescriptor.getPropertyDescriptors().get(0) instanceof EmbeddedDescriptor);
 		embeddeeDescriptor = (EmbeddedDescriptor) embeddorDescriptor.getPropertyDescriptors().get(0);
-		assertEquals("2 props", 2, embeddeeDescriptor.getPropertyDescriptors().size());
-		assertEquals("The Title", embeddeeDescriptor.getPropertyDescriptor("title").getDisplayName());
+		assertEquals(2, embeddeeDescriptor.getPropertyDescriptors().size(), "2 props");
+		assertEquals(embeddeeDescriptor.getPropertyDescriptor("title").getName(), "title");
 	}
 }

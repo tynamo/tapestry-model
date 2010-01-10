@@ -1,23 +1,13 @@
 package org.tynamo.descriptor;
 
-import junit.framework.TestCase;
+import org.testng.Assert;
+import org.testng.annotations.Test;
 import org.tynamo.test.Foo;
 
-public class ObjectReferenceDescriptorTest extends TestCase
+public class ObjectReferenceDescriptorTest extends Assert
 {
 
-	public ObjectReferenceDescriptorTest()
-	{
-		super();
-		// TODO Auto-generated constructor stub
-	}
-
-	public ObjectReferenceDescriptorTest(String arg0)
-	{
-		super(arg0);
-		// TODO Auto-generated constructor stub
-	}
-
+	@Test
 	public void testClone() throws Exception
 	{
 		ObjectReferenceDescriptor descriptor = new ObjectReferenceDescriptor(Foo.class, Foo.class, Foo.class);

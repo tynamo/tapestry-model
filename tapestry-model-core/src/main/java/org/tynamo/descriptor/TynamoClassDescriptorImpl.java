@@ -38,9 +38,6 @@ public class TynamoClassDescriptorImpl extends TynamoDescriptor implements Tynam
 
 	boolean allowSave = true;
 
-	// ///////////////////////////////////////////////////////////////////////////////////////////////////////
-	// Constructors
-	// ///////////////////////////////////////////////////////////////////////////////////////////////////////
 	/**
 	 * This is a copy constructor. These need to be clonable for the security
 	 * aspect to be able to copy them, so if new properties are added they
@@ -83,28 +80,19 @@ public class TynamoClassDescriptorImpl extends TynamoDescriptor implements Tynam
 		}
 	}
 
-	// ///////////////////////////////////////////////////////////////////////////////////////////////////////
-	// Methods
-	// ///////////////////////////////////////////////////////////////////////////////////////////////////////
 	private void copyMethodDescriptorsFrom(TynamoClassDescriptor descriptor)
 	{
-		for (IMethodDescriptor methodDescriptor : descriptor
-			.getMethodDescriptors())
+		for (IMethodDescriptor methodDescriptor : descriptor.getMethodDescriptors())
 		{
-			getMethodDescriptors().add(
-				IMethodDescriptor.class.cast(methodDescriptor.clone()));
+			getMethodDescriptors().add(IMethodDescriptor.class.cast(methodDescriptor.clone()));
 		}
 	}
 
 	protected void copyPropertyDescriptorsFrom(TynamoClassDescriptor descriptor)
 	{
-		for (TynamoPropertyDescriptor iPropertyDescriptor : descriptor
-			.getPropertyDescriptors())
+		for (TynamoPropertyDescriptor propertyDescriptor : descriptor.getPropertyDescriptors())
 		{
-			getPropertyDescriptors()
-				.add(
-					TynamoPropertyDescriptor.class.cast(iPropertyDescriptor
-						.clone()));
+			getPropertyDescriptors().add(TynamoPropertyDescriptor.class.cast(propertyDescriptor.clone()));
 		}
 	}
 
@@ -137,17 +125,16 @@ public class TynamoClassDescriptorImpl extends TynamoDescriptor implements Tynam
 		return findDescriptor("propertyDescriptors.{? name == '" + name + "'}[0]");
 	}
 
-	public List<TynamoPropertyDescriptor> getPropertyDescriptors(List<String> properties) {
+	public List<TynamoPropertyDescriptor> getPropertyDescriptors(List<String> properties)
+	{
 		ArrayList<TynamoPropertyDescriptor> descriptors = new ArrayList<TynamoPropertyDescriptor>();
-		for (String property : properties) {
+		for (String property : properties)
+		{
 			descriptors.add(getPropertyDescriptor(property));
 		}
 		return descriptors;
 	}
 
-	// ///////////////////////////////////////////////////////////////////////////////////////////////////////
-	// bean getters / setters
-	// ///////////////////////////////////////////////////////////////////////////////////////////////////////
 	/**
 	 * @return Returns the methodDescriptors.
 	 */
@@ -175,8 +162,7 @@ public class TynamoClassDescriptorImpl extends TynamoDescriptor implements Tynam
 	/**
 	 * @param propertyDescriptors The propertyDescriptors to set.
 	 */
-	public void setPropertyDescriptors(
-		List<TynamoPropertyDescriptor> propertyDescriptors)
+	public void setPropertyDescriptors(List<TynamoPropertyDescriptor> propertyDescriptors)
 	{
 		this.propertyDescriptors = propertyDescriptors;
 	}
@@ -220,8 +206,7 @@ public class TynamoClassDescriptorImpl extends TynamoDescriptor implements Tynam
 
 			try
 			{
-				BeanUtils.copyProperties(this,
-					(TynamoClassDescriptorImpl) descriptor);
+				BeanUtils.copyProperties(this, (TynamoClassDescriptorImpl) descriptor);
 				copyPropertyDescriptorsFrom((TynamoClassDescriptorImpl) descriptor);
 				copyMethodDescriptorsFrom((TynamoClassDescriptorImpl) descriptor);
 			} catch (IllegalAccessException e)

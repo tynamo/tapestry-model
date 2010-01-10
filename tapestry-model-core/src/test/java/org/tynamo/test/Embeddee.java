@@ -1,7 +1,5 @@
 package org.tynamo.test;
 
-import org.tynamo.descriptor.annotation.PropertyDescriptor;
-
 public class Embeddee
 {
 
@@ -19,7 +17,6 @@ public class Embeddee
 		this.description = description;
 	}
 
-	@PropertyDescriptor(displayName = "The Title")
 	public String getTitle()
 	{
 		return title;

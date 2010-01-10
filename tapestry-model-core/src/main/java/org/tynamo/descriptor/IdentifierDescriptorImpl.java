@@ -12,12 +12,6 @@
 package org.tynamo.descriptor;
 
 
-/**
- * @author fus8882
- *         <p/>
- *         TODO To change the template for this generated type comment go to
- *         Window - Preferences - Java - Code Style - Code Templates
- */
 public class IdentifierDescriptorImpl extends TynamoPropertyDescriptorImpl implements IdentifierDescriptor
 {
 	private boolean generated = true;
@@ -38,9 +32,17 @@ public class IdentifierDescriptorImpl extends TynamoPropertyDescriptorImpl imple
 		setSearchable(false);
 	}
 
-	/* (non-Javadoc)
-		 * @see org.tynamo.descriptor.PropertyDescriptor#isIdentifier()
-		 */
+	public IdentifierDescriptorImpl(Class beanType, String name, Class type)
+	{
+		super(beanType, name, type);
+		setSearchable(false);
+	}
+
+	/**
+	 * (non-Javadoc)
+	 *
+	 * @see org.tynamo.descriptor.PropertyDescriptor#isIdentifier()
+	 */
 	public boolean isIdentifier()
 	{
 		return true;

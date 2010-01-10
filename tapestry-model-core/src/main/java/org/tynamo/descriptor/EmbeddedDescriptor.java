@@ -13,60 +13,6 @@ public class EmbeddedDescriptor extends TynamoClassDescriptorImpl implements Ide
 
 	private String name;
 
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////
-	// constructors
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-	public EmbeddedDescriptor(Class beanType, TynamoClassDescriptor descriptor)
-	{
-		super(descriptor);
-		this.beanType = beanType;
-	}
-
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////
-	// methods
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////
-	// bean setters/getters
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-	public boolean isNumeric()
-	{
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public boolean isBoolean()
-	{
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public boolean isDate()
-	{
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public boolean isString()
-	{
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public boolean isObjectReference()
-	{
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public boolean isOwningObjectReference()
-	{
-		// TODO Auto-generated method stub
-		return false;
-	}
-
 	private boolean required;
 
 	private int length;
@@ -82,6 +28,49 @@ public class EmbeddedDescriptor extends TynamoClassDescriptorImpl implements Ide
 	private boolean richText;
 
 	private Class beanType;
+
+	public EmbeddedDescriptor(Class beanType, TynamoClassDescriptor descriptor)
+	{
+		super(descriptor);
+		this.beanType = beanType;
+	}
+
+	public EmbeddedDescriptor(Class beanType, String name, Class type)
+	{
+		super(type);
+		this.name = name;
+		this.beanType = beanType;
+	}
+
+	public boolean isNumeric()
+	{
+		return false;
+	}
+
+	public boolean isBoolean()
+	{
+		return false;
+	}
+
+	public boolean isDate()
+	{
+		return false;
+	}
+
+	public boolean isString()
+	{
+		return false;
+	}
+
+	public boolean isObjectReference()
+	{
+		return false;
+	}
+
+	public boolean isOwningObjectReference()
+	{
+		return false;
+	}
 
 	public boolean isEmbedded()
 	{
@@ -131,12 +120,6 @@ public class EmbeddedDescriptor extends TynamoClassDescriptorImpl implements Ide
 	public boolean isCollection()
 	{
 		return false;
-	}
-
-	@Override
-	public Object clone()
-	{
-		return new EmbeddedDescriptor(getBeanType(), this);
 	}
 
 	public String getFormat()
@@ -219,13 +202,6 @@ public class EmbeddedDescriptor extends TynamoClassDescriptorImpl implements Ide
 		this.required = required;
 	}
 
-	@Override
-	public void copyFrom(Descriptor descriptor)
-	{
-
-		super.copyFrom(descriptor);
-	}
-
 	public boolean isIdentifier()
 	{
 		return identifier;
@@ -245,4 +221,18 @@ public class EmbeddedDescriptor extends TynamoClassDescriptorImpl implements Ide
 	{
 		this.generated = generated;
 	}
+
+	@Override
+	public void copyFrom(Descriptor descriptor)
+	{
+
+		super.copyFrom(descriptor);
+	}
+
+	@Override
+	public Object clone()
+	{
+		return new EmbeddedDescriptor(getBeanType(), this);
+	}
+
 }

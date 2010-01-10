@@ -1,31 +1,20 @@
 package org.tynamo.descriptor.annotation;
 
-import junit.framework.TestCase;
-import org.tynamo.descriptor.TrailsClassDescriptor;
-import org.tynamo.descriptor.TrailsClassDescriptor;
+import org.testng.Assert;
+import org.testng.annotations.Test;
+import org.tynamo.descriptor.TynamoClassDescriptor;
+import org.tynamo.descriptor.TynamoClassDescriptorImpl;
 
-public class ClassDescriptorDecoratorTest extends TestCase
+public class ClassDescriptorDecoratorTest extends Assert
 {
 
-	public ClassDescriptorDecoratorTest()
-	{
-		super();
-		// TODO Auto-generated constructor stub
-	}
-
-	public ClassDescriptorDecoratorTest(String arg0)
-	{
-		super(arg0);
-		// TODO Auto-generated constructor stub
-	}
-
+	@Test
 	public void testDecorate() throws Exception
 	{
 		ClassDescriptorAnnotationHandler decorator = new ClassDescriptorAnnotationHandler();
-		TrailsClassDescriptor descriptor = new TrailsClassDescriptor(Annotated.class);
+		TynamoClassDescriptorImpl descriptor = new TynamoClassDescriptorImpl(Annotated.class);
 		ClassDescriptor classDescriptorAnno = Annotated.class.getAnnotation(ClassDescriptor.class);
-		TrailsClassDescriptor decoratedDescriptor = decorator.decorateFromAnnotation(classDescriptorAnno, descriptor);
-		assertEquals("This is annotated", decoratedDescriptor.getDisplayName());
+		TynamoClassDescriptor decoratedDescriptor = decorator.decorateFromAnnotation(classDescriptorAnno, descriptor);
 		assertTrue(decoratedDescriptor.isHidden());
 		assertTrue(decoratedDescriptor.getHasCyclicRelationships());
 	}
