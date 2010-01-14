@@ -55,7 +55,7 @@ public abstract class AbstractContainerTest
 	static String errorText = "You must correct the following errors before you may continue";
 
 	@BeforeClass
-	public static void startContainer() throws Exception
+	public void startContainer() throws Exception
 	{
 		if (server == null)
 		{
@@ -64,17 +64,25 @@ public abstract class AbstractContainerTest
 			connector.setPort(port);
 			server.setConnectors(new Connector[]{connector});
 
-			WebAppContext context = new WebAppContext("src/main/webapp", "/");
-			ResourceCollection resourceCollection =
-					new ResourceCollection(new String[]{"src/main/webapp", "src/test/webapp"});
-			context.setBaseResource(resourceCollection);
-
 			HandlerCollection handlers = new HandlerCollection();
-			handlers.setHandlers(new Handler[]{context, new DefaultHandler()});
+			handlers.setHandlers(new Handler[]{buildContext(), new DefaultHandler()});
 			server.setHandler(handlers);
 			server.start();
 			assertTrue(server.isStarted());
 		}
+	}
+
+	/**
+	 * Non-abstract hook method (with a default implementation) to allow subclasses to provide their own WebAppContext instance.
+	 * @return a WebAppContext
+	 */
+	public WebAppContext buildContext()
+	{
+		WebAppContext context = new WebAppContext("src/main/webapp", "/");
+		ResourceCollection resourceCollection =
+				new ResourceCollection(new String[]{"src/main/webapp", "src/test/webapp"});
+		context.setBaseResource(resourceCollection);
+		return context;
 	}
 
 	@BeforeTest
