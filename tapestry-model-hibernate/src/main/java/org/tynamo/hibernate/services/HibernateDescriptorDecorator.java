@@ -13,9 +13,9 @@ package org.tynamo.hibernate.services;
 
 import ognl.Ognl;
 import ognl.OgnlException;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.tapestry5.hibernate.HibernateSessionSource;
+import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.ioc.annotations.Symbol;
 import org.hibernate.HibernateException;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.mapping.*;
@@ -23,10 +23,12 @@ import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.metadata.CollectionMetadata;
 import org.hibernate.type.ComponentType;
 import org.hibernate.type.Type;
+import org.slf4j.Logger;
 import org.tynamo.descriptor.*;
 import org.tynamo.descriptor.extension.EnumReferenceDescriptor;
 import org.tynamo.exception.MetadataNotFoundException;
 import org.tynamo.exception.TynamoRuntimeException;
+import org.tynamo.hibernate.TynamoHibernateSymbols;
 
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
@@ -51,7 +53,7 @@ import java.util.List;
  * class descriptor for class type - TynamoDescriptorService finally populates
  * decorated class descriptor and it's aggregated list of decorated property
  * descriptors into it's own list/cache of referenced class descriptors
- * 
+ *
  * @see TynamoPropertyDescriptor
  * @see ObjectReferenceDescriptor
  * @see CollectionDescriptor
@@ -59,7 +61,7 @@ import java.util.List;
  */
 public class HibernateDescriptorDecorator implements DescriptorDecorator
 {
-	protected static final Log LOG = LogFactory.getLog(HibernateDescriptorDecorator.class);
+	private Logger logger;
 
 	private HibernateSessionSource hibernateSessionSource;
 
@@ -72,12 +74,19 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 
 	private final boolean ignoreNonHibernateTypes;
 
-	public HibernateDescriptorDecorator(HibernateSessionSource hibernateSessionSource, DescriptorFactory descriptorFactory, int largeColumnLength, boolean ignoreNonHibernateTypes)
+	public HibernateDescriptorDecorator(HibernateSessionSource hibernateSessionSource,
+	                                    DescriptorFactory descriptorFactory,
+	                                    @Inject @Symbol(TynamoHibernateSymbols.LARGE_COLUMN_LENGTH)
+	                                    int largeColumnLength,
+	                                    @Inject @Symbol(TynamoHibernateSymbols.IGNORE_NON_HIBERNATE_TYPES)
+	                                    boolean ignoreNonHibernateTypes,
+	                                    Logger logger)
 	{
 		this.hibernateSessionSource = hibernateSessionSource;
 		this.descriptorFactory = descriptorFactory;
 		this.largeColumnLength = largeColumnLength;
 		this.ignoreNonHibernateTypes = ignoreNonHibernateTypes;
+		this.logger = logger;
 	}
 
 	public TynamoClassDescriptor decorate(TynamoClassDescriptor descriptor)
@@ -92,10 +101,12 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 			classMetaData = findMetadata(type);
 		} catch (MetadataNotFoundException e)
 		{
-			if (ignoreNonHibernateTypes) {
-				LOG.warn("MetadataNotFound! Ignoring:" + descriptor.getType().toString());
+			if (ignoreNonHibernateTypes)
+			{
+				logger.warn("MetadataNotFound! Ignoring:" + descriptor.getType().toString());
 				return descriptor;
-			} else {
+			} else
+			{
 				throw new TynamoRuntimeException(e);
 			}
 		}
@@ -135,7 +146,8 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 	}
 
 	protected TynamoPropertyDescriptor decoratePropertyDescriptor(Class type, Property mappingProperty,
-			TynamoPropertyDescriptor descriptor, TynamoClassDescriptor parentClassDescriptor)
+	                                                              TynamoPropertyDescriptor descriptor,
+	                                                              TynamoClassDescriptor parentClassDescriptor)
 	{
 		if (isFormula(mappingProperty))
 		{
@@ -176,7 +188,8 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 	}
 
 	private EmbeddedDescriptor buildEmbeddedDescriptor(Class type, Property mappingProperty,
-			TynamoPropertyDescriptor descriptor, TynamoClassDescriptor parentClassDescriptor)
+	                                                   TynamoPropertyDescriptor descriptor,
+	                                                   TynamoClassDescriptor parentClassDescriptor)
 	{
 		Component componentMapping = (Component) mappingProperty.getValue();
 		TynamoClassDescriptor baseDescriptor = descriptorFactory.buildClassDescriptor(descriptor.getPropertyType());
@@ -194,8 +207,9 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 			} else
 			{
 				Property property = componentMapping.getProperty(propertyDescriptor.getName());
-				TynamoPropertyDescriptor TynamoPropertyDescriptor = decoratePropertyDescriptor(embeddedDescriptor.getBeanType(),
-						property, propertyDescriptor, parentClassDescriptor);
+				TynamoPropertyDescriptor TynamoPropertyDescriptor =
+						decoratePropertyDescriptor(embeddedDescriptor.getBeanType(),
+								property, propertyDescriptor, parentClassDescriptor);
 				decoratedProperties.add(TynamoPropertyDescriptor);
 			}
 		}
@@ -207,7 +221,7 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 	 * The default way to order our property descriptors is by the order they
 	 * appear in the hibernate config, with id first. Any non-mapped properties
 	 * are tacked on at the end, til I think of a better way.
-	 * 
+	 *
 	 * @param propertyDescriptors
 	 * @return
 	 */
@@ -234,7 +248,7 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 	/**
 	 * Find the Hibernate metadata for this type, traversing up the hierarchy to
 	 * supertypes if necessary
-	 * 
+	 *
 	 * @param type
 	 * @return
 	 */
@@ -269,7 +283,7 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 
 	/**
 	 * Checks to see if a property descriptor is in a component mapping
-	 * 
+	 *
 	 * @param componentMapping
 	 * @param propertyDescriptor
 	 * @return true if the propertyDescriptor property is in componentMapping
@@ -329,7 +343,8 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 	 * @param parentClassDescriptor
 	 * @return
 	 */
-	private IdentifierDescriptor createIdentifierDescriptor(Class type, TynamoPropertyDescriptor descriptor, TynamoClassDescriptor parentClassDescriptor)
+	private IdentifierDescriptor createIdentifierDescriptor(Class type, TynamoPropertyDescriptor descriptor,
+	                                                        TynamoClassDescriptor parentClassDescriptor)
 	{
 		IdentifierDescriptor identifierDescriptor;
 		PersistentClass mapping = getMapping(type);
@@ -370,10 +385,10 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 	/**
 	 * @param type
 	 * @param descriptor
-	 * @param parentClassDescriptor 
+	 * @param parentClassDescriptor
 	 */
 	private CollectionDescriptor decorateCollectionDescriptor(Class type, TynamoPropertyDescriptor descriptor,
-			TynamoClassDescriptor parentClassDescriptor)
+	                                                          TynamoClassDescriptor parentClassDescriptor)
 	{
 		try
 		{
@@ -400,7 +415,8 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 	}
 
 	public TynamoPropertyDescriptor decorateAssociationDescriptor(Class type, Property mappingProperty,
-			TynamoPropertyDescriptor descriptor, TynamoClassDescriptor parentClassDescriptor)
+	                                                              TynamoPropertyDescriptor descriptor,
+	                                                              TynamoClassDescriptor parentClassDescriptor)
 	{
 		Type hibernateType = mappingProperty.getType();
 		Class parentClassType = parentClassDescriptor.getType();
@@ -451,16 +467,16 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 
 		} catch (SecurityException e)
 		{
-			LOG.error(e.getMessage());
+			logger.error(e.getMessage());
 		} catch (NoSuchFieldException e)
 		{
-			LOG.error(e.getMessage());
+			logger.error(e.getMessage());
 		} catch (OgnlException e)
 		{
-			LOG.error(e.getMessage());
+			logger.error(e.getMessage());
 		} catch (IntrospectionException e)
 		{
-			LOG.error(e.getMessage());
+			logger.error(e.getMessage());
 		}
 		return descriptorReference;
 	}
@@ -470,7 +486,8 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 	 * metadata, so I'm getting it from the OneToMany annotation.
 	 */
 	private void decorateOneToManyCollection(TynamoClassDescriptor parentClassDescriptor,
-			CollectionDescriptor collectionDescriptor, org.hibernate.mapping.Collection collectionMapping)
+	                                         CollectionDescriptor collectionDescriptor,
+	                                         org.hibernate.mapping.Collection collectionMapping)
 	{
 		Class type = parentClassDescriptor.getType();
 		if (collectionDescriptor.isOneToMany() && collectionMapping.isInverse())
@@ -501,16 +518,20 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 
 			} catch (SecurityException e)
 			{
-				LOG.error(e.getMessage());
+				logger.error(e.getMessage());
+				e.printStackTrace();
 			} catch (NoSuchFieldException e)
 			{
-				LOG.error(e.getMessage());
+				logger.error(e.getMessage());
+				e.printStackTrace();
 			} catch (OgnlException e)
 			{
-				LOG.error(e.getMessage());
+				logger.error(e.getMessage());
+				e.printStackTrace();
 			} catch (IntrospectionException e)
 			{
-				LOG.error(e.getMessage());
+				logger.error(e.getMessage());
+				e.printStackTrace();
 			}
 		}
 	}
@@ -538,6 +559,7 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 	 * 
 	 * @see org.tynamo.descriptor.PropertyDescriptorService#getIdentifierProperty(java.lang.Class)
 	 */
+
 	public String getIdentifierProperty(Class type)
 	{
 		try

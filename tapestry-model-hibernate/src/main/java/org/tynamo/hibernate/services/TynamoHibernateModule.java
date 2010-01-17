@@ -7,15 +7,14 @@ import org.apache.tapestry5.ioc.Configuration;
 import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.ioc.OrderedConfiguration;
 import org.apache.tapestry5.ioc.ServiceBinder;
+import org.apache.tapestry5.ioc.annotations.Autobuild;
 import org.apache.tapestry5.ioc.annotations.InjectService;
 import org.apache.tapestry5.ioc.annotations.Match;
-import org.apache.tapestry5.ioc.annotations.Symbol;
 import org.apache.tapestry5.services.BeanBlockContribution;
 import org.apache.tapestry5.services.LibraryMapping;
 import org.hibernate.mapping.PersistentClass;
 import org.tynamo.VersionedModule;
 import org.tynamo.descriptor.DescriptorDecorator;
-import org.tynamo.descriptor.DescriptorFactory;
 import org.tynamo.descriptor.annotation.AnnotationDecorator;
 import org.tynamo.hibernate.TynamoHibernateSymbols;
 import org.tynamo.hibernate.TynamoInterceptor;
@@ -93,7 +92,7 @@ public class TynamoHibernateModule extends VersionedModule
 	}
 
 	public static void contributeDescriptorFactory(OrderedConfiguration<DescriptorDecorator> configuration,
-												   HibernateDescriptorDecorator hibernateDescriptorDecorator)
+	                                               @Autobuild HibernateDescriptorDecorator hibernateDescriptorDecorator)
 	{
 		configuration.add("Hibernate", hibernateDescriptorDecorator);
 		configuration.add("Annotation", new AnnotationDecorator());
@@ -166,17 +165,6 @@ public class TynamoHibernateModule extends VersionedModule
 		configuration.add("toString");
 		configuration.add("notify.*");
 		configuration.add("hashCode");
-	}
-
-	public static HibernateDescriptorDecorator buildHibernateDescriptorDecorator(
-												HibernateSessionSource hibernateSessionSource,
-												DescriptorFactory descriptorFactory,
-												@Symbol(TynamoHibernateSymbols.LARGE_COLUMN_LENGTH)
-												final int largeColumnLength,
-												@Symbol(TynamoHibernateSymbols.IGNORE_NON_HIBERNATE_TYPES)
-												final boolean ignoreNonHibernateTypes)
-	{
-		return new HibernateDescriptorDecorator(hibernateSessionSource, descriptorFactory, largeColumnLength, ignoreNonHibernateTypes);
 	}
 
 	public static void contributeFactoryDefaults(MappedConfiguration<String, String> configuration)
