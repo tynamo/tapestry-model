@@ -12,6 +12,7 @@ import org.apache.tapestry5.services.BeanEditContext;
 import org.apache.tapestry5.services.BeanModelSource;
 import org.apache.tapestry5.services.PropertyEditContext;
 import org.apache.tapestry5.services.ValueEncoderSource;
+import org.apache.tapestry5.util.EnumSelectModel;
 import org.chenillekit.tapestry.core.components.DateTimeField;
 import org.chenillekit.tapestry.core.components.Editor;
 import org.tynamo.components.*;
@@ -44,7 +45,7 @@ public class Editors
 	private TynamoBeanContext tynamoBeanContext;
 
 	@Inject
-	private PersistenceService persitenceService;
+	private PersistenceService persistenceService;
 
 	@Inject
 	private DescriptorService descriptorService;
@@ -85,18 +86,14 @@ public class Editors
 		return descriptorService.getClassDescriptor(beanEditContext.getBeanClass()).getPropertyDescriptor(propertyEditContext.getPropertyId());
 	}
 
+	@SuppressWarnings({ "unchecked" })
 	public SelectModel getSelectModel()
 	{
 		TynamoPropertyDescriptor propertyDescriptor = getPropertyDescriptor();
 
-		if (propertyDescriptor.isCollection())
-		{
-			CollectionDescriptor collectionDescriptor = (CollectionDescriptor) propertyDescriptor;
-			return new GenericSelectionModel(persitenceService.getInstances(collectionDescriptor.getElementType()));
-		} else
-		{
-			return new GenericSelectionModel(persitenceService.getInstances(propertyEditContext.getPropertyType()));
-		}
+		Class type = propertyDescriptor.isCollection() ? ((CollectionDescriptor) propertyDescriptor).getElementType() : propertyDescriptor.getPropertyType();
+		if (type.isEnum()) return new EnumSelectModel(type, resources.getMessages());
+		return new GenericSelectionModel(persistenceService.getInstances(type));
 	}
 
 	/**
