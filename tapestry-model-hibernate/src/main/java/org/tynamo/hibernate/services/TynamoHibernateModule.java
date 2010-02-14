@@ -15,13 +15,11 @@ import org.apache.tapestry5.services.LibraryMapping;
 import org.hibernate.mapping.PersistentClass;
 import org.tynamo.VersionedModule;
 import org.tynamo.descriptor.DescriptorDecorator;
-import org.tynamo.descriptor.annotation.AnnotationDecorator;
 import org.tynamo.hibernate.TynamoHibernateSymbols;
 import org.tynamo.hibernate.TynamoInterceptor;
 import org.tynamo.hibernate.TynamoInterceptorConfigurer;
 import org.tynamo.hibernate.validation.HibernateClassValidatorFactory;
 import org.tynamo.hibernate.validation.HibernateValidationDelegate;
-import org.tynamo.util.Pair;
 
 import java.util.Iterator;
 
@@ -95,7 +93,6 @@ public class TynamoHibernateModule extends VersionedModule
 	                                               @Autobuild HibernateDescriptorDecorator hibernateDescriptorDecorator)
 	{
 		configuration.add("Hibernate", hibernateDescriptorDecorator);
-		configuration.add("Annotation", new AnnotationDecorator());
 	}
 
 	@SuppressWarnings("unchecked")
@@ -117,55 +114,6 @@ public class TynamoHibernateModule extends VersionedModule
 		}
 	}
 
-	public static void contributeTynamoDataTypeAnalyzer(OrderedConfiguration<Pair> configuration)
-	{
-
-		addPairToOrderedConfiguration(configuration, "hidden", "hidden");
-		addPairToOrderedConfiguration(configuration, "readOnly", "readOnly");
-		addPairToOrderedConfiguration(configuration, "richText", "fckEditor");
-//		addPairToOrderedConfiguration(configuration, "name.toLowerCase().endsWith('password')", "passwordEditor"); //USE @DataType("password")
-//		addPairToOrderedConfiguration(configuration, "string and !large and !identifier", "stringEditor"); //managed by Tapestry
-		addPairToOrderedConfiguration(configuration, "string and large and !identifier", "longtext");
-		addPairToOrderedConfiguration(configuration, "date", "dateEditor");
-//		addPairToOrderedConfiguration(configuration, "numeric and !identifier", "numberEditor"); //managed by Tapestry
-		addPairToOrderedConfiguration(configuration, "identifier && generated", "readOnly");
-		addPairToOrderedConfiguration(configuration, "identifier && not(generated) && string", "identifierEditor");
-//		addPairToOrderedConfiguration(configuration, "identifier && objectReference", "objectReferenceIdentifierEditor");
-//		addPairToOrderedConfiguration(configuration, "boolean", "booleanEditor"); //managed by Tapestry
-//		addPairToOrderedConfiguration(configuration, "supportsExtension('org.tynamo.descriptor.extension.EnumReferenceDescriptor')", "enumEditor"); //managed by Tapestry
-		addPairToOrderedConfiguration(configuration, "supportsExtension('org.tynamo.descriptor.extension.BlobDescriptorExtension')", "blob");
-
-		addPairToOrderedConfiguration(configuration, "objectReference", "single-valued-association" /* (aka: ManyToOne) */);
-		addPairToOrderedConfiguration(configuration, "collection && not(childRelationship)", "many-valued-association" /* (aka: ManyToMany) */);
-		addPairToOrderedConfiguration(configuration, "collection && childRelationship", "composition");
-		addPairToOrderedConfiguration(configuration, "name == 'id'", "readOnly");
-		addPairToOrderedConfiguration(configuration, "embedded", "embedded");
-	}
-
-	private static void addPairToOrderedConfiguration(OrderedConfiguration<Pair> configuration, String key, String value)
-	{
-		configuration.add(key, new Pair<String, String>(key, value));
-	}
-
-
-	public static void contributePropertyDescriptorFactory(Configuration<String> configuration)
-	{
-		configuration.add("exclude.*");
-		configuration.add("class");
-	}
-
-	public static void contributeMethodDescriptorFactory(Configuration<String> configuration)
-	{
-		configuration.add("shouldExclude");
-		configuration.add("set.*");
-		configuration.add("get.*");
-		configuration.add("is.*");
-		configuration.add("equals");
-		configuration.add("wait");
-		configuration.add("toString");
-		configuration.add("notify.*");
-		configuration.add("hashCode");
-	}
 
 	public static void contributeFactoryDefaults(MappedConfiguration<String, String> configuration)
 	{

@@ -12,6 +12,7 @@
 package org.tynamo.hibernate.services;
 
 import org.hibernate.criterion.DetachedCriteria;
+import org.tynamo.descriptor.CollectionDescriptor;
 import org.tynamo.descriptor.TynamoClassDescriptor;
 import org.tynamo.services.PersistenceService;
 import org.apache.tapestry5.hibernate.annotations.CommitAfter;
@@ -57,4 +58,12 @@ public interface HibernatePersistenceService extends PersistenceService
 	public List findByQuery(String queryString, QueryParameter... parameters);
 
 	public List findByQuery(String queryString, int startIndex, int maxResults, QueryParameter... parameters);
+
+	boolean isTransient(Object data, TynamoClassDescriptor classDescriptor);
+
+	@CommitAfter
+	<T> T addToCollection(CollectionDescriptor descriptor, T element, Object collectionOwner);
+
+	@CommitAfter
+	void removeFromCollection(CollectionDescriptor descriptor, Object element, Object collectionOwner);
 }

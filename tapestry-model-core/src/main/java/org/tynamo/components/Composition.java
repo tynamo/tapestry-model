@@ -160,8 +160,7 @@ public class Composition
 
 	public Object onSuccess()
 	{
-		Utils.executeOgnlExpression(collectionDescriptor.getAddExpression(), formBean, owner);
-		persitenceService.save(owner);
+		persitenceService.addToCollection(collectionDescriptor, formBean, owner);
 		return compositionZone.getBody();
 	}
 
@@ -169,10 +168,9 @@ public class Composition
 	{
 		ValueEncoder valueEncoder = valueEncoderSource.getValueEncoder(collectionDescriptor.getElementType());
 		Object element = valueEncoder.toValue(elementid);
-		Utils.executeOgnlExpression(collectionDescriptor.getRemoveExpression(), element, owner);
 
-		persitenceService.remove(element);
-		persitenceService.save(owner);
+		persitenceService.removeFromCollection(collectionDescriptor, element, owner);
+
 		return compositionZone.getBody();
 	}
 

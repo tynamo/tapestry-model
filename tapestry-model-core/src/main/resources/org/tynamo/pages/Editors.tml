@@ -40,12 +40,12 @@
 <t:block id="palette">
 	<t:if test="propertyValueInstanceOfList">
 		<t:label for="palette_list"/>
-		<t:palette t:id="palette_list" model="selectModel" selected="propertyEditContext.propertyValue"
+		<t:palette t:id="palette_list" model="selectModel" selected="selected"
 				   label="prop:propertyEditContext.label" encoder="valueEncoderForProperty" reorder="true"/>
 		<p:else>
 			<t:label for="palette_set"/>
-			<t:palette t:id="palette_set" model="selectModel" selected="selected" label="prop:propertyEditContext.label"
-					   encoder="valueEncoderForProperty"/>
+			<t:palette t:id="palette_set" model="selectModel" selected="selected"
+			           label="prop:propertyEditContext.label" encoder="valueEncoderForProperty"/>
 		</p:else>
 	</t:if>
 	<em>

@@ -11,47 +11,56 @@
  */
 package org.tynamo.services;
 
+import org.tynamo.descriptor.CollectionDescriptor;
+import org.tynamo.descriptor.TynamoClassDescriptor;
+
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 
-import org.tynamo.descriptor.TynamoClassDescriptor;
-
 public interface PersistenceService
 {
 
-	public <T> T getInstance(Class<T> type, Serializable id);
+	/**
+	 * Returns the persistent instance of the given entity class with the given identifier,
+	 * or null if there is no such persistent instance.
+	 */
+	<T> T getInstance(Class<T> type, Serializable id);
 
-	<T> T loadInstance(final Class<T> type, Serializable id);
+	<T> List<T> getInstances(Class<T> type);
 
-	public <T> List<T> getInstances(Class<T> type);
+	<T> List<T> getInstances(Class<T> type, int startIndex, int maxResults);
 
-	public <T> List<T> getInstances(Class<T> type, int startIndex, int maxResults);
+	int count(Class type);
+
+	<T> T save(T instance);
+
+	void remove(Object instance);
 
 	/**
-	 * @return a List containing all the classes this persistence
-	 *         service knows about
+	 * Removes all the elements in the specified collection
 	 */
-//	public List getAllTypes();
-
-	public <T> T save(T instance);
-
-	public void remove(Object instance);
-	public void removeAll(Collection collection);
+	void removeAll(Collection collection);
 
 	/**
-	 * A convenience method for getting a singleton instance of specific type
-	 *
-	 * @param <T>  Specific type of the entity
-	 * @param type Type of singleton entity you want return
-	 * @return Returns the singleton entity of requested type
+	 * Adds and element to the collectionOwner's collection described by the descriptor
 	 */
-	public <T> T getInstance(final Class<T> type);
+	<T> T addToCollection(CollectionDescriptor descriptor, T element, Object collectionOwner);
 
-	boolean isTransient(Object data, TynamoClassDescriptor classDescriptor);
+	/**
+	 * Removes the element from the collectionOwner's collection described by the descriptor
+	 */
+	void removeFromCollection(CollectionDescriptor descriptor, Object element, Object collectionOwner);
 
-	<T> T saveCollectionElement(String addExpression, T member, Object parent);
+	List getOrphanInstances(CollectionDescriptor descriptor, Object owner);
 
-	void removeCollectionElement(String removeExpression, Object member, Object parent);
+	/**
+	 * Returns the identifier value of the given entity
+	 */
+	Serializable getIdentifier(Object data, TynamoClassDescriptor classDescriptor);
 
+	/**
+	 * Returns the identifier value of the given entity
+	 */
+	Serializable getIdentifier(Object data);
 }

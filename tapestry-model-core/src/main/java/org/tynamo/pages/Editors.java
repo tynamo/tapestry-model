@@ -1,5 +1,6 @@
 package org.tynamo.pages;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.tapestry5.*;
 import org.apache.tapestry5.annotations.Component;
 import org.apache.tapestry5.annotations.Environmental;
@@ -26,6 +27,7 @@ import org.tynamo.util.GenericSelectionModel;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -93,6 +95,11 @@ public class Editors
 
 		Class type = propertyDescriptor.isCollection() ? ((CollectionDescriptor) propertyDescriptor).getElementType() : propertyDescriptor.getPropertyType();
 		if (type.isEnum()) return new EnumSelectModel(type, resources.getMessages());
+
+		if (propertyDescriptor.isCollection() && ((CollectionDescriptor) propertyDescriptor).isOneToMany()) {
+			return new GenericSelectionModel(persistenceService.getOrphanInstances((CollectionDescriptor) propertyDescriptor, tynamoBeanContext.getBean()));
+		}
+
 		return new GenericSelectionModel(persistenceService.getInstances(type));
 	}
 
@@ -140,7 +147,6 @@ public class Editors
 	}
 
 
-
 /*	public List<Boolean> buildSelectedList()
 	{
 		ArrayList<Boolean> selected = new ArrayList<Boolean>();
@@ -162,26 +168,37 @@ public class Editors
 	}
 
 	/**
-	 *
 	 * Palette's parameter "selected" only accepts java.util.List
 	 * If the collection is a java.util.Set it needs to get converted
-	 *
 	 */
 	public List getSelected()
 	{
-		ArrayList selectedList = new ArrayList();
-		selectedList.addAll((Collection) propertyEditContext.getPropertyValue());
-		return selectedList;
+		if (isPropertyValueInstanceOfList())
+		{
+			return (List) propertyEditContext.getPropertyValue();
+		} else
+		{
+			ArrayList selectedList = new ArrayList();
+			selectedList.addAll((Collection) propertyEditContext.getPropertyValue());
+			return selectedList;
+		}
 	}
 
 	public void setSelected(List selected)
 	{
 		Collection collection = (Collection) propertyEditContext.getPropertyValue();
-		if (selected != null)
+		CollectionDescriptor descriptor = (CollectionDescriptor) getPropertyDescriptor();
+
+		for (Object o : CollectionUtils.subtract(selected, collection))
 		{
-			collection.clear();
-			collection.addAll(selected);
+			persistenceService.addToCollection(descriptor, o, tynamoBeanContext.getBean());
 		}
+
+		for (Object o : CollectionUtils.subtract(collection, selected))
+		{
+			persistenceService.removeFromCollection(descriptor, o, tynamoBeanContext.getBean());
+		}
+
 	}
 
 	public boolean isNotEditable()

@@ -130,7 +130,7 @@ public class EditPageTest extends ComponentTest
 	public void testAddToChildCollection()
 	{
 		bazzesDescriptor.setChildRelationship(true);
-		persistenceMock.expects(once()).method("saveCollectionElement").with(eq("addBaz"), eq(baz), eq(foo));
+		persistenceMock.expects(once()).method("addToCollection").with(eq("addBaz"), eq(baz), eq(foo));
 
 		try
 		{
@@ -147,7 +147,7 @@ public class EditPageTest extends ComponentTest
 	public void testAddToNonChildCollection()
 	{
 		bazzesDescriptor.setChildRelationship(false);
-		persistenceMock.expects(once()).method("saveCollectionElement").with(eq("addBaz"), eq(baz), eq(foo));
+		persistenceMock.expects(once()).method("addToCollection").with(eq("addBaz"), eq(baz), eq(foo));
 
 		try
 		{
@@ -165,7 +165,7 @@ public class EditPageTest extends ComponentTest
 	{
 		foo.getBazzes().add(baz);
 
-		persistenceMock.expects(once()).method("removeCollectionElement").with(eq("removeBaz"), eq(baz), eq(foo));
+		persistenceMock.expects(once()).method("removeFromCollection").with(eq("removeBaz"), eq(baz), eq(foo));
 
 		try
 		{

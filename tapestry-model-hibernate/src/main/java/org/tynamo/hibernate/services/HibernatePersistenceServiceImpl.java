@@ -12,14 +12,15 @@
 package org.tynamo.hibernate.services;
 
 import org.apache.tapestry5.hibernate.HibernateSessionManager;
+import org.apache.tapestry5.ioc.services.PropertyAccess;
 import org.hibernate.*;
 import org.hibernate.criterion.*;
-import org.tynamo.services.DescriptorService;
-import org.tynamo.util.Utils;
+import org.slf4j.Logger;
+import org.tynamo.descriptor.CollectionDescriptor;
 import org.tynamo.descriptor.TynamoClassDescriptor;
 import org.tynamo.descriptor.TynamoPropertyDescriptor;
-import org.tynamo.descriptor.CollectionDescriptor;
-import org.slf4j.Logger;
+import org.tynamo.services.DescriptorService;
+import org.tynamo.util.Utils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -32,16 +33,22 @@ public class HibernatePersistenceServiceImpl implements HibernatePersistenceServ
 
 	private Logger logger;
 	private DescriptorService descriptorService;
-	private Session session;
 	private HibernateSessionManager sessionManager;
+	private PropertyAccess propertyAccess;
 
-	public HibernatePersistenceServiceImpl(Logger logger, DescriptorService descriptorService, Session session, HibernateSessionManager sessionManager)
+	public HibernatePersistenceServiceImpl(Logger logger, DescriptorService descriptorService, HibernateSessionManager sessionManager, PropertyAccess propertyAccess)
 	{
 		this.logger = logger;
 		this.descriptorService = descriptorService;
-		this.session = session;
-		// we need a sessionmanager as well (only?) because Tapestry session proxy doesn't implement Hibernate's SessionImplementator interface
+		this.propertyAccess = propertyAccess;
+
+		// we need a sessionmanager because Tapestry session proxy doesn't implement Hibernate's SessionImplementator interface
 		this.sessionManager = sessionManager;
+	}
+
+	private Session getSession()
+	{
+		return sessionManager.getSession();
 	}
 
 	/**
@@ -63,7 +70,7 @@ public class HibernatePersistenceServiceImpl implements HibernatePersistenceServ
 	public <T> T getInstance(final Class<T> type, DetachedCriteria detachedCriteria)
 	{
 		final DetachedCriteria criteria = alterCriteria(type, detachedCriteria);
-		return (T) criteria.getExecutableCriteria(sessionManager.getSession()).uniqueResult();
+		return (T) criteria.getExecutableCriteria(getSession()).uniqueResult();
 	}
 
 	/**
@@ -76,31 +83,6 @@ public class HibernatePersistenceServiceImpl implements HibernatePersistenceServ
 	{
 		DetachedCriteria criteria = DetachedCriteria.forClass(Utils.checkForCGLIB(type)).add(Restrictions.idEq(id));
 		return getInstance(type, criteria);
-	}
-
-
-	/**
-	 * <strong>Description copied from:</strong> {@link org.hibernate.Session#load(Class,java.io.Serializable)}
-	 * <p/>
-	 * Return the persistent instance of the given entity class with the given identifier, assuming that the instance
-	 * exists, throwing an exception if not found.
-	 * <p/>
-	 * You should not use this method to determine if an instance exists (use get() instead). Use this only to retrieve an
-	 * instance that you assume exists, where non-existence would be an actual error.
-	 * <p/>
-	 * <p>This method is a thin wrapper around {@link org.hibernate.Session#load(Class,java.io.Serializable)} for
-	 * convenience. For an explanation of the exact semantics of this method, please do refer to the Hibernate API
-	 * documentation in the first instance.
-	 *
-	 * @param type a persistent class
-	 * @param id   the identifier of the persistent instance
-	 * @return the persistent instance
-	 * @see org.hibernate.Session#load(Class,java.io.Serializable)
-	 */
-
-	public <T> T loadInstance(final Class<T> type, Serializable id)
-	{
-		return (T) session.load(type, id);
 	}
 
 	/**
@@ -137,7 +119,7 @@ public class HibernatePersistenceServiceImpl implements HibernatePersistenceServ
 	 */
 	public List findByQuery(String queryString, int startIndex, int maxResults, QueryParameter... parameters)
 	{
-		Query query = session.createQuery(queryString);
+		Query query = getSession().createQuery(queryString);
 		for (QueryParameter parameter : parameters)
 		{
 			parameter.applyNamedParameterToQuery(query);
@@ -164,7 +146,7 @@ public class HibernatePersistenceServiceImpl implements HibernatePersistenceServ
 
 	public <T> List<T> getInstances(final Class<T> type)
 	{
-		return session.createCriteria(type).list();
+		return getSession().createCriteria(type).list();
 	}
 
 
@@ -188,10 +170,10 @@ public class HibernatePersistenceServiceImpl implements HibernatePersistenceServ
 		/* check isTransient to avoid merging on entities not persisted yet. TRAILS-33 */
 		if (!TynamoClassDescriptor.getHasCyclicRelationships() || isTransient(instance, TynamoClassDescriptor))
 		{
-			session.saveOrUpdate(instance);
+			getSession().saveOrUpdate(instance);
 		} else
 		{
-			instance = (T) session.merge(instance);
+			instance = (T) getSession().merge(instance);
 		}
 		return instance;
 //		}
@@ -206,13 +188,13 @@ public class HibernatePersistenceServiceImpl implements HibernatePersistenceServ
 
 	public void removeAll(Collection collection)
 	{
-//		session.deleteAll(collection);
+//		getSession().deleteAll(collection);
 	}
 
 
 	public void remove(Object instance)
 	{
-		session.delete(instance);
+		getSession().delete(instance);
 	}
 
 
@@ -220,74 +202,23 @@ public class HibernatePersistenceServiceImpl implements HibernatePersistenceServ
 	{
 		criteria = alterCriteria(type, criteria);
 		criteria.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
-		return criteria.getExecutableCriteria(sessionManager.getSession()).list();
+		return criteria.getExecutableCriteria(getSession()).list();
 	}
 
-	/**
-	 * (non-Javadoc)
-	 *
-	 * @see org.tynamo.services.PersistenceService#getAllTypes()
-	 */
-/*
-	public List<Class> getAllTypes()
-	{
-		ArrayList<Class> allTypes = new ArrayList<Class>();
-		for (Object classMetadata : getSessionFactory().getAllClassMetadata().values())
-		{
-			allTypes.add(((ClassMetadata) classMetadata).getMappedClass(EntityMode.POJO));
-		}
-		return allTypes;
-	}
-*/
 	public void reattach(Object model)
 	{
-		session.lock(model, LockMode.NONE);
+		getSession().lock(model, LockMode.NONE);
 	}
 
 
-	/**
-	 * (non-Javadoc)
-	 *
-	 * @see org.tynamo.services.PersistenceService#getInstance(Class<T>)
-	 */
-
-	public <T> T getInstance(final Class<T> type)
-	{
-		return (T) getInstance(type, DetachedCriteria.forClass(type));
-	}
-
-	/**
-	 * Returns an entity's pk.
-	 *
-	 * @param data
-	 * @param classDescriptor
-	 * @return
-	 * @note (ascandroli): I tried to implement it using something like:
-	 * <p/>
-	 * <code>
-	 * <p/>
-	 * <p/>
-	 * private Serializable getIdentifier(final Object data)
-	 * {
-	 * return (Serializable) session.execute(new HibernateCallback()
-	 * {
-	 * public Object doInHibernate(Session session) throws HibernateException, SQLException
-	 * {
-	 * return session.getIdentifier(data);
-	 * }
-	 * });
-	 * }
-	 * <p/>
-	 * </code>
-	 * <p/>
-	 * but it didn't work.
-	 * "session.getIdentifier(data)" thows TransientObjectException when the Entity is not loaded by the current session,
-	 * which is pretty usual in Tynamo.
-	 */
 	public Serializable getIdentifier(final Object data, final TynamoClassDescriptor classDescriptor)
 	{
-//		return (Serializable) PropertyUtils.read(data, classDescriptor.getIdentifierDescriptor().getName());
-		return 0;
+		return (Serializable) propertyAccess.get(data, classDescriptor.getIdentifierDescriptor().getName());
+	}
+
+	public Serializable getIdentifier(final Object data)
+	{
+		return getIdentifier(data, descriptorService.getClassDescriptor(data.getClass()));
 	}
 
 	public boolean isTransient(Object data, TynamoClassDescriptor classDescriptor)
@@ -373,18 +304,21 @@ public class HibernatePersistenceServiceImpl implements HibernatePersistenceServ
 		// FIXME This won't work because the shadow proxy doesn't implement SessionImplementor
 		// that session is casted to. Maybe we should inject SessionManager instead 
 		// and obtain the Session from it
-		return searchCriteria.getExecutableCriteria(sessionManager.getSession()).list();
+		return searchCriteria.getExecutableCriteria(getSession()).list();
 	}
 
+	public int count(Class type)
+	{
+		return count(type, DetachedCriteria.forClass(type));
+	}
 
 	public int count(Class type, DetachedCriteria detachedCriteria)
 	{
 		detachedCriteria.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 		final DetachedCriteria criteria = alterCriteria(type, detachedCriteria);
-		Criteria executableCriteria = criteria.getExecutableCriteria(sessionManager.getSession()).setProjection(Projections.rowCount());
+		Criteria executableCriteria = criteria.getExecutableCriteria(getSession()).setProjection(Projections.rowCount());
 		return (Integer) executableCriteria.uniqueResult();
 	}
-
 
 	public <T> List<T> getInstances(Class<T> type, final DetachedCriteria detachedCriteria, final int startIndex, final int maxResults)
 	{
@@ -395,7 +329,7 @@ public class HibernatePersistenceServiceImpl implements HibernatePersistenceServ
 	public List getInstances(final DetachedCriteria detachedCriteria, final int startIndex, final int maxResults)
 	{
 		detachedCriteria.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
-		Criteria executableCriteria = detachedCriteria.getExecutableCriteria(sessionManager.getSession());
+		Criteria executableCriteria = detachedCriteria.getExecutableCriteria(getSession());
 		if (startIndex >= 0)
 		{
 			executableCriteria.setFirstResult(startIndex);
@@ -424,7 +358,7 @@ public class HibernatePersistenceServiceImpl implements HibernatePersistenceServ
 
 	public <T> T merge(T instance)
 	{
-		return (T) session.merge(instance);
+		return (T) getSession().merge(instance);
 	}
 
 	/**
@@ -433,7 +367,7 @@ public class HibernatePersistenceServiceImpl implements HibernatePersistenceServ
 
 	public <T> T saveOrUpdate(T instance)  // throws ValidationException
 	{
-		session.saveOrUpdate(instance);
+		getSession().saveOrUpdate(instance);
 		return instance;
 
 /*
@@ -444,21 +378,36 @@ public class HibernatePersistenceServiceImpl implements HibernatePersistenceServ
 */
 	}
 
-
-	public <T> T saveCollectionElement(String addExpression, T member, Object parent)
+	public <T> T addToCollection(CollectionDescriptor descriptor, T element, Object collectionOwner)
 	{
-		T instance = save(member);
-		Utils.executeOgnlExpression(addExpression, member, parent);
-		save(parent);
-		return instance;
+		Utils.executeOgnlExpression(descriptor.getAddExpression(), element, collectionOwner);
+		return element;
 	}
 
-
-	public void removeCollectionElement(String removeExpression, Object member, Object parent)
+	public void removeFromCollection(CollectionDescriptor descriptor, Object element, Object collectionOwner)
 	{
-		Utils.executeOgnlExpression(removeExpression, member, parent);
-		save(parent);
-		remove(member);
+		Utils.executeOgnlExpression(descriptor.getRemoveExpression(), element, collectionOwner);
 	}
 
+	public List getOrphanInstances(CollectionDescriptor descriptor, Object owner)
+	{
+		if (descriptor.getInverseProperty() != null && descriptor.isOneToMany())
+		{
+			Criteria criteria = getSession().createCriteria(descriptor.getElementType());
+			TynamoClassDescriptor elementDescriptor = descriptorService.getClassDescriptor(descriptor.getBeanType());
+			String idProperty = elementDescriptor.getIdentifierDescriptor().getName();
+			if (owner != null)
+			{
+				criteria.add(
+						Restrictions.disjunction()
+								.add(Restrictions.isNull(descriptor.getInverseProperty()))
+								.add(Restrictions.eq(descriptor.getInverseProperty() + "." + idProperty, getIdentifier(owner, elementDescriptor))));
+			} else
+			{
+				criteria.add(Restrictions.isNull(descriptor.getInverseProperty()));
+			}
+			return criteria.list();
+		}
+		return getInstances(descriptor.getElementType());
+	}
 }
