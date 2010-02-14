@@ -37,6 +37,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeTest;
 
 import java.io.IOException;
+import java.util.List;
 
 import static com.gargoylesoftware.htmlunit.WebAssert.assertTextNotPresent;
 import static com.gargoylesoftware.htmlunit.WebAssert.assertTextPresent;
@@ -112,14 +113,29 @@ public abstract class AbstractContainerTest
 		}
 	}
 
-	protected void assertXPathPresent(HtmlPage page, String xpath) throws Exception
+	/**
+	 * Verifies that the specified xpath is somewhere on the page.
+	 *
+	 * @param page
+	 * @param xpath
+	 */
+	protected void assertXPathPresent(HtmlPage page, String xpath)
 	{
-		assertNotNull(page.getByXPath(xpath).get(0));
+		String message = "XPath not present: " + xpath;
+		List list = page.getByXPath(xpath);
+		if (list.isEmpty()) fail(message);
+		assertNotNull(list.get(0), message);
 	}
 
-	protected void assertXPathNotPresent(HtmlPage page, String xpath) throws Exception
+	/**
+	 * Verifies that the specified xpath does NOT appear anywhere on the page.
+	 *
+	 * @param page
+	 * @param xpath
+	 */
+	protected void assertXPathNotPresent(HtmlPage page, String xpath)
 	{
-		assertNull(page.getByXPath(xpath).get(0));
+		if (!page.getByXPath(xpath).isEmpty()) fail("XPath IS present: " + xpath);
 	}
 
 
