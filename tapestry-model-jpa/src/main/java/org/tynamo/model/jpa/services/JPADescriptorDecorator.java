@@ -12,13 +12,13 @@
  */
 package org.tynamo.model.jpa.services;
 
-import com.kenai.tapestryjpa.JPAEntityManagerSource;
+import org.tynamo.jpa.JPAEntityManagerSource;
 import ognl.Ognl;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.slf4j.Logger;
 import org.tynamo.descriptor.*;
 import org.tynamo.model.exception.MetadataNotFoundException;
-import org.tynamo.model.exception.TynamoRuntimeException;
+import org.tynamo.exception.TynamoRuntimeException;
 
 import javax.persistence.*;
 import javax.persistence.metamodel.*;

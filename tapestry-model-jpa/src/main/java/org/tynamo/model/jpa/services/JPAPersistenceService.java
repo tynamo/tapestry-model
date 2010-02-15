@@ -11,7 +11,7 @@
  */
 package org.tynamo.model.jpa.services;
 
-import com.kenai.tapestryjpa.annotations.CommitAfter;
+import org.tynamo.jpa.annotations.CommitAfter;
 import org.tynamo.descriptor.TynamoClassDescriptor;
 import org.tynamo.services.PersistenceService;
 

@@ -12,7 +12,7 @@
  */
 package org.tynamo.model.jpa.services;
 
-import com.kenai.tapestryjpa.JPAEntityManagerSource;
+import org.tynamo.jpa.JPAEntityManagerSource;
 import org.slf4j.Logger;
 import org.tynamo.descriptor.CollectionDescriptor;
 import org.tynamo.descriptor.TynamoClassDescriptor;
@@ -251,8 +251,34 @@ public class JPAPersistenceServiceImpl implements JPAPersistenceService {
 	 * @note (ascandroli): I tried to implement it using something like:
 	 */
 	public Serializable getIdentifier(final Object data, final TynamoClassDescriptor classDescriptor) {
+		// Ignore classdescriptor for now
+		return getIdentifier(data);
+	}
+
+	public List getOrphanInstances(CollectionDescriptor descriptor, Object owner) {
+		//FIXME Not implemented yet
+		return null;
+	}
+	
+	public void removeFromCollection(CollectionDescriptor descriptor, Object element, Object collectionOwner) {
+		//FIXME Not implemented yet
+	}
+
+	public <T> T addToCollection(CollectionDescriptor descriptor, T element, Object collectionOwner) {
+		//FIXME Not implemented yet
+		return null;
+	}
+	
+	public int count(Class type) {
+		//FIXME Not implemented yet
+		return 0;
+	}
+	
+	
+	public Serializable getIdentifier(final Object data) {
 		return (Serializable) entityManagerSource.getEntityManagerFactory().getPersistenceUnitUtil().getIdentifier(data);
 	}
+	
 
 	public boolean isTransient(Object data, TynamoClassDescriptor classDescriptor) {
 		return getIdentifier(data, classDescriptor) == null;

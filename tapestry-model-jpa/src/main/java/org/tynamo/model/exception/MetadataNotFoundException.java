@@ -1,5 +1,7 @@
 package org.tynamo.model.exception;
 
+import org.tynamo.exception.TynamoRuntimeException;
+
 public class MetadataNotFoundException extends TynamoRuntimeException
 {
 

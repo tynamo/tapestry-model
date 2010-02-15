@@ -45,8 +45,8 @@
   -->
 		<dependency>
 			<groupId>org.tynamo</groupId>
-			<artifactId>tapestry-jpa2</artifactId>
-			<version>0.5-SNAPSHOT</version>
+			<artifactId>tapestry-jpa</artifactId>
+			<version>2.0.0</version>
 		</dependency>
 
 		<dependency>

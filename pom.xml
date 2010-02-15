@@ -18,6 +18,7 @@
 		<module>tapestry-model-test</module>
 		<module>tapestry-model-core</module>
 		<module>tapestry-model-hibernate</module>
+		<module>tapestry-model-jpa</module>
 <!--		<module>tynamo-security</module>-->
 		<module>tapestry-model-web</module>
 <!--	<module>tynamo-jbpm</module>  -->
