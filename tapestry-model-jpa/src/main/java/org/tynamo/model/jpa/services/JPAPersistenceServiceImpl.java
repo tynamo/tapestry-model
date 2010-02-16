@@ -26,6 +26,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Root;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.Type;
@@ -232,8 +233,6 @@ public class JPAPersistenceServiceImpl implements JPAPersistenceService {
 
 	/**
 	 * (non-Javadoc)
-	 *
-	 * @see org.tynamo.services.PersistenceService#getInstance(Class<T>)
 	 */
 
 	public <T> T getInstance(final Class<T> type) {
@@ -259,7 +258,7 @@ public class JPAPersistenceServiceImpl implements JPAPersistenceService {
 		//FIXME Not implemented yet
 		return null;
 	}
-	
+
 	public void removeFromCollection(CollectionDescriptor descriptor, Object element, Object collectionOwner) {
 		//FIXME Not implemented yet
 	}
@@ -268,17 +267,22 @@ public class JPAPersistenceServiceImpl implements JPAPersistenceService {
 		//FIXME Not implemented yet
 		return null;
 	}
-	
+
 	public int count(Class type) {
-		//FIXME Not implemented yet
-		return 0;
+		CriteriaBuilder qb = em.getCriteriaBuilder();
+		CriteriaQuery<Long> query = qb.createQuery(Long.class);
+		Root entity = query.from(type);
+		Expression<Long> count = qb.count(entity);
+		query.select(count);
+		Long size = em.createQuery(query).getSingleResult();
+		return size.intValue();
 	}
-	
-	
+
+
 	public Serializable getIdentifier(final Object data) {
 		return (Serializable) entityManagerSource.getEntityManagerFactory().getPersistenceUnitUtil().getIdentifier(data);
 	}
-	
+
 
 	public boolean isTransient(Object data, TynamoClassDescriptor classDescriptor) {
 		return getIdentifier(data, classDescriptor) == null;
