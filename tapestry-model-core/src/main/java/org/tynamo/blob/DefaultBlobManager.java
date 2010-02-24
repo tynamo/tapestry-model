@@ -115,12 +115,6 @@ public class DefaultBlobManager implements BlobManager
 	{
 		BlobDescriptorExtension blobDescriptorExtension = getBlobDescriptorExtension(propertyDescriptor);
 
-		if (StringUtils.isNotEmpty(blobDescriptorExtension.getFileName()))
-		{
-			return blobDescriptorExtension.getContentType();
-		}
-
-
 		if (blobDescriptorExtension.isITynamoBlob())
 		{
 			TynamoBlob trailsBlob = (TynamoBlob) propertyAccess.get(model, propertyDescriptor.getName());
@@ -130,7 +124,7 @@ public class DefaultBlobManager implements BlobManager
 			}
 		}
 
-		return null;
+		return blobDescriptorExtension.getContentType();
 	}
 
 	public String getFileName(TynamoPropertyDescriptor propertyDescriptor, Object model)
@@ -156,9 +150,20 @@ public class DefaultBlobManager implements BlobManager
 
 	public boolean isNotNull(TynamoPropertyDescriptor propertyDescriptor, Object model)
 	{
-		BlobDescriptorExtension blobDescriptorExtension = getBlobDescriptorExtension(propertyDescriptor);
-		TynamoBlob trailsBlob = (TynamoBlob) propertyAccess.get(model, propertyDescriptor.getName());
-		return trailsBlob != null && trailsBlob.getBytes() != null && trailsBlob.getBytes().length > 0;
+		if (model != null)
+		{
+			BlobDescriptorExtension blobDescriptorExtension = getBlobDescriptorExtension(propertyDescriptor);
+			byte[] bytes = null;
+			if (blobDescriptorExtension.isITynamoBlob())
+			{
+				TynamoBlob trailsBlob = (TynamoBlob) propertyAccess.get(model, propertyDescriptor.getName());
+				bytes = trailsBlob != null ? trailsBlob.getBytes() : null;
+			} else if (blobDescriptorExtension.isBytes()) {
+				bytes = (byte[]) propertyAccess.get(model, propertyDescriptor.getName());
+			}
+			return bytes != null && bytes.length > 0;
+		}
+		return false;
 	}
 
 	private BlobDescriptorExtension getBlobDescriptorExtension(TynamoPropertyDescriptor propertyDescriptor)
