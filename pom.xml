@@ -252,4 +252,19 @@
 		</profile>
 	</profiles>
 
+	<!-- tapestry.formos.com is down -->
+	<repositories>
+		<repository>
+			<id>repository.apache.org</id>
+			<url>http://repository.apache.org/snapshots</url>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+
+
 </project>
