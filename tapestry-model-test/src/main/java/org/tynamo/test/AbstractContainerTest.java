@@ -80,9 +80,14 @@ public abstract class AbstractContainerTest
 	public WebAppContext buildContext()
 	{
 		WebAppContext context = new WebAppContext("src/main/webapp", "/");
-		ResourceCollection resourceCollection =
-				new ResourceCollection(new String[]{"src/main/webapp", "src/test/webapp"});
+		ResourceCollection resourceCollection = new ResourceCollection(new String[]{"src/main/webapp", "src/test/webapp"});
 		context.setBaseResource(resourceCollection);
+
+		/**
+		 * like -Dorg.mortbay.jetty.webapp.parentLoaderPriority=true
+		 * Sets the classloading model for the context to avoid an strange "ClassNotFoundException: org.slf4j.Logger"
+		 */
+		context.setParentLoaderPriority(true);
 		return context;
 	}
 
