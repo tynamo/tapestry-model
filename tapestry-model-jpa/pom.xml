@@ -39,7 +39,6 @@
 		  <dependency>
 			  <groupId>org.tynamo</groupId>
 			  <artifactId>tapestry-model-test</artifactId>
-			  <version>${tynamo-release-version}</version>
 			  <scope>test</scope>
 		  </dependency>
   -->

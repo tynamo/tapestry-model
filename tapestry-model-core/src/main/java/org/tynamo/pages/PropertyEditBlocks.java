@@ -16,7 +16,7 @@ import org.apache.tapestry5.services.ValueEncoderSource;
 import org.apache.tapestry5.util.EnumSelectModel;
 import org.chenillekit.tapestry.core.components.DateTimeField;
 import org.chenillekit.tapestry.core.components.Editor;
-import org.tynamo.components.*;
+import org.tynamo.components.EditComposition;
 import org.tynamo.descriptor.CollectionDescriptor;
 import org.tynamo.descriptor.IdentifierDescriptor;
 import org.tynamo.descriptor.TynamoPropertyDescriptor;
@@ -27,11 +27,10 @@ import org.tynamo.util.GenericSelectionModel;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 
-public class Editors
+public class PropertyEditBlocks
 {
 
 	@Environmental

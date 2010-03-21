@@ -1,21 +1,18 @@
 package org.tynamo.model.jpa.services;
 
-import org.tynamo.jpa.JPAEntityManagerSource;
-import org.tynamo.jpa.JPATransactionDecorator;
 import org.apache.tapestry5.ioc.Configuration;
 import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.ioc.OrderedConfiguration;
 import org.apache.tapestry5.ioc.ServiceBinder;
+import org.apache.tapestry5.ioc.annotations.Autobuild;
 import org.apache.tapestry5.ioc.annotations.Match;
-import org.apache.tapestry5.ioc.annotations.Symbol;
 import org.apache.tapestry5.services.BeanBlockContribution;
 import org.apache.tapestry5.services.LibraryMapping;
 import org.tynamo.VersionedModule;
 import org.tynamo.descriptor.DescriptorDecorator;
-import org.tynamo.descriptor.DescriptorFactory;
-import org.tynamo.descriptor.annotation.AnnotationDecorator;
+import org.tynamo.jpa.JPAEntityManagerSource;
+import org.tynamo.jpa.JPATransactionDecorator;
 import org.tynamo.model.jpa.TynamoJPASymbols;
-import org.tynamo.util.Pair;
 
 import javax.persistence.metamodel.ManagedType;
 import java.util.Iterator;
@@ -24,22 +21,19 @@ import java.util.Set;
 public class TynamoJPAModule extends VersionedModule {
 
 	public static void bind(ServiceBinder binder) {
+
 		// Make bind() calls on the binder object to define most IoC services.
 		// Use service builder methods (example below) when the implementation
 		// is provided inline, or requires more initialization than simply
 		// invoking the constructor.
 
 		binder.bind(JPAPersistenceService.class, JPAPersistenceServiceImpl.class);
-		/* TODO validation
-		binder.bind(HibernateClassValidatorFactory.class, HibernateClassValidatorFactory.class);
-		binder.bind(HibernateValidationDelegate.class, HibernateValidationDelegate.class);
-		*/
 		//binder.bind(TynamoInterceptor.class);
 		//binder.bind(JPAConfigurer.class, TynamoInterceptorConfigurer.class).withId("TynamoInterceptorConfigurer");
 
 	}
 
-	/** Add our components and pages to the "trails" library. */
+	/** Add our components and pages to the "tynamo-jpa" library. */
 	public static void contributeComponentClassResolver(Configuration<LibraryMapping> configuration) {
 		configuration.add(new LibraryMapping("tynamo-jpa", "org.tynamo.model.jpa"));
 	}
@@ -80,9 +74,8 @@ public class TynamoJPAModule extends VersionedModule {
 	}
 
 	public static void contributeDescriptorFactory(OrderedConfiguration<DescriptorDecorator> configuration,
-												   JPADescriptorDecorator JPADescriptorDecorator) {
-		configuration.add("Hibernate", JPADescriptorDecorator);
-		configuration.add("Annotation", new AnnotationDecorator());
+												   @Autobuild JPADescriptorDecorator jpaDescriptorDecorator) {
+		configuration.add("JPA", jpaDescriptorDecorator);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -102,67 +95,10 @@ public class TynamoJPAModule extends VersionedModule {
 		}
 	}
 
-	public static void contributeTynamoDataTypeAnalyzer(OrderedConfiguration<Pair> configuration) {
-
-		addPairToOrderedConfiguration(configuration, "hidden", "hidden");
-		addPairToOrderedConfiguration(configuration, "readOnly", "readOnly");
-		addPairToOrderedConfiguration(configuration, "richText", "fckEditor");
-//		addPairToOrderedConfiguration(configuration, "name.toLowerCase().endsWith('password')", "passwordEditor"); //USE @DataType("password")
-//		addPairToOrderedConfiguration(configuration, "string and !large and !identifier", "stringEditor"); //managed by Tapestry
-		addPairToOrderedConfiguration(configuration, "string and large and !identifier", "longtext");
-		addPairToOrderedConfiguration(configuration, "date", "dateEditor");
-//		addPairToOrderedConfiguration(configuration, "numeric and !identifier", "numberEditor"); //managed by Tapestry
-		addPairToOrderedConfiguration(configuration, "identifier && generated", "readOnly");
-		addPairToOrderedConfiguration(configuration, "identifier && not(generated) && string", "identifierEditor");
-//		addPairToOrderedConfiguration(configuration, "identifier && objectReference", "objectReferenceIdentifierEditor");
-//		addPairToOrderedConfiguration(configuration, "boolean", "booleanEditor"); //managed by Tapestry
-//		addPairToOrderedConfiguration(configuration, "supportsExtension('org.tynamo.descriptor.extension.EnumReferenceDescriptor')", "enumEditor"); //managed by Tapestry
-		addPairToOrderedConfiguration(configuration, "supportsExtension('org.tynamo.descriptor.extension.BlobDescriptorExtension')", "blob");
-
-		addPairToOrderedConfiguration(configuration, "objectReference", "single-valued-association" /* (aka: ManyToOne) */);
-		addPairToOrderedConfiguration(configuration, "collection && not(childRelationship)", "many-valued-association" /* (aka: ManyToMany) */);
-		addPairToOrderedConfiguration(configuration, "collection && childRelationship", "composition");
-		addPairToOrderedConfiguration(configuration, "name == 'id'", "readOnly");
-		addPairToOrderedConfiguration(configuration, "embedded", "embedded");
-	}
-
-	private static void addPairToOrderedConfiguration(OrderedConfiguration<Pair> configuration, String key, String value) {
-		configuration.add(key, new Pair<String, String>(key, value));
-	}
-
-
-	public static void contributePropertyDescriptorFactory(Configuration<String> configuration) {
-		configuration.add("exclude.*");
-		configuration.add("class");
-	}
-
-	public static void contributeMethodDescriptorFactory(Configuration<String> configuration) {
-		configuration.add("shouldExclude");
-		configuration.add("set.*");
-		configuration.add("get.*");
-		configuration.add("is.*");
-		configuration.add("equals");
-		configuration.add("wait");
-		configuration.add("toString");
-		configuration.add("notify.*");
-		configuration.add("hashCode");
-	}
-
-	public static JPADescriptorDecorator buildHibernateDescriptorDecorator(
-			JPAEntityManagerSource hibernateSessionSource,
-			DescriptorFactory descriptorFactory,
-			@Symbol(TynamoJPASymbols.LARGE_COLUMN_LENGTH)
-			final int largeColumnLength,
-			@Symbol(TynamoJPASymbols.IGNORE_NON_HIBERNATE_TYPES)
-			final boolean ignoreNonHibernateTypes) {
-		return new JPADescriptorDecorator(hibernateSessionSource, descriptorFactory, largeColumnLength, ignoreNonHibernateTypes);
-	}
-
 	public static void contributeFactoryDefaults(MappedConfiguration<String, String> configuration) {
 		configuration.add(TynamoJPASymbols.LARGE_COLUMN_LENGTH, "100");
 		configuration.add(TynamoJPASymbols.IGNORE_NON_HIBERNATE_TYPES, "false");
 	}
-
 
 	/**
 	 * TODO: needed?

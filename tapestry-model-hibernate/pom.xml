@@ -21,7 +21,7 @@
 				<configuration>
 				<archive>
 					<manifestEntries>
-					<Tapestry-Module-Classes>org.tynamo.hibernate.services.TynamoHibernateModule</Tapestry-Module-Classes>
+						<Tapestry-Module-Classes>org.tynamo.hibernate.services.TynamoHibernateModule</Tapestry-Module-Classes>
 					</manifestEntries>
 				</archive>
 				</configuration>
@@ -38,14 +38,12 @@
 		<dependency>
 			<groupId>org.tynamo</groupId>
 			<artifactId>tapestry-model-test</artifactId>
-			<version>${tynamo-release-version}</version>
 			<scope>test</scope>
 		</dependency>
 -->
 		<dependency>
 			<groupId>org.apache.tapestry</groupId>
 			<artifactId>tapestry-hibernate</artifactId>
-			<version>${tapestry-release-version}</version>
 		</dependency>
 
 		<dependency>
@@ -58,7 +56,7 @@
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-validator</artifactId>
-			<version>3.1.0.GA</version>
+			<version>4.0.2.GA</version>
 			<exclusions>
 				<!-- Make sure we use the version defined by tapestry-ioc. -->
 				<exclusion>
@@ -66,6 +64,11 @@
 					<artifactId>slf4j-api</artifactId>
 				</exclusion>
 			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.tapestry</groupId>
+			<artifactId>tapestry-beanvalidator</artifactId>
 		</dependency>
 
 		<dependency>

@@ -1,9 +1,10 @@
-package org.tynamo.hibernate.pages;
+package org.tynamo.pages;
 
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.beaneditor.BeanModel;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.ioc.internal.util.Defense;
 import org.apache.tapestry5.ioc.services.PropertyAccess;
 import org.apache.tapestry5.services.BeanModelSource;
 import org.tynamo.descriptor.TynamoClassDescriptor;
@@ -13,8 +14,7 @@ import org.tynamo.util.BeanModelUtils;
 import org.tynamo.util.DisplayNameUtils;
 import org.tynamo.util.Utils;
 
-public class HibernateListPage
-{
+public class List {
 
 	@Inject
 	private PersistenceService persitenceService;
@@ -31,63 +31,46 @@ public class HibernateListPage
 	@Inject
 	private BeanModelSource beanModelSource;
 
-	@Property(read = false)
+	@Property
 	private Object bean;
 
+	@Property
 	private TynamoClassDescriptor classDescriptor;
 
+	@Property
 	private BeanModel beanModel;
 
-	protected void onActivate(Class clazz) throws Exception
-	{
+	protected void onActivate(Class clazz) throws Exception {
+
+		Defense.notNull(clazz, "class"); //@todo throw a proper exception
+
 		classDescriptor = descriptorService.getClassDescriptor(clazz);
 		beanModel = beanModelSource.createDisplayModel(clazz, messages);
 		BeanModelUtils.exclude(beanModel, classDescriptor);
 	}
 
-	protected Object[] onPassivate()
-	{
+	protected Object[] onPassivate() {
 		return new Object[]{classDescriptor.getType()};
 	}
 
-	public java.util.List getInstances()
-	{
+	public java.util.List getInstances() {
 		return persitenceService.getInstances(classDescriptor.getType());
 	}
 
-	public Object[] getEditPageContext()
-	{
+	public Object[] getEditPageContext() {
 		return new Object[]{classDescriptor.getType(), bean};
 	}
 
-	public String getTitle()
-	{
+	public String getTitle() {
 		return messages.format(Utils.LIST_MESSAGE, DisplayNameUtils.getPluralDisplayName(classDescriptor, messages));
 	}
 
-	public String getNewLinkMessage()
-	{
+	public String getNewLinkMessage() {
 		return messages.format(Utils.NEW_MESSAGE, DisplayNameUtils.getDisplayName(classDescriptor, messages));
 	}
 
-	public final String getModelId()
-	{
+	public final String getModelId() {
 		return propertyAccess.get(bean, classDescriptor.getIdentifierDescriptor().getName()).toString();
 	}
 
-
-	public final TynamoClassDescriptor getClassDescriptor()
-	{
-		return classDescriptor;
-	}
-
-	public final BeanModel getBeanModel()
-	{
-		return beanModel;
-	}
-
-	public final Object getBean()
-	{
-		return bean;
-	}
 }

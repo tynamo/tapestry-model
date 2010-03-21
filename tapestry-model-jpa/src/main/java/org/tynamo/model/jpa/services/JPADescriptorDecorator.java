@@ -12,13 +12,15 @@
  */
 package org.tynamo.model.jpa.services;
 
-import org.tynamo.jpa.JPAEntityManagerSource;
 import ognl.Ognl;
 import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.ioc.annotations.Symbol;
 import org.slf4j.Logger;
 import org.tynamo.descriptor.*;
-import org.tynamo.model.exception.MetadataNotFoundException;
 import org.tynamo.exception.TynamoRuntimeException;
+import org.tynamo.jpa.JPAEntityManagerSource;
+import org.tynamo.model.exception.MetadataNotFoundException;
+import org.tynamo.model.jpa.TynamoJPASymbols;
 
 import javax.persistence.*;
 import javax.persistence.metamodel.*;
@@ -60,7 +62,13 @@ public class JPADescriptorDecorator implements DescriptorDecorator {
 
 	private final boolean ignoreNonEntityTypes;
 
-	public JPADescriptorDecorator(JPAEntityManagerSource entityManagerSource, DescriptorFactory descriptorFactory, int largeColumnLength, boolean ignoreNonEntityTypes) {
+	public JPADescriptorDecorator(JPAEntityManagerSource entityManagerSource,
+	                              DescriptorFactory descriptorFactory,
+	                              @Symbol(TynamoJPASymbols.LARGE_COLUMN_LENGTH)
+	                              int largeColumnLength,
+	                              @Symbol(TynamoJPASymbols.IGNORE_NON_HIBERNATE_TYPES)
+	                              boolean ignoreNonEntityTypes) {
+
 		this.entityManagerSource = entityManagerSource;
 		this.descriptorFactory = descriptorFactory;
 		this.largeColumnLength = largeColumnLength;

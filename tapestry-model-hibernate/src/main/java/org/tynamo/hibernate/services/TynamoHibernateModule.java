@@ -18,8 +18,6 @@ import org.tynamo.descriptor.DescriptorDecorator;
 import org.tynamo.hibernate.TynamoHibernateSymbols;
 import org.tynamo.hibernate.TynamoInterceptor;
 import org.tynamo.hibernate.TynamoInterceptorConfigurer;
-import org.tynamo.hibernate.validation.HibernateClassValidatorFactory;
-import org.tynamo.hibernate.validation.HibernateValidationDelegate;
 
 import java.util.Iterator;
 
@@ -34,15 +32,13 @@ public class TynamoHibernateModule extends VersionedModule
 		// invoking the constructor.
 
 		binder.bind(HibernatePersistenceService.class, HibernatePersistenceServiceImpl.class);
-		binder.bind(HibernateClassValidatorFactory.class, HibernateClassValidatorFactory.class);
-		binder.bind(HibernateValidationDelegate.class, HibernateValidationDelegate.class);
 		binder.bind(TynamoInterceptor.class);
 		binder.bind(HibernateConfigurer.class, TynamoInterceptorConfigurer.class).withId("TynamoInterceptorConfigurer");
 
 	}
 
 	/**
-	 * Add our components and pages to the "trails" library.
+	 * Add our components and pages to the "tynamo-hibernate" library.
 	 */
 	public static void contributeComponentClassResolver(Configuration<LibraryMapping> configuration)
 	{
@@ -130,9 +126,9 @@ public class TynamoHibernateModule extends VersionedModule
 	 */
 	public static void contributeHibernateSessionSource(OrderedConfiguration<HibernateConfigurer> config,
 														@InjectService("TynamoInterceptorConfigurer")
-														HibernateConfigurer trailsInterceptorConfigurer)
+														HibernateConfigurer interceptorConfigurer)
 	{
-		config.add("TynamoInterceptorConfigurer", trailsInterceptorConfigurer);
+		config.add("TynamoInterceptorConfigurer", interceptorConfigurer);
 	}
 
 

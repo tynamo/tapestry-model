@@ -42,8 +42,7 @@
 				<configuration>
 					<archive>
 						<manifestEntries>
-							<Tapestry-Module-Classes>org.tynamo.services.TynamoCoreModule
-							</Tapestry-Module-Classes>
+							<Tapestry-Module-Classes>org.tynamo.services.TynamoCoreModule</Tapestry-Module-Classes>
 						</manifestEntries>
 					</archive>
 				</configuration>
@@ -57,13 +56,11 @@
 		<dependency>
 			<groupId>org.apache.tapestry</groupId>
 			<artifactId>tapestry-core</artifactId>
-			<version>${tapestry-release-version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.apache.tapestry</groupId>
 			<artifactId>tapestry-upload</artifactId>
-			<version>${tapestry-release-version}</version>
 		</dependency>
 
 		<dependency>
@@ -81,12 +78,13 @@
 			<scope>test</scope>
 		</dependency>
 
+<!--
 		<dependency>
 			<groupId>org.apache.tapestry</groupId>
 			<artifactId>tapestry-test</artifactId>
-			<version>${tapestry-release-version}</version>
 			<scope>test</scope>
 		</dependency>
+-->
 
 		<dependency>
 			<groupId>ognl</groupId>
@@ -103,11 +101,13 @@
 		<dependency>
 			<groupId>commons-beanutils</groupId>
 			<artifactId>commons-beanutils</artifactId>
+			<version>1.7.0</version>
 		</dependency>
 
 		<dependency>
 			<groupId>commons-lang</groupId>
 			<artifactId>commons-lang</artifactId>
+			<version>2.2</version>
 		</dependency>
 
 		<dependency>

@@ -6,6 +6,7 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import org.tynamo.descriptor.TynamoClassDescriptor;
 import org.tynamo.services.DescriptorService;
 import org.tynamo.util.DisplayNameUtils;
+import org.tynamo.util.Utils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -50,7 +51,8 @@ public class ListPageLinkList
 
 	public String getListAllLinkMessage()
 	{
-		return messages.format("org.tynamo.component.listalllink", DisplayNameUtils.getPluralDisplayName(descriptorIterator, messages));
+		return messages.format(Utils.LISTALL_LINK_MESSAGE,
+				DisplayNameUtils.getPluralDisplayName(descriptorIterator, messages));
 	}
 
 }

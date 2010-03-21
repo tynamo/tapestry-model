@@ -37,6 +37,8 @@ public class Utils
 	public static final String ADDED_MESSAGE = "org.tynamo.i18n.added";
 	public static final String SAVED_MESSAGE = "org.tynamo.i18n.saved";
 
+	public static final String LISTALL_LINK_MESSAGE = "org.tynamo.component.listalllink";
+
 	public static String DEFAULT = "Default";
 
 	public static Class classForName(String className)

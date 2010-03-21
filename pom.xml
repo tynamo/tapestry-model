@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.tynamo</groupId>
@@ -11,7 +12,7 @@
 	<parent>
 		<groupId>org.tynamo</groupId>
 		<artifactId>tynamo-parent</artifactId>
-		<version>0.0.3</version>
+		<version>0.0.5</version>
 	</parent>
 
 	<modules>
@@ -24,11 +25,11 @@
 <!--	<module>tynamo-jbpm</module>  -->
 	</modules>
 
-  <scm>
-    <connection>scm:svn:http://svn.codehaus.org/tynamo/trunk/tapestry-model</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/tynamo/trunk/tapestry-model</developerConnection>
-    <url>http://svn.tynamo.codehaus.org/tynamo/trunk/tapestry-model</url>
-  </scm>
+	<scm>
+		<connection>scm:svn:http://svn.codehaus.org/tynamo/trunk/tapestry-model</connection>
+		<developerConnection>scm:svn:https://svn.codehaus.org/tynamo/trunk/tapestry-model</developerConnection>
+		<url>http://svn.tynamo.codehaus.org/tynamo/trunk/tapestry-model</url>
+	</scm>
 
 	<distributionManagement>
 		<site>
@@ -37,7 +38,7 @@
 			<url>dav:https://dav.codehaus.org/tynamo/constant/tapestry-model</url>
 		</site>
 	</distributionManagement>
-	
+
 	<!-- note that our own versions are auto-managed by the release plugin -->
 	<dependencyManagement>
 		<dependencies>
@@ -63,6 +64,38 @@
 				<type>war</type>
 				<version>0.1.0-SNAPSHOT</version>
 			</dependency>
+
+			<dependency>
+				<groupId>org.apache.tapestry</groupId>
+				<artifactId>tapestry-core</artifactId>
+				<version>5.2.0-SNAPSHOT</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.apache.tapestry</groupId>
+				<artifactId>tapestry-upload</artifactId>
+				<version>5.2.0-SNAPSHOT</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.apache.tapestry</groupId>
+				<artifactId>tapestry-hibernate</artifactId>
+				<version>5.2.0-SNAPSHOT</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.apache.tapestry</groupId>
+				<artifactId>tapestry-beanvalidator</artifactId>
+				<version>5.2.0-SNAPSHOT</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.apache.tapestry</groupId>
+				<artifactId>tapestry-test</artifactId>
+				<version>5.2.0-SNAPSHOT</version>
+				<scope>test</scope>
+			</dependency>
+
 		</dependencies>
 	</dependencyManagement>
 

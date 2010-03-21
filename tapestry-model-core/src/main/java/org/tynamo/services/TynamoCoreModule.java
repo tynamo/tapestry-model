@@ -21,7 +21,7 @@ public class TynamoCoreModule extends VersionedModule
 {
 
 	public final static String PROPERTY_DISPLAY_BLOCKS = "tynamo/PropertyDisplayBlocks";
-	public final static String PROPERTY_EDIT_BLOCKS = "tynamo/Editors";
+	public final static String PROPERTY_EDIT_BLOCKS = "tynamo/PropertyEditBlocks";
 
 	public static void bind(ServiceBinder binder)
 	{
