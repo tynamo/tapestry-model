@@ -250,6 +250,23 @@
 				</plugins>
 			</reporting>
 		</profile>
+
+		<profile>
+			<id>repositories</id>
+			<repositories>
+				<repository>
+					<id>repository.jboss.org</id>
+					<url>http://repository.jboss.org/maven2</url>
+					<releases>
+						<enabled>true</enabled>
+					</releases>
+					<snapshots>
+						<enabled>false</enabled>
+					</snapshots>
+				</repository>
+			</repositories>
+		</profile>
+
 	</profiles>
 
 	<!-- tapestry.formos.com is down -->
@@ -265,6 +282,7 @@
 			</snapshots>
 		</repository>
 	</repositories>
+
 
 
 </project>
