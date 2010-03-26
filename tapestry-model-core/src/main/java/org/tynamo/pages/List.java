@@ -7,6 +7,7 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.internal.util.Defense;
 import org.apache.tapestry5.ioc.services.PropertyAccess;
 import org.apache.tapestry5.services.BeanModelSource;
+import org.tynamo.TynamoGridDataSource;
 import org.tynamo.descriptor.TynamoClassDescriptor;
 import org.tynamo.services.DescriptorService;
 import org.tynamo.services.PersistenceService;
@@ -53,8 +54,8 @@ public class List {
 		return new Object[]{classDescriptor.getType()};
 	}
 
-	public java.util.List getInstances() {
-		return persitenceService.getInstances(classDescriptor.getType());
+	public Object getSource() {
+		return new TynamoGridDataSource(persitenceService, classDescriptor.getType());
 	}
 
 	public Object[] getEditPageContext() {
