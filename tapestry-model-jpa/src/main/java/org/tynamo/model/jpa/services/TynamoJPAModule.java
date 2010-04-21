@@ -39,7 +39,7 @@ public class TynamoJPAModule extends VersionedModule {
 	}
 
 	public static void contributeClasspathAssetAliasManager(MappedConfiguration<String, String> configuration) {
-		configuration.add("tynamo-jpa/" + version, "org/tynamo/jpa");
+		configuration.add("tynamo-jpa-" + version, "org/tynamo/jpa");
 	}
 
 	public static void contributeValidationMessagesSource(OrderedConfiguration<String> configuration) {

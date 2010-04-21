@@ -47,7 +47,7 @@ public class TynamoHibernateModule extends VersionedModule
 
 	public static void contributeClasspathAssetAliasManager(MappedConfiguration<String, String> configuration)
 	{
-		configuration.add("tynamo-hibernate/" + version, "org/tynamo/hibernate");
+		configuration.add("tynamo-hibernate-" + version, "org/tynamo/hibernate");
 	}
 
 	public static void contributeValidationMessagesSource(OrderedConfiguration<String> configuration)

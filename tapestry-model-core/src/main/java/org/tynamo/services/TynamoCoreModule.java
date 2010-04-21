@@ -52,7 +52,7 @@ public class TynamoCoreModule extends VersionedModule
 
 	public static void contributeClasspathAssetAliasManager(MappedConfiguration<String, String> configuration)
 	{
-		configuration.add("tynamo/" + version, "org/tynamo");
+		configuration.add("tynamo-" + version, "org/tynamo");
 	}
 
 
