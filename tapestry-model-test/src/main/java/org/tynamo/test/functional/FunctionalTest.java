@@ -44,20 +44,25 @@ public class FunctionalTest
 
 	protected HtmlPage clickButton(HtmlForm form, String buttonValue) throws IOException
 	{
-		ClickableElement button = null;
 		try
 		{
-			button = ((HtmlSubmitInput) form.getInputByValue(buttonValue));
+			return form.<HtmlInput>getInputByValue(buttonValue).click();
 		} catch (ElementNotFoundException e)
 		{
-			button = (HtmlButton) form.getButtonByName(buttonValue);
+			try
+			{
+				return form.getButtonByName(buttonValue).click();
+			} catch (ElementNotFoundException e1)
+			{
+				fail("Couldn't find a button with text/name '" + buttonValue + "' on form '" + form.getNameAttribute() + "'");
+			}
 		}
-		return (HtmlPage) button.click();
+		return null;
 	}
 
-	protected HtmlPage clickButton(HtmlPage page, String buttonValue) throws IOException
+	protected HtmlPage clickButton(HtmlPage page, String buttonId) throws IOException
 	{
-		return clickButton((HtmlForm) page.getForms().get(0), buttonValue);
+		return page.getElementById(buttonId).click();
 	}
 
 	protected HtmlPage clickLinkOnPage(HtmlPage page, String linkText) throws IOException
