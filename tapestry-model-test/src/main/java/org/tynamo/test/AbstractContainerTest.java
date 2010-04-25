@@ -21,7 +21,6 @@ package org.tynamo.test;
 
 import com.gargoylesoftware.htmlunit.ElementNotFoundException;
 import com.gargoylesoftware.htmlunit.WebClient;
-import com.gargoylesoftware.htmlunit.html.ClickableElement;
 import com.gargoylesoftware.htmlunit.html.HtmlForm;
 import com.gargoylesoftware.htmlunit.html.HtmlInput;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
@@ -161,8 +160,7 @@ public abstract class AbstractContainerTest
 
 	protected HtmlPage clickButton(HtmlPage page, String buttonId) throws IOException
 	{
-		ClickableElement button = (ClickableElement) page.getElementById(buttonId);
-		return button.click();
+		return page.getElementById(buttonId).click();
 	}
 
 	protected HtmlPage clickButton(HtmlForm form, String buttonValue) throws IOException
