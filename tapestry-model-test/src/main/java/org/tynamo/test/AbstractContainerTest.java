@@ -90,6 +90,10 @@ public abstract class AbstractContainerTest
 		return context;
 	}
 
+	/**
+	 * Hook method which is called during setup phase, before the first request.
+	 * It allows subclasses to modify the  webClient, such as for disabling javascript
+	 */
 	@BeforeTest
 	public void configureWebClient()
 	{
