@@ -62,20 +62,20 @@ public class TynamoCoreModule extends VersionedModule
 	public static void contributeBeanBlockSource(Configuration<BeanBlockContribution> configuration)
 	{
 		configuration.add(new BeanBlockContribution("hidden", PROPERTY_EDIT_BLOCKS, "hidden", true));
-		configuration.add(new BeanBlockContribution("dateEditor", PROPERTY_EDIT_BLOCKS, "date", true));
-		configuration.add(new BeanBlockContribution("fckEditor", PROPERTY_EDIT_BLOCKS, "fckEditor", true));
+//		configuration.add(new BeanBlockContribution("dateEditor", PROPERTY_EDIT_BLOCKS, "date", true));
+//		configuration.add(new BeanBlockContribution("fckEditor", PROPERTY_EDIT_BLOCKS, "fckEditor", true));
 		configuration.add(new BeanBlockContribution("readOnly", PROPERTY_EDIT_BLOCKS, "readOnly", true));
 		configuration.add(new BeanBlockContribution("single-valued-association", PROPERTY_EDIT_BLOCKS, "select", true));
 		configuration.add(new BeanBlockContribution("identifierEditor", PROPERTY_EDIT_BLOCKS, "identifierEditor", true));
 		configuration.add(new BeanBlockContribution("many-valued-association", PROPERTY_EDIT_BLOCKS, "palette", true));
-		configuration.add(new BeanBlockContribution("composition", PROPERTY_EDIT_BLOCKS, "editComposition", true));
+		configuration.add(new BeanBlockContribution("composition", PROPERTY_EDIT_BLOCKS, "hidden", true));
 		configuration.add(new BeanBlockContribution("embedded", PROPERTY_EDIT_BLOCKS, "embedded", true));
 		configuration.add(new BeanBlockContribution("blob", PROPERTY_EDIT_BLOCKS, "blob", true));
 
 		configuration.add(new BeanBlockContribution("hidden", PROPERTY_DISPLAY_BLOCKS, "hidden", false));
 		configuration.add(new BeanBlockContribution("single-valued-association", PROPERTY_DISPLAY_BLOCKS, "showPageLink", false));
 		configuration.add(new BeanBlockContribution("many-valued-association", PROPERTY_DISPLAY_BLOCKS, "showPageLinks", false));
-		configuration.add(new BeanBlockContribution("composition", PROPERTY_DISPLAY_BLOCKS, "showPageLinks", false));
+		configuration.add(new BeanBlockContribution("composition", PROPERTY_DISPLAY_BLOCKS, "composition", false));
 		configuration.add(new BeanBlockContribution("blob", PROPERTY_DISPLAY_BLOCKS, "download", false));
 	}
 
@@ -104,7 +104,7 @@ public class TynamoCoreModule extends VersionedModule
 
 	public static void contributeDescriptorFactory(OrderedConfiguration<DescriptorDecorator> configuration)
 	{
-		configuration.add("Annotation", new AnnotationDecorator());
+		configuration.add("AnnotationDecorator", new AnnotationDecorator());
 	}
 
 	public static void contributeTynamoDataTypeAnalyzer(OrderedConfiguration<Pair> configuration)
@@ -112,11 +112,11 @@ public class TynamoCoreModule extends VersionedModule
 
 		addPairToOrderedConfiguration(configuration, "hidden", "hidden");
 		addPairToOrderedConfiguration(configuration, "readOnly", "readOnly");
-		addPairToOrderedConfiguration(configuration, "richText", "fckEditor");
+//		addPairToOrderedConfiguration(configuration, "richText", "fckEditor");
 //		addPairToOrderedConfiguration(configuration, "name.toLowerCase().endsWith('password')", "passwordEditor"); //USE @DataType("password")
 //		addPairToOrderedConfiguration(configuration, "string and !large and !identifier", "stringEditor"); //managed by Tapestry
 		addPairToOrderedConfiguration(configuration, "string and large and !identifier", "longtext");
-		addPairToOrderedConfiguration(configuration, "date", "dateEditor");
+//		addPairToOrderedConfiguration(configuration, "date", "dateEditor");
 //		addPairToOrderedConfiguration(configuration, "numeric and !identifier", "numberEditor"); //managed by Tapestry
 		addPairToOrderedConfiguration(configuration, "identifier && generated", "readOnly");
 		addPairToOrderedConfiguration(configuration, "identifier && not(generated) && string", "identifierEditor");

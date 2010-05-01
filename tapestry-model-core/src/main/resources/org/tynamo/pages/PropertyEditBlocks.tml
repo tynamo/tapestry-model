@@ -3,16 +3,6 @@
 	<t:block id="hidden"/>
 
 
-<t:block id="date">
-	<t:label for="dateField"/>
-	<input t:id="dateField"/>
-</t:block>
-
-<t:block id="fckEditor">
-	<t:label for="fckEditor"/>
-	<input t:id="fckEditor"/>
-</t:block>
-
 <t:block id="select">
 	<t:label for="select"/>
 	<t:select t:id="select" model="selectModel" value="propertyEditContext.propertyValue"

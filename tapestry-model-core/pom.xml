@@ -111,29 +111,9 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.chenillekit</groupId>
-			<artifactId>chenillekit-tapestry</artifactId>
-			<version>1.2.0</version>
-			<exclusions>
-				<exclusion>
-					<groupId>org.apache.tapestry</groupId>
-					<artifactId>tapestry-ioc</artifactId>
-				</exclusion>
-
-				<exclusion>
-					<groupId>org.apache.tapestry</groupId>
-					<artifactId>tapestry-core</artifactId>
-				</exclusion>
-
-				<exclusion>
-					<groupId>org.apache.tapestry</groupId>
-					<artifactId>tapestry-hibernate</artifactId>
-				</exclusion>
-				<exclusion>
-					<artifactId>javassist</artifactId>
-					<groupId>jboss</groupId>
-				</exclusion>
-			</exclusions>
+			<groupId>commons-collections</groupId>
+			<artifactId>commons-collections</artifactId>
+			<version>3.2.1</version>
 		</dependency>
 
 	</dependencies>
