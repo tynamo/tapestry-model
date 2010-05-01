@@ -24,7 +24,7 @@ public class Blob
 	@Inject
 	private ContextValueEncoder contextValueEncoder;
 
-	final StreamResponse onActivate(Class clazz, String id, String property) throws Exception
+	protected StreamResponse onActivate(Class clazz, String id, String property) throws Exception
 	{
 		final Object bean = contextValueEncoder.toValue(clazz, id);
 		final TynamoPropertyDescriptor propertyDescriptor =

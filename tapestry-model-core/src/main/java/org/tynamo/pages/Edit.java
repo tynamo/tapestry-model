@@ -44,7 +44,7 @@ public class Edit {
 	@Property(read = false)
 	private Object bean;
 
-	final protected void onActivate(Class clazz, String id) {
+	protected void onActivate(Class clazz, String id) {
 
 		Defense.notNull(clazz, "class"); //@todo throw a proper exception
 
