@@ -12,13 +12,13 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.services.PropertyAccess;
 import org.apache.tapestry5.ioc.services.TypeCoercer;
 import org.apache.tapestry5.services.BeanModelSource;
+import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.ValueEncoderSource;
 import org.tynamo.builder.BuilderDirector;
 import org.tynamo.descriptor.CollectionDescriptor;
 import org.tynamo.services.DescriptorService;
 import org.tynamo.services.PersistenceService;
 import org.tynamo.util.DisplayNameUtils;
-import org.tynamo.util.Utils;
 
 import java.util.Collection;
 import java.util.List;
@@ -49,6 +49,9 @@ public class Composition
 
 	@Inject
 	private ValueEncoderSource valueEncoderSource;
+
+	@Inject
+	private Request request;
 
 	/**
 	 * The id used to generate a page-unique client-side identifier for the component. If a component renders multiple
@@ -171,7 +174,12 @@ public class Composition
 
 		persitenceService.removeFromCollection(collectionDescriptor, element, owner);
 
-		return compositionZone.getBody();
+		if (request.isXHR())
+		{
+			return compositionZone.getBody();
+		}
+
+		return null;
 	}
 
 
@@ -240,6 +248,11 @@ public class Composition
 	{
 		return messages.format("org.tynamo.i18n.add",
 				DisplayNameUtils.getDisplayName(collectionDescriptor.getElementType(), messages));
+	}
+
+	public String getCompositionZoneClientId()
+	{
+		return compositionZone.getClientId();
 	}
 
 }

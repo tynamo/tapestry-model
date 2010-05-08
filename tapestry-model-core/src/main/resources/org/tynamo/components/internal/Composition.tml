@@ -13,7 +13,7 @@
 					<li>
 						<t:pagelink page="Show" context="showPageContext">${collectionIterator}</t:pagelink>
 						<t:actionlink t:id="deletechild" title="message:org.tynamo.i18n.delete-child"
-						              context="deleteContext" zone="compositionzone"
+						              context="deleteContext" zone="prop:compositionZoneClientId"
 						              style="float:right; display:inline-block;">
 							<img src="${deleteicon}" alt="${message:deleteicon-label}"/>
 						</t:actionlink>
@@ -26,7 +26,7 @@
 		</t:if>
 	</t:zone>
 
-	<t:form t:id="form" zone="compositionzone" style="display:none;" context="formContext">
+	<t:form t:id="form" zone="prop:compositionZoneClientId" style="display:none;" context="formContext">
 		<t:errors/>
 		<fieldset class="group">
 			<legend>${legendMessage}</legend>

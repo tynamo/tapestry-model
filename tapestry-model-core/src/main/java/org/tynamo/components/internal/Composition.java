@@ -59,6 +59,8 @@ public class Composition
 	@Inject
 	private ContextValueEncoder contextValueEncoder;
 
+	@Inject
+	private Request request;
 
 	/**
 	 * The id used to generate a page-unique client-side identifier for the component. If a component renders multiple
@@ -248,7 +250,17 @@ public class Composition
 
 		pushPropertyOutputContextIntoEnvironment(property);
 
-		return compositionZone.getBody();
+		if (request.isXHR())
+		{
+			return compositionZone.getBody();
+		}
+
+		return null;
+	}
+
+	public String getCompositionZoneClientId()
+	{
+		return compositionZone.getClientId();
 	}
 
 }
