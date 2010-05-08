@@ -5,7 +5,7 @@ import org.apache.tapestry5.annotations.Environmental;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.PropertyOutputContext;
-import org.tynamo.components.Composition;
+import org.tynamo.components.internal.Composition;
 import org.tynamo.components.Download;
 import org.tynamo.descriptor.TynamoPropertyDescriptor;
 import org.tynamo.services.DescriptorService;
@@ -33,10 +33,10 @@ public class PropertyDisplayBlocks
 	private int loopIndex;
 
 	@Component(parameters = {"collection=context.propertyValue", "clientId=prop:context.propertyId",
-			"collectionDescriptor=propertyDescriptor", "owner=tynamoBeanContext.bean"})
+			"property=propertyDescriptor.name", "owner=tynamoBeanContext.beanInstance"})
 	private Composition composition;
 
-	@Component(parameters = {"model=tynamoBeanContext.bean", "propertyDescriptor=propertyDescriptor"})
+	@Component(parameters = {"model=tynamoBeanContext.beanInstance", "propertyDescriptor=propertyDescriptor"})
 	private Download download;
 
 	public Object[] getShowPageContext()
@@ -56,7 +56,7 @@ public class PropertyDisplayBlocks
 
 	public TynamoPropertyDescriptor getPropertyDescriptor()
 	{
-		return descriptorService.getClassDescriptor(tynamoBeanContext.getBeanClass())
+		return descriptorService.getClassDescriptor(tynamoBeanContext.getBeanType())
 				.getPropertyDescriptor(context.getPropertyId());
 	}
 
