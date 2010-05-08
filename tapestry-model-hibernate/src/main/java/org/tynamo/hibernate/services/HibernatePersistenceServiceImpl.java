@@ -317,7 +317,7 @@ public class HibernatePersistenceServiceImpl implements HibernatePersistenceServ
 		detachedCriteria.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 		final DetachedCriteria criteria = alterCriteria(type, detachedCriteria);
 		Criteria executableCriteria = criteria.getExecutableCriteria(getSession()).setProjection(Projections.rowCount());
-		return (Integer) executableCriteria.uniqueResult();
+		return ((Long) executableCriteria.uniqueResult()).intValue();
 	}
 
 	public <T> List<T> getInstances(Class<T> type, final DetachedCriteria detachedCriteria, final int startIndex, final int maxResults)
