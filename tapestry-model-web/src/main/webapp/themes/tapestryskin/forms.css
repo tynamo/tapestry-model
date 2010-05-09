@@ -534,3 +534,10 @@ li.leftHalf .medium, li.rightHalf .medium, li.leftHalf .small, li.rightHalf .sma
 		display: block;
 	}
 }
+
+.t-add-child {
+	text-align: right;
+	display: block;
+	margin-right: 5px;
+	margin-top: -20px;
+}

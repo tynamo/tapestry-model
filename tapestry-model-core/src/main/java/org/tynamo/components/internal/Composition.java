@@ -1,12 +1,11 @@
 package org.tynamo.components.internal;
 
 import org.apache.tapestry5.*;
-import org.apache.tapestry5.annotations.InjectComponent;
-import org.apache.tapestry5.annotations.Parameter;
-import org.apache.tapestry5.annotations.Property;
+import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.beaneditor.BeanModel;
 import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.corelib.components.Zone;
+import org.apache.tapestry5.dom.Element;
 import org.apache.tapestry5.internal.TapestryInternalUtils;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -22,9 +21,8 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * Copy of org.tynamo.components.Composition designed to be used from Block pages (i.e: PropertyDisplayBlocks)
- * This class is for internal use only.
- *
+ * Copy of org.tynamo.components.Composition designed to be used from Block pages (i.e: PropertyDisplayBlocks) This
+ * class is for internal use only.
  */
 public class Composition
 {
@@ -62,6 +60,9 @@ public class Composition
 	@Inject
 	private Request request;
 
+	@Environmental
+	private Heartbeat heartbeat;
+
 	/**
 	 * The id used to generate a page-unique client-side identifier for the component. If a component renders multiple
 	 * times, a suffix will be appended to the to id to ensure uniqueness. The uniqued value may be accessed via the
@@ -92,7 +93,7 @@ public class Composition
 	@Parameter(name = "owner", required = true)
 	private Object ownerParameter;
 
-	private Object ownerProperty;
+	private Object owner;
 
 	/**
 	 * Ognl expression to invoke on the model to create a new child instance
@@ -149,14 +150,16 @@ public class Composition
 	@Property(write = false)
 	private BeanModel beanModel;
 
+	private Element addLink;
+
 	public boolean isAllowCreate()
 	{
-		return propertyAccess.get(ownerProperty, descriptorService.getClassDescriptor(ownerProperty.getClass()).getIdentifierDescriptor().getName()) != null;
+		return propertyAccess.get(owner, descriptorService.getClassDescriptor(owner.getClass()).getIdentifierDescriptor().getName()) != null;
 	}
 
 	private void activate(Object owner, String property)
 	{
-		ownerProperty = owner;
+		this.owner = owner;
 		collectionDescriptor = (CollectionDescriptor) descriptorService.getClassDescriptor(owner.getClass()).getPropertyDescriptor(property);
 		beanModel = beanModelSource.createEditModel(collectionDescriptor.getElementType(), messages);
 	}
@@ -175,6 +178,30 @@ public class Composition
 	{
 		activate(ownerParameter, property);
 		formBean = builderDirector.createNewInstance(collectionDescriptor.getElementType());
+		pushPropertyOutputContextIntoEnvironment(property);
+	}
+
+	boolean beginRender(MarkupWriter writer)
+	{
+
+		writer.element("div", "class", "t-add-child");
+		addLink = writer.element("a", "id", "add-" + property + "-link", "href", "#", "class", "t-add-child-link");
+		writer.write(messages.get("org.tynamo.i18n.add-child"));
+
+		Runnable command = new Runnable()
+		{
+			public void run()
+			{
+				String fieldId = form.getClientId();
+				addLink.forceAttributes("onclick", "Element.toggle('" + form.getClientId() + "'); this.blur(); return false;");
+			}
+		};
+		heartbeat.defer(command);
+
+		writer.end();
+		writer.end();
+		
+		return true;
 	}
 
 	public Object[] getShowPageContext()
@@ -190,7 +217,7 @@ public class Composition
 
 	public Object[] getFormContext()
 	{
-		return new Object[]{ownerProperty.getClass(), ownerProperty, collectionDescriptor.getName()};
+		return new Object[]{owner.getClass(), owner, collectionDescriptor.getName()};
 	}
 
 
@@ -211,7 +238,7 @@ public class Composition
 
 			public Object getPropertyValue()
 			{
-				return propertyAccess.get(ownerProperty, property);
+				return propertyAccess.get(owner, property);
 			}
 
 			public String getPropertyId()
@@ -230,13 +257,15 @@ public class Composition
 
 	public Object onSuccess()
 	{
-		persitenceService.addToCollection(collectionDescriptor, formBean, ownerProperty);
-		return compositionZone.getBody();
+		persitenceService.addToCollection(collectionDescriptor, formBean, owner);
+
+		if (request.isXHR()) return compositionZone.getBody();
+		else return null;
 	}
 
 	public Object[] getDeleteContext()
 	{
-		return new Object[]{ownerProperty.getClass(), ownerProperty, collectionDescriptor.getName(), collectionIterator};
+		return new Object[]{owner.getClass(), owner, collectionDescriptor.getName(), collectionIterator};
 	}
 
 	public Object onActionFromDeleteChild(final Class clazz, String id, final String property, final String elementid)
@@ -246,16 +275,18 @@ public class Composition
 		ValueEncoder valueEncoder = valueEncoderSource.getValueEncoder(collectionDescriptor.getElementType());
 		Object element = valueEncoder.toValue(elementid);
 
-		persitenceService.removeFromCollection(collectionDescriptor, element, ownerProperty);
+		persitenceService.removeFromCollection(collectionDescriptor, element, owner);
 
 		pushPropertyOutputContextIntoEnvironment(property);
 
-		if (request.isXHR())
-		{
-			return compositionZone.getBody();
-		}
+		if (request.isXHR()) return compositionZone.getBody();
+		else return null;
+	}
 
-		return null;
+	@Log
+	void cleanupRender()
+	{
+		environment.pop(PropertyOutputContext.class);
 	}
 
 	public String getCompositionZoneClientId()

@@ -1,17 +1,20 @@
 package org.tynamo.components;
 
 import org.apache.tapestry5.*;
+import org.apache.tapestry5.annotations.Environmental;
 import org.apache.tapestry5.annotations.InjectComponent;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.beaneditor.BeanModel;
 import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.corelib.components.Zone;
+import org.apache.tapestry5.dom.Element;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.services.PropertyAccess;
 import org.apache.tapestry5.ioc.services.TypeCoercer;
 import org.apache.tapestry5.services.BeanModelSource;
+import org.apache.tapestry5.services.Heartbeat;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.ValueEncoderSource;
 import org.tynamo.builder.BuilderDirector;
@@ -52,6 +55,9 @@ public class Composition
 
 	@Inject
 	private Request request;
+
+	@Environmental
+	private Heartbeat heartbeat;
 
 	/**
 	 * The id used to generate a page-unique client-side identifier for the component. If a component renders multiple
@@ -145,6 +151,8 @@ public class Composition
 	@Property(write = false)
 	private BeanModel beanModel;
 
+	private Element addLink;
+
 	void onPrepareFromForm()
 	{
 		resources.triggerEvent(EventConstants.PREPARE, null, null);
@@ -161,10 +169,35 @@ public class Composition
 		formBean = builderDirector.createNewInstance(collectionDescriptor.getElementType());
 	}
 
+	boolean beginRender(MarkupWriter writer)
+	{
+
+		writer.element("div", "class", "t-add-child");
+		addLink = writer.element("a", "id", "add-" + collectionDescriptor.getName() + "-link", "href", "#", "class", "t-add-child-link");
+		writer.write(messages.get("org.tynamo.i18n.add-child"));
+
+		Runnable command = new Runnable()
+		{
+			public void run()
+			{
+				String fieldId = form.getClientId();
+				addLink.forceAttributes("onclick", "Element.toggle('" + form.getClientId() + "'); this.blur(); return false;");
+			}
+		};
+		heartbeat.defer(command);
+
+		writer.end();
+		writer.end();
+
+		return true;
+	}
+
 	public Object onSuccess()
 	{
 		persitenceService.addToCollection(collectionDescriptor, formBean, owner);
-		return compositionZone.getBody();
+
+		if (request.isXHR()) return compositionZone.getBody();
+		else return null;
 	}
 
 	public Object onActionFromDeleteChild(String elementid)

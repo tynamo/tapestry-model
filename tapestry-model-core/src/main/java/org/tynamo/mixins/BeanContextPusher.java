@@ -9,9 +9,8 @@ import org.apache.tapestry5.services.Environment;
 import org.tynamo.services.TynamoBeanContext;
 
 /**
- * This mixin pushes the {@link TynamoBeanContext} into the {@link Environment}
- * it's meant to be used in a {@link BeanDisplay}
- *
+ * This mixin pushes the {@link TynamoBeanContext} into the {@link Environment} it's meant to be used in a {@link
+ * BeanDisplay}
  */
 public class BeanContextPusher
 {
@@ -58,6 +57,12 @@ public class BeanContextPusher
 			};
 			environment.push(TynamoBeanContext.class, context);
 		}
+	}
+
+	@Log
+	void cleanupRender()
+	{
+		environment.pop(TynamoBeanContext.class);
 	}
 
 }

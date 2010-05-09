@@ -1,10 +1,14 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<div id="${clientId}" class="composition" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_0_0.xsd"
+<div id="${clientId}" class="composition" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
      xmlns:p="tapestry:parameter">
 
-	<!--
-	 @note: the add-child link should be here!
-	-->
+	<t:remove>
+<!-- This link is added from the beginRender method
+	  <div>
+		  <a onclick="" href="#">${message:org.tynamo.i18n.add-child}</a>
+	  </div>
+-->
+	</t:remove>
 
 	<t:zone t:id="compositionzone">
 		<t:if test="collection">
@@ -43,11 +47,6 @@
 			</div>
 		</fieldset>
 	</t:form>
-
-	<div style="text-align:right; display:block; margin-right:5px; margin-top:-20px;">
-		<a onclick="Element.toggle('${form.clientId}'); this.blur(); return false;"
-		   href="#">${message:org.tynamo.i18n.add-child}</a>
-	</div>
 
 	<t:block id="empty">
 		${message:no-data-to-display}
