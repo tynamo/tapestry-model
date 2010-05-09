@@ -2,15 +2,15 @@
 
 	<t:block id="hidden"/>
 
-
-<t:block id="select">
-	<t:label for="select"/>
-	<t:select t:id="select" model="selectModel" value="propertyEditContext.propertyValue"
-			  label="prop:propertyEditContext.label" encoder="valueEncoderForProperty"/>
-	<em>
-		${helpMessage}
-	</em>
-</t:block>
+	<t:block id="select">
+		<t:label for="select"/>
+		<input t:id="select"/>
+		<t:if test="helpMessage">
+			<em>
+				${helpMessage}
+			</em>
+		</t:if>
+	</t:block>
 
 <t:block id="identifierEditor">
 	<t:if test="notEditable">
@@ -30,12 +30,12 @@
 <t:block id="palette">
 	<t:if test="propertyValueInstanceOfList">
 		<t:label for="palette_list"/>
-		<t:palette t:id="palette_list" model="selectModel" selected="selected"
+		<t:palette t:id="palette_list" model="selectModelForProperty" selected="selected"
 				   label="prop:propertyEditContext.label" encoder="valueEncoderForProperty" reorder="true"/>
 		<p:else>
 			<t:label for="palette_set"/>
-			<t:palette t:id="palette_set" model="selectModel" selected="selected"
-			           label="prop:propertyEditContext.label" encoder="valueEncoderForProperty"/>
+			<t:palette t:id="palette_set" model="selectModelForProperty" selected="selected"
+					   label="prop:propertyEditContext.label" encoder="valueEncoderForProperty"/>
 		</p:else>
 	</t:if>
 	<em>

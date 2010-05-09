@@ -61,6 +61,8 @@ public class TynamoCoreModule extends VersionedModule
 	 */
 	public static void contributeBeanBlockSource(Configuration<BeanBlockContribution> configuration)
 	{
+		configuration.add(new BeanBlockContribution("enum", PROPERTY_EDIT_BLOCKS, "select", true)); // overrides Tapestry's enum
+
 		configuration.add(new BeanBlockContribution("hidden", PROPERTY_EDIT_BLOCKS, "hidden", true));
 //		configuration.add(new BeanBlockContribution("dateEditor", PROPERTY_EDIT_BLOCKS, "date", true));
 //		configuration.add(new BeanBlockContribution("fckEditor", PROPERTY_EDIT_BLOCKS, "fckEditor", true));
@@ -122,7 +124,7 @@ public class TynamoCoreModule extends VersionedModule
 		addPairToOrderedConfiguration(configuration, "identifier && not(generated) && string", "identifierEditor");
 //		addPairToOrderedConfiguration(configuration, "identifier && objectReference", "objectReferenceIdentifierEditor");
 //		addPairToOrderedConfiguration(configuration, "boolean", "booleanEditor"); //managed by Tapestry
-//		addPairToOrderedConfiguration(configuration, "supportsExtension('org.tynamo.descriptor.extension.EnumReferenceDescriptor')", "enumEditor"); //managed by Tapestry
+		addPairToOrderedConfiguration(configuration, "supportsExtension('org.tynamo.descriptor.extension.EnumReferenceDescriptor')", "enum"); // overrides Tapestry's enum
 		addPairToOrderedConfiguration(configuration, "supportsExtension('org.tynamo.descriptor.extension.BlobDescriptorExtension')", "blob");
 
 		addPairToOrderedConfiguration(configuration, "objectReference", "single-valued-association" /* (aka: ManyToOne) */);

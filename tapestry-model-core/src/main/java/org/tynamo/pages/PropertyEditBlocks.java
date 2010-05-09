@@ -6,7 +6,9 @@ import org.apache.tapestry5.annotations.Component;
 import org.apache.tapestry5.annotations.Environmental;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.beaneditor.BeanModel;
+import org.apache.tapestry5.corelib.components.Select;
 import org.apache.tapestry5.corelib.components.TextField;
+import org.apache.tapestry5.corelib.data.BlankOption;
 import org.apache.tapestry5.internal.BeanValidationContext;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -53,9 +55,6 @@ public class PropertyEditBlocks
 	private ValueEncoderSource valueEncoderSource;
 
 	@Inject
-	private ComponentResources resources;
-
-	@Inject
 	private BeanModelSource beanModelSource;
 
 	@Component(parameters = {"value=propertyEditContext.propertyValue", "label=prop:propertyEditContext.label",
@@ -71,18 +70,24 @@ public class PropertyEditBlocks
 	@Component(parameters = {"model=tynamoBeanContext.beanInstance", "propertyDescriptor=propertyDescriptor"})
 	private org.tynamo.components.Blob blob;
 
+	@Component(
+			parameters = {"value=propertyEditContext.propertyValue", "label=prop:propertyEditContext.label",
+					"encoder=valueEncoderForProperty", "model=selectModelForProperty", "validate=prop:selectValidator",
+					"clientId=prop:propertyEditContext.propertyId", "blankOption=prop:blankOption"})
+	private Select select;
+
 	public TynamoPropertyDescriptor getPropertyDescriptor()
 	{
 		return descriptorService.getClassDescriptor(beanEditContext.getBeanClass()).getPropertyDescriptor(propertyEditContext.getPropertyId());
 	}
 
 	@SuppressWarnings({"unchecked"})
-	public SelectModel getSelectModel()
+	public SelectModel getSelectModelForProperty()
 	{
 		TynamoPropertyDescriptor propertyDescriptor = getPropertyDescriptor();
 
 		Class type = propertyDescriptor.isCollection() ? ((CollectionDescriptor) propertyDescriptor).getElementType() : propertyDescriptor.getPropertyType();
-		if (type.isEnum()) return new EnumSelectModel(type, resources.getMessages());
+		if (type.isEnum()) return new EnumSelectModel(type, getMessages());
 
 		if (propertyDescriptor.isCollection() && ((CollectionDescriptor) propertyDescriptor).isOneToMany())
 		{
@@ -120,21 +125,10 @@ public class PropertyEditBlocks
 		return propertyEditContext.getValidator(textField);
 	}
 
-
-/*	public List<Boolean> buildSelectedList()
+	public FieldValidator getSelectValidator()
 	{
-		ArrayList<Boolean> selected = new ArrayList<Boolean>();
-		if (collection != null)
-		{
-			selected = new ArrayList<Boolean>(collection.size());
-			for (Object o : getCollection())
-			{
-				selected.add(false);
-			}
-		}
-		return selected;
+		return propertyEditContext.getValidator(select);
 	}
-*/
 
 	public boolean isPropertyValueInstanceOfList()
 	{
@@ -188,7 +182,7 @@ public class PropertyEditBlocks
 
 	private Messages getMessages()
 	{
-		return resources.getContainerMessages() != null ? resources.getContainerMessages() : resources.getMessages();
+		return propertyEditContext.getContainerMessages();
 	}
 
 	/**
@@ -200,6 +194,11 @@ public class PropertyEditBlocks
 		String key = propertyEditContext.getPropertyId() + "-help";
 		if (messages.contains(key)) return messages.get(key);
 		return null;
+	}
+
+	public BlankOption getBlankOption()
+	{
+		return getPropertyDescriptor().isRequired() ? BlankOption.NEVER : BlankOption.ALWAYS;
 	}
 
 }
