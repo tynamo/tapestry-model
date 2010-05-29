@@ -3,10 +3,7 @@ package org.tynamo.hibernate.services;
 import org.apache.tapestry5.hibernate.HibernateConfigurer;
 import org.apache.tapestry5.hibernate.HibernateSessionSource;
 import org.apache.tapestry5.hibernate.HibernateTransactionDecorator;
-import org.apache.tapestry5.ioc.Configuration;
-import org.apache.tapestry5.ioc.MappedConfiguration;
-import org.apache.tapestry5.ioc.OrderedConfiguration;
-import org.apache.tapestry5.ioc.ServiceBinder;
+import org.apache.tapestry5.ioc.*;
 import org.apache.tapestry5.ioc.annotations.Autobuild;
 import org.apache.tapestry5.ioc.annotations.InjectService;
 import org.apache.tapestry5.ioc.annotations.Match;
@@ -58,9 +55,9 @@ public class TynamoHibernateModule extends VersionedModule
 	@Match("HibernatePersistenceService")
 	public static <T> T decorateTransactionally(HibernateTransactionDecorator decorator, Class<T> serviceInterface,
 												T delegate,
-												String serviceId)
+												ServiceResources resources)
 	{
-		return decorator.build(serviceInterface, delegate, serviceId);
+		return decorator.build(serviceInterface, delegate, resources.getServiceId());
 	}
 
 	/**
