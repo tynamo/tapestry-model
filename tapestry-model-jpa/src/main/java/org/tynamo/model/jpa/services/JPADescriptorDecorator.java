@@ -51,7 +51,7 @@ import java.util.Set;
  */
 public class JPADescriptorDecorator implements DescriptorDecorator {
 
-	@Inject private Logger logger;
+	private Logger logger;
 
 	private JPAEntityManagerSource entityManagerSource;
 
@@ -67,12 +67,14 @@ public class JPADescriptorDecorator implements DescriptorDecorator {
 	                              @Symbol(TynamoJPASymbols.LARGE_COLUMN_LENGTH)
 	                              int largeColumnLength,
 	                              @Symbol(TynamoJPASymbols.IGNORE_NON_HIBERNATE_TYPES)
-	                              boolean ignoreNonEntityTypes) {
+	                              boolean ignoreNonEntityTypes,
+	                              Logger logger) {
 
 		this.entityManagerSource = entityManagerSource;
 		this.descriptorFactory = descriptorFactory;
 		this.largeColumnLength = largeColumnLength;
 		this.ignoreNonEntityTypes = ignoreNonEntityTypes;
+		this.logger = logger;
 	}
 
 	public TynamoClassDescriptor decorate(TynamoClassDescriptor descriptor) {
