@@ -6,7 +6,7 @@
 	<packaging>pom</packaging>
 	<name>Tynamo Model-Driven CRUD web framework</name>
 	<url>http://tynamo.org/</url>
-	<version>0.0.2-SNAPSHOT</version>
+	<version>0.0.2</version>
 
 	<parent>
 		<groupId>org.tynamo</groupId>
@@ -24,9 +24,9 @@
 	</modules>
 
   <scm>
-    <connection>scm:svn:http://svn.codehaus.org/tynamo/branches/tapestry-model-0.0.x</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/tynamo/branches/tapestry-model-0.0.x</developerConnection>
-    <url>http://svn.tynamo.codehaus.org/tynamo/branches/tapestry-model-0.0.x</url>
+    <connection>scm:svn:http://svn.codehaus.org/tynamo/tags/tapestry-model-0.0.2</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/tynamo/tags/tapestry-model-0.0.2</developerConnection>
+    <url>http://svn.tynamo.codehaus.org/tynamo/tags/tapestry-model-0.0.2</url>
   </scm>
 
 	<distributionManagement>
@@ -43,12 +43,12 @@
 			<dependency>
 				<groupId>org.tynamo</groupId>
 				<artifactId>tapestry-model-core</artifactId>
-				<version>0.0.2-SNAPSHOT</version>
+				<version>0.0.2</version>
 			</dependency>
 			<dependency>
 				<groupId>org.tynamo</groupId>
 				<artifactId>tapestry-model-hibernate</artifactId>
-				<version>0.0.2-SNAPSHOT</version>
+				<version>0.0.2</version>
 			</dependency>
 			<dependency>
 				<groupId>org.tynamo.examples</groupId>
@@ -60,7 +60,7 @@
 				<groupId>org.tynamo</groupId>
 				<artifactId>tapestry-model-web</artifactId>
 				<type>war</type>
-				<version>0.0.2-SNAPSHOT</version>
+				<version>0.0.2</version>
 			</dependency>
 			<dependency>
 				<groupId>commons-beanutils</groupId>
