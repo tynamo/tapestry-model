@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>tapestry-model-web</artifactId>
 	<name>Tynamo Common Web Module</name>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 
 	<parent>
 		<artifactId>tapestry-model</artifactId>
