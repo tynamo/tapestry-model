@@ -6,7 +6,6 @@ import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.beaneditor.BeanModel;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.ioc.internal.util.Defense;
 import org.apache.tapestry5.services.BeanModelSource;
 import org.apache.tapestry5.services.ContextValueEncoder;
 import org.apache.tapestry5.services.PageRenderLinkSource;
@@ -64,11 +63,11 @@ public class AddC {
 
 	final void onActivate(Class clazz, String parentId, String property) throws Exception {
 
-		Defense.notNull(clazz, "class"); //@todo throw a proper exception
+		assert clazz != null; //@todo throw a proper exception
 
 		TynamoPropertyDescriptor propertyDescriptor = descriptorService.getClassDescriptor(clazz).getPropertyDescriptor(property);
 
-		Defense.notNull(propertyDescriptor, "propertyDescriptor"); //@todo throw a proper exception
+		assert propertyDescriptor != null; //@todo throw a proper exception
 
 		this.collectionDescriptor = ((CollectionDescriptor) propertyDescriptor);
 
@@ -77,7 +76,7 @@ public class AddC {
 		this.beanModel = beanModelSource.createEditModel(classDescriptor.getType(), messages);
 
 		this.parentBean = contextValueEncoder.toValue(clazz, parentId);
-		Defense.notNull(parentBean, "parentBean"); //@todo throw a proper exception
+		assert parentBean != null; //@todo throw a proper exception
 
 	}
 

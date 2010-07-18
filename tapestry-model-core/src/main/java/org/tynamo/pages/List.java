@@ -4,7 +4,6 @@ import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.beaneditor.BeanModel;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.ioc.internal.util.Defense;
 import org.apache.tapestry5.ioc.services.PropertyAccess;
 import org.apache.tapestry5.services.BeanModelSource;
 import org.tynamo.TynamoGridDataSource;
@@ -43,7 +42,7 @@ public class List {
 
 	protected void onActivate(Class clazz) throws Exception {
 
-		Defense.notNull(clazz, "class"); //@todo throw a proper exception
+		assert clazz != null; //@todo throw a proper exception
 
 		classDescriptor = descriptorService.getClassDescriptor(clazz);
 		beanModel = beanModelSource.createDisplayModel(clazz, messages);

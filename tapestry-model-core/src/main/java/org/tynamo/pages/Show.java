@@ -5,7 +5,6 @@ import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.beaneditor.BeanModel;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.ioc.internal.util.Defense;
 import org.apache.tapestry5.services.BeanModelSource;
 import org.apache.tapestry5.services.ContextValueEncoder;
 import org.apache.tapestry5.services.PageRenderLinkSource;
@@ -45,13 +44,13 @@ public class Show {
 
 	protected void onActivate(Class clazz, String id) {
 
-		Defense.notNull(clazz, "class"); //@todo throw a proper exception
+		assert clazz != null; //@todo throw a proper exception
 
 		this.bean = contextValueEncoder.toValue(clazz, id);
 		this.classDescriptor = descriptorService.getClassDescriptor(clazz);
 		this.beanModel = beanModelSource.createDisplayModel(clazz, messages);
 
-		Defense.notNull(bean, "bean"); //@todo throw a proper exception
+		assert bean != null; //@todo throw a proper exception
 	}
 
 	protected void cleanupRender() {

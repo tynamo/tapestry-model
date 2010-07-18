@@ -1,7 +1,7 @@
 package org.tynamo.services;
 
 import org.apache.tapestry5.ioc.internal.util.CollectionFactory;
-import org.apache.tapestry5.ioc.internal.util.Defense;
+
 import org.apache.tapestry5.ioc.util.StrategyRegistry;
 import org.tynamo.descriptor.*;
 
@@ -54,7 +54,6 @@ public class DescriptorServiceImpl implements DescriptorService
 
 	public TynamoClassDescriptor getClassDescriptor(Class type)
 	{
-		Defense.notNull(type, "type");
 		return descriptorsRegistry.get(type);
 	}
 

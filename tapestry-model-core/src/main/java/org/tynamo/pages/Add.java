@@ -6,7 +6,6 @@ import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.beaneditor.BeanModel;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.ioc.internal.util.Defense;
 import org.apache.tapestry5.services.BeanModelSource;
 import org.apache.tapestry5.services.PageRenderLinkSource;
 import org.tynamo.builder.BuilderDirector;
@@ -48,7 +47,7 @@ public class Add {
 
 	protected void onActivate(Class clazz) throws Exception {
 
-		Defense.notNull(clazz, "class"); //@todo throw a proper exception
+		assert clazz != null; //@todo throw a proper exception
 
 		this.bean = builderDirector.createNewInstance(clazz);
 		this.classDescriptor = descriptorService.getClassDescriptor(clazz);
