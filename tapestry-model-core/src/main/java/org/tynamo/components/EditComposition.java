@@ -212,8 +212,8 @@ public class EditComposition
 
 	public final String getModelId()
 	{
-		TynamoClassDescriptor classDescriptor = 
-				descriptorService.getClassDescriptor(collectionDescriptor.getBeanType());
+		TynamoClassDescriptor classDescriptor =
+				descriptorService.getClassDescriptor(collectionDescriptor.getElementType());
 		return propertyAccess.get(collectionIterator, classDescriptor.getIdentifierDescriptor().getName()).toString();
 	}
 }
