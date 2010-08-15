@@ -1,4 +1,4 @@
-package org.tynamo.descriptor.annotation;
+package org.tynamo.descriptor.extension;
 
 import java.util.Map;
 

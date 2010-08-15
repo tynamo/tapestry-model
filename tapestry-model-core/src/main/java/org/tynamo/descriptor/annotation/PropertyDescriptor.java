@@ -1,6 +1,7 @@
 package org.tynamo.descriptor.annotation;
 
 import org.tynamo.descriptor.TynamoPropertyDescriptor;
+import org.tynamo.descriptor.annotation.handlers.PropertyDescriptorAnnotationHandler;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -57,5 +58,6 @@ public @interface PropertyDescriptor
 	 */
 	String format() default "no_format";
 
+	@Deprecated
 	int index() default TynamoPropertyDescriptor.UNDEFINED_INDEX;
 }

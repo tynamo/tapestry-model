@@ -1,6 +1,8 @@
-package org.tynamo.descriptor;
+package org.tynamo.descriptor.factories;
 
 import org.apache.commons.beanutils.BeanUtils;
+import org.tynamo.descriptor.TynamoPropertyDescriptor;
+import org.tynamo.descriptor.TynamoPropertyDescriptorImpl;
 import org.tynamo.util.Utils;
 
 import java.beans.BeanInfo;

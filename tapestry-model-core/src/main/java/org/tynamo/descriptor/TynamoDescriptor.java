@@ -3,6 +3,7 @@ package org.tynamo.descriptor;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.tynamo.descriptor.extension.DescriptorExtension;
 
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;

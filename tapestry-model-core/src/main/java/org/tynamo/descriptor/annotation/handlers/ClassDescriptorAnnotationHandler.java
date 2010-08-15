@@ -1,6 +1,7 @@
-package org.tynamo.descriptor.annotation;
+package org.tynamo.descriptor.annotation.handlers;
 
 import org.tynamo.descriptor.TynamoClassDescriptor;
+import org.tynamo.descriptor.annotation.ClassDescriptor;
 
 public class ClassDescriptorAnnotationHandler extends AbstractAnnotationHandler implements DescriptorAnnotationHandler<ClassDescriptor, TynamoClassDescriptor>
 {

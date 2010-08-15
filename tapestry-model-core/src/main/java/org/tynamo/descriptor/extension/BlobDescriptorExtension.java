@@ -2,7 +2,6 @@ package org.tynamo.descriptor.extension;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.tynamo.descriptor.DescriptorExtension;
 import org.tynamo.exception.TynamoRuntimeException;
 
 public class BlobDescriptorExtension implements DescriptorExtension

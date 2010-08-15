@@ -1,11 +1,10 @@
-package org.tynamo.descriptor.annotation;
+package org.tynamo.descriptor.extension;
 
 import ognl.Ognl;
 import ognl.OgnlException;
 import org.apache.commons.lang.Validate;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.tynamo.descriptor.DescriptorExtension;
 
 import java.util.Map;
 

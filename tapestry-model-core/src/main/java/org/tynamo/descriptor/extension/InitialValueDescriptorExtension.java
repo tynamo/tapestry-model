@@ -1,6 +1,6 @@
 /* vim: set ts=2 et sw=2 cindent fo=qroca: */
 
-package org.tynamo.descriptor.annotation;
+package org.tynamo.descriptor.extension;
 
 import java.util.Map;
 

@@ -1,4 +1,6 @@
-package org.tynamo.descriptor;
+package org.tynamo.descriptor.extension;
+
+import org.tynamo.descriptor.extension.DescriptorExtension;
 
 import java.util.Map;
 

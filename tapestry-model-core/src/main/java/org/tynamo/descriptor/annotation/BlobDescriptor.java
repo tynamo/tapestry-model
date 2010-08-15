@@ -1,5 +1,6 @@
 package org.tynamo.descriptor.annotation;
 
+import org.tynamo.descriptor.annotation.handlers.BlobDescriptorAnnotationHandler;
 import org.tynamo.descriptor.extension.BlobDescriptorExtension;
 
 import java.lang.annotation.ElementType;

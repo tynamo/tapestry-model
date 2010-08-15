@@ -1,4 +1,6 @@
-package org.tynamo.descriptor;
+package org.tynamo.descriptor.factories;
+
+import org.tynamo.descriptor.TynamoPropertyDescriptor;
 
 import java.util.ArrayList;
 import java.beans.BeanInfo;

@@ -1,11 +1,13 @@
-package org.tynamo.descriptor.annotation;
+package org.tynamo.descriptor.annotation.handlers;
 
 import org.apache.commons.lang.Validate;
 import org.tynamo.descriptor.TynamoPropertyDescriptor;
+import org.tynamo.descriptor.annotation.InitialValue;
+import org.tynamo.descriptor.extension.InitialValueDescriptorExtension;
 
 /**
- * Creates a {@link InitialValueDescriptorExtension} using the
- * information retrieved from a {@link InitialValue} annotation.
+ * Creates a {@link org.tynamo.descriptor.extension.InitialValueDescriptorExtension} using the
+ * information retrieved from a {@link org.tynamo.descriptor.annotation.InitialValue} annotation.
  *
  * @author pruggia
  */
@@ -14,7 +16,7 @@ public class InitialValueAnnotationHandler extends AbstractAnnotationHandler
 {
 
 	/**
-	 * Creates a {@link InitialValueDescriptorExtension} and adds it to
+	 * Creates a {@link org.tynamo.descriptor.extension.InitialValueDescriptorExtension} and adds it to
 	 * the property descriptor.
 	 *
 	 * @param annotation Annotation added to the property. It cannot be null.

@@ -1,5 +1,7 @@
 package org.tynamo.descriptor.annotation;
 
+import org.tynamo.descriptor.annotation.handlers.PossibleValuesAnnotationHandler;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

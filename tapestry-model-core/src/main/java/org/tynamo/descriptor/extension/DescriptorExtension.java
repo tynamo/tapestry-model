@@ -1,4 +1,4 @@
-package org.tynamo.descriptor;
+package org.tynamo.descriptor.extension;
 
 import java.io.Serializable;
 

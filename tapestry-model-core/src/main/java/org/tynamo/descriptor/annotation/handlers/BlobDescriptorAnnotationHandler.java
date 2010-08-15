@@ -1,5 +1,6 @@
-package org.tynamo.descriptor.annotation;
+package org.tynamo.descriptor.annotation.handlers;
 
+import org.tynamo.descriptor.annotation.BlobDescriptor;
 import org.tynamo.descriptor.extension.BlobDescriptorExtension;
 import org.tynamo.descriptor.TynamoPropertyDescriptor;
 

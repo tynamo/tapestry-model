@@ -1,8 +1,11 @@
-package org.tynamo.descriptor;
+package org.tynamo.descriptor.factories;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.tynamo.descriptor.TynamoClassDescriptor;
+import org.tynamo.descriptor.TynamoClassDescriptorImpl;
+import org.tynamo.descriptor.decorators.DescriptorDecorator;
 
 import java.beans.BeanInfo;
 import java.beans.Introspector;

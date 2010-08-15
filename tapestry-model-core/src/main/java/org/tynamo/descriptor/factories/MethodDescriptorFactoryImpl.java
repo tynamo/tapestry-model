@@ -1,5 +1,7 @@
-package org.tynamo.descriptor;
+package org.tynamo.descriptor.factories;
 
+import org.tynamo.descriptor.IMethodDescriptor;
+import org.tynamo.descriptor.TynamoMethodDescriptorImpl;
 import org.tynamo.util.Utils;
 
 import java.beans.BeanInfo;

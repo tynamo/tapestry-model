@@ -1,4 +1,6 @@
-package org.tynamo.descriptor;
+package org.tynamo.descriptor.decorators;
+
+import org.tynamo.descriptor.TynamoClassDescriptor;
 
 /**
  * @author Chris Nelson

@@ -1,6 +1,7 @@
-package org.tynamo.descriptor.annotation;
+package org.tynamo.descriptor.annotation.handlers;
 
 import org.tynamo.descriptor.CollectionDescriptor;
+import org.tynamo.descriptor.annotation.Collection;
 
 public class CollectionDescriptorAnnotationHandler implements DescriptorAnnotationHandler<Collection, CollectionDescriptor>
 {

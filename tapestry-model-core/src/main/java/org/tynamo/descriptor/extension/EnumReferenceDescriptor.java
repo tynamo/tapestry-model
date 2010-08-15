@@ -1,7 +1,5 @@
 package org.tynamo.descriptor.extension;
 
-import org.tynamo.descriptor.DescriptorExtension;
-
 
 public class EnumReferenceDescriptor implements DescriptorExtension
 {

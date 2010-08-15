@@ -1,4 +1,4 @@
-package org.tynamo.descriptor.annotation;
+package org.tynamo.descriptor.annotation.handlers;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;

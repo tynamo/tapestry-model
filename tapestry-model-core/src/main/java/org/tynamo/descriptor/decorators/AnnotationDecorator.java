@@ -1,10 +1,12 @@
-package org.tynamo.descriptor.annotation;
+package org.tynamo.descriptor.decorators;
 
 import ognl.Ognl;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.tynamo.descriptor.*;
+import org.tynamo.descriptor.annotation.DescriptorAnnotation;
+import org.tynamo.descriptor.annotation.handlers.DescriptorAnnotationHandler;
 
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;

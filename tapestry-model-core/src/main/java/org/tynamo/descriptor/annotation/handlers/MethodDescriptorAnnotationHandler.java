@@ -1,6 +1,7 @@
-package org.tynamo.descriptor.annotation;
+package org.tynamo.descriptor.annotation.handlers;
 
 import org.tynamo.descriptor.IMethodDescriptor;
+import org.tynamo.descriptor.annotation.MethodDescriptor;
 
 
 public class MethodDescriptorAnnotationHandler extends AbstractAnnotationHandler
