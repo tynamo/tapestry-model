@@ -22,7 +22,7 @@ import java.lang.annotation.Target;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD, ElementType.METHOD})
-@DescriptorAnnotation(InitialValueAnnotationHandler.class)
+@HandledBy(InitialValueAnnotationHandler.class)
 public @interface InitialValue
 {
 

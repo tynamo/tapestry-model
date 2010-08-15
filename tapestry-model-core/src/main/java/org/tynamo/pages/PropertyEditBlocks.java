@@ -29,7 +29,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-
+/**
+ * A page that exists to contain blocks used to edit different types of properties. The blocks on this page are
+ * contributed into the {@link org.apache.tapestry5.services.BeanBlockSource} service configuration.
+ *
+ * @see org.apache.tapestry5.services.BeanBlockContribution
+ * @see org.apache.tapestry5.corelib.components.BeanEditForm
+ */
 public class PropertyEditBlocks
 {
 

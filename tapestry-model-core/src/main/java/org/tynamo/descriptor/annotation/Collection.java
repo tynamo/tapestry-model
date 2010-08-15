@@ -1,15 +1,16 @@
 package org.tynamo.descriptor.annotation;
 
+import org.apache.tapestry5.ioc.annotations.AnnotationUseContext;
+import org.apache.tapestry5.ioc.annotations.UseWith;
 import org.tynamo.descriptor.annotation.handlers.CollectionDescriptorAnnotationHandler;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.lang.annotation.*;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD, ElementType.METHOD})
-@DescriptorAnnotation(CollectionDescriptorAnnotationHandler.class)
+@HandledBy(CollectionDescriptorAnnotationHandler.class)
+@Documented
+@UseWith(AnnotationUseContext.BEAN)
 public @interface Collection
 {
 

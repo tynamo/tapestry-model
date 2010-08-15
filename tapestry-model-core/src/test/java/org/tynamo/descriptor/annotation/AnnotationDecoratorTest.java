@@ -3,7 +3,7 @@ package org.tynamo.descriptor.annotation;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import org.tynamo.descriptor.*;
-import org.tynamo.descriptor.decorators.AnnotationDecorator;
+import org.tynamo.descriptor.decorators.TynamoDecorator;
 import org.tynamo.test.Embeddee;
 import org.tynamo.test.Embeddor;
 import org.tynamo.test.Foo;
@@ -11,7 +11,7 @@ import org.tynamo.test.Foo;
 
 public class AnnotationDecoratorTest extends Assert
 {
-	AnnotationDecorator decorator = new AnnotationDecorator();
+	TynamoDecorator decorator = new TynamoDecorator();
 
 	@Test
 	public void testDecorate()

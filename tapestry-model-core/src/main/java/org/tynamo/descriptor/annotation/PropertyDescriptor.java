@@ -1,16 +1,17 @@
 package org.tynamo.descriptor.annotation;
 
+import org.apache.tapestry5.ioc.annotations.AnnotationUseContext;
+import org.apache.tapestry5.ioc.annotations.UseWith;
 import org.tynamo.descriptor.TynamoPropertyDescriptor;
 import org.tynamo.descriptor.annotation.handlers.PropertyDescriptorAnnotationHandler;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.lang.annotation.*;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD, ElementType.METHOD})
-@DescriptorAnnotation(PropertyDescriptorAnnotationHandler.class)
+@HandledBy(PropertyDescriptorAnnotationHandler.class)
+@Documented
+@UseWith(AnnotationUseContext.BEAN)
 public @interface PropertyDescriptor
 {
 

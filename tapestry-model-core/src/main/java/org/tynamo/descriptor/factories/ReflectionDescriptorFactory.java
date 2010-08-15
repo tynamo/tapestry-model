@@ -27,7 +27,7 @@ public class ReflectionDescriptorFactory implements DescriptorFactory
 	private final List<DescriptorDecorator> decorators;
 
 	/**
-	 * @param decorators				In the default Tynamo configuration this will contain a HibernateDescriptorDecorator and an AnnotationDecorator
+	 * @param decorators				In the default Tynamo configuration this will contain a HibernateDescriptorDecorator and an TynamoDecorator
 	 * @param methodDescriptorFactory
 	 * @param propertyDescriptorFactory
 	 */

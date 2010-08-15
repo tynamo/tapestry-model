@@ -5,7 +5,7 @@ import org.apache.commons.lang.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.tynamo.descriptor.*;
-import org.tynamo.descriptor.annotation.DescriptorAnnotation;
+import org.tynamo.descriptor.annotation.HandledBy;
 import org.tynamo.descriptor.annotation.handlers.DescriptorAnnotationHandler;
 
 import java.beans.Introspector;
@@ -18,15 +18,15 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * This class uses the annotations on a given class or property to modify its
+ * This class uses the Tynamo's annotations on a given class or property to modify its
  * descriptor
  *
  * @author Chris Nelson
  */
-public class AnnotationDecorator implements DescriptorDecorator
+public class TynamoDecorator implements DescriptorDecorator
 {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(AnnotationDecorator.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(TynamoDecorator.class);
 
 	public TynamoClassDescriptor decorate(TynamoClassDescriptor descriptor)
 	{
@@ -134,9 +134,9 @@ public class AnnotationDecorator implements DescriptorDecorator
 		Descriptor clonedDescriptor = (Descriptor) descriptor.clone();
 		for (Annotation annotation : annotations)
 		{
-			// If the annotation type itself has a DescriptorAnnotation, it's one of ours
-			DescriptorAnnotation handlerAnnotation =
-					annotation.annotationType().getAnnotation(DescriptorAnnotation.class);
+			// If the annotation type itself has a HandledBy, it's one of ours
+			HandledBy handlerAnnotation =
+					annotation.annotationType().getAnnotation(HandledBy.class);
 			if (handlerAnnotation != null)
 			{
 				try

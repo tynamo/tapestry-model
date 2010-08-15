@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD})
-@DescriptorAnnotation(MethodDescriptorAnnotationHandler.class)
+@HandledBy(MethodDescriptorAnnotationHandler.class)
 public @interface MethodDescriptor
 {
 

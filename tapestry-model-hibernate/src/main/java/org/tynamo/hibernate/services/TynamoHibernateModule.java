@@ -85,7 +85,7 @@ public class TynamoHibernateModule extends VersionedModule
 	public static void contributeDescriptorFactory(OrderedConfiguration<DescriptorDecorator> configuration,
 	                                               @Autobuild HibernateDescriptorDecorator hibernateDescriptorDecorator)
 	{
-		configuration.add("HibernateDescriptorDecorator", hibernateDescriptorDecorator, "after:AnnotationDecorator");
+		configuration.add("HibernateDescriptorDecorator", hibernateDescriptorDecorator, "after:TynamoDecorator");
 	}
 
 	@SuppressWarnings("unchecked")

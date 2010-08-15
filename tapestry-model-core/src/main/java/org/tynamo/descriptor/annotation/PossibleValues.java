@@ -23,7 +23,7 @@ import java.lang.annotation.Target;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD, ElementType.METHOD})
-@DescriptorAnnotation(PossibleValuesAnnotationHandler.class)
+@HandledBy(PossibleValuesAnnotationHandler.class)
 public @interface PossibleValues
 {
 
