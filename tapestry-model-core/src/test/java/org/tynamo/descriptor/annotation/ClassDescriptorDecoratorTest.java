@@ -4,6 +4,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import org.tynamo.descriptor.TynamoClassDescriptor;
 import org.tynamo.descriptor.TynamoClassDescriptorImpl;
+import org.tynamo.descriptor.annotation.handlers.ClassDescriptorAnnotationHandler;
 
 public class ClassDescriptorDecoratorTest extends Assert
 {

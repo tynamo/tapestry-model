@@ -3,8 +3,9 @@ package org.tynamo.descriptor;
 import org.apache.tapestry5.ioc.test.TestBase;
 import org.easymock.EasyMock;
 import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+import org.tynamo.descriptor.decorators.DescriptorDecorator;
+import org.tynamo.descriptor.factories.*;
 import org.tynamo.services.DescriptorService;
 import org.tynamo.services.DescriptorServiceImpl;
 

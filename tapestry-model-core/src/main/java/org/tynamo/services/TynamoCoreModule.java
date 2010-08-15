@@ -13,8 +13,9 @@ import org.tynamo.VersionedModule;
 import org.tynamo.blob.BlobManager;
 import org.tynamo.blob.DefaultBlobManager;
 import org.tynamo.builder.BuilderDirector;
-import org.tynamo.descriptor.*;
-import org.tynamo.descriptor.annotation.AnnotationDecorator;
+import org.tynamo.descriptor.decorators.AnnotationDecorator;
+import org.tynamo.descriptor.decorators.DescriptorDecorator;
+import org.tynamo.descriptor.factories.*;
 import org.tynamo.util.Pair;
 
 public class TynamoCoreModule extends VersionedModule

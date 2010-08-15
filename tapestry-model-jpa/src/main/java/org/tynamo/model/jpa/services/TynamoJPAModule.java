@@ -10,7 +10,7 @@ import org.apache.tapestry5.ioc.annotations.Match;
 import org.apache.tapestry5.services.BeanBlockContribution;
 import org.apache.tapestry5.services.LibraryMapping;
 import org.tynamo.VersionedModule;
-import org.tynamo.descriptor.DescriptorDecorator;
+import org.tynamo.descriptor.decorators.DescriptorDecorator;
 import org.tynamo.jpa.JPAEntityManagerSource;
 import org.tynamo.jpa.JPATransactionDecorator;
 import org.tynamo.model.jpa.TynamoJPASymbols;

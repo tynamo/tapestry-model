@@ -10,7 +10,7 @@ import org.tynamo.component.ComponentTest;
 import org.tynamo.descriptor.TrailsClassDescriptor;
 import org.tynamo.descriptor.IDescriptor;
 import org.tynamo.descriptor.IPropertyDescriptor;
-import org.tynamo.descriptor.ReflectionDescriptorFactory;
+import org.tynamo.descriptor.factories.ReflectionDescriptorFactory;
 import org.tynamo.descriptor.TrailsPropertyDescriptor;
 import org.tynamo.test.Bar;
 import org.tynamo.test.Foo;

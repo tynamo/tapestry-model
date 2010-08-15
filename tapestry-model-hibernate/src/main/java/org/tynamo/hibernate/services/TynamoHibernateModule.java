@@ -11,7 +11,7 @@ import org.apache.tapestry5.services.BeanBlockContribution;
 import org.apache.tapestry5.services.LibraryMapping;
 import org.hibernate.mapping.PersistentClass;
 import org.tynamo.VersionedModule;
-import org.tynamo.descriptor.DescriptorDecorator;
+import org.tynamo.descriptor.decorators.DescriptorDecorator;
 import org.tynamo.hibernate.TynamoHibernateSymbols;
 import org.tynamo.hibernate.TynamoInterceptor;
 import org.tynamo.hibernate.TynamoInterceptorConfigurer;

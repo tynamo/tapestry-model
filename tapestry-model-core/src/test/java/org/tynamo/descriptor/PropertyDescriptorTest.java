@@ -16,6 +16,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import org.tynamo.descriptor.extension.DescriptorExtension;
 import org.tynamo.test.Foo;
 
 import java.lang.reflect.InvocationTargetException;

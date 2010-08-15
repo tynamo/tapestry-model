@@ -4,6 +4,7 @@ import org.apache.tapestry5.ioc.internal.util.CollectionFactory;
 
 import org.apache.tapestry5.ioc.util.StrategyRegistry;
 import org.tynamo.descriptor.*;
+import org.tynamo.descriptor.factories.DescriptorFactory;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -25,8 +26,8 @@ public class DescriptorServiceImpl implements DescriptorService
 	 *
 	 * @param types			 In the Tynamo default configuration this will be set to all classes in the Hibernate config
 	 * @param descriptorFactory In default Tynamo this will be a ReflectionDescriptorFactory
-	 * @see DescriptorFactory
-	 * @see DescriptorDecorator
+	 * @see org.tynamo.descriptor.factories.DescriptorFactory
+	 * @see org.tynamo.descriptor.decorators.DescriptorDecorator
 	 */
 	public DescriptorServiceImpl(final Collection<Class> types, DescriptorFactory descriptorFactory)
 	{

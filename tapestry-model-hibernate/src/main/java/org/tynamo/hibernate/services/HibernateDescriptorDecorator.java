@@ -25,7 +25,9 @@ import org.hibernate.type.ComponentType;
 import org.hibernate.type.Type;
 import org.slf4j.Logger;
 import org.tynamo.descriptor.*;
+import org.tynamo.descriptor.decorators.DescriptorDecorator;
 import org.tynamo.descriptor.extension.EnumReferenceDescriptor;
+import org.tynamo.descriptor.factories.DescriptorFactory;
 import org.tynamo.exception.MetadataNotFoundException;
 import org.tynamo.exception.TynamoRuntimeException;
 import org.tynamo.hibernate.TynamoHibernateSymbols;
@@ -104,6 +106,7 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 			if (ignoreNonHibernateTypes)
 			{
 				logger.warn("MetadataNotFound! Ignoring:" + descriptor.getType().toString());
+				descriptor.setHidden(true);
 				return descriptor;
 			} else
 			{
@@ -207,10 +210,10 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 			} else
 			{
 				Property property = componentMapping.getProperty(propertyDescriptor.getName());
-				TynamoPropertyDescriptor TynamoPropertyDescriptor =
+				TynamoPropertyDescriptor tynamopropertydescriptor =
 						decoratePropertyDescriptor(embeddedDescriptor.getBeanType(),
 								property, propertyDescriptor, parentClassDescriptor);
-				decoratedProperties.add(TynamoPropertyDescriptor);
+				decoratedProperties.add(tynamopropertydescriptor);
 			}
 		}
 		embeddedDescriptor.setPropertyDescriptors(decoratedProperties);

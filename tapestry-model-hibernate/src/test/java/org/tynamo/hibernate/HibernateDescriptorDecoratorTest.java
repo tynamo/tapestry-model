@@ -24,7 +24,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.orm.hibernate3.LocalSessionFactoryBean;
 import org.tynamo.descriptor.CollectionDescriptor;
-import org.tynamo.descriptor.DescriptorDecorator;
+import org.tynamo.descriptor.decorators.DescriptorDecorator;
 import org.tynamo.descriptor.TrailsClassDescriptor;
 import org.tynamo.descriptor.IPropertyDescriptor;
 import org.tynamo.descriptor.IdentifierDescriptor;

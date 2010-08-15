@@ -9,7 +9,7 @@ import org.hibernate.validator.InvalidValue;
 import org.jmock.Mock;
 import org.tynamo.component.HibernateComponentTest;
 import org.tynamo.descriptor.TrailsClassDescriptor;
-import org.tynamo.descriptor.ReflectionDescriptorFactory;
+import org.tynamo.descriptor.factories.ReflectionDescriptorFactory;
 import org.tynamo.descriptor.TrailsClassDescriptor;
 import org.tynamo.descriptor.TrailsPropertyDescriptor;
 import org.tynamo.testhibernate.Baz;

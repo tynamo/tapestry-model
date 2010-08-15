@@ -7,6 +7,7 @@ import org.testng.annotations.Test;
 import org.tynamo.descriptor.TynamoPropertyDescriptor;
 import org.tynamo.descriptor.TynamoClassDescriptorImpl;
 import org.tynamo.descriptor.TynamoPropertyDescriptorImpl;
+import org.tynamo.descriptor.annotation.handlers.PropertyDescriptorAnnotationHandler;
 import org.tynamo.test.Foo;
 
 public class PropertyDescriptorDecoratorTest extends Assert

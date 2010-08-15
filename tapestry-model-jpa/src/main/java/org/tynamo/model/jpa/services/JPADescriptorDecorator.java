@@ -13,10 +13,11 @@
 package org.tynamo.model.jpa.services;
 
 import ognl.Ognl;
-import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.annotations.Symbol;
 import org.slf4j.Logger;
 import org.tynamo.descriptor.*;
+import org.tynamo.descriptor.decorators.DescriptorDecorator;
+import org.tynamo.descriptor.factories.DescriptorFactory;
 import org.tynamo.exception.TynamoRuntimeException;
 import org.tynamo.jpa.JPAEntityManagerSource;
 import org.tynamo.model.exception.MetadataNotFoundException;
@@ -49,7 +50,8 @@ import java.util.Set;
  * @see CollectionDescriptor
  * @see EmbeddedDescriptor
  */
-public class JPADescriptorDecorator implements DescriptorDecorator {
+public class JPADescriptorDecorator implements DescriptorDecorator
+{
 
 	private Logger logger;
 

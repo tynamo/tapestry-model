@@ -23,6 +23,7 @@ import org.apache.tapestry.util.ComponentAddress;
 import org.jmock.Expectations;
 import org.jmock.integration.junit3.MockObjectTestCase;
 import org.tynamo.descriptor.*;
+import org.tynamo.descriptor.factories.ReflectionDescriptorFactory;
 import org.tynamo.persistence.PersistenceService;
 import org.tynamo.test.Foo;
 

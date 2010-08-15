@@ -3,6 +3,7 @@ package org.tynamo.descriptor.annotation;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import org.tynamo.descriptor.*;
+import org.tynamo.descriptor.decorators.AnnotationDecorator;
 import org.tynamo.test.Embeddee;
 import org.tynamo.test.Embeddor;
 import org.tynamo.test.Foo;
