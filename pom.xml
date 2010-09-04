@@ -61,7 +61,7 @@
 			<dependency>
 				<groupId>org.tynamo</groupId>
 				<artifactId>tapestry-model-web</artifactId>
-				<type>war</type>
+				<type>jar</type>
 				<version>0.1.0-SNAPSHOT</version>
 			</dependency>
 
