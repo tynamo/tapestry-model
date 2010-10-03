@@ -23,7 +23,7 @@ public class EntityCoercerServiceImpl implements EntityCoercerService
 
 		for (TynamoClassDescriptor classDescriptor : descriptorService.getAllDescriptors())
 		{
-			classToString(classDescriptor.getType());
+			classToString(classDescriptor.getBeanType());
 		}
 	}
 

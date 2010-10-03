@@ -3,6 +3,7 @@ package org.tynamo.descriptor.annotation;
 import org.apache.tapestry5.ioc.annotations.AnnotationUseContext;
 import org.apache.tapestry5.ioc.annotations.UseWith;
 import org.tynamo.descriptor.annotation.handlers.BlobDescriptorAnnotationHandler;
+import org.tynamo.descriptor.annotation.handlers.HandledBy;
 import org.tynamo.descriptor.extension.BlobDescriptorExtension;
 
 import java.lang.annotation.*;

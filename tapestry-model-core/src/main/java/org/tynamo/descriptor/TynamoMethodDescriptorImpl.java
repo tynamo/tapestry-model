@@ -6,7 +6,7 @@ public class TynamoMethodDescriptorImpl extends TynamoDescriptor implements IMet
 {
 
 	private String name;
-	private Class beanType;
+	private Class returnType;
 	private Class[] argumentTypes;
 
 	public TynamoMethodDescriptorImpl(IMethodDescriptor methodDescriptor)
@@ -16,11 +16,11 @@ public class TynamoMethodDescriptorImpl extends TynamoDescriptor implements IMet
 
 	public TynamoMethodDescriptorImpl(Class beanType, String name, Class returnType, Class[] argumentTypes)
 	{
-		super(returnType);
-		this.beanType = beanType;
+		super(beanType);
+		this.returnType = returnType;
 		this.name = name;
 		this.argumentTypes = argumentTypes;
-		setHidden(true);
+		setNonVisual(true);
 	}
 
 	/**
@@ -63,17 +63,17 @@ public class TynamoMethodDescriptorImpl extends TynamoDescriptor implements IMet
 		this.name = name;
 	}
 
-	public Class getBeanType()
+	public Class getReturnType()
 	{
-		return beanType;
+		return returnType;
 	}
 
 	/**
 	 * just for serialization pourposes
 	 */
-	public void setBeanType(Class beanType)
+	public void setReturnType(Class returnType)
 	{
-		this.beanType = beanType;
+		this.returnType = returnType;
 	}
 
 	public Method getMethod()

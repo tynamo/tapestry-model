@@ -37,7 +37,7 @@ public class AnnotationDecoratorTest extends Assert
 		descriptor = decorator.decorate(descriptor);
 
 		assertEquals("notBloppity", descriptor.getPropertyDescriptors().get(2).getName(), "right index");
-		assertTrue(descriptor.getPropertyDescriptor("hidden").isHidden());
+		assertTrue(descriptor.getPropertyDescriptor("hidden").isNonVisual());
 		assertTrue(descriptor.getPropertyDescriptor("id") instanceof IdentifierDescriptor, "still an id descriptor");
 	}
 

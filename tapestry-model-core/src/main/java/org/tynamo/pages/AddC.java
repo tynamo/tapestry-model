@@ -72,8 +72,8 @@ public class AddC {
 		this.collectionDescriptor = ((CollectionDescriptor) propertyDescriptor);
 
 		this.classDescriptor = descriptorService.getClassDescriptor(collectionDescriptor.getElementType());
-		this.bean = builderDirector.createNewInstance(classDescriptor.getType());
-		this.beanModel = beanModelSource.createEditModel(classDescriptor.getType(), messages);
+		this.bean = builderDirector.createNewInstance(classDescriptor.getBeanType());
+		this.beanModel = beanModelSource.createEditModel(classDescriptor.getBeanType(), messages);
 
 		this.parentBean = contextValueEncoder.toValue(clazz, parentId);
 		assert parentBean != null; //@todo throw a proper exception

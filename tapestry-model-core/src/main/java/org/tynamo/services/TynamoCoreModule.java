@@ -1,18 +1,20 @@
 package org.tynamo.services;
 
+import org.tynamo.internal.services.TynamoBeanModelSourceImpl;
 import org.apache.tapestry5.ioc.Configuration;
 import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.ioc.OrderedConfiguration;
 import org.apache.tapestry5.ioc.ServiceBinder;
 import org.apache.tapestry5.ioc.annotations.InjectService;
+import org.apache.tapestry5.ioc.annotations.Local;
 import org.apache.tapestry5.ioc.services.CoercionTuple;
-import org.apache.tapestry5.services.BeanBlockContribution;
-import org.apache.tapestry5.services.DataTypeAnalyzer;
-import org.apache.tapestry5.services.LibraryMapping;
+import org.apache.tapestry5.ioc.services.PropertyAccess;
+import org.apache.tapestry5.services.*;
 import org.tynamo.VersionedModule;
 import org.tynamo.blob.BlobManager;
 import org.tynamo.blob.DefaultBlobManager;
 import org.tynamo.builder.BuilderDirector;
+import org.tynamo.descriptor.decorators.TapestryDecorator;
 import org.tynamo.descriptor.decorators.TynamoDecorator;
 import org.tynamo.descriptor.decorators.DescriptorDecorator;
 import org.tynamo.descriptor.factories.*;
@@ -41,6 +43,14 @@ public class TynamoCoreModule extends VersionedModule
 
 		binder.bind(BlobManager.class, DefaultBlobManager.class).withId("DefaultBlobManager");
 
+		binder.bind(BeanModelSource.class, TynamoBeanModelSourceImpl.class).withId("TynamoBeanModelSourceImpl");
+
+	}
+
+	public static void contributeServiceOverride(MappedConfiguration<Class, Object> configuration,
+	                                             @Local BeanModelSource beanModelSource)
+	{
+		configuration.add(BeanModelSource.class, beanModelSource);
 	}
 
 	/**
@@ -64,18 +74,18 @@ public class TynamoCoreModule extends VersionedModule
 	{
 		configuration.add(new BeanBlockContribution("enum", PROPERTY_EDIT_BLOCKS, "select", true)); // overrides Tapestry's enum
 
-		configuration.add(new BeanBlockContribution("hidden", PROPERTY_EDIT_BLOCKS, "hidden", true));
+		configuration.add(new BeanBlockContribution("nonVisual", PROPERTY_EDIT_BLOCKS, "nonVisual", true));
 //		configuration.add(new BeanBlockContribution("dateEditor", PROPERTY_EDIT_BLOCKS, "date", true));
 //		configuration.add(new BeanBlockContribution("fckEditor", PROPERTY_EDIT_BLOCKS, "fckEditor", true));
 		configuration.add(new BeanBlockContribution("readOnly", PROPERTY_EDIT_BLOCKS, "readOnly", true));
 		configuration.add(new BeanBlockContribution("single-valued-association", PROPERTY_EDIT_BLOCKS, "select", true));
 		configuration.add(new BeanBlockContribution("identifierEditor", PROPERTY_EDIT_BLOCKS, "identifierEditor", true));
 		configuration.add(new BeanBlockContribution("many-valued-association", PROPERTY_EDIT_BLOCKS, "palette", true));
-		configuration.add(new BeanBlockContribution("composition", PROPERTY_EDIT_BLOCKS, "hidden", true));
+		configuration.add(new BeanBlockContribution("composition", PROPERTY_EDIT_BLOCKS, "nonVisual", true));
 		configuration.add(new BeanBlockContribution("embedded", PROPERTY_EDIT_BLOCKS, "embedded", true));
 		configuration.add(new BeanBlockContribution("blob", PROPERTY_EDIT_BLOCKS, "blob", true));
 
-		configuration.add(new BeanBlockContribution("hidden", PROPERTY_DISPLAY_BLOCKS, "hidden", false));
+		configuration.add(new BeanBlockContribution("nonVisual", PROPERTY_DISPLAY_BLOCKS, "nonVisual", false));
 		configuration.add(new BeanBlockContribution("single-valued-association", PROPERTY_DISPLAY_BLOCKS, "showPageLink", false));
 		configuration.add(new BeanBlockContribution("many-valued-association", PROPERTY_DISPLAY_BLOCKS, "showPageLinks", false));
 		configuration.add(new BeanBlockContribution("composition", PROPERTY_DISPLAY_BLOCKS, "composition", false));
@@ -105,15 +115,17 @@ public class TynamoCoreModule extends VersionedModule
 		configuration.add(new CoercionTuple<String, Class>(String.class, Class.class, new StringToClassCoercion(entityCoercerService)));
 	}
 
-	public static void contributeDescriptorFactory(OrderedConfiguration<DescriptorDecorator> configuration)
+	public static void contributeDescriptorFactory(OrderedConfiguration<DescriptorDecorator> configuration,
+	                                               PropertyAccess propertyAccess)
 	{
 		configuration.add("TynamoDecorator", new TynamoDecorator());
+		configuration.add("TapestryDecorator", new TapestryDecorator(propertyAccess));
 	}
 
 	public static void contributeTynamoDataTypeAnalyzer(OrderedConfiguration<Pair> configuration)
 	{
 
-		addPairToOrderedConfiguration(configuration, "hidden", "hidden");
+		addPairToOrderedConfiguration(configuration, "nonVisual", "nonVisual");
 		addPairToOrderedConfiguration(configuration, "readOnly", "readOnly");
 //		addPairToOrderedConfiguration(configuration, "richText", "fckEditor");
 //		addPairToOrderedConfiguration(configuration, "name.toLowerCase().endsWith('password')", "passwordEditor"); //USE @DataType("password")

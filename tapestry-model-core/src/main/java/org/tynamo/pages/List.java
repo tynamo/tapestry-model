@@ -50,15 +50,15 @@ public class List {
 	}
 
 	protected Object[] onPassivate() {
-		return new Object[]{classDescriptor.getType()};
+		return new Object[]{classDescriptor.getBeanType()};
 	}
 
 	public Object getSource() {
-		return new TynamoGridDataSource(persitenceService, classDescriptor.getType());
+		return new TynamoGridDataSource(persitenceService, classDescriptor.getBeanType());
 	}
 
 	public Object[] getEditPageContext() {
-		return new Object[]{classDescriptor.getType(), bean};
+		return new Object[]{classDescriptor.getBeanType(), bean};
 	}
 
 	public String getTitle() {

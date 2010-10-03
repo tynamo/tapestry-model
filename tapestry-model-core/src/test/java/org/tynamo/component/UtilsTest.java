@@ -24,11 +24,6 @@ import org.tynamo.util.Utils;
 
 public class UtilsTest extends TestCase
 {
-	public void testUnqualify()
-	{
-		assertEquals("Foo", Utils.unqualify(Foo.class.getName()));
-		assertEquals(Baz.class.getSimpleName(), Utils.unqualify(Baz.class.getName()));
-	}
 
 	public void testPluralize()
 	{

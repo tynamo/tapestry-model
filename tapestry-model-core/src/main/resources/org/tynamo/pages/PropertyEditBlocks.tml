@@ -1,6 +1,6 @@
 <html xmlns:t="http://tapestry.apache.org/schema/tapestry_5_0_0.xsd" xmlns:p="tapestry:parameter">
 
-	<t:block id="hidden"/>
+	<t:block id="nonVisual"/>
 
 	<t:block id="select">
 		<t:label for="select"/>

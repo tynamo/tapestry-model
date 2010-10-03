@@ -2,13 +2,7 @@ package org.tynamo.descriptor;
 
 public interface TynamoPropertyDescriptor extends Descriptor
 {
-	public static final int UNDEFINED_INDEX = -1;
-
 	public static final int DEFAULT_LENGTH = 255;
-
-	public void setIndex(int index);
-
-	public int getIndex();
 
 	/**
 	 * @return
@@ -80,11 +74,7 @@ public interface TynamoPropertyDescriptor extends Descriptor
 
 	public void setSearchable(boolean searchable);
 
-	public boolean isSummary();
-
 	public boolean isCollection();
-
-	public void setSummary(boolean summary);
 
 	public boolean isEmbedded();
 

@@ -66,7 +66,7 @@ public class TynamoDescriptorServiceTest extends TestBase
 
 		TynamoClassDescriptor decoratedDescriptor = new TynamoClassDescriptorImpl(TestBean.class);
 		decoratedDescriptor.setHasCyclicRelationships(true);
-		decoratedDescriptor.setHidden(true);
+		decoratedDescriptor.setNonVisual(true);
 
 		DescriptorDecorator decorator = newMock(DescriptorDecorator.class);
 		expect(decorator.decorate(EasyMock.<TynamoClassDescriptor>anyObject())).andReturn(decoratedDescriptor).atLeastOnce();
@@ -78,7 +78,7 @@ public class TynamoDescriptorServiceTest extends TestBase
 		TynamoClassDescriptor classDescriptor = descriptorService.getClassDescriptor(TestBean.class);
 
 		assertNotNull(classDescriptor);
-		assertTrue(classDescriptor.isHidden(), "was decorated");
+		assertTrue(classDescriptor.isNonVisual(), "was decorated");
 		assertTrue(classDescriptor.getHasCyclicRelationships(), "was decorated");
 
 		verify();

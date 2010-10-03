@@ -3,6 +3,7 @@ package org.tynamo.descriptor.annotation;
 import org.apache.tapestry5.ioc.annotations.AnnotationUseContext;
 import org.apache.tapestry5.ioc.annotations.UseWith;
 import org.tynamo.descriptor.annotation.handlers.CollectionDescriptorAnnotationHandler;
+import org.tynamo.descriptor.annotation.handlers.HandledBy;
 
 import java.lang.annotation.*;
 

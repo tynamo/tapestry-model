@@ -1,4 +1,4 @@
-package org.tynamo.descriptor.annotation;
+package org.tynamo.descriptor.annotation.handlers;
 
 import org.tynamo.descriptor.annotation.handlers.DescriptorAnnotationHandler;
 

@@ -82,14 +82,14 @@ public class JPADescriptorDecorator implements DescriptorDecorator
 	public TynamoClassDescriptor decorate(TynamoClassDescriptor descriptor) {
 		ArrayList<TynamoPropertyDescriptor> decoratedPropertyDescriptors = new ArrayList<TynamoPropertyDescriptor>();
 
-		Class type = descriptor.getType();
+		Class type = descriptor.getBeanType();
 		Metamodel metamodel = null;
 
 		try {
 			metamodel = findMetadata(type);
 		} catch (MetadataNotFoundException e) {
 			if (ignoreNonEntityTypes) {
-				logger.warn("MetadataNotFound! Ignoring:" + descriptor.getType().toString());
+				logger.warn("MetadataNotFound! Ignoring:" + descriptor.getBeanType().toString());
 				return descriptor;
 			} else {
 				throw new TynamoRuntimeException(e);
@@ -126,7 +126,7 @@ public class JPADescriptorDecorator implements DescriptorDecorator
 
 	protected TynamoPropertyDescriptor decoratePropertyDescriptor(Class type, Metamodel metamodel,
 																  TynamoPropertyDescriptor propertyDescriptor, TynamoClassDescriptor parentClassDescriptor) {
-		ManagedType managedType = metamodel.managedType(parentClassDescriptor.getType());
+		ManagedType managedType = metamodel.managedType(parentClassDescriptor.getBeanType());
 		Attribute attribute;
 		try {
 			attribute = managedType.getAttribute(propertyDescriptor.getName());

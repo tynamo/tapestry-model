@@ -17,7 +17,10 @@ import java.util.List;
 
 public interface TynamoClassDescriptor extends Descriptor
 {
-	public Class getType();
+	/**
+	 * Returns the type of bean to which this property belongs.
+	 */
+	Class getBeanType();
 
 	/**
 	 * @return Returns the methodDescriptors.

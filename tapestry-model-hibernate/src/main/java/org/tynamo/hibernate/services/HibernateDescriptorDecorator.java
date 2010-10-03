@@ -95,7 +95,7 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 	{
 		ArrayList<TynamoPropertyDescriptor> decoratedPropertyDescriptors = new ArrayList<TynamoPropertyDescriptor>();
 
-		Class type = descriptor.getType();
+		Class type = descriptor.getBeanType();
 		ClassMetadata classMetaData = null;
 
 		try
@@ -105,8 +105,8 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 		{
 			if (ignoreNonHibernateTypes)
 			{
-				logger.warn("MetadataNotFound! Ignoring:" + descriptor.getType().toString());
-				descriptor.setHidden(true);
+				logger.warn("MetadataNotFound! Ignoring:" + descriptor.getBeanType().toString());
+				descriptor.setNonVisual(true);
 				return descriptor;
 			} else
 			{
@@ -422,7 +422,7 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 	                                                              TynamoClassDescriptor parentClassDescriptor)
 	{
 		Type hibernateType = mappingProperty.getType();
-		Class parentClassType = parentClassDescriptor.getType();
+		Class parentClassType = parentClassDescriptor.getBeanType();
 		ObjectReferenceDescriptor descriptorReference = new ObjectReferenceDescriptor(type, descriptor, hibernateType
 				.getReturnedClass());
 
@@ -492,7 +492,7 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 	                                         CollectionDescriptor collectionDescriptor,
 	                                         org.hibernate.mapping.Collection collectionMapping)
 	{
-		Class type = parentClassDescriptor.getType();
+		Class type = parentClassDescriptor.getBeanType();
 		if (collectionDescriptor.isOneToMany() && collectionMapping.isInverse())
 		{
 			try

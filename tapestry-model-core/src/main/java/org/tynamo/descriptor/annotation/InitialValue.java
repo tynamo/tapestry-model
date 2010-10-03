@@ -1,5 +1,6 @@
 package org.tynamo.descriptor.annotation;
 
+import org.tynamo.descriptor.annotation.handlers.HandledBy;
 import org.tynamo.descriptor.annotation.handlers.InitialValueAnnotationHandler;
 
 import java.lang.annotation.ElementType;

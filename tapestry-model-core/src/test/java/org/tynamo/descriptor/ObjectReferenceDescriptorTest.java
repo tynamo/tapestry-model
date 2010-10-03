@@ -12,6 +12,6 @@ public class ObjectReferenceDescriptorTest extends Assert
 	{
 		ObjectReferenceDescriptor descriptor = new ObjectReferenceDescriptor(Foo.class, Foo.class, Foo.class);
 		ObjectReferenceDescriptor descriptor2 = (ObjectReferenceDescriptor) descriptor.clone();
-		assertEquals(Foo.class, descriptor2.getType());
+		assertEquals(Foo.class, descriptor2.getBeanType());
 	}
 }

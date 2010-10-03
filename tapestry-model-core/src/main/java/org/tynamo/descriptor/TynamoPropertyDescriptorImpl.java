@@ -18,7 +18,8 @@ import java.lang.reflect.InvocationTargetException;
 
 public class TynamoPropertyDescriptorImpl extends TynamoDescriptor implements TynamoPropertyDescriptor
 {
-	private Class beanType;
+
+	private Class propertyType;
 
 	private String name;
 
@@ -28,15 +29,11 @@ public class TynamoPropertyDescriptorImpl extends TynamoDescriptor implements Ty
 
 	private boolean readOnly;
 
-	private int index = UNDEFINED_INDEX;
-
 	private int length = DEFAULT_LENGTH;
 
 	private boolean large;
 
 	private String format;
-
-	private boolean summary = true;
 
 	private boolean richText;
 
@@ -65,15 +62,15 @@ public class TynamoPropertyDescriptorImpl extends TynamoDescriptor implements Ty
 		}
 	}
 
-	public TynamoPropertyDescriptorImpl(Class beanType, Class type)
+	public TynamoPropertyDescriptorImpl(Class beanType, Class propertyType)
 	{
-		super(type);
-		this.beanType = beanType;
+		super(beanType);
+		this.propertyType = propertyType;
 	}
 
-	public TynamoPropertyDescriptorImpl(Class beanType, String name, Class type)
+	public TynamoPropertyDescriptorImpl(Class beanType, String name, Class propertyType)
 	{
-		this(beanType, type);
+		this(beanType, propertyType);
 		this.setName(name);
 	}
 
@@ -102,12 +99,14 @@ public class TynamoPropertyDescriptorImpl extends TynamoDescriptor implements Ty
 		}
 	}
 
-	/**
-	 * @return
-	 */
 	public Class getPropertyType()
 	{
-		return getType();
+		return propertyType;
+	}
+
+	public void setPropertyType(Class propertyType)
+	{
+		this.propertyType = propertyType;
 	}
 
 	/**
@@ -151,16 +150,6 @@ public class TynamoPropertyDescriptorImpl extends TynamoDescriptor implements Ty
 	public boolean isObjectReference()
 	{
 		return false;
-	}
-
-	public int getIndex()
-	{
-		return index;
-	}
-
-	public void setIndex(int index)
-	{
-		this.index = index;
 	}
 
 	/**
@@ -288,16 +277,6 @@ public class TynamoPropertyDescriptorImpl extends TynamoDescriptor implements Ty
 		this.searchable = searchable;
 	}
 
-	public boolean isSummary()
-	{
-		return summary;
-	}
-
-	public void setSummary(boolean summary)
-	{
-		this.summary = summary;
-	}
-
 	public boolean isRichText()
 	{
 		return richText;
@@ -311,16 +290,6 @@ public class TynamoPropertyDescriptorImpl extends TynamoDescriptor implements Ty
 	public boolean isEmbedded()
 	{
 		return false;
-	}
-
-	public Class getBeanType()
-	{
-		return beanType;
-	}
-
-	public void setBeanType(Class beanType)
-	{
-		this.beanType = beanType;
 	}
 
 	public String getName()

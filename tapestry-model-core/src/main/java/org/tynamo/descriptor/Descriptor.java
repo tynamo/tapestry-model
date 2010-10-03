@@ -4,12 +4,9 @@ import org.tynamo.descriptor.extension.Extensible;
 
 public interface Descriptor extends Cloneable, Extensible
 {
-	/**
-	 * @return
-	 */
-	public boolean isHidden();
+	public boolean isNonVisual();
 
-	public void setHidden(boolean hidden);
+	public void setNonVisual(boolean nonVisual);
 
 	public Object clone();
 

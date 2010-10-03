@@ -3,6 +3,7 @@ package org.tynamo.descriptor.annotation;
 import org.apache.tapestry5.ioc.annotations.AnnotationUseContext;
 import org.apache.tapestry5.ioc.annotations.UseWith;
 import org.tynamo.descriptor.annotation.handlers.ClassDescriptorAnnotationHandler;
+import org.tynamo.descriptor.annotation.handlers.HandledBy;
 
 import java.lang.annotation.*;
 
@@ -14,9 +15,9 @@ import java.lang.annotation.*;
 @UseWith(AnnotationUseContext.BEAN)
 public @interface ClassDescriptor
 {
-	public static final boolean DEFAULT_hidden = false;
+	public static final boolean DEFAULT_nonVisual = false;
 
-	boolean hidden() default false;
+	boolean nonVisual() default false;
 
 	boolean hasCyclicRelationships() default false;
 

@@ -14,9 +14,7 @@ package org.tynamo.descriptor;
 import ognl.Ognl;
 import ognl.OgnlException;
 import org.testng.Assert;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 import org.tynamo.test.Bar;
 import org.tynamo.test.BlogEntry;
@@ -51,7 +49,7 @@ public class TynamoClassDescriptorTest extends Assert
 	public void testClone() throws Exception
 	{
 		TynamoClassDescriptorImpl clone = (TynamoClassDescriptorImpl) classDescriptor.clone();
-		assertEquals(Foo.class, clone.getType(), "still foo");
+		assertEquals(Foo.class, clone.getBeanType(), "still foo");
 		assertEquals(clone.getPropertyDescriptors().size(), 2, "2 props");
 		assertTrue(clone.getPropertyDescriptor("id") instanceof IdentifierDescriptor, "clone has id");
 		assertEquals(idProp.getName(), clone.getIdentifierDescriptor().getName(), "clone has id");
@@ -62,7 +60,7 @@ public class TynamoClassDescriptorTest extends Assert
 	@Test public void testCopyConstructor() throws Exception
 	{
 		TynamoClassDescriptorImpl copiedDescriptor = new TynamoClassDescriptorImpl(classDescriptor);
-		assertEquals(copiedDescriptor.getType().getSimpleName(), "Foo");
+		assertEquals(copiedDescriptor.getBeanType().getSimpleName(), "Foo");
 		assertEquals(2, copiedDescriptor.getPropertyDescriptors().size(), "2 properties");
 		assertTrue(copiedDescriptor.getHasCyclicRelationships(), "still has cyclic relationships");
 	}

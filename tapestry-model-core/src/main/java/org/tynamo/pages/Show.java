@@ -65,11 +65,11 @@ public class Show {
 	 * @return
 	 */
 	protected Object[] onPassivate() {
-		return new Object[]{classDescriptor.getType(), bean};
+		return new Object[]{classDescriptor.getBeanType(), bean};
 	}
 
 	public Object[] getEditPageContext() {
-		return new Object[]{classDescriptor.getType(), bean};
+		return new Object[]{classDescriptor.getBeanType(), bean};
 	}
 
 	public String getEditLinkMessage() {
@@ -82,7 +82,7 @@ public class Show {
 
 	public Link onActionFromDelete() {
 		persitenceService.remove(bean);
-		return pageRenderLinkSource.createPageRenderLinkWithContext("List", classDescriptor.getType());
+		return pageRenderLinkSource.createPageRenderLinkWithContext("List", classDescriptor.getBeanType());
 	}
 
 	public boolean isAllowRemove() {

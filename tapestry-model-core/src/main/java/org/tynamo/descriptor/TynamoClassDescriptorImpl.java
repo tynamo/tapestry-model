@@ -50,9 +50,9 @@ public class TynamoClassDescriptorImpl extends TynamoDescriptor implements Tynam
 		copyMethodDescriptorsFrom(descriptor);
 	}
 
-	public TynamoClassDescriptorImpl(Class type)
+	public TynamoClassDescriptorImpl(Class beanType)
 	{
-		super(type);
+		super(beanType);
 	}
 
 	/**
@@ -260,7 +260,7 @@ public class TynamoClassDescriptorImpl extends TynamoDescriptor implements Tynam
 	 */
 	public String toString()
 	{
-		return "{TynamoClassDescriptor - Type: " + getType() + "}";
+		return "{TynamoClassDescriptor - Type: " + getBeanType() + "}";
 	}
 
 }

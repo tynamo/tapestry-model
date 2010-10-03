@@ -14,9 +14,9 @@ public class TynamoDescriptor implements Descriptor, Serializable
 {
 	protected static final Log LOG = LogFactory.getLog(TynamoDescriptor.class);
 
-	protected Class type;
+	protected Class beanType;
 
-	private boolean hidden;
+	private boolean nonVisual;
 
 	Map<String, DescriptorExtension> extensions = new Hashtable<String, DescriptorExtension>();
 
@@ -64,9 +64,9 @@ public class TynamoDescriptor implements Descriptor, Serializable
 		}
 	}
 
-	public TynamoDescriptor(Class type)
+	public TynamoDescriptor(Class beanType)
 	{
-		this.type = type;
+		this.beanType = beanType;
 	}
 
 	@Override
@@ -114,24 +114,37 @@ public class TynamoDescriptor implements Descriptor, Serializable
 		}
 	}
 
-	public boolean isHidden()
+	public boolean isNonVisual()
 	{
-		return hidden;
+		return nonVisual;
 	}
 
-	public void setHidden(boolean hidden)
+	public void setNonVisual(boolean nonVisual)
 	{
-		this.hidden = hidden;
+		this.nonVisual = nonVisual;
 	}
 
+	/**
+	 * @deprecated: Use getBeanType instead
+	 */
+	@Deprecated
 	public Class getType()
 	{
-		return type;
+		return getBeanType();
 	}
 
-	public void setType(Class type)
+
+	/**
+	 * Returns the type of bean this descriptor provides metadata for.
+	 */
+	public Class getBeanType()
 	{
-		this.type = type;
+		return beanType;
+	}
+
+	public void setBeanType(Class beanType)
+	{
+		this.beanType = beanType;
 	}
 
 	/**

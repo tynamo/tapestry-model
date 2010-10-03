@@ -32,7 +32,7 @@ public class ListPageLinkList
 
 		for (TynamoClassDescriptor descriptor : descriptors)
 		{
-			if (!descriptor.isHidden())
+			if (!descriptor.isNonVisual())
 			{
 				result.add(descriptor);
 			}

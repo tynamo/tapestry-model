@@ -33,7 +33,7 @@ public class Annotated
 	}
 
 
-	@PropertyDescriptor(hidden = true)
+	@PropertyDescriptor(nonVisual = true)
 	public String getHidden()
 	{
 		return hidden;

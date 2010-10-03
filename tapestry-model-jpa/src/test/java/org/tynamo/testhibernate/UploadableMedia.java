@@ -115,18 +115,18 @@ public class UploadableMedia implements ITrailsBlob
 		return id;
 	}
 
-	@PropertyDescriptor(hidden = false, summary = true, searchable = true)
+	@PropertyDescriptor(nonVisual = false, summary = true, searchable = true)
 	public String getName() {
 		return name;
 	}
 
-	@PropertyDescriptor(hidden = false, summary = true, searchable = true)
+	@PropertyDescriptor(nonVisual = false, summary = true, searchable = true)
 	public String getDescription() {
 		return description;
 	}
 
 	@Enumerated(value = EnumType.STRING)
-	@PropertyDescriptor(hidden = false, summary = true, searchable = true)
+	@PropertyDescriptor(nonVisual = false, summary = true, searchable = true)
 	public EMedia getMediaType() {
 		return mediaType;
 	}
@@ -136,17 +136,17 @@ public class UploadableMedia implements ITrailsBlob
 		return fileName;
 	}
 
-	@PropertyDescriptor(hidden = true, readOnly = true)
+	@PropertyDescriptor(nonVisual = true, readOnly = true)
 	public String getFilePath() {
 		return filePath;
 	}
 
-	@PropertyDescriptor(hidden = true, readOnly = true)
+	@PropertyDescriptor(nonVisual = true, readOnly = true)
 	public String getFileExtension() {
 		return fileExtension;
 	}
 
-	@PropertyDescriptor(hidden = true, readOnly = true)
+	@PropertyDescriptor(nonVisual = true, readOnly = true)
 	public Long getNumBytes() {
 		return numBytes;
 	}
@@ -166,18 +166,18 @@ public class UploadableMedia implements ITrailsBlob
 		return bytes;
 	}
 
-	@PropertyDescriptor(hidden = true, summary = false, searchable = false)
+	@PropertyDescriptor(nonVisual = true, summary = false, searchable = false)
 	public Long getCreated() {
 		return created;
 	}
 
-	@PropertyDescriptor(hidden = true, summary = false, searchable = false)
+	@PropertyDescriptor(nonVisual = true, summary = false, searchable = false)
 	public Long getAccessed() {
 		return accessed;
 	}
 
 	@Transient
-	@PropertyDescriptor(hidden = true, summary = false, searchable = false)
+	@PropertyDescriptor(nonVisual = true, summary = false, searchable = false)
 	public String getCreatedAsString() {
 		Calendar cal = new GregorianCalendar();
 		cal.setTimeInMillis(created.longValue());
@@ -185,7 +185,7 @@ public class UploadableMedia implements ITrailsBlob
 	}
 
 	@Transient
-	@PropertyDescriptor(hidden = true, summary = false, searchable = false)
+	@PropertyDescriptor(nonVisual = true, summary = false, searchable = false)
 	public String getAccessedAsString() {
 		Calendar cal = new GregorianCalendar();
 		cal.setTimeInMillis(accessed.longValue());
@@ -193,7 +193,7 @@ public class UploadableMedia implements ITrailsBlob
 	}
 
 	@Transient
-	@PropertyDescriptor(hidden = true, summary = false, searchable = false)
+	@PropertyDescriptor(nonVisual = true, summary = false, searchable = false)
 	public void setCreatedAsString(String value) throws Exception {
 		Calendar cal = new GregorianCalendar();
 		cal.setTimeInMillis(sdf.parse(value).getTime());
@@ -201,7 +201,7 @@ public class UploadableMedia implements ITrailsBlob
 	}
 
 	@Transient
-	@PropertyDescriptor(hidden = true, summary = false, searchable = false)
+	@PropertyDescriptor(nonVisual = true, summary = false, searchable = false)
 	public void setAccessedAsString(String value) throws Exception {
 		Calendar cal = new GregorianCalendar();
 		cal.setTimeInMillis(sdf.parse(value).getTime());

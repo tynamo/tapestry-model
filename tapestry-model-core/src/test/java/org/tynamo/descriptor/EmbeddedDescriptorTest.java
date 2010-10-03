@@ -17,7 +17,7 @@ public class EmbeddedDescriptorTest extends Assert
 		embeddedDescriptor.getPropertyDescriptors().add(new TynamoPropertyDescriptorImpl(Embeddee.class, "title", String.class));
 		EmbeddedDescriptor cloned = (EmbeddedDescriptor) embeddedDescriptor.clone();
 		assertEquals(Embeddor.class, cloned.getBeanType());
-		assertEquals(Embeddee.class, cloned.getType());
+		assertEquals(Embeddee.class, cloned.getBeanType());
 		assertEquals(1, cloned.getPropertyDescriptors().size());
 	}
 

@@ -3,6 +3,7 @@ package org.tynamo.util;
 import ognl.Ognl;
 import ognl.OgnlException;
 import org.apache.tapestry5.beaneditor.BeanModel;
+import org.apache.tapestry5.ioc.internal.util.InternalUtils;
 import org.tynamo.descriptor.TynamoClassDescriptor;
 
 import java.util.List;
@@ -24,7 +25,7 @@ public final class BeanModelUtils
 		try
 		{
 			List<String> nameList = (List<String>) Ognl
-					.getValue("propertyDescriptors.{? identifier or !summary or hidden or collection}.{name}",
+					.getValue("propertyDescriptors.{? identifier or !summary or nonVisual or collection}.{name}",
 							classDescriptor);
 
 			model.exclude((String[]) nameList.toArray(new String[nameList.size()]));
@@ -34,5 +35,12 @@ public final class BeanModelUtils
 		}
 	}
 
+	public static final String join(String firstList, String optionalSecondList)
+	{
+		if (InternalUtils.isBlank(optionalSecondList))
+			return firstList;
+
+		return firstList + "," + optionalSecondList;
+	}
 
 }

@@ -39,24 +39,6 @@ public class Utils
 
 	public static final String LISTALL_LINK_MESSAGE = "org.tynamo.component.listalllink";
 
-	public static String DEFAULT = "Default";
-
-	public static Class classForName(String className)
-	{
-		try
-		{
-			return Class.forName(className);
-		} catch (ClassNotFoundException e)
-		{
-			throw new TynamoRuntimeException(e, null);
-		}
-	}
-
-	public static String unqualify(String className)
-	{
-		return className.substring(className.lastIndexOf(".") + 1);
-	}
-
 	/**
 	 * Thank you, AndroMDA project...
 	 * Linguistically pluralizes a singular noun. <p/>

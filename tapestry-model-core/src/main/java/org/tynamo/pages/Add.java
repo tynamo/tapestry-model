@@ -61,17 +61,17 @@ public class Add {
 	}
 
 	protected Object[] onPassivate() {
-		return new Object[]{classDescriptor.getType()};
+		return new Object[]{classDescriptor.getBeanType()};
 	}
 
 	@Log
 	protected Object onSuccess() {
 		persitenceService.save(bean);
-		return pageRenderLinkSource.createPageRenderLinkWithContext("Show", classDescriptor.getType(), bean);
+		return pageRenderLinkSource.createPageRenderLinkWithContext("Show", classDescriptor.getBeanType(), bean);
 	}
 
 	public Link onActionFromCancel() {
-		return pageRenderLinkSource.createPageRenderLinkWithContext("List", classDescriptor.getType());
+		return pageRenderLinkSource.createPageRenderLinkWithContext("List", classDescriptor.getBeanType());
 	}
 
 	public String getTitle() {

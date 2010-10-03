@@ -6,12 +6,6 @@ import org.tynamo.descriptor.annotation.ClassDescriptor;
 public class ClassDescriptorAnnotationHandler extends AbstractAnnotationHandler implements DescriptorAnnotationHandler<ClassDescriptor, TynamoClassDescriptor>
 {
 
-	public ClassDescriptorAnnotationHandler()
-	{
-		super();
-		// TODO Auto-generated constructor stub
-	}
-
 	public TynamoClassDescriptor decorateFromAnnotation(ClassDescriptor annotation, TynamoClassDescriptor descriptor)
 	{
 		/**

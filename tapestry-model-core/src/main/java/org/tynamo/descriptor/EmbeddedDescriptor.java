@@ -3,8 +3,6 @@ package org.tynamo.descriptor;
 public class EmbeddedDescriptor extends TynamoClassDescriptorImpl implements IdentifierDescriptor
 {
 
-	private int index;
-
 	private boolean readOnly;
 
 	private boolean identifier;
@@ -23,23 +21,21 @@ public class EmbeddedDescriptor extends TynamoClassDescriptorImpl implements Ide
 
 	private boolean searchable;
 
-	private boolean summary;
-
 	private boolean richText;
 
-	private Class beanType;
+	private Class propertyType;
 
-	public EmbeddedDescriptor(Class beanType, TynamoClassDescriptor descriptor)
+	public EmbeddedDescriptor(Class propertyType, TynamoClassDescriptor descriptor)
 	{
 		super(descriptor);
-		this.beanType = beanType;
+		this.propertyType = propertyType;
 	}
 
-	public EmbeddedDescriptor(Class beanType, String name, Class type)
+	public EmbeddedDescriptor(Class beanType, String name, Class propertyType)
 	{
-		super(type);
+		super(beanType);
 		this.name = name;
-		this.beanType = beanType;
+		this.propertyType = propertyType;
 	}
 
 	public boolean isNumeric()
@@ -79,17 +75,12 @@ public class EmbeddedDescriptor extends TynamoClassDescriptorImpl implements Ide
 
 	public Class getPropertyType()
 	{
-		return getType();
+		return propertyType;
 	}
 
 	public void setPropertyType(Class propertyType)
 	{
-		setType(propertyType);
-	}
-
-	public int getIndex()
-	{
-		return index;
+		this.propertyType = propertyType;
 	}
 
 	public boolean isReadOnly()
@@ -100,11 +91,6 @@ public class EmbeddedDescriptor extends TynamoClassDescriptorImpl implements Ide
 	public void setReadOnly(boolean readOnly)
 	{
 		this.readOnly = readOnly;
-	}
-
-	public void setIndex(int index)
-	{
-		this.index = index;
 	}
 
 	public String getName()
@@ -160,16 +146,6 @@ public class EmbeddedDescriptor extends TynamoClassDescriptorImpl implements Ide
 	public void setSearchable(boolean searchable)
 	{
 		this.searchable = searchable;
-	}
-
-	public boolean isSummary()
-	{
-		return summary;
-	}
-
-	public void setSummary(boolean summary)
-	{
-		this.summary = summary;
 	}
 
 	public Class getBeanType()

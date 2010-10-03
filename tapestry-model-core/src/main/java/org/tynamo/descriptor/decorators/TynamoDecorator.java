@@ -5,8 +5,8 @@ import org.apache.commons.lang.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.tynamo.descriptor.*;
-import org.tynamo.descriptor.annotation.HandledBy;
 import org.tynamo.descriptor.annotation.handlers.DescriptorAnnotationHandler;
+import org.tynamo.descriptor.annotation.handlers.HandledBy;
 
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
@@ -14,7 +14,6 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -31,12 +30,10 @@ public class TynamoDecorator implements DescriptorDecorator
 	public TynamoClassDescriptor decorate(TynamoClassDescriptor descriptor)
 	{
 
-		Annotation[] classAnnotations = descriptor.getType().getAnnotations();
+		Annotation[] classAnnotations = descriptor.getBeanType().getAnnotations();
 		TynamoClassDescriptor decoratedDescriptor = (TynamoClassDescriptor) decorateFromAnnotations(descriptor, classAnnotations);
 
 		decoratedDescriptor.setPropertyDescriptors(decoratePropertyDescriptors(descriptor));
-		sortDescriptors(decoratedDescriptor.getPropertyDescriptors());
-
 		decoratedDescriptor.setMethodDescriptors(decorateMethodDescriptors(descriptor));
 
 		return decoratedDescriptor;
@@ -112,31 +109,13 @@ public class TynamoDecorator implements DescriptorDecorator
 		return methodDescriptor;
 	}
 
-	/**
-	 * Rearrange the property descriptors by their index
-	 *
-	 * @param propertyDescriptors
-	 */
-	private void sortDescriptors(List<TynamoPropertyDescriptor> propertyDescriptors)
-	{
-		for (TynamoPropertyDescriptor propertyDescriptor : Collections.unmodifiableList(propertyDescriptors))
-		{
-			if (propertyDescriptor.getIndex() != TynamoPropertyDescriptor.UNDEFINED_INDEX)
-			{
-				Collections.swap(propertyDescriptors, propertyDescriptor.getIndex(),
-						propertyDescriptors.indexOf(propertyDescriptor));
-			}
-		}
-	}
-
 	private Descriptor decorateFromAnnotations(Descriptor descriptor, Annotation[] annotations)
 	{
 		Descriptor clonedDescriptor = (Descriptor) descriptor.clone();
 		for (Annotation annotation : annotations)
 		{
-			// If the annotation type itself has a HandledBy, it's one of ours
-			HandledBy handlerAnnotation =
-					annotation.annotationType().getAnnotation(HandledBy.class);
+			// If the annotation type itself has a @HandledBy annotation, it's one of ours
+			HandledBy handlerAnnotation = annotation.annotationType().getAnnotation(HandledBy.class);
 			if (handlerAnnotation != null)
 			{
 				try

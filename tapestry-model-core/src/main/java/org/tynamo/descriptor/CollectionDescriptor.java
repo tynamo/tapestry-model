@@ -182,7 +182,7 @@ public class CollectionDescriptor extends TynamoPropertyDescriptorImpl
 		 * eg: "bazzes.contains(#member) ? bazzes.size() : bazzes.add" 
 		 *
 		 */
-		if (isChildRelationship() && List.class.isAssignableFrom(getType()))
+		if (isChildRelationship() && List.class.isAssignableFrom(getBeanType()))
 		{
 			return findExpression(method,
 					getName() + ".contains(#member) ? " + getName() + ".size() : " + getName() + "." + method);

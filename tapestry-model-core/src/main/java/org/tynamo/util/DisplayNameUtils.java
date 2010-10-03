@@ -21,9 +21,9 @@ public class DisplayNameUtils
 	 */
 	public static String getPluralDisplayName(TynamoClassDescriptor classDescriptor, Messages messages)
 	{
-		String fullName = classDescriptor.getType().getName() + PLURAL_SUFIX;
-		String shortName = classDescriptor.getType().getSimpleName() + PLURAL_SUFIX;
-		return selectDisplayName(fullName, shortName, Utils.pluralize(TapestryInternalUtils.toUserPresentable(classDescriptor.getType().getSimpleName())), messages);
+		String fullName = classDescriptor.getBeanType().getName() + PLURAL_SUFIX;
+		String shortName = classDescriptor.getBeanType().getSimpleName() + PLURAL_SUFIX;
+		return selectDisplayName(fullName, shortName, Utils.pluralize(TapestryInternalUtils.toUserPresentable(classDescriptor.getBeanType().getSimpleName())), messages);
 	}
 
 	/**
@@ -33,7 +33,7 @@ public class DisplayNameUtils
 	 */
 	public static String getDisplayName(TynamoClassDescriptor classDescriptor, Messages messages)
 	{
-		return getDisplayName(classDescriptor.getType(), messages);
+		return getDisplayName(classDescriptor.getBeanType(), messages);
 	}
 
 	/**
@@ -65,8 +65,8 @@ public class DisplayNameUtils
 	 */
 	public static String getShortDescription(TynamoClassDescriptor classDescriptor, Messages messages)
 	{
-		String fullName = classDescriptor.getType().getName() + SHORTDESC_SUFIX;
-		String shortName = classDescriptor.getType().getSimpleName() + SHORTDESC_SUFIX;
+		String fullName = classDescriptor.getBeanType().getName() + SHORTDESC_SUFIX;
+		String shortName = classDescriptor.getBeanType().getSimpleName() + SHORTDESC_SUFIX;
 		return selectDisplayName(fullName, shortName, StringUtils.EMPTY, messages);
 	}
 

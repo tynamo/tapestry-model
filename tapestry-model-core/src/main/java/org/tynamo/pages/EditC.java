@@ -67,12 +67,12 @@ public class EditC {
 		this.collectionDescriptor = ((CollectionDescriptor) propertyDescriptor);
 
 		this.classDescriptor = descriptorService.getClassDescriptor(collectionDescriptor.getElementType());
-		this.beanModel = beanModelSource.createEditModel(classDescriptor.getType(), messages);
+		this.beanModel = beanModelSource.createEditModel(classDescriptor.getBeanType(), messages);
 
 		this.parentBean = contextValueEncoder.toValue(clazz, parentId);
 		assert parentBean != null; //@todo throw a proper exception
 
-		this.bean = contextValueEncoder.toValue(classDescriptor.getType(), id);
+		this.bean = contextValueEncoder.toValue(classDescriptor.getBeanType(), id);
 		assert bean != null; //@todo throw a proper exception
 
 	}

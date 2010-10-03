@@ -66,7 +66,7 @@ public class Edit {
 	 * @return
 	 */
 	protected Object[] onPassivate() {
-		return new Object[]{classDescriptor.getType(), bean};
+		return new Object[]{classDescriptor.getBeanType(), bean};
 	}
 
 	@Log
@@ -93,7 +93,7 @@ public class Edit {
 	}
 
 	public Link back() {
-		return pageRenderLinkSource.createPageRenderLinkWithContext("Show", classDescriptor.getType(), getBean());
+		return pageRenderLinkSource.createPageRenderLinkWithContext("Show", classDescriptor.getBeanType(), getBean());
 	}
 
 	public TynamoClassDescriptor getClassDescriptor() {

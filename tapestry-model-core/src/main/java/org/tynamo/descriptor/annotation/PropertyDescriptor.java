@@ -2,7 +2,7 @@ package org.tynamo.descriptor.annotation;
 
 import org.apache.tapestry5.ioc.annotations.AnnotationUseContext;
 import org.apache.tapestry5.ioc.annotations.UseWith;
-import org.tynamo.descriptor.TynamoPropertyDescriptor;
+import org.tynamo.descriptor.annotation.handlers.HandledBy;
 import org.tynamo.descriptor.annotation.handlers.PropertyDescriptorAnnotationHandler;
 
 import java.lang.annotation.*;
@@ -15,23 +15,15 @@ import java.lang.annotation.*;
 public @interface PropertyDescriptor
 {
 
-	public static final int DEFAULT_index = TynamoPropertyDescriptor.UNDEFINED_INDEX;
 	public static final String DEFAULT_format = "no_format";
-
-	/**
-	 * Specifies if a property should appear on the list page.
-	 *
-	 * @return
-	 */
-	boolean summary() default true;
 
 	/**
 	 * Specifies if a property should appear on both edit and list pages
 	 *
 	 * @return
-	 * @see org.tynamo.descriptor.Descriptor#isHidden()
+	 * @see org.tynamo.descriptor.Descriptor#isNonVisual()
 	 */
-	boolean hidden() default false;
+	boolean nonVisual() default false;
 
 
 	boolean readOnly() default false;
@@ -59,6 +51,4 @@ public @interface PropertyDescriptor
 	 */
 	String format() default "no_format";
 
-	@Deprecated
-	int index() default TynamoPropertyDescriptor.UNDEFINED_INDEX;
 }

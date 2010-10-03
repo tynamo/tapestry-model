@@ -1,7 +1,9 @@
 package org.tynamo.mixins;
 
+import org.apache.tapestry5.BindingConstants;
 import org.apache.tapestry5.annotations.InjectContainer;
 import org.apache.tapestry5.annotations.Log;
+import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.corelib.components.BeanDisplay;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.services.PropertyAccess;
@@ -14,11 +16,12 @@ import org.tynamo.services.TynamoBeanContext;
  */
 public class BeanContextPusher
 {
+
 	/**
-	 * The BeanDisplay component to which this mixin is attached.
+	 * The component to which this mixin is attached.
 	 */
 	@InjectContainer
-	private BeanDisplay beanDisplay;
+	private Object container;
 
 	@Inject
 	private Environment environment;
@@ -26,11 +29,16 @@ public class BeanContextPusher
 	@Inject
 	private PropertyAccess propertyAccess;
 
+	/**
+	 * The container's property
+	 */
+	@Parameter(defaultPrefix = BindingConstants.LITERAL)
+	private String property;
+
 	@Log
 	void setupRender()
 	{
 		final TynamoBeanContext tynamoBeanContext = environment.peek(TynamoBeanContext.class);
-		final Object object = propertyAccess.get(beanDisplay, "object");
 
 		if (tynamoBeanContext == null)
 		{
@@ -38,12 +46,12 @@ public class BeanContextPusher
 			{
 				public Class getBeanType()
 				{
-					return object.getClass();
+					return getObject().getClass();
 				}
 
 				public Object getBeanInstance()
 				{
-					return object;
+					return getObject();
 				}
 
 				public String getCurrentProperty()
@@ -53,6 +61,11 @@ public class BeanContextPusher
 
 				public void setCurrentProperty(String s)
 				{
+				}
+
+				private Object getObject()
+				{
+					return propertyAccess.get(container, property);
 				}
 			};
 			environment.push(TynamoBeanContext.class, context);

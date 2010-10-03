@@ -16,7 +16,7 @@ public class ClassDescriptorDecoratorTest extends Assert
 		TynamoClassDescriptorImpl descriptor = new TynamoClassDescriptorImpl(Annotated.class);
 		ClassDescriptor classDescriptorAnno = Annotated.class.getAnnotation(ClassDescriptor.class);
 		TynamoClassDescriptor decoratedDescriptor = decorator.decorateFromAnnotation(classDescriptorAnno, descriptor);
-		assertTrue(decoratedDescriptor.isHidden());
+		assertTrue(decoratedDescriptor.isNonVisual());
 		assertTrue(decoratedDescriptor.getHasCyclicRelationships());
 	}
 }
