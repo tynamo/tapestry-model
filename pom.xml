@@ -12,7 +12,7 @@
 	<parent>
 		<groupId>org.tynamo</groupId>
 		<artifactId>tynamo-parent</artifactId>
-		<version>0.0.5</version>
+		<version>0.0.6</version>
 	</parent>
 
 	<modules>
@@ -68,31 +68,31 @@
 			<dependency>
 				<groupId>org.apache.tapestry</groupId>
 				<artifactId>tapestry-core</artifactId>
-				<version>5.2.1</version>
+				<version>${tapestry-release-version}</version>
 			</dependency>
 
 			<dependency>
 				<groupId>org.apache.tapestry</groupId>
 				<artifactId>tapestry-upload</artifactId>
-				<version>5.2.1</version>
+				<version>${tapestry-release-version}</version>
 			</dependency>
 
 			<dependency>
 				<groupId>org.apache.tapestry</groupId>
 				<artifactId>tapestry-hibernate</artifactId>
-				<version>5.2.1</version>
+				<version>${tapestry-release-version}</version>
 			</dependency>
 
 			<dependency>
 				<groupId>org.apache.tapestry</groupId>
 				<artifactId>tapestry-beanvalidator</artifactId>
-				<version>5.2.1</version>
+				<version>${tapestry-release-version}</version>
 			</dependency>
 
 			<dependency>
 				<groupId>org.apache.tapestry</groupId>
 				<artifactId>tapestry-test</artifactId>
-				<version>5.2.1</version>
+				<version>${tapestry-release-version}</version>
 				<scope>test</scope>
 			</dependency>
 
