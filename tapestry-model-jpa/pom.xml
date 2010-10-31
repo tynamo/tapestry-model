@@ -3,7 +3,7 @@
 
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>tapestry-model-jpa</artifactId>
-	<name>Tynamo CRUD JPA</name>
+	<name>Tynamo Model JPA</name>
 	<packaging>jar</packaging>
 
 	<parent>
