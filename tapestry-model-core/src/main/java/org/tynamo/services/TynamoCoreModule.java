@@ -1,23 +1,23 @@
 package org.tynamo.services;
 
-import org.tynamo.internal.services.TynamoBeanModelSourceImpl;
-import org.apache.tapestry5.ioc.Configuration;
-import org.apache.tapestry5.ioc.MappedConfiguration;
-import org.apache.tapestry5.ioc.OrderedConfiguration;
-import org.apache.tapestry5.ioc.ServiceBinder;
+import org.apache.tapestry5.ioc.*;
+import org.apache.tapestry5.ioc.annotations.Autobuild;
 import org.apache.tapestry5.ioc.annotations.InjectService;
-import org.apache.tapestry5.ioc.annotations.Local;
+import org.apache.tapestry5.ioc.annotations.Match;
 import org.apache.tapestry5.ioc.services.CoercionTuple;
 import org.apache.tapestry5.ioc.services.PropertyAccess;
-import org.apache.tapestry5.services.*;
+import org.apache.tapestry5.services.BeanBlockContribution;
+import org.apache.tapestry5.services.DataTypeAnalyzer;
+import org.apache.tapestry5.services.LibraryMapping;
 import org.tynamo.VersionedModule;
 import org.tynamo.blob.BlobManager;
 import org.tynamo.blob.DefaultBlobManager;
 import org.tynamo.builder.BuilderDirector;
+import org.tynamo.descriptor.decorators.DescriptorDecorator;
 import org.tynamo.descriptor.decorators.TapestryDecorator;
 import org.tynamo.descriptor.decorators.TynamoDecorator;
-import org.tynamo.descriptor.decorators.DescriptorDecorator;
 import org.tynamo.descriptor.factories.*;
+import org.tynamo.internal.services.BeanModelSourceAdvice;
 import org.tynamo.util.Pair;
 
 public class TynamoCoreModule extends VersionedModule
@@ -42,15 +42,13 @@ public class TynamoCoreModule extends VersionedModule
 		binder.bind(TynamoDataTypeAnalyzer.class, TynamoDataTypeAnalyzer.class);
 
 		binder.bind(BlobManager.class, DefaultBlobManager.class).withId("DefaultBlobManager");
-
-		binder.bind(BeanModelSource.class, TynamoBeanModelSourceImpl.class).withId("TynamoBeanModelSourceImpl");
-
 	}
 
-	public static void contributeServiceOverride(MappedConfiguration<Class, Object> configuration,
-	                                             @Local BeanModelSource beanModelSource)
+	@Match("BeanModelSource")
+	public static void adviseBeanModelSource(MethodAdviceReceiver receiver,
+	                                               @Autobuild BeanModelSourceAdvice advice)
 	{
-		configuration.add(BeanModelSource.class, beanModelSource);
+		receiver.adviseAllMethods(advice);
 	}
 
 	/**

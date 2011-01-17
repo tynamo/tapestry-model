@@ -157,6 +157,10 @@ public class Composition
 	{
 		resources.triggerEvent(EventConstants.PREPARE, null, null);
 
+		if (formBean == null) {
+			formBean = builderDirector.createNewInstance(collectionDescriptor.getElementType());
+		}
+
 		if (beanModel == null)
 		{
 			beanModel = beanModelSource.createEditModel(collectionDescriptor.getElementType(), messages);
