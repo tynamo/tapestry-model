@@ -11,9 +11,7 @@ import org.tynamo.jpa.JPAEntityManagerSource;
 import org.tynamo.jpa.JPATransactionAdvisor;
 import org.tynamo.model.jpa.TynamoJPASymbols;
 
-import javax.persistence.metamodel.ManagedType;
-import java.util.Iterator;
-import java.util.Set;
+import javax.persistence.metamodel.EntityType;
 
 public class TynamoJPAModule extends VersionedModule {
 
@@ -76,14 +74,9 @@ public class TynamoJPAModule extends VersionedModule {
 
 	@SuppressWarnings("unchecked")
 	public static void contributeDescriptorService(Configuration<Class> configuration,
-												   JPAEntityManagerSource entityManagerSource) {
-
-		//org.hibernate.cfg.Configuration config = entityManagerSource.getConfiguration();
-		Set<ManagedType<?>> mappings = entityManagerSource.getEntityManagerFactory().getMetamodel().getManagedTypes();
-		Iterator<ManagedType<?>> iter = mappings.iterator();
-		while (iter.hasNext()) {
-			final ManagedType persistentClass = iter.next();
-			final Class entityClass = persistentClass.getJavaType();
+	                                               JPAEntityManagerSource entityManagerSource) {
+		for (EntityType<?> mapping : entityManagerSource.getEntityManagerFactory().getMetamodel().getEntities()) {
+			final Class entityClass = mapping.getJavaType();
 
 			if (entityClass != null) {
 				configuration.add(entityClass);
