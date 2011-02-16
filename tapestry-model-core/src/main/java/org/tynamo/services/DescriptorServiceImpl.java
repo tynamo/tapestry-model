@@ -24,7 +24,7 @@ public class DescriptorServiceImpl implements DescriptorService
 	 * For each class in types, a descriptor is built by the DescriptorFactory.  Next it is decorated
 	 * by each DescriptorDecorator in turn.  Finally it is cached.
 	 *
-	 * @param types			 In the Tynamo default configuration this will be set to all classes in the Hibernate config
+	 * @param types In the Tynamo default configuration this will be set to all classes in the Hibernate config
 	 * @param descriptorFactory In default Tynamo this will be a ReflectionDescriptorFactory
 	 * @see org.tynamo.descriptor.factories.DescriptorFactory
 	 * @see org.tynamo.descriptor.decorators.DescriptorDecorator

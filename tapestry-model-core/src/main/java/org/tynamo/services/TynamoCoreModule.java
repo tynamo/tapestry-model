@@ -2,6 +2,7 @@ package org.tynamo.services;
 
 import org.apache.tapestry5.ioc.*;
 import org.apache.tapestry5.ioc.annotations.Autobuild;
+import org.apache.tapestry5.ioc.annotations.Contribute;
 import org.apache.tapestry5.ioc.annotations.InjectService;
 import org.apache.tapestry5.ioc.annotations.Match;
 import org.apache.tapestry5.ioc.services.CoercionTuple;
@@ -13,6 +14,7 @@ import org.tynamo.VersionedModule;
 import org.tynamo.blob.BlobManager;
 import org.tynamo.blob.DefaultBlobManager;
 import org.tynamo.builder.BuilderDirector;
+import org.tynamo.descriptor.TynamoClassDescriptor;
 import org.tynamo.descriptor.decorators.DescriptorDecorator;
 import org.tynamo.descriptor.decorators.TapestryDecorator;
 import org.tynamo.descriptor.decorators.TynamoDecorator;
@@ -169,5 +171,15 @@ public class TynamoCoreModule extends VersionedModule
 		configuration.add("hashCode");
 	}
 
-
+	@Contribute(EntityCoercerService.class)
+	public static void contributeEntityCoercerService(MappedConfiguration<String, Class> configuration,
+	                                                  DescriptorService descriptorService)
+	{
+		for (TynamoClassDescriptor classDescriptor : descriptorService.getAllDescriptors())
+		{
+			Class clazz = classDescriptor.getBeanType();
+			String simpleName = clazz.getSimpleName().toLowerCase();
+			configuration.add(simpleName, clazz);
+		}
+	}
 }
