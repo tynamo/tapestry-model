@@ -8,6 +8,7 @@ import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.BeanModelSource;
 import org.apache.tapestry5.services.ContextValueEncoder;
+import org.apache.tapestry5.services.HttpError;
 import org.apache.tapestry5.services.PageRenderLinkSource;
 import org.tynamo.builder.BuilderDirector;
 import org.tynamo.descriptor.CollectionDescriptor;
@@ -61,22 +62,27 @@ public class AddC {
 	@Property
 	private BeanModel beanModel;
 
-	final void onActivate(Class clazz, String parentId, String property) throws Exception {
+	protected Object onActivate(Class clazz, String parentId, String property) {
 
-		assert clazz != null; //@todo throw a proper exception
+		if (clazz != null) {
 
 		TynamoPropertyDescriptor propertyDescriptor = descriptorService.getClassDescriptor(clazz).getPropertyDescriptor(property);
 
-		assert propertyDescriptor != null; //@todo throw a proper exception
+			if (propertyDescriptor != null) {
+				this.collectionDescriptor = ((CollectionDescriptor) propertyDescriptor);
 
-		this.collectionDescriptor = ((CollectionDescriptor) propertyDescriptor);
+				this.classDescriptor = descriptorService.getClassDescriptor(collectionDescriptor.getElementType());
+				this.bean = builderDirector.createNewInstance(classDescriptor.getBeanType());
+				this.beanModel = beanModelSource.createEditModel(classDescriptor.getBeanType(), messages);
 
-		this.classDescriptor = descriptorService.getClassDescriptor(collectionDescriptor.getElementType());
-		this.bean = builderDirector.createNewInstance(classDescriptor.getBeanType());
-		this.beanModel = beanModelSource.createEditModel(classDescriptor.getBeanType(), messages);
+				this.parentBean = contextValueEncoder.toValue(clazz, parentId);
 
-		this.parentBean = contextValueEncoder.toValue(clazz, parentId);
-		assert parentBean != null; //@todo throw a proper exception
+				if (parentBean != null) return null; // I know this is counterintuitive
+			}
+
+		}
+
+		return new HttpError(Utils.SC_NOT_FOUND, messages.get(Utils.SC_NOT_FOUND_MESSAGE));
 
 	}
 

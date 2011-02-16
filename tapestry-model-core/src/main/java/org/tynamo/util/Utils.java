@@ -40,6 +40,12 @@ public class Utils
 	public static final String LISTALL_LINK_MESSAGE = "org.tynamo.component.listalllink";
 
 	/**
+	 * Status code (404) indicating that the requested resource is not available.
+	 */
+	public static final int SC_NOT_FOUND = 404;
+	public static final String SC_NOT_FOUND_MESSAGE = "resource-not-found";
+
+	/**
 	 * Thank you, AndroMDA project...
 	 * Linguistically pluralizes a singular noun. <p/>
 	 * <ul>

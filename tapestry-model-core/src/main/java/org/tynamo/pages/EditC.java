@@ -8,6 +8,7 @@ import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.BeanModelSource;
 import org.apache.tapestry5.services.ContextValueEncoder;
+import org.apache.tapestry5.services.HttpError;
 import org.apache.tapestry5.services.PageRenderLinkSource;
 import org.tynamo.descriptor.CollectionDescriptor;
 import org.tynamo.descriptor.TynamoClassDescriptor;
@@ -56,24 +57,30 @@ public class EditC {
 	private BeanModel beanModel;
 
 
-	final void onActivate(Class clazz, String parentId, String property, String id) throws Exception {
+	protected Object onActivate(Class clazz, String parentId, String property, String id) {
 
-		assert clazz != null; //@todo throw a proper exception
+		if (clazz != null)
+		{
+			TynamoPropertyDescriptor propertyDescriptor = descriptorService.getClassDescriptor(clazz).getPropertyDescriptor(property);
 
-		TynamoPropertyDescriptor propertyDescriptor = descriptorService.getClassDescriptor(clazz).getPropertyDescriptor(property);
+			if (propertyDescriptor != null)
+			{
+				this.collectionDescriptor = ((CollectionDescriptor) propertyDescriptor);
 
-		assert propertyDescriptor != null; //@todo throw a proper exception
+				this.classDescriptor = descriptorService.getClassDescriptor(collectionDescriptor.getElementType());
+				this.beanModel = beanModelSource.createEditModel(classDescriptor.getBeanType(), messages);
 
-		this.collectionDescriptor = ((CollectionDescriptor) propertyDescriptor);
+				this.parentBean = contextValueEncoder.toValue(clazz, parentId);
 
-		this.classDescriptor = descriptorService.getClassDescriptor(collectionDescriptor.getElementType());
-		this.beanModel = beanModelSource.createEditModel(classDescriptor.getBeanType(), messages);
+				if (parentBean != null)
+				{
+					this.bean = contextValueEncoder.toValue(classDescriptor.getBeanType(), id);
+					if (bean != null) return null; // I know this is counterintuitive
+				}
+			}
+		}
 
-		this.parentBean = contextValueEncoder.toValue(clazz, parentId);
-		assert parentBean != null; //@todo throw a proper exception
-
-		this.bean = contextValueEncoder.toValue(classDescriptor.getBeanType(), id);
-		assert bean != null; //@todo throw a proper exception
+		return new HttpError(Utils.SC_NOT_FOUND, messages.get(Utils.SC_NOT_FOUND_MESSAGE));
 
 	}
 

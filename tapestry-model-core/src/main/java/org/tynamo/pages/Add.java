@@ -7,6 +7,7 @@ import org.apache.tapestry5.beaneditor.BeanModel;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.BeanModelSource;
+import org.apache.tapestry5.services.HttpError;
 import org.apache.tapestry5.services.PageRenderLinkSource;
 import org.tynamo.builder.BuilderDirector;
 import org.tynamo.descriptor.TynamoClassDescriptor;
@@ -45,13 +46,15 @@ public class Add {
 	private Object bean;
 
 
-	protected void onActivate(Class clazz) throws Exception {
+	protected Object onActivate(Class clazz) {
 
-		assert clazz != null; //@todo throw a proper exception
+		if (clazz == null) return new HttpError(Utils.SC_NOT_FOUND, messages.get(Utils.SC_NOT_FOUND_MESSAGE));
 
 		this.bean = builderDirector.createNewInstance(clazz);
 		this.classDescriptor = descriptorService.getClassDescriptor(clazz);
 		this.beanModel = beanModelSource.createEditModel(clazz, messages);
+
+		return null;
 	}
 
 	protected void cleanupRender() {

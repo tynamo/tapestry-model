@@ -7,6 +7,7 @@ import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.BeanModelSource;
 import org.apache.tapestry5.services.ContextValueEncoder;
+import org.apache.tapestry5.services.HttpError;
 import org.apache.tapestry5.services.PageRenderLinkSource;
 import org.tynamo.descriptor.TynamoClassDescriptor;
 import org.tynamo.services.DescriptorService;
@@ -42,15 +43,17 @@ public class Show {
 	@Property(read = false)
 	private Object bean;
 
-	protected void onActivate(Class clazz, String id) {
+	protected Object onActivate(Class clazz, String id) {
 
-		assert clazz != null; //@todo throw a proper exception
+		if (clazz == null) return new HttpError(Utils.SC_NOT_FOUND, messages.get(Utils.SC_NOT_FOUND_MESSAGE));
 
 		this.bean = contextValueEncoder.toValue(clazz, id);
 		this.classDescriptor = descriptorService.getClassDescriptor(clazz);
 		this.beanModel = beanModelSource.createDisplayModel(clazz, messages);
 
-		assert bean != null; //@todo throw a proper exception
+		if (bean == null) return new HttpError(Utils.SC_NOT_FOUND, messages.get(Utils.SC_NOT_FOUND_MESSAGE));
+
+		return null;
 	}
 
 	protected void cleanupRender() {
