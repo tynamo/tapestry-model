@@ -2,6 +2,7 @@ package org.tynamo.descriptor.decorators;
 
 import ognl.Ognl;
 import org.apache.commons.lang.exception.ExceptionUtils;
+import org.apache.tapestry5.ioc.ObjectLocator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.tynamo.descriptor.*;
@@ -19,13 +20,17 @@ import java.util.List;
 /**
  * This class uses the Tynamo's annotations on a given class or property to modify its
  * descriptor
- *
- * @author Chris Nelson
  */
 public class TynamoDecorator implements DescriptorDecorator
 {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(TynamoDecorator.class);
+	private ObjectLocator locator;
+
+	public TynamoDecorator(ObjectLocator locator)
+	{
+		this.locator = locator;
+	}
 
 	public TynamoClassDescriptor decorate(TynamoClassDescriptor descriptor)
 	{
@@ -115,12 +120,13 @@ public class TynamoDecorator implements DescriptorDecorator
 		for (Annotation annotation : annotations)
 		{
 			// If the annotation type itself has a @HandledBy annotation, it's one of ours
-			HandledBy handlerAnnotation = annotation.annotationType().getAnnotation(HandledBy.class);
-			if (handlerAnnotation != null)
+			HandledBy handledBy = annotation.annotationType().getAnnotation(HandledBy.class);
+			if (handledBy != null)
 			{
 				try
 				{
-					DescriptorAnnotationHandler handler = handlerAnnotation.value().newInstance();
+					String serviceId = handledBy.value();
+					DescriptorAnnotationHandler handler = locator.getService(serviceId, DescriptorAnnotationHandler.class);
 					clonedDescriptor = handler.decorateFromAnnotation(annotation, clonedDescriptor);
 				}
 				catch (Exception ex)

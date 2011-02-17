@@ -1,7 +1,6 @@
 package org.tynamo.descriptor.annotation;
 
 import org.tynamo.descriptor.annotation.handlers.HandledBy;
-import org.tynamo.descriptor.annotation.handlers.MethodDescriptorAnnotationHandler;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -10,7 +9,7 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD})
-@HandledBy(MethodDescriptorAnnotationHandler.class)
+@HandledBy("MethodDescriptorAnnotationHandler")
 public @interface MethodDescriptor
 {
 

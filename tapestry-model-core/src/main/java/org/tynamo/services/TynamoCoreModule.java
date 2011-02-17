@@ -15,6 +15,7 @@ import org.tynamo.blob.BlobManager;
 import org.tynamo.blob.DefaultBlobManager;
 import org.tynamo.builder.BuilderDirector;
 import org.tynamo.descriptor.TynamoClassDescriptor;
+import org.tynamo.descriptor.annotation.handlers.*;
 import org.tynamo.descriptor.decorators.DescriptorDecorator;
 import org.tynamo.descriptor.decorators.TapestryDecorator;
 import org.tynamo.descriptor.decorators.TynamoDecorator;
@@ -44,6 +45,20 @@ public class TynamoCoreModule extends VersionedModule
 		binder.bind(TynamoDataTypeAnalyzer.class, TynamoDataTypeAnalyzer.class);
 
 		binder.bind(BlobManager.class, DefaultBlobManager.class).withId("DefaultBlobManager");
+
+		binder.bind(DescriptorAnnotationHandler.class, AddPageBeanModelAnnotationHandler.class).withId("AddPageBeanModelAnnotationHandler");
+		binder.bind(DescriptorAnnotationHandler.class, BlobDescriptorAnnotationHandler.class).withId("BlobDescriptorAnnotationHandler");
+		binder.bind(DescriptorAnnotationHandler.class, ClassDescriptorAnnotationHandler.class).withId("ClassDescriptorAnnotationHandler");
+		binder.bind(DescriptorAnnotationHandler.class, CollectionDescriptorAnnotationHandler.class).withId("CollectionDescriptorAnnotationHandler");
+		binder.bind(DescriptorAnnotationHandler.class, DefaultBeanModelAnnotationHandler.class).withId("DefaultBeanModelAnnotationHandler");
+		binder.bind(DescriptorAnnotationHandler.class, EditPageBeanModelAnnotationHandler.class).withId("EditPageBeanModelAnnotationHandler");
+		binder.bind(DescriptorAnnotationHandler.class, InitialValueAnnotationHandler.class).withId("InitialValueAnnotationHandler");
+		binder.bind(DescriptorAnnotationHandler.class, ListPageBeanModelAnnotationHandler.class).withId("ListPageBeanModelAnnotationHandler");
+		binder.bind(DescriptorAnnotationHandler.class, MethodDescriptorAnnotationHandler.class).withId("MethodDescriptorAnnotationHandler");
+		binder.bind(DescriptorAnnotationHandler.class, PossibleValuesAnnotationHandler.class).withId("PossibleValuesAnnotationHandler");
+		binder.bind(DescriptorAnnotationHandler.class, PropertyDescriptorAnnotationHandler.class).withId("PropertyDescriptorAnnotationHandler");
+		binder.bind(DescriptorAnnotationHandler.class, ShowPageBeanModelAnnotationHandler.class).withId("ShowPageBeanModelAnnotationHandler");
+
 	}
 
 	@Match("BeanModelSource")
@@ -116,9 +131,9 @@ public class TynamoCoreModule extends VersionedModule
 	}
 
 	public static void contributeDescriptorFactory(OrderedConfiguration<DescriptorDecorator> configuration,
-	                                               PropertyAccess propertyAccess)
+	                                               PropertyAccess propertyAccess, ObjectLocator locator)
 	{
-		configuration.add("TynamoDecorator", new TynamoDecorator());
+		configuration.add("TynamoDecorator", new TynamoDecorator(locator));
 		configuration.add("TapestryDecorator", new TapestryDecorator(propertyAccess));
 	}
 

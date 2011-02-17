@@ -2,46 +2,13 @@ package org.tynamo.descriptor.extension;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.tynamo.blob.ContentDisposition;
+import org.tynamo.blob.RenderType;
 import org.tynamo.exception.TynamoRuntimeException;
 
 public class BlobDescriptorExtension implements DescriptorExtension
 {
 	protected static final Log LOG = LogFactory.getLog(BlobDescriptorExtension.class);
-
-	public enum ContentDisposition
-	{
-		INLINE, ATTACHMENT;
-
-		public String getValue()
-		{
-			return name().toLowerCase();
-		}
-	}
-
-	public enum RenderType
-	{
-		IMAGE, LINK; //, IFRAME, ICON; not yet supported in Tynamo
-
-		public boolean isImage()
-		{
-			return this == IMAGE;
-		}
-
-		public boolean isLink()
-		{
-			return this == LINK;
-		}
-
-		public boolean isIFrame()
-		{
-			return false; // this == IFRAME;
-		}
-
-		public boolean isIcon()
-		{
-			return false; // this == ICON;
-		}
-	}
 
 	private enum BlobType
 	{

@@ -8,6 +8,7 @@ import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.services.PropertyAccess;
 import org.tynamo.blob.BlobManager;
+import org.tynamo.blob.RenderType;
 import org.tynamo.descriptor.TynamoPropertyDescriptor;
 import org.tynamo.descriptor.extension.BlobDescriptorExtension;
 import org.tynamo.services.DescriptorService;
@@ -50,7 +51,7 @@ public class Download
 	@Parameter(required = true)
 	private TynamoPropertyDescriptor propertyDescriptor;
 
-	public BlobDescriptorExtension.RenderType getRenderType()
+	public RenderType getRenderType()
 	{
 		return propertyDescriptor.getExtension(BlobDescriptorExtension.class).getRenderType();
 	}

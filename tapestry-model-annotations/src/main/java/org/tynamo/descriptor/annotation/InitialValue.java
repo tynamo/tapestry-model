@@ -1,7 +1,6 @@
 package org.tynamo.descriptor.annotation;
 
 import org.tynamo.descriptor.annotation.handlers.HandledBy;
-import org.tynamo.descriptor.annotation.handlers.InitialValueAnnotationHandler;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -23,7 +22,7 @@ import java.lang.annotation.Target;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD, ElementType.METHOD})
-@HandledBy(InitialValueAnnotationHandler.class)
+@HandledBy("InitialValueAnnotationHandler")
 public @interface InitialValue
 {
 

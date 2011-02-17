@@ -2,15 +2,15 @@ package org.tynamo.descriptor.annotation;
 
 import org.apache.tapestry5.ioc.annotations.AnnotationUseContext;
 import org.apache.tapestry5.ioc.annotations.UseWith;
-import org.tynamo.descriptor.annotation.handlers.BlobDescriptorAnnotationHandler;
+import org.tynamo.blob.ContentDisposition;
+import org.tynamo.blob.RenderType;
 import org.tynamo.descriptor.annotation.handlers.HandledBy;
-import org.tynamo.descriptor.extension.BlobDescriptorExtension;
 
 import java.lang.annotation.*;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD, ElementType.METHOD})
-@HandledBy(BlobDescriptorAnnotationHandler.class)
+@HandledBy("BlobDescriptorAnnotationHandler")
 @Documented
 @UseWith(AnnotationUseContext.BEAN)
 public @interface BlobDescriptor
@@ -23,8 +23,8 @@ public @interface BlobDescriptor
 
 	public String contentType() default "";
 
-	public BlobDescriptorExtension.RenderType renderType() default BlobDescriptorExtension.RenderType.LINK;
+	public RenderType renderType() default RenderType.LINK;
 
-	public BlobDescriptorExtension.ContentDisposition contentDisposition() default BlobDescriptorExtension.ContentDisposition.INLINE;
+	public ContentDisposition contentDisposition() default ContentDisposition.INLINE;
 
 }

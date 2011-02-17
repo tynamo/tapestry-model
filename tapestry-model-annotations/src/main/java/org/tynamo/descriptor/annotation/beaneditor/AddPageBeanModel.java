@@ -3,7 +3,6 @@ package org.tynamo.descriptor.annotation.beaneditor;
 import org.apache.tapestry5.ioc.annotations.AnnotationUseContext;
 import org.apache.tapestry5.ioc.annotations.UseWith;
 import org.tynamo.descriptor.annotation.handlers.HandledBy;
-import org.tynamo.descriptor.annotation.handlers.ShowPageBeanModelAnnotationHandler;
 
 import java.lang.annotation.*;
 
@@ -11,8 +10,8 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @UseWith(AnnotationUseContext.BEAN)
-@HandledBy(ShowPageBeanModelAnnotationHandler.class)
-public @interface ShowPageBeanModel
+@HandledBy("AddPageBeanModelAnnotationHandler")
+public @interface AddPageBeanModel
 {
 
 	/**
