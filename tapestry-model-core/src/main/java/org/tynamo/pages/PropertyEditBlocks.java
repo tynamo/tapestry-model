@@ -1,7 +1,10 @@
 package org.tynamo.pages;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.tapestry5.*;
+import org.apache.tapestry5.FieldTranslator;
+import org.apache.tapestry5.FieldValidator;
+import org.apache.tapestry5.SelectModel;
+import org.apache.tapestry5.ValueEncoder;
 import org.apache.tapestry5.annotations.Component;
 import org.apache.tapestry5.annotations.Environmental;
 import org.apache.tapestry5.annotations.Property;
@@ -17,6 +20,7 @@ import org.apache.tapestry5.services.BeanModelSource;
 import org.apache.tapestry5.services.PropertyEditContext;
 import org.apache.tapestry5.services.ValueEncoderSource;
 import org.apache.tapestry5.util.EnumSelectModel;
+import org.chenillekit.tapestry.core.components.DateTimeField;
 import org.tynamo.components.EditComposition;
 import org.tynamo.descriptor.CollectionDescriptor;
 import org.tynamo.descriptor.IdentifierDescriptor;
@@ -81,6 +85,13 @@ public class PropertyEditBlocks
 					"encoder=valueEncoderForProperty", "model=selectModelForProperty", "validate=prop:selectValidator",
 					"clientId=prop:propertyEditContext.propertyId", "blankOption=prop:blankOption"})
 	private Select select;
+
+	@Component(
+			parameters = {"value=propertyEditContext.propertyValue", "label=prop:propertyEditContext.label",
+			              "clientId=prop:propertyEditContext.propertyid", "validate=prop:dateFieldValidator",
+			              "datePattern=prop:propertyDescriptor.format"})
+	private DateTimeField dateField;
+
 
 	public TynamoPropertyDescriptor getPropertyDescriptor()
 	{
@@ -205,6 +216,11 @@ public class PropertyEditBlocks
 	public BlankOption getBlankOption()
 	{
 		return getPropertyDescriptor().isRequired() ? BlankOption.NEVER : BlankOption.ALWAYS;
+	}
+
+	public FieldValidator getDateFieldValidator()
+	{
+		return propertyEditContext.getValidator(dateField);
 	}
 
 }

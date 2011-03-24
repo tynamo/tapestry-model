@@ -44,4 +44,8 @@
 		<div t:id="download"/>
 	</t:block>
 
+	<t:block id="date">
+		<div t:id="date"/>
+	</t:block>
+
 </t:container>

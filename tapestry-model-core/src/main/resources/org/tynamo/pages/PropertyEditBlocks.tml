@@ -2,6 +2,11 @@
 
 	<t:block id="nonVisual"/>
 
+	<t:block id="date">
+		<t:label for="dateField"/>
+		<input t:id="dateField"/>
+	</t:block>
+
 	<t:block id="select">
 		<t:label for="select"/>
 		<input t:id="select"/>

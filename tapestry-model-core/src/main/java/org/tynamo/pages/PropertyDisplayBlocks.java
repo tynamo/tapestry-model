@@ -5,8 +5,9 @@ import org.apache.tapestry5.annotations.Environmental;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.PropertyOutputContext;
-import org.tynamo.components.internal.Composition;
+import org.chenillekit.tapestry.core.components.DateFormat;
 import org.tynamo.components.Download;
+import org.tynamo.components.internal.Composition;
 import org.tynamo.descriptor.TynamoPropertyDescriptor;
 import org.tynamo.services.DescriptorService;
 import org.tynamo.services.TynamoBeanContext;
@@ -38,6 +39,12 @@ public class PropertyDisplayBlocks
 
 	@Component(parameters = {"model=tynamoBeanContext.beanInstance", "propertyDescriptor=propertyDescriptor"})
 	private Download download;
+
+	@Component(
+			parameters = {"value=context.propertyValue", "clientId=prop:context.propertyid",
+			              "pattern=prop:propertyDescriptor.format"})
+	private DateFormat date;
+
 
 	public Object[] getShowPageContext()
 	{
