@@ -101,6 +101,8 @@ public class TynamoCoreModule extends VersionedModule
 
 		configuration.add(new DisplayBlockContribution("nonVisual", PROPERTY_DISPLAY_BLOCKS, "nonVisual"));
 		configuration.add(new DisplayBlockContribution("date", PROPERTY_DISPLAY_BLOCKS, "date"));
+		configuration.add(new DisplayBlockContribution("number", PROPERTY_DISPLAY_BLOCKS, "number"));
+
 		configuration.add(new DisplayBlockContribution("single-valued-association", PROPERTY_DISPLAY_BLOCKS, "showPageLink"));
 		configuration.add(new DisplayBlockContribution("many-valued-association", PROPERTY_DISPLAY_BLOCKS, "showPageLinks"));
 		configuration.add(new DisplayBlockContribution("composition", PROPERTY_DISPLAY_BLOCKS, "composition"));
@@ -146,7 +148,6 @@ public class TynamoCoreModule extends VersionedModule
 		addPairToOrderedConfiguration(configuration, "name.toLowerCase().endsWith('password')", "password");
 //		addPairToOrderedConfiguration(configuration, "string and !large and !identifier", "stringEditor"); //managed by Tapestry
 		addPairToOrderedConfiguration(configuration, "string and large and !identifier", "longtext");
-		addPairToOrderedConfiguration(configuration, "numeric and !identifier", "tyn_number");
 		addPairToOrderedConfiguration(configuration, "identifier && generated", "readOnly");
 		addPairToOrderedConfiguration(configuration, "identifier && not(generated) && string", "identifierEditor");
 //		addPairToOrderedConfiguration(configuration, "identifier && objectReference", "objectReferenceIdentifierEditor");

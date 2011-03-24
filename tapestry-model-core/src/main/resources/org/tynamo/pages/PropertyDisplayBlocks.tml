@@ -48,4 +48,8 @@
 		<div t:id="date"/>
 	</t:block>
 
+	<t:block id="number">
+		<div t:id="number"/>
+	</t:block>
+
 </t:container>

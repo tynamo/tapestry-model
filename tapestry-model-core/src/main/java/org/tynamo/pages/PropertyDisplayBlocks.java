@@ -6,6 +6,7 @@ import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.PropertyOutputContext;
 import org.chenillekit.tapestry.core.components.DateFormat;
+import org.chenillekit.tapestry.core.components.NumberFormat;
 import org.tynamo.components.Download;
 import org.tynamo.components.internal.Composition;
 import org.tynamo.descriptor.TynamoPropertyDescriptor;
@@ -45,6 +46,10 @@ public class PropertyDisplayBlocks
 			              "pattern=prop:propertyDescriptor.format"})
 	private DateFormat date;
 
+	@Component(
+			parameters = {"value=context.propertyValue", "clientId=prop:context.propertyid",
+			              "mask=prop:propertyDescriptor.format"})
+	private NumberFormat number;
 
 	public Object[] getShowPageContext()
 	{
