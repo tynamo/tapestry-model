@@ -9,6 +9,7 @@ import org.apache.tapestry5.ioc.services.CoercionTuple;
 import org.apache.tapestry5.ioc.services.PropertyAccess;
 import org.apache.tapestry5.services.*;
 import org.tynamo.VersionedModule;
+import org.tynamo.bindings.ModelBingingFactory;
 import org.tynamo.blob.BlobManager;
 import org.tynamo.blob.DefaultBlobManager;
 import org.tynamo.builder.BuilderDirector;
@@ -197,4 +198,12 @@ public class TynamoCoreModule extends VersionedModule
 			configuration.add(simpleName, clazz);
 		}
 	}
+
+	@Contribute(BindingSource.class)
+	public void contributeBindingSource(MappedConfiguration<String, BindingFactory> configuration,
+	                                    @Autobuild ModelBingingFactory modelBingingFactory)
+	{
+		configuration.add("mb", modelBingingFactory);
+	}
+
 }

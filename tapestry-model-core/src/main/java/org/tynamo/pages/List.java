@@ -1,17 +1,14 @@
 package org.tynamo.pages;
 
 import org.apache.tapestry5.annotations.Property;
-import org.apache.tapestry5.beaneditor.BeanModel;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.services.PropertyAccess;
-import org.apache.tapestry5.services.BeanModelSource;
 import org.apache.tapestry5.services.HttpError;
 import org.tynamo.TynamoGridDataSource;
 import org.tynamo.descriptor.TynamoClassDescriptor;
 import org.tynamo.services.DescriptorService;
 import org.tynamo.services.PersistenceService;
-import org.tynamo.util.BeanModelUtils;
 import org.tynamo.util.DisplayNameUtils;
 import org.tynamo.util.Utils;
 
@@ -29,25 +26,16 @@ public class List {
 	@Inject
 	private PropertyAccess propertyAccess;
 
-	@Inject
-	private BeanModelSource beanModelSource;
-
 	@Property
 	private Object bean;
 
 	@Property
 	private TynamoClassDescriptor classDescriptor;
 
-	@Property
-	private BeanModel beanModel;
-
 	protected Object onActivate(Class clazz) {
 
 		if (clazz == null) return new HttpError(Utils.SC_NOT_FOUND, messages.get(Utils.SC_NOT_FOUND_MESSAGE));
-
 		classDescriptor = descriptorService.getClassDescriptor(clazz);
-		beanModel = beanModelSource.createDisplayModel(clazz, messages);
-		BeanModelUtils.exclude(beanModel, classDescriptor);
 
 		return null;
 	}

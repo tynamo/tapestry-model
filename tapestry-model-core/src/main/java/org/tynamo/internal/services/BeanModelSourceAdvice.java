@@ -1,50 +1,46 @@
 package org.tynamo.internal.services;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.beaneditor.BeanModel;
-import org.apache.tapestry5.internal.beaneditor.BeanModelUtils;
 import org.apache.tapestry5.ioc.Invocation;
 import org.apache.tapestry5.ioc.MethodAdvice;
-import org.apache.tapestry5.services.RequestGlobals;
+import org.apache.tapestry5.services.Environment;
 import org.tynamo.descriptor.TynamoClassDescriptor;
-import org.tynamo.descriptor.extension.BeanModelExtension;
+import org.tynamo.services.BeanModelSourceContext;
 import org.tynamo.services.DescriptorService;
+import org.tynamo.util.BeanModelUtils;
 
-public class BeanModelSourceAdvice implements MethodAdvice {
+public class BeanModelSourceAdvice implements MethodAdvice
+{
 
 	DescriptorService descriptorService;
-	RequestGlobals requestGlobals;
+	Environment environment;
 
-	public BeanModelSourceAdvice(DescriptorService descriptorService,
-	                             RequestGlobals requestGlobals) {
+	public BeanModelSourceAdvice(DescriptorService descriptorService, Environment environment)
+	{
 		this.descriptorService = descriptorService;
-		this.requestGlobals = requestGlobals;
+		this.environment = environment;
 	}
 
-	public void advise(Invocation invocation) {
+	public void advise(Invocation invocation)
+	{
 
 		invocation.proceed();
 
-		if (BeanModel.class.isAssignableFrom(invocation.getResultType())) {
+		if (BeanModel.class.isAssignableFrom(invocation.getResultType()))
+		{
 
 			BeanModel<?> dataModel = (BeanModel) invocation.getResult();
 			Class<?> beanClass = (Class<?>) invocation.getParameter(0);
 
 			TynamoClassDescriptor classDescriptor = descriptorService.getClassDescriptor(beanClass);
+			BeanModelSourceContext context = environment.peek(BeanModelSourceContext.class);
 
-			if (classDescriptor != null) {
-				String activePageName = requestGlobals.getActivePageName().toLowerCase();
-				int index = activePageName.indexOf(beanClass.getSimpleName().toLowerCase());
-				String contextKey = index > 0 ? activePageName.substring(0, index) : activePageName;
-
-				if (classDescriptor.supportsExtension(BeanModelExtension.class)) {
-					BeanModelExtension extension = classDescriptor.getExtension(BeanModelExtension.class);
-					BeanModelUtils.modify(dataModel, null,
-							extension.getIncludePropertyNames(contextKey),
-							extension.getExcludePropertyNames(contextKey),
-							extension.getReorderPropertyNames(contextKey));
-				}
+			if (classDescriptor != null && context != null && StringUtils.isNotEmpty(context.getKey()))
+			{
+				BeanModelUtils.modify(dataModel, classDescriptor, context.getKey());
+				invocation.overrideResult(dataModel);
 			}
-			invocation.overrideResult(dataModel);
 		}
 	}
 }

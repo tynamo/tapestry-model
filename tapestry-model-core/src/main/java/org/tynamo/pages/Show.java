@@ -2,10 +2,8 @@ package org.tynamo.pages;
 
 import org.apache.tapestry5.Link;
 import org.apache.tapestry5.annotations.Property;
-import org.apache.tapestry5.beaneditor.BeanModel;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.services.BeanModelSource;
 import org.apache.tapestry5.services.ContextValueEncoder;
 import org.apache.tapestry5.services.HttpError;
 import org.apache.tapestry5.services.PageRenderLinkSource;
@@ -21,9 +19,6 @@ public class Show {
 	private ContextValueEncoder contextValueEncoder;
 
 	@Inject
-	private BeanModelSource beanModelSource;
-
-	@Inject
 	private Messages messages;
 
 	@Inject
@@ -37,9 +32,6 @@ public class Show {
 
 	private TynamoClassDescriptor classDescriptor;
 
-	@Property
-	private BeanModel beanModel;
-
 	@Property(read = false)
 	private Object bean;
 
@@ -49,7 +41,6 @@ public class Show {
 
 		this.bean = contextValueEncoder.toValue(clazz, id);
 		this.classDescriptor = descriptorService.getClassDescriptor(clazz);
-		this.beanModel = beanModelSource.createDisplayModel(clazz, messages);
 
 		if (bean == null) return new HttpError(Utils.SC_NOT_FOUND, messages.get(Utils.SC_NOT_FOUND_MESSAGE));
 
@@ -59,7 +50,6 @@ public class Show {
 	protected void cleanupRender() {
 		bean = null;
 		classDescriptor = null;
-		beanModel = null;
 	}
 
 	/**

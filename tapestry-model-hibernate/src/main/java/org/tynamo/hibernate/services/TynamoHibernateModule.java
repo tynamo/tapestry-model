@@ -5,6 +5,7 @@ import org.apache.tapestry5.hibernate.HibernateSessionSource;
 import org.apache.tapestry5.hibernate.HibernateTransactionAdvisor;
 import org.apache.tapestry5.ioc.*;
 import org.apache.tapestry5.ioc.annotations.Autobuild;
+import org.apache.tapestry5.ioc.annotations.Contribute;
 import org.apache.tapestry5.ioc.annotations.InjectService;
 import org.apache.tapestry5.ioc.annotations.Match;
 import org.apache.tapestry5.services.BeanBlockContribution;
@@ -15,6 +16,7 @@ import org.tynamo.descriptor.decorators.DescriptorDecorator;
 import org.tynamo.hibernate.TynamoHibernateSymbols;
 import org.tynamo.hibernate.TynamoInterceptor;
 import org.tynamo.hibernate.TynamoInterceptorConfigurer;
+import org.tynamo.services.DescriptorService;
 
 import java.util.Iterator;
 
@@ -87,6 +89,7 @@ public class TynamoHibernateModule extends VersionedModule
 	}
 
 	@SuppressWarnings("unchecked")
+	@Contribute(DescriptorService.class)
 	public static void contributeDescriptorService(Configuration<Class> configuration,
 												   HibernateSessionSource hibernateSessionSource)
 	{

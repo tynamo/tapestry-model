@@ -3,10 +3,8 @@ package org.tynamo.pages;
 import org.apache.tapestry5.Link;
 import org.apache.tapestry5.annotations.Log;
 import org.apache.tapestry5.annotations.Property;
-import org.apache.tapestry5.beaneditor.BeanModel;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.services.BeanModelSource;
 import org.apache.tapestry5.services.HttpError;
 import org.apache.tapestry5.services.PageRenderLinkSource;
 import org.tynamo.builder.BuilderDirector;
@@ -20,9 +18,6 @@ public class Add {
 
 	@Inject
 	private BuilderDirector builderDirector;
-
-	@Inject
-	private BeanModelSource beanModelSource;
 
 	@Inject
 	private Messages messages;
@@ -40,9 +35,6 @@ public class Add {
 	private TynamoClassDescriptor classDescriptor;
 
 	@Property
-	private BeanModel beanModel;
-
-	@Property
 	private Object bean;
 
 
@@ -52,7 +44,6 @@ public class Add {
 
 		this.bean = builderDirector.createNewInstance(clazz);
 		this.classDescriptor = descriptorService.getClassDescriptor(clazz);
-		this.beanModel = beanModelSource.createEditModel(clazz, messages);
 
 		return null;
 	}
@@ -60,7 +51,6 @@ public class Add {
 	protected void cleanupRender() {
 		bean = null;
 		classDescriptor = null;
-		beanModel = null;
 	}
 
 	protected Object[] onPassivate() {
