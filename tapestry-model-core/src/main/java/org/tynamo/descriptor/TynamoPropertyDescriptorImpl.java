@@ -134,7 +134,6 @@ public class TynamoPropertyDescriptorImpl extends TynamoDescriptor implements Ty
 	 */
 	public boolean isDate()
 	{
-		// TODO Auto-generated method stub
 		return getPropertyType().getName().endsWith("Date");
 	}
 
@@ -143,7 +142,6 @@ public class TynamoPropertyDescriptorImpl extends TynamoDescriptor implements Ty
 	 */
 	public boolean isString()
 	{
-		// TODO Auto-generated method stub
 		return getPropertyType().getName().endsWith("String");
 	}
 
