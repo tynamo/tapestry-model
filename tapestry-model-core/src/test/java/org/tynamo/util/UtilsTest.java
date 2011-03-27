@@ -9,17 +9,15 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and limitations under the License.
  */
-package org.tynamo.component;
+package org.tynamo.util;
+
+import com.google.inject.internal.cglib.proxy.Enhancer;
+import com.google.inject.internal.cglib.proxy.MethodInterceptor;
+import com.google.inject.internal.cglib.proxy.MethodProxy;
+import junit.framework.TestCase;
+import org.tynamo.test.Foo;
 
 import java.lang.reflect.Method;
-
-import junit.framework.TestCase;
-import net.sf.cglib.proxy.Enhancer;
-import net.sf.cglib.proxy.MethodInterceptor;
-import net.sf.cglib.proxy.MethodProxy;
-import org.tynamo.test.Baz;
-import org.tynamo.test.Foo;
-import org.tynamo.util.Utils;
 
 
 public class UtilsTest extends TestCase
@@ -61,10 +59,4 @@ public class UtilsTest extends TestCase
 		assertEquals(Foo.class, Utils.checkForCGLIB(enbCB.create().getClass()));
 	}
 
-	public void testUnCamelCase()
-	{
-		assertEquals("Born On Date", Utils.unCamelCase("bornOnDate"));
-		assertEquals("Born On Date", Utils.unCamelCase("born On Date"));
-//		assertEquals("BOD", Utils.unCamelCase("BOD")); //@note: should this work?
-	}
 }
