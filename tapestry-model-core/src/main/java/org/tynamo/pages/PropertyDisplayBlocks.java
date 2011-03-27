@@ -1,5 +1,6 @@
 package org.tynamo.pages;
 
+import org.apache.tapestry5.Block;
 import org.apache.tapestry5.annotations.Component;
 import org.apache.tapestry5.annotations.Environmental;
 import org.apache.tapestry5.annotations.Property;
@@ -24,7 +25,7 @@ public class PropertyDisplayBlocks
 	@Property(write = false)
 	private PropertyOutputContext context;
 
-	@Environmental
+	@Environmental(false)
 	@Property(write = false)
 	private TynamoBeanContext tynamoBeanContext;
 
@@ -50,6 +51,10 @@ public class PropertyDisplayBlocks
 			parameters = {"value=context.propertyValue", "clientId=prop:context.propertyid",
 			              "mask=prop:propertyDescriptor.format"})
 	private NumberFormat number;
+
+	@Inject
+	@Property
+	private Block missingAdvisor;
 
 	public Object[] getShowPageContext()
 	{

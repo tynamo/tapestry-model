@@ -37,11 +37,21 @@
  -->
 
 	<t:block id="composition">
-		<div t:id="composition"/>
+		<t:if test="tynamoBeanContext">
+			<div t:id="composition"/>
+			<p:else>
+				<t:delegate to="missingAdvisor"/>
+			</p:else>
+		</t:if>
 	</t:block>
 
 	<t:block id="download">
-		<div t:id="download"/>
+		<t:if test="tynamoBeanContext">
+			<div t:id="download"/>
+			<p:else>
+				<t:delegate to="missingAdvisor"/>
+			</p:else>
+		</t:if>
 	</t:block>
 
 	<t:block id="date">
@@ -50,6 +60,13 @@
 
 	<t:block id="number">
 		<div t:id="number"/>
+	</t:block>
+
+	<t:block id="missingAdvisor">
+		<p style="color:red;font-weight:bold">Tynamo can't display this property properly because it doesn't have
+			enought information. Please check you have the Avisor mixing configured correctly
+			(t:mixins="tynamo/Advisor")
+		</p>
 	</t:block>
 
 </t:container>
