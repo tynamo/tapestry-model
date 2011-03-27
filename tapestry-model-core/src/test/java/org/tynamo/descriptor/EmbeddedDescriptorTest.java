@@ -8,7 +8,6 @@ import org.tynamo.test.Foo;
 
 public class EmbeddedDescriptorTest extends Assert
 {
-	EmbeddedDescriptor embeddedDescriptor = new EmbeddedDescriptor(Embeddor.class, "embeddee", Embeddee.class);
 
 	@Test
 	public void testClone() throws Exception
@@ -17,16 +16,15 @@ public class EmbeddedDescriptorTest extends Assert
 		embeddedDescriptor.getPropertyDescriptors().add(new TynamoPropertyDescriptorImpl(Embeddee.class, "title", String.class));
 		EmbeddedDescriptor cloned = (EmbeddedDescriptor) embeddedDescriptor.clone();
 		assertEquals(Embeddor.class, cloned.getBeanType());
-		assertEquals(Embeddee.class, cloned.getBeanType());
+		assertEquals(Embeddee.class, cloned.getPropertyType());
 		assertEquals(1, cloned.getPropertyDescriptors().size());
 	}
 
 	@Test public void testCopyFromPropertyDescriptor() throws Exception
 	{
+		EmbeddedDescriptor embeddedDescriptor = new EmbeddedDescriptor(Embeddor.class, "embeddee", Embeddee.class);
 		TynamoPropertyDescriptor propertyDescriptor = new TynamoPropertyDescriptorImpl(Foo.class, "blork", String.class);
-		propertyDescriptor.setIndex(1);
 		embeddedDescriptor.copyFrom(propertyDescriptor);
 		assertEquals("blork", embeddedDescriptor.getName());
-		assertEquals(1, embeddedDescriptor.getIndex());
 	}
 }

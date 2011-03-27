@@ -27,12 +27,11 @@ public class PropertyDescriptorDecoratorTest extends Assert
 
 		fieldPropDescriptor = decorator.decorateFromAnnotation(fieldAppearance, fieldPropDescriptor);
 		assertEquals("notBloppity", fieldPropDescriptor.getName());
-		assertEquals(2, (fieldPropDescriptor).getIndex(), "right index");
+		assertTrue(fieldPropDescriptor.isReadOnly());
 
 		PropertyDescriptor propDescriptorAnno = Annotated.class.getMethod("getHidden").getAnnotation(PropertyDescriptor.class);
 		TynamoPropertyDescriptor hiddenPropDescriptor = decorator.decorateFromAnnotation(propDescriptorAnno, hiddenDescriptor);
 		assertTrue(hiddenPropDescriptor.isNonVisual());
-		assertTrue(hiddenPropDescriptor.getIndex() != 2);
 		assertEquals("Hidden", hiddenPropDescriptor.getName());
 
 		PropertyDescriptor dateDescriptorAnno = Annotated.class.getMethod("getDate").getAnnotation(PropertyDescriptor.class);

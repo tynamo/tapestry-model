@@ -4,14 +4,14 @@ import java.util.Date;
 import java.util.Set;
 
 
-@ClassDescriptor(hidden = true, hasCyclicRelationships = true)
+@ClassDescriptor(nonVisual = true, hasCyclicRelationships = true)
 public class Annotated
 {
 	private Date date;
 
 	private Set stuff;
 
-	@PropertyDescriptor(index = 2)
+	@PropertyDescriptor(readOnly = true)
 	private String notBloppity;
 
 	String hidden;
@@ -57,7 +57,6 @@ public class Annotated
 		this.notBloppity = notBloppity;
 	}
 
-	@PropertyDescriptor(index = 3)
 	public String getValidatedString()
 	{
 		return validatedString;

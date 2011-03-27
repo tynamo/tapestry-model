@@ -208,7 +208,7 @@ public class EmbeddedDescriptor extends TynamoClassDescriptorImpl implements Ide
 	@Override
 	public Object clone()
 	{
-		return new EmbeddedDescriptor(getBeanType(), this);
+		return new EmbeddedDescriptor(getPropertyType(), this);
 	}
 
 }

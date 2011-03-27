@@ -1,8 +1,15 @@
 package org.tynamo.descriptor.annotation;
 
+import org.apache.tapestry5.ioc.ObjectLocator;
+import org.apache.tapestry5.ioc.test.MockTester;
+import org.easymock.EasyMock;
 import org.testng.Assert;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
 import org.tynamo.descriptor.*;
+import org.tynamo.descriptor.annotation.handlers.ClassDescriptorAnnotationHandler;
+import org.tynamo.descriptor.annotation.handlers.DescriptorAnnotationHandler;
+import org.tynamo.descriptor.annotation.handlers.PropertyDescriptorAnnotationHandler;
 import org.tynamo.descriptor.decorators.TynamoDecorator;
 import org.tynamo.test.Embeddee;
 import org.tynamo.test.Embeddor;
@@ -11,20 +18,37 @@ import org.tynamo.test.Foo;
 
 public class AnnotationDecoratorTest extends Assert
 {
-	TynamoDecorator decorator = new TynamoDecorator();
+	private final MockTester tester = new MockTester();
+
+	/**
+	 * Discards any mock objects created during the test.
+	 */
+	@AfterMethod(alwaysRun = true)
+	public final void discardMockControl()
+	{
+		tester.cleanup();
+	}
 
 	@Test
 	public void testDecorate()
 	{
+		ObjectLocator locator = tester.newMock(ObjectLocator.class);
+		TynamoDecorator decorator = new TynamoDecorator(locator);
+
+		EasyMock.expect(locator.getService("ClassDescriptorAnnotationHandler", DescriptorAnnotationHandler.class))
+				.andReturn(new ClassDescriptorAnnotationHandler());
+
+		EasyMock.expect(locator.getService("PropertyDescriptorAnnotationHandler", DescriptorAnnotationHandler.class))
+				.andReturn(new PropertyDescriptorAnnotationHandler()).anyTimes();
+
+		tester.replay();
 
 		TynamoClassDescriptor descriptor = new TynamoClassDescriptorImpl(Annotated.class);
 		TynamoPropertyDescriptor fieldPropDescriptor = new TynamoPropertyDescriptorImpl(Annotated.class, "notBloppity", String.class);
 
 		TynamoPropertyDescriptor hiddenDescriptor = new TynamoPropertyDescriptorImpl(Annotated.class, "hidden", String.class);
-		hiddenDescriptor.setIndex(1);
 
 		TynamoPropertyDescriptor validatedStringDescriptor = new TynamoPropertyDescriptorImpl(Foo.class, "validatedString", String.class);
-		validatedStringDescriptor.setIndex(3);
 
 		TynamoPropertyDescriptor booleanDescriptor = new TynamoPropertyDescriptorImpl(Annotated.class, "booleanProperty", boolean.class);
 
@@ -36,14 +60,18 @@ public class AnnotationDecoratorTest extends Assert
 
 		descriptor = decorator.decorate(descriptor);
 
-		assertEquals("notBloppity", descriptor.getPropertyDescriptors().get(2).getName(), "right index");
+		assertTrue(descriptor.getPropertyDescriptor("notBloppity").isReadOnly());
 		assertTrue(descriptor.getPropertyDescriptor("hidden").isNonVisual());
 		assertTrue(descriptor.getPropertyDescriptor("id") instanceof IdentifierDescriptor, "still an id descriptor");
+
+		tester.verify();
 	}
 
 	@Test
 	public void testDecorateEmbedded() throws Exception
 	{
+		TynamoDecorator decorator = new TynamoDecorator(null);
+
 		TynamoClassDescriptor embeddorDescriptor = new TynamoClassDescriptorImpl(Embeddor.class);
 		EmbeddedDescriptor embeddeeDescriptor = new EmbeddedDescriptor(Embeddor.class, "embeddee", Embeddee.class);
 		embeddeeDescriptor.getPropertyDescriptors().add(new TynamoPropertyDescriptorImpl(Embeddee.class, "title", String.class));
