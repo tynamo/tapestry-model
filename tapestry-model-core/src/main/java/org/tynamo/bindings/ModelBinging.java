@@ -4,6 +4,11 @@ import org.apache.tapestry5.Binding;
 
 import java.lang.annotation.Annotation;
 
+/**
+ * Binding to use when you don't know the final type of the property bound.
+ * The bindingType will be computed on the fly based on the binding actual value.
+ *
+ */
 public class ModelBinging implements Binding
 {
 	private final Binding binding;
