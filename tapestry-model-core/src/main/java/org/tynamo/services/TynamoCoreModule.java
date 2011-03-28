@@ -86,10 +86,8 @@ public class TynamoCoreModule extends VersionedModule
 	 */
 	public static void contributeBeanBlockSource(Configuration<BeanBlockContribution> configuration)
 	{
-		configuration.add(new EditBlockContribution("enum", PROPERTY_EDIT_BLOCKS, "select")); // overrides Tapestry's enum
-
 		configuration.add(new EditBlockContribution("nonVisual", PROPERTY_EDIT_BLOCKS, "nonVisual"));
-		configuration.add(new EditBlockContribution("date", PROPERTY_EDIT_BLOCKS, "date"));
+		configuration.add(new EditBlockContribution("formatted-date", PROPERTY_EDIT_BLOCKS, "date"));
 		configuration.add(new EditBlockContribution("fckEditor", PROPERTY_EDIT_BLOCKS, "fckEditor"));
 
 		configuration.add(new EditBlockContribution("readOnly", PROPERTY_EDIT_BLOCKS, "readOnly"));
@@ -101,13 +99,18 @@ public class TynamoCoreModule extends VersionedModule
 		configuration.add(new EditBlockContribution("blob", PROPERTY_EDIT_BLOCKS, "blob"));
 
 		configuration.add(new DisplayBlockContribution("nonVisual", PROPERTY_DISPLAY_BLOCKS, "nonVisual"));
-		configuration.add(new DisplayBlockContribution("date", PROPERTY_DISPLAY_BLOCKS, "date"));
+		configuration.add(new DisplayBlockContribution("formatted-date", PROPERTY_DISPLAY_BLOCKS, "date"));
 		configuration.add(new DisplayBlockContribution("number", PROPERTY_DISPLAY_BLOCKS, "number"));
 
 		configuration.add(new DisplayBlockContribution("single-valued-association", PROPERTY_DISPLAY_BLOCKS, "showPageLink"));
 		configuration.add(new DisplayBlockContribution("many-valued-association", PROPERTY_DISPLAY_BLOCKS, "showPageLinks"));
 		configuration.add(new DisplayBlockContribution("composition", PROPERTY_DISPLAY_BLOCKS, "composition"));
 		configuration.add(new DisplayBlockContribution("blob", PROPERTY_DISPLAY_BLOCKS, "download"));
+	}
+
+	public static void contributeBeanBlockOverrideSource(Configuration<BeanBlockContribution> configuration)
+	{
+		configuration.add(new EditBlockContribution("enum", PROPERTY_EDIT_BLOCKS, "select"));
 	}
 
 	public static void contributeDataTypeAnalyzer(OrderedConfiguration<DataTypeAnalyzer> configuration,
@@ -148,6 +151,7 @@ public class TynamoCoreModule extends VersionedModule
 //		addPairToOrderedConfiguration(configuration, "richText", "fckEditor");
 		addPairToOrderedConfiguration(configuration, "name.toLowerCase().endsWith('password')", "password");
 //		addPairToOrderedConfiguration(configuration, "string and !large and !identifier", "stringEditor"); //managed by Tapestry
+		addPairToOrderedConfiguration(configuration, "date", "formatted-date");
 		addPairToOrderedConfiguration(configuration, "string and large and !identifier", "longtext");
 		addPairToOrderedConfiguration(configuration, "identifier && generated", "readOnly");
 		addPairToOrderedConfiguration(configuration, "identifier && not(generated) && string", "identifierEditor");

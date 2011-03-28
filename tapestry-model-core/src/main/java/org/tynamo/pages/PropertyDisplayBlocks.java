@@ -6,20 +6,30 @@ import org.apache.tapestry5.annotations.Environmental;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.PropertyOutputContext;
-import org.chenillekit.tapestry.core.components.DateFormat;
-import org.chenillekit.tapestry.core.components.NumberFormat;
 import org.tynamo.components.Download;
 import org.tynamo.components.internal.Composition;
 import org.tynamo.descriptor.TynamoPropertyDescriptor;
 import org.tynamo.services.DescriptorService;
 import org.tynamo.services.TynamoBeanContext;
 
+import java.text.DateFormat;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.Collection;
+import java.util.Locale;
 
 public class PropertyDisplayBlocks
 {
 	@Inject
 	private DescriptorService descriptorService;
+
+	@Inject
+	private Locale locale;
+
+	private final DateFormat dateFormat = DateFormat.getDateInstance(java.text.DateFormat.MEDIUM, locale);
+
+	private final NumberFormat numberFormat = NumberFormat.getInstance(locale);
 
 	@Environmental
 	@Property(write = false)
@@ -41,16 +51,6 @@ public class PropertyDisplayBlocks
 
 	@Component(parameters = {"model=tynamoBeanContext.beanInstance", "propertyDescriptor=propertyDescriptor"})
 	private Download download;
-
-	@Component(
-			parameters = {"value=context.propertyValue", "clientId=prop:context.propertyid",
-			              "pattern=prop:propertyDescriptor.format"})
-	private DateFormat date;
-
-	@Component(
-			parameters = {"value=context.propertyValue", "clientId=prop:context.propertyid",
-			              "mask=prop:propertyDescriptor.format"})
-	private NumberFormat number;
 
 	@Inject
 	@Property
@@ -75,6 +75,18 @@ public class PropertyDisplayBlocks
 	{
 		return descriptorService.getClassDescriptor(tynamoBeanContext.getBeanType())
 				.getPropertyDescriptor(context.getPropertyId());
+	}
+
+	public DateFormat getDateFormat()
+	{
+		String format = getPropertyDescriptor().getFormat();
+		return format != null ? new SimpleDateFormat(format) : dateFormat;
+	}
+
+	public NumberFormat getNumberFormat()
+	{
+		String format = getPropertyDescriptor().getFormat();
+		return format != null ? new DecimalFormat(format) : numberFormat;
 	}
 
 }

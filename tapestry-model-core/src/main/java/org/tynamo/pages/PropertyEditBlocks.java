@@ -9,6 +9,7 @@ import org.apache.tapestry5.annotations.Component;
 import org.apache.tapestry5.annotations.Environmental;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.beaneditor.BeanModel;
+import org.apache.tapestry5.corelib.components.DateField;
 import org.apache.tapestry5.corelib.components.Select;
 import org.apache.tapestry5.corelib.components.TextField;
 import org.apache.tapestry5.corelib.data.BlankOption;
@@ -20,7 +21,6 @@ import org.apache.tapestry5.services.BeanModelSource;
 import org.apache.tapestry5.services.PropertyEditContext;
 import org.apache.tapestry5.services.ValueEncoderSource;
 import org.apache.tapestry5.util.EnumSelectModel;
-import org.chenillekit.tapestry.core.components.DateTimeField;
 import org.tynamo.components.EditComposition;
 import org.tynamo.descriptor.CollectionDescriptor;
 import org.tynamo.descriptor.IdentifierDescriptor;
@@ -29,9 +29,12 @@ import org.tynamo.services.DescriptorService;
 import org.tynamo.services.PersistenceService;
 import org.tynamo.util.GenericSelectionModel;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * A page that exists to contain blocks used to edit different types of properties. The blocks on this page are
@@ -67,6 +70,11 @@ public class PropertyEditBlocks
 	@Inject
 	private BeanModelSource beanModelSource;
 
+	@Inject
+	private Locale locale;
+
+	private final DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.MEDIUM, locale);
+
 	@Component(parameters = {"value=propertyEditContext.propertyValue", "label=prop:propertyEditContext.label",
 			"translate=prop:textFieldTranslator", "validate=prop:textFieldValidator",
 			"clientId=prop:propertyEditContext.propertyId", "annotationProvider=propertyEditContext"})
@@ -89,8 +97,8 @@ public class PropertyEditBlocks
 	@Component(
 			parameters = {"value=propertyEditContext.propertyValue", "label=prop:propertyEditContext.label",
 			              "clientId=prop:propertyEditContext.propertyid", "validate=prop:dateFieldValidator",
-			              "datePattern=prop:propertyDescriptor.format"})
-	private DateTimeField dateField;
+			              "format=prop:dateFormat"})
+	private DateField dateField;
 
 
 	public TynamoPropertyDescriptor getPropertyDescriptor()
@@ -223,4 +231,9 @@ public class PropertyEditBlocks
 		return propertyEditContext.getValidator(dateField);
 	}
 
+	public DateFormat getDateFormat()
+	{
+		String format = getPropertyDescriptor().getFormat();
+		return format != null ? new SimpleDateFormat(format) : dateFormat;
+	}
 }

@@ -55,11 +55,11 @@
 	</t:block>
 
 	<t:block id="date">
-		<div t:id="date"/>
+		<t:output value="context.propertyValue" format="dateFormat"/>
 	</t:block>
 
 	<t:block id="number">
-		<div t:id="number"/>
+		<t:output value="context.propertyValue" format="numberFormat"/>
 	</t:block>
 
 	<t:block id="missingAdvisor">
