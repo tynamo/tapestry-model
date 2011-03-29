@@ -10,7 +10,7 @@ import org.apache.tapestry5.corelib.components.*;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.services.PropertyAccess;
 import org.apache.tapestry5.services.Environment;
-import org.tynamo.pages.PageType;
+import org.tynamo.PageType;
 import org.tynamo.services.BeanModelSourceContext;
 import org.tynamo.services.TynamoBeanContext;
 

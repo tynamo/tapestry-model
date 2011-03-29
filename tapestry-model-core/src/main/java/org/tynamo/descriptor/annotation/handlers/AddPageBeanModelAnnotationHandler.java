@@ -1,6 +1,6 @@
 package org.tynamo.descriptor.annotation.handlers;
 
-import org.tynamo.pages.PageType;
+import org.tynamo.PageType;
 import org.tynamo.descriptor.TynamoClassDescriptor;
 import org.tynamo.descriptor.annotation.beaneditor.AddPageBeanModel;
 

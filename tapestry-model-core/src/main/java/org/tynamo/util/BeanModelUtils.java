@@ -4,7 +4,7 @@ import ognl.Ognl;
 import ognl.OgnlException;
 import org.apache.tapestry5.beaneditor.BeanModel;
 import org.apache.tapestry5.ioc.internal.util.InternalUtils;
-import org.tynamo.pages.PageType;
+import org.tynamo.PageType;
 import org.tynamo.descriptor.TynamoClassDescriptor;
 import org.tynamo.descriptor.extension.BeanModelExtension;
 

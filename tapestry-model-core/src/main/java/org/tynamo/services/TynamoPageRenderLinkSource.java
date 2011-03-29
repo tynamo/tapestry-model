@@ -2,7 +2,7 @@ package org.tynamo.services;
 
 
 import org.apache.tapestry5.Link;
-import org.tynamo.pages.PageType;
+import org.tynamo.PageType;
 
 public interface TynamoPageRenderLinkSource
 {

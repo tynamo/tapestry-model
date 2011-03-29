@@ -3,7 +3,7 @@ package org.tynamo.components;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
-import org.tynamo.pages.PageType;
+import org.tynamo.PageType;
 import org.tynamo.descriptor.TynamoClassDescriptor;
 import org.tynamo.services.DescriptorService;
 import org.tynamo.services.TynamoPageRenderLinkSource;

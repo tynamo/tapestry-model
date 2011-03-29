@@ -4,7 +4,7 @@ package org.tynamo.services;
 import org.apache.tapestry5.Link;
 import org.apache.tapestry5.services.ComponentClassResolver;
 import org.apache.tapestry5.services.PageRenderLinkSource;
-import org.tynamo.pages.PageType;
+import org.tynamo.PageType;
 
 import java.util.HashMap;
 import java.util.Map;

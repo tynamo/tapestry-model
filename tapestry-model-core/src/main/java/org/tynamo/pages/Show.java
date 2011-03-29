@@ -6,6 +6,7 @@ import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.ContextValueEncoder;
 import org.apache.tapestry5.services.HttpError;
+import org.tynamo.PageType;
 import org.tynamo.descriptor.TynamoClassDescriptor;
 import org.tynamo.services.DescriptorService;
 import org.tynamo.services.PersistenceService;

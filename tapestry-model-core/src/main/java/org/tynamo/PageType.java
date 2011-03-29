@@ -1,4 +1,4 @@
-package org.tynamo.pages;
+package org.tynamo;
 
 public enum PageType {
 
