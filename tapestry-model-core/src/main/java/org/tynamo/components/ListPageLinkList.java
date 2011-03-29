@@ -3,8 +3,10 @@ package org.tynamo.components;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
+import org.tynamo.pages.PageType;
 import org.tynamo.descriptor.TynamoClassDescriptor;
 import org.tynamo.services.DescriptorService;
+import org.tynamo.services.TynamoPageRenderLinkSource;
 import org.tynamo.util.DisplayNameUtils;
 import org.tynamo.util.Utils;
 
@@ -17,6 +19,9 @@ public class ListPageLinkList
 {
 	@Inject
 	private DescriptorService descriptorService;
+
+	@Inject
+	private TynamoPageRenderLinkSource tynamoPageRenderLinkSource;
 
 	@Property
 	private TynamoClassDescriptor descriptorIterator;
@@ -53,6 +58,10 @@ public class ListPageLinkList
 	{
 		return messages.format(Utils.LISTALL_LINK_MESSAGE,
 				DisplayNameUtils.getPluralDisplayName(descriptorIterator, messages));
+	}
+
+	public String getListPageName() {
+		return tynamoPageRenderLinkSource.getCanonicalPageName(PageType.LIST);
 	}
 
 }

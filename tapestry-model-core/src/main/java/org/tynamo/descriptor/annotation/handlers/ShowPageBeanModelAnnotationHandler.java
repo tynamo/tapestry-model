@@ -1,6 +1,6 @@
 package org.tynamo.descriptor.annotation.handlers;
 
-import org.tynamo.internal.InternalConstants;
+import org.tynamo.pages.PageType;
 import org.tynamo.descriptor.TynamoClassDescriptor;
 import org.tynamo.descriptor.annotation.beaneditor.ShowPageBeanModel;
 
@@ -10,7 +10,7 @@ public class ShowPageBeanModelAnnotationHandler extends BeanModelAnnotationHandl
 {
 	public TynamoClassDescriptor decorateFromAnnotation(ShowPageBeanModel annotation, TynamoClassDescriptor descriptor)
 	{
-		configureBeanModelExtension(descriptor, InternalConstants.SHOW_PAGE_CONTEXT_KEY, annotation.exclude(),
+		configureBeanModelExtension(descriptor, PageType.SHOW.getContextKey(), annotation.exclude(),
 				annotation.include(), annotation.reorder());
 		return descriptor;
 	}

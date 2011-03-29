@@ -9,13 +9,13 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.BeanModelSource;
 import org.apache.tapestry5.services.ContextValueEncoder;
 import org.apache.tapestry5.services.HttpError;
-import org.apache.tapestry5.services.PageRenderLinkSource;
 import org.tynamo.builder.BuilderDirector;
 import org.tynamo.descriptor.CollectionDescriptor;
 import org.tynamo.descriptor.TynamoClassDescriptor;
 import org.tynamo.descriptor.TynamoPropertyDescriptor;
 import org.tynamo.services.DescriptorService;
 import org.tynamo.services.PersistenceService;
+import org.tynamo.services.TynamoPageRenderLinkSource;
 import org.tynamo.util.DisplayNameUtils;
 import org.tynamo.util.Utils;
 
@@ -44,7 +44,7 @@ public class AddC {
 	private DescriptorService descriptorService;
 
 	@Inject
-	private PageRenderLinkSource pageRenderLinkSource;
+	private TynamoPageRenderLinkSource tynamoPageRenderLinkSource;
 
 
 	@Property(write = false)
@@ -121,7 +121,9 @@ public class AddC {
 
 
 	public Link back() {
-		return pageRenderLinkSource.createPageRenderLinkWithContext("Edit", collectionDescriptor.getBeanType(), parentBean);
+		return tynamoPageRenderLinkSource.createPageRenderLinkWithContext(PageType.EDIT,
+		                                                                  collectionDescriptor.getBeanType(),
+		                                                                  parentBean);
 	}
 
 	public String getListAllLinkMessage() {

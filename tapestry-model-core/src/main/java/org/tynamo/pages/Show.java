@@ -6,10 +6,10 @@ import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.ContextValueEncoder;
 import org.apache.tapestry5.services.HttpError;
-import org.apache.tapestry5.services.PageRenderLinkSource;
 import org.tynamo.descriptor.TynamoClassDescriptor;
 import org.tynamo.services.DescriptorService;
 import org.tynamo.services.PersistenceService;
+import org.tynamo.services.TynamoPageRenderLinkSource;
 import org.tynamo.util.DisplayNameUtils;
 import org.tynamo.util.Utils;
 
@@ -28,7 +28,7 @@ public class Show {
 	private DescriptorService descriptorService;
 
 	@Inject
-	private PageRenderLinkSource pageRenderLinkSource;
+	private TynamoPageRenderLinkSource tynamoPageRenderLinkSource;
 
 	private TynamoClassDescriptor classDescriptor;
 
@@ -75,7 +75,7 @@ public class Show {
 
 	public Link onActionFromDelete() {
 		persitenceService.remove(bean);
-		return pageRenderLinkSource.createPageRenderLinkWithContext("List", classDescriptor.getBeanType());
+		return tynamoPageRenderLinkSource.createPageRenderLinkWithContext(PageType.LIST, classDescriptor.getBeanType());
 	}
 
 	public boolean isAllowRemove() {

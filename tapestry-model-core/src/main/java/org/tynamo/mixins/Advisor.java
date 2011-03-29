@@ -10,7 +10,7 @@ import org.apache.tapestry5.corelib.components.*;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.services.PropertyAccess;
 import org.apache.tapestry5.services.Environment;
-import org.tynamo.internal.InternalConstants;
+import org.tynamo.pages.PageType;
 import org.tynamo.services.BeanModelSourceContext;
 import org.tynamo.services.TynamoBeanContext;
 
@@ -98,16 +98,16 @@ public class Advisor
 	private String guessKey()
 	{
 
-		if (container instanceof Grid) return InternalConstants.LIST_PAGE_CONTEXT_KEY;
+		if (container instanceof Grid) return PageType.LIST.getContextKey();
 
 		if (container instanceof BeanDisplay || container instanceof PropertyDisplay)
 		{
-			return InternalConstants.SHOW_PAGE_CONTEXT_KEY;
+			return PageType.SHOW.getContextKey();
 		}
 
 		if (container instanceof BeanEditor || container instanceof BeanEditForm || container instanceof PropertyEditor)
 		{
-			return InternalConstants.EDIT_PAGE_CONTEXT_KEY;
+			return PageType.EDIT.getContextKey();
 		}
 
 		throw new RuntimeException(

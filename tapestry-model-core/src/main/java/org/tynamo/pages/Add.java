@@ -6,11 +6,11 @@ import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.HttpError;
-import org.apache.tapestry5.services.PageRenderLinkSource;
 import org.tynamo.builder.BuilderDirector;
 import org.tynamo.descriptor.TynamoClassDescriptor;
 import org.tynamo.services.DescriptorService;
 import org.tynamo.services.PersistenceService;
+import org.tynamo.services.TynamoPageRenderLinkSource;
 import org.tynamo.util.DisplayNameUtils;
 import org.tynamo.util.Utils;
 
@@ -29,7 +29,7 @@ public class Add {
 	private DescriptorService descriptorService;
 
 	@Inject
-	private PageRenderLinkSource pageRenderLinkSource;
+	private TynamoPageRenderLinkSource tynamoPageRenderLinkSource;
 
 	@Property
 	private TynamoClassDescriptor classDescriptor;
@@ -60,11 +60,11 @@ public class Add {
 	@Log
 	protected Object onSuccess() {
 		persitenceService.save(bean);
-		return pageRenderLinkSource.createPageRenderLinkWithContext("Show", classDescriptor.getBeanType(), bean);
+		return tynamoPageRenderLinkSource.createPageRenderLinkWithContext(PageType.SHOW, classDescriptor.getBeanType(),bean);
 	}
 
 	public Link onActionFromCancel() {
-		return pageRenderLinkSource.createPageRenderLinkWithContext("List", classDescriptor.getBeanType());
+		return tynamoPageRenderLinkSource.createPageRenderLinkWithContext(PageType.LIST, classDescriptor.getBeanType());
 	}
 
 	public String getTitle() {

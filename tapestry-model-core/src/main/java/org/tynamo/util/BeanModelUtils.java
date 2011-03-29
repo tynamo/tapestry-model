@@ -4,9 +4,9 @@ import ognl.Ognl;
 import ognl.OgnlException;
 import org.apache.tapestry5.beaneditor.BeanModel;
 import org.apache.tapestry5.ioc.internal.util.InternalUtils;
+import org.tynamo.pages.PageType;
 import org.tynamo.descriptor.TynamoClassDescriptor;
 import org.tynamo.descriptor.extension.BeanModelExtension;
-import org.tynamo.internal.InternalConstants;
 
 import java.util.List;
 
@@ -48,7 +48,7 @@ public final class BeanModelUtils
 	 */
 	public static void modify(BeanModel dataModel, TynamoClassDescriptor classDescriptor, String key)
 	{
-		if (InternalConstants.LIST_PAGE_CONTEXT_KEY.equals(key))
+		if (PageType.LIST.getContextKey().equals(key))
 		{
 			exclude(dataModel, classDescriptor);
 		}
