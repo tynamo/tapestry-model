@@ -41,6 +41,7 @@
 	<!-- note that our own versions are auto-managed by the release plugin -->
 	<dependencyManagement>
 		<dependencies>
+
 			<dependency>
 				<groupId>org.tynamo</groupId>
 				<artifactId>tapestry-model-annotations</artifactId>
@@ -57,15 +58,8 @@
 				<version>0.2.0-SNAPSHOT</version>
 			</dependency>
 			<dependency>
-				<groupId>org.tynamo.examples</groupId>
-				<artifactId>recipe</artifactId>
-				<type>war</type>
-				<version>0.0.1-SNAPSHOT</version>
-			</dependency>
-			<dependency>
 				<groupId>org.tynamo</groupId>
 				<artifactId>tapestry-model-web</artifactId>
-				<type>jar</type>
 				<version>0.2.0-SNAPSHOT</version>
 			</dependency>
 
@@ -291,8 +285,18 @@
 				<enabled>true</enabled>
 			</snapshots>
 		</repository>
+
+		<repository>
+			<id>howardlewisship</id>
+			<url>http://howardlewisship.com/snapshot-repository/</url>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+
 	</repositories>
-
-
 
 </project>

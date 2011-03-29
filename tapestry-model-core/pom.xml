@@ -124,6 +124,12 @@
 			<version>3.2.1</version>
 		</dependency>
 
+		<dependency>
+			<groupId>com.howardlewisship</groupId>
+			<artifactId>tapx-datefield</artifactId>
+			<version>1.1-SNAPSHOT</version>
+		</dependency>
+
 	</dependencies>
 
 </project>

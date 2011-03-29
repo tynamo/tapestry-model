@@ -1,5 +1,6 @@
 package org.tynamo.pages;
 
+import com.howardlewisship.tapx.datefield.components.DateField;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.tapestry5.FieldTranslator;
 import org.apache.tapestry5.FieldValidator;
@@ -9,7 +10,6 @@ import org.apache.tapestry5.annotations.Component;
 import org.apache.tapestry5.annotations.Environmental;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.beaneditor.BeanModel;
-import org.apache.tapestry5.corelib.components.DateField;
 import org.apache.tapestry5.corelib.components.Select;
 import org.apache.tapestry5.corelib.components.TextField;
 import org.apache.tapestry5.corelib.data.BlankOption;
