@@ -6,11 +6,13 @@ import org.apache.tapestry5.annotations.Environmental;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.PropertyOutputContext;
+import org.tynamo.PageType;
 import org.tynamo.components.Download;
 import org.tynamo.components.internal.Composition;
 import org.tynamo.descriptor.TynamoPropertyDescriptor;
 import org.tynamo.services.DescriptorService;
 import org.tynamo.services.TynamoBeanContext;
+import org.tynamo.services.TynamoPageRenderLinkSource;
 
 import java.text.DateFormat;
 import java.text.DecimalFormat;
@@ -23,6 +25,9 @@ public class PropertyDisplayBlocks
 {
 	@Inject
 	private DescriptorService descriptorService;
+
+	@Inject
+	private TynamoPageRenderLinkSource tynamoPageRenderLinkSource;
 
 	@Inject
 	private Locale locale;
@@ -87,6 +92,11 @@ public class PropertyDisplayBlocks
 	{
 		String format = getPropertyDescriptor().getFormat();
 		return format != null ? new DecimalFormat(format) : numberFormat;
+	}
+
+	public String getShow()
+	{
+		return tynamoPageRenderLinkSource.getCanonicalPageName(PageType.LIST);
 	}
 
 }

@@ -4,14 +4,14 @@
 
 	<t:block id="showPageLink">
 		<t:if test="context.propertyValue">
-			<t:pagelink t:page="Show" context="showPageContext">${context.propertyValue}</t:pagelink>
+			<t:pagelink t:page="prop:show" context="showPageContext">${context.propertyValue}</t:pagelink>
 		</t:if>
 	</t:block>
 
 	<t:block id="showPageLinks">
 		<t:if test="context.propertyValue">
 			<t:loop source="context.propertyValue" value="loopIterator" index="loopIndex">
-				<t:pagelink page="Show" context="loopShowPageContext">${loopIterator}</t:pagelink><t:if test="lastElement" negate="true">, </t:if>
+				<t:pagelink page="prop:show" context="loopShowPageContext">${loopIterator}</t:pagelink><t:if test="lastElement" negate="true">, </t:if>
 			</t:loop>
 		</t:if>
 	</t:block>
