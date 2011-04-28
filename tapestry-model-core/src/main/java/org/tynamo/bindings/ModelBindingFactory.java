@@ -8,10 +8,10 @@ import org.apache.tapestry5.ioc.Location;
 import org.apache.tapestry5.services.BindingFactory;
 import org.apache.tapestry5.services.PropertyConduitSource;
 
-public class ModelBingingFactory extends PropBindingFactory implements BindingFactory
+public class ModelBindingFactory extends PropBindingFactory implements BindingFactory
 {
 
-	public ModelBingingFactory(PropertyConduitSource propertyConduitSource, StringInterner interner)
+	public ModelBindingFactory(PropertyConduitSource propertyConduitSource, StringInterner interner)
 	{
 		super(propertyConduitSource, interner);
 	}
@@ -20,6 +20,6 @@ public class ModelBingingFactory extends PropBindingFactory implements BindingFa
 	public Binding newBinding(String description, ComponentResources container, ComponentResources component,
 	                          String expression, Location location)
 	{
-		return new ModelBinging(super.newBinding(description, container, component, expression, location));
+		return new ModelBinding(super.newBinding(description, container, component, expression, location));
 	}
 }

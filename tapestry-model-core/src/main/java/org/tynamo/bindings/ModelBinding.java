@@ -9,11 +9,11 @@ import java.lang.annotation.Annotation;
  * The bindingType will be computed on the fly based on the binding actual value.
  *
  */
-public class ModelBinging implements Binding
+public class ModelBinding implements Binding
 {
 	private final Binding binding;
 
-	public ModelBinging(Binding binding)
+	public ModelBinding(Binding binding)
 	{
 		this.binding = binding;
 	}
@@ -21,7 +21,7 @@ public class ModelBinging implements Binding
 	public Class getBindingType()
 	{
 		Object object = binding.get();
-		if (object == null) throw new NullPointerException("ModelBinging's value can't be null!");
+		if (object == null) throw new NullPointerException("ModelBinding's value can't be null!");
 		return object.getClass();
 	}
 
