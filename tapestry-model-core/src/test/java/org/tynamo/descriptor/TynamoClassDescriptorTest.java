@@ -11,8 +11,8 @@
  */
 package org.tynamo.descriptor;
 
-import ognl.Ognl;
-import ognl.OgnlException;
+import org.apache.tapestry5.func.F;
+import org.apache.tapestry5.func.Predicate;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -93,18 +93,21 @@ public class TynamoClassDescriptorTest extends Assert
 	@Test public void testGetSearchableProperties()
 	{
 		TynamoClassDescriptorImpl classDescriptor = new TynamoClassDescriptorImpl(Searchee.class);
-		classDescriptor.getPropertyDescriptors().add(new TynamoPropertyDescriptorImpl(Foo.class, "someProperty", String.class));
+		classDescriptor.getPropertyDescriptors().add(
+				new TynamoPropertyDescriptorImpl(Foo.class, "someProperty", String.class));
 		classDescriptor.getPropertyDescriptors().add(new IdentifierDescriptorImpl(Foo.class, "id", String.class));
 		classDescriptor.getPropertyDescriptors().add(new CollectionDescriptor(Foo.class, "name", Set.class));
 
-		try
+		List<TynamoPropertyDescriptor> searchableProperties = classDescriptor.getPropertyDescriptors();
+		searchableProperties = F.flow(searchableProperties).filter(new Predicate<TynamoPropertyDescriptor>()
 		{
-			List<TynamoPropertyDescriptor> searchableProperties = (List<TynamoPropertyDescriptor>) Ognl.getValue("propertyDescriptors.{? searchable}", classDescriptor);
-			assertEquals(2, searchableProperties.size(), "should only be 2 search properties");
-			assertEquals(searchableProperties.get(0).getName(), "someProperty");
-		} catch (OgnlException e)
-		{
-			fail();
-		}
+			public boolean accept(TynamoPropertyDescriptor element)
+			{
+				return element.isSearchable();
+			}
+		}).toList();
+
+		assertEquals(2, searchableProperties.size(), "should only be 2 search properties");
+		assertEquals(searchableProperties.get(0).getName(), "someProperty");
 	}
 }

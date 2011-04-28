@@ -1,7 +1,8 @@
 package org.tynamo.descriptor.decorators;
 
-import ognl.Ognl;
 import org.apache.commons.lang.exception.ExceptionUtils;
+import org.apache.tapestry5.func.F;
+import org.apache.tapestry5.func.Predicate;
 import org.apache.tapestry5.ioc.ObjectLocator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,7 +37,8 @@ public class TynamoDecorator implements DescriptorDecorator
 	{
 
 		Annotation[] classAnnotations = descriptor.getBeanType().getAnnotations();
-		TynamoClassDescriptor decoratedDescriptor = (TynamoClassDescriptor) decorateFromAnnotations(descriptor, classAnnotations);
+		TynamoClassDescriptor decoratedDescriptor = (TynamoClassDescriptor) descriptor.clone();
+		decorateFromAnnotations(decoratedDescriptor, classAnnotations);
 
 		decoratedDescriptor.setPropertyDescriptors(decoratePropertyDescriptors(descriptor));
 		decoratedDescriptor.setMethodDescriptors(decorateMethodDescriptors(descriptor));
@@ -44,12 +46,14 @@ public class TynamoDecorator implements DescriptorDecorator
 		return decoratedDescriptor;
 	}
 
-	private List<TynamoPropertyDescriptor> decoratePropertyDescriptors(TynamoClassDescriptor descriptor)
+	List<TynamoPropertyDescriptor> decoratePropertyDescriptors(TynamoClassDescriptor descriptor)
 	{
 		List<TynamoPropertyDescriptor> decoratedPropertyDescriptors = new ArrayList<TynamoPropertyDescriptor>();
 		for (TynamoPropertyDescriptor propertyDescriptor : descriptor.getPropertyDescriptors())
 		{
-			TynamoPropertyDescriptor clonedDescriptor = decoratePropertyDescriptor(propertyDescriptor);
+			TynamoPropertyDescriptor clonedDescriptor = (TynamoPropertyDescriptor) propertyDescriptor.clone();
+			decoratePropertyDescriptor(clonedDescriptor);
+
 			// recursively decorate components
 			if (clonedDescriptor.isEmbedded())
 			{
@@ -60,63 +64,78 @@ public class TynamoDecorator implements DescriptorDecorator
 		return decoratedPropertyDescriptors;
 	}
 
-	private List<IMethodDescriptor> decorateMethodDescriptors(TynamoClassDescriptor descriptor)
+	List<IMethodDescriptor> decorateMethodDescriptors(TynamoClassDescriptor descriptor)
 	{
 		List<IMethodDescriptor> decoratedMethodDescriptors = new ArrayList<IMethodDescriptor>();
 		for (IMethodDescriptor methodDescriptor : descriptor.getMethodDescriptors())
 		{
-			IMethodDescriptor clonedDescriptor = decorateMethodDescriptor(methodDescriptor);
+			IMethodDescriptor clonedDescriptor = (IMethodDescriptor) methodDescriptor.clone();
+			decorateMethodDescriptor(clonedDescriptor);
 			decoratedMethodDescriptors.add(clonedDescriptor);
 		}
 		return decoratedMethodDescriptors;
 	}
 
-	protected TynamoPropertyDescriptor decoratePropertyDescriptor(TynamoPropertyDescriptor propertyDescriptor)
+	void decoratePropertyDescriptor(final TynamoPropertyDescriptor descriptor)
 	{
-		TynamoPropertyDescriptor clonedDescriptor = (TynamoPropertyDescriptor) propertyDescriptor.clone();
-		try
-		{
-			Field propertyField = clonedDescriptor.getBeanType().getDeclaredField(propertyDescriptor.getName());
-			clonedDescriptor = (TynamoPropertyDescriptor) decorateFromAnnotations(clonedDescriptor, propertyField.getAnnotations());
 
-		} catch (Exception ex)
-		{
-			// don't care
-		}
+		decorateFromDeclaredField(descriptor);
+		decorateFromReadMethod(descriptor);
+	}
+
+	void decorateFromReadMethod(final TynamoPropertyDescriptor tynamoPropertyDescriptor)
+	{
 		try
 		{
-			PropertyDescriptor beanPropDescriptor = (PropertyDescriptor) Ognl.getValue("propertyDescriptors.{? name == '" + propertyDescriptor.getName() + "'}[0]",
-					Introspector.getBeanInfo(clonedDescriptor.getBeanType()));
+			PropertyDescriptor[] descriptors =
+					Introspector.getBeanInfo(tynamoPropertyDescriptor.getBeanType()).getPropertyDescriptors();
+
+			PropertyDescriptor beanPropDescriptor = F.flow(descriptors).filter(new Predicate<PropertyDescriptor>()
+			{
+				public boolean accept(PropertyDescriptor descriptor)
+				{
+					return descriptor.getName().equals(tynamoPropertyDescriptor.getName());
+				}
+			}).first();
 
 			Method readMethod = beanPropDescriptor.getReadMethod();
-			clonedDescriptor = (TynamoPropertyDescriptor) decorateFromAnnotations(clonedDescriptor, readMethod.getAnnotations());
+
+			decorateFromAnnotations(tynamoPropertyDescriptor, readMethod.getAnnotations());
 		}
 		catch (Exception ex)
 		{
-			//System.out.println(propertyDescriptor.getName());
-			//ex.printStackTrace();
-			// don't care
+			LOGGER.warn(ExceptionUtils.getRootCauseMessage(ex));
 		}
-		return clonedDescriptor;
 	}
 
-	protected IMethodDescriptor decorateMethodDescriptor(IMethodDescriptor methodDescriptor)
+	void decorateFromDeclaredField(TynamoPropertyDescriptor tynamoPropertyDescriptor)
+	{
+		try
+		{
+			Field propertyField = tynamoPropertyDescriptor.getBeanType().getDeclaredField(tynamoPropertyDescriptor.getName());
+			decorateFromAnnotations(tynamoPropertyDescriptor, propertyField.getAnnotations());
+
+		} catch (Exception ex)
+		{
+			LOGGER.warn(ExceptionUtils.getRootCauseMessage(ex));
+		}
+	}
+
+	void decorateMethodDescriptor(IMethodDescriptor methodDescriptor)
 	{
 		try
 		{
 
-			return (IMethodDescriptor) decorateFromAnnotations(methodDescriptor, methodDescriptor.getMethod().getAnnotations());
+			decorateFromAnnotations(methodDescriptor, methodDescriptor.getMethod().getAnnotations());
 
 		} catch (NoSuchMethodException nsme)
 		{
 			LOGGER.warn(ExceptionUtils.getRootCauseMessage(nsme));
 		}
-		return methodDescriptor;
 	}
 
-	private Descriptor decorateFromAnnotations(Descriptor descriptor, Annotation[] annotations)
+	void decorateFromAnnotations(Descriptor descriptor, Annotation[] annotations)
 	{
-		Descriptor clonedDescriptor = (Descriptor) descriptor.clone();
 		for (Annotation annotation : annotations)
 		{
 			// If the annotation type itself has a @HandledBy annotation, it's one of ours
@@ -127,7 +146,7 @@ public class TynamoDecorator implements DescriptorDecorator
 				{
 					String serviceId = handledBy.value();
 					DescriptorAnnotationHandler handler = locator.getService(serviceId, DescriptorAnnotationHandler.class);
-					clonedDescriptor = handler.decorateFromAnnotation(annotation, clonedDescriptor);
+					handler.decorateFromAnnotation(annotation, descriptor);
 				}
 				catch (Exception ex)
 				{
@@ -135,7 +154,6 @@ public class TynamoDecorator implements DescriptorDecorator
 				}
 			}
 		}
-		return clonedDescriptor;
 	}
 
 }

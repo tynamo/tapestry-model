@@ -1,11 +1,13 @@
 package org.tynamo.util;
 
-import ognl.Ognl;
-import ognl.OgnlException;
 import org.apache.tapestry5.beaneditor.BeanModel;
+import org.apache.tapestry5.func.F;
+import org.apache.tapestry5.func.Mapper;
+import org.apache.tapestry5.func.Predicate;
 import org.apache.tapestry5.ioc.internal.util.InternalUtils;
 import org.tynamo.PageType;
 import org.tynamo.descriptor.TynamoClassDescriptor;
+import org.tynamo.descriptor.TynamoPropertyDescriptor;
 import org.tynamo.descriptor.extension.BeanModelExtension;
 
 import java.util.List;
@@ -24,17 +26,21 @@ public final class BeanModelUtils
 	 */
 	public static void exclude(BeanModel model, TynamoClassDescriptor classDescriptor)
 	{
-		try
+		List<String> nameList = F.flow(classDescriptor.getPropertyDescriptors()).filter(new Predicate<TynamoPropertyDescriptor>()
 		{
-			List<String> nameList = (List<String>) Ognl
-					.getValue("propertyDescriptors.{? identifier or !summary or nonVisual or collection}.{name}",
-					          classDescriptor);
-
-			model.exclude((String[]) nameList.toArray(new String[nameList.size()]));
-
-		} catch (OgnlException e)
+			public boolean accept(TynamoPropertyDescriptor descriptor)
+			{
+				return descriptor.isIdentifier() || descriptor.isCollection() || descriptor.isNonVisual();
+			}
+		}).map(new Mapper<TynamoPropertyDescriptor, String>()
 		{
-		}
+			public String map(TynamoPropertyDescriptor descriptor)
+			{
+				return descriptor.getName();
+			}
+		}).toList();
+
+		model.exclude((String[]) nameList.toArray(new String[nameList.size()]));
 	}
 
 	/**
