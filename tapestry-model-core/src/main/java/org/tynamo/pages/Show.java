@@ -74,6 +74,7 @@ public class Show {
 		return messages.format(Utils.SHOW_MESSAGE, bean.toString(), messages);
 	}
 
+//	@CommitAfter
 	public Link onActionFromDelete() {
 		persitenceService.remove(bean);
 		return tynamoPageRenderLinkSource.createPageRenderLinkWithContext(PageType.LIST, classDescriptor.getBeanType());

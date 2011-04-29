@@ -63,6 +63,7 @@ public class Edit {
 		return new Object[]{classDescriptor.getBeanType(), bean};
 	}
 
+//	@CommitAfter
 	@Log
 	protected Object onSuccess() {
 		persitenceService.save(bean);

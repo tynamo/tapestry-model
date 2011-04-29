@@ -58,6 +58,7 @@ public class Add {
 		return new Object[]{classDescriptor.getBeanType()};
 	}
 
+//	@CommitAfter
 	@Log
 	protected Object onSuccess() {
 		persitenceService.save(bean);

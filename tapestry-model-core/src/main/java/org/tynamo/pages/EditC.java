@@ -102,6 +102,7 @@ public class EditC {
 		collectionDescriptor = null;
 	}
 
+//	@CommitAfter
 	@Log
 	protected Object onSuccess() {
 		persitenceService.save(bean);

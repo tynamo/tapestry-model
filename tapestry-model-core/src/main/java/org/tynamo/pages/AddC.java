@@ -87,6 +87,7 @@ public class AddC {
 
 	}
 
+//	@CommitAfter
 	@Log
 	protected Object onSuccess() {
 		persitenceService.addToCollection(collectionDescriptor, bean, parentBean);
