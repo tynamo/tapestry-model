@@ -13,6 +13,7 @@ import java.lang.annotation.*;
 @HandledBy("BeanModelAnnotationHandler")
 public @interface BeanModels {
 
+	boolean applyDefaultExclusions() default false;
 	BeanModel[] value();
 
 }

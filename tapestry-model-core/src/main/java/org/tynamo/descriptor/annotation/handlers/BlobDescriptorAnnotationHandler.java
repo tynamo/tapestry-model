@@ -1,5 +1,6 @@
 package org.tynamo.descriptor.annotation.handlers;
 
+import org.tynamo.PageType;
 import org.tynamo.descriptor.TynamoPropertyDescriptor;
 import org.tynamo.descriptor.annotation.BlobDescriptor;
 import org.tynamo.descriptor.extension.BeanModelExtension;
@@ -22,7 +23,7 @@ public class BlobDescriptorAnnotationHandler extends AbstractAnnotationHandler i
 
 		BeanModelExtension beanModelExtension = BeanModelExtension.obtainBeanModelExtension(descriptor);
 
-		beanModelExtension.addToExcludeMap("list", descriptor.getName());
+		beanModelExtension.addToExcludeMap(PageType.LIST.getContextKey(), descriptor.getName());
 		return descriptor;
 	}
 

@@ -3,6 +3,7 @@ package org.tynamo.descriptor;
 import org.apache.tapestry5.beaneditor.BeanModel;
 import org.apache.tapestry5.test.TapestryTestCase;
 import org.testng.annotations.Test;
+import org.tynamo.PageType;
 import org.tynamo.test.Baz;
 import org.tynamo.test.Foo;
 import org.tynamo.util.BeanModelUtils;
@@ -32,7 +33,7 @@ public class BeanModelUtilsTest extends TapestryTestCase
 
 		Collections.addAll(classDescriptor.getPropertyDescriptors(), idProp, multiWordProp, bazzesDescriptor);
 
-		BeanModelUtils.exclude(model, classDescriptor);
+		BeanModelUtils.applyDefaultExclusions(model, classDescriptor, PageType.LIST.getContextKey());
 
 		verify();
 

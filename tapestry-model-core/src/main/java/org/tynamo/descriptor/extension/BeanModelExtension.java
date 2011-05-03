@@ -16,9 +16,9 @@ public class BeanModelExtension implements DescriptorExtension
 	private Map<String, String> includeMap = new HashMap<String, String>();
 	private Map<String, String> excludeMap = new HashMap<String, String>();
 
-	private BeanModelExtension()
-	{
-	}
+	private boolean applyDefaultExclusions = true;
+
+	private BeanModelExtension(){}
 
 	public String getReorderPropertyNames(String contextKey)
 	{
@@ -84,6 +84,16 @@ public class BeanModelExtension implements DescriptorExtension
 		String excludePropertyNames = excludeMap.get(contextKey);
 		excludePropertyNames = excludePropertyNames == null ? newProperty : BeanModelUtils.join(excludePropertyNames, newProperty);
 		setExcludePropertyNames(contextKey, excludePropertyNames);
+	}
+
+	public boolean isApplyDefaultExclusions()
+	{
+		return applyDefaultExclusions;
+	}
+
+	public void setApplyDefaultExclusions(boolean applyDefaultExclusions)
+	{
+		this.applyDefaultExclusions = applyDefaultExclusions;
 	}
 
 	public static BeanModelExtension obtainBeanModelExtension(Descriptor descriptor)

@@ -19,18 +19,29 @@ public final class BeanModelUtils
 {
 
 	/**
-	 * Removes properties from the bean model.
+	 * Removes from the bean model the Tynamo "recommended" list of properties to exclude.
 	 *
-	 * @param model           to modifiy
+	 * It excludes all nonVisual properties from the BeanModel for ALL context, and for the "list" context it also removes
+	 * identifier and collection properties.
+	 *
+	 * @param dataModel to modifiy
 	 * @param classDescriptor
+	 * @param key to choose which configuration set to apply
 	 */
-	public static void exclude(BeanModel model, TynamoClassDescriptor classDescriptor)
+	public static void applyDefaultExclusions(BeanModel dataModel, TynamoClassDescriptor classDescriptor,
+	                                          final String key)
 	{
 		List<String> nameList = F.flow(classDescriptor.getPropertyDescriptors()).filter(new Predicate<TynamoPropertyDescriptor>()
 		{
 			public boolean accept(TynamoPropertyDescriptor descriptor)
 			{
-				return descriptor.isIdentifier() || descriptor.isCollection() || descriptor.isNonVisual();
+				if (PageType.LIST.getContextKey().equals(key))
+				{
+					return descriptor.isIdentifier() || descriptor.isCollection() || descriptor.isNonVisual();
+				} else
+				{
+					return descriptor.isNonVisual();
+				}
 			}
 		}).map(new Mapper<TynamoPropertyDescriptor, String>()
 		{
@@ -40,7 +51,7 @@ public final class BeanModelUtils
 			}
 		}).toList();
 
-		model.exclude((String[]) nameList.toArray(new String[nameList.size()]));
+		dataModel.exclude((String[]) nameList.toArray(new String[nameList.size()]));
 	}
 
 	/**
@@ -54,11 +65,6 @@ public final class BeanModelUtils
 	 */
 	public static void modify(BeanModel dataModel, TynamoClassDescriptor classDescriptor, String key)
 	{
-		if (PageType.LIST.getContextKey().equals(key))
-		{
-			exclude(dataModel, classDescriptor);
-		}
-
 		if (classDescriptor.supportsExtension(BeanModelExtension.class))
 		{
 			BeanModelExtension extension = classDescriptor.getExtension(BeanModelExtension.class);
@@ -67,6 +73,14 @@ public final class BeanModelUtils
 					.modify(dataModel, null, extension.getIncludePropertyNames(key),
 					        extension.getExcludePropertyNames(key),
 					        extension.getReorderPropertyNames(key));
+
+			if (extension.isApplyDefaultExclusions())
+			{
+				applyDefaultExclusions(dataModel, classDescriptor, key);
+			}
+		} else
+		{
+			applyDefaultExclusions(dataModel, classDescriptor, key);
 		}
 	}
 
