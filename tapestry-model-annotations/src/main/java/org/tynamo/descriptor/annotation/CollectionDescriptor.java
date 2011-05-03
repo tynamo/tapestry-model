@@ -11,7 +11,7 @@ import java.lang.annotation.*;
 @HandledBy("CollectionDescriptorAnnotationHandler")
 @Documented
 @UseWith(AnnotationUseContext.BEAN)
-public @interface Collection
+public @interface CollectionDescriptor
 {
 
 	public static final String DEFAULT_inverse = "";
@@ -20,7 +20,7 @@ public @interface Collection
 	public static final String DEFAULT_swapExpression = "";
 
 	/**
-	 * The field in the other end of the realtionship. Required for @OneToMany @Collection(child=false)
+	 * The field in the other end of the realtionship. Required for @OneToMany @CollectionDescriptor(child=false)
 	 *
 	 * @return
 	 */

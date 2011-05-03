@@ -46,18 +46,14 @@ public class TynamoCoreModule extends VersionedModule
 
 		binder.bind(BlobManager.class, DefaultBlobManager.class).withId("DefaultBlobManager");
 
-		binder.bind(DescriptorAnnotationHandler.class, AddPageBeanModelAnnotationHandler.class).withId("AddPageBeanModelAnnotationHandler");
+		binder.bind(DescriptorAnnotationHandler.class, BeanModelAnnotationHandler.class).withId("BeanModelAnnotationHandler");
 		binder.bind(DescriptorAnnotationHandler.class, BlobDescriptorAnnotationHandler.class).withId("BlobDescriptorAnnotationHandler");
 		binder.bind(DescriptorAnnotationHandler.class, ClassDescriptorAnnotationHandler.class).withId("ClassDescriptorAnnotationHandler");
 		binder.bind(DescriptorAnnotationHandler.class, CollectionDescriptorAnnotationHandler.class).withId("CollectionDescriptorAnnotationHandler");
-		binder.bind(DescriptorAnnotationHandler.class, DefaultBeanModelAnnotationHandler.class).withId("DefaultBeanModelAnnotationHandler");
-		binder.bind(DescriptorAnnotationHandler.class, EditPageBeanModelAnnotationHandler.class).withId("EditPageBeanModelAnnotationHandler");
 		binder.bind(DescriptorAnnotationHandler.class, InitialValueAnnotationHandler.class).withId("InitialValueAnnotationHandler");
-		binder.bind(DescriptorAnnotationHandler.class, ListPageBeanModelAnnotationHandler.class).withId("ListPageBeanModelAnnotationHandler");
 		binder.bind(DescriptorAnnotationHandler.class, MethodDescriptorAnnotationHandler.class).withId("MethodDescriptorAnnotationHandler");
 		binder.bind(DescriptorAnnotationHandler.class, PossibleValuesAnnotationHandler.class).withId("PossibleValuesAnnotationHandler");
 		binder.bind(DescriptorAnnotationHandler.class, PropertyDescriptorAnnotationHandler.class).withId("PropertyDescriptorAnnotationHandler");
-		binder.bind(DescriptorAnnotationHandler.class, ShowPageBeanModelAnnotationHandler.class).withId("ShowPageBeanModelAnnotationHandler");
 
 	}
 

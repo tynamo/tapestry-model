@@ -4,12 +4,12 @@ package org.tynamo.descriptor.annotation.handlers;
 
 import org.apache.commons.lang.Validate;
 import org.tynamo.descriptor.TynamoPropertyDescriptor;
-import org.tynamo.descriptor.annotation.PossibleValues;
+import org.tynamo.descriptor.annotation.extension.PossibleValues;
 import org.tynamo.descriptor.extension.PossibleValuesDescriptorExtension;
 
 /**
  * Creates a {@link org.tynamo.descriptor.extension.PossibleValuesDescriptorExtension} using the
- * information retrieved from a {@link org.tynamo.descriptor.annotation.PossibleValues} annotation.
+ * information retrieved from a {@link org.tynamo.descriptor.annotation.extension.PossibleValues} annotation.
  *
  * @author pruggia
  */

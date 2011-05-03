@@ -20,7 +20,7 @@ public class Annotated
 
 	private boolean booleanProperty;
 
-	@Collection(child = true, inverse = "annotated")
+	@CollectionDescriptor(child = true, inverse = "annotated")
 	public Set getStuff()
 	{
 		return stuff;

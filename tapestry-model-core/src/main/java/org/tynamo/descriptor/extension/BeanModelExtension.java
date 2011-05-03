@@ -1,6 +1,6 @@
 package org.tynamo.descriptor.extension;
 
-import org.tynamo.internal.InternalConstants;
+import org.tynamo.PageType;
 import org.tynamo.descriptor.Descriptor;
 import org.tynamo.util.BeanModelUtils;
 
@@ -9,6 +9,8 @@ import java.util.Map;
 
 public class BeanModelExtension implements DescriptorExtension
 {
+
+	private final static String defaultKey = PageType.DEFAULT.getContextKey();
 
 	private Map<String, String> reorderMap = new HashMap<String, String>();
 	private Map<String, String> includeMap = new HashMap<String, String>();
@@ -20,17 +22,17 @@ public class BeanModelExtension implements DescriptorExtension
 
 	public String getReorderPropertyNames(String contextKey)
 	{
-		return reorderMap.containsKey(contextKey) ? reorderMap.get(contextKey) : getReorder();
+		return reorderMap.containsKey(contextKey) ? reorderMap.get(contextKey) : getReorderPropertyNames();
 	}
 
 	public String getIncludePropertyNames(String contextKey)
 	{
-		return includeMap.containsKey(contextKey) ? includeMap.get(contextKey) : getInclude();
+		return includeMap.containsKey(contextKey) ? includeMap.get(contextKey) : getIncludePropertyNames();
 	}
 
 	public String getExcludePropertyNames(String contextKey)
 	{
-		return excludeMap.containsKey(contextKey) ? excludeMap.get(contextKey) : getExclude();
+		return excludeMap.containsKey(contextKey) ? excludeMap.get(contextKey) : getExcludePropertyNames();
 	}
 
 	public void setReorderPropertyNames(String contextKey, String properties)
@@ -49,20 +51,26 @@ public class BeanModelExtension implements DescriptorExtension
 	}
 
 
-	public String getReorder()
+	public String getReorderPropertyNames()
 	{
-		return reorderMap.get(InternalConstants.DEFAULT_BEANMODEL_CONTEXT_KEY);
+		return reorderMap.get(defaultKey);
 	}
 
-	public String getInclude()
+	public String getIncludePropertyNames()
 	{
-		return includeMap.get(InternalConstants.DEFAULT_BEANMODEL_CONTEXT_KEY);
+		return includeMap.get(defaultKey);
 	}
 
-	public String getExclude()
+	public String getExcludePropertyNames()
 	{
-		return excludeMap.get(InternalConstants.DEFAULT_BEANMODEL_CONTEXT_KEY);
+		return excludeMap.get(defaultKey);
 	}
+
+	public void setReorderPropertyNames(String properties)
+	{
+		reorderMap.put(defaultKey, properties);
+	}
+
 
 	public void addToIncludeMap(String contextKey, String newProperty)
 	{

@@ -6,7 +6,6 @@ import org.apache.tapestry5.beaneditor.ReorderProperties;
 import org.apache.tapestry5.ioc.services.ClassPropertyAdapter;
 import org.apache.tapestry5.ioc.services.PropertyAccess;
 import org.apache.tapestry5.ioc.services.PropertyAdapter;
-import org.tynamo.internal.InternalConstants;
 import org.tynamo.descriptor.TynamoClassDescriptor;
 import org.tynamo.descriptor.extension.BeanModelExtension;
 
@@ -38,7 +37,7 @@ public class TapestryDecorator implements DescriptorDecorator
 				BeanModelExtension beanModelExtension = BeanModelExtension.obtainBeanModelExtension(descriptor);
 
 				if (StringUtils.isNotEmpty(reorder))
-					beanModelExtension.setReorderPropertyNames(InternalConstants.DEFAULT_BEANMODEL_CONTEXT_KEY, reorder);
+					beanModelExtension.setReorderPropertyNames(reorder);
 			}
 
 		}

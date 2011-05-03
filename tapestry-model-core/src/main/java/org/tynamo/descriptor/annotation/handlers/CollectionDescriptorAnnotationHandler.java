@@ -1,32 +1,31 @@
 package org.tynamo.descriptor.annotation.handlers;
 
-import org.tynamo.descriptor.CollectionDescriptor;
-import org.tynamo.descriptor.annotation.Collection;
+import org.tynamo.descriptor.annotation.CollectionDescriptor;
 
-public class CollectionDescriptorAnnotationHandler implements DescriptorAnnotationHandler<Collection, CollectionDescriptor>
+public class CollectionDescriptorAnnotationHandler implements DescriptorAnnotationHandler<CollectionDescriptor, org.tynamo.descriptor.CollectionDescriptor>
 {
 
-	public CollectionDescriptor decorateFromAnnotation(Collection annotation, CollectionDescriptor descriptor)
+	public org.tynamo.descriptor.CollectionDescriptor decorateFromAnnotation(CollectionDescriptor annotation, org.tynamo.descriptor.CollectionDescriptor descriptor)
 	{
 		descriptor.setChildRelationship(annotation.child());
 		descriptor.setAllowRemove(annotation.allowRemove());
 
-		if (!Collection.DEFAULT_inverse.equals(annotation.inverse()))
+		if (!CollectionDescriptor.DEFAULT_inverse.equals(annotation.inverse()))
 		{
 			descriptor.setInverseProperty(annotation.inverse());
 		}
 
-		if (!Collection.DEFAULT_addExpression.equals(annotation.addExpression()))
+		if (!CollectionDescriptor.DEFAULT_addExpression.equals(annotation.addExpression()))
 		{
 			descriptor.setAddExpression(annotation.addExpression());
 		}
 
-		if (!Collection.DEFAULT_removeExpression.equals(annotation.removeExpression()))
+		if (!CollectionDescriptor.DEFAULT_removeExpression.equals(annotation.removeExpression()))
 		{
 			descriptor.setRemoveExpression(annotation.removeExpression());
 		}
 
-		if (!Collection.DEFAULT_swapExpression.equals(annotation.swapExpression()))
+		if (!CollectionDescriptor.DEFAULT_swapExpression.equals(annotation.swapExpression()))
 		{
 			descriptor.setSwapExpression(annotation.swapExpression());
 		}

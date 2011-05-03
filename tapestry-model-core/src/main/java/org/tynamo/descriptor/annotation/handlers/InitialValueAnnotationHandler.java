@@ -2,12 +2,12 @@ package org.tynamo.descriptor.annotation.handlers;
 
 import org.apache.commons.lang.Validate;
 import org.tynamo.descriptor.TynamoPropertyDescriptor;
-import org.tynamo.descriptor.annotation.InitialValue;
+import org.tynamo.descriptor.annotation.extension.InitialValue;
 import org.tynamo.descriptor.extension.InitialValueDescriptorExtension;
 
 /**
  * Creates a {@link org.tynamo.descriptor.extension.InitialValueDescriptorExtension} using the
- * information retrieved from a {@link org.tynamo.descriptor.annotation.InitialValue} annotation.
+ * information retrieved from a {@link org.tynamo.descriptor.annotation.extension.InitialValue} annotation.
  *
  * @author pruggia
  */

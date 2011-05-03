@@ -2,6 +2,7 @@ package org.tynamo;
 
 public enum PageType {
 
+	DEFAULT,
 	LIST,
 	SHOW,
 	EDIT,

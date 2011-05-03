@@ -2,9 +2,9 @@ package org.tynamo.descriptor.decorators;
 
 import ognl.Ognl;
 import org.tynamo.descriptor.*;
-import org.tynamo.descriptor.annotation.InitialValue;
+import org.tynamo.descriptor.annotation.extension.InitialValue;
+import org.tynamo.descriptor.annotation.extension.PossibleValues;
 import org.tynamo.descriptor.extension.InitialValueDescriptorExtension;
-import org.tynamo.descriptor.annotation.PossibleValues;
 import org.tynamo.descriptor.extension.PossibleValuesDescriptorExtension;
 
 import java.beans.Introspector;
@@ -15,8 +15,8 @@ import java.lang.reflect.Method;
 import java.util.Map;
 
 /**
- * Creates {@link org.tynamo.descriptor.extension.InitialValueDescriptorExtension} and {@link org.tynamo.descriptor.extension.PossibleValuesDescriptorExtension} extensions
- * using the information retrieved from {@link org.tynamo.descriptor.annotation.InitialValue} and {@link org.tynamo.descriptor.annotation.PossibleValues} annotations.
+ * Creates {@link org.tynamo.descriptor.extension.InitialValueDescriptorExtension} and {@link org.tynamo.descriptor.extension.PossibleValuesDescriptorExtension} extension
+ * using the information retrieved from {@link org.tynamo.descriptor.annotation.extension.InitialValue} and {@link org.tynamo.descriptor.annotation.extension.PossibleValues} annotations.
  */
 public class OgnlAnnotationsDecorator implements DescriptorDecorator
 {

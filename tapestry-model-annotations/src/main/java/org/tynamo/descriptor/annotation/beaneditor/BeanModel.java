@@ -1,18 +1,18 @@
 package org.tynamo.descriptor.annotation.beaneditor;
 
-import org.apache.tapestry5.ioc.annotations.AnnotationUseContext;
-import org.apache.tapestry5.ioc.annotations.UseWith;
-import org.tynamo.descriptor.annotation.handlers.HandledBy;
+import org.tynamo.PageType;
 
 import java.lang.annotation.*;
 
-@Target(ElementType.TYPE)
+@Target(ElementType.PARAMETER)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-@UseWith(AnnotationUseContext.BEAN)
-@HandledBy("ListPageBeanModelAnnotationHandler")
-public @interface ListPageBeanModel
-{
+public @interface BeanModel {
+
+
+	String context() default "";
+
+	PageType pageType() default PageType.DEFAULT;
 
 	/**
 	 * A comma-seperated list of property names to be added to the BeanModel. Cells for added columns will be blank unless
@@ -21,7 +21,7 @@ public @interface ListPageBeanModel
 //	String add() default "";
 
 	/**
-	 * A comma-separated list of property names to be removed from the BeanModel  . The names are case-insensitive.
+	 * A comma-separated list of property names to be removed from the BeanModel. The names are case-insensitive.
 	 */
 	String exclude() default "";
 
