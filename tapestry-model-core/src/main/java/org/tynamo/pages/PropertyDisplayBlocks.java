@@ -96,7 +96,7 @@ public class PropertyDisplayBlocks
 
 	public String getShow()
 	{
-		return tynamoPageRenderLinkSource.getCanonicalPageName(PageType.LIST);
+		return tynamoPageRenderLinkSource.getCanonicalPageName(PageType.SHOW);
 	}
 
 }
