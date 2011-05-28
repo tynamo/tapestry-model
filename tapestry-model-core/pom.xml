@@ -86,14 +86,14 @@
 			<scope>test</scope>
 		</dependency>
 
-<!--
 		<dependency>
 			<groupId>org.apache.tapestry</groupId>
 			<artifactId>tapestry-test</artifactId>
 			<scope>test</scope>
 		</dependency>
--->
 
+
+		<!-- todo: remove OGNL -->
 		<dependency>
 			<groupId>ognl</groupId>
 			<artifactId>ognl</artifactId>
@@ -127,7 +127,7 @@
 		<dependency>
 			<groupId>com.howardlewisship</groupId>
 			<artifactId>tapx-datefield</artifactId>
-			<version>1.1-SNAPSHOT</version>
+			<version>1.2-SNAPSHOT</version>
 		</dependency>
 
 	</dependencies>
