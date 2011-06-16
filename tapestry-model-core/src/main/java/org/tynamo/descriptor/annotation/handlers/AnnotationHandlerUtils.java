@@ -1,15 +1,15 @@
 package org.tynamo.descriptor.annotation.handlers;
 
+import org.apache.commons.beanutils.PropertyUtils;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
-import org.apache.commons.beanutils.PropertyUtils;
-
 /**
  * @author Chris Nelson
  */
-public abstract class AbstractAnnotationHandler
+public class AnnotationHandlerUtils
 {
 
 	/**
@@ -22,7 +22,7 @@ public abstract class AbstractAnnotationHandler
 	 * @param annotationMethod
 	 * @return
 	 */
-	protected boolean isDefault(Annotation propertyDescriptorAnno, Method annotationMethod)
+	public static boolean isDefault(Annotation propertyDescriptorAnno, Method annotationMethod)
 	{
 		try
 		{
@@ -50,12 +50,12 @@ public abstract class AbstractAnnotationHandler
 	 * @param annotation
 	 * @param descriptor
 	 */
-	protected void setPropertiesFromAnnotation(Annotation annotation, Object target)
+	public static void setPropertiesFromAnnotation(Annotation annotation, Object target)
 	{
 		/**
 		 * !! This is how we get our properties migrated from our
-		 * annotation to our property descriptor !! 	 
-		 */		
+		 * annotation to our property descriptor !!
+		 */
 		for (Method annotationMethod : annotation.getClass().getMethods())
 		{
 			try

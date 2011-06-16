@@ -6,5 +6,5 @@ import org.tynamo.descriptor.Descriptor;
 
 public interface DescriptorAnnotationHandler<T extends Annotation, X extends Descriptor>
 {
-	public X decorateFromAnnotation(T annotation, X descriptor);
+	public void decorateFromAnnotation(T annotation, X descriptor);
 }

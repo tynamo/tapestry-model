@@ -11,8 +11,7 @@ import org.tynamo.descriptor.extension.InitialValueDescriptorExtension;
  *
  * @author pruggia
  */
-public class InitialValueAnnotationHandler extends AbstractAnnotationHandler
-		implements DescriptorAnnotationHandler<InitialValue, TynamoPropertyDescriptor>
+public class InitialValueAnnotationHandler implements DescriptorAnnotationHandler<InitialValue, TynamoPropertyDescriptor>
 {
 
 	/**
@@ -21,17 +20,14 @@ public class InitialValueAnnotationHandler extends AbstractAnnotationHandler
 	 *
 	 * @param annotation Annotation added to the property. It cannot be null.
 	 * @param descriptor The property descriptor. It cannot be null.
-	 * @return The provided descriptor with the extension added.
 	 */
-	public TynamoPropertyDescriptor decorateFromAnnotation(final InitialValue annotation,
-													  final TynamoPropertyDescriptor descriptor)
+	public void decorateFromAnnotation(final InitialValue annotation, final TynamoPropertyDescriptor descriptor)
 	{
 		Validate.notNull(annotation, "The annotation cannot be null");
 		Validate.notNull(descriptor, "The descriptor cannot be null");
 		InitialValueDescriptorExtension extension = new InitialValueDescriptorExtension(annotation.value());
-		descriptor.addExtension(InitialValueDescriptorExtension.class
-				.getName(), extension);
-		return descriptor;
+		descriptor.addExtension(InitialValueDescriptorExtension.class.getName(), extension);
 	}
+
 }
 
