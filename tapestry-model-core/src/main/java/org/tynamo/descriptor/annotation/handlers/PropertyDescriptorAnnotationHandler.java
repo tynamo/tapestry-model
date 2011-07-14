@@ -4,24 +4,18 @@ import org.tynamo.descriptor.TynamoPropertyDescriptor;
 import org.tynamo.descriptor.annotation.PropertyDescriptor;
 
 /**
- * @author fus8882
- *         <p/>
- *         Applies the annotation to a given property.
- * @see AbstractAnnotationHandler.setDescriptorPropertiesFromAnnotation
+ * Applies the annotation to a given property.
  */
-public class PropertyDescriptorAnnotationHandler extends AbstractAnnotationHandler implements DescriptorAnnotationHandler<PropertyDescriptor, TynamoPropertyDescriptor>
+public class PropertyDescriptorAnnotationHandler implements DescriptorAnnotationHandler<PropertyDescriptor, TynamoPropertyDescriptor>
 {
 	/**
 	 * @param propertyDescriptorAnno
 	 * @param descriptor
-	 * @return
-	 * @see AbstractAnnotationHandler.setDescriptorPropertiesFromAnnotation
 	 */
-	public TynamoPropertyDescriptor decorateFromAnnotation(PropertyDescriptor propertyDescriptorAnno,
+	public void decorateFromAnnotation(PropertyDescriptor propertyDescriptorAnno,
 													  TynamoPropertyDescriptor descriptor)
 	{
-		setPropertiesFromAnnotation(propertyDescriptorAnno, descriptor);
-		return descriptor;
+		AnnotationHandlerUtils.setPropertiesFromAnnotation(propertyDescriptorAnno, descriptor);
 	}
 
 }

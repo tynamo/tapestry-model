@@ -5,7 +5,7 @@ import org.tynamo.descriptor.annotation.CollectionDescriptor;
 public class CollectionDescriptorAnnotationHandler implements DescriptorAnnotationHandler<CollectionDescriptor, org.tynamo.descriptor.CollectionDescriptor>
 {
 
-	public org.tynamo.descriptor.CollectionDescriptor decorateFromAnnotation(CollectionDescriptor annotation, org.tynamo.descriptor.CollectionDescriptor descriptor)
+	public void decorateFromAnnotation(CollectionDescriptor annotation, org.tynamo.descriptor.CollectionDescriptor descriptor)
 	{
 		descriptor.setChildRelationship(annotation.child());
 		descriptor.setAllowRemove(annotation.allowRemove());
@@ -30,7 +30,5 @@ public class CollectionDescriptorAnnotationHandler implements DescriptorAnnotati
 			descriptor.setSwapExpression(annotation.swapExpression());
 		}
 
-
-		return descriptor;
 	}
 }

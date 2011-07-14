@@ -10,7 +10,7 @@ import org.tynamo.descriptor.extension.BeanModelExtension;
 public class BeanModelAnnotationHandler implements DescriptorAnnotationHandler<BeanModels, TynamoClassDescriptor>
 {
 
-	public TynamoClassDescriptor decorateFromAnnotation(final BeanModels annotation, final TynamoClassDescriptor descriptor)
+	public void decorateFromAnnotation(final BeanModels annotation, final TynamoClassDescriptor descriptor)
 	{
 
 		BeanModelExtension beanModelExtension = BeanModelExtension.obtainBeanModelExtension(descriptor);
@@ -29,7 +29,6 @@ public class BeanModelAnnotationHandler implements DescriptorAnnotationHandler<B
 			if (StringUtils.isNotEmpty(reorder)) beanModelExtension.setReorderPropertyNames(context, reorder);
 		}
 
-		return descriptor;
 	}
 
 }

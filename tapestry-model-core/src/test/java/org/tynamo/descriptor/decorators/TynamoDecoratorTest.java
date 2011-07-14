@@ -3,6 +3,7 @@ package org.tynamo.descriptor.decorators;
 
 import org.apache.tapestry5.ioc.ObjectLocator;
 import org.apache.tapestry5.test.TapestryTestCase;
+import org.easymock.EasyMock;
 import org.testng.annotations.Test;
 import org.tynamo.descriptor.TynamoClassDescriptorImpl;
 import org.tynamo.descriptor.annotation.handlers.DescriptorAnnotationHandler;
@@ -23,10 +24,10 @@ public class TynamoDecoratorTest extends TapestryTestCase
 		ObjectLocator locator = newMock(ObjectLocator.class);
 		DescriptorAnnotationHandler annotationHandler = newMock(DescriptorAnnotationHandler.class);
 
-		expect(annotationHandler.decorateFromAnnotation(annotation, descriptor)).andReturn(descriptor);
+		annotationHandler.decorateFromAnnotation(annotation, descriptor);
+		EasyMock.expectLastCall().once();
 
-		expect(locator.getService("AnnotationHandler", DescriptorAnnotationHandler.class))
-				.andReturn(annotationHandler);
+		expect(locator.getService("AnnotationHandler", DescriptorAnnotationHandler.class)).andReturn(annotationHandler);
 
 		replay();
 

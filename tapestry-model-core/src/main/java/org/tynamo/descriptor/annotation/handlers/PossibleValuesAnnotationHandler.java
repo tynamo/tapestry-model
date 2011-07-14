@@ -13,8 +13,7 @@ import org.tynamo.descriptor.extension.PossibleValuesDescriptorExtension;
  *
  * @author pruggia
  */
-public class PossibleValuesAnnotationHandler extends AbstractAnnotationHandler
-		implements DescriptorAnnotationHandler<PossibleValues, TynamoPropertyDescriptor>
+public class PossibleValuesAnnotationHandler implements DescriptorAnnotationHandler<PossibleValues, TynamoPropertyDescriptor>
 {
 
 	/**
@@ -23,9 +22,8 @@ public class PossibleValuesAnnotationHandler extends AbstractAnnotationHandler
 	 *
 	 * @param annotation Annotation added to the property. It cannot be null.
 	 * @param descriptor The property descriptor. It cannot be null.
-	 * @return Returns descriptor, with the possible values extension.
 	 */
-	public TynamoPropertyDescriptor decorateFromAnnotation(final PossibleValues annotation,
+	public void decorateFromAnnotation(final PossibleValues annotation,
 													  final TynamoPropertyDescriptor descriptor)
 	{
 		Validate.notNull(annotation, "The annotation cannot be null");
@@ -33,7 +31,6 @@ public class PossibleValuesAnnotationHandler extends AbstractAnnotationHandler
 
 		PossibleValuesDescriptorExtension extension = new PossibleValuesDescriptorExtension(annotation.value());
 		descriptor.addExtension(PossibleValuesDescriptorExtension.class.getName(), extension);
-		return descriptor;
 	}
 }
 

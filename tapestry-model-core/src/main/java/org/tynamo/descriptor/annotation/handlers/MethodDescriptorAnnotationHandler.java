@@ -4,13 +4,12 @@ import org.tynamo.descriptor.IMethodDescriptor;
 import org.tynamo.descriptor.annotation.MethodDescriptor;
 
 
-public class MethodDescriptorAnnotationHandler extends AbstractAnnotationHandler
-		implements DescriptorAnnotationHandler<MethodDescriptor, IMethodDescriptor>
+public class MethodDescriptorAnnotationHandler implements DescriptorAnnotationHandler<MethodDescriptor, IMethodDescriptor>
 {
 
-	public IMethodDescriptor decorateFromAnnotation(MethodDescriptor annotation, IMethodDescriptor descriptor)
+	public void decorateFromAnnotation(MethodDescriptor annotation, IMethodDescriptor descriptor)
 	{
-		setPropertiesFromAnnotation(annotation, descriptor);
-		return descriptor;
+		AnnotationHandlerUtils.setPropertiesFromAnnotation(annotation, descriptor);
 	}
+
 }

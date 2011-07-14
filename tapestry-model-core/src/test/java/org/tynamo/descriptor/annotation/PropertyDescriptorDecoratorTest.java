@@ -25,17 +25,17 @@ public class PropertyDescriptorDecoratorTest extends Assert
 
 		PropertyDescriptor fieldAppearance = Annotated.class.getDeclaredField("notBloppity").getAnnotation(PropertyDescriptor.class);
 
-		fieldPropDescriptor = decorator.decorateFromAnnotation(fieldAppearance, fieldPropDescriptor);
+		decorator.decorateFromAnnotation(fieldAppearance, fieldPropDescriptor);
 		assertEquals("notBloppity", fieldPropDescriptor.getName());
 		assertTrue(fieldPropDescriptor.isReadOnly());
 
 		PropertyDescriptor propDescriptorAnno = Annotated.class.getMethod("getHidden").getAnnotation(PropertyDescriptor.class);
-		TynamoPropertyDescriptor hiddenPropDescriptor = decorator.decorateFromAnnotation(propDescriptorAnno, hiddenDescriptor);
-		assertTrue(hiddenPropDescriptor.isNonVisual());
-		assertEquals("Hidden", hiddenPropDescriptor.getName());
+		decorator.decorateFromAnnotation(propDescriptorAnno, hiddenDescriptor);
+		assertTrue(hiddenDescriptor.isNonVisual());
+		assertEquals("Hidden", hiddenDescriptor.getName());
 
 		PropertyDescriptor dateDescriptorAnno = Annotated.class.getMethod("getDate").getAnnotation(PropertyDescriptor.class);
-		TynamoPropertyDescriptor datePropDescriptor = decorator.decorateFromAnnotation(dateDescriptorAnno, dateDescriptor);
-		assertEquals("MM/dd/yyyy", datePropDescriptor.getFormat());
+		decorator.decorateFromAnnotation(dateDescriptorAnno, dateDescriptor);
+		assertEquals("MM/dd/yyyy", dateDescriptor.getFormat());
 	}
 }
