@@ -1,8 +1,0 @@
-<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-
-<suite name="Tynamo CRUD Hibernate" annotations="1.5" verbose="2">
-	<test name="Tynamo CRUD Hibernate Test Suite">
-		<packages>
-		</packages>
-	</test>
-</suite>

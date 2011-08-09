@@ -154,7 +154,7 @@ public abstract class AbstractContainerTest
 	{
 		try
 		{
-			return (HtmlPage) page.getFirstAnchorByText(linkText).click();
+			return (HtmlPage) page.getAnchorByText(linkText).click();
 		} catch (ElementNotFoundException e)
 		{
 			fail("Couldn't find a link with text '" + linkText + "' on page " + page);
