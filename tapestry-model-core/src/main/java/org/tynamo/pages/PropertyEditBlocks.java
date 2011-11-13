@@ -1,6 +1,5 @@
 package org.tynamo.pages;
 
-import com.howardlewisship.tapx.datefield.components.DateField;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.tapestry5.FieldTranslator;
 import org.apache.tapestry5.FieldValidator;
@@ -29,8 +28,6 @@ import org.tynamo.services.DescriptorService;
 import org.tynamo.services.PersistenceService;
 import org.tynamo.util.GenericSelectionModel;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -73,8 +70,6 @@ public class PropertyEditBlocks
 	@Inject
 	private Locale locale;
 
-	private final DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.MEDIUM, locale);
-
 	@Component(parameters = {"value=propertyEditContext.propertyValue", "label=prop:propertyEditContext.label",
 			"translate=prop:textFieldTranslator", "validate=prop:textFieldValidator",
 			"clientId=prop:propertyEditContext.propertyId", "annotationProvider=propertyEditContext"})
@@ -93,13 +88,6 @@ public class PropertyEditBlocks
 					"encoder=valueEncoderForProperty", "model=selectModelForProperty", "validate=prop:selectValidator",
 					"clientId=prop:propertyEditContext.propertyId", "blankOption=prop:blankOption"})
 	private Select select;
-
-	@Component(
-			parameters = {"value=propertyEditContext.propertyValue", "label=prop:propertyEditContext.label",
-			              "clientId=prop:propertyEditContext.propertyid", "validate=prop:dateFieldValidator",
-			              "format=prop:dateFormat"})
-	private DateField dateField;
-
 
 	public TynamoPropertyDescriptor getPropertyDescriptor()
 	{
@@ -226,14 +214,4 @@ public class PropertyEditBlocks
 		return getPropertyDescriptor().isRequired() ? BlankOption.NEVER : BlankOption.ALWAYS;
 	}
 
-	public FieldValidator getDateFieldValidator()
-	{
-		return propertyEditContext.getValidator(dateField);
-	}
-
-	public DateFormat getDateFormat()
-	{
-		String format = getPropertyDescriptor().getFormat();
-		return format != null ? new SimpleDateFormat(format) : dateFormat;
-	}
 }
