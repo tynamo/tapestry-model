@@ -11,12 +11,10 @@
  */
 package org.tynamo.util;
 
-import ognl.Ognl;
-import ognl.OgnlException;
-import org.tynamo.exception.TynamoRuntimeException;
+import org.apache.tapestry5.ioc.Messages;
+import org.apache.tapestry5.services.HttpError;
 
 import java.util.Collection;
-import java.util.HashMap;
 
 
 public class Utils
@@ -111,32 +109,6 @@ public class Utils
 	}
 
 	/**
-	 * @param type the (usable) super type if passed a CGLIB enhanced class
-	 * @return
-	 */
-	public static Class checkForCGLIB(Class type)
-	{
-		if (type.getName().contains("CGLIB"))
-		{
-			return type.getSuperclass();
-		} else return type;
-	}
-
-	public static void executeOgnlExpression(String ognlExpression, Object member, Object model)
-	{
-		HashMap context = new HashMap();
-		context.put("member", member);
-
-		try
-		{
-			Ognl.getValue(ognlExpression + "(#member)", context, model);
-		} catch (OgnlException e)
-		{
-			throw new TynamoRuntimeException(e, model.getClass());
-		}
-	}
-
-	/**
 	 * Tests whether or not a name matches against at least one exclude pattern.
 	 *
 	 * @param name The name to match. Must not be null.
@@ -154,5 +126,10 @@ public class Utils
 		}
 
 		return false;
+	}
+
+	public static HttpError new404(Messages messages)
+	{
+		return new HttpError(Utils.SC_NOT_FOUND, messages.get(Utils.SC_NOT_FOUND_MESSAGE));
 	}
 }
