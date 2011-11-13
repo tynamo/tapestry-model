@@ -48,6 +48,6 @@ public @interface PropertyDescriptor
 	 * @see java.text.SimpleDateFormat
 	 * @see java.text.NumberFormat
 	 */
-	String format() default "no_format";
+	String format() default DEFAULT_format;
 
 }

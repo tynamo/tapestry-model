@@ -11,8 +11,10 @@
  */
 package org.tynamo.hibernate.services;
 
+import org.apache.tapestry5.PropertyConduit;
 import org.apache.tapestry5.hibernate.HibernateSessionManager;
 import org.apache.tapestry5.ioc.services.PropertyAccess;
+import org.apache.tapestry5.services.PropertyConduitSource;
 import org.hibernate.*;
 import org.hibernate.criterion.*;
 import org.slf4j.Logger;
@@ -35,12 +37,18 @@ public class HibernatePersistenceServiceImpl implements HibernatePersistenceServ
 	private DescriptorService descriptorService;
 	private HibernateSessionManager sessionManager;
 	private PropertyAccess propertyAccess;
+	private PropertyConduitSource propertyConduitSource;
 
-	public HibernatePersistenceServiceImpl(Logger logger, DescriptorService descriptorService, HibernateSessionManager sessionManager, PropertyAccess propertyAccess)
+	public HibernatePersistenceServiceImpl(Logger logger,
+	                                       DescriptorService descriptorService,
+	                                       HibernateSessionManager sessionManager,
+	                                       PropertyAccess propertyAccess,
+	                                       PropertyConduitSource propertyConduitSource)
 	{
 		this.logger = logger;
 		this.descriptorService = descriptorService;
 		this.propertyAccess = propertyAccess;
+		this.propertyConduitSource = propertyConduitSource;
 
 		// we need a sessionmanager because Tapestry session proxy doesn't implement Hibernate's SessionImplementator interface
 		this.sessionManager = sessionManager;
@@ -81,7 +89,7 @@ public class HibernatePersistenceServiceImpl implements HibernatePersistenceServ
 
 	public <T> T getInstance(final Class<T> type, final Serializable id)
 	{
-		DetachedCriteria criteria = DetachedCriteria.forClass(Utils.checkForCGLIB(type)).add(Restrictions.idEq(id));
+		DetachedCriteria criteria = DetachedCriteria.forClass(type).add(Restrictions.idEq(id));
 		return getInstance(type, criteria);
 	}
 
@@ -166,9 +174,11 @@ public class HibernatePersistenceServiceImpl implements HibernatePersistenceServ
 		try
 		{
 */
-		TynamoClassDescriptor TynamoClassDescriptor = descriptorService.getClassDescriptor(instance.getClass());
+		TynamoClassDescriptor tynamoclassdescriptor = descriptorService.getClassDescriptor(instance.getClass());
+		// @todo: org.hibernate.MappingException: Unknown entity
+
 		/* check isTransient to avoid merging on entities not persisted yet. TRAILS-33 */
-		if (!TynamoClassDescriptor.getHasCyclicRelationships() || isTransient(instance, TynamoClassDescriptor))
+		if (!tynamoclassdescriptor.getHasCyclicRelationships() || isTransient(instance, tynamoclassdescriptor))
 		{
 			getSession().saveOrUpdate(instance);
 		} else
@@ -236,7 +246,7 @@ public class HibernatePersistenceServiceImpl implements HibernatePersistenceServ
 	public List getInstances(final Object example, final TynamoClassDescriptor classDescriptor)
 	{
 		//create Criteria instance
-		DetachedCriteria searchCriteria = DetachedCriteria.forClass(Utils.checkForCGLIB(example.getClass()));
+		DetachedCriteria searchCriteria = DetachedCriteria.forClass(example.getClass());
 		searchCriteria = alterCriteria(example.getClass(), searchCriteria);
 
 		//loop over the example object's PropertyDescriptors
@@ -380,13 +390,15 @@ public class HibernatePersistenceServiceImpl implements HibernatePersistenceServ
 
 	public <T> T addToCollection(CollectionDescriptor descriptor, T element, Object collectionOwner)
 	{
-		Utils.executeOgnlExpression(descriptor.getAddExpression(), element, collectionOwner);
+		PropertyConduit propertyConduit = propertyConduitSource.create(collectionOwner.getClass(), descriptor.getAddExpression());
+		propertyConduit.set(collectionOwner, element);
 		return element;
 	}
 
 	public void removeFromCollection(CollectionDescriptor descriptor, Object element, Object collectionOwner)
 	{
-		Utils.executeOgnlExpression(descriptor.getRemoveExpression(), element, collectionOwner);
+		PropertyConduit propertyConduit = propertyConduitSource.create(collectionOwner.getClass(), descriptor.getRemoveExpression());
+		propertyConduit.set(collectionOwner, element);
 	}
 
 	public List getOrphanInstances(CollectionDescriptor descriptor, Object owner)

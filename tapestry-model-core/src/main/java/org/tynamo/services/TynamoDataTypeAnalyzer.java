@@ -1,8 +1,7 @@
 package org.tynamo.services;
 
-import ognl.Ognl;
-import ognl.OgnlException;
 import org.apache.tapestry5.beaneditor.DataType;
+import org.apache.tapestry5.func.Predicate;
 import org.apache.tapestry5.ioc.services.PropertyAdapter;
 import org.apache.tapestry5.services.DataTypeAnalyzer;
 import org.slf4j.Logger;
@@ -16,14 +15,14 @@ public class TynamoDataTypeAnalyzer implements DataTypeAnalyzer
 {
 
 	private final DescriptorService descriptorService;
-	private final List<Pair> editorMap;
+	private final List<Pair<Predicate<TynamoPropertyDescriptor>, String>> editorMap;
 	private final Logger logger;
 
 	/**
 	 * @param descriptorService
-	 * @param editorMap		 A map where the keys are OGNL expressions and the values are data type identifier used to select editor (or display) blocks
+	 * @param editorMap         A map where the keys are OGNL expressions and the values are data type identifier used to select editor (or display) blocks
 	 */
-	public TynamoDataTypeAnalyzer(final DescriptorService descriptorService, final List<Pair> editorMap, final Logger logger)
+	public TynamoDataTypeAnalyzer(final DescriptorService descriptorService, final List<Pair<Predicate<TynamoPropertyDescriptor>,String>> editorMap, final Logger logger)
 	{
 		this.descriptorService = descriptorService;
 		this.editorMap = editorMap;
@@ -43,18 +42,11 @@ public class TynamoDataTypeAnalyzer implements DataTypeAnalyzer
 			TynamoPropertyDescriptor propertyDescriptor = getPropertyDescriptor(adapter);
 			if (propertyDescriptor != null) //ignore excluded properties
 			{
-				for (Pair<String, String> entry : editorMap)
+				for (Pair<Predicate<TynamoPropertyDescriptor>, String> entry : editorMap)
 				{
-					try
+					if (entry.getKey().accept(propertyDescriptor))
 					{
-						if ((Boolean) Ognl.getValue(entry.getKey(), propertyDescriptor))
-						{
-							return entry.getValue();
-						}
-					} catch (OgnlException oe)
-					{
-						logger.error(String.format("Error evaluating expression: \"%s\" for the \"%s\" property of %s",
-								entry.getKey(), adapter.getName(), adapter.getBeanType().getName()), oe);
+						return entry.getValue();
 					}
 				}
 			}
@@ -67,16 +59,14 @@ public class TynamoDataTypeAnalyzer implements DataTypeAnalyzer
 
 	private TynamoPropertyDescriptor getPropertyDescriptor(PropertyAdapter adapter)
 	{
-
 		TynamoClassDescriptor classDescriptor = descriptorService.getClassDescriptor(adapter.getBeanType());
-		TynamoPropertyDescriptor propertyDescriptor = null;
 
 		if (classDescriptor != null)
 		{
-			propertyDescriptor = classDescriptor.getPropertyDescriptor(adapter.getName());
+			return classDescriptor.getPropertyDescriptor(adapter.getName());
 		}
 
-		return propertyDescriptor;
+		return null;
 	}
 
 }

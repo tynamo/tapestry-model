@@ -92,20 +92,6 @@
 			<scope>test</scope>
 		</dependency>
 
-
-		<!-- todo: remove OGNL -->
-		<dependency>
-			<groupId>ognl</groupId>
-			<artifactId>ognl</artifactId>
-			<version>2.7.3</version>
-			<exclusions>
-				<exclusion>
-					<groupId>jboss</groupId>
-					<artifactId>javassist</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-
 		<dependency>
 			<groupId>commons-beanutils</groupId>
 			<artifactId>commons-beanutils</artifactId>
@@ -115,7 +101,7 @@
 		<dependency>
 			<groupId>commons-lang</groupId>
 			<artifactId>commons-lang</artifactId>
-			<version>2.2</version>
+			<version>2.6</version>
 		</dependency>
 
 		<dependency>

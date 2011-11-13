@@ -1,5 +1,6 @@
 package org.tynamo.services;
 
+import org.apache.tapestry5.func.Predicate;
 import org.apache.tapestry5.ioc.*;
 import org.apache.tapestry5.ioc.annotations.Autobuild;
 import org.apache.tapestry5.ioc.annotations.Contribute;
@@ -14,6 +15,7 @@ import org.tynamo.blob.BlobManager;
 import org.tynamo.blob.DefaultBlobManager;
 import org.tynamo.builder.BuilderDirector;
 import org.tynamo.descriptor.TynamoClassDescriptor;
+import org.tynamo.descriptor.TynamoPropertyDescriptor;
 import org.tynamo.descriptor.annotation.handlers.*;
 import org.tynamo.descriptor.decorators.DescriptorDecorator;
 import org.tynamo.descriptor.decorators.TapestryDecorator;
@@ -50,16 +52,14 @@ public class TynamoCoreModule extends VersionedModule
 		binder.bind(DescriptorAnnotationHandler.class, BlobDescriptorAnnotationHandler.class).withId("BlobDescriptorAnnotationHandler");
 		binder.bind(DescriptorAnnotationHandler.class, ClassDescriptorAnnotationHandler.class).withId("ClassDescriptorAnnotationHandler");
 		binder.bind(DescriptorAnnotationHandler.class, CollectionDescriptorAnnotationHandler.class).withId("CollectionDescriptorAnnotationHandler");
-		binder.bind(DescriptorAnnotationHandler.class, InitialValueAnnotationHandler.class).withId("InitialValueAnnotationHandler");
 		binder.bind(DescriptorAnnotationHandler.class, MethodDescriptorAnnotationHandler.class).withId("MethodDescriptorAnnotationHandler");
-		binder.bind(DescriptorAnnotationHandler.class, PossibleValuesAnnotationHandler.class).withId("PossibleValuesAnnotationHandler");
 		binder.bind(DescriptorAnnotationHandler.class, PropertyDescriptorAnnotationHandler.class).withId("PropertyDescriptorAnnotationHandler");
 
 	}
 
 	@Match("BeanModelSource")
 	public static void adviseBeanModelSource(MethodAdviceReceiver receiver,
-	                                               @Autobuild BeanModelSourceAdvice advice)
+	                                         @Autobuild BeanModelSourceAdvice advice)
 	{
 		receiver.adviseAllMethods(advice);
 	}
@@ -91,7 +91,7 @@ public class TynamoCoreModule extends VersionedModule
 		configuration.add(new EditBlockContribution("single-valued-association", PROPERTY_EDIT_BLOCKS, "select"));
 		configuration.add(new EditBlockContribution("identifierEditor", PROPERTY_EDIT_BLOCKS, "identifierEditor"));
 		configuration.add(new EditBlockContribution("many-valued-association", PROPERTY_EDIT_BLOCKS, "palette"));
-		configuration.add(new EditBlockContribution("composition", PROPERTY_EDIT_BLOCKS, "nonVisual"));
+		configuration.add(new EditBlockContribution("composition", PROPERTY_EDIT_BLOCKS, "editComposition"));
 		configuration.add(new EditBlockContribution("embedded", PROPERTY_EDIT_BLOCKS, "embedded"));
 		configuration.add(new EditBlockContribution("blob", PROPERTY_EDIT_BLOCKS, "blob"));
 
@@ -142,31 +142,30 @@ public class TynamoCoreModule extends VersionedModule
 
 	public static void contributeTynamoDataTypeAnalyzer(OrderedConfiguration<Pair> configuration)
 	{
-
-		addPairToOrderedConfiguration(configuration, "nonVisual", "nonVisual");
-		addPairToOrderedConfiguration(configuration, "readOnly", "readOnly");
+		addPairToOrderedConfiguration(configuration, TynamoDataTypeAnalyzerPredicates.nonVisual, "nonVisual");
+		addPairToOrderedConfiguration(configuration, TynamoDataTypeAnalyzerPredicates.readOnly, "readOnly");
 //		addPairToOrderedConfiguration(configuration, "richText", "fckEditor");
-		addPairToOrderedConfiguration(configuration, "name.toLowerCase().endsWith('password')", "password");
+		addPairToOrderedConfiguration(configuration, TynamoDataTypeAnalyzerPredicates.password, "password");
 //		addPairToOrderedConfiguration(configuration, "string and !large and !identifier", "stringEditor"); //managed by Tapestry
-		addPairToOrderedConfiguration(configuration, "date", "formatted-date");
-		addPairToOrderedConfiguration(configuration, "string and large and !identifier", "longtext");
-		addPairToOrderedConfiguration(configuration, "identifier && generated", "readOnly");
-		addPairToOrderedConfiguration(configuration, "identifier && not(generated) && string", "identifierEditor");
+		addPairToOrderedConfiguration(configuration, TynamoDataTypeAnalyzerPredicates.date, "formatted-date");
+		addPairToOrderedConfiguration(configuration, TynamoDataTypeAnalyzerPredicates.longtext, "longtext");
+		addPairToOrderedConfiguration(configuration, TynamoDataTypeAnalyzerPredicates.generatedId, "readOnly");
+		addPairToOrderedConfiguration(configuration, TynamoDataTypeAnalyzerPredicates.assignedId, "identifierEditor");
 //		addPairToOrderedConfiguration(configuration, "identifier && objectReference", "objectReferenceIdentifierEditor");
 //		addPairToOrderedConfiguration(configuration, "boolean", "booleanEditor"); //managed by Tapestry
-		addPairToOrderedConfiguration(configuration, "supportsExtension('org.tynamo.descriptor.extension.EnumReferenceDescriptor')", "enum"); // overrides Tapestry's enum
-		addPairToOrderedConfiguration(configuration, "supportsExtension('org.tynamo.descriptor.extension.BlobDescriptorExtension')", "blob");
+		addPairToOrderedConfiguration(configuration, TynamoDataTypeAnalyzerPredicates.enumi, "enum"); // overrides Tapestry's enum
+		addPairToOrderedConfiguration(configuration, TynamoDataTypeAnalyzerPredicates.blob, "blob");
 
-		addPairToOrderedConfiguration(configuration, "objectReference", "single-valued-association" /* (aka: ManyToOne) */);
-		addPairToOrderedConfiguration(configuration, "collection && not(childRelationship)", "many-valued-association" /* (aka: ManyToMany) */);
-		addPairToOrderedConfiguration(configuration, "collection && childRelationship", "composition");
-		addPairToOrderedConfiguration(configuration, "name == 'id'", "readOnly");
-		addPairToOrderedConfiguration(configuration, "embedded", "embedded");
+		addPairToOrderedConfiguration(configuration, TynamoDataTypeAnalyzerPredicates.manyToOne, "single-valued-association" /* (aka: ManyToOne) */);
+		addPairToOrderedConfiguration(configuration, TynamoDataTypeAnalyzerPredicates.manyToMany, "many-valued-association" /* (aka: ManyToMany) */);
+		addPairToOrderedConfiguration(configuration, TynamoDataTypeAnalyzerPredicates.composition, "composition");
+
+		addPairToOrderedConfiguration(configuration, TynamoDataTypeAnalyzerPredicates.embedded, "embedded");
 	}
 
-	private static void addPairToOrderedConfiguration(OrderedConfiguration<Pair> configuration, String key, String value)
+	private static void addPairToOrderedConfiguration(OrderedConfiguration<Pair> configuration, Predicate<TynamoPropertyDescriptor> predicate, String value)
 	{
-		configuration.add(key, new Pair<String, String>(key, value));
+		configuration.add(value, new Pair<Predicate<TynamoPropertyDescriptor>, String>(predicate, value));
 	}
 
 	public static void contributePropertyDescriptorFactory(Configuration<String> configuration)

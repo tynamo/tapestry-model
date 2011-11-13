@@ -11,9 +11,9 @@
  */
 package org.tynamo.descriptor;
 
-import ognl.Ognl;
-import ognl.OgnlException;
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.tapestry5.func.F;
+import org.apache.tapestry5.func.Predicate;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -96,33 +96,15 @@ public class TynamoClassDescriptorImpl extends TynamoDescriptor implements Tynam
 		}
 	}
 
-	/**
-	 * @param ognl
-	 * @return
-	 */
-	private TynamoPropertyDescriptor findDescriptor(String ognl)
+	public TynamoPropertyDescriptor getPropertyDescriptor(final String name)
 	{
-		try
+		return F.flow(propertyDescriptors).filter(new Predicate<TynamoPropertyDescriptor>()
 		{
-			return (TynamoPropertyDescriptor) Ognl.getValue(ognl, this);
-		} catch (OgnlException oe)
-		{
-			// oe.printStackTrace();
-
-			return null;
-		} catch (IndexOutOfBoundsException ie)
-		{
-			return null;
-		}
-	}
-
-	/**
-	 * @param string
-	 * @return
-	 */
-	public TynamoPropertyDescriptor getPropertyDescriptor(String name)
-	{
-		return findDescriptor("propertyDescriptors.{? name == '" + name + "'}[0]");
+			public boolean accept(TynamoPropertyDescriptor descriptor)
+			{
+				return descriptor.getName().equals(name);
+			}
+		}).first();
 	}
 
 	public List<TynamoPropertyDescriptor> getPropertyDescriptors(List<String> properties)
@@ -169,9 +151,13 @@ public class TynamoClassDescriptorImpl extends TynamoDescriptor implements Tynam
 
 	public TynamoPropertyDescriptor getIdentifierDescriptor()
 	{
-		String ognl = "propertyDescriptors.{? identifier}[0]";
-
-		return findDescriptor(ognl);
+		return F.flow(propertyDescriptors).filter(new Predicate<TynamoPropertyDescriptor>()
+		{
+			public boolean accept(TynamoPropertyDescriptor descriptor)
+			{
+				return descriptor.isIdentifier();
+			}
+		}).first();
 	}
 
 	/**

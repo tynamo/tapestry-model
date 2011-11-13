@@ -11,8 +11,8 @@
  */
 package org.tynamo.hibernate.services;
 
-import ognl.Ognl;
-import ognl.OgnlException;
+import org.apache.tapestry5.func.F;
+import org.apache.tapestry5.func.Predicate;
 import org.apache.tapestry5.hibernate.HibernateSessionSource;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.annotations.Symbol;
@@ -40,7 +40,6 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
 
 /**
  * This decorator will add metadata information. It will replace simple
@@ -221,34 +220,6 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 	}
 
 	/**
-	 * The default way to order our property descriptors is by the order they
-	 * appear in the hibernate config, with id first. Any non-mapped properties
-	 * are tacked on at the end, til I think of a better way.
-	 *
-	 * @param propertyDescriptors
-	 * @return
-	 */
-	protected List sortPropertyDescriptors(Class type, List propertyDescriptors)
-	{
-		ArrayList sortedPropertyDescriptors = new ArrayList();
-
-		try
-		{
-			sortedPropertyDescriptors.add(Ognl.getValue("#this.{? identifier == true}[0]", propertyDescriptors));
-			for (Iterator iter = getMapping(type).getPropertyIterator(); iter.hasNext();)
-			{
-				Property mapping = (Property) iter.next();
-				sortedPropertyDescriptors.addAll((List) Ognl.getValue("#this.{ ? name == \"" + mapping.getName()
-						+ "\"}", propertyDescriptors));
-			}
-		} catch (Exception ex)
-		{
-			throw new TynamoRuntimeException(ex);
-		}
-		return sortedPropertyDescriptors;
-	}
-
-	/**
 	 * Find the Hibernate metadata for this type, traversing up the hierarchy to
 	 * supertypes if necessary
 	 *
@@ -328,16 +299,15 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 	 * @param descriptor
 	 * @return
 	 */
-	protected boolean notAHibernateProperty(ClassMetadata classMetaData, TynamoPropertyDescriptor descriptor)
+	protected boolean notAHibernateProperty(ClassMetadata classMetaData, final TynamoPropertyDescriptor descriptor)
 	{
-		try
+		return F.flow(classMetaData.getPropertyNames()).filter(new Predicate<String>()
 		{
-			return (Boolean) Ognl.getValue("propertyNames.{ ? #this == \"" + descriptor.getName() + "\"}.size() == 0",
-					classMetaData);
-		} catch (OgnlException oe)
-		{
-			throw new TynamoRuntimeException(oe);
-		}
+			public boolean accept(String propertyName)
+			{
+				return descriptor.getName().equals(propertyName);
+			}
+		}).isEmpty();
 	}
 
 	/**
@@ -418,7 +388,7 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 	}
 
 	public TynamoPropertyDescriptor decorateAssociationDescriptor(Class type, Property mappingProperty,
-	                                                              TynamoPropertyDescriptor descriptor,
+	                                                              final TynamoPropertyDescriptor descriptor,
 	                                                              TynamoClassDescriptor parentClassDescriptor)
 	{
 		Type hibernateType = mappingProperty.getType();
@@ -429,9 +399,17 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 		try
 		{
 			Field propertyField = parentClassType.getDeclaredField(descriptor.getName());
-			PropertyDescriptor beanPropDescriptor = (PropertyDescriptor) Ognl.getValue(
-					"propertyDescriptors.{? name == '" + descriptor.getName() + "'}[0]", Introspector
-							.getBeanInfo(parentClassType));
+
+			PropertyDescriptor[] propertyDescriptors = Introspector.getBeanInfo(parentClassType).getPropertyDescriptors();
+
+			PropertyDescriptor beanPropDescriptor = F.flow(propertyDescriptors).filter(new Predicate<PropertyDescriptor>()
+			{
+				public boolean accept(PropertyDescriptor propertyDescriptor)
+				{
+					return propertyDescriptor.getName().equals(descriptor.getName());
+				}
+			}).first();
+
 			Method readMethod = beanPropDescriptor.getReadMethod();
 
 			// Start by checking for and retrieving mappedBy attribute inside
@@ -474,9 +452,6 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 		} catch (NoSuchFieldException e)
 		{
 			logger.error(e.getMessage());
-		} catch (OgnlException e)
-		{
-			logger.error(e.getMessage());
 		} catch (IntrospectionException e)
 		{
 			logger.error(e.getMessage());
@@ -489,7 +464,7 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 	 * metadata, so I'm getting it from the OneToMany annotation.
 	 */
 	private void decorateOneToManyCollection(TynamoClassDescriptor parentClassDescriptor,
-	                                         CollectionDescriptor collectionDescriptor,
+	                                         final CollectionDescriptor collectionDescriptor,
 	                                         org.hibernate.mapping.Collection collectionMapping)
 	{
 		Class type = parentClassDescriptor.getBeanType();
@@ -499,9 +474,17 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 			{
 
 				Field propertyField = type.getDeclaredField(collectionDescriptor.getName());
-				PropertyDescriptor beanPropDescriptor = (PropertyDescriptor) Ognl.getValue(
-						"propertyDescriptors.{? name == '" + collectionDescriptor.getName() + "'}[0]", Introspector
-								.getBeanInfo(type));
+
+				PropertyDescriptor[] propertyDescriptors = Introspector.getBeanInfo(type).getPropertyDescriptors();
+
+				PropertyDescriptor beanPropDescriptor = F.flow(propertyDescriptors).filter(new Predicate<PropertyDescriptor>()
+				{
+					public boolean accept(PropertyDescriptor propertyDescriptor)
+					{
+						return propertyDescriptor.getName().equals(collectionDescriptor.getName());
+					}
+				}).first();
+
 				Method readMethod = beanPropDescriptor.getReadMethod();
 				String mappedBy = "";
 				if (readMethod.isAnnotationPresent(javax.persistence.OneToMany.class))
@@ -524,10 +507,6 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 				logger.error(e.getMessage());
 				e.printStackTrace();
 			} catch (NoSuchFieldException e)
-			{
-				logger.error(e.getMessage());
-				e.printStackTrace();
-			} catch (OgnlException e)
 			{
 				logger.error(e.getMessage());
 				e.printStackTrace();
