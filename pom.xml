@@ -37,7 +37,7 @@
 	</distributionManagement>
 
 	<properties>
-		<tapestry-release-version>5.3.0</tapestry-release-version>
+		<tapestry-release-version>5.3-rc-3</tapestry-release-version>
 	</properties>
 
 	<!-- note that our own versions are auto-managed by the release plugin -->
@@ -74,7 +74,7 @@
 			<dependency>
 				<groupId>org.apache.tapestry</groupId>
 				<artifactId>tapestry-annotations</artifactId>
-				<version>${tapestry-release-version}</version>
+				<version>5.3.0</version>
 			</dependency>
 
 			<dependency>
@@ -272,10 +272,9 @@
 
 	</profiles>
 
-	<!-- tapestry.formos.com is down -->
 	<repositories>
 		<repository>
-			<id>repository.apache.org</id>
+			<id>snapshots@repository.apache.org</id>
 			<url>http://repository.apache.org/snapshots</url>
 			<releases>
 				<enabled>false</enabled>
@@ -286,13 +285,13 @@
 		</repository>
 
 		<repository>
-			<id>howardlewisship</id>
-			<url>http://howardlewisship.com/snapshot-repository/</url>
+			<id>staging@repository.apache.org</id>
+			<url>https://repository.apache.org/content/repositories/staging</url>
 			<releases>
-				<enabled>false</enabled>
+				<enabled>true</enabled>
 			</releases>
 			<snapshots>
-				<enabled>true</enabled>
+				<enabled>false</enabled>
 			</snapshots>
 		</repository>
 
