@@ -21,9 +21,14 @@ public class DisplayNameUtils
 	 */
 	public static String getPluralDisplayName(TynamoClassDescriptor classDescriptor, Messages messages)
 	{
-		String fullName = classDescriptor.getBeanType().getName() + PLURAL_SUFIX;
-		String shortName = classDescriptor.getBeanType().getSimpleName() + PLURAL_SUFIX;
-		return selectDisplayName(fullName, shortName, Utils.pluralize(TapestryInternalUtils.toUserPresentable(classDescriptor.getBeanType().getSimpleName())), messages);
+		return getPluralDisplayName(classDescriptor.getBeanType(), messages);
+	}
+
+	public static String getPluralDisplayName(Class type, Messages messages)
+	{
+		String fullName = type.getName() + PLURAL_SUFIX;
+		String shortName = type.getSimpleName() + PLURAL_SUFIX;
+		return selectDisplayName(fullName, shortName, Utils.pluralize(TapestryInternalUtils.toUserPresentable(type.getSimpleName())), messages);
 	}
 
 	/**
