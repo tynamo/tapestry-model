@@ -18,7 +18,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.apache.tapestry</groupId>
-			<artifactId>tapestry-annotations</artifactId>
+			<artifactId>tapestry5-annotations</artifactId>
 		</dependency>
 	</dependencies>
 
