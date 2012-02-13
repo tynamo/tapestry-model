@@ -4,7 +4,6 @@ import org.apache.tapestry5.beaneditor.DataType;
 import org.apache.tapestry5.func.Predicate;
 import org.apache.tapestry5.ioc.services.PropertyAdapter;
 import org.apache.tapestry5.services.DataTypeAnalyzer;
-import org.slf4j.Logger;
 import org.tynamo.descriptor.TynamoClassDescriptor;
 import org.tynamo.descriptor.TynamoPropertyDescriptor;
 import org.tynamo.util.Pair;
@@ -15,18 +14,18 @@ public class TynamoDataTypeAnalyzer implements DataTypeAnalyzer
 {
 
 	private final DescriptorService descriptorService;
-	private final List<Pair<Predicate<TynamoPropertyDescriptor>, String>> editorMap;
-	private final Logger logger;
+	private final List<Pair> editorMap;
 
 	/**
-	 * @param descriptorService
-	 * @param editorMap         A map where the keys are OGNL expressions and the values are data type identifier used to select editor (or display) blocks
+	 *
+ 	 * @param descriptorService
+	 * @param editorMap A list of pairs Pair<Predicate<TynamoPropertyDescriptor>, String> where the Predicate us ...
+	 * and the String is the data type identifier used to select editor (or display) blocks
 	 */
-	public TynamoDataTypeAnalyzer(final DescriptorService descriptorService, final List<Pair<Predicate<TynamoPropertyDescriptor>,String>> editorMap, final Logger logger)
+	public TynamoDataTypeAnalyzer(final DescriptorService descriptorService, final List<Pair> editorMap)
 	{
 		this.descriptorService = descriptorService;
 		this.editorMap = editorMap;
-		this.logger = logger;
 	}
 
 	/**
