@@ -43,7 +43,6 @@
 	<!-- note that our own versions are auto-managed by the release plugin -->
 	<dependencyManagement>
 		<dependencies>
-
 			<dependency>
 				<groupId>org.tynamo</groupId>
 				<artifactId>tapestry-model-annotations</artifactId>
@@ -110,6 +109,7 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>cobertura-maven-plugin</artifactId>
+				<version>2.5.1</version>
 				<inherited>true</inherited>
 				<executions>
 					<execution>
@@ -143,14 +143,17 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-report-plugin</artifactId>
+				<version>2.12</version>
 			</plugin>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>cobertura-maven-plugin</artifactId>
+				<version>2.5.1</version>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-pmd-plugin</artifactId>
+				<version>2.7</version>
 				<configuration>
 					<linkXref>true</linkXref>
 					<targetJdk>1.5</targetJdk>
@@ -191,6 +194,7 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>taglist-maven-plugin</artifactId>
+				<version>2.4</version>
 				<configuration>
 					<tagListOptions>
 						<tagClasses>
