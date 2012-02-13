@@ -1,6 +1,5 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<div id="${clientId}" class="composition" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
-     xmlns:p="tapestry:parameter">
+<div id="${clientId}" class="composition" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd" xmlns:p="tapestry:parameter">
 
 	<t:remove>
 <!-- This link is added from the beginRender method
@@ -30,7 +29,8 @@
 		</t:if>
 	</t:zone>
 
-	<t:form t:id="form" zone="prop:compositionZoneClientId" style="display:none;" context="formContext">
+	<t:form t:id="form" style="display:none;" context="formContext"> <!-- zone="prop:compositionZoneClientId" -->
+		<!-- todo: AJAX doesn't work due to the environment cloaking bug -->
 		<t:errors/>
 		<fieldset class="group">
 			<legend>${legendMessage}</legend>
@@ -42,8 +42,7 @@
 					${message:org.tynamo.i18n.ok}
 				</button>
 				&nbsp; &nbsp;
-				<a onclick="Element.toggle('${form.clientId}'); this.blur(); return false;"
-				   href="#">${message:org.tynamo.i18n.cancel}</a>
+				<a onclick="Element.toggle('${form.clientId}'); this.blur(); return false;" href="#">${message:org.tynamo.i18n.cancel}</a>
 			</div>
 		</fieldset>
 	</t:form>
