@@ -99,8 +99,6 @@ public class TynamoCoreModule extends VersionedModule
 		configuration.add(new DisplayBlockContribution("formatted-date", PROPERTY_DISPLAY_BLOCKS, "date"));
 		configuration.add(new DisplayBlockContribution("number", PROPERTY_DISPLAY_BLOCKS, "number"));
 
-		configuration.add(new DisplayBlockContribution("single-valued-association", PROPERTY_DISPLAY_BLOCKS, "showPageLink"));
-		configuration.add(new DisplayBlockContribution("many-valued-association", PROPERTY_DISPLAY_BLOCKS, "showPageLinks"));
 		configuration.add(new DisplayBlockContribution("composition", PROPERTY_DISPLAY_BLOCKS, "composition"));
 		configuration.add(new DisplayBlockContribution("blob", PROPERTY_DISPLAY_BLOCKS, "download"));
 	}

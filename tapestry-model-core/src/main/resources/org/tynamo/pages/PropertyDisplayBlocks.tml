@@ -2,47 +2,8 @@
 
 	<t:block id="nonVisual"/>
 
-	<t:block id="showPageLink">
-		<t:if test="context.propertyValue">
-			<t:pagelink t:page="prop:show" context="showPageContext">${context.propertyValue}</t:pagelink>
-		</t:if>
-	</t:block>
-
-	<t:block id="showPageLinks">
-		<t:if test="context.propertyValue">
-			<t:loop source="context.propertyValue" value="loopIterator" index="loopIndex">
-				<t:pagelink page="prop:show" context="loopShowPageContext">${loopIterator}</t:pagelink><t:if test="lastElement" negate="true">, </t:if>
-			</t:loop>
-		</t:if>
-	</t:block>
-
-	<!--
-	 <span jwcid="stringViewer@Block">
-		 <li><label class="desc"><span jwcid="@Insert" value="ognl:descriptor.displayName"/></label>
-			 <span jwcid="insertText@Insert" value="ognl:model[#this.descriptor.name]"/>
-		 </li>
-	 </span>
-
-	 <span jwcid="htmlTextViewer@Block">
-		 <li><label class="desc"><span jwcid="@Insert" value="ognl:descriptor.displayName"/></label>
-			 <span jwcid="insertHtmlText@Insert" value="ognl:model[#this.descriptor.name]" raw="true"/>
-		 </li>
-	 </span>
-
-	 <span jwcid="blobViewer@Block">
-		 <li><label class="desc"><span jwcid="@Insert" value="ognl:descriptor.displayName"/></label>
-			 <span jwcid="@TrailsDownload" propertyDescriptor="ognl:descriptor" model="ognl:model"/>
-		 </li>
-	 </span>
- -->
-
 	<t:block id="composition">
-		<t:if test="tynamoBeanContext">
-			<div t:id="composition"/>
-			<p:else>
-				<t:delegate to="missingAdvisor"/>
-			</p:else>
-		</t:if>
+		<div t:id="composition"/>
 	</t:block>
 
 	<t:block id="download">
