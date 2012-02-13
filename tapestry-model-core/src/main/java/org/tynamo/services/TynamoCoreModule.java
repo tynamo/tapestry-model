@@ -142,30 +142,24 @@ public class TynamoCoreModule extends VersionedModule
 
 	public static void contributeTynamoDataTypeAnalyzer(OrderedConfiguration<Pair> configuration)
 	{
-		addPairToOrderedConfiguration(configuration, TynamoDataTypeAnalyzerPredicates.nonVisual, "nonVisual");
-		addPairToOrderedConfiguration(configuration, TynamoDataTypeAnalyzerPredicates.readOnly, "readOnly");
-//		addPairToOrderedConfiguration(configuration, "richText", "fckEditor");
-		addPairToOrderedConfiguration(configuration, TynamoDataTypeAnalyzerPredicates.password, "password");
-//		addPairToOrderedConfiguration(configuration, "string and !large and !identifier", "stringEditor"); //managed by Tapestry
-		addPairToOrderedConfiguration(configuration, TynamoDataTypeAnalyzerPredicates.date, "formatted-date");
-		addPairToOrderedConfiguration(configuration, TynamoDataTypeAnalyzerPredicates.longtext, "longtext");
-		addPairToOrderedConfiguration(configuration, TynamoDataTypeAnalyzerPredicates.generatedId, "readOnly");
-		addPairToOrderedConfiguration(configuration, TynamoDataTypeAnalyzerPredicates.assignedId, "identifierEditor");
-//		addPairToOrderedConfiguration(configuration, "identifier && objectReference", "objectReferenceIdentifierEditor");
-//		addPairToOrderedConfiguration(configuration, "boolean", "booleanEditor"); //managed by Tapestry
-		addPairToOrderedConfiguration(configuration, TynamoDataTypeAnalyzerPredicates.enumi, "enum"); // overrides Tapestry's enum
-		addPairToOrderedConfiguration(configuration, TynamoDataTypeAnalyzerPredicates.blob, "blob");
-
-		addPairToOrderedConfiguration(configuration, TynamoDataTypeAnalyzerPredicates.manyToOne, "single-valued-association" /* (aka: ManyToOne) */);
-		addPairToOrderedConfiguration(configuration, TynamoDataTypeAnalyzerPredicates.manyToMany, "many-valued-association" /* (aka: ManyToMany) */);
-		addPairToOrderedConfiguration(configuration, TynamoDataTypeAnalyzerPredicates.composition, "composition");
-
-		addPairToOrderedConfiguration(configuration, TynamoDataTypeAnalyzerPredicates.embedded, "embedded");
+		configuration.add("nonVisual", newPair(TynamoDataTypeAnalyzerPredicates.nonVisual, "nonVisual"));
+		configuration.add("readOnly", newPair(TynamoDataTypeAnalyzerPredicates.readOnly, "readOnly"));
+		configuration.add("password", newPair(TynamoDataTypeAnalyzerPredicates.password, "password"));
+		configuration.add("longtext", newPair(TynamoDataTypeAnalyzerPredicates.longtext, "longtext"));
+		configuration.add("generatedId", newPair(TynamoDataTypeAnalyzerPredicates.generatedId, "readOnly"));
+		configuration.add("assignedId", newPair(TynamoDataTypeAnalyzerPredicates.assignedId, "identifierEditor"));
+//		configuration.add("", newPair("identifier && objectReference", "objectReferenceIdentifierEditor");
+		configuration.add("enum", newPair(TynamoDataTypeAnalyzerPredicates.enumi, "enum")); // overrides Tapestry's enum
+		configuration.add("blob", newPair(TynamoDataTypeAnalyzerPredicates.blob, "blob"));
+		configuration.add("manyToOne", newPair(TynamoDataTypeAnalyzerPredicates.manyToOne, "single-valued-association"));
+		configuration.add("manyToMany", newPair(TynamoDataTypeAnalyzerPredicates.manyToMany, "many-valued-association"));
+		configuration.add("composition", newPair(TynamoDataTypeAnalyzerPredicates.composition, "composition"));
+		configuration.add("embedded", newPair(TynamoDataTypeAnalyzerPredicates.embedded, "embedded"));
 	}
 
-	private static void addPairToOrderedConfiguration(OrderedConfiguration<Pair> configuration, Predicate<TynamoPropertyDescriptor> predicate, String value)
+	private static Pair<Predicate<TynamoPropertyDescriptor>, String> newPair(Predicate<TynamoPropertyDescriptor> predicate, String value)
 	{
-		configuration.add(value, new Pair<Predicate<TynamoPropertyDescriptor>, String>(predicate, value));
+		return new Pair<Predicate<TynamoPropertyDescriptor>, String>(predicate, value);
 	}
 
 	public static void contributePropertyDescriptorFactory(Configuration<String> configuration)
