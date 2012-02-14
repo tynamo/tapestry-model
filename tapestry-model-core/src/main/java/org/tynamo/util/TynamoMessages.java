@@ -29,4 +29,14 @@ public class TynamoMessages
 		return messages.format(Utils.NEW_MESSAGE, DisplayNameUtils.getDisplayName(type, messages));
 	}
 
+	public static String added(Messages messages, Object bean)
+	{
+		return messages.getFormatter(Utils.ADDED_MESSAGE).format(bean);
+	}
+
+	public static String saved(Messages messages, Object bean)
+	{
+		return messages.getFormatter(Utils.SAVED_MESSAGE).format(bean);
+	}
+
 }
