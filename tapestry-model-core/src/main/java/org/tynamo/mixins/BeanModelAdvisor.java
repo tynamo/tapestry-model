@@ -20,7 +20,7 @@ import org.tynamo.services.TynamoBeanContext;
  * it pushes the {@link TynamoBeanContext} into the {@link Environment} it's meant to be used in a {@link BeanDisplay} or with a {@link Grid}
  * it pushes the {@link BeanModelSourceContext} into the {@link Environment}
  */
-public class Advisor
+public class BeanModelAdvisor
 {
 
 	/**
@@ -38,7 +38,7 @@ public class Advisor
 	/**
 	 * The context key
 	 */
-	@Parameter(defaultPrefix = BindingConstants.LITERAL, allowNull = false)
+	@Parameter(defaultPrefix = BindingConstants.LITERAL, allowNull = false, value = "prop:guessKey()")
 	private String key;
 
 	/**
@@ -56,7 +56,6 @@ public class Advisor
 
 	private void pushBeanModelSourceContext()
 	{
-		if (StringUtils.isEmpty(key)) key = guessKey();
 		BeanModelSourceContext context = new BeanModelSourceContext(key);
 		environment.push(BeanModelSourceContext.class, context);
 	}
@@ -95,7 +94,7 @@ public class Advisor
 		environment.push(TynamoBeanContext.class, context);
 	}
 
-	private String guessKey()
+	public String guessKey()
 	{
 
 		if (container instanceof Grid) return PageType.LIST.getContextKey();
