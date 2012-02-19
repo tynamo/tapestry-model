@@ -1,13 +1,18 @@
 package org.tynamo.hibernate;
 
 import org.apache.tapestry5.hibernate.HibernateEntityPackageManager;
+import org.apache.tapestry5.hibernate.HibernateSessionSource;
 import org.apache.tapestry5.internal.InternalConstants;
 import org.apache.tapestry5.internal.InternalSymbols;
 import org.apache.tapestry5.ioc.Configuration;
+import org.apache.tapestry5.ioc.LoggerSource;
 import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.ioc.annotations.Contribute;
+import org.apache.tapestry5.ioc.annotations.Symbol;
 import org.apache.tapestry5.ioc.services.ApplicationDefaults;
 import org.apache.tapestry5.ioc.services.SymbolProvider;
+import org.tynamo.descriptor.factories.DescriptorFactory;
+import org.tynamo.hibernate.services.HibernateDescriptorDecorator;
 
 public class TestModule
 {
@@ -27,6 +32,22 @@ public class TestModule
 	public static void addPackages(Configuration<String> configuration)
 	{
 		configuration.add("org.tynamo.testhibernate");
+	}
+
+	public static HibernateDescriptorDecorator buildHibernateDescriptorDecorator(HibernateSessionSource hibernateSessionSource,
+	                                                               DescriptorFactory descriptorFactory,
+	                                                               @Symbol(TynamoHibernateSymbols.LARGE_COLUMN_LENGTH)
+	                                                               int largeColumnLength,
+	                                                               @Symbol(TynamoHibernateSymbols.IGNORE_NON_HIBERNATE_TYPES)
+	                                                               boolean ignoreNonHibernateTypes,
+	                                                               LoggerSource loggerSource)
+	{
+		return new HibernateDescriptorDecorator(
+				hibernateSessionSource,
+				descriptorFactory,
+				largeColumnLength,
+				ignoreNonHibernateTypes,
+				loggerSource.getLogger(HibernateDescriptorDecorator.class));
 	}
 
 }

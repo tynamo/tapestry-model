@@ -71,7 +71,7 @@ public class HibernateDescriptorDecoratorTest
 	@BeforeMethod
 	public void setUp()
 	{
-		hibernateDescriptorDecorator = registry.autobuild(HibernateDescriptorDecorator.class);
+		hibernateDescriptorDecorator = registry.getService(HibernateDescriptorDecorator.class);
 
 		TynamoClassDescriptor fooDescriptor = new TynamoClassDescriptorImpl(Foo.class);
 		fooDescriptor.getPropertyDescriptors().add(new TynamoPropertyDescriptorImpl(Foo.class, "bazzes", Set.class));
