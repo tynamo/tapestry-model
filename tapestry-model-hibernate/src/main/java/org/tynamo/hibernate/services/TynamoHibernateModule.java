@@ -2,12 +2,13 @@ package org.tynamo.hibernate.services;
 
 import org.apache.tapestry5.hibernate.HibernateConfigurer;
 import org.apache.tapestry5.hibernate.HibernateSessionSource;
-import org.apache.tapestry5.hibernate.HibernateTransactionAdvisor;
-import org.apache.tapestry5.ioc.*;
+import org.apache.tapestry5.ioc.Configuration;
+import org.apache.tapestry5.ioc.MappedConfiguration;
+import org.apache.tapestry5.ioc.OrderedConfiguration;
+import org.apache.tapestry5.ioc.ServiceBinder;
 import org.apache.tapestry5.ioc.annotations.Autobuild;
 import org.apache.tapestry5.ioc.annotations.Contribute;
 import org.apache.tapestry5.ioc.annotations.InjectService;
-import org.apache.tapestry5.ioc.annotations.Match;
 import org.apache.tapestry5.ioc.services.FactoryDefaults;
 import org.apache.tapestry5.ioc.services.SymbolProvider;
 import org.apache.tapestry5.services.*;
@@ -58,12 +59,6 @@ public class TynamoHibernateModule extends VersionedModule
 	public static void componentMessagesSource(OrderedConfiguration<String> configuration)
 	{
 		configuration.add("Tynamo", "ValidationMessages");
-	}
-
-	@Match("HibernatePersistenceService")
-	public static void adviseTransactions(HibernateTransactionAdvisor advisor, MethodAdviceReceiver receiver)
-	{
-		advisor.addTransactionCommitAdvice(receiver);
 	}
 
 	/**
