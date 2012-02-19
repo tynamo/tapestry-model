@@ -11,15 +11,13 @@
  */
 package org.tynamo.testhibernate;
 
-import org.hibernate.validator.Length;
-import org.hibernate.validator.NotNull;
-import org.tynamo.validation.ValidateUniqueness;
-
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import org.hibernate.validator.constraints.Length;
 
 
 @Entity
-@ValidateUniqueness(property = "description")
+// @ValidateUniqueness(property = "description")
 public class Baz {
 
     private Integer id;

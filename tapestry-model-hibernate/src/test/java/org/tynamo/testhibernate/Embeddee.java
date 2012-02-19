@@ -20,7 +20,6 @@ public class Embeddee {
         this.description = description;
     }
 
-    @PropertyDescriptor(displayName = "The Title")
     public String getTitle() {
         return title;
     }

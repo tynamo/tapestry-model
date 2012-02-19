@@ -11,8 +11,6 @@
  */
 package org.tynamo.testhibernate;
 
-import org.tynamo.validation.ValidateUniqueness;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -20,7 +18,7 @@ import javax.persistence.Id;
 
 
 @Entity
-@ValidateUniqueness(property = "number")
+// @ValidateUniqueness(property = "number")
 public class Bing {
 
     private Integer id;

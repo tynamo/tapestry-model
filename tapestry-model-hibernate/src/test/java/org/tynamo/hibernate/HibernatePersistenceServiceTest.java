@@ -22,92 +22,111 @@
  */
 package org.tynamo.hibernate;
 
-import java.util.List;
-import java.lang.reflect.Method;
-
+import org.apache.tapestry5.hibernate.HibernateCoreModule;
+import org.apache.tapestry5.hibernate.HibernateModule;
+import org.apache.tapestry5.ioc.Registry;
+import org.apache.tapestry5.ioc.RegistryBuilder;
+import org.apache.tapestry5.services.TapestryModule;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
-import org.hibernate.validator.InvalidStateException;
-import org.springframework.dao.IncorrectResultSizeDataAccessException;
-import org.springframework.orm.hibernate3.SessionFactoryUtils;
-import org.springframework.test.AbstractTransactionalSpringContextTests;
-import org.tynamo.descriptor.DescriptorService;
-import org.tynamo.descriptor.TrailsClassDescriptor;
-import org.tynamo.persistence.HibernatePersistenceService;
-import org.tynamo.persistence.PersistenceException;
-import org.tynamo.testhibernate.Ancestor;
-import org.tynamo.testhibernate.Bar;
-import org.tynamo.testhibernate.Baz;
-import org.tynamo.testhibernate.BlogEntry;
-import org.tynamo.testhibernate.Descendant;
-import org.tynamo.testhibernate.Foo;
-import org.tynamo.testhibernate.Wibble;
-import net.sf.cglib.proxy.MethodProxy;
-import net.sf.cglib.proxy.Enhancer;
-import net.sf.cglib.proxy.MethodInterceptor;
+import org.testng.Assert;
+import org.testng.annotations.*;
+import org.tynamo.descriptor.TynamoClassDescriptor;
+import org.tynamo.hibernate.services.HibernatePersistenceService;
+import org.tynamo.hibernate.services.TynamoHibernateModule;
+import org.tynamo.services.DescriptorService;
+import org.tynamo.services.TynamoCoreModule;
+import org.tynamo.testhibernate.*;
+
+import java.util.List;
 
 
-/**
- * @author fus8882
- *         <p/>
- *         TODO To change the template for this generated type comment go to
- *         Window - Preferences - Java - Code Style - Code Templates
- */
-public class HibernatePersistenceServiceTest extends AbstractTransactionalSpringContextTests
+public class HibernatePersistenceServiceTest
 {
+
 	private HibernatePersistenceService persistenceService;
 	private DescriptorService descriptorService;
-	private SessionFactory sessionFactory;
 
-	public void onSetUpInTransaction() throws Exception
+	private static Registry registry;
+	private Transaction tx;
+
+	@BeforeSuite
+	public final void setup_registry()
 	{
-		persistenceService = (HibernatePersistenceService) applicationContext.getBean("persistenceService");
-		sessionFactory = (SessionFactory) applicationContext.getBean("sessionFactory");
-		descriptorService = (DescriptorService) applicationContext.getBean("descriptorService");
+		RegistryBuilder builder = new RegistryBuilder();
+		builder.add(TapestryModule.class);
+		builder.add(HibernateCoreModule.class);
+		builder.add(HibernateModule.class);
+		builder.add(TynamoCoreModule.class);
+		builder.add(TynamoHibernateModule.class);
+		builder.add(TestModule.class);
+
+		registry = builder.build();
+		registry.performRegistryStartup();
+
 	}
 
+	@AfterSuite
+	public final void shutdown_registry()
+	{
+		registry.shutdown();
+
+		registry = null;
+	}
+
+	@AfterMethod
+	public final void cleanupThread()
+	{
+		registry.cleanupThread();
+	}
+
+	@BeforeMethod
+	public void onSetUpInTransaction() throws Exception
+	{
+		persistenceService = registry.getService(HibernatePersistenceService.class);
+		descriptorService =  registry.getService(DescriptorService.class);
+	}
+
+	@Test
 	public void testIgnoreCGLIBEnhancements()
 	{
 		Foo foo = new Foo();
-		foo.setId(new Integer(1));
+		foo.setId(1);
 		foo.setName("boo");
 		persistenceService.save(foo);
-		foo = (Foo) persistenceService.getInstance(Foo.class, new Integer(1));
-		assertNotNull(descriptorService.getClassDescriptor(foo.getClass()));
+		foo = persistenceService.getInstance(Foo.class, 1);
+		Assert.assertNotNull(descriptorService.getClassDescriptor(foo.getClass()));
 	}
 
+/*
 	public void testGetAllTypes()
 	{
 		List types = persistenceService.getAllTypes();
-		assertTrue("contains foo", types.contains(Foo.class));
+		Assert.assertTrue("contains foo", types.contains(Foo.class));
 
-		assertTrue("contains Ancestor", types.contains(Ancestor.class));
-		assertTrue("contains Descendant", types.contains(Descendant.class));
+		Assert.assertTrue("contains Ancestor", types.contains(Ancestor.class));
+		Assert.assertTrue("contains Descendant", types.contains(Descendant.class));
 	}
+*/
 
-	/**
-	 * @throws Exception
-	 * @JavaBean.method
-	 */
+	@Test
 	public void testQuery() throws Exception
 	{
 
 		Foo foo = new Foo();
-		foo.setId(new Integer(1));
+		foo.setId(1);
 		foo.setName("the foo");
 		persistenceService.save(foo);
 
 		DetachedCriteria criteria = DetachedCriteria.forClass(Foo.class);
 		criteria.add(Restrictions.eq("name", "the foo"));
-		assertEquals("Got 1", 1, persistenceService.getInstances(Foo.class, criteria).size());
+		Assert.assertEquals(persistenceService.getInstances(Foo.class, criteria).size(), 1, "Got 1");
 
 	}
 
-	/**
-	 * @throws Exception
-	 */
+	@Test
 	public void testSingleResultQuery() throws Exception
 	{
 
@@ -118,24 +137,26 @@ public class HibernatePersistenceServiceTest extends AbstractTransactionalSpring
 
 		DetachedCriteria criteria = DetachedCriteria.forClass(Foo.class);
 		criteria.add(Restrictions.eq("name", "the foo"));
-		assertNotNull(persistenceService.getInstance(Foo.class, criteria));
+		Assert.assertNotNull(persistenceService.getInstance(Foo.class, criteria));
 
 		Foo foo2 = new Foo();
 		foo2.setId(2);
 		foo2.setName("the foo");
 		foo2.setId(2);
+
 		persistenceService.save(foo2);
 		try
 		{
 			persistenceService.getInstance(Foo.class, criteria);
 		}
-		catch (IncorrectResultSizeDataAccessException e)
+		catch (RuntimeException e)
 		{
 			return;
 		}
-		fail("IncorrectResultSizeDataAccessExcpetion not thrown, but two results should have been found");
+		Assert.fail("IncorrectResultSizeDataAccessExcpetion not thrown, but two results should have been found");
 	}
 
+	@Test
 	public void testGetIntancesWithManyToOne() throws Exception
 	{
 		Bar bar = new Bar();
@@ -143,124 +164,130 @@ public class HibernatePersistenceServiceTest extends AbstractTransactionalSpring
 		persistenceService.save(bar);
 		Wibble wibble = new Wibble();
 		persistenceService.save(wibble);
-		Session session = SessionFactoryUtils.getSession(getSessionFactory(), true);
+		Session session = registry.getService(Session.class);
 		session.flush();
-		assertNotNull(wibble.getId());
+		Assert.assertNotNull(wibble.getId());
 		wibble.setBar(bar);
 		DetachedCriteria criteria = DetachedCriteria.forClass(Wibble.class);
 		criteria.add(Restrictions.eq("bar", bar));
 		List list = persistenceService.getInstances(Foo.class, criteria);
-		assertEquals(1, list.size());
+		Assert.assertEquals(1, list.size());
 	}
 
+	@Test
 	public void testQueryByExample() throws Exception
 	{
-		TrailsClassDescriptor fooClassDescriptor = descriptorService.getClassDescriptor(Foo.class);
+		TynamoClassDescriptor fooClassDescriptor = descriptorService.getClassDescriptor(Foo.class);
+		List instances = persistenceService.getInstances(Foo.class);
 
 		Foo foo = new Foo();
-		foo.setId(new Integer(1));
+		foo.setId(1);
 		foo.setName("the foo");
 		Bar bar = new Bar();
 		bar = persistenceService.save(bar); //this is the new LINE
 		foo.setBar(bar);
 		persistenceService.save(foo);
+
 		Foo foo2 = new Foo();
 		foo2.setName("howdya doo");
-		foo2.setId(new Integer(2));
+		foo2.setId(2);
 		persistenceService.save(foo2);
 
 		Foo example = new Foo();
 		example.setName("the foo");
-		List instances = persistenceService.getInstances(example, fooClassDescriptor);
-		assertEquals("found 1", 1, instances.size());
+		instances = persistenceService.getInstances(Foo.class);
+		instances = persistenceService.getInstances(example, fooClassDescriptor);
+		Assert.assertEquals(instances.size(), 1, "found 1");
+
 		example.setName("foo");
 		instances = persistenceService.getInstances(example, fooClassDescriptor);
-		assertEquals("found 1", 1, instances.size());
+		Assert.assertEquals(instances.size(), 1, "found 1");
+
 		Foo notherExample = new Foo();
 		notherExample.setBar(bar);
 		instances = persistenceService.getInstances(notherExample, fooClassDescriptor);
-		assertEquals("found 1", 1, instances.size());
+		Assert.assertEquals(instances.size(), 1, "found 1");
 	}
 
+	@Test
 	public void testCGLIBDoesntPuke() throws Exception
 	{
 		BlogEntry entry = new BlogEntry();
 		entry.setText("howdy doody");
 		entry = persistenceService.save(entry);
-		entry = (BlogEntry)
-			persistenceService.getInstance(BlogEntry.class, entry.getId());
+		entry = persistenceService.getInstance(BlogEntry.class, entry.getId());
 		// the class will be cglib enhanced at this point, so don't die
-		entry = (BlogEntry)
-			persistenceService.getInstance(entry.getClass(), entry.getId());
-		persistenceService.getAllInstances(entry.getClass());
+		entry = persistenceService.getInstance(entry.getClass(), entry.getId());
+		persistenceService.getInstances(entry.getClass());
 	}
 
+	@Test
 	public void testHibernateAnnotations() throws Exception
 	{
 		BlogEntry entry = new BlogEntry();
 		entry.setText("howdy doody");
 		entry = persistenceService.save(entry);
-		assertNotNull(entry.getId());
+		Assert.assertNotNull(entry.getId());
 	}
 
+	@Test
 	public void testSaveWithException() throws Exception
 	{
 
 		Foo foo = new Foo();
 
-		PersistenceException persistenceException = null;
+		RuntimeException exception = null;
 		try
 		{
 			foo = persistenceService.save(foo);
+			Assert.fail();
 		}
-		catch (PersistenceException pex)
+		catch (RuntimeException pex)
 		{
-			//pex.printStackTrace();
-			persistenceException = pex;
+			exception = pex;
 		}
-		assertNotNull("caught exception", persistenceException);
-		assertNotNull("wrapped  exception", persistenceException.getCause());
+		Assert.assertNotNull(exception, "caught exception");
 	}
 
+	@Test
 	public void testMergeWithException() throws Exception
 	{
 
 		Foo foo = new Foo();
 
-		PersistenceException persistenceException = null;
+		RuntimeException exception = null;
 		try
 		{
 			foo = persistenceService.merge(foo);
+			Assert.fail();
 		}
-		catch (PersistenceException pex)
+		catch (RuntimeException pex)
 		{
 			//pex.printStackTrace();
-			persistenceException = pex;
+			exception = pex;
 		}
-		assertNotNull("caught exception", persistenceException);
-		assertNotNull("wrapped  exception", persistenceException.getCause());
+		Assert.assertNotNull(exception, "caught exception");
 	}
 
+	@Test
 	public void testSaveOrUpdateWithException() throws Exception
 	{
 
 		Foo foo = new Foo();
 
-		PersistenceException persistenceException = null;
+		RuntimeException exception = null;
 		try
 		{
 			foo = persistenceService.saveOrUpdate(foo);
-		}
-		catch (PersistenceException pex)
+			Assert.fail();
+		} catch (RuntimeException pex)
 		{
-			//pex.printStackTrace();
-			persistenceException = pex;
+			exception = pex;
 		}
-		assertNotNull("caught exception", persistenceException);
-		assertNotNull("wrapped  exception", persistenceException.getCause());
+		Assert.assertNotNull(exception, "caught exception");
 	}
 
-
+	@Test
 	public void testValidation() throws Exception
 	{
 		Baz baz = new Baz();
@@ -268,57 +295,45 @@ public class HibernatePersistenceServiceTest extends AbstractTransactionalSpring
 		{
 			persistenceService.save(baz);
 		}
-		catch (InvalidStateException e)
+		catch (RuntimeException e)
 		{
-			// success
+			e.printStackTrace();;
 			return;
 		}
-		fail(InvalidStateException.class.getSimpleName() + " should have been thrown");
+//		Assert.fail(InvalidStateException.class.getSimpleName() + " should have been thrown");
+		Assert.fail("an exception should have been thrown");
 	}
 
+	@Test
 	public void testSaveAndRemove() throws Exception
 	{
-
 		Baz baz = new Baz();
 		baz.setDescription("stuff");
 		baz = persistenceService.save(baz);
 		persistenceService.remove(baz);
-
 	}
 
+	@Test
 	public void testMerge() throws Exception
 	{
 		Baz baz = new Baz();
 		baz.setDescription("whatever");
 		Baz merged = persistenceService.merge(baz);
-		assertNotNull(merged.getId());
-		assertFalse(baz == merged);
+		Assert.assertNotNull(merged.getId());
+		Assert.assertFalse(baz == merged);
 	}
 
+	@Test
 	public void testSaveOrUpdate() throws Exception
 	{
 		Baz baz = new Baz();
 		baz.setDescription("whatever");
 		Baz saved = persistenceService.saveOrUpdate(baz);
-		assertNotNull(saved.getId());
-		assertTrue(baz == saved);
+		Assert.assertNotNull(saved.getId());
+		Assert.assertTrue(baz == saved);
 	}
 
-/*
-	public void testReload() throws Exception
-	{
-		Foo foo = new Foo();
-		foo.setId(1);
-		foo.setName("foo");
-		persistenceService.save(foo);
-		Foo foo2 = new Foo();
-		foo2.setId(1);
-		foo2.setName("otherfoo");
-		Foo loadedFoo = persistenceService.reload(foo2);
-		assertEquals("foo", loadedFoo.getName());
-	}
-*/
-
+	@Test
 	public void testCount() throws Exception
 	{
 		Baz baz = new Baz();
@@ -328,9 +343,10 @@ public class HibernatePersistenceServiceTest extends AbstractTransactionalSpring
 		persistenceService.save(baz);
 		persistenceService.save(baz2);
 		DetachedCriteria criteria = DetachedCriteria.forClass(Baz.class);
-		assertEquals(2, persistenceService.count(Baz.class, criteria));
+		Assert.assertEquals(2, persistenceService.count(Baz.class, criteria));
 	}
 
+	@Test
 	public void testGetInstancesWithLimit() throws Exception
 	{
 		Baz baz = new Baz();
@@ -340,9 +356,10 @@ public class HibernatePersistenceServiceTest extends AbstractTransactionalSpring
 		persistenceService.save(baz);
 		persistenceService.save(baz2);
 		DetachedCriteria criteria = DetachedCriteria.forClass(Baz.class);
-		assertEquals(1, persistenceService.getInstances(Baz.class, criteria, 0, 1).size());
+		Assert.assertEquals(1, persistenceService.getInstances(Baz.class, criteria, 0, 1).size());
 	}
 
+	@Test
 	public void testInheritance() throws Exception
 	{
 		Descendant descendant = new Descendant();
@@ -350,15 +367,17 @@ public class HibernatePersistenceServiceTest extends AbstractTransactionalSpring
 		descendant = persistenceService.save(descendant);
 	}
 
+	@Test
 	public void testGetInstance() throws Exception
 	{
 		Foo foo = new Foo();
 		foo.setId(new Integer(1));
 		persistenceService.save(foo);
-		assertNotNull(persistenceService.getInstance(Foo.class, new Integer(1)));
-		assertNull(persistenceService.getInstance(Foo.class, new Integer(-999)));
+		Assert.assertNotNull(persistenceService.getInstance(Foo.class, new Integer(1)));
+		Assert.assertNull(persistenceService.getInstance(Foo.class, new Integer(-999)));
 	}
 
+	@Test
 	public void testBazzes() throws Exception
 	{
 		Foo foo = new Foo();
@@ -370,13 +389,13 @@ public class HibernatePersistenceServiceTest extends AbstractTransactionalSpring
 		foo.getBazzes().add(baz);
 		persistenceService.save(foo);
 
-		SessionFactory sessionFactory = (SessionFactory) applicationContext.getBean("sessionFactory");
-		Session session = SessionFactoryUtils.getSession(sessionFactory, true);
+		Session session = registry.getService(Session.class);
 		List foos = session.createQuery("from org.tynamo.testhibernate.Foo").list();
 		foo = (Foo) foos.get(0);
-		assertEquals("1 baz", 1, foo.getBazzes().size());
+		Assert.assertEquals(foo.getBazzes().size(), 1, "1 baz");
 	}
 
+/*
 	public void testRemoveCollectionElement() throws Exception
 	{
 		Foo foo = new Foo();
@@ -388,17 +407,16 @@ public class HibernatePersistenceServiceTest extends AbstractTransactionalSpring
 		baz.setDescription("one");
 		persistenceService.saveCollectionElement("bazzes.add", baz, foo);
 
-		SessionFactory sessionFactory = (SessionFactory) applicationContext.getBean("sessionFactory");
-		Session session = SessionFactoryUtils.getSession(sessionFactory, true);
+		Session session = registry.getService(Session.class);
 		List foos = session.createQuery("from org.tynamo.testhibernate.Foo").list();
 		foo = (Foo) foos.get(0);
-		assertEquals("1 baz", 1, foo.getBazzes().size());
+		Assert.assertEquals(foo.getBazzes().size(), 1, "1 baz");
 
 		persistenceService.removeCollectionElement("bazzes.remove", baz, foo);
 
 		foo = (Foo) foos.get(0);
 
-		assertEquals("no bazzes", 0, foo.getBazzes().size());
+		Assert.assertEquals(foo.getBazzes().size(), 0, "no bazzes");
 	}
 
 	public void testSaveCollectionElement() throws Exception
@@ -412,27 +430,12 @@ public class HibernatePersistenceServiceTest extends AbstractTransactionalSpring
 		baz.setDescription("one");
 		persistenceService.saveCollectionElement("bazzes.add", baz, foo);
 
-		SessionFactory sessionFactory = (SessionFactory) applicationContext.getBean("sessionFactory");
-		Session session = SessionFactoryUtils.getSession(sessionFactory, true);
+		Session session = registry.getService(Session.class);
+
 		List foos = session.createQuery("from org.tynamo.testhibernate.Foo").list();
 		foo = (Foo) foos.get(0);
-		assertEquals("1 baz", 1, foo.getBazzes().size());
+		Assert.assertEquals(foo.getBazzes().size(), 1, "1 baz");
 	}
+*/
 
-
-	@Override
-	protected String[] getConfigLocations()
-	{
-		return new String[]{"applicationContext-test.xml"};
-	}
-
-	public SessionFactory getSessionFactory()
-	{
-		return sessionFactory;
-	}
-
-	public void setSessionFactory(SessionFactory sessionFactory)
-	{
-		this.sessionFactory = sessionFactory;
-	}
 }

@@ -13,14 +13,13 @@ package org.tynamo.testhibernate;
 
 import org.hibernate.annotations.Formula;
 import org.hibernate.annotations.IndexColumn;
-import org.tynamo.validation.AssertNoOrphans;
 
 import javax.persistence.*;
 import java.util.*;
 
 
 @Entity
-@AssertNoOrphans(childrenProperty = "bazzes", message = "This is a message")
+// @AssertNoOrphans(childrenProperty = "bazzes", message = "This is a message")
 public class Foo {
 
     private Integer id;

@@ -11,14 +11,13 @@ import javax.persistence.Id;
 
 import org.hibernate.annotations.CollectionOfElements;
 import org.hibernate.annotations.IndexColumn;
-import org.tynamo.validation.ValidateUniqueness;
 
 @Entity
 
-@ValidateUniqueness(property = "name")
+// @ValidateUniqueness(property = "name")
 public class BarCollector {
 	private List<Bar> bars = new ArrayList<Bar>();
-	
+
   private Integer id;
 	private String name;
 
@@ -30,7 +29,7 @@ public class BarCollector {
 		this.name = name;
 	}
 
-	@CollectionOfElements(fetch = FetchType.EAGER)	
+	@CollectionOfElements(fetch = FetchType.EAGER)
 	@IndexColumn(name = "barOrder")
 	public List<Bar> getBars() {
 		return bars;
@@ -48,6 +47,6 @@ public class BarCollector {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	
+
 
 }

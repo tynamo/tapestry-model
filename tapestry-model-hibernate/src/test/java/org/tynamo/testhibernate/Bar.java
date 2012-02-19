@@ -11,12 +11,11 @@
  */
 package org.tynamo.testhibernate;
 
-import org.tynamo.validation.AssertNoOrphans;
 
 import javax.persistence.*;
 
 @Entity
-@AssertNoOrphans(Wibble.class)
+// @AssertNoOrphans(Wibble.class)
 public class Bar implements IBar {
 
     private Integer id;
