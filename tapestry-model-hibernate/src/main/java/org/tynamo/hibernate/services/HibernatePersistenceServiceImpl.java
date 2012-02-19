@@ -168,12 +168,8 @@ public class HibernatePersistenceServiceImpl implements HibernatePersistenceServ
 	 *
 	 * @see org.tynamo.services.PersistenceService#save(java.lang.Object)
 	 */
-	public <T> T save(T instance) // throws ValidationException
+	public <T> T save(T instance)
 	{
-/*
-		try
-		{
-*/
 		TynamoClassDescriptor tynamoclassdescriptor = descriptorService.getClassDescriptor(instance.getClass());
 		// @todo: org.hibernate.MappingException: Unknown entity
 
@@ -186,13 +182,6 @@ public class HibernatePersistenceServiceImpl implements HibernatePersistenceServ
 			instance = (T) getSession().merge(instance);
 		}
 		return instance;
-//		}
-/*
-		catch (DataAccessException dex)
-		{
-			throw new PersistenceException(dex);
-		}
-*/
 	}
 
 
@@ -374,18 +363,10 @@ public class HibernatePersistenceServiceImpl implements HibernatePersistenceServ
 	/**
 	 * @see org.tynamo.hibernate.services.HibernatePersistenceService#saveOrUpdate(java.lang.Object)
 	 */
-
-	public <T> T saveOrUpdate(T instance)  // throws ValidationException
+	public <T> T saveOrUpdate(T instance)
 	{
 		getSession().saveOrUpdate(instance);
 		return instance;
-
-/*
-		catch (DataAccessException dex)
-		{
-			throw new PersistenceException(dex);
-		}
-*/
 	}
 
 	public <T> T addToCollection(CollectionDescriptor descriptor, T element, Object collectionOwner)
