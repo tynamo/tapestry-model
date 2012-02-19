@@ -11,7 +11,8 @@
  */
 package org.tynamo.hibernate;
 
-import ognl.Ognl;
+import org.apache.tapestry5.func.F;
+import org.apache.tapestry5.func.Predicate;
 import org.apache.tapestry5.hibernate.HibernateCoreModule;
 import org.apache.tapestry5.hibernate.HibernateModule;
 import org.apache.tapestry5.ioc.Registry;
@@ -129,17 +130,34 @@ public class HibernateDescriptorDecoratorTest
 	{
 
 		Assert.assertFalse(classDescriptor.isChild(), "not a child");
-		List propertyDescriptors = classDescriptor.getPropertyDescriptors();
+		List<TynamoPropertyDescriptor> propertyDescriptors = classDescriptor.getPropertyDescriptors();
 		Assert.assertEquals(propertyDescriptors.size(), 11, "got 11");
 
-		TynamoPropertyDescriptor barDescriptor = (TynamoPropertyDescriptor) Ognl.getValue("#root.{? #this.name == 'bar'}[0]", propertyDescriptors);
+		class NameFilter implements Predicate<TynamoPropertyDescriptor>
+		{
+			private String nameToFilter;
+
+			NameFilter(String nameToFilter)
+			{
+				this.nameToFilter = nameToFilter;
+			}
+
+			@Override
+			public boolean accept(TynamoPropertyDescriptor tynamoPropertyDescriptor)
+			{
+				return nameToFilter.equals(tynamoPropertyDescriptor.getName());
+			}
+		}
+
+		TynamoPropertyDescriptor barDescriptor = F.flow(propertyDescriptors).filter(new NameFilter("bar")).toList().get(0);
+
 		Assert.assertEquals(barDescriptor.getName(), "bar", "name");
 		Assert.assertTrue(!barDescriptor.isIdentifier(), "is not an id");
 
-		TynamoPropertyDescriptor hiddenDescriptor = (TynamoPropertyDescriptor) Ognl.getValue("#root.{? #this.name == 'hidden'}[0]", propertyDescriptors);
+		TynamoPropertyDescriptor hiddenDescriptor = F.flow(propertyDescriptors).filter(new NameFilter("hidden")).toList().get(0);
 		Assert.assertNotNull(hiddenDescriptor, "didn't blow up");
 
-		TynamoPropertyDescriptor primitiveDescriptor = (TynamoPropertyDescriptor) Ognl.getValue("#root.{? #this.name == 'primitive'}[0]", propertyDescriptors);
+		TynamoPropertyDescriptor primitiveDescriptor = F.flow(propertyDescriptors).filter(new NameFilter("primitive")).toList().get(0);
 		Assert.assertTrue(primitiveDescriptor.isBoolean(), "is boolean");
 
 	}
