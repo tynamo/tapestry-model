@@ -257,7 +257,7 @@ public class HibernatePersistenceServiceImpl implements HibernatePersistenceServ
 			{
 				String propertyName = propertyDescriptor.getName();
 				Class propertyClass = propertyDescriptor.getPropertyType();
-				Object value = null; //PropertyUtils.read(example, propertyName);
+				Object value = propertyAccess.get(example, propertyName);
 
 				//only add a Criterion to the Criteria instance if the value for this property is non-null
 				if (value != null)
