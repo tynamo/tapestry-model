@@ -71,4 +71,22 @@ public class Baz {
     public void setFoo(Foo foo) {
         this.foo = foo;
     }
+
+	@Override
+	public boolean equals(Object o)
+	{
+		if (this == o) return true;
+		if (!(o instanceof Baz)) return false;
+
+		Baz baz = (Baz) o;
+
+		return id != null ? id.equals(baz.id) : baz.id == null;
+
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return id != null ? id.hashCode() : 0;
+	}
 }

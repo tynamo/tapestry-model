@@ -24,6 +24,7 @@ package org.tynamo.hibernate;
 
 import org.apache.tapestry5.hibernate.HibernateCoreModule;
 import org.apache.tapestry5.hibernate.HibernateModule;
+import org.apache.tapestry5.hibernate.HibernateSessionManager;
 import org.apache.tapestry5.ioc.Registry;
 import org.apache.tapestry5.ioc.RegistryBuilder;
 import org.apache.tapestry5.services.TapestryModule;
@@ -33,6 +34,7 @@ import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 import org.testng.Assert;
 import org.testng.annotations.*;
+import org.tynamo.descriptor.CollectionDescriptor;
 import org.tynamo.descriptor.TynamoClassDescriptor;
 import org.tynamo.hibernate.services.HibernatePersistenceService;
 import org.tynamo.hibernate.services.TynamoHibernateModule;
@@ -50,7 +52,7 @@ public class HibernatePersistenceServiceTest
 	private DescriptorService descriptorService;
 
 	private static Registry registry;
-	private Transaction tx;
+	private Session session;
 
 	@BeforeSuite
 	public final void setup_registry()
@@ -66,13 +68,16 @@ public class HibernatePersistenceServiceTest
 		registry = builder.build();
 		registry.performRegistryStartup();
 
+		persistenceService = registry.getService(HibernatePersistenceService.class);
+		descriptorService =  registry.getService(DescriptorService.class);
+		session = registry.getService(Session.class);
+
 	}
 
 	@AfterSuite
 	public final void shutdown_registry()
 	{
 		registry.shutdown();
-
 		registry = null;
 	}
 
@@ -80,13 +85,6 @@ public class HibernatePersistenceServiceTest
 	public final void cleanupThread()
 	{
 		registry.cleanupThread();
-	}
-
-	@BeforeMethod
-	public void onSetUpInTransaction() throws Exception
-	{
-		persistenceService = registry.getService(HibernatePersistenceService.class);
-		descriptorService =  registry.getService(DescriptorService.class);
 	}
 
 	@Test
@@ -99,17 +97,6 @@ public class HibernatePersistenceServiceTest
 		foo = persistenceService.getInstance(Foo.class, 1);
 		Assert.assertNotNull(descriptorService.getClassDescriptor(foo.getClass()));
 	}
-
-/*
-	public void testGetAllTypes()
-	{
-		List types = persistenceService.getAllTypes();
-		Assert.assertTrue("contains foo", types.contains(Foo.class));
-
-		Assert.assertTrue("contains Ancestor", types.contains(Ancestor.class));
-		Assert.assertTrue("contains Descendant", types.contains(Descendant.class));
-	}
-*/
 
 	@Test
 	public void testQuery() throws Exception
@@ -371,17 +358,17 @@ public class HibernatePersistenceServiceTest
 	public void testGetInstance() throws Exception
 	{
 		Foo foo = new Foo();
-		foo.setId(new Integer(1));
+		foo.setId(1);
 		persistenceService.save(foo);
-		Assert.assertNotNull(persistenceService.getInstance(Foo.class, new Integer(1)));
-		Assert.assertNull(persistenceService.getInstance(Foo.class, new Integer(-999)));
+		Assert.assertNotNull(persistenceService.getInstance(Foo.class, 1));
+		Assert.assertNull(persistenceService.getInstance(Foo.class, -999));
 	}
 
 	@Test
 	public void testBazzes() throws Exception
 	{
 		Foo foo = new Foo();
-		foo.setId(new Integer(1));
+		foo.setId(1);
 		foo.setName("boo");
 		Baz baz = new Baz();
 		baz.setDescription("one");
@@ -395,47 +382,124 @@ public class HibernatePersistenceServiceTest
 		Assert.assertEquals(foo.getBazzes().size(), 1, "1 baz");
 	}
 
-/*
-	public void testRemoveCollectionElement() throws Exception
+	@Test
+	public void remove_collection_element() throws Exception
 	{
+		CollectionDescriptor bazzesDescriptor = (CollectionDescriptor) descriptorService.getClassDescriptor(Foo.class).getPropertyDescriptor("bazzes");
+
 		Foo foo = new Foo();
-		foo.setId(new Integer(1));
+		foo.setId(1);
 		foo.setName("boo");
-		persistenceService.save(foo);
+		foo = persistenceService.save(foo);
 
 		Baz baz = new Baz();
 		baz.setDescription("one");
-		persistenceService.saveCollectionElement("bazzes.add", baz, foo);
 
-		Session session = registry.getService(Session.class);
+		persistenceService.addToCollection(bazzesDescriptor, baz, foo);
+		Assert.assertEquals(foo.getBazzes().size(), 1, "1 baz before flushing the session");
+
+		fakeOpenSessionInViewResponse();
+
 		List foos = session.createQuery("from org.tynamo.testhibernate.Foo").list();
 		foo = (Foo) foos.get(0);
 		Assert.assertEquals(foo.getBazzes().size(), 1, "1 baz");
 
-		persistenceService.removeCollectionElement("bazzes.remove", baz, foo);
-
-		foo = (Foo) foos.get(0);
+		persistenceService.removeFromCollection(bazzesDescriptor, baz, foo);
 
 		Assert.assertEquals(foo.getBazzes().size(), 0, "no bazzes");
 	}
 
-	public void testSaveCollectionElement() throws Exception
+	@Test
+	public void save_mappedby_collection_element_with_add_method() throws Exception
 	{
+		resetTablesAfterCommit();
+
+		CollectionDescriptor bazzesDescriptor = (CollectionDescriptor) descriptorService.getClassDescriptor(Foo.class).getPropertyDescriptor("bazzes");
+
 		Foo foo = new Foo();
-		foo.setId(new Integer(1));
+		foo.setId(1);
 		foo.setName("boo");
-		persistenceService.save(foo);
+		foo = persistenceService.save(foo);
 
 		Baz baz = new Baz();
 		baz.setDescription("one");
-		persistenceService.saveCollectionElement("bazzes.add", baz, foo);
+		persistenceService.addToCollection(bazzesDescriptor, baz, foo);
 
-		Session session = registry.getService(Session.class);
+		Assert.assertEquals(foo.getBazzes().size(), 1, "1 baz before flushing the session");
+
+		fakeOpenSessionInViewResponse();
 
 		List foos = session.createQuery("from org.tynamo.testhibernate.Foo").list();
 		foo = (Foo) foos.get(0);
-		Assert.assertEquals(foo.getBazzes().size(), 1, "1 baz");
+
+		Assert.assertEquals(foo.getBazzes().size(), 1, "1 baz after the transaction commit");
 	}
-*/
+
+	@Test
+	public void save_mappedby_collection_element_without_using_add_method() throws Exception
+	{
+		resetTablesAfterCommit();
+
+		Foo foo = new Foo();
+		foo.setId(1);
+		foo.setName("boo");
+		foo = persistenceService.save(foo);
+
+		Baz baz = new Baz();
+		baz.setDescription("one");
+
+		foo.getBazzes().add(baz); //add to Bazzes without using the PersistenceService
+
+		Assert.assertEquals(foo.getBazzes().size(), 1, "1 baz before flushing the session");
+
+		fakeOpenSessionInViewResponse();
+
+		List foos = session.createQuery("from org.tynamo.testhibernate.Foo").list();
+		foo = (Foo) foos.get(0);
+
+		Assert.assertTrue(foo.getBazzes().isEmpty(), "there shouldn't be any bazzes here, the relationship is reaondly");
+	}
+
+	@Test
+	public void save_collection_element_with_getter() throws Exception
+	{
+		resetTablesAfterCommit();
+		CollectionDescriptor bingsDescriptor = (CollectionDescriptor) descriptorService.getClassDescriptor(Foo.class).getPropertyDescriptor("bings");
+
+		Foo foo = new Foo();
+		foo.setId(1);
+		foo.setName("boo");
+		foo = persistenceService.save(foo);
+
+		Bing bing = new Bing();
+		bing.setDescription("one");
+		bing = persistenceService.save(bing);
+
+		persistenceService.addToCollection(bingsDescriptor, bing, foo);
+
+		Assert.assertEquals(foo.getBings().size(), 1, "1 bing before flushing the session");
+
+		fakeOpenSessionInViewResponse();
+
+		List foos = session.createQuery("from org.tynamo.testhibernate.Foo").list();
+		foo = (Foo) foos.get(0);
+
+		Assert.assertEquals(foo.getBings().size(), 1, "1 bing after the transaction commit");
+	}
+
+
+	private void resetTablesAfterCommit()
+	{
+		session.createSQLQuery("TRUNCATE TABLE Bing").executeUpdate();
+		session.createSQLQuery("TRUNCATE TABLE Baz").executeUpdate();
+		session.createSQLQuery("DELETE FROM Foo").executeUpdate();
+		fakeOpenSessionInViewResponse();
+	}
+
+	private void fakeOpenSessionInViewResponse()
+	{
+		registry.getService(HibernateSessionManager.class).commit();
+		registry.cleanupThread();
+	}
 
 }

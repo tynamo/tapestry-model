@@ -22,9 +22,11 @@ import org.tynamo.descriptor.CollectionDescriptor;
 import org.tynamo.descriptor.TynamoClassDescriptor;
 import org.tynamo.descriptor.TynamoPropertyDescriptor;
 import org.tynamo.services.DescriptorService;
-import org.tynamo.util.Utils;
 
+import java.beans.IntrospectionException;
 import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -371,15 +373,59 @@ public class HibernatePersistenceServiceImpl implements HibernatePersistenceServ
 
 	public <T> T addToCollection(CollectionDescriptor descriptor, T element, Object collectionOwner)
 	{
-		PropertyConduit propertyConduit = propertyConduitSource.create(collectionOwner.getClass(), descriptor.getAddExpression());
-		propertyConduit.set(collectionOwner, element);
+		Class elementType = descriptor.getElementType();
+		String addMethod = descriptor.getAddExpression() != null ? descriptor.getAddExpression() : "add" + elementType.getSimpleName();
+
+		try
+		{
+			Method method = descriptor.getBeanType().getMethod(addMethod, new Class[]{elementType});
+			method.invoke(collectionOwner, element);
+			return element;
+
+		} catch (NoSuchMethodException e)
+		{
+			// do nothing;
+		} catch (InvocationTargetException e)
+		{
+			throw new RuntimeException(e);
+		} catch (IllegalAccessException e)
+		{
+			throw new RuntimeException(e);
+		}
+
+		Collection collection = (Collection) propertyAccess.get(collectionOwner, descriptor.getName());
+		if (!(descriptor.isChildRelationship() && (collection instanceof List) && (collection.contains(element))))
+		{
+			collection.add(element);
+		}
 		return element;
+
 	}
 
 	public void removeFromCollection(CollectionDescriptor descriptor, Object element, Object collectionOwner)
 	{
-		PropertyConduit propertyConduit = propertyConduitSource.create(collectionOwner.getClass(), descriptor.getRemoveExpression());
-		propertyConduit.set(collectionOwner, element);
+		Class elementType = descriptor.getElementType();
+		String removeMethod = descriptor.getRemoveExpression() != null ? descriptor.getRemoveExpression() : "remove" + elementType.getSimpleName();
+
+		try
+		{
+			Method method = descriptor.getBeanType().getMethod(removeMethod, new Class[]{elementType});
+			method.invoke(collectionOwner, element);
+			return;
+
+		} catch (NoSuchMethodException e)
+		{
+			// do nothing;
+		} catch (InvocationTargetException e)
+		{
+			throw new RuntimeException(e);
+		} catch (IllegalAccessException e)
+		{
+			throw new RuntimeException(e);
+		}
+
+		Collection collection = (Collection) propertyAccess.get(collectionOwner, descriptor.getName());
+		collection.remove(element);
 	}
 
 	public List getOrphanInstances(CollectionDescriptor descriptor, Object owner)

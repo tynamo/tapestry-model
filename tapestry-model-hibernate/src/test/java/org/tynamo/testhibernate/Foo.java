@@ -13,6 +13,7 @@ package org.tynamo.testhibernate;
 
 import org.hibernate.annotations.Formula;
 import org.hibernate.annotations.IndexColumn;
+import org.tynamo.descriptor.annotation.CollectionDescriptor;
 
 import javax.persistence.*;
 import java.util.*;
@@ -88,6 +89,7 @@ public class Foo {
     }
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "foo")
+//    @CollectionDescriptor(addExpression = "customAddBaz")
     public Set<Baz> getBazzes() {
         return bazzes;
     }
@@ -99,7 +101,12 @@ public class Foo {
         this.bazzes = bazzes;
     }
 
-    @OneToMany
+    public void addBaz(Baz baz) {
+        bazzes.add(baz);
+        baz.setFoo(this);
+    }
+
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "FOO_ID")
     @IndexColumn(name = "BING_INDEX")
     public List<Bing> getBings() {
@@ -111,14 +118,6 @@ public class Foo {
      */
     public void setBings(List<Bing> bings) {
         this.bings = bings;
-    }
-
-    public void addBing(Bing bing) {
-        getBings().add(bing);
-    }
-
-    public void removeBing(Bing bing) {
-        getBings().remove(bing);
     }
 
     /**
@@ -202,4 +201,22 @@ public class Foo {
     public void setFromFormula(String fromFormula) {
         this.fromFormula = fromFormula;
     }
+
+	@Override
+	public boolean equals(Object o)
+	{
+		if (this == o) return true;
+		if (!(o instanceof Foo)) return false;
+
+		Foo foo = (Foo) o;
+
+		return id != null ? id.equals(foo.id) : foo.id == null;
+
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return id != null ? id.hashCode() : 0;
+	}
 }
