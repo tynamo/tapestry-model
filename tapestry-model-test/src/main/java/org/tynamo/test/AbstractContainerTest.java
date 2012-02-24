@@ -55,7 +55,7 @@ public abstract class AbstractContainerTest
 
 	protected final WebClient webClient = new WebClient();
 
-	static String errorText = "You must correct the following errors before you may continue";
+	static String errorText = "You must correct the following errors before continuing";
 
 	@BeforeClass
 	public void startContainer() throws Exception
