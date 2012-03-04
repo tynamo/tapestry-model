@@ -88,7 +88,7 @@ public class Foo {
         this.multiWordProperty = value;
     }
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "foo")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "foo", orphanRemoval = true)
 //    @CollectionDescriptor(addExpression = "customAddBaz")
     public Set<Baz> getBazzes() {
         return bazzes;

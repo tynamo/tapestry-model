@@ -118,11 +118,13 @@ public class HibernateDescriptorDecoratorTest
 		CollectionDescriptor bazzesDescriptor = (CollectionDescriptor) classDescriptor.getPropertyDescriptor("bazzes");
 		Assert.assertTrue(bazzesDescriptor.isCollection(), "bazzes is a collection");
 		Assert.assertEquals(bazzesDescriptor.getElementType(), Baz.class, "right element type");
-		//TODO Fix when hibernate annotations add support for this..
-		//assertTrue("bazzes are children", bazzesDescriptor.isChildRelationship());
+		Assert.assertTrue(bazzesDescriptor.isChildRelationship(), "bazzes are children");
 		Assert.assertTrue(bazzesDescriptor.isOneToMany());
 		Assert.assertEquals(bazzesDescriptor.getInverseProperty(), "foo", "bazzes are mapped by 'foo' property in Baz");
-		Assert.assertTrue(classDescriptor.getHasCyclicRelationships(), "Foo has a cyclic relationship");
+
+//      @note: HibernateDescriptorDecorator doesn't set hasCyclicRelationships anymore but it might do it again if we
+//      switch from Descriptors to Extensions
+//		Assert.assertTrue(classDescriptor.getHasCyclicRelationships(), "Foo has a cyclic relationship");
 	}
 
 	@Test

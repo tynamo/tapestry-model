@@ -92,19 +92,19 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 
 	public TynamoClassDescriptor decorate(TynamoClassDescriptor descriptor)
 	{
-		ArrayList<TynamoPropertyDescriptor> decoratedPropertyDescriptors = new ArrayList<TynamoPropertyDescriptor>();
+		java.util.List<TynamoPropertyDescriptor> decoratedPropertyDescriptors = new ArrayList<TynamoPropertyDescriptor>();
 
-		Class type = descriptor.getBeanType();
+		Class beanType = descriptor.getBeanType();
 		ClassMetadata classMetaData = null;
 
 		try
 		{
-			classMetaData = findMetadata(type);
+			classMetaData = findMetadata(beanType);
 		} catch (MetadataNotFoundException e)
 		{
 			if (ignoreNonHibernateTypes)
 			{
-				logger.warn("MetadataNotFound! Ignoring:" + descriptor.getBeanType().toString());
+				logger.warn("MetadataNotFound! could not decorate: " + descriptor.getBeanType().getSimpleName());
 				descriptor.setNonVisual(true);
 				return descriptor;
 			} else
@@ -119,9 +119,9 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 			{
 				TynamoPropertyDescriptor descriptorReference;
 
-				if (propertyDescriptor.getName().equals(getIdentifierProperty(type)))
+				if (propertyDescriptor.getName().equals(getIdentifierProperty(beanType)))
 				{
-					descriptorReference = createIdentifierDescriptor(type, propertyDescriptor, descriptor);
+					descriptorReference = createIdentifierDescriptor(beanType, propertyDescriptor);
 				} else if (notAHibernateProperty(classMetaData, propertyDescriptor))
 				{
 					// If this is not a hibernate property (i.e. marked
@@ -131,9 +131,8 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 					descriptorReference = propertyDescriptor;
 				} else
 				{
-					Property mappingProperty = getMapping(type).getProperty(propertyDescriptor.getName());
-					descriptorReference = decoratePropertyDescriptor(type, mappingProperty, propertyDescriptor,
-							descriptor);
+					Property mappingProperty = getMapping(beanType).getProperty(propertyDescriptor.getName());
+					descriptorReference = decoratePropertyDescriptor(beanType, mappingProperty, propertyDescriptor);
 				}
 
 				decoratedPropertyDescriptors.add(descriptorReference);
@@ -147,9 +146,7 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 		return descriptor;
 	}
 
-	protected TynamoPropertyDescriptor decoratePropertyDescriptor(Class type, Property mappingProperty,
-	                                                              TynamoPropertyDescriptor descriptor,
-	                                                              TynamoClassDescriptor parentClassDescriptor)
+	protected TynamoPropertyDescriptor decoratePropertyDescriptor(Class beanType, Property mappingProperty, TynamoPropertyDescriptor descriptor)
 	{
 		if (isFormula(mappingProperty))
 		{
@@ -169,37 +166,39 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 		}
 
 		TynamoPropertyDescriptor descriptorReference = descriptor;
+
 		Type hibernateType = mappingProperty.getType();
+
 		if (mappingProperty.getType() instanceof ComponentType)
 		{
-			descriptorReference = buildEmbeddedDescriptor(type, mappingProperty, descriptor, parentClassDescriptor);
+			descriptorReference = buildEmbeddedDescriptor(beanType, mappingProperty, descriptor);
 		} else if (Collection.class.isAssignableFrom(descriptor.getPropertyType()))
 		{
-			descriptorReference = decorateCollectionDescriptor(type, descriptor, parentClassDescriptor);
+			descriptorReference = decorateCollectionDescriptor(beanType, descriptor);
 		} else if (hibernateType.isAssociationType())
 		{
-			descriptorReference = decorateAssociationDescriptor(type, mappingProperty, descriptor,
-					parentClassDescriptor);
+			descriptorReference = decorateAssociationDescriptor(beanType, mappingProperty, descriptor);
 		} else if (hibernateType.getReturnedClass().isEnum())
 		{
-			descriptor.addExtension(EnumReferenceDescriptor.class.getName(), new EnumReferenceDescriptor(hibernateType
-					.getReturnedClass()));
+			descriptor.addExtension(EnumReferenceDescriptor.class.getName(), new EnumReferenceDescriptor(hibernateType.getReturnedClass()));
 		}
 
 		return descriptorReference;
 	}
 
-	private EmbeddedDescriptor buildEmbeddedDescriptor(Class type, Property mappingProperty,
-	                                                   TynamoPropertyDescriptor descriptor,
-	                                                   TynamoClassDescriptor parentClassDescriptor)
+	private EmbeddedDescriptor buildEmbeddedDescriptor(Class beanType, Property mappingProperty, TynamoPropertyDescriptor descriptor)
 	{
 		Component componentMapping = (Component) mappingProperty.getValue();
 		TynamoClassDescriptor baseDescriptor = descriptorFactory.buildClassDescriptor(descriptor.getPropertyType());
+
 		// build from base descriptor
-		EmbeddedDescriptor embeddedDescriptor = new EmbeddedDescriptor(type, baseDescriptor);
+		EmbeddedDescriptor embeddedDescriptor = new EmbeddedDescriptor(beanType, baseDescriptor);
+
 		// and copy from property descriptor
 		embeddedDescriptor.copyFrom(descriptor);
-		ArrayList<TynamoPropertyDescriptor> decoratedProperties = new ArrayList<TynamoPropertyDescriptor>();
+
+		java.util.List<TynamoPropertyDescriptor> decoratedProperties = new ArrayList<TynamoPropertyDescriptor>();
+
 		// go thru each property and decorate it with Hibernate info
 		for (TynamoPropertyDescriptor propertyDescriptor : embeddedDescriptor.getPropertyDescriptors())
 		{
@@ -210,8 +209,7 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 			{
 				Property property = componentMapping.getProperty(propertyDescriptor.getName());
 				TynamoPropertyDescriptor tynamopropertydescriptor =
-						decoratePropertyDescriptor(embeddedDescriptor.getBeanType(),
-								property, propertyDescriptor, parentClassDescriptor);
+						decoratePropertyDescriptor(embeddedDescriptor.getPropertyType(), property, propertyDescriptor);
 				decoratedProperties.add(tynamopropertydescriptor);
 			}
 		}
@@ -244,7 +242,7 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 
 	private boolean isFormula(Property mappingProperty)
 	{
-		for (Iterator iter = mappingProperty.getColumnIterator(); iter.hasNext();)
+		for (Iterator iter = mappingProperty.getColumnIterator(); iter.hasNext(); )
 		{
 			Selectable selectable = (Selectable) iter.next();
 			if (selectable.isFormula())
@@ -264,7 +262,7 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 	 */
 	protected boolean notAHibernateProperty(Component componentMapping, TynamoPropertyDescriptor propertyDescriptor)
 	{
-		for (Iterator iter = componentMapping.getPropertyIterator(); iter.hasNext();)
+		for (Iterator iter = componentMapping.getPropertyIterator(); iter.hasNext(); )
 		{
 			Property property = (Property) iter.next();
 			if (property.getName().equals(propertyDescriptor.getName()))
@@ -286,7 +284,7 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 	private int findColumnLength(Property mappingProperty)
 	{
 		int length = 0;
-		for (Iterator iter = mappingProperty.getColumnIterator(); iter.hasNext();)
+		for (Iterator iter = mappingProperty.getColumnIterator(); iter.hasNext(); )
 		{
 			Column column = (Column) iter.next();
 			length += column.getLength();
@@ -311,29 +309,27 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 	}
 
 	/**
-	 * @param type
+	 * @param beanType
 	 * @param descriptor
 	 * @param parentClassDescriptor
 	 * @return
 	 */
-	private IdentifierDescriptor createIdentifierDescriptor(Class type, TynamoPropertyDescriptor descriptor,
-	                                                        TynamoClassDescriptor parentClassDescriptor)
+	private IdentifierDescriptor createIdentifierDescriptor(Class beanType, TynamoPropertyDescriptor descriptor)
 	{
 		IdentifierDescriptor identifierDescriptor;
-		PersistentClass mapping = getMapping(type);
+		PersistentClass mapping = getMapping(beanType);
 
 		/**
 		 * fix for TRAILS-92
 		 */
 		if (mapping.getProperty(descriptor.getName()).getType() instanceof ComponentType)
 		{
-			EmbeddedDescriptor embeddedDescriptor = buildEmbeddedDescriptor(type,
-					mapping.getProperty(descriptor.getName()), descriptor, parentClassDescriptor);
+			EmbeddedDescriptor embeddedDescriptor = buildEmbeddedDescriptor(beanType, mapping.getProperty(descriptor.getName()), descriptor);
 			embeddedDescriptor.setIdentifier(true);
 			identifierDescriptor = embeddedDescriptor;
 		} else
 		{
-			identifierDescriptor = new IdentifierDescriptorImpl(type, descriptor);
+			identifierDescriptor = new IdentifierDescriptorImpl(beanType, descriptor);
 		}
 
 		if (((SimpleValue) mapping.getIdentifier()).getIdentifierGeneratorStrategy().equals("assigned"))
@@ -356,17 +352,15 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 	}
 
 	/**
-	 * @param type
+	 * @param beanType
 	 * @param descriptor
-	 * @param parentClassDescriptor
 	 */
-	private CollectionDescriptor decorateCollectionDescriptor(Class type, TynamoPropertyDescriptor descriptor,
-	                                                          TynamoClassDescriptor parentClassDescriptor)
+	private CollectionDescriptor decorateCollectionDescriptor(Class beanType, TynamoPropertyDescriptor descriptor)
 	{
 		try
 		{
-			CollectionDescriptor collectionDescriptor = new CollectionDescriptor(type, descriptor);
-			org.hibernate.mapping.Collection collectionMapping = findCollectionMapping(type, descriptor.getName());
+			CollectionDescriptor collectionDescriptor = new CollectionDescriptor(beanType, descriptor);
+			org.hibernate.mapping.Collection collectionMapping = findCollectionMapping(beanType, descriptor.getName());
 			// It is a child relationship if it has delete-orphan specified in
 			// the mapping
 			collectionDescriptor.setChildRelationship(collectionMapping.hasOrphanDelete());
@@ -377,7 +371,7 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 
 			collectionDescriptor.setOneToMany(collectionMapping.isOneToMany());
 
-			decorateOneToManyCollection(parentClassDescriptor, collectionDescriptor, collectionMapping);
+			decorateOneToManyCollection(beanType, collectionDescriptor, collectionMapping);
 
 			return collectionDescriptor;
 
@@ -387,20 +381,21 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 		}
 	}
 
-	public TynamoPropertyDescriptor decorateAssociationDescriptor(Class type, Property mappingProperty,
-	                                                              final TynamoPropertyDescriptor descriptor,
-	                                                              TynamoClassDescriptor parentClassDescriptor)
+	public TynamoPropertyDescriptor decorateAssociationDescriptor(final Class beanType,
+	                                                              final Property mappingProperty,
+	                                                              final TynamoPropertyDescriptor descriptor)
 	{
 		Type hibernateType = mappingProperty.getType();
-		Class parentClassType = parentClassDescriptor.getBeanType();
-		ObjectReferenceDescriptor descriptorReference = new ObjectReferenceDescriptor(type, descriptor, hibernateType
-				.getReturnedClass());
+
+		ObjectReferenceDescriptor descriptorReference = new ObjectReferenceDescriptor(beanType,
+				descriptor,
+				hibernateType.getReturnedClass());
 
 		try
 		{
-			Field propertyField = parentClassType.getDeclaredField(descriptor.getName());
+			Field propertyField = beanType.getDeclaredField(descriptor.getName());
 
-			PropertyDescriptor[] propertyDescriptors = Introspector.getBeanInfo(parentClassType).getPropertyDescriptors();
+			PropertyDescriptor[] propertyDescriptors = Introspector.getBeanInfo(beanType).getPropertyDescriptors();
 
 			PropertyDescriptor beanPropDescriptor = F.flow(propertyDescriptors).filter(new Predicate<PropertyDescriptor>()
 			{
@@ -412,8 +407,7 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 
 			Method readMethod = beanPropDescriptor.getReadMethod();
 
-			// Start by checking for and retrieving mappedBy attribute inside
-			// the annotation
+			// Start by checking for and retrieving mappedBy attribute inside the annotation
 			String inverseProperty = "";
 			if (readMethod.isAnnotationPresent(javax.persistence.OneToOne.class))
 			{
@@ -423,8 +417,7 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 				inverseProperty = propertyField.getAnnotation(javax.persistence.OneToOne.class).mappedBy();
 			} else
 			{
-				// If there is none then just return the
-				// ObjectReferenceDescriptor
+				// If there is none then just return the ObjectReferenceDescriptor
 				return descriptorReference;
 			}
 
@@ -448,13 +441,13 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 
 		} catch (SecurityException e)
 		{
-			logger.error(e.getMessage());
+			logger.error("Could not decorate association.", e);
 		} catch (NoSuchFieldException e)
 		{
-			logger.error(e.getMessage());
+			logger.error("Could not decorate association.", e);
 		} catch (IntrospectionException e)
 		{
-			logger.error(e.getMessage());
+			logger.error("Could not decorate association.", e);
 		}
 		return descriptorReference;
 	}
@@ -463,19 +456,18 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 	 * I couldn't find a way to get the "mappedBy" value from the collection
 	 * metadata, so I'm getting it from the OneToMany annotation.
 	 */
-	private void decorateOneToManyCollection(TynamoClassDescriptor parentClassDescriptor,
+	private void decorateOneToManyCollection(final Class beanType,
 	                                         final CollectionDescriptor collectionDescriptor,
 	                                         org.hibernate.mapping.Collection collectionMapping)
 	{
-		Class type = parentClassDescriptor.getBeanType();
 		if (collectionDescriptor.isOneToMany() && collectionMapping.isInverse())
 		{
 			try
 			{
 
-				Field propertyField = type.getDeclaredField(collectionDescriptor.getName());
+				Field propertyField = beanType.getDeclaredField(collectionDescriptor.getName());
 
-				PropertyDescriptor[] propertyDescriptors = Introspector.getBeanInfo(type).getPropertyDescriptors();
+				PropertyDescriptor[] propertyDescriptors = Introspector.getBeanInfo(beanType).getPropertyDescriptors();
 
 				PropertyDescriptor beanPropDescriptor = F.flow(propertyDescriptors).filter(new Predicate<PropertyDescriptor>()
 				{
@@ -499,8 +491,6 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 				{
 					collectionDescriptor.setInverseProperty(mappedBy);
 				}
-
-				parentClassDescriptor.setHasCyclicRelationships(true);
 
 			} catch (SecurityException e)
 			{
