@@ -44,7 +44,6 @@ public class TynamoCoreModule extends VersionedModule
 		binder.bind(EntityCoercerService.class, EntityCoercerServiceImpl.class);
 		binder.bind(DescriptorService.class, DescriptorServiceImpl.class);
 		binder.bind(TynamoDataTypeAnalyzer.class, TynamoDataTypeAnalyzer.class);
-		binder.bind(TynamoPageRenderLinkSource.class, TynamoPageRenderLinkSourceImpl.class);
 
 		binder.bind(BlobManager.class, DefaultBlobManager.class).withId("DefaultBlobManager");
 
