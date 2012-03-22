@@ -49,9 +49,9 @@ public abstract class AbstractContainerTest
 {
 	protected static PauseableServer server;
 
-	protected static final int port = 8180;
+	protected static int port = 8180;
 
-	protected static final String BASEURI = "http://localhost:" + port + "/";
+	protected static String BASEURI = "http://localhost:" + port + "/";
 
 	protected final WebClient webClient = new WebClient();
 
