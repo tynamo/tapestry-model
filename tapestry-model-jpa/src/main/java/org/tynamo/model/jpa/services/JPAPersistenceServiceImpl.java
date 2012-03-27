@@ -1,7 +1,4 @@
 /*
- * Copyright (C) Pierangelo Sartini, 2010.
- * Copyright 2004 Chris Nelson
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -12,13 +9,10 @@
  */
 package org.tynamo.model.jpa.services;
 
-import org.tynamo.jpa.JPAEntityManagerSource;
-import org.slf4j.Logger;
-import org.tynamo.descriptor.CollectionDescriptor;
-import org.tynamo.descriptor.TynamoClassDescriptor;
-import org.tynamo.descriptor.TynamoPropertyDescriptor;
-import org.tynamo.services.DescriptorService;
-import org.tynamo.util.Utils;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.LockModeType;
@@ -30,10 +24,14 @@ import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Root;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.Type;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+
+import org.apache.tapestry5.ioc.annotations.Autobuild;
+import org.slf4j.Logger;
+import org.tynamo.descriptor.CollectionDescriptor;
+import org.tynamo.descriptor.TynamoClassDescriptor;
+import org.tynamo.descriptor.TynamoPropertyDescriptor;
+import org.tynamo.model.jpa.internal.ConfigurableEntityManagerProvider;
+import org.tynamo.services.DescriptorService;
 
 @SuppressWarnings("unchecked")
 public class JPAPersistenceServiceImpl implements JPAPersistenceService {
@@ -41,14 +39,11 @@ public class JPAPersistenceServiceImpl implements JPAPersistenceService {
 	private Logger logger;
 	private DescriptorService descriptorService;
 	private EntityManager em;
-	private JPAEntityManagerSource entityManagerSource;
 
-	public JPAPersistenceServiceImpl(Logger logger, DescriptorService descriptorService, EntityManager em, JPAEntityManagerSource entityManagerSource) {
+	public JPAPersistenceServiceImpl(Logger logger, DescriptorService descriptorService, @Autobuild ConfigurableEntityManagerProvider entityManagerProvider) {
 		this.logger = logger;
 		this.descriptorService = descriptorService;
-		this.em = em;
-		// we need a sessionmanager as well (only?) because Tapestry em proxy doesn't implement Hibernate's SessionImplementator interface
-		this.entityManagerSource = entityManagerSource;
+		this.em = entityManagerProvider.getEntityManager();
 	}
 
 	/**
@@ -79,14 +74,7 @@ public class JPAPersistenceServiceImpl implements JPAPersistenceService {
 	 */
 
 	public <T> T getInstance(final Class<T> type, final Serializable id) {
-		CriteriaBuilder cb = em.getCriteriaBuilder();
-		CriteriaQuery query = cb.createQuery(Utils.checkForCGLIB(type));
-		Root<T> root = query.from(type);
-		Type t = root.getModel().getIdType();
-		SingularAttribute idAttribute = root.getModel().getId(t.getJavaType());
-		query.where(cb.equal(root.get(idAttribute), id));
-		//CriteriaQuery criteria = DetachedCriteria.forClass().add(Restrictions.idEq(id));
-		return getInstance(type, query);
+		return em.find(type, id);
 	}
 
 	public <T> T loadInstance(final Class<T> type, Serializable id) {
@@ -280,7 +268,7 @@ public class JPAPersistenceServiceImpl implements JPAPersistenceService {
 
 
 	public Serializable getIdentifier(final Object data) {
-		return (Serializable) entityManagerSource.getEntityManagerFactory().getPersistenceUnitUtil().getIdentifier(data);
+		return (Serializable) em.getEntityManagerFactory().getPersistenceUnitUtil().getIdentifier(data);
 	}
 
 
@@ -292,7 +280,7 @@ public class JPAPersistenceServiceImpl implements JPAPersistenceService {
 	public List getInstances(final Object example, final TynamoClassDescriptor classDescriptor) {
 		//create Criteria instance
 		CriteriaBuilder cb = em.getCriteriaBuilder();
-		CriteriaQuery searchQuery = cb.createQuery(Utils.checkForCGLIB(example.getClass()));
+		CriteriaQuery searchQuery = cb.createQuery(example.getClass());
 		searchQuery = alterCriteria(example.getClass(), searchQuery);
 
 		Root entity = searchQuery.from(example.getClass());
@@ -400,28 +388,30 @@ public class JPAPersistenceServiceImpl implements JPAPersistenceService {
 		return detachedCriteria;
 	}
 
+	@Override
 	public <T> T merge(T instance) {
 		return (T) em.merge(instance);
 	}
 
+	@Override
 	public <T> T saveOrUpdate(T instance) {
 		em.persist(instance);
 		return instance;
 	}
 
 
-	public <T> T saveCollectionElement(String addExpression, T member, Object parent) {
-		T instance = save(member);
-		Utils.executeOgnlExpression(addExpression, member, parent);
-		save(parent);
-		return instance;
-	}
-
-
-	public void removeCollectionElement(String removeExpression, Object member, Object parent) {
-		Utils.executeOgnlExpression(removeExpression, member, parent);
-		save(parent);
-		remove(member);
-	}
+//	public <T> T saveCollectionElement(String addExpression, T member, Object parent) {
+//		T instance = save(member);
+//		Utils.executeOgnlExpression(addExpression, member, parent);
+//		save(parent);
+//		return instance;
+//	}
+//
+//
+//	public void removeCollectionElement(String removeExpression, Object member, Object parent) {
+//		Utils.executeOgnlExpression(removeExpression, member, parent);
+//		save(parent);
+//		remove(member);
+//	}
 
 }

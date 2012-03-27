@@ -1,17 +1,22 @@
 package org.tynamo.model.jpa.services;
 
-import org.apache.tapestry5.ioc.*;
+import javax.persistence.EntityManager;
+import javax.persistence.metamodel.EntityType;
+
+import org.apache.tapestry5.ioc.Configuration;
+import org.apache.tapestry5.ioc.MappedConfiguration;
+import org.apache.tapestry5.ioc.MethodAdviceReceiver;
+import org.apache.tapestry5.ioc.OrderedConfiguration;
+import org.apache.tapestry5.ioc.ServiceBinder;
 import org.apache.tapestry5.ioc.annotations.Autobuild;
 import org.apache.tapestry5.ioc.annotations.Match;
+import org.apache.tapestry5.jpa.JpaTransactionAdvisor;
 import org.apache.tapestry5.services.BeanBlockContribution;
 import org.apache.tapestry5.services.LibraryMapping;
 import org.tynamo.VersionedModule;
 import org.tynamo.descriptor.decorators.DescriptorDecorator;
-import org.tynamo.jpa.JPAEntityManagerSource;
-import org.tynamo.jpa.JPATransactionAdvisor;
 import org.tynamo.model.jpa.TynamoJPASymbols;
-
-import javax.persistence.metamodel.EntityType;
+import org.tynamo.model.jpa.internal.ConfigurableEntityManagerProvider;
 
 public class TynamoJPAModule extends VersionedModule {
 
@@ -42,7 +47,7 @@ public class TynamoJPAModule extends VersionedModule {
 	}
 
 	@Match("JPAPersistenceService")
-	public static void adviseTransactions(JPATransactionAdvisor advisor, MethodAdviceReceiver receiver)
+	public static void adviseTransactions(JpaTransactionAdvisor advisor, MethodAdviceReceiver receiver)
 	{
 		advisor.addTransactionCommitAdvice(receiver);
 	}
@@ -73,14 +78,13 @@ public class TynamoJPAModule extends VersionedModule {
 	}
 
 	@SuppressWarnings("unchecked")
-	public static void contributeDescriptorService(Configuration<Class> configuration,
-	                                               JPAEntityManagerSource entityManagerSource) {
-		for (EntityType<?> mapping : entityManagerSource.getEntityManagerFactory().getMetamodel().getEntities()) {
+	public static void contributeDescriptorService(Configuration<Class> configuration, 
+		@Autobuild ConfigurableEntityManagerProvider entityManagerProvider) {
+		
+		EntityManager entityManager = entityManagerProvider.getEntityManager();
+		for (EntityType<?> mapping : entityManager.getMetamodel().getEntities()) {
 			final Class entityClass = mapping.getJavaType();
-
-			if (entityClass != null) {
-				configuration.add(entityClass);
-			}
+			if (entityClass != null) configuration.add(entityClass);
 		}
 	}
 

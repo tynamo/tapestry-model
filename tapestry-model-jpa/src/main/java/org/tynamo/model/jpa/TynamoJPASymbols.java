@@ -14,5 +14,9 @@ public class TynamoJPASymbols
 	 * this symbol configured to true tells JPADescriptorDecorator to ignore these errors.
 	 */
 	public static final String IGNORE_NON_HIBERNATE_TYPES = "tynamo.model.jpa.ignore-non-jpa-types";
-
+	
+	/**
+	 * type string, default "" (if unit name is empty us the configured persistence unit if there's only a single one)
+	 */
+	public static final String PERSISTENCEUNIT = "tynamo.model.jpa.persistenceunit";
 }

@@ -1,7 +1,4 @@
 /*
- * Copyright (C) Pierangelo Sartini, 2010.
- * Copyright 2004 Chris Nelson
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -12,24 +9,41 @@
  */
 package org.tynamo.model.jpa.services;
 
-import ognl.Ognl;
-import org.apache.tapestry5.ioc.annotations.Symbol;
-import org.slf4j.Logger;
-import org.tynamo.descriptor.*;
-import org.tynamo.descriptor.decorators.DescriptorDecorator;
-import org.tynamo.descriptor.factories.DescriptorFactory;
-import org.tynamo.exception.TynamoRuntimeException;
-import org.tynamo.jpa.JPAEntityManagerSource;
-import org.tynamo.model.exception.MetadataNotFoundException;
-import org.tynamo.model.jpa.TynamoJPASymbols;
-
-import javax.persistence.*;
-import javax.persistence.metamodel.*;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
+
+import javax.persistence.Column;
+import javax.persistence.EntityManager;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.PersistenceException;
+import javax.persistence.metamodel.Attribute;
+import javax.persistence.metamodel.EmbeddableType;
+import javax.persistence.metamodel.EntityType;
+import javax.persistence.metamodel.ManagedType;
+import javax.persistence.metamodel.Metamodel;
+import javax.persistence.metamodel.PluralAttribute;
+import javax.persistence.metamodel.SingularAttribute;
+
+import org.apache.tapestry5.ioc.annotations.Autobuild;
+import org.apache.tapestry5.ioc.annotations.Symbol;
+import org.slf4j.Logger;
+import org.tynamo.descriptor.CollectionDescriptor;
+import org.tynamo.descriptor.EmbeddedDescriptor;
+import org.tynamo.descriptor.IdentifierDescriptor;
+import org.tynamo.descriptor.IdentifierDescriptorImpl;
+import org.tynamo.descriptor.ObjectReferenceDescriptor;
+import org.tynamo.descriptor.TynamoClassDescriptor;
+import org.tynamo.descriptor.TynamoPropertyDescriptor;
+import org.tynamo.descriptor.decorators.DescriptorDecorator;
+import org.tynamo.descriptor.factories.DescriptorFactory;
+import org.tynamo.exception.TynamoRuntimeException;
+import org.tynamo.model.exception.MetadataNotFoundException;
+import org.tynamo.model.jpa.TynamoJPASymbols;
+import org.tynamo.model.jpa.internal.ConfigurableEntityManagerProvider;
 
 /**
  * This decorator will add metadata information. It will replace simple
@@ -55,8 +69,6 @@ public class JPADescriptorDecorator implements DescriptorDecorator
 
 	private Logger logger;
 
-	private JPAEntityManagerSource entityManagerSource;
-
 	private DescriptorFactory descriptorFactory;
 
 	/** Columns longer than this will have their large property set to true. */
@@ -64,15 +76,16 @@ public class JPADescriptorDecorator implements DescriptorDecorator
 
 	private final boolean ignoreNonEntityTypes;
 
-	public JPADescriptorDecorator(JPAEntityManagerSource entityManagerSource,
-	                              DescriptorFactory descriptorFactory,
+	private EntityManager entityManager;
+
+	public JPADescriptorDecorator(
+	                              DescriptorFactory descriptorFactory, @Autobuild ConfigurableEntityManagerProvider entityManagerProvider,
 	                              @Symbol(TynamoJPASymbols.LARGE_COLUMN_LENGTH)
 	                              int largeColumnLength,
 	                              @Symbol(TynamoJPASymbols.IGNORE_NON_HIBERNATE_TYPES)
 	                              boolean ignoreNonEntityTypes,
 	                              Logger logger) {
-
-		this.entityManagerSource = entityManagerSource;
+		entityManager = entityManagerProvider.getEntityManager();
 		this.descriptorFactory = descriptorFactory;
 		this.largeColumnLength = largeColumnLength;
 		this.ignoreNonEntityTypes = ignoreNonEntityTypes;
@@ -256,21 +269,21 @@ public class JPADescriptorDecorator implements DescriptorDecorator
 	 * @param propertyDescriptors
 	 * @return
 	 */
-	protected List sortPropertyDescriptors(Class type, List propertyDescriptors) {
-		ArrayList sortedPropertyDescriptors = new ArrayList();
-
-		try {
-			sortedPropertyDescriptors.add(Ognl.getValue("#this.{? identifier == true}[0]", propertyDescriptors));
-			for (Object obj : findMetadata(type).managedType(type).getAttributes()) {
-				Attribute mapping = (Attribute) obj;
-				sortedPropertyDescriptors.addAll((List) Ognl.getValue("#this.{ ? name == \"" + mapping.getName()
-																	  + "\"}", propertyDescriptors));
-			}
-		} catch (Exception ex) {
-			throw new TynamoRuntimeException(ex);
-		}
-		return sortedPropertyDescriptors;
-	}
+//	protected List sortPropertyDescriptors(Class type, List propertyDescriptors) {
+//		ArrayList sortedPropertyDescriptors = new ArrayList();
+//
+//		try {
+//			sortedPropertyDescriptors.add(Ognl.getValue("#this.{? identifier == true}[0]", propertyDescriptors));
+//			for (Object obj : findMetadata(type).managedType(type).getAttributes()) {
+//				Attribute mapping = (Attribute) obj;
+//				sortedPropertyDescriptors.addAll((List) Ognl.getValue("#this.{ ? name == \"" + mapping.getName()
+//																	  + "\"}", propertyDescriptors));
+//			}
+//		} catch (Exception ex) {
+//			throw new TynamoRuntimeException(ex);
+//		}
+//		return sortedPropertyDescriptors;
+//	}
 
 	/**
 	 * Find the Hibernate metadata for this type, traversing up the hierarchy to
@@ -280,7 +293,7 @@ public class JPADescriptorDecorator implements DescriptorDecorator
 	 * @return
 	 */
 	protected <T> Metamodel findMetadata(Class<T> type) throws MetadataNotFoundException {
-		Metamodel managedType = entityManagerSource.getEntityManagerFactory().getMetamodel();
+		Metamodel managedType = entityManager.getMetamodel();
 		if (managedType != null) {
 			return managedType;
 		}
@@ -421,7 +434,7 @@ public class JPADescriptorDecorator implements DescriptorDecorator
 	 */
 	protected EntityType getMapping(Class type) {
 		//Configuration cfg = entityManagerSource.getConfiguration();
-		return entityManagerSource.getEntityManagerFactory().getMetamodel().entity(type);
+		return entityManager.getMetamodel().entity(type);
 		//return cfg.getClassMapping(type.getName());
 	}
 
