@@ -1,4 +1,4 @@
-package org.tynamo.testhibernate;
+package org.tynamo.model.test.entities;
 
 import org.tynamo.descriptor.annotation.PropertyDescriptor;
 

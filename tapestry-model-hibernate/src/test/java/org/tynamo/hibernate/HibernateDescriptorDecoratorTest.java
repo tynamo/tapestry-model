@@ -1,6 +1,4 @@
 /*
- * Copyright 2004 Chris Nelson
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -23,8 +21,14 @@ import org.testng.annotations.*;
 import org.tynamo.descriptor.*;
 import org.tynamo.descriptor.decorators.DescriptorDecorator;
 import org.tynamo.hibernate.services.HibernateDescriptorDecorator;
+import org.tynamo.model.test.entities.Bar;
+import org.tynamo.model.test.entities.Baz;
+import org.tynamo.model.test.entities.Descendant;
+import org.tynamo.model.test.entities.Embeddee;
+import org.tynamo.model.test.entities.Embeddor;
+import org.tynamo.model.test.entities.Foo;
+import org.tynamo.model.test.entities.IBar;
 import org.tynamo.services.TynamoCoreModule;
-import org.tynamo.testhibernate.*;
 
 import java.util.Date;
 import java.util.List;

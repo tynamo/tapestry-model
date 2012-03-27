@@ -1,4 +1,4 @@
-package org.tynamo.testhibernate;
+package org.tynamo.model.test.entities;
 
 import javax.persistence.*;
 import java.util.HashSet;

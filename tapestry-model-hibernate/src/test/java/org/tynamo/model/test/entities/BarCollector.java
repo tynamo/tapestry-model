@@ -1,4 +1,4 @@
-package org.tynamo.testhibernate;
+package org.tynamo.model.test.entities;
 
 import java.util.ArrayList;
 import java.util.List;

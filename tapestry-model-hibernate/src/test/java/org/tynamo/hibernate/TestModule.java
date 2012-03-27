@@ -13,6 +13,7 @@ import org.apache.tapestry5.ioc.services.ApplicationDefaults;
 import org.apache.tapestry5.ioc.services.SymbolProvider;
 import org.tynamo.descriptor.factories.DescriptorFactory;
 import org.tynamo.hibernate.services.HibernateDescriptorDecorator;
+import org.tynamo.model.test.entities.Foo;
 
 public class TestModule
 {
@@ -31,7 +32,7 @@ public class TestModule
 	@Contribute(HibernateEntityPackageManager.class)
 	public static void addPackages(Configuration<String> configuration)
 	{
-		configuration.add("org.tynamo.testhibernate");
+		configuration.add(Foo.class.getPackage().getName());
 	}
 
 	public static HibernateDescriptorDecorator buildHibernateDescriptorDecorator(HibernateSessionSource hibernateSessionSource,

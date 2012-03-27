@@ -38,6 +38,13 @@ import org.tynamo.descriptor.CollectionDescriptor;
 import org.tynamo.descriptor.TynamoClassDescriptor;
 import org.tynamo.hibernate.services.HibernatePersistenceService;
 import org.tynamo.hibernate.services.TynamoHibernateModule;
+import org.tynamo.model.test.entities.Bar;
+import org.tynamo.model.test.entities.Baz;
+import org.tynamo.model.test.entities.Bing;
+import org.tynamo.model.test.entities.BlogEntry;
+import org.tynamo.model.test.entities.Descendant;
+import org.tynamo.model.test.entities.Foo;
+import org.tynamo.model.test.entities.Wibble;
 import org.tynamo.services.DescriptorService;
 import org.tynamo.services.TynamoCoreModule;
 import org.tynamo.testhibernate.*;
@@ -377,7 +384,7 @@ public class HibernatePersistenceServiceTest
 		persistenceService.save(foo);
 
 		Session session = registry.getService(Session.class);
-		List foos = session.createQuery("from org.tynamo.testhibernate.Foo").list();
+		List foos = session.createQuery("from " + Foo.class.getName()).list();
 		foo = (Foo) foos.get(0);
 		Assert.assertEquals(foo.getBazzes().size(), 1, "1 baz");
 	}
@@ -400,7 +407,7 @@ public class HibernatePersistenceServiceTest
 
 		fakeOpenSessionInViewResponse();
 
-		List foos = session.createQuery("from org.tynamo.testhibernate.Foo").list();
+		List foos = session.createQuery("from " + Foo.class.getName()).list();
 		foo = (Foo) foos.get(0);
 		Assert.assertEquals(foo.getBazzes().size(), 1, "1 baz");
 
@@ -429,7 +436,7 @@ public class HibernatePersistenceServiceTest
 
 		fakeOpenSessionInViewResponse();
 
-		List foos = session.createQuery("from org.tynamo.testhibernate.Foo").list();
+		List foos = session.createQuery("from " + Foo.class.getName()).list();
 		foo = (Foo) foos.get(0);
 
 		Assert.assertEquals(foo.getBazzes().size(), 1, "1 baz after the transaction commit");
@@ -454,7 +461,7 @@ public class HibernatePersistenceServiceTest
 
 		fakeOpenSessionInViewResponse();
 
-		List foos = session.createQuery("from org.tynamo.testhibernate.Foo").list();
+		List foos = session.createQuery("from " + Foo.class.getName()).list();
 		foo = (Foo) foos.get(0);
 
 		Assert.assertTrue(foo.getBazzes().isEmpty(), "there shouldn't be any bazzes here, the relationship is reaondly");
@@ -481,7 +488,7 @@ public class HibernatePersistenceServiceTest
 
 		fakeOpenSessionInViewResponse();
 
-		List foos = session.createQuery("from org.tynamo.testhibernate.Foo").list();
+		List foos = session.createQuery("from " + Foo.class.getName()).list();
 		foo = (Foo) foos.get(0);
 
 		Assert.assertEquals(foo.getBings().size(), 1, "1 bing after the transaction commit");
