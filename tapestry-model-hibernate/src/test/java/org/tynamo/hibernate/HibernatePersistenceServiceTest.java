@@ -47,7 +47,6 @@ import org.tynamo.model.test.entities.Foo;
 import org.tynamo.model.test.entities.Wibble;
 import org.tynamo.services.DescriptorService;
 import org.tynamo.services.TynamoCoreModule;
-import org.tynamo.testhibernate.*;
 
 import java.util.List;
 
