@@ -1,7 +1,5 @@
 package org.tynamo.model.test.entities;
 
-import org.tynamo.descriptor.annotation.PropertyDescriptor;
-
 import javax.persistence.Embeddable;
 import javax.persistence.Transient;
 

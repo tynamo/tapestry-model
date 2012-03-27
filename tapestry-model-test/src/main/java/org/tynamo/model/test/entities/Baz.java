@@ -11,9 +11,13 @@
  */
 package org.tynamo.model.test.entities;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
-import org.hibernate.validator.constraints.Length;
 
 
 @Entity
@@ -26,7 +30,7 @@ public class Baz {
     private Foo foo;
 
     @NotNull
-    @Length(max = 10, message = "was too long.")
+    @Column(length = 10)
     public String getDescription() {
         return description;
     }

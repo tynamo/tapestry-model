@@ -32,13 +32,13 @@
 			<groupId>org.tynamo</groupId>
 			<artifactId>tapestry-model-core</artifactId>
 		</dependency>
-<!--
+
 		<dependency>
 			<groupId>org.tynamo</groupId>
 			<artifactId>tapestry-model-test</artifactId>
 			<scope>test</scope>
 		</dependency>
--->
+		
 		<dependency>
 			<groupId>org.apache.tapestry</groupId>
 			<artifactId>tapestry-hibernate</artifactId>

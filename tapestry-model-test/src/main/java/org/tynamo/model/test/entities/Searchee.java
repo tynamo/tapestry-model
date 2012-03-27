@@ -1,13 +1,12 @@
 package org.tynamo.model.test.entities;
 
-import org.tynamo.descriptor.annotation.PropertyDescriptor;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 public class Searchee {
@@ -38,7 +37,6 @@ public class Searchee {
         this.name = name;
     }
 
-    @PropertyDescriptor(searchable = false)
     public String getNonSearchableProperty() {
         return nonSearchableProperty;
     }

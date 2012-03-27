@@ -3,14 +3,12 @@ package org.tynamo.model.test.entities;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-
-import org.hibernate.annotations.CollectionOfElements;
-import org.hibernate.annotations.IndexColumn;
+import javax.persistence.OrderColumn;
 
 @Entity
 
@@ -29,8 +27,8 @@ public class BarCollector {
 		this.name = name;
 	}
 
-	@CollectionOfElements(fetch = FetchType.EAGER)
-	@IndexColumn(name = "barOrder")
+	@ElementCollection
+	@OrderColumn(name = "barOrder")
 	public List<Bar> getBars() {
 		return bars;
 	}

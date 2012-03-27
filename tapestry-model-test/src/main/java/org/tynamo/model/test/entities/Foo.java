@@ -11,12 +11,20 @@
  */
 package org.tynamo.model.test.entities;
 
-import org.hibernate.annotations.Formula;
-import org.hibernate.annotations.IndexColumn;
-import org.tynamo.descriptor.annotation.CollectionDescriptor;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
-import javax.persistence.*;
-import java.util.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderColumn;
 
 
 @Entity
@@ -108,7 +116,7 @@ public class Foo {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "FOO_ID")
-    @IndexColumn(name = "BING_INDEX")
+    @OrderColumn(name = "BING_INDEX")
     public List<Bing> getBings() {
         return bings;
     }
@@ -193,7 +201,11 @@ public class Foo {
         return baz;
     }
 
-    @Formula("lower('ABC')")
+    // FIXME JPA 2 doesn't have support for formula, you could something similar with @PostLoad (see http://stackoverflow.com/questions/1359671/mapping-calculated-properties-with-jpa)
+    // but it's impossible to determine from that this property is read only (which is what HibernatedDescriptorDecorateTest.testFormulaDescriptor
+    // is testing while using this property
+    //@Formula("lower('ABC')")
+    @Column(insertable=false, updatable=false)
     public String getFromFormula() {
         return fromFormula;
     }
