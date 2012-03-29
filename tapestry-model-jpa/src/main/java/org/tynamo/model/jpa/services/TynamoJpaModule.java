@@ -18,7 +18,7 @@ import org.tynamo.descriptor.decorators.DescriptorDecorator;
 import org.tynamo.model.jpa.TynamoJpaSymbols;
 import org.tynamo.model.jpa.internal.ConfigurableEntityManagerProvider;
 
-public class TynamoJPAModule extends VersionedModule {
+public class TynamoJpaModule extends VersionedModule {
 
 	public static void bind(ServiceBinder binder) {
 
@@ -27,7 +27,7 @@ public class TynamoJPAModule extends VersionedModule {
 		// is provided inline, or requires more initialization than simply
 		// invoking the constructor.
 
-		binder.bind(JPAPersistenceService.class, JPAPersistenceServiceImpl.class);
+		binder.bind(JpaPersistenceService.class, JpaPersistenceServiceImpl.class);
 		//binder.bind(TynamoInterceptor.class);
 		//binder.bind(JPAConfigurer.class, TynamoInterceptorConfigurer.class).withId("TynamoInterceptorConfigurer");
 
@@ -73,7 +73,7 @@ public class TynamoJPAModule extends VersionedModule {
 	}
 
 	public static void contributeDescriptorFactory(OrderedConfiguration<DescriptorDecorator> configuration,
-												   @Autobuild JPADescriptorDecorator jpaDescriptorDecorator) {
+												   @Autobuild JpaDescriptorDecorator jpaDescriptorDecorator) {
 		configuration.add("JPA", jpaDescriptorDecorator);
 	}
 

@@ -39,8 +39,8 @@ import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
 import org.tynamo.descriptor.CollectionDescriptor;
-import org.tynamo.model.jpa.services.JPAPersistenceService;
-import org.tynamo.model.jpa.services.TynamoJPAModule;
+import org.tynamo.model.jpa.services.JpaPersistenceService;
+import org.tynamo.model.jpa.services.TynamoJpaModule;
 import org.tynamo.model.test.entities.Baz;
 import org.tynamo.model.test.entities.Bing;
 import org.tynamo.model.test.entities.Descendant;
@@ -52,7 +52,7 @@ import org.tynamo.services.TynamoCoreModule;
 public class JpaPersistenceServiceTest
 {
 
-	private JPAPersistenceService persistenceService;
+	private JpaPersistenceService persistenceService;
 	private DescriptorService descriptorService;
 
 	private static Registry registry;
@@ -65,13 +65,13 @@ public class JpaPersistenceServiceTest
 		builder.add(TapestryModule.class);
 		builder.add(JpaModule.class);
 		builder.add(TynamoCoreModule.class);
-		builder.add(TynamoJPAModule.class);
+		builder.add(TynamoJpaModule.class);
 		builder.add(TestModule.class);
 
 		registry = builder.build();
 		registry.performRegistryStartup();
 
-		persistenceService = registry.getService(JPAPersistenceService.class);
+		persistenceService = registry.getService(JpaPersistenceService.class);
 		descriptorService =  registry.getService(DescriptorService.class);
 		entityManager = registry.getService(EntityManager.class);
 

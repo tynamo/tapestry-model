@@ -34,13 +34,13 @@ import org.tynamo.model.jpa.internal.ConfigurableEntityManagerProvider;
 import org.tynamo.services.DescriptorService;
 
 @SuppressWarnings("unchecked")
-public class JPAPersistenceServiceImpl implements JPAPersistenceService {
+public class JpaPersistenceServiceImpl implements JpaPersistenceService {
 
 	private Logger logger;
 	private DescriptorService descriptorService;
 	private EntityManager em;
 
-	public JPAPersistenceServiceImpl(Logger logger, DescriptorService descriptorService, @Autobuild ConfigurableEntityManagerProvider entityManagerProvider) {
+	public JpaPersistenceServiceImpl(Logger logger, DescriptorService descriptorService, @Autobuild ConfigurableEntityManagerProvider entityManagerProvider) {
 		this.logger = logger;
 		this.descriptorService = descriptorService;
 		this.em = entityManagerProvider.getEntityManager();

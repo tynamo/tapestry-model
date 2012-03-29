@@ -13,7 +13,7 @@ import org.apache.tapestry5.ioc.services.SymbolProvider;
 import org.apache.tapestry5.jpa.JpaEntityPackageManager;
 import org.tynamo.descriptor.factories.DescriptorFactory;
 import org.tynamo.model.jpa.internal.ConfigurableEntityManagerProvider;
-import org.tynamo.model.jpa.services.JPADescriptorDecorator;
+import org.tynamo.model.jpa.services.JpaDescriptorDecorator;
 import org.tynamo.model.test.entities.Foo;
 
 public class TestModule
@@ -36,7 +36,7 @@ public class TestModule
 		configuration.add(Foo.class.getPackage().getName());
 	}
 
-	public static JPADescriptorDecorator buildJPADescriptorDecorator(@Autobuild ConfigurableEntityManagerProvider entityManagerProvider,
+	public static JpaDescriptorDecorator buildJPADescriptorDecorator(@Autobuild ConfigurableEntityManagerProvider entityManagerProvider,
 	                                                               DescriptorFactory descriptorFactory,
 	                                                               @Symbol(TynamoJpaSymbols.LARGE_COLUMN_LENGTH)
 	                                                               int largeColumnLength,
@@ -44,11 +44,11 @@ public class TestModule
 	                                                               boolean ignoreNonHibernateTypes,
 	                                                               LoggerSource loggerSource)
 	{
-		return new JPADescriptorDecorator(
+		return new JpaDescriptorDecorator(
 				descriptorFactory, entityManagerProvider,
 				largeColumnLength,
 				ignoreNonHibernateTypes,
-				loggerSource.getLogger(JPADescriptorDecorator.class));
+				loggerSource.getLogger(JpaDescriptorDecorator.class));
 	}
 
 }

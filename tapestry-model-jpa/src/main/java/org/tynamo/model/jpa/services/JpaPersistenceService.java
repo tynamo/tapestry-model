@@ -15,7 +15,7 @@ import org.apache.tapestry5.jpa.annotations.CommitAfter;
 import org.tynamo.descriptor.TynamoClassDescriptor;
 import org.tynamo.services.PersistenceService;
 
-public interface JPAPersistenceService extends PersistenceService
+public interface JpaPersistenceService extends PersistenceService
 {
 
 	@CommitAfter

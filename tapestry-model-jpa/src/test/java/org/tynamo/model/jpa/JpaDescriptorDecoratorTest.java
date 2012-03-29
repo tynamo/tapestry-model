@@ -33,7 +33,7 @@ import org.tynamo.descriptor.TynamoClassDescriptorImpl;
 import org.tynamo.descriptor.TynamoPropertyDescriptor;
 import org.tynamo.descriptor.TynamoPropertyDescriptorImpl;
 import org.tynamo.descriptor.decorators.DescriptorDecorator;
-import org.tynamo.model.jpa.services.JPADescriptorDecorator;
+import org.tynamo.model.jpa.services.JpaDescriptorDecorator;
 import org.tynamo.model.test.entities.Bar;
 import org.tynamo.model.test.entities.Baz;
 import org.tynamo.model.test.entities.Descendant;
@@ -83,7 +83,7 @@ public class JpaDescriptorDecoratorTest
 	@BeforeMethod
 	public void setUp()
 	{
-		jpaDescriptorDecorator = registry.getService(JPADescriptorDecorator.class);
+		jpaDescriptorDecorator = registry.getService(JpaDescriptorDecorator.class);
 
 		TynamoClassDescriptor fooDescriptor = new TynamoClassDescriptorImpl(Foo.class);
 		fooDescriptor.getPropertyDescriptors().add(new TynamoPropertyDescriptorImpl(Foo.class, "bazzes", Set.class));

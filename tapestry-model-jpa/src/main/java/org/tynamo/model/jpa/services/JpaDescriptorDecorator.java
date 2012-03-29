@@ -64,7 +64,7 @@ import org.tynamo.model.jpa.internal.ConfigurableEntityManagerProvider;
  * @see CollectionDescriptor
  * @see EmbeddedDescriptor
  */
-public class JPADescriptorDecorator implements DescriptorDecorator
+public class JpaDescriptorDecorator implements DescriptorDecorator
 {
 
 	private Logger logger;
@@ -78,7 +78,7 @@ public class JPADescriptorDecorator implements DescriptorDecorator
 
 	private EntityManager entityManager;
 
-	public JPADescriptorDecorator(
+	public JpaDescriptorDecorator(
 	                              DescriptorFactory descriptorFactory, @Autobuild ConfigurableEntityManagerProvider entityManagerProvider,
 	                              @Symbol(TynamoJpaSymbols.LARGE_COLUMN_LENGTH)
 	                              int largeColumnLength,
