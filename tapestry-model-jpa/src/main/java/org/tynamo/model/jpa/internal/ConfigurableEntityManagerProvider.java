@@ -5,13 +5,13 @@ import javax.persistence.EntityManager;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.annotations.Symbol;
 import org.apache.tapestry5.jpa.EntityManagerManager;
-import org.tynamo.model.jpa.TynamoJPASymbols;
+import org.tynamo.model.jpa.TynamoJpaSymbols;
 
 public class ConfigurableEntityManagerProvider {
 	private EntityManagerManager entityManagerManager;
 	private String persistenceUnitName;
 
-	public ConfigurableEntityManagerProvider(EntityManagerManager entityManagerManager, @Inject @Symbol(TynamoJPASymbols.PERSISTENCEUNIT) String persistenceUnitName) {
+	public ConfigurableEntityManagerProvider(EntityManagerManager entityManagerManager, @Inject @Symbol(TynamoJpaSymbols.PERSISTENCEUNIT) String persistenceUnitName) {
 		persistenceUnitName = persistenceUnitName;
 		entityManagerManager = entityManagerManager;
 	}

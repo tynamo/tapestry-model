@@ -1,7 +1,7 @@
 package org.tynamo.model.jpa;
 
 
-public class TynamoJPASymbols
+public class TynamoJpaSymbols
 {
 
 	/**

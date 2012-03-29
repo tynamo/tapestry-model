@@ -42,7 +42,7 @@ import org.tynamo.descriptor.decorators.DescriptorDecorator;
 import org.tynamo.descriptor.factories.DescriptorFactory;
 import org.tynamo.exception.TynamoRuntimeException;
 import org.tynamo.model.exception.MetadataNotFoundException;
-import org.tynamo.model.jpa.TynamoJPASymbols;
+import org.tynamo.model.jpa.TynamoJpaSymbols;
 import org.tynamo.model.jpa.internal.ConfigurableEntityManagerProvider;
 
 /**
@@ -80,9 +80,9 @@ public class JPADescriptorDecorator implements DescriptorDecorator
 
 	public JPADescriptorDecorator(
 	                              DescriptorFactory descriptorFactory, @Autobuild ConfigurableEntityManagerProvider entityManagerProvider,
-	                              @Symbol(TynamoJPASymbols.LARGE_COLUMN_LENGTH)
+	                              @Symbol(TynamoJpaSymbols.LARGE_COLUMN_LENGTH)
 	                              int largeColumnLength,
-	                              @Symbol(TynamoJPASymbols.IGNORE_NON_HIBERNATE_TYPES)
+	                              @Symbol(TynamoJpaSymbols.IGNORE_NON_HIBERNATE_TYPES)
 	                              boolean ignoreNonEntityTypes,
 	                              Logger logger) {
 		entityManager = entityManagerProvider.getEntityManager();

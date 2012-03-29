@@ -12,7 +12,6 @@
 	</parent>
 
 	<build>
-		<testSourceDirectory>src/test/resources</testSourceDirectory>
 
 		<plugins>
 			<plugin>
@@ -34,13 +33,11 @@
 			<groupId>org.tynamo</groupId>
 			<artifactId>tapestry-model-core</artifactId>
 		</dependency>
-		<!--
-		  <dependency>
-			  <groupId>org.tynamo</groupId>
-			  <artifactId>tapestry-model-test</artifactId>
-			  <scope>test</scope>
-		  </dependency>
-  -->
+	  <dependency>
+		  <groupId>org.tynamo</groupId>
+		  <artifactId>tapestry-model-test</artifactId>
+		  <scope>test</scope>
+	  </dependency>
 		<dependency>
 			<groupId>org.apache.tapestry</groupId>
 			<artifactId>tapestry-jpa</artifactId>

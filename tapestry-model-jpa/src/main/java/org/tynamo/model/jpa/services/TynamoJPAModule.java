@@ -15,7 +15,7 @@ import org.apache.tapestry5.services.BeanBlockContribution;
 import org.apache.tapestry5.services.LibraryMapping;
 import org.tynamo.VersionedModule;
 import org.tynamo.descriptor.decorators.DescriptorDecorator;
-import org.tynamo.model.jpa.TynamoJPASymbols;
+import org.tynamo.model.jpa.TynamoJpaSymbols;
 import org.tynamo.model.jpa.internal.ConfigurableEntityManagerProvider;
 
 public class TynamoJPAModule extends VersionedModule {
@@ -89,8 +89,8 @@ public class TynamoJPAModule extends VersionedModule {
 	}
 
 	public static void contributeFactoryDefaults(MappedConfiguration<String, String> configuration) {
-		configuration.add(TynamoJPASymbols.LARGE_COLUMN_LENGTH, "100");
-		configuration.add(TynamoJPASymbols.IGNORE_NON_HIBERNATE_TYPES, "false");
+		configuration.add(TynamoJpaSymbols.LARGE_COLUMN_LENGTH, "100");
+		configuration.add(TynamoJpaSymbols.IGNORE_NON_HIBERNATE_TYPES, "false");
 	}
 
 	/**
