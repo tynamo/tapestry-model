@@ -42,9 +42,10 @@ public class TynamoJpaModule extends VersionedModule {
 		configuration.add("tynamo-jpa-" + version, "org/tynamo/jpa");
 	}
 
-	public static void contributeValidationMessagesSource(OrderedConfiguration<String> configuration) {
-		configuration.add("Tynamo", "ValidationMessages");
-	}
+// FIXME validationMessageSources doesn't exist when running tests
+//	public static void contributeValidationMessagesSource(OrderedConfiguration<String> configuration) {
+//		configuration.add("Tynamo", "ValidationMessages");
+//	}
 
 	@Match("JPAPersistenceService")
 	public static void adviseTransactions(JpaTransactionAdvisor advisor, MethodAdviceReceiver receiver)

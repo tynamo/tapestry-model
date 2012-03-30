@@ -15,9 +15,11 @@ import java.util.Set;
 
 import org.apache.tapestry5.func.F;
 import org.apache.tapestry5.func.Predicate;
+import org.apache.tapestry5.internal.test.PageTesterContext;
 import org.apache.tapestry5.ioc.Registry;
 import org.apache.tapestry5.ioc.RegistryBuilder;
 import org.apache.tapestry5.jpa.JpaModule;
+import org.apache.tapestry5.services.ApplicationGlobals;
 import org.apache.tapestry5.services.TapestryModule;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
@@ -62,6 +64,9 @@ public class JpaDescriptorDecoratorTest
 		builder.add(TestModule.class);
 
 		registry = builder.build();
+    ApplicationGlobals globals = registry.getObject(ApplicationGlobals.class, null);
+    globals.storeContext(new PageTesterContext(""));
+		
 		registry.performRegistryStartup();
 
 	}
@@ -82,8 +87,9 @@ public class JpaDescriptorDecoratorTest
 
 	@BeforeMethod
 	public void setUp()
-	{
+	{   
 		jpaDescriptorDecorator = registry.getService(JpaDescriptorDecorator.class);
+		
 
 		TynamoClassDescriptor fooDescriptor = new TynamoClassDescriptorImpl(Foo.class);
 		fooDescriptor.getPropertyDescriptors().add(new TynamoPropertyDescriptorImpl(Foo.class, "bazzes", Set.class));

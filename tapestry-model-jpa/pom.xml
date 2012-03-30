@@ -30,6 +30,11 @@
 
 	<dependencies>
 		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
 			<groupId>org.tynamo</groupId>
 			<artifactId>tapestry-model-core</artifactId>
 		</dependency>
@@ -42,6 +47,11 @@
 			<groupId>org.apache.tapestry</groupId>
 			<artifactId>tapestry-jpa</artifactId>
 			<version>${tapestry-release-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.tapestry</groupId>
+			<artifactId>tapestry-test</artifactId>
+		  <scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.persistence</groupId>
