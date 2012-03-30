@@ -12,8 +12,13 @@
 package org.tynamo.model.test.entities;
 
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Transient;
 
+//@Embeddable
 @Entity
 // @AssertNoOrphans(Wibble.class)
 public class Bar implements IBar {

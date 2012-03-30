@@ -28,6 +28,7 @@ public class BarCollector {
 	}
 
 	@ElementCollection
+//	@CollectionTable(name = "Bar", joinColumns = {@JoinColumn(name="barCollector_id")})	
 	@OrderColumn(name = "barOrder")
 	public List<Bar> getBars() {
 		return bars;

@@ -25,6 +25,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderColumn;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 
 @Entity
@@ -71,6 +73,7 @@ public class Foo {
     }
 
 
+  	@Temporal(TemporalType.DATE)
     public Date getDate() {
         return date;
     }
