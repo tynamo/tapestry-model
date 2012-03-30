@@ -91,6 +91,7 @@ public class HibernatePersistenceServiceTest
 	public final void cleanupThread()
 	{
 		registry.cleanupThread();
+		resetTablesAfterCommit();
 	}
 
 	@Test
@@ -418,8 +419,6 @@ public class HibernatePersistenceServiceTest
 	@Test
 	public void save_mappedby_collection_element_with_add_method() throws Exception
 	{
-		resetTablesAfterCommit();
-
 		CollectionDescriptor bazzesDescriptor = (CollectionDescriptor) descriptorService.getClassDescriptor(Foo.class).getPropertyDescriptor("bazzes");
 
 		Foo foo = new Foo();
@@ -444,8 +443,6 @@ public class HibernatePersistenceServiceTest
 	@Test
 	public void save_mappedby_collection_element_without_using_add_method() throws Exception
 	{
-		resetTablesAfterCommit();
-
 		Foo foo = new Foo();
 		foo.setId(1);
 		foo.setName("boo");
@@ -469,7 +466,6 @@ public class HibernatePersistenceServiceTest
 	@Test
 	public void save_collection_element_with_getter() throws Exception
 	{
-		resetTablesAfterCommit();
 		CollectionDescriptor bingsDescriptor = (CollectionDescriptor) descriptorService.getClassDescriptor(Foo.class).getPropertyDescriptor("bings");
 
 		Foo foo = new Foo();
