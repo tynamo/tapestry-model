@@ -244,7 +244,7 @@ public class JpaDescriptorDecorator implements DescriptorDecorator
 	private EmbeddedDescriptor buildEmbeddedDescriptor(Class type, Metamodel metamodel,
 													   TynamoPropertyDescriptor descriptor, TynamoClassDescriptor parentClassDescriptor) {
 		//EmbeddableType componentMapping = (EmbeddableType) metamodel.getValue();
-		EmbeddableType componentMapping = metamodel.embeddable(type);
+		EmbeddableType componentMapping = metamodel.embeddable(descriptor.getPropertyType());
 		TynamoClassDescriptor baseDescriptor = descriptorFactory.buildClassDescriptor(descriptor.getPropertyType());
 		// build from base descriptor
 		EmbeddedDescriptor embeddedDescriptor = new EmbeddedDescriptor(type, baseDescriptor);
