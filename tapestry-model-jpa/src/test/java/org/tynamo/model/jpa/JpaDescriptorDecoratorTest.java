@@ -82,7 +82,7 @@ public class JpaDescriptorDecoratorTest
 	@AfterMethod
 	public final void cleanupThread()
 	{
-		registry.cleanupThread();
+		// registry.cleanupThread();
 	}
 
 	@BeforeMethod

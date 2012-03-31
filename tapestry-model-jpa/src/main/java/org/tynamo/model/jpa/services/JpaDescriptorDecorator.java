@@ -10,6 +10,8 @@
 package org.tynamo.model.jpa.services;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
+import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Set;
@@ -199,7 +201,9 @@ public class JpaDescriptorDecorator implements DescriptorDecorator
 			case ONE_TO_MANY: {
 				collectionDescriptor.setOneToMany(true);
 
-				Annotation a = pluralAttribute.getJavaType().getAnnotation(OneToMany.class);
+//				Annotation a = pluralAttribute.getJavaType().getAnnotation(OneToMany.class);
+				Member member= pluralAttribute.getJavaMember();
+				Annotation a = member instanceof Field ? ((Field)member).getAnnotation(OneToMany.class) : member instanceof Method ? ((Method)member).getAnnotation(OneToMany.class) : null;
 				if (a != null) {
 					OneToMany aOneToMany = (OneToMany) a;
 					collectionDescriptor.setChildRelationship(aOneToMany.orphanRemoval());
@@ -209,6 +213,7 @@ public class JpaDescriptorDecorator implements DescriptorDecorator
 						parentClassDescriptor.setHasCyclicRelationships(true);
 					}
 				}
+				break;
 			}
 			case MANY_TO_MANY:
 				break;
