@@ -12,8 +12,8 @@ public class ConfigurableEntityManagerProvider {
 	private String persistenceUnitName;
 
 	public ConfigurableEntityManagerProvider(EntityManagerManager entityManagerManager, @Inject @Symbol(TynamoJpaSymbols.PERSISTENCEUNIT) String persistenceUnitName) {
-		persistenceUnitName = persistenceUnitName;
-		entityManagerManager = entityManagerManager;
+		this.persistenceUnitName = persistenceUnitName;
+		this.entityManagerManager = entityManagerManager;
 	}
 	
 	public EntityManager getEntityManager() {

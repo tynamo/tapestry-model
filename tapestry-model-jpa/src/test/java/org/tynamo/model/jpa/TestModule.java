@@ -50,5 +50,11 @@ public class TestModule
 				ignoreNonHibernateTypes,
 				loggerSource.getLogger(JpaDescriptorDecorator.class));
 	}
+	
+	public static void contributeFactoryDefaults(MappedConfiguration<String, String> configuration) {
+		configuration.add(TynamoJpaSymbols.LARGE_COLUMN_LENGTH, "100");
+		configuration.add(TynamoJpaSymbols.IGNORE_NON_HIBERNATE_TYPES, "false");
+		configuration.add(TynamoJpaSymbols.PERSISTENCEUNIT, "");
+	}
 
 }

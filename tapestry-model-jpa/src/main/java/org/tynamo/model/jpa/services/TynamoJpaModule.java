@@ -78,7 +78,7 @@ public class TynamoJpaModule extends VersionedModule {
 		configuration.add("JPA", jpaDescriptorDecorator);
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	public static void contributeDescriptorService(Configuration<Class> configuration, 
 		@Autobuild ConfigurableEntityManagerProvider entityManagerProvider) {
 		
@@ -92,6 +92,7 @@ public class TynamoJpaModule extends VersionedModule {
 	public static void contributeFactoryDefaults(MappedConfiguration<String, String> configuration) {
 		configuration.add(TynamoJpaSymbols.LARGE_COLUMN_LENGTH, "100");
 		configuration.add(TynamoJpaSymbols.IGNORE_NON_HIBERNATE_TYPES, "false");
+		configuration.add(TynamoJpaSymbols.PERSISTENCEUNIT, "");
 	}
 
 	/**
