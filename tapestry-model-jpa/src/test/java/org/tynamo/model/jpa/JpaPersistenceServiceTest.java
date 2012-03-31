@@ -29,9 +29,11 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
+import org.apache.tapestry5.internal.test.PageTesterContext;
 import org.apache.tapestry5.ioc.Registry;
 import org.apache.tapestry5.ioc.RegistryBuilder;
 import org.apache.tapestry5.jpa.JpaModule;
+import org.apache.tapestry5.services.ApplicationGlobals;
 import org.apache.tapestry5.services.TapestryModule;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
@@ -69,6 +71,8 @@ public class JpaPersistenceServiceTest
 		builder.add(TestModule.class);
 
 		registry = builder.build();
+    ApplicationGlobals globals = registry.getObject(ApplicationGlobals.class, null);
+    globals.storeContext(new PageTesterContext(""));
 		registry.performRegistryStartup();
 
 		persistenceService = registry.getService(JpaPersistenceService.class);

@@ -26,8 +26,11 @@ public class TestModule
 		configuration.add(InternalConstants.TAPESTRY_APP_PACKAGE_PARAM, "org.tynamo.model.jpa");
 		configuration.add(InternalSymbols.APP_PACKAGE_PATH, "org/tynamo/model/jpa");
 
+		// JpaDescriptorDecoratorTest doesn't include TynamoJpaModule at all, but JpaDescriptorDecorator expects persistenceunit to be configured 
 		configuration.add(TynamoJpaSymbols.LARGE_COLUMN_LENGTH, "100");
 		configuration.add(TynamoJpaSymbols.IGNORE_NON_HIBERNATE_TYPES, "true");
+
+		configuration.add(TynamoJpaSymbols.PERSISTENCEUNIT, "");
 	}
 
 	@Contribute(JpaEntityPackageManager.class)
@@ -50,11 +53,4 @@ public class TestModule
 				ignoreNonHibernateTypes,
 				loggerSource.getLogger(JpaDescriptorDecorator.class));
 	}
-	
-	public static void contributeFactoryDefaults(MappedConfiguration<String, String> configuration) {
-		configuration.add(TynamoJpaSymbols.LARGE_COLUMN_LENGTH, "100");
-		configuration.add(TynamoJpaSymbols.IGNORE_NON_HIBERNATE_TYPES, "false");
-		configuration.add(TynamoJpaSymbols.PERSISTENCEUNIT, "");
-	}
-
 }
