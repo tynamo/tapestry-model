@@ -494,7 +494,9 @@ public class HibernatePersistenceServiceTest
 	{
 		session.createSQLQuery("TRUNCATE TABLE Bing").executeUpdate();
 		session.createSQLQuery("TRUNCATE TABLE Baz").executeUpdate();
-		session.createSQLQuery("DELETE FROM Foo").executeUpdate();
+		// you should actually need to truncate Bing first, but without it, the following will fail on Hibernate 3.6 with referential 
+		// integrity constraint violation because of https://hibernate.onjira.com/browse/HHH-3008
+		session.createQuery("DELETE FROM Foo").executeUpdate();
 		fakeOpenSessionInViewResponse();
 	}
 
