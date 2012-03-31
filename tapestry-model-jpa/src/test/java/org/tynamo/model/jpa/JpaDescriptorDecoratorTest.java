@@ -122,12 +122,13 @@ public class JpaDescriptorDecoratorTest
 		Assert.assertFalse(idDescriptor.isGenerated(), "not generated");
 	}
 
-	@Test
-	public void testFormulaDescriptor() throws Exception
-	{
-		TynamoPropertyDescriptor formulaDescriptor = classDescriptor.getPropertyDescriptor("fromFormula");
-		Assert.assertTrue(formulaDescriptor.isReadOnly());
-	}
+// JPA2 doesn't have support for @Formula, also see comments in Foo.getFromFormula()
+//	@Test
+//	public void testFormulaDescriptor() throws Exception
+//	{
+//		TynamoPropertyDescriptor formulaDescriptor = classDescriptor.getPropertyDescriptor("fromFormula");
+//		Assert.assertTrue(formulaDescriptor.isReadOnly());
+//	}
 
 	@Test
 	public void testCollectionDescriptor() throws Exception

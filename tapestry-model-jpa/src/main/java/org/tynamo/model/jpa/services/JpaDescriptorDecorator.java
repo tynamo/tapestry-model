@@ -18,6 +18,7 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.EntityManager;
+import javax.persistence.GeneratedValue;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -201,9 +202,7 @@ public class JpaDescriptorDecorator implements DescriptorDecorator
 			case ONE_TO_MANY: {
 				collectionDescriptor.setOneToMany(true);
 
-//				Annotation a = pluralAttribute.getJavaType().getAnnotation(OneToMany.class);
-				Member member= pluralAttribute.getJavaMember();
-				Annotation a = member instanceof Field ? ((Field)member).getAnnotation(OneToMany.class) : member instanceof Method ? ((Method)member).getAnnotation(OneToMany.class) : null;
+				Annotation a = getAnnotation(pluralAttribute.getJavaMember(), OneToMany.class);
 				if (a != null) {
 					OneToMany aOneToMany = (OneToMany) a;
 					collectionDescriptor.setChildRelationship(aOneToMany.orphanRemoval());
@@ -332,9 +331,13 @@ public class JpaDescriptorDecorator implements DescriptorDecorator
 		return findColumnLength(mappingProperty) != 255
 			   && findColumnLength(mappingProperty) > largeColumnLength;
 	}
+	
+	private Annotation getAnnotation(Member member, Class annotationType) {
+		return member instanceof Field ? ((Field)member).getAnnotation(annotationType) : member instanceof Method ? ((Method)member).getAnnotation(annotationType) : null; 
+	}
 
 	private int findColumnLength(SingularAttribute mappingProperty) {
-		Annotation a = mappingProperty.getType().getJavaType().getAnnotation(Column.class);
+		Annotation a = getAnnotation(mappingProperty.getJavaMember(), Column.class);
 		if (a != null) {
 			Column column = (Column) a;
 			return column.length();
@@ -366,9 +369,6 @@ public class JpaDescriptorDecorator implements DescriptorDecorator
 		IdentifierDescriptor identifierDescriptor;
 		ManagedType mapping = getMapping(type);
 
-		/**
-		 * fix for TRAILS-92
-		 */
 		if (mapping.getAttribute(descriptor.getName()).getPersistentAttributeType().equals(Attribute.PersistentAttributeType.EMBEDDED)) {
 			EmbeddedDescriptor embeddedDescriptor = buildEmbeddedDescriptor(type,
 																			findMetadata(type), descriptor, parentClassDescriptor);
@@ -378,11 +378,10 @@ public class JpaDescriptorDecorator implements DescriptorDecorator
 			identifierDescriptor = new IdentifierDescriptorImpl(type, descriptor);
 		}
 
-		//TODO
-		/*if (mapping.getSingularAttribute(descriptor.getName()).getType().getIdentifierGeneratorStrategy().equals("assigned"))
+		if ( getAnnotation(mapping.getSingularAttribute(descriptor.getName()).getJavaMember(), GeneratedValue.class) == null)
 		{
 			identifierDescriptor.setGenerated(false);
-		}*/
+		}
 
 		return identifierDescriptor;
 	}
