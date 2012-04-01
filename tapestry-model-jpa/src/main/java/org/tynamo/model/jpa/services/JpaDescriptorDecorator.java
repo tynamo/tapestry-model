@@ -436,17 +436,19 @@ public class JpaDescriptorDecorator implements DescriptorDecorator
 	 * @param type
 	 * @return
 	 */
-	protected EntityType getMapping(Class type) {
+	protected ManagedType getMapping(Class type) {
 		//Configuration cfg = entityManagerSource.getConfiguration();
-		return entityManager.getMetamodel().entity(type);
+		return entityManager.getMetamodel().managedType(type);
 		//return cfg.getClassMapping(type.getName());
 	}
 
 
 	public String getIdentifierProperty(Class type) {
 		try {
-			EntityType mapping = getMapping(type);
-			return mapping.getId(mapping.getIdType().getJavaType()).getName();
+			ManagedType mapping = getMapping(type);
+			if (!(mapping instanceof EntityType)) return null;
+			EntityType entityType = (EntityType)mapping;
+			return entityType.getId(entityType.getIdType().getJavaType()).getName();
 		} catch (PersistenceException e) {
 			throw new TynamoRuntimeException(e);
 		}
