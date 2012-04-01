@@ -32,6 +32,7 @@ import javax.persistence.criteria.Root;
 import org.apache.tapestry5.internal.test.PageTesterContext;
 import org.apache.tapestry5.ioc.Registry;
 import org.apache.tapestry5.ioc.RegistryBuilder;
+import org.apache.tapestry5.jpa.EntityManagerManager;
 import org.apache.tapestry5.jpa.JpaModule;
 import org.apache.tapestry5.services.ApplicationGlobals;
 import org.apache.tapestry5.services.TapestryModule;
@@ -58,7 +59,7 @@ public class JpaPersistenceServiceTest
 	private DescriptorService descriptorService;
 
 	private static Registry registry;
-	private EntityManager entityManager;
+	private EntityManagerManager entityManagerManager;
 
 	@BeforeSuite
 	public final void setup_registry()
@@ -77,8 +78,11 @@ public class JpaPersistenceServiceTest
 
 		persistenceService = registry.getService(JpaPersistenceService.class);
 		descriptorService =  registry.getService(DescriptorService.class);
-		entityManager = registry.getService(EntityManager.class);
-
+		entityManagerManager = registry.getService(EntityManagerManager.class);
+	}
+	
+	private EntityManager getEntityManager() {
+		return entityManagerManager.getEntityManagers().values().iterator().next();
 	}
 
 	@AfterSuite
@@ -114,11 +118,11 @@ public class JpaPersistenceServiceTest
 		foo.setId(1);
 		foo.setName("the foo");
 		persistenceService.save(foo);
-		CriteriaBuilder qb = entityManager.getCriteriaBuilder();
+		CriteriaBuilder qb = getEntityManager().getCriteriaBuilder();
 		CriteriaQuery<Foo> q = qb.createQuery(Foo.class);
 		Root<Foo> root = q.from(Foo.class);
 		q.where(qb.equal(root.get("name"), "the foo"));
-		entityManager.createQuery(q).getSingleResult();
+		getEntityManager().createQuery(q).getSingleResult();
 	}
 
 //	@Test
@@ -370,10 +374,10 @@ public class JpaPersistenceServiceTest
 		foo.getBazzes().add(baz);
 		persistenceService.save(foo);
 
-		CriteriaBuilder qb = entityManager.getCriteriaBuilder();
+		CriteriaBuilder qb = getEntityManager().getCriteriaBuilder();
 		CriteriaQuery<Foo> q = qb.createQuery(Foo.class);
 		Root<Foo> root = q.from(Foo.class);
-		List foos = entityManager.createQuery(q).getResultList();
+		List foos = getEntityManager().createQuery(q).getResultList();
 		foo = (Foo) foos.get(0);
 		Assert.assertEquals(foo.getBazzes().size(), 1, "1 baz");
 	}
@@ -396,10 +400,10 @@ public class JpaPersistenceServiceTest
 
 		fakeOpenSessionInViewResponse();
 
-		CriteriaBuilder qb = entityManager.getCriteriaBuilder();
+		CriteriaBuilder qb = getEntityManager().getCriteriaBuilder();
 		CriteriaQuery<Foo> q = qb.createQuery(Foo.class);
 		Root<Foo> root = q.from(Foo.class);
-		List foos = entityManager.createQuery(q).getResultList();
+		List foos = getEntityManager().createQuery(q).getResultList();
 		foo = (Foo) foos.get(0);
 		Assert.assertEquals(foo.getBazzes().size(), 1, "1 baz");
 
@@ -426,10 +430,10 @@ public class JpaPersistenceServiceTest
 
 		fakeOpenSessionInViewResponse();
 
-		CriteriaBuilder qb = entityManager.getCriteriaBuilder();
+		CriteriaBuilder qb = getEntityManager().getCriteriaBuilder();
 		CriteriaQuery<Foo> q = qb.createQuery(Foo.class);
 		Root<Foo> root = q.from(Foo.class);
-		List foos = entityManager.createQuery(q).getResultList();
+		List foos = getEntityManager().createQuery(q).getResultList();
 		foo = (Foo) foos.get(0);
 
 		Assert.assertEquals(foo.getBazzes().size(), 1, "1 baz after the transaction commit");
@@ -452,10 +456,10 @@ public class JpaPersistenceServiceTest
 
 		fakeOpenSessionInViewResponse();
 
-		CriteriaBuilder qb = entityManager.getCriteriaBuilder();
+		CriteriaBuilder qb = getEntityManager().getCriteriaBuilder();
 		CriteriaQuery<Foo> q = qb.createQuery(Foo.class);
 		Root<Foo> root = q.from(Foo.class);
-		List foos = entityManager.createQuery(q).getResultList();
+		List foos = getEntityManager().createQuery(q).getResultList();
 		foo = (Foo) foos.get(0);
 
 		Assert.assertTrue(foo.getBazzes().isEmpty(), "there shouldn't be any bazzes here, the relationship is reaondly");
@@ -481,10 +485,10 @@ public class JpaPersistenceServiceTest
 
 		fakeOpenSessionInViewResponse();
 
-		CriteriaBuilder qb = entityManager.getCriteriaBuilder();
+		CriteriaBuilder qb = getEntityManager().getCriteriaBuilder();
 		CriteriaQuery<Foo> q = qb.createQuery(Foo.class);
 		Root<Foo> root = q.from(Foo.class);
-		List foos = entityManager.createQuery(q).getResultList();
+		List foos = getEntityManager().createQuery(q).getResultList();
 		foo = (Foo) foos.get(0);
 
 		Assert.assertEquals(foo.getBings().size(), 1, "1 bing after the transaction commit");
@@ -493,15 +497,15 @@ public class JpaPersistenceServiceTest
 
 	private void resetTablesAfterCommit()
 	{
-		entityManager.createQuery("TRUNCATE TABLE Bing").executeUpdate();
-		entityManager.createQuery("TRUNCATE TABLE Baz").executeUpdate();
-		entityManager.createQuery("DELETE FROM Foo").executeUpdate();
+		getEntityManager().createQuery("TRUNCATE TABLE Bing").executeUpdate();
+		getEntityManager().createQuery("TRUNCATE TABLE Baz").executeUpdate();
+		getEntityManager().createQuery("DELETE FROM Foo").executeUpdate();
 		fakeOpenSessionInViewResponse();
 	}
 
 	private void fakeOpenSessionInViewResponse()
 	{
-		entityManager.getTransaction().commit();
+		getEntityManager().getTransaction().commit();
 		registry.cleanupThread();
 	}
 
