@@ -9,14 +9,18 @@ import org.apache.tapestry5.ioc.MethodAdviceReceiver;
 import org.apache.tapestry5.ioc.OrderedConfiguration;
 import org.apache.tapestry5.ioc.ServiceBinder;
 import org.apache.tapestry5.ioc.annotations.Autobuild;
+import org.apache.tapestry5.ioc.annotations.Contribute;
 import org.apache.tapestry5.ioc.annotations.Match;
 import org.apache.tapestry5.jpa.JpaTransactionAdvisor;
 import org.apache.tapestry5.services.BeanBlockContribution;
+import org.apache.tapestry5.services.BeanBlockSource;
 import org.apache.tapestry5.services.LibraryMapping;
 import org.tynamo.VersionedModule;
 import org.tynamo.descriptor.decorators.DescriptorDecorator;
+import org.tynamo.descriptor.factories.DescriptorFactory;
 import org.tynamo.model.jpa.TynamoJpaSymbols;
 import org.tynamo.model.jpa.internal.ConfigurableEntityManagerProvider;
+import org.tynamo.services.DescriptorService;
 
 public class TynamoJpaModule extends VersionedModule {
 
@@ -69,24 +73,25 @@ public class TynamoJpaModule extends VersionedModule {
 	 * BeanEditForm sees a property of type BigDecimal, it will map that to datatype "currency" and from there to the
 	 * currency block of the AppPropertyEditBlocks page of the application.
 	 */
-	public static void contributeBeanBlockSource(Configuration<BeanBlockContribution> configuration) {
+	@Contribute(BeanBlockSource.class)
+	public static void beanBlockSource(Configuration<BeanBlockContribution> configuration) {
 
 	}
 
-	public static void contributeDescriptorFactory(OrderedConfiguration<DescriptorDecorator> configuration,
+	@Contribute(DescriptorFactory.class)
+	public static void descriptorFactory(OrderedConfiguration<DescriptorDecorator> configuration,
 												   @Autobuild JpaDescriptorDecorator jpaDescriptorDecorator) {
-		configuration.add("JPA", jpaDescriptorDecorator);
+		configuration.add("JPA", jpaDescriptorDecorator,"after:TynamoDecorator");
 	}
 
 	@SuppressWarnings("rawtypes")
-	public static void contributeDescriptorService(Configuration<Class> configuration, 
+	@Contribute(DescriptorService.class)
+	public static void descriptorService(Configuration<Class> configuration, 
 		@Autobuild ConfigurableEntityManagerProvider entityManagerProvider) {
 		
 		EntityManager entityManager = entityManagerProvider.getEntityManager();
-		for (EntityType<?> mapping : entityManager.getMetamodel().getEntities()) {
-			final Class entityClass = mapping.getJavaType();
-			if (entityClass != null) configuration.add(entityClass);
-		}
+		for (EntityType<?> mapping : entityManager.getMetamodel().getEntities()) configuration.add(mapping.getJavaType());
+//		for (EmbeddableType<?> mapping : entityManager.getMetamodel().getEmbeddables()) configuration.add(mapping.getJavaType());
 	}
 
 	public static void contributeFactoryDefaults(MappedConfiguration<String, String> configuration) {
