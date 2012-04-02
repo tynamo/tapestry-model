@@ -25,6 +25,7 @@ package org.tynamo.model.jpa;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
@@ -96,7 +97,7 @@ public class JpaPersistenceServiceTest
 	public final void cleanupThread()
 	{
 		registry.cleanupThread();
-		resetTablesAfterCommit();		
+		resetTablesAfterCommit();
 	}
 
 	@Test
@@ -497,8 +498,10 @@ public class JpaPersistenceServiceTest
 
 	private void resetTablesAfterCommit()
 	{
-		getEntityManager().createQuery("TRUNCATE TABLE Bing").executeUpdate();
-		getEntityManager().createQuery("TRUNCATE TABLE Baz").executeUpdate();
+		EntityTransaction tx = getEntityManager().getTransaction();
+		if (!tx.isActive()) tx.begin();
+		getEntityManager().createNativeQuery("TRUNCATE TABLE Bing").executeUpdate();
+//		getEntityManager().createQuery("TRUNCATE TABLE Baz").executeUpdate();
 		getEntityManager().createQuery("DELETE FROM Foo").executeUpdate();
 		fakeOpenSessionInViewResponse();
 	}
