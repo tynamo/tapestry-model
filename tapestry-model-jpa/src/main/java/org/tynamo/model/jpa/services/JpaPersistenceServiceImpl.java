@@ -26,21 +26,24 @@ import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.Type;
 
 import org.apache.tapestry5.ioc.annotations.Autobuild;
+import org.apache.tapestry5.ioc.services.PropertyAccess;
 import org.slf4j.Logger;
 import org.tynamo.descriptor.CollectionDescriptor;
 import org.tynamo.descriptor.TynamoClassDescriptor;
 import org.tynamo.descriptor.TynamoPropertyDescriptor;
+import org.tynamo.internal.services.GenericPersistenceService;
 import org.tynamo.model.jpa.internal.ConfigurableEntityManagerProvider;
 import org.tynamo.services.DescriptorService;
 
 @SuppressWarnings("unchecked")
-public class JpaPersistenceServiceImpl implements JpaPersistenceService {
+public class JpaPersistenceServiceImpl extends GenericPersistenceService implements JpaPersistenceService {
 
 	private Logger logger;
 	private DescriptorService descriptorService;
 	private EntityManager em;
 
-	public JpaPersistenceServiceImpl(Logger logger, DescriptorService descriptorService, @Autobuild ConfigurableEntityManagerProvider entityManagerProvider) {
+	public JpaPersistenceServiceImpl(Logger logger, DescriptorService descriptorService, @Autobuild ConfigurableEntityManagerProvider entityManagerProvider, PropertyAccess propertyAccess) {
+		super(propertyAccess);
 		this.logger = logger;
 		this.descriptorService = descriptorService;
 		this.em = entityManagerProvider.getEntityManager();
@@ -251,10 +254,6 @@ public class JpaPersistenceServiceImpl implements JpaPersistenceService {
 		//FIXME Not implemented yet
 	}
 
-	public <T> T addToCollection(CollectionDescriptor descriptor, T element, Object collectionOwner) {
-		//FIXME Not implemented yet
-		return null;
-	}
 
 	public int count(Class type) {
 		CriteriaBuilder qb = em.getCriteriaBuilder();
@@ -271,11 +270,9 @@ public class JpaPersistenceServiceImpl implements JpaPersistenceService {
 		return (Serializable) em.getEntityManagerFactory().getPersistenceUnitUtil().getIdentifier(data);
 	}
 
-
 	public boolean isTransient(Object data, TynamoClassDescriptor classDescriptor) {
 		return getIdentifier(data, classDescriptor) == null;
 	}
-
 
 	public List getInstances(final Object example, final TynamoClassDescriptor classDescriptor) {
 		//create Criteria instance

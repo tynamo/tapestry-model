@@ -19,6 +19,7 @@ import org.slf4j.Logger;
 import org.tynamo.descriptor.CollectionDescriptor;
 import org.tynamo.descriptor.TynamoClassDescriptor;
 import org.tynamo.descriptor.TynamoPropertyDescriptor;
+import org.tynamo.internal.services.GenericPersistenceService;
 import org.tynamo.services.DescriptorService;
 
 import java.beans.IntrospectionException;
@@ -30,13 +31,12 @@ import java.util.Collection;
 import java.util.List;
 
 @SuppressWarnings("unchecked")
-public class HibernatePersistenceServiceImpl implements HibernatePersistenceService
+public class HibernatePersistenceServiceImpl extends GenericPersistenceService implements HibernatePersistenceService
 {
 
 	private Logger logger;
 	private DescriptorService descriptorService;
 	private HibernateSessionManager sessionManager;
-	private PropertyAccess propertyAccess;
 	private PropertyConduitSource propertyConduitSource;
 
 	public HibernatePersistenceServiceImpl(Logger logger,
@@ -45,9 +45,9 @@ public class HibernatePersistenceServiceImpl implements HibernatePersistenceServ
 	                                       PropertyAccess propertyAccess,
 	                                       PropertyConduitSource propertyConduitSource)
 	{
+		super(propertyAccess);
 		this.logger = logger;
 		this.descriptorService = descriptorService;
-		this.propertyAccess = propertyAccess;
 		this.propertyConduitSource = propertyConduitSource;
 
 		// we need a sessionmanager because Tapestry session proxy doesn't implement Hibernate's SessionImplementator interface
@@ -212,7 +212,7 @@ public class HibernatePersistenceServiceImpl implements HibernatePersistenceServ
 
 	public Serializable getIdentifier(final Object data, final TynamoClassDescriptor classDescriptor)
 	{
-		return (Serializable) propertyAccess.get(data, classDescriptor.getIdentifierDescriptor().getName());
+		return (Serializable) getPropertyAccess().get(data, classDescriptor.getIdentifierDescriptor().getName());
 	}
 
 	public Serializable getIdentifier(final Object data)
@@ -246,7 +246,7 @@ public class HibernatePersistenceServiceImpl implements HibernatePersistenceServ
 			{
 				String propertyName = propertyDescriptor.getName();
 				Class propertyClass = propertyDescriptor.getPropertyType();
-				Object value = propertyAccess.get(example, propertyName);
+				Object value = getPropertyAccess().get(example, propertyName);
 
 				//only add a Criterion to the Criteria instance if the value for this property is non-null
 				if (value != null)
@@ -391,7 +391,7 @@ public class HibernatePersistenceServiceImpl implements HibernatePersistenceServ
 			throw new RuntimeException(e);
 		}
 
-		Collection collection = (Collection) propertyAccess.get(collectionOwner, descriptor.getName());
+		Collection collection = (Collection) getPropertyAccess().get(collectionOwner, descriptor.getName());
 		if (!(descriptor.isChildRelationship() && (collection instanceof List) && (collection.contains(element))))
 		{
 			collection.add(element);
@@ -422,7 +422,7 @@ public class HibernatePersistenceServiceImpl implements HibernatePersistenceServ
 			throw new RuntimeException(e);
 		}
 
-		Collection collection = (Collection) propertyAccess.get(collectionOwner, descriptor.getName());
+		Collection collection = (Collection) getPropertyAccess().get(collectionOwner, descriptor.getName());
 		collection.remove(element);
 	}
 
