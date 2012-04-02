@@ -105,8 +105,9 @@ public class JpaPersistenceServiceTest
 	@AfterMethod
 	public final void cleanupThread()
 	{
-		registry.cleanupThread();
+//		registry.cleanupThread();
 		resetTablesAfterCommit();
+		getEntityManager().clear();
 	}
 
 	@Test
@@ -457,6 +458,8 @@ public class JpaPersistenceServiceTest
 		foo.setName("boo");
 		foo = persistenceService.save(foo);
 
+		fakeOpenSessionInViewResponse();
+
 		Baz baz = new Baz();
 		baz.setDescription("one");
 
@@ -464,15 +467,13 @@ public class JpaPersistenceServiceTest
 
 		Assert.assertEquals(foo.getBazzes().size(), 1, "1 baz before flushing the session");
 
-		fakeOpenSessionInViewResponse();
-
 		CriteriaBuilder qb = getEntityManager().getCriteriaBuilder();
 		CriteriaQuery<Foo> q = qb.createQuery(Foo.class);
 		Root<Foo> root = q.from(Foo.class);
 		List foos = getEntityManager().createQuery(q).getResultList();
 		foo = (Foo) foos.get(0);
 
-		Assert.assertTrue(foo.getBazzes().isEmpty(), "there shouldn't be any bazzes here, the relationship is reaondly");
+		Assert.assertTrue(foo.getBazzes().isEmpty(), "there shouldn't be any bazzes here, the relationship is read only");
 	}
 
 	@Test
@@ -518,7 +519,8 @@ public class JpaPersistenceServiceTest
 	private void fakeOpenSessionInViewResponse()
 	{
 		getEntityManager().getTransaction().commit();
-		registry.cleanupThread();
+		getEntityManager().clear();
+//		registry.cleanupThread();
 	}
 
 }
