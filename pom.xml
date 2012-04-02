@@ -19,6 +19,7 @@
 		<module>tapestry-model-test</module>
 		<module>tapestry-model-core</module>
 		<module>tapestry-model-hibernate</module>
+		<module>tapestry-model-jpa</module>
 		<module>tapestry-model-web</module>
 	</modules>
 

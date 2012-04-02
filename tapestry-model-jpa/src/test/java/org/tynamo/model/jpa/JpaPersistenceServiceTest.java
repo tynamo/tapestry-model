@@ -238,6 +238,7 @@ public class JpaPersistenceServiceTest
 		try
 		{
 			foo = persistenceService.save(foo);
+			fakeOpenSessionInViewResponse();
 			Assert.fail();
 		}
 		catch (RuntimeException pex)
@@ -257,6 +258,7 @@ public class JpaPersistenceServiceTest
 		try
 		{
 			foo = persistenceService.merge(foo);
+			fakeOpenSessionInViewResponse();
 			Assert.fail();
 		}
 		catch (RuntimeException pex)
@@ -277,6 +279,7 @@ public class JpaPersistenceServiceTest
 		try
 		{
 			foo = persistenceService.saveOrUpdate(foo);
+			fakeOpenSessionInViewResponse();
 			Assert.fail();
 		} catch (RuntimeException pex)
 		{
@@ -292,6 +295,7 @@ public class JpaPersistenceServiceTest
 		try
 		{
 			persistenceService.save(baz);
+			fakeOpenSessionInViewResponse();
 		}
 		catch (RuntimeException e)
 		{

@@ -30,7 +30,7 @@ public class Baz {
     private Foo foo;
 
     @NotNull
-    @Column(length = 10)
+    @Column(length = 10, nullable = false)
     public String getDescription() {
         return description;
     }
