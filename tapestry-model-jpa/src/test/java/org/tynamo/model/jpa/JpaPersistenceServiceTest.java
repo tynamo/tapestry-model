@@ -510,7 +510,7 @@ public class JpaPersistenceServiceTest
 		EntityTransaction tx = getEntityManager().getTransaction();
 		if (!tx.isActive()) tx.begin();
 		getEntityManager().createNativeQuery("TRUNCATE TABLE Bing").executeUpdate();
-//		getEntityManager().createQuery("TRUNCATE TABLE Baz").executeUpdate();
+		getEntityManager().createNativeQuery("TRUNCATE TABLE Baz").executeUpdate();
 		getEntityManager().createQuery("DELETE FROM Foo").executeUpdate();
 		fakeOpenSessionInViewResponse();
 	}

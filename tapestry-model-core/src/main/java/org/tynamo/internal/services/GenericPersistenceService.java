@@ -50,5 +50,32 @@ public abstract class GenericPersistenceService implements PersistenceService {
 		}
 		return element;
 	}
+	
+	public void removeFromCollection(CollectionDescriptor descriptor, Object element, Object collectionOwner)
+	{
+		Class elementType = descriptor.getElementType();
+		String removeMethod = descriptor.getRemoveExpression() != null ? descriptor.getRemoveExpression() : "remove" + elementType.getSimpleName();
+
+		try
+		{
+			Method method = descriptor.getBeanType().getMethod(removeMethod, new Class[]{elementType});
+			method.invoke(collectionOwner, element);
+			return;
+
+		} catch (NoSuchMethodException e)
+		{
+			// do nothing;
+		} catch (InvocationTargetException e)
+		{
+			throw new RuntimeException(e);
+		} catch (IllegalAccessException e)
+		{
+			throw new RuntimeException(e);
+		}
+
+		Collection collection = (Collection) getPropertyAccess().get(collectionOwner, descriptor.getName());
+		collection.remove(element);
+	}
+	
 
 }

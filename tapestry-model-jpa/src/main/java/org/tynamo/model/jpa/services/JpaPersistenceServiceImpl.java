@@ -250,11 +250,6 @@ public class JpaPersistenceServiceImpl extends GenericPersistenceService impleme
 		return null;
 	}
 
-	public void removeFromCollection(CollectionDescriptor descriptor, Object element, Object collectionOwner) {
-		//FIXME Not implemented yet
-	}
-
-
 	public int count(Class type) {
 		CriteriaBuilder qb = em.getCriteriaBuilder();
 		CriteriaQuery<Long> query = qb.createQuery(Long.class);
