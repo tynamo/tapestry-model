@@ -41,6 +41,14 @@ public class TynamoDataTypeAnalyzerPredicates
 		}
 	};
 
+	public static final Predicate<TynamoPropertyDescriptor> number = new Predicate<TynamoPropertyDescriptor>()
+	{
+		public boolean accept(TynamoPropertyDescriptor tynamoPropertyDescriptor)
+		{
+			return tynamoPropertyDescriptor.isNumeric();
+		}
+	};
+
 	public static final Predicate<TynamoPropertyDescriptor> longtext = new Predicate<TynamoPropertyDescriptor>()
 	{
 		public boolean accept(TynamoPropertyDescriptor descriptor)

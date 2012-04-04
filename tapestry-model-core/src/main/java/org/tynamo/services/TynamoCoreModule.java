@@ -1,5 +1,6 @@
 package org.tynamo.services;
 
+import org.apache.tapestry5.beaneditor.DataTypeConstants;
 import org.apache.tapestry5.func.Predicate;
 import org.apache.tapestry5.ioc.*;
 import org.apache.tapestry5.ioc.annotations.Autobuild;
@@ -83,8 +84,8 @@ public class TynamoCoreModule extends VersionedModule
 	public static void contributeBeanBlockSource(Configuration<BeanBlockContribution> configuration)
 	{
 		configuration.add(new EditBlockContribution("nonVisual", PROPERTY_EDIT_BLOCKS, "nonVisual"));
-		configuration.add(new EditBlockContribution("formatted-date", PROPERTY_EDIT_BLOCKS, "date"));
-		configuration.add(new EditBlockContribution("fckEditor", PROPERTY_EDIT_BLOCKS, "fckEditor"));
+		configuration.add(new EditBlockContribution("formatted-date", "PropertyEditBlocks", DataTypeConstants.DATE));
+		configuration.add(new EditBlockContribution("formatted-number", "PropertyEditBlocks", DataTypeConstants.NUMBER));
 
 		configuration.add(new EditBlockContribution("readOnly", PROPERTY_EDIT_BLOCKS, "readOnly"));
 		configuration.add(new EditBlockContribution("single-valued-association", PROPERTY_EDIT_BLOCKS, "select"));
@@ -96,7 +97,7 @@ public class TynamoCoreModule extends VersionedModule
 
 		configuration.add(new DisplayBlockContribution("nonVisual", PROPERTY_DISPLAY_BLOCKS, "nonVisual"));
 		configuration.add(new DisplayBlockContribution("formatted-date", PROPERTY_DISPLAY_BLOCKS, "date"));
-		configuration.add(new DisplayBlockContribution("number", PROPERTY_DISPLAY_BLOCKS, "number"));
+		configuration.add(new DisplayBlockContribution("formatted-number", PROPERTY_DISPLAY_BLOCKS, "number"));
 
 		configuration.add(new DisplayBlockContribution("composition", PROPERTY_DISPLAY_BLOCKS, "composition"));
 		configuration.add(new DisplayBlockContribution("blob", PROPERTY_DISPLAY_BLOCKS, "download"));
@@ -142,6 +143,8 @@ public class TynamoCoreModule extends VersionedModule
 		configuration.add("nonVisual", newPair(TynamoDataTypeAnalyzerPredicates.nonVisual, "nonVisual"));
 		configuration.add("readOnly", newPair(TynamoDataTypeAnalyzerPredicates.readOnly, "readOnly"));
 		configuration.add("password", newPair(TynamoDataTypeAnalyzerPredicates.password, "password"));
+		configuration.add("date", newPair(TynamoDataTypeAnalyzerPredicates.date, "formatted-date"));
+		configuration.add("number", newPair(TynamoDataTypeAnalyzerPredicates.number, "formatted-number"));
 		configuration.add("longtext", newPair(TynamoDataTypeAnalyzerPredicates.longtext, "longtext"));
 		configuration.add("generatedId", newPair(TynamoDataTypeAnalyzerPredicates.generatedId, "readOnly"));
 		configuration.add("assignedId", newPair(TynamoDataTypeAnalyzerPredicates.assignedId, "identifierEditor"));
