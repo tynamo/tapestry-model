@@ -25,6 +25,14 @@ public class TynamoDataTypeAnalyzerPredicates
 		}
 	};
 
+	public static final Predicate<TynamoPropertyDescriptor> richText = new Predicate<TynamoPropertyDescriptor>()
+	{
+		public boolean accept(TynamoPropertyDescriptor tynamoPropertyDescriptor)
+		{
+			return tynamoPropertyDescriptor.isRichText();
+		}
+	};
+
 	public static final Predicate<TynamoPropertyDescriptor> password = new Predicate<TynamoPropertyDescriptor>()
 	{
 		public boolean accept(TynamoPropertyDescriptor tynamoPropertyDescriptor)

@@ -10,6 +10,7 @@ import org.apache.tapestry5.annotations.Environmental;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.beaneditor.BeanModel;
 import org.apache.tapestry5.corelib.components.Select;
+import org.apache.tapestry5.corelib.components.TextArea;
 import org.apache.tapestry5.corelib.components.TextField;
 import org.apache.tapestry5.corelib.data.BlankOption;
 import org.apache.tapestry5.internal.BeanValidationContext;
@@ -75,6 +76,13 @@ public class PropertyEditBlocks
 			"clientId=prop:propertyEditContext.propertyId", "annotationProvider=propertyEditContext"})
 	private TextField textField;
 
+	@Component(
+			parameters = {"value=propertyEditContext.propertyValue", "label=prop:propertyEditContext.label",
+					"translate=prop:textAreaTranslator", "validate=prop:textAreaValidator",
+					"clientId=prop:propertyEditContext.propertyId",
+					"annotationProvider=propertyEditContext"})
+	private TextArea textArea;
+
 	@Component(parameters = {"collection=propertyEditContext.propertyValue", "label=prop:propertyEditContext.label",
 			"clientId=prop:propertyEditContext.propertyId", "collectionDescriptor=propertyDescriptor",
 			"owner=tynamoBeanContext.beanInstance"})
@@ -136,6 +144,16 @@ public class PropertyEditBlocks
 	public FieldValidator getTextFieldValidator()
 	{
 		return propertyEditContext.getValidator(textField);
+	}
+
+	public FieldTranslator getTextAreaTranslator()
+	{
+		return propertyEditContext.getTranslator(textArea);
+	}
+
+	public FieldValidator getTextAreaValidator()
+	{
+		return propertyEditContext.getValidator(textArea);
 	}
 
 	public FieldValidator getSelectValidator()

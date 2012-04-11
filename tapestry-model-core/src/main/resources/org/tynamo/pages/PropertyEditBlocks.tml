@@ -63,4 +63,8 @@
 		<div t:id="blob"/>
 	</t:block>
 
+	<t:block id="ckeditor">
+		<input t:id="textarea" t:mixins="tynamo/ckeditor" parameters="{'toolbar': 'Basic'}"/>
+	</t:block>
+
 </html>

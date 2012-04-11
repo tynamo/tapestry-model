@@ -86,6 +86,7 @@ public class TynamoCoreModule extends VersionedModule
 		configuration.add(new EditBlockContribution("nonVisual", PROPERTY_EDIT_BLOCKS, "nonVisual"));
 		configuration.add(new EditBlockContribution("formatted-date", "PropertyEditBlocks", DataTypeConstants.DATE));
 		configuration.add(new EditBlockContribution("formatted-number", "PropertyEditBlocks", DataTypeConstants.NUMBER));
+		configuration.add(new EditBlockContribution("ckeditor", PROPERTY_EDIT_BLOCKS, "ckeditor"));
 
 		configuration.add(new EditBlockContribution("readOnly", PROPERTY_EDIT_BLOCKS, "readOnly"));
 		configuration.add(new EditBlockContribution("single-valued-association", PROPERTY_EDIT_BLOCKS, "select"));
@@ -101,6 +102,7 @@ public class TynamoCoreModule extends VersionedModule
 
 		configuration.add(new DisplayBlockContribution("composition", PROPERTY_DISPLAY_BLOCKS, "composition"));
 		configuration.add(new DisplayBlockContribution("blob", PROPERTY_DISPLAY_BLOCKS, "download"));
+		configuration.add(new DisplayBlockContribution("ckeditor", PROPERTY_DISPLAY_BLOCKS, "ckeditor"));
 	}
 
 	public static void contributeBeanBlockOverrideSource(Configuration<BeanBlockContribution> configuration)
@@ -142,6 +144,7 @@ public class TynamoCoreModule extends VersionedModule
 	{
 		configuration.add("nonVisual", newPair(TynamoDataTypeAnalyzerPredicates.nonVisual, "nonVisual"));
 		configuration.add("readOnly", newPair(TynamoDataTypeAnalyzerPredicates.readOnly, "readOnly"));
+		configuration.add("richText", newPair(TynamoDataTypeAnalyzerPredicates.richText, "ckeditor"));
 		configuration.add("password", newPair(TynamoDataTypeAnalyzerPredicates.password, "password"));
 		configuration.add("date", newPair(TynamoDataTypeAnalyzerPredicates.date, "formatted-date"));
 		configuration.add("number", newPair(TynamoDataTypeAnalyzerPredicates.number, "formatted-number"));

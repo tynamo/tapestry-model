@@ -30,4 +30,8 @@
 		</p>
 	</t:block>
 
+	<t:block id="ckeditor">
+		<t:outputraw value="context.propertyValue"/>
+	</t:block>
+
 </t:container>
