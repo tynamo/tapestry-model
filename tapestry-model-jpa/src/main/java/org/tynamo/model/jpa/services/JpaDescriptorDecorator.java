@@ -14,11 +14,13 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.EntityManager;
 import javax.persistence.GeneratedValue;
+import javax.persistence.IdClass;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -112,11 +114,12 @@ public class JpaDescriptorDecorator implements DescriptorDecorator
 			}
 		}
 
+		Set<String> idProperties = getIdentifierProperties(type);
 		for (TynamoPropertyDescriptor propertyDescriptor : descriptor.getPropertyDescriptors()) {
 			try {
 				TynamoPropertyDescriptor descriptorReference;
-
-				if (propertyDescriptor.getName().equals(getIdentifierProperty(type))) {
+				if (idProperties != null && idProperties.contains(propertyDescriptor.getName())) {
+					// FIXME should we mark an identifier descriptor as part of a composite key?
 					descriptorReference = createIdentifierDescriptor(type, propertyDescriptor, descriptor);
 				} else if (notAHibernateProperty(metamodel, type, propertyDescriptor)) {
 					// If this is not a jpa property (i.e. marked
@@ -443,12 +446,24 @@ public class JpaDescriptorDecorator implements DescriptorDecorator
 	}
 
 
-	public String getIdentifierProperty(Class type) {
+	private Set<String> getIdentifierProperties(Class type) {
 		try {
 			ManagedType mapping = getMapping(type);
 			if (!(mapping instanceof EntityType)) return null;
 			EntityType entityType = (EntityType)mapping;
-			return entityType.getId(entityType.getIdType().getJavaType()).getName();
+			// NOTE either eclipselink 2.4.0 has a bug or I don't understand how hasSingleIdAttribute is supposed to work, but
+			// it returns true even if a class is annotated with @IdClass and has multiple @Id attributes.
+			// Directly check for annotation as well as a fix
+			if (!entityType.hasSingleIdAttribute() || type.isAnnotationPresent(IdClass.class)) {
+				Set<SingularAttribute> idAttrs = entityType.getIdClassAttributes();
+				Set<String> result = new HashSet<String>(idAttrs.size());
+				for (SingularAttribute attr : idAttrs)
+					result.add(attr.getName());
+				return result;
+			}
+			Set<String> result =  new HashSet<String>(1);
+			result.add(entityType.getId(entityType.getIdType().getJavaType()).getName());
+			return result;
 		} catch (PersistenceException e) {
 			throw new TynamoRuntimeException(e);
 		}
