@@ -1,11 +1,6 @@
-<html xmlns:t="http://tapestry.apache.org/schema/tapestry_5_0_0.xsd" xmlns:p="tapestry:parameter">
+<html xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd" xmlns:p="tapestry:parameter">
 
 	<t:block id="nonVisual"/>
-
-	<t:block id="date">
-		<t:label for="dateField"/>
-		<input t:id="dateField"/>
-	</t:block>
 
 	<t:block id="select">
 		<t:label for="select"/>
@@ -29,7 +24,8 @@
 	</t:block>
 
 	<t:block id="readOnly">
-		<label>${propertyEditContext.label}</label><p>${propertyEditContext.propertyValue}</p>
+		<label>${propertyEditContext.label}</label>
+		<p t:type="any" t:mixins="NotEmpty">${propertyEditContext.propertyValue}</p>
 	</t:block>
 
 	<t:block id="palette">
@@ -65,6 +61,10 @@
 
 	<t:block id="blob">
 		<div t:id="blob"/>
+	</t:block>
+
+	<t:block id="ckeditor">
+		<input t:id="textarea" t:mixins="tynamo/ckeditor" parameters="{'toolbar': 'Basic'}"/>
 	</t:block>
 
 </html>

@@ -1,6 +1,4 @@
 /*
- * Copyright 2004 Chris Nelson
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -15,17 +13,14 @@ import org.hibernate.criterion.DetachedCriteria;
 import org.tynamo.descriptor.CollectionDescriptor;
 import org.tynamo.descriptor.TynamoClassDescriptor;
 import org.tynamo.services.PersistenceService;
-import org.apache.tapestry5.hibernate.annotations.CommitAfter;
 
 import java.util.List;
 
 public interface HibernatePersistenceService extends PersistenceService
 {
 
-	@CommitAfter
 	<T> T save(T instance);
 
-	@CommitAfter
 	void remove(Object instance);
 
 	public <T> T getInstance(Class<T> type, DetachedCriteria criteria);
@@ -61,9 +56,7 @@ public interface HibernatePersistenceService extends PersistenceService
 
 	boolean isTransient(Object data, TynamoClassDescriptor classDescriptor);
 
-	@CommitAfter
 	<T> T addToCollection(CollectionDescriptor descriptor, T element, Object collectionOwner);
 
-	@CommitAfter
 	void removeFromCollection(CollectionDescriptor descriptor, Object element, Object collectionOwner);
 }

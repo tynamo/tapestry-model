@@ -2,17 +2,21 @@ package org.tynamo.hibernate.services;
 
 import org.apache.tapestry5.hibernate.HibernateConfigurer;
 import org.apache.tapestry5.hibernate.HibernateSessionSource;
-import org.apache.tapestry5.hibernate.HibernateTransactionAdvisor;
-import org.apache.tapestry5.ioc.*;
+import org.apache.tapestry5.ioc.Configuration;
+import org.apache.tapestry5.ioc.MappedConfiguration;
+import org.apache.tapestry5.ioc.OrderedConfiguration;
+import org.apache.tapestry5.ioc.ServiceBinder;
 import org.apache.tapestry5.ioc.annotations.Autobuild;
 import org.apache.tapestry5.ioc.annotations.Contribute;
 import org.apache.tapestry5.ioc.annotations.InjectService;
-import org.apache.tapestry5.ioc.annotations.Match;
-import org.apache.tapestry5.services.BeanBlockContribution;
-import org.apache.tapestry5.services.LibraryMapping;
+import org.apache.tapestry5.ioc.services.FactoryDefaults;
+import org.apache.tapestry5.ioc.services.SymbolProvider;
+import org.apache.tapestry5.services.*;
+import org.apache.tapestry5.services.messages.ComponentMessagesSource;
 import org.hibernate.mapping.PersistentClass;
 import org.tynamo.VersionedModule;
 import org.tynamo.descriptor.decorators.DescriptorDecorator;
+import org.tynamo.descriptor.factories.DescriptorFactory;
 import org.tynamo.hibernate.TynamoHibernateSymbols;
 import org.tynamo.hibernate.TynamoInterceptor;
 import org.tynamo.hibernate.TynamoInterceptorConfigurer;
@@ -39,25 +43,22 @@ public class TynamoHibernateModule extends VersionedModule
 	/**
 	 * Add our components and pages to the "tynamo-hibernate" library.
 	 */
-	public static void contributeComponentClassResolver(Configuration<LibraryMapping> configuration)
+	@Contribute(ComponentClassResolver.class)
+	public static void componentClassResolver(Configuration<LibraryMapping> configuration)
 	{
 		configuration.add(new LibraryMapping("tynamo-hibernate", "org.tynamo.hibernate"));
 	}
 
-	public static void contributeClasspathAssetAliasManager(MappedConfiguration<String, String> configuration)
+	@Contribute(ClasspathAssetAliasManager.class)
+	public static void classpathAssetAliasManager(MappedConfiguration<String, String> configuration)
 	{
 		configuration.add("tynamo-hibernate-" + version, "org/tynamo/hibernate");
 	}
 
-	public static void contributeValidationMessagesSource(OrderedConfiguration<String> configuration)
+	@Contribute(ComponentMessagesSource.class)
+	public static void componentMessagesSource(OrderedConfiguration<String> configuration)
 	{
 		configuration.add("Tynamo", "ValidationMessages");
-	}
-
-	@Match("HibernatePersistenceService")
-	public static void adviseTransactions(HibernateTransactionAdvisor advisor, MethodAdviceReceiver receiver)
-	{
-		advisor.addTransactionCommitAdvice(receiver);
 	}
 
 	/**
@@ -77,20 +78,21 @@ public class TynamoHibernateModule extends VersionedModule
 	 * BeanEditForm sees a property of type BigDecimal, it will map that to datatype "currency" and from there to the
 	 * currency block of the AppPropertyEditBlocks page of the application.
 	 */
-	public static void contributeBeanBlockSource(Configuration<BeanBlockContribution> configuration)
+	@Contribute(BeanBlockSource.class)
+	public static void beanBlockSource(Configuration<BeanBlockContribution> configuration)
 	{
 
 	}
 
-	public static void contributeDescriptorFactory(OrderedConfiguration<DescriptorDecorator> configuration,
+	@Contribute(DescriptorFactory.class)
+	public static void descriptorFactory(OrderedConfiguration<DescriptorDecorator> configuration,
 	                                               @Autobuild HibernateDescriptorDecorator hibernateDescriptorDecorator)
 	{
 		configuration.add("HibernateDescriptorDecorator", hibernateDescriptorDecorator, "after:TynamoDecorator");
 	}
 
-	@SuppressWarnings("unchecked")
 	@Contribute(DescriptorService.class)
-	public static void contributeDescriptorService(Configuration<Class> configuration,
+	public static void descriptorService(Configuration<Class> configuration,
 												   HibernateSessionSource hibernateSessionSource)
 	{
 
@@ -108,13 +110,13 @@ public class TynamoHibernateModule extends VersionedModule
 		}
 	}
 
-
-	public static void contributeFactoryDefaults(MappedConfiguration<String, String> configuration)
+	@Contribute(SymbolProvider.class)
+	@FactoryDefaults
+	public static void setupFactoryDefaultsSymbols(MappedConfiguration<String, String> configuration)
 	{
 		configuration.add(TynamoHibernateSymbols.LARGE_COLUMN_LENGTH, "100");
 		configuration.add(TynamoHibernateSymbols.IGNORE_NON_HIBERNATE_TYPES, "false");
 	}
-
 
 	/**
 	 * Adds the following configurers:
@@ -122,7 +124,8 @@ public class TynamoHibernateModule extends VersionedModule
 	 * <dt>TynamoInterceptorConfigurer
 	 * <dd>add the TynamoInterceptor to the hibernate configuration
 	 */
-	public static void contributeHibernateSessionSource(OrderedConfiguration<HibernateConfigurer> config,
+	@Contribute(HibernateSessionSource.class)
+	public static void hibernateSessionSource(OrderedConfiguration<HibernateConfigurer> config,
 														@InjectService("TynamoInterceptorConfigurer")
 														HibernateConfigurer interceptorConfigurer)
 	{
@@ -130,13 +133,7 @@ public class TynamoHibernateModule extends VersionedModule
 	}
 
 
-/**
- * We don't need this just yet, and it gives an error under Tapestry 5.1.0.2
- *
- * [INFO] [talledLocalContainer] java.lang.IllegalArgumentException:
- * Contribution org.tynamo.hibernate.services.TynamoHibernateModule.contributeTynamoEntityPackageManager(Configuration, HibernateEntityPackageManager)
- * (at TynamoHibernateModule.java:145) is for service 'TynamoEntityPackageManager', which does not exist.
- *
+/*
 	public static void contributeTynamoEntityPackageManager(Configuration<String> configuration, HibernateEntityPackageManager packageManager)
 	{
 		for (String packageName : packageManager.getPackageNames())
@@ -145,7 +142,6 @@ public class TynamoHibernateModule extends VersionedModule
 		}
 	}
 */
-
 
 /*
 	public static void contributeFieldValidatorSource(MappedConfiguration<String, Validator> configuration) {

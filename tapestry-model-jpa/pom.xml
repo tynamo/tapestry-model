@@ -1,0 +1,84 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>tapestry-model-jpa</artifactId>
+	<name>Tynamo Model JPA</name>
+	<packaging>jar</packaging>
+
+	<parent>
+		<artifactId>tapestry-model</artifactId>
+		<groupId>org.tynamo</groupId>
+		<version>0.3.2-SNAPSHOT</version>
+	</parent>
+
+	<build>
+
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<archive>
+						<manifestEntries>
+							<Tapestry-Module-Classes>org.tynamo.model.jpa.services.TynamoJpaModule</Tapestry-Module-Classes>
+						</manifestEntries>
+					</archive>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.tynamo</groupId>
+			<artifactId>tapestry-model-core</artifactId>
+		</dependency>
+	  <dependency>
+		  <groupId>org.tynamo</groupId>
+		  <artifactId>tapestry-model-test</artifactId>
+		  <scope>test</scope>
+	  </dependency>
+		<dependency>
+			<groupId>org.apache.tapestry</groupId>
+			<artifactId>tapestry-jpa</artifactId>
+			<version>${tapestry-release-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.tapestry</groupId>
+			<artifactId>tapestry-test</artifactId>
+		  <scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.persistence</groupId>
+			<artifactId>eclipselink</artifactId>
+			<version>2.3.0</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.testng</groupId>
+			<artifactId>testng</artifactId>
+			<classifier>jdk15</classifier>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+	
+	<profiles>
+		<profile>
+			<id>repositories</id>
+			<repositories>
+				<repository>
+					<id>EclipseLink Repo</id>
+					<url>
+						http://download.eclipse.org/rt/eclipselink/maven.repo
+					</url>
+				</repository>
+			</repositories>
+		</profile>
+	</profiles>
+</project>

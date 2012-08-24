@@ -48,6 +48,7 @@ public class Composition
 	private BuilderDirector builderDirector;
 
 	@Inject
+	@Property
 	private ComponentResources resources;
 
 	@Inject

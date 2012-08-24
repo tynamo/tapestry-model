@@ -11,13 +11,7 @@
  */
 package org.tynamo.util;
 
-import com.google.inject.internal.cglib.proxy.Enhancer;
-import com.google.inject.internal.cglib.proxy.MethodInterceptor;
-import com.google.inject.internal.cglib.proxy.MethodProxy;
 import junit.framework.TestCase;
-import org.tynamo.test.Foo;
-
-import java.lang.reflect.Method;
 
 
 public class UtilsTest extends TestCase
@@ -30,33 +24,6 @@ public class UtilsTest extends TestCase
 		assertEquals("words", Utils.pluralize("word"));
 		assertEquals("properties", Utils.pluralize("property"));
 		assertEquals("bosses", Utils.pluralize("boss"));
-	}
-
-	public void testCheckForCGLIB()
-	{
-		Enhancer enb = new Enhancer();
-		enb.setUseCache(false);
-		enb.setInterceptDuringConstruction(false);
-		enb.setCallbackType(MethodInterceptor.class);
-		enb.setSuperclass(Foo.class);
-
-		Enhancer enbCB = new Enhancer();
-		enbCB.setUseCache(false);
-		enbCB.setInterceptDuringConstruction(false);
-		enbCB.setCallbackType(MethodInterceptor.class);
-		enbCB.setSuperclass(Foo.class);
-		enbCB.setCallback(new MethodInterceptor()
-		{
-			public Object intercept(Object obj, Method method, Object[] args, MethodProxy proxy) throws Throwable
-			{
-				return proxy.invokeSuper(obj, args);
-			}
-		});
-
-
-		assertEquals(Foo.class, Utils.checkForCGLIB(Foo.class));
-		assertEquals(Foo.class, Utils.checkForCGLIB(enb.createClass()));
-		assertEquals(Foo.class, Utils.checkForCGLIB(enbCB.create().getClass()));
 	}
 
 }

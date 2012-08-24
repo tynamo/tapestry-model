@@ -1,6 +1,4 @@
 /*
- * Copyright 2004 Chris Nelson
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -11,36 +9,46 @@
  */
 package org.tynamo.hibernate.services;
 
+import org.apache.tapestry5.PropertyConduit;
 import org.apache.tapestry5.hibernate.HibernateSessionManager;
 import org.apache.tapestry5.ioc.services.PropertyAccess;
+import org.apache.tapestry5.services.PropertyConduitSource;
 import org.hibernate.*;
 import org.hibernate.criterion.*;
 import org.slf4j.Logger;
 import org.tynamo.descriptor.CollectionDescriptor;
 import org.tynamo.descriptor.TynamoClassDescriptor;
 import org.tynamo.descriptor.TynamoPropertyDescriptor;
+import org.tynamo.internal.services.GenericPersistenceService;
 import org.tynamo.services.DescriptorService;
-import org.tynamo.util.Utils;
 
+import java.beans.IntrospectionException;
 import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 @SuppressWarnings("unchecked")
-public class HibernatePersistenceServiceImpl implements HibernatePersistenceService
+public class HibernatePersistenceServiceImpl extends GenericPersistenceService implements HibernatePersistenceService
 {
 
 	private Logger logger;
 	private DescriptorService descriptorService;
 	private HibernateSessionManager sessionManager;
-	private PropertyAccess propertyAccess;
+	private PropertyConduitSource propertyConduitSource;
 
-	public HibernatePersistenceServiceImpl(Logger logger, DescriptorService descriptorService, HibernateSessionManager sessionManager, PropertyAccess propertyAccess)
+	public HibernatePersistenceServiceImpl(Logger logger,
+	                                       DescriptorService descriptorService,
+	                                       HibernateSessionManager sessionManager,
+	                                       PropertyAccess propertyAccess,
+	                                       PropertyConduitSource propertyConduitSource)
 	{
+		super(propertyAccess);
 		this.logger = logger;
 		this.descriptorService = descriptorService;
-		this.propertyAccess = propertyAccess;
+		this.propertyConduitSource = propertyConduitSource;
 
 		// we need a sessionmanager because Tapestry session proxy doesn't implement Hibernate's SessionImplementator interface
 		this.sessionManager = sessionManager;
@@ -81,7 +89,7 @@ public class HibernatePersistenceServiceImpl implements HibernatePersistenceServ
 
 	public <T> T getInstance(final Class<T> type, final Serializable id)
 	{
-		DetachedCriteria criteria = DetachedCriteria.forClass(Utils.checkForCGLIB(type)).add(Restrictions.idEq(id));
+		DetachedCriteria criteria = DetachedCriteria.forClass(type).add(Restrictions.idEq(id));
 		return getInstance(type, criteria);
 	}
 
@@ -160,15 +168,13 @@ public class HibernatePersistenceServiceImpl implements HibernatePersistenceServ
 	 *
 	 * @see org.tynamo.services.PersistenceService#save(java.lang.Object)
 	 */
-	public <T> T save(T instance) // throws ValidationException
+	public <T> T save(T instance)
 	{
-/*
-		try
-		{
-*/
-		TynamoClassDescriptor TynamoClassDescriptor = descriptorService.getClassDescriptor(instance.getClass());
+		TynamoClassDescriptor tynamoclassdescriptor = descriptorService.getClassDescriptor(instance.getClass());
+		// @todo: org.hibernate.MappingException: Unknown entity
+
 		/* check isTransient to avoid merging on entities not persisted yet. TRAILS-33 */
-		if (!TynamoClassDescriptor.getHasCyclicRelationships() || isTransient(instance, TynamoClassDescriptor))
+		if (!tynamoclassdescriptor.getHasCyclicRelationships() || isTransient(instance, tynamoclassdescriptor))
 		{
 			getSession().saveOrUpdate(instance);
 		} else
@@ -176,13 +182,6 @@ public class HibernatePersistenceServiceImpl implements HibernatePersistenceServ
 			instance = (T) getSession().merge(instance);
 		}
 		return instance;
-//		}
-/*
-		catch (DataAccessException dex)
-		{
-			throw new PersistenceException(dex);
-		}
-*/
 	}
 
 
@@ -213,7 +212,7 @@ public class HibernatePersistenceServiceImpl implements HibernatePersistenceServ
 
 	public Serializable getIdentifier(final Object data, final TynamoClassDescriptor classDescriptor)
 	{
-		return (Serializable) propertyAccess.get(data, classDescriptor.getIdentifierDescriptor().getName());
+		return (Serializable) getPropertyAccess().get(data, classDescriptor.getIdentifierDescriptor().getName());
 	}
 
 	public Serializable getIdentifier(final Object data)
@@ -236,7 +235,7 @@ public class HibernatePersistenceServiceImpl implements HibernatePersistenceServ
 	public List getInstances(final Object example, final TynamoClassDescriptor classDescriptor)
 	{
 		//create Criteria instance
-		DetachedCriteria searchCriteria = DetachedCriteria.forClass(Utils.checkForCGLIB(example.getClass()));
+		DetachedCriteria searchCriteria = DetachedCriteria.forClass(example.getClass());
 		searchCriteria = alterCriteria(example.getClass(), searchCriteria);
 
 		//loop over the example object's PropertyDescriptors
@@ -247,7 +246,7 @@ public class HibernatePersistenceServiceImpl implements HibernatePersistenceServ
 			{
 				String propertyName = propertyDescriptor.getName();
 				Class propertyClass = propertyDescriptor.getPropertyType();
-				Object value = null; //PropertyUtils.read(example, propertyName);
+				Object value = getPropertyAccess().get(example, propertyName);
 
 				//only add a Criterion to the Criteria instance if the value for this property is non-null
 				if (value != null)
@@ -364,29 +363,41 @@ public class HibernatePersistenceServiceImpl implements HibernatePersistenceServ
 	/**
 	 * @see org.tynamo.hibernate.services.HibernatePersistenceService#saveOrUpdate(java.lang.Object)
 	 */
-
-	public <T> T saveOrUpdate(T instance)  // throws ValidationException
+	public <T> T saveOrUpdate(T instance)
 	{
 		getSession().saveOrUpdate(instance);
 		return instance;
-
-/*
-		catch (DataAccessException dex)
-		{
-			throw new PersistenceException(dex);
-		}
-*/
 	}
 
 	public <T> T addToCollection(CollectionDescriptor descriptor, T element, Object collectionOwner)
 	{
-		Utils.executeOgnlExpression(descriptor.getAddExpression(), element, collectionOwner);
-		return element;
-	}
+		Class elementType = descriptor.getElementType();
+		String addMethod = descriptor.getAddExpression() != null ? descriptor.getAddExpression() : "add" + elementType.getSimpleName();
 
-	public void removeFromCollection(CollectionDescriptor descriptor, Object element, Object collectionOwner)
-	{
-		Utils.executeOgnlExpression(descriptor.getRemoveExpression(), element, collectionOwner);
+		try
+		{
+			Method method = descriptor.getBeanType().getMethod(addMethod, new Class[]{elementType});
+			method.invoke(collectionOwner, element);
+			return element;
+
+		} catch (NoSuchMethodException e)
+		{
+			// do nothing;
+		} catch (InvocationTargetException e)
+		{
+			throw new RuntimeException(e);
+		} catch (IllegalAccessException e)
+		{
+			throw new RuntimeException(e);
+		}
+
+		Collection collection = (Collection) getPropertyAccess().get(collectionOwner, descriptor.getName());
+		if (!(descriptor.isChildRelationship() && (collection instanceof List) && (collection.contains(element))))
+		{
+			collection.add(element);
+		}
+		return element;
+
 	}
 
 	public List getOrphanInstances(CollectionDescriptor descriptor, Object owner)

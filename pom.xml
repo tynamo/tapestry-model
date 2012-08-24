@@ -6,12 +6,12 @@
 	<packaging>pom</packaging>
 	<name>Tynamo Model-Driven CRUD web framework</name>
 	<url>http://tynamo.org/</url>
-	<version>0.3.0-SNAPSHOT</version>
+	<version>0.3.2-SNAPSHOT</version>
 
 	<parent>
 		<groupId>org.tynamo</groupId>
 		<artifactId>tynamo-parent</artifactId>
-		<version>0.0.8</version>
+		<version>0.0.10</version>
 	</parent>
 
 	<modules>
@@ -19,6 +19,7 @@
 		<module>tapestry-model-test</module>
 		<module>tapestry-model-core</module>
 		<module>tapestry-model-hibernate</module>
+		<module>tapestry-model-jpa</module>
 		<module>tapestry-model-web</module>
 	</modules>
 
@@ -37,43 +38,47 @@
 	</distributionManagement>
 
 	<properties>
-		<tapestry-release-version>5.3.0</tapestry-release-version>
+		<tapestry-release-version>5.3.2</tapestry-release-version>
 	</properties>
 
 	<!-- note that our own versions are auto-managed by the release plugin -->
 	<dependencyManagement>
 		<dependencies>
-
 			<dependency>
 				<groupId>org.tynamo</groupId>
 				<artifactId>tapestry-model-annotations</artifactId>
-				<version>0.3.0-SNAPSHOT</version>
+				<version>0.3.2-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>org.tynamo</groupId>
 				<artifactId>tapestry-model-core</artifactId>
-				<version>0.3.0-SNAPSHOT</version>
+				<version>0.3.2-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>org.tynamo</groupId>
 				<artifactId>tapestry-model-hibernate</artifactId>
-				<version>0.3.0-SNAPSHOT</version>
+				<version>0.3.2-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>org.tynamo</groupId>
+				<artifactId>tapestry-model-test</artifactId>
+				<version>0.3.2-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>org.tynamo</groupId>
 				<artifactId>tapestry-model-web</artifactId>
-				<version>0.3.0-SNAPSHOT</version>
+				<version>0.3.2-SNAPSHOT</version>
 			</dependency>
 
 			<dependency>
 				<groupId>org.apache.tapestry</groupId>
 				<artifactId>tapestry-core</artifactId>
-				<version>5.3.0-SNAPSHOT</version>
+				<version>${tapestry-release-version}</version>
 			</dependency>
 
 			<dependency>
 				<groupId>org.apache.tapestry</groupId>
-				<artifactId>tapestry-annotations</artifactId>
+				<artifactId>tapestry5-annotations</artifactId>
 				<version>${tapestry-release-version}</version>
 			</dependency>
 
@@ -110,6 +115,7 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>cobertura-maven-plugin</artifactId>
+				<version>2.5.1</version>
 				<inherited>true</inherited>
 				<executions>
 					<execution>
@@ -124,15 +130,8 @@
 			<plugins>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-surefire-report-plugin</artifactId>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-surefire-plugin</artifactId>
 					<configuration>
-						<suiteXmlFiles>
-							<suiteXmlFile>src/test/conf/testng.xml</suiteXmlFile>
-						</suiteXmlFiles>
 						<argLine>-Xmx500m</argLine>
 						<redirectTestOutputToFile>false</redirectTestOutputToFile>
 					</configuration>
@@ -146,14 +145,17 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-report-plugin</artifactId>
+				<version>2.12</version>
 			</plugin>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>cobertura-maven-plugin</artifactId>
+				<version>2.5.1</version>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-pmd-plugin</artifactId>
+				<version>2.7</version>
 				<configuration>
 					<linkXref>true</linkXref>
 					<targetJdk>1.5</targetJdk>
@@ -194,6 +196,7 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>taglist-maven-plugin</artifactId>
+				<version>2.4</version>
 				<configuration>
 					<tagListOptions>
 						<tagClasses>
@@ -275,10 +278,9 @@
 
 	</profiles>
 
-	<!-- tapestry.formos.com is down -->
 	<repositories>
 		<repository>
-			<id>repository.apache.org</id>
+			<id>snapshots@repository.apache.org</id>
 			<url>http://repository.apache.org/snapshots</url>
 			<releases>
 				<enabled>false</enabled>
@@ -289,13 +291,13 @@
 		</repository>
 
 		<repository>
-			<id>howardlewisship</id>
-			<url>http://howardlewisship.com/snapshot-repository/</url>
+			<id>staging@repository.apache.org</id>
+			<url>https://repository.apache.org/content/repositories/staging</url>
 			<releases>
-				<enabled>false</enabled>
+				<enabled>true</enabled>
 			</releases>
 			<snapshots>
-				<enabled>true</enabled>
+				<enabled>false</enabled>
 			</snapshots>
 		</repository>
 

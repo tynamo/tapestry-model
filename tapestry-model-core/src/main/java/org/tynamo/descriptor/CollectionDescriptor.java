@@ -3,11 +3,8 @@ package org.tynamo.descriptor;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.tynamo.exception.TynamoRuntimeException;
 
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.List;
 
 
 public class CollectionDescriptor extends TynamoPropertyDescriptorImpl
@@ -120,10 +117,6 @@ public class CollectionDescriptor extends TynamoPropertyDescriptorImpl
 
 	public String getAddExpression()
 	{
-		if (addExpression == null)
-		{
-			addExpression = findAddExpression();
-		}
 		return addExpression;
 	}
 
@@ -134,10 +127,6 @@ public class CollectionDescriptor extends TynamoPropertyDescriptorImpl
 
 	public String getRemoveExpression()
 	{
-		if (removeExpression == null)
-		{
-			removeExpression = findRemoveExpression();
-		}
 		return removeExpression;
 	}
 
@@ -169,64 +158,6 @@ public class CollectionDescriptor extends TynamoPropertyDescriptorImpl
 	public Object clone()
 	{
 		return new CollectionDescriptor(getBeanType(), this);
-	}
-
-	private String findAddExpression()
-	{
-		final String method = "add";
-
-		/**
-		 * Awful patch for TRAILS-78 bug.
-		 * It evaluates if the object is in the list before adding it.
-		 * If it is already there then do nothing else add it.
-		 * eg: "bazzes.contains(#member) ? bazzes.size() : bazzes.add" 
-		 *
-		 */
-		if (isChildRelationship() && List.class.isAssignableFrom(getBeanType()))
-		{
-			return findExpression(method,
-					getName() + ".contains(#member) ? " + getName() + ".size() : " + getName() + "." + method);
-		} else
-		{
-			return findExpression(method);
-		}
-
-	}
-
-	private String findRemoveExpression()
-	{
-		return findExpression("remove");
-	}
-
-	/**
-	 * @param method the method to look for, usually add or remove
-	 * @return the ogln expression to use to add or remove a member to the collection.  Will look for a addName method
-	 *         where Name is the unqualified element class name, if there isn't one it will use the collection's add
-	 *         method.
-	 */
-	private String findExpression(String method, String defaultValue)
-	{
-		Method addMethod = null;
-
-		try
-		{
-			addMethod =
-					getBeanType().getMethod(method + getElementType().getSimpleName(), new Class[]{getElementType()});
-		} catch (NoSuchMethodException ex)
-		{
-			// if we don't have one...
-			return defaultValue;
-		} catch (Exception e)
-		{
-			throw new TynamoRuntimeException(e);
-		}
-
-		return addMethod.getName();
-	}
-
-	String findExpression(String method)
-	{
-		return findExpression(method, getName() + "." + method);
 	}
 
 	private void copyFrom(CollectionDescriptor collectionDescriptor)

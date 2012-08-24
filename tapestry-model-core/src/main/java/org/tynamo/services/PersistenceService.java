@@ -1,6 +1,4 @@
 /*
- * Copyright 2004 Chris Nelson
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -11,13 +9,15 @@
  */
 package org.tynamo.services;
 
-import org.tynamo.descriptor.CollectionDescriptor;
-import org.tynamo.descriptor.TynamoClassDescriptor;
-
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 
+import org.tynamo.descriptor.CollectionDescriptor;
+import org.tynamo.descriptor.TynamoClassDescriptor;
+
+// To be replaced with an internal service. User are discouraged to use this service even if model pages are using it
+@Deprecated 
 public interface PersistenceService
 {
 

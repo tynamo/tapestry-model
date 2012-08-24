@@ -6,6 +6,7 @@ import org.apache.tapestry5.Link;
 import org.apache.tapestry5.ioc.services.PropertyAccess;
 import org.apache.tapestry5.services.PageRenderLinkSource;
 import org.apache.tapestry5.upload.services.UploadedFile;
+import org.tynamo.builder.BuilderDirector;
 import org.tynamo.descriptor.TynamoPropertyDescriptor;
 import org.tynamo.descriptor.extension.BlobDescriptorExtension;
 import org.tynamo.descriptor.extension.TynamoBlob;
@@ -24,13 +25,15 @@ public class DefaultBlobManager implements BlobManager
 	private PersistenceService persistenceService;
 	private PropertyAccess propertyAccess;
 	private PageRenderLinkSource pageRenderLinkSource;
+	private BuilderDirector builderDirector;
 
 	public DefaultBlobManager(PersistenceService persistenceService, PropertyAccess propertyAccess,
-							  PageRenderLinkSource pageRenderLinkSource)
+	                          PageRenderLinkSource pageRenderLinkSource, BuilderDirector builderDirector)
 	{
 		this.persistenceService = persistenceService;
 		this.propertyAccess = propertyAccess;
 		this.pageRenderLinkSource = pageRenderLinkSource;
+		this.builderDirector = builderDirector;
 	}
 
 	public void store(TynamoPropertyDescriptor propertyDescriptor, Object model, UploadedFile file)
@@ -56,18 +59,19 @@ public class DefaultBlobManager implements BlobManager
 				propertyAccess.set(model, propertyDescriptor.getName(), data);
 			} else if (blobDescriptorExtension.isITynamoBlob())
 			{
-				TynamoBlob trailsBlob = (TynamoBlob) propertyAccess.get(model, propertyDescriptor.getName());
+				TynamoBlob tynamoBlob = (TynamoBlob) propertyAccess.get(model, propertyDescriptor.getName());
 
-				if (trailsBlob == null)
-				{ //trying to avoid an NPE
-					trailsBlob = new TynamoBlobImpl();
-					propertyAccess.set(model, propertyDescriptor.getName(), trailsBlob);
+				if (tynamoBlob == null)
+				{
+					//trying to avoid an NPE
+					tynamoBlob = (TynamoBlob) builderDirector.createNewInstance(propertyDescriptor.getPropertyType());
+					propertyAccess.set(model, propertyDescriptor.getName(), tynamoBlob);
 				}
 
-				trailsBlob.setFileName(file.getFileName());
-				trailsBlob.setFilePath(file.getFilePath());
-				trailsBlob.setContentType(file.getContentType());
-				trailsBlob.setBytes(data);
+				tynamoBlob.setFileName(file.getFileName());
+				tynamoBlob.setFilePath(file.getFilePath());
+				tynamoBlob.setContentType(file.getContentType());
+				tynamoBlob.setBytes(data);
 			}
 		}
 	}
@@ -82,8 +86,8 @@ public class DefaultBlobManager implements BlobManager
 
 		} else if (blobDescriptorExtension.isITynamoBlob())
 		{
-			TynamoBlob trailsBlob = (TynamoBlob) propertyAccess.get(model, propertyDescriptor.getName());
-			return trailsBlob != null ? trailsBlob.getBytes() : new byte[0];
+			TynamoBlob tynamoBlob = (TynamoBlob) propertyAccess.get(model, propertyDescriptor.getName());
+			return tynamoBlob != null ? tynamoBlob.getBytes() : new byte[0];
 		}
 		return null;
 	}
@@ -98,8 +102,8 @@ public class DefaultBlobManager implements BlobManager
 
 		} else if (blobDescriptorExtension.isITynamoBlob())
 		{
-			TynamoBlob trailsBlob = (TynamoBlob) propertyAccess.get(model, propertyDescriptor.getName());
-			trailsBlob.reset();
+			TynamoBlob tynamoBlob = (TynamoBlob) propertyAccess.get(model, propertyDescriptor.getName());
+			tynamoBlob.reset();
 		}
 
 		persistenceService.save(model);
@@ -117,10 +121,10 @@ public class DefaultBlobManager implements BlobManager
 
 		if (blobDescriptorExtension.isITynamoBlob())
 		{
-			TynamoBlob trailsBlob = (TynamoBlob) propertyAccess.get(model, propertyDescriptor.getName());
-			if (trailsBlob != null)
+			TynamoBlob tynamoBlob = (TynamoBlob) propertyAccess.get(model, propertyDescriptor.getName());
+			if (tynamoBlob != null)
 			{
-				return trailsBlob.getContentType();
+				return tynamoBlob.getContentType();
 			}
 		}
 
@@ -138,10 +142,10 @@ public class DefaultBlobManager implements BlobManager
 
 		if (blobDescriptorExtension.isITynamoBlob())
 		{
-			TynamoBlob trailsBlob = (TynamoBlob) propertyAccess.get(model, propertyDescriptor.getName());
-			if (trailsBlob != null)
+			TynamoBlob tynamoBlob = (TynamoBlob) propertyAccess.get(model, propertyDescriptor.getName());
+			if (tynamoBlob != null)
 			{
-				return trailsBlob.getFileName();
+				return tynamoBlob.getFileName();
 			}
 		}
 
@@ -156,8 +160,8 @@ public class DefaultBlobManager implements BlobManager
 			byte[] bytes = null;
 			if (blobDescriptorExtension.isITynamoBlob())
 			{
-				TynamoBlob trailsBlob = (TynamoBlob) propertyAccess.get(model, propertyDescriptor.getName());
-				bytes = trailsBlob != null ? trailsBlob.getBytes() : null;
+				TynamoBlob tynamoBlob = (TynamoBlob) propertyAccess.get(model, propertyDescriptor.getName());
+				bytes = tynamoBlob != null ? tynamoBlob.getBytes() : null;
 			} else if (blobDescriptorExtension.isBytes()) {
 				bytes = (byte[]) propertyAccess.get(model, propertyDescriptor.getName());
 			}

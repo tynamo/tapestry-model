@@ -1,5 +1,5 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<div id="${clientId}" class="composition" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_0_0.xsd" xmlns:p="tapestry:parameter">
+<div id="${clientId}" class="composition" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd" xmlns:p="tapestry:parameter">
 
 	<t:remove>
 <!-- This link is added from the beginRender method
@@ -16,9 +16,9 @@
 					<li>
 						<t:pagelink page="Show" context="showPageContext">${collectionIterator}</t:pagelink>
 						<t:actionlink t:id="deletechild" title="message:org.tynamo.i18n.delete-child"
-									  context="deleteContext" zone="prop:compositionZoneClientId"
-									  style="float:right; display:inline-block;">
-						<img src="${deleteicon}" alt="${message:deleteicon-label}"/>
+						              context="deleteContext" zone="prop:compositionZoneClientId"
+						              style="float:right; display:inline-block;">
+							<img src="${deleteicon}" alt="${message:deleteicon-label}"/>
 						</t:actionlink>
 					</li>
 				</t:loop>
@@ -33,7 +33,7 @@
 		<t:errors/>
 		<fieldset class="group">
 			<legend>${legendMessage}</legend>
-				<t:beaneditor object="formBean" model="beanModel"/>
+			<t:beaneditor object="formBean" model="beanModel"/>
 			<br/>
 
 			<div class="t-beaneditor-row">

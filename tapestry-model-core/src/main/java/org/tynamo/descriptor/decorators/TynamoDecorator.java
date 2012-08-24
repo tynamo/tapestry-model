@@ -150,7 +150,7 @@ public class TynamoDecorator implements DescriptorDecorator
 				}
 				catch (Exception ex)
 				{
-					LOGGER.warn(ExceptionUtils.getRootCauseMessage(ex));
+					LOGGER.error("error decorating: " + descriptor.toString() + " with " + annotation.toString(), ExceptionUtils.getRootCauseMessage(ex));
 				}
 			}
 		}

@@ -19,40 +19,43 @@
 
 package org.tynamo.test;
 
+import static com.gargoylesoftware.htmlunit.WebAssert.assertTextNotPresent;
+import static com.gargoylesoftware.htmlunit.WebAssert.assertTextPresent;
+import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.assertTrue;
+import static org.testng.Assert.fail;
+
+import java.io.IOException;
+import java.util.List;
+
+import org.eclipse.jetty.server.Connector;
+import org.eclipse.jetty.server.Handler;
+import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.handler.DefaultHandler;
+import org.eclipse.jetty.server.handler.HandlerCollection;
+import org.eclipse.jetty.server.nio.SelectChannelConnector;
+import org.eclipse.jetty.util.resource.ResourceCollection;
+import org.eclipse.jetty.webapp.WebAppContext;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeTest;
+
 import com.gargoylesoftware.htmlunit.ElementNotFoundException;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlForm;
 import com.gargoylesoftware.htmlunit.html.HtmlInput;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
-import org.mortbay.jetty.Connector;
-import org.mortbay.jetty.Handler;
-import org.mortbay.jetty.Server;
-import org.mortbay.jetty.handler.DefaultHandler;
-import org.mortbay.jetty.handler.HandlerCollection;
-import org.mortbay.jetty.nio.SelectChannelConnector;
-import org.mortbay.jetty.webapp.WebAppContext;
-import org.mortbay.resource.ResourceCollection;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeTest;
-
-import java.io.IOException;
-import java.util.List;
-
-import static com.gargoylesoftware.htmlunit.WebAssert.assertTextNotPresent;
-import static com.gargoylesoftware.htmlunit.WebAssert.assertTextPresent;
-import static org.testng.Assert.*;
 
 public abstract class AbstractContainerTest
 {
 	protected static PauseableServer server;
 
-	protected static final int port = 8180;
+	protected static int port = 8180;
 
-	protected static final String BASEURI = "http://localhost:" + port + "/";
+	protected static String BASEURI = "http://localhost:" + port + "/";
 
 	protected final WebClient webClient = new WebClient();
 
-	static String errorText = "You must correct the following errors before you may continue";
+	static String errorText = "You must correct the following errors before continuing";
 
 	@BeforeClass
 	public void startContainer() throws Exception
@@ -83,7 +86,7 @@ public abstract class AbstractContainerTest
 		context.setBaseResource(resourceCollection);
 
 		/**
-		 * like -Dorg.mortbay.jetty.webapp.parentLoaderPriority=true
+		 * like -Dorg.eclipse.jetty.webapp.parentLoaderPriority=true
 		 * Sets the classloading model for the context to avoid an strange "ClassNotFoundException: org.slf4j.Logger"
 		 */
 		context.setParentLoaderPriority(true);
@@ -151,7 +154,7 @@ public abstract class AbstractContainerTest
 	{
 		try
 		{
-			return (HtmlPage) page.getFirstAnchorByText(linkText).click();
+			return (HtmlPage) page.getAnchorByText(linkText).click();
 		} catch (ElementNotFoundException e)
 		{
 			fail("Couldn't find a link with text '" + linkText + "' on page " + page);

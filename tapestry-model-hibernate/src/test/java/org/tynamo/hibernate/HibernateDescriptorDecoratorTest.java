@@ -1,6 +1,4 @@
 /*
- * Copyright 2004 Chris Nelson
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -11,206 +9,220 @@
  */
 package org.tynamo.hibernate;
 
+import org.apache.tapestry5.func.F;
+import org.apache.tapestry5.func.Predicate;
+import org.apache.tapestry5.hibernate.HibernateCoreModule;
+import org.apache.tapestry5.hibernate.HibernateModule;
+import org.apache.tapestry5.ioc.Registry;
+import org.apache.tapestry5.ioc.RegistryBuilder;
+import org.apache.tapestry5.services.TapestryModule;
+import org.testng.Assert;
+import org.testng.annotations.*;
+import org.tynamo.descriptor.*;
+import org.tynamo.descriptor.decorators.DescriptorDecorator;
+import org.tynamo.hibernate.services.HibernateDescriptorDecorator;
+import org.tynamo.model.test.entities.Bar;
+import org.tynamo.model.test.entities.Baz;
+import org.tynamo.model.test.entities.Descendant;
+import org.tynamo.model.test.entities.Embeddee;
+import org.tynamo.model.test.entities.Embeddor;
+import org.tynamo.model.test.entities.Foo;
+import org.tynamo.model.test.entities.IBar;
+import org.tynamo.services.TynamoCoreModule;
+
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
-import junit.framework.TestCase;
-import ognl.Ognl;
-import org.hibernate.cfg.Configuration;
-import org.hibernate.mapping.PersistentClass;
-import org.hibernate.mapping.Property;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.orm.hibernate3.LocalSessionFactoryBean;
-import org.tynamo.descriptor.CollectionDescriptor;
-import org.tynamo.descriptor.decorators.DescriptorDecorator;
-import org.tynamo.descriptor.TrailsClassDescriptor;
-import org.tynamo.descriptor.IPropertyDescriptor;
-import org.tynamo.descriptor.IdentifierDescriptor;
-import org.tynamo.descriptor.TrailsClassDescriptor;
-import org.tynamo.descriptor.TrailsPropertyDescriptor;
-import org.tynamo.descriptor.EmbeddedDescriptor;
-import org.tynamo.testhibernate.Bar;
-import org.tynamo.testhibernate.Baz;
-import org.tynamo.testhibernate.Descendant;
-import org.tynamo.testhibernate.Embeddee;
-import org.tynamo.testhibernate.Embeddor;
-import org.tynamo.testhibernate.Foo;
-import org.tynamo.testhibernate.IBar;
 
-
-/**
- * @author fus8882
- *         <p/>
- *         TODO To change the template for this generated type comment go to
- *         Window - Preferences - Java - Code Style - Code Templates
- */
-public class HibernateDescriptorDecoratorTest extends TestCase
+public class HibernateDescriptorDecoratorTest
 {
-	ApplicationContext appContext;
-	DescriptorDecorator hibernateDescriptorDecorator;
-	TrailsClassDescriptor classDescriptor;
 
+	DescriptorDecorator hibernateDescriptorDecorator;
+	TynamoClassDescriptor classDescriptor;
+
+	private static Registry registry;
+
+	@BeforeSuite
+	public final void setup_registry()
+	{
+		RegistryBuilder builder = new RegistryBuilder();
+		builder.add(TapestryModule.class);
+		builder.add(HibernateCoreModule.class);
+		builder.add(HibernateModule.class);
+		builder.add(TynamoCoreModule.class);
+		builder.add(TestModule.class);
+
+		registry = builder.build();
+		registry.performRegistryStartup();
+
+	}
+
+	@AfterSuite
+	public final void shutdown_registry()
+	{
+		registry.shutdown();
+
+		registry = null;
+	}
+
+	@AfterMethod
+	public final void cleanupThread()
+	{
+		registry.cleanupThread();
+	}
+
+	@BeforeMethod
 	public void setUp()
 	{
-		appContext = new ClassPathXmlApplicationContext(
-			"applicationContext-test.xml");
-		hibernateDescriptorDecorator = (DescriptorDecorator) appContext.getBean(
-			"hibernateDescriptorDecorator");
-		TrailsClassDescriptor fooDescriptor = new TrailsClassDescriptor(Foo.class);
-		fooDescriptor.getPropertyDescriptors().add(new TrailsPropertyDescriptor(Foo.class, "bazzes", Set.class));
-		fooDescriptor.getPropertyDescriptors().add(new TrailsPropertyDescriptor(Foo.class, "bings", Set.class));
-		fooDescriptor.getPropertyDescriptors().add(new TrailsPropertyDescriptor(Foo.class, "id", Integer.class));
-		fooDescriptor.getPropertyDescriptors().add(new TrailsPropertyDescriptor(Foo.class, "name", String.class));
-		fooDescriptor.getPropertyDescriptors().add(new TrailsPropertyDescriptor(Foo.class, "hidden", String.class));
-		fooDescriptor.getPropertyDescriptors().add(new TrailsPropertyDescriptor(Foo.class, "date", Date.class));
-		fooDescriptor.getPropertyDescriptors().add(new TrailsPropertyDescriptor(Foo.class, "readOnly", String.class));
-		fooDescriptor.getPropertyDescriptors().add(new TrailsPropertyDescriptor(Foo.class, "multiWordProperty", String.class));
-		fooDescriptor.getPropertyDescriptors().add(new TrailsPropertyDescriptor(Foo.class, "primitive", boolean.class));
-		fooDescriptor.getPropertyDescriptors().add(new TrailsPropertyDescriptor(Foo.class, "bar", IBar.class));
-		fooDescriptor.getPropertyDescriptors().add(new TrailsPropertyDescriptor(Foo.class, "fromFormula", String.class));
+		hibernateDescriptorDecorator = registry.getService(HibernateDescriptorDecorator.class);
+
+		TynamoClassDescriptor fooDescriptor = new TynamoClassDescriptorImpl(Foo.class);
+		fooDescriptor.getPropertyDescriptors().add(new TynamoPropertyDescriptorImpl(Foo.class, "bazzes", Set.class));
+		fooDescriptor.getPropertyDescriptors().add(new TynamoPropertyDescriptorImpl(Foo.class, "bings", Set.class));
+		fooDescriptor.getPropertyDescriptors().add(new TynamoPropertyDescriptorImpl(Foo.class, "id", Integer.class));
+		fooDescriptor.getPropertyDescriptors().add(new TynamoPropertyDescriptorImpl(Foo.class, "name", String.class));
+		fooDescriptor.getPropertyDescriptors().add(new TynamoPropertyDescriptorImpl(Foo.class, "hidden", String.class));
+		fooDescriptor.getPropertyDescriptors().add(new TynamoPropertyDescriptorImpl(Foo.class, "date", Date.class));
+		fooDescriptor.getPropertyDescriptors().add(new TynamoPropertyDescriptorImpl(Foo.class, "readOnly", String.class));
+		fooDescriptor.getPropertyDescriptors().add(new TynamoPropertyDescriptorImpl(Foo.class, "multiWordProperty", String.class));
+		fooDescriptor.getPropertyDescriptors().add(new TynamoPropertyDescriptorImpl(Foo.class, "primitive", boolean.class));
+		fooDescriptor.getPropertyDescriptors().add(new TynamoPropertyDescriptorImpl(Foo.class, "bar", IBar.class));
+		fooDescriptor.getPropertyDescriptors().add(new TynamoPropertyDescriptorImpl(Foo.class, "fromFormula", String.class));
 
 		classDescriptor = hibernateDescriptorDecorator.decorate(fooDescriptor);
-
 	}
 
+	@Test
 	public void testNameDescriptor() throws Exception
 	{
-		IPropertyDescriptor nameDescriptor = (IPropertyDescriptor) classDescriptor.getPropertyDescriptor("name");
-
-		assertEquals("is name", "name", nameDescriptor.getName());
-
+		TynamoPropertyDescriptor nameDescriptor = classDescriptor.getPropertyDescriptor("name");
+		Assert.assertEquals(nameDescriptor.getName(), "name", "is name");
 	}
 
+	@Test
 	public void testIdDescriptor() throws Exception
 	{
 		IdentifierDescriptor idDescriptor = (IdentifierDescriptor) classDescriptor.getIdentifierDescriptor();
-		assertTrue("is id", idDescriptor.isIdentifier());
-		assertFalse("not generated", idDescriptor.isGenerated());
+		Assert.assertTrue(idDescriptor.isIdentifier(), "is id");
+		Assert.assertFalse(idDescriptor.isGenerated(), "not generated");
 	}
 
+	@Test
 	public void testFormulaDescriptor() throws Exception
 	{
-		IPropertyDescriptor formulaDescriptor = classDescriptor.getPropertyDescriptor("fromFormula");
-		assertTrue(formulaDescriptor.isReadOnly());
+		TynamoPropertyDescriptor formulaDescriptor = classDescriptor.getPropertyDescriptor("fromFormula");
+		Assert.assertTrue(formulaDescriptor.isReadOnly());
 	}
 
+	@Test
 	public void testCollectionDescriptor() throws Exception
 	{
 
 		CollectionDescriptor bazzesDescriptor = (CollectionDescriptor) classDescriptor.getPropertyDescriptor("bazzes");
-		assertTrue("bazzes is a collection", bazzesDescriptor.isCollection());
-		assertEquals("right element type", Baz.class,
-			bazzesDescriptor.getElementType());
-		//TODO Fix when hibernate annotations add support for this..
-		//assertTrue("bazzes are children", bazzesDescriptor.isChildRelationship());
-		assertTrue(bazzesDescriptor.isOneToMany());
-		assertEquals("bazzes are mapped by 'foo' property in Baz", "foo", bazzesDescriptor.getInverseProperty());
-		assertTrue("Foo has a cyclic relationship", classDescriptor.getHasCyclicRelationships());
+		Assert.assertTrue(bazzesDescriptor.isCollection(), "bazzes is a collection");
+		Assert.assertEquals(bazzesDescriptor.getElementType(), Baz.class, "right element type");
+		Assert.assertTrue(bazzesDescriptor.isChildRelationship(), "bazzes are children");
+		Assert.assertTrue(bazzesDescriptor.isOneToMany());
+		Assert.assertEquals(bazzesDescriptor.getInverseProperty(), "foo", "bazzes are mapped by 'foo' property in Baz");
+
+//      @note: HibernateDescriptorDecorator doesn't set hasCyclicRelationships anymore but it might do it again if we
+//      switch from Descriptors to Extensions
+//		Assert.assertTrue(classDescriptor.getHasCyclicRelationships(), "Foo has a cyclic relationship");
 	}
 
+	@Test
 	public void testGetClassDescriptors() throws Exception
 	{
 
-		assertFalse("not a child", classDescriptor.isChild());
-		List propertyDescriptors = classDescriptor.getPropertyDescriptors();
-		assertEquals("got 11", 11, propertyDescriptors.size());
+		Assert.assertFalse(classDescriptor.isChild(), "not a child");
+		List<TynamoPropertyDescriptor> propertyDescriptors = classDescriptor.getPropertyDescriptors();
+		Assert.assertEquals(propertyDescriptors.size(), 11, "got 11");
 
-//        TrailsPropertyDescriptor barDescriptor = (TrailsPropertyDescriptor) Ognl.getValue("#root.{? #this.name == 'bar'}[0]",
-//            propertyDescriptors);
-//        assertEquals("name", "bar", barDescriptor.getName());
-//        assertTrue("is not an id", !barDescriptor.isIdentifier());
+		class NameFilter implements Predicate<TynamoPropertyDescriptor>
+		{
+			private String nameToFilter;
 
-		IPropertyDescriptor hiddenDescriptor = (IPropertyDescriptor)
-			Ognl.getValue("#root.{? #this.name == 'hidden'}[0]", propertyDescriptors);
-		assertNotNull("didn't blow up", hiddenDescriptor);
+			NameFilter(String nameToFilter)
+			{
+				this.nameToFilter = nameToFilter;
+			}
 
-		// This is not working yet for Hibernate3 Xdoclet
-//        IPropertyDescriptor readOnlyDescriptor = (IPropertyDescriptor)
-//        	Ognl.getValue("#root.{? #this.name == 'readOnly'}[0]", propertyDescriptors);
-//        assertTrue("is read only", readOnlyDescriptor.isReadOnly());
+			@Override
+			public boolean accept(TynamoPropertyDescriptor tynamoPropertyDescriptor)
+			{
+				return nameToFilter.equals(tynamoPropertyDescriptor.getName());
+			}
+		}
 
-		IPropertyDescriptor primitiveDescriptor = (IPropertyDescriptor)
-			Ognl.getValue("#root.{? #this.name == 'primitive'}[0]", propertyDescriptors);
-		assertTrue("is boolean", primitiveDescriptor.isBoolean());
+		TynamoPropertyDescriptor barDescriptor = F.flow(propertyDescriptors).filter(new NameFilter("bar")).toList().get(0);
 
+		Assert.assertEquals(barDescriptor.getName(), "bar", "name");
+		Assert.assertTrue(!barDescriptor.isIdentifier(), "is not an id");
+
+		TynamoPropertyDescriptor hiddenDescriptor = F.flow(propertyDescriptors).filter(new NameFilter("hidden")).toList().get(0);
+		Assert.assertNotNull(hiddenDescriptor, "didn't blow up");
+
+		TynamoPropertyDescriptor primitiveDescriptor = F.flow(propertyDescriptors).filter(new NameFilter("primitive")).toList().get(0);
+		Assert.assertTrue(primitiveDescriptor.isBoolean(), "is boolean");
 
 	}
 
-//    public void testischild() throws exception
-//    {
-//        descriptorservice descriptorservice = (descriptorservice)appcontext.getbean("descriptorservice");
-//        TrailsClassDescriptor bazdescriptor = descriptorservice.getclassdescriptor(baz.class);
-//        asserttrue("is a child", bazdescriptor.ischild());
-//    }
-
-/*
-// waiting for Ken to fix it.
+	@Test
 	public void testIsObjectReference() throws Exception
 	{
-		IPropertyDescriptor propertyDescriptor = classDescriptor.getPropertyDescriptor(
-			"bar");
-		assertTrue(propertyDescriptor.isObjectReference());
-		assertEquals("got right class", Bar.class,
-			propertyDescriptor.getPropertyType());
+		TynamoPropertyDescriptor propertyDescriptor = classDescriptor.getPropertyDescriptor("bar");
+		Assert.assertTrue(propertyDescriptor.isObjectReference());
+		Assert.assertEquals(propertyDescriptor.getPropertyType(), Bar.class, "got right class");
 
-		IPropertyDescriptor primitiveDescriptor = classDescriptor.getPropertyDescriptor(
-			"primitive");
-		assertFalse(primitiveDescriptor.isObjectReference());
-	}
-*/
-
-	public void testGetMappings() throws Exception
-	{
-		LocalSessionFactoryBean lsfb = (LocalSessionFactoryBean) appContext.getBean(
-			"&sessionFactory");
-		Configuration cfg = lsfb.getConfiguration();
-		PersistentClass fooMapping = cfg.getClassMapping(Foo.class.getName());
-		Property idProp = fooMapping.getIdentifierProperty();
-		//System.out.println(idProp.getMetaAttributes());
+		TynamoPropertyDescriptor primitiveDescriptor = classDescriptor.getPropertyDescriptor("primitive");
+		Assert.assertFalse(primitiveDescriptor.isObjectReference());
 	}
 
+	@Test
 	public void testLengthLarge() throws Exception
 	{
-		IPropertyDescriptor multiWordDescriptor = classDescriptor.getPropertyDescriptor("multiWordProperty");
-		assertTrue(multiWordDescriptor.isLarge());
-		assertEquals("right length", 101, multiWordDescriptor.getLength());
-		IPropertyDescriptor nameDescriptor = classDescriptor.getPropertyDescriptor("name");
-		assertFalse("not large", nameDescriptor.isLarge());
+		TynamoPropertyDescriptor multiWordDescriptor = classDescriptor.getPropertyDescriptor("multiWordProperty");
+		Assert.assertTrue(multiWordDescriptor.isLarge());
+		Assert.assertEquals(multiWordDescriptor.getLength(), 101, "right length");
+		TynamoPropertyDescriptor nameDescriptor = classDescriptor.getPropertyDescriptor("name");
+		Assert.assertFalse(nameDescriptor.isLarge(), "not large");
 	}
 
+	@Test
 	public void testInheritance() throws Exception
 	{
-		TrailsClassDescriptor descendantDescriptor = new TrailsClassDescriptor(Descendant.class);
-		descendantDescriptor.getPropertyDescriptors().add(new TrailsPropertyDescriptor(Foo.class, "bazzes", Set.class));
-		descendantDescriptor.getPropertyDescriptors().add(new TrailsPropertyDescriptor(Foo.class, "extra", String.class));
-		descendantDescriptor.getPropertyDescriptors().add(new TrailsPropertyDescriptor(Foo.class, "id", Integer.class));
-		descendantDescriptor.getPropertyDescriptors().add(new TrailsPropertyDescriptor(Foo.class, "name", String.class));
-		TrailsClassDescriptor decorated = (TrailsClassDescriptor) hibernateDescriptorDecorator.decorate(descendantDescriptor);
-		assertEquals(4, decorated.getPropertyDescriptors().size());
+		TynamoClassDescriptor descendantDescriptor = new TynamoClassDescriptorImpl(Descendant.class);
+		descendantDescriptor.getPropertyDescriptors().add(new TynamoPropertyDescriptorImpl(Foo.class, "bazzes", Set.class));
+		descendantDescriptor.getPropertyDescriptors().add(new TynamoPropertyDescriptorImpl(Foo.class, "extra", String.class));
+		descendantDescriptor.getPropertyDescriptors().add(new TynamoPropertyDescriptorImpl(Foo.class, "id", Integer.class));
+		descendantDescriptor.getPropertyDescriptors().add(new TynamoPropertyDescriptorImpl(Foo.class, "name", String.class));
+		TynamoClassDescriptor decorated = hibernateDescriptorDecorator.decorate(descendantDescriptor);
+		Assert.assertEquals(4, decorated.getPropertyDescriptors().size());
 	}
 
+	@Test
 	public void testEmbedded() throws Exception
 	{
-		TrailsClassDescriptor embeddorDescriptor = new TrailsClassDescriptor(Embeddor.class);
-		embeddorDescriptor.getPropertyDescriptors().add(new TrailsPropertyDescriptor(Embeddor.class, "embeddee", Embeddee.class));
-		TrailsClassDescriptor decorated = (TrailsClassDescriptor) hibernateDescriptorDecorator.decorate(embeddorDescriptor);
-		IPropertyDescriptor propertyDescriptor = (IPropertyDescriptor) decorated.getPropertyDescriptors().get(0);
-		assertTrue(propertyDescriptor.isEmbedded());
+		TynamoClassDescriptor embeddorDescriptor = new TynamoClassDescriptorImpl(Embeddor.class);
+		embeddorDescriptor.getPropertyDescriptors().add(new TynamoPropertyDescriptorImpl(Embeddor.class, "embeddee", Embeddee.class));
+		TynamoClassDescriptor decorated = hibernateDescriptorDecorator.decorate(embeddorDescriptor);
+		TynamoPropertyDescriptor propertyDescriptor = decorated.getPropertyDescriptors().get(0);
+		Assert.assertTrue(propertyDescriptor.isEmbedded());
 		EmbeddedDescriptor embeddedDescriptor = (EmbeddedDescriptor) propertyDescriptor;
-		assertEquals("embeddee", embeddedDescriptor.getName());
-		assertEquals("right bean type", Embeddor.class, embeddedDescriptor.getBeanType());
-		assertEquals("3 prop descriptors", 3, embeddedDescriptor.getPropertyDescriptors().size());
+		Assert.assertEquals("embeddee", embeddedDescriptor.getName());
+		Assert.assertEquals(Embeddor.class, embeddedDescriptor.getBeanType(), "right bean type");
+		Assert.assertEquals(3, embeddedDescriptor.getPropertyDescriptors().size(), "3 prop descriptors");
 	}
 
+	@Test
 	public void testTransient() throws Exception
 	{
-		TrailsClassDescriptor descriptor = new TrailsClassDescriptor(Bar.class);
-		descriptor.getPropertyDescriptors().add(new TrailsPropertyDescriptor(Bar.class, "name", String.class));
-		descriptor.getPropertyDescriptors().add(new TrailsPropertyDescriptor(Bar.class, "transientProperty", String.class));
-		TrailsClassDescriptor decorated = (TrailsClassDescriptor) hibernateDescriptorDecorator.decorate(descriptor);
-		assertFalse(decorated.getPropertyDescriptor("transientProperty").isSearchable());
-		assertTrue(decorated.getPropertyDescriptor("name").isSearchable());
+		TynamoClassDescriptor descriptor = new TynamoClassDescriptorImpl(Bar.class);
+		descriptor.getPropertyDescriptors().add(new TynamoPropertyDescriptorImpl(Bar.class, "name", String.class));
+		descriptor.getPropertyDescriptors().add(new TynamoPropertyDescriptorImpl(Bar.class, "transientProperty", String.class));
+		TynamoClassDescriptor decorated = hibernateDescriptorDecorator.decorate(descriptor);
+		Assert.assertFalse(decorated.getPropertyDescriptor("transientProperty").isSearchable());
+		Assert.assertTrue(decorated.getPropertyDescriptor("name").isSearchable());
 	}
 }
