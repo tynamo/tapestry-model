@@ -25,7 +25,7 @@
 
 	<t:block id="missingAdvisor">
 		<p style="color:red;font-weight:bold">Tynamo can't display this property properly because it doesn't have
-			enought information. Please check you have the Avisor mixing configured correctly
+			enough information. Please check you have the Advisor mixing configured correctly
 			(t:mixins="tynamo/BeanModelAdvisor")
 		</p>
 	</t:block>
