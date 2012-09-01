@@ -1,23 +1,12 @@
-/*
- * Copyright 2004 Chris Nelson
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and limitations under the License.
- */
 package org.tynamo.descriptor;
-
-import org.apache.commons.beanutils.BeanUtils;
-import org.apache.tapestry5.func.F;
-import org.apache.tapestry5.func.Predicate;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.commons.beanutils.BeanUtils;
+import org.apache.tapestry5.func.F;
+import org.apache.tapestry5.func.Predicate;
 
 
 /**
@@ -37,6 +26,8 @@ public class TynamoClassDescriptorImpl extends TynamoDescriptor implements Tynam
 	boolean allowRemove = true;
 
 	boolean allowSave = true;
+	
+	boolean searchable = false;
 
 	/**
 	 * This is a copy constructor. These need to be clonable for the security
@@ -230,6 +221,15 @@ public class TynamoClassDescriptorImpl extends TynamoDescriptor implements Tynam
 	{
 		this.allowSave = allowSave;
 	}
+	
+	public boolean isSearchable() {
+		return searchable;
+	}
+
+	public void setSearchable(boolean searchable)
+	{
+		this.searchable = searchable;
+	}
 
 	public boolean getHasCyclicRelationships()
 	{
@@ -240,7 +240,7 @@ public class TynamoClassDescriptorImpl extends TynamoDescriptor implements Tynam
 	{
 		this.hasCyclicRelationships = hasBidirectionalRelationship;
 	}
-
+	
 	/**
 	 * Added toString method to help with unit testing debugging.
 	 */

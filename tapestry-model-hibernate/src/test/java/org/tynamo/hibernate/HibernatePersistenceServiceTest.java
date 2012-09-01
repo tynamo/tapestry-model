@@ -22,6 +22,9 @@
  */
 package org.tynamo.hibernate;
 
+import java.util.List;
+
+import org.apache.tapestry5.hibernate.HibernateCore;
 import org.apache.tapestry5.hibernate.HibernateCoreModule;
 import org.apache.tapestry5.hibernate.HibernateModule;
 import org.apache.tapestry5.hibernate.HibernateSessionManager;
@@ -29,11 +32,13 @@ import org.apache.tapestry5.ioc.Registry;
 import org.apache.tapestry5.ioc.RegistryBuilder;
 import org.apache.tapestry5.services.TapestryModule;
 import org.hibernate.Session;
-import org.hibernate.Transaction;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 import org.testng.Assert;
-import org.testng.annotations.*;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.AfterSuite;
+import org.testng.annotations.BeforeSuite;
+import org.testng.annotations.Test;
 import org.tynamo.descriptor.CollectionDescriptor;
 import org.tynamo.descriptor.TynamoClassDescriptor;
 import org.tynamo.hibernate.services.HibernatePersistenceService;
@@ -48,8 +53,6 @@ import org.tynamo.model.test.entities.Wibble;
 import org.tynamo.services.DescriptorService;
 import org.tynamo.services.TynamoCoreModule;
 
-import java.util.List;
-
 
 public class HibernatePersistenceServiceTest
 {
@@ -60,6 +63,7 @@ public class HibernatePersistenceServiceTest
 	private static Registry registry;
 	private Session session;
 
+	@SuppressWarnings("unchecked")
 	@BeforeSuite
 	public final void setup_registry()
 	{
@@ -76,7 +80,7 @@ public class HibernatePersistenceServiceTest
 
 		persistenceService = registry.getService(HibernatePersistenceService.class);
 		descriptorService =  registry.getService(DescriptorService.class);
-		session = registry.getService(Session.class);
+		session = registry.getService(Session.class, HibernateCore.class);
 
 	}
 
@@ -158,7 +162,8 @@ public class HibernatePersistenceServiceTest
 		persistenceService.save(bar);
 		Wibble wibble = new Wibble();
 		persistenceService.save(wibble);
-		Session session = registry.getService(Session.class);
+		@SuppressWarnings("unchecked")
+		Session session = registry.getService(Session.class, HibernateCore.class);
 		session.flush();
 		Assert.assertNotNull(wibble.getId());
 		wibble.setBar(bar);
@@ -383,7 +388,8 @@ public class HibernatePersistenceServiceTest
 		foo.getBazzes().add(baz);
 		persistenceService.save(foo);
 
-		Session session = registry.getService(Session.class);
+		@SuppressWarnings("unchecked")
+		Session session = registry.getService(Session.class, HibernateCore.class);
 		List foos = session.createQuery("from " + Foo.class.getName()).list();
 		foo = (Foo) foos.get(0);
 		Assert.assertEquals(foo.getBazzes().size(), 1, "1 baz");

@@ -9,9 +9,12 @@ import org.apache.tapestry5.ioc.OrderedConfiguration;
 import org.apache.tapestry5.ioc.ServiceBinder;
 import org.apache.tapestry5.ioc.annotations.Autobuild;
 import org.apache.tapestry5.ioc.annotations.Contribute;
+import org.apache.tapestry5.ioc.services.PropertyShadowBuilder;
 import org.apache.tapestry5.services.BeanBlockContribution;
 import org.apache.tapestry5.services.BeanBlockSource;
 import org.apache.tapestry5.services.LibraryMapping;
+import org.hibernate.search.jpa.FullTextEntityManager;
+import org.hibernate.search.jpa.Search;
 import org.tynamo.VersionedModule;
 import org.tynamo.descriptor.decorators.DescriptorDecorator;
 import org.tynamo.descriptor.factories.DescriptorFactory;
@@ -89,6 +92,18 @@ public class TynamoJpaModule extends VersionedModule {
 		configuration.add(TynamoJpaSymbols.LARGE_COLUMN_LENGTH, "100");
 		configuration.add(TynamoJpaSymbols.IGNORE_NON_HIBERNATE_TYPES, "false");
 		configuration.add(TynamoJpaSymbols.PERSISTENCEUNIT, "");
+	}
+
+	public static FullTextEntityManager buildFullTextEntityManager(final EntityManager entityManager,
+		PropertyShadowBuilder propertyShadowBuilder) {
+		// FIXME we'd need get the configured entityManager, this only works if there's a single entityManager
+		Object lazyLoader = new Object() {
+			public FullTextEntityManager getFullTextEntityManager() {
+				// / entityManager is per thread
+				return Search.getFullTextEntityManager(entityManager);
+			}
+		};
+		return propertyShadowBuilder.build(lazyLoader, "fullTextEntityManager", FullTextEntityManager.class);
 	}
 
 	/**

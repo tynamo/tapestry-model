@@ -1,6 +1,9 @@
 package org.tynamo.hibernate.services;
 
+import java.util.Iterator;
+
 import org.apache.tapestry5.hibernate.HibernateConfigurer;
+import org.apache.tapestry5.hibernate.HibernateSessionManager;
 import org.apache.tapestry5.hibernate.HibernateSessionSource;
 import org.apache.tapestry5.ioc.Configuration;
 import org.apache.tapestry5.ioc.MappedConfiguration;
@@ -10,10 +13,17 @@ import org.apache.tapestry5.ioc.annotations.Autobuild;
 import org.apache.tapestry5.ioc.annotations.Contribute;
 import org.apache.tapestry5.ioc.annotations.InjectService;
 import org.apache.tapestry5.ioc.services.FactoryDefaults;
+import org.apache.tapestry5.ioc.services.PropertyShadowBuilder;
 import org.apache.tapestry5.ioc.services.SymbolProvider;
-import org.apache.tapestry5.services.*;
+import org.apache.tapestry5.services.BeanBlockContribution;
+import org.apache.tapestry5.services.BeanBlockSource;
+import org.apache.tapestry5.services.ClasspathAssetAliasManager;
+import org.apache.tapestry5.services.ComponentClassResolver;
+import org.apache.tapestry5.services.LibraryMapping;
 import org.apache.tapestry5.services.messages.ComponentMessagesSource;
 import org.hibernate.mapping.PersistentClass;
+import org.hibernate.search.FullTextSession;
+import org.hibernate.search.Search;
 import org.tynamo.VersionedModule;
 import org.tynamo.descriptor.decorators.DescriptorDecorator;
 import org.tynamo.descriptor.factories.DescriptorFactory;
@@ -21,8 +31,6 @@ import org.tynamo.hibernate.TynamoHibernateSymbols;
 import org.tynamo.hibernate.TynamoInterceptor;
 import org.tynamo.hibernate.TynamoInterceptorConfigurer;
 import org.tynamo.services.DescriptorService;
-
-import java.util.Iterator;
 
 public class TynamoHibernateModule extends VersionedModule
 {
@@ -132,6 +140,25 @@ public class TynamoHibernateModule extends VersionedModule
 		config.add("TynamoInterceptorConfigurer", interceptorConfigurer);
 	}
 
+	public static FullTextSession buildFullTextSession(HibernateSessionManager sessionManager,
+		PropertyShadowBuilder propertyShadowBuilder)
+
+	{
+		LazyFullTextSession lazy = new LazyFullTextSession(sessionManager);
+		return propertyShadowBuilder.build(lazy, "fullTextSession", FullTextSession.class);
+	}
+	
+	public static class LazyFullTextSession {
+		private HibernateSessionManager sessionManager;
+
+		public LazyFullTextSession(HibernateSessionManager sessionManager) {
+			this.sessionManager = sessionManager;
+		}
+
+		public FullTextSession getFullTextSession() {
+			return Search.getFullTextSession(sessionManager.getSession());
+		}
+	}
 
 /*
 	public static void contributeTynamoEntityPackageManager(Configuration<String> configuration, HibernateEntityPackageManager packageManager)

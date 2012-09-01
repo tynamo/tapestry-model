@@ -1,6 +1,4 @@
 /*
- * Copyright 2004 Chris Nelson
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -11,11 +9,22 @@
  */
 package org.tynamo.test;
 
+import org.hibernate.search.annotations.Boost;
+import org.hibernate.search.annotations.DocumentId;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Index;
+import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.Store;
+
+@Indexed
 public class Bar implements IBar
 {
 
+	@DocumentId
 	private Integer id;
 
+	@Field(index = Index.YES, store = Store.NO)
+	@Boost(value = 2.0f) // boosts the importance of the name when searching	
 	private String name;
 
 	public String getName()

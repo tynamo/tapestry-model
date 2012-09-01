@@ -6,7 +6,12 @@ import org.apache.tapestry5.annotations.InjectContainer;
 import org.apache.tapestry5.annotations.Log;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.SetupRender;
-import org.apache.tapestry5.corelib.components.*;
+import org.apache.tapestry5.corelib.components.BeanDisplay;
+import org.apache.tapestry5.corelib.components.BeanEditForm;
+import org.apache.tapestry5.corelib.components.BeanEditor;
+import org.apache.tapestry5.corelib.components.Grid;
+import org.apache.tapestry5.corelib.components.PropertyDisplay;
+import org.apache.tapestry5.corelib.components.PropertyEditor;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.services.PropertyAccess;
 import org.apache.tapestry5.services.Environment;
@@ -110,7 +115,7 @@ public class BeanModelAdvisor
 		}
 
 		throw new RuntimeException(
-				"The context key couldn't be guessed from the container, please provide one. eg: avisor.key=\"add\"");
+				"The context key couldn't be guessed from the container, please provide one. eg: advisor.key=\"add\"");
 	}
 
 	private String guessPropertyName()
@@ -119,7 +124,7 @@ public class BeanModelAdvisor
 		if (container instanceof BeanDisplay) return "object";
 
 		throw new RuntimeException(
-				"The container's object property couldn't be guessed, please provide one. eg: avisor.containerProperty=\"bean\"");
+				"The container's object property couldn't be guessed, please provide one. eg: advisor.containerProperty=\"bean\"");
 	}
 
 	private boolean isTynamoBeanContextNeeded()
