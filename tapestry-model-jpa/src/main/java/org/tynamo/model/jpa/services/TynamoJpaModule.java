@@ -15,14 +15,16 @@ import org.apache.tapestry5.services.BeanBlockSource;
 import org.apache.tapestry5.services.LibraryMapping;
 import org.hibernate.search.jpa.FullTextEntityManager;
 import org.hibernate.search.jpa.Search;
-import org.tynamo.VersionedModule;
+import org.tynamo.common.ModuleProperties;
 import org.tynamo.descriptor.decorators.DescriptorDecorator;
 import org.tynamo.descriptor.factories.DescriptorFactory;
 import org.tynamo.model.jpa.TynamoJpaSymbols;
 import org.tynamo.model.jpa.internal.ConfigurableEntityManagerProvider;
 import org.tynamo.services.DescriptorService;
+import org.tynamo.services.TynamoCoreModule;
 
-public class TynamoJpaModule extends VersionedModule {
+public class TynamoJpaModule {
+	private static final String version = ModuleProperties.getVersion(TynamoCoreModule.class);
 
 	public static void bind(ServiceBinder binder) {
 

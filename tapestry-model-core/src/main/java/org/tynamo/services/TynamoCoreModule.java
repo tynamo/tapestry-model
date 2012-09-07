@@ -21,11 +21,11 @@ import org.apache.tapestry5.services.DataTypeAnalyzer;
 import org.apache.tapestry5.services.DisplayBlockContribution;
 import org.apache.tapestry5.services.EditBlockContribution;
 import org.apache.tapestry5.services.LibraryMapping;
-import org.tynamo.VersionedModule;
 import org.tynamo.bindings.ModelBindingFactory;
 import org.tynamo.blob.BlobManager;
 import org.tynamo.blob.DefaultBlobManager;
 import org.tynamo.builder.BuilderDirector;
+import org.tynamo.common.ModuleProperties;
 import org.tynamo.descriptor.TynamoClassDescriptor;
 import org.tynamo.descriptor.TynamoPropertyDescriptor;
 import org.tynamo.descriptor.annotation.handlers.BeanModelAnnotationHandler;
@@ -47,8 +47,9 @@ import org.tynamo.descriptor.factories.ReflectionDescriptorFactory;
 import org.tynamo.internal.services.BeanModelSourceAdvice;
 import org.tynamo.util.Pair;
 
-public class TynamoCoreModule extends VersionedModule
+public class TynamoCoreModule
 {
+	private static final String version = ModuleProperties.getVersion(TynamoCoreModule.class);
 
 	public final static String PROPERTY_DISPLAY_BLOCKS = "tynamo/PropertyDisplayBlocks";
 	public final static String PROPERTY_EDIT_BLOCKS = "tynamo/PropertyEditBlocks";
@@ -67,6 +68,8 @@ public class TynamoCoreModule extends VersionedModule
 		binder.bind(EntityCoercerService.class, EntityCoercerServiceImpl.class);
 		binder.bind(DescriptorService.class, DescriptorServiceImpl.class);
 		binder.bind(TynamoDataTypeAnalyzer.class, TynamoDataTypeAnalyzer.class);
+		binder.bind(SearchFilterBlockSource.class);
+		binder.bind(SearchFilterBlockOverrideSource.class);
 
 		binder.bind(BlobManager.class, DefaultBlobManager.class).withId("DefaultBlobManager");
 
@@ -130,6 +133,22 @@ public class TynamoCoreModule extends VersionedModule
 	public static void contributeBeanBlockOverrideSource(Configuration<BeanBlockContribution> configuration)
 	{
 		configuration.add(new EditBlockContribution("enum", PROPERTY_EDIT_BLOCKS, "select"));
+	}
+
+	@Contribute(SearchFilterBlockSource.class)
+	public static void provideDefaultSearchFilterBlocks(Configuration<SearchFilterBlockContribution> configuration) {
+		configuration.add(new SearchFilterBlockContribution(DataTypeConstants.TEXT, "tynamo/PropertySearchFilterBlocks",
+			DataTypeConstants.TEXT));
+		configuration.add(new SearchFilterBlockContribution("formatted-number", "tynamo/PropertySearchFilterBlocks",
+			DataTypeConstants.NUMBER));
+		configuration.add(new SearchFilterBlockContribution(DataTypeConstants.NUMBER, "tynamo/PropertySearchFilterBlocks",
+			DataTypeConstants.NUMBER));
+		configuration.add(new SearchFilterBlockContribution(DataTypeConstants.ENUM, "tynamo/PropertySearchFilterBlocks",
+			DataTypeConstants.ENUM));
+		configuration.add(new SearchFilterBlockContribution(DataTypeConstants.BOOLEAN, "tynamo/PropertySearchFilterBlocks",
+			DataTypeConstants.BOOLEAN));
+		configuration.add(new SearchFilterBlockContribution(DataTypeConstants.DATE, "tynamo/PropertySearchFilterBlocks",
+			DataTypeConstants.DATE));
 	}
 
 	public static void contributeDataTypeAnalyzer(OrderedConfiguration<DataTypeAnalyzer> configuration,

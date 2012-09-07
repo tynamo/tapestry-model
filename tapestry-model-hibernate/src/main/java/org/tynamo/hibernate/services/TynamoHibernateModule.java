@@ -24,16 +24,18 @@ import org.apache.tapestry5.services.messages.ComponentMessagesSource;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.search.FullTextSession;
 import org.hibernate.search.Search;
-import org.tynamo.VersionedModule;
+import org.tynamo.common.ModuleProperties;
 import org.tynamo.descriptor.decorators.DescriptorDecorator;
 import org.tynamo.descriptor.factories.DescriptorFactory;
 import org.tynamo.hibernate.TynamoHibernateSymbols;
 import org.tynamo.hibernate.TynamoInterceptor;
 import org.tynamo.hibernate.TynamoInterceptorConfigurer;
 import org.tynamo.services.DescriptorService;
+import org.tynamo.services.TynamoCoreModule;
 
-public class TynamoHibernateModule extends VersionedModule
+public class TynamoHibernateModule
 {
+	private static final String version = ModuleProperties.getVersion(TynamoCoreModule.class);
 
 	public static void bind(ServiceBinder binder)
 	{
