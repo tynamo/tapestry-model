@@ -51,7 +51,7 @@ public class SearchFilters
 	private Class beanType;
 
 	@Persist
-	private Map<Class, SortedMap<TynamoPropertyDescriptor, SearchFilterPredicate>> filterStateByDescriptor;
+	private Map<Class, SortedMap<TynamoPropertyDescriptor, SearchFilterPredicate>> filterStateByBeanType;
 	
 	@Property
 	private Entry<TynamoPropertyDescriptor, Object> entry;
@@ -64,8 +64,8 @@ public class SearchFilters
 
 	public Map<TynamoPropertyDescriptor, SearchFilterPredicate> getActiveFilterMap() {
 		// may be null if session has expired
-		if (filterStateByDescriptor == null) return Collections.emptyMap();
-		SortedMap<TynamoPropertyDescriptor, SearchFilterPredicate> descriptorMap = filterStateByDescriptor.get(beanType);
+		if (filterStateByBeanType == null) return Collections.emptyMap();
+		SortedMap<TynamoPropertyDescriptor, SearchFilterPredicate> descriptorMap = filterStateByBeanType.get(beanType);
 		if (descriptorMap == null) return Collections.emptyMap();
 		Map<TynamoPropertyDescriptor, SearchFilterPredicate> activeDescriptorMap = new HashMap<TynamoPropertyDescriptor, SearchFilterPredicate>();
 		for (Entry<TynamoPropertyDescriptor, SearchFilterPredicate> entry : descriptorMap.entrySet())
@@ -74,22 +74,17 @@ public class SearchFilters
 		return activeDescriptorMap;
 	}
 
-	// void onPrepare() {
-	// int i = 0;
-	// i++;
-	// }
 	void setupRender() {
 		formSupport.storeAndExecute(this, new Prepare());
 	}
 
-	// void setupRender() {
 	void doPrepare() {
 		TynamoClassDescriptor classDescriptor = descriptorService.getClassDescriptor(beanType);
 
-		if (filterStateByDescriptor == null)
-			filterStateByDescriptor = Collections
+		if (filterStateByBeanType == null)
+			filterStateByBeanType = Collections
 			.synchronizedMap(new HashMap<Class, SortedMap<TynamoPropertyDescriptor, SearchFilterPredicate>>());
-		else displayableDescriptorMap = filterStateByDescriptor.get(classDescriptor);
+		else displayableDescriptorMap = filterStateByBeanType.get(beanType);
 
 		if (displayableDescriptorMap == null) {
 			SortedMap<TynamoPropertyDescriptor, SearchFilterPredicate> map = new TreeMap<TynamoPropertyDescriptor, SearchFilterPredicate>(
@@ -104,7 +99,7 @@ public class SearchFilters
 				// FIXME remove all strings for now, decide how to deal with them later
 				if (!descriptor.isNonVisual() && !descriptor.isIdentifier() && !descriptor.isString())
 					map.put(descriptor, new SearchFilterPredicate());
-			filterStateByDescriptor.put(beanType, map);
+			filterStateByBeanType.put(beanType, map);
 			displayableDescriptorMap = map;
 		}
 	}
