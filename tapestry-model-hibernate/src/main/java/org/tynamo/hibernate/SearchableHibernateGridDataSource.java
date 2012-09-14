@@ -1,36 +1,43 @@
 package org.tynamo.hibernate;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.tapestry5.grid.GridDataSource;
 import org.apache.tapestry5.grid.SortConstraint;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.search.FullTextQuery;
 import org.tynamo.descriptor.TynamoPropertyDescriptor;
+import org.tynamo.search.SearchFilterPredicate;
 
 public class SearchableHibernateGridDataSource implements GridDataSource {
 
 	private FullTextQuery fullTextQuery;
+	private Map<TynamoPropertyDescriptor, SearchFilterPredicate> propertySearchFilterMap;
 	private Session session;
-	private Object[] filteringPropertyValues;
 	private Class entityType;
   private int startIndex;
   private List preparedResults;
 	
+	public SearchableHibernateGridDataSource(Session session, Class entityType,
+		Map<TynamoPropertyDescriptor, SearchFilterPredicate> propertySearchFilterMap) {
+		this(session, entityType, null, propertySearchFilterMap);
+	}
 
-	public SearchableHibernateGridDataSource(Session session, Class entityType, FullTextQuery fullTextQuery, Object... filteringPropertyValues) {
+	public SearchableHibernateGridDataSource(Session session, Class entityType, FullTextQuery fullTextQuery,
+		Map<TynamoPropertyDescriptor, SearchFilterPredicate> propertySearchFilterMap) {
 		this.session= session;
 		this.entityType = entityType;
 		this.fullTextQuery = fullTextQuery;
-		// every other is TynamoPropertyDescriptor, every other a value
-		this.filteringPropertyValues = filteringPropertyValues;
-		if (filteringPropertyValues != null && filteringPropertyValues.length %2 != 0) throw new IllegalArgumentException("filteringPropertyValues is expected to contain a TynamoPropertyDescriptor+value pairs. The length of the array was not an even number");
+		this.propertySearchFilterMap = propertySearchFilterMap;
 	}
-  
+
   /**
    * Returns the total number of rows for the configured entity type.
    */
@@ -105,17 +112,30 @@ public class SearchableHibernateGridDataSource implements GridDataSource {
    */
   protected void applyAdditionalConstraints(Criteria crit)
   {
-  	if (filteringPropertyValues == null || filteringPropertyValues.length == 0) return;
-  	for (int i = 0; i < filteringPropertyValues.length; i+=2) {
-  		// add the filtering properties to the criteria
-  		if (!(filteringPropertyValues[i] instanceof TynamoPropertyDescriptor)) throw new IllegalArgumentException("filteringPropertyValues at index " + i + " is of type " + filteringPropertyValues[i].getClass() + " but " + TynamoPropertyDescriptor.class.getSimpleName() + " was expected");
-  		TynamoPropertyDescriptor propertyDescriptor = (TynamoPropertyDescriptor)filteringPropertyValues[i];
-  		// TODO we should log a warning
-  		if (propertyDescriptor.isObjectReference() || !propertyDescriptor.isSearchable()) continue;
-  		crit.add(Restrictions.eq(propertyDescriptor.getName(), filteringPropertyValues[i+1]));
-  	}
-  	
-  } 
+		if (propertySearchFilterMap == null || propertySearchFilterMap.size() <= 0) return;
+		for (Entry<TynamoPropertyDescriptor, SearchFilterPredicate> entry : propertySearchFilterMap.entrySet())
+			crit.add(createCriterion(entry.getKey().getName(), entry.getValue()));
+	}
+
+	private Criterion createCriterion(String propertyName, SearchFilterPredicate predicate) {
+		switch (predicate.getOperator()) {
+		case eq:
+			return Restrictions.eq(propertyName, predicate.getLowValue());
+		case ne:
+			return Restrictions.ne(propertyName, predicate.getLowValue());
+		case gt:
+			return Restrictions.gt(propertyName, predicate.getLowValue());
+		case ge:
+			return Restrictions.ge(propertyName, predicate.getLowValue());
+		case lt:
+			return Restrictions.lt(propertyName, predicate.getLowValue());
+		case le:
+			return Restrictions.le(propertyName, predicate.getLowValue());
+		default:
+			throw new IllegalArgumentException("Search filtering for operator '" + predicate.getOperator()
+				+ "' is not yet supported");
+		}
+	}
   
   /**
    * Returns a row value at the given index (which must be within the range defined by the call to {@link

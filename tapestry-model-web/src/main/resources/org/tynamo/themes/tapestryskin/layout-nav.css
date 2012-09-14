@@ -7,7 +7,7 @@ div#content {
 	min-width: 770px;
 }
 
-div#sub {
+div.sub {
 	width: 150px;
 	float: right;
 	margin-top: 75px;
@@ -24,23 +24,23 @@ div#sub {
 	right: 1px;
 }
 
-div#sub ul {
+div.sub ul {
 	margin: 5px 10px 15px 0;
 	line-height: 1.5em;
 	font-size: 14px;
 }
 
-div#sub ul a {
+div.sub ul a {
 	font-weight: bolder;
 	text-decoration: none;
 	color: #4477aa;
 }
 
-div#sub ul a:hover {
+div.sub ul a:hover {
 	color: red;
 }
 
-div#sub li {
+div.sub li {
 	padding: 0 !important;
 	margin: 0 !important;
 	list-style-type: none;
@@ -52,7 +52,7 @@ div#sub li {
 	font-size: smaller;
 }
 
-div#sub h2 {
+div.sub h2 {
 	font-size: smaller;
 	border-bottom: 1px solid #aaaaaa;
 	color: #000000;
@@ -191,6 +191,19 @@ ul.locales {
 	display: block;
 	margin-top: -15px;
 	white-space: nowrap;
+}
+
+ul.t-model-searchfilters {
+	
+}
+
+ul.t-model-searchfilters li {
+	margin-bottom:10px !important
+}
+
+ul.t-model-searchfilters li label.filter {
+	display: inline-block;
+	font-weight: bold;
 }
 
 /**

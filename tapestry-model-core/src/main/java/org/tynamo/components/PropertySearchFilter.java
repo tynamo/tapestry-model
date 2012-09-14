@@ -28,13 +28,15 @@ import org.apache.tapestry5.services.Environment;
 import org.apache.tapestry5.services.FieldTranslatorSource;
 import org.apache.tapestry5.services.FieldValidatorDefaultSource;
 import org.apache.tapestry5.services.FormSupport;
-import org.apache.tapestry5.services.PropertyEditContext;
 import org.tynamo.descriptor.TynamoPropertyDescriptor;
+import org.tynamo.search.SearchFilterOperator;
+import org.tynamo.search.SearchFilterPredicate;
+import org.tynamo.services.PropertySearchFilterContext;
 import org.tynamo.services.SearchFilterBlockSource;
 
 public class PropertySearchFilter {
 	/**
-	 * Configures and stores a {@link PropertyEditContext} into the {@link Environment}.
+	 * Configures and stores a {@link PropertySearchFilterContext} into the {@link Environment}.
 	 */
 	static class SetupEnvironment implements ComponentAction<PropertySearchFilter> {
 		private static final long serialVersionUID = 1L;
@@ -69,7 +71,7 @@ public class PropertySearchFilter {
 	}
 
 	@Parameter(required = true, allowNull = false)
-	private Entry<TynamoPropertyDescriptor, Object> entry;
+	private Entry<TynamoPropertyDescriptor, SearchFilterPredicate> entry;
 
 	@Inject
 	private SearchFilterBlockSource searchFilterBlockSource;
@@ -120,7 +122,7 @@ public class PropertySearchFilter {
 	}
 
 	/**
-	 * Returns a Block for rendering the property. The Block will be able to access the {@link PropertyEditContext} via the
+	 * Returns a Block for rendering the property. The Block will be able to access the {@link PropertySearchFilterContext} via the
 	 * {@link Environmental} annotation.
 	 */
 	Block beginRender() {
@@ -171,14 +173,14 @@ public class PropertySearchFilter {
 	}
 
 	/**
-	 * Creates a {@link org.apache.tapestry5.services.PropertyEditContext} and pushes it onto the
+	 * Creates a {@link org.apache.tapestry5.services.PropertySearchFilterContext} and pushes it onto the
 	 * {@link org.apache.tapestry5.services.Environment} stack.
 	 */
 	void setupEnvironment(final String propertyName) {
 		model = beanModelSource.createEditModel(entry.getKey().getBeanType(), resources.getContainerMessages());
 		propertyModel = model.get(propertyName);
 
-		PropertyEditContext context = new PropertyEditContext() {
+		PropertySearchFilterContext context = new PropertySearchFilterContext() {
 			public Messages getContainerMessages() {
 				// return overrides.getOverrideMessages();
 				return null;
@@ -196,10 +198,15 @@ public class PropertySearchFilter {
 				return propertyModel.getPropertyType();
 			}
 
-			public Object getPropertyValue() {
+			public Object getLowValue() {
 				// return propertyModel.getConduit().get(object);
-				return null;
+				return entry.getValue().getLowValue();
 			}
+
+			public Object getHighValue() {
+				return entry.getValue().getLowValue();
+			}
+
 
 			public FieldTranslator getTranslator(Field field) {
 				// return fieldTranslatorSource.createDefaultTranslator(field, propertyName, overrides.getOverrideMessages(),
@@ -215,9 +222,24 @@ public class PropertySearchFilter {
 					locale, propertyModel.getPropertyType(), propertyModel.getConduit());
 			}
 
-			public void setPropertyValue(Object value) {
-				// propertyModel.getConduit().set(object, value);
-				return;
+			public void setLowValue(Object value) {
+				entry.getValue().setLowValue(value);
+			}
+
+			public void setHighValue(Object value) {
+				entry.getValue().setLowValue(value);
+			}
+
+			public String getOperatorId() {
+				return propertyModel.getId() + "_searchoperator";
+			}
+
+			public SearchFilterOperator getOperatorValue() {
+				return entry.getValue().getOperator();
+			}
+
+			public void setOperatorValue(SearchFilterOperator value) {
+				entry.getValue().setOperator(value);
 			}
 
 			public <T extends Annotation> T getAnnotation(Class<T> annotationClass) {
@@ -225,7 +247,7 @@ public class PropertySearchFilter {
 			}
 		};
 
-		environment.push(PropertyEditContext.class, context);
+		environment.push(PropertySearchFilterContext.class, context);
 
 		BeanValidationContext beanValidationContext = environment.peek(BeanValidationContext.class);
 
@@ -238,7 +260,7 @@ public class PropertySearchFilter {
 	 * Called at the end of the form render (or at the end of the form submission) to clean up the {@link Environment} stack.
 	 */
 	void cleanupEnvironment() {
-		environment.pop(PropertyEditContext.class);
+		environment.pop(PropertySearchFilterContext.class);
 	}
 
 }

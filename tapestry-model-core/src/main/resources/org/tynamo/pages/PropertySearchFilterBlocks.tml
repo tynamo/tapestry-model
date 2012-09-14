@@ -1,25 +1,37 @@
 <html xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd" xmlns:p="tapestry:parameter">
 
-   <t:block id="text">
-       <t:label for="textField"/>
-       <input t:id="textField"/>
-   </t:block>
+	<t:block id="text">
+			<t:label for="textField"/>
+			<input t:id="textField"/>
+	</t:block>
 
-   <t:block id="number">
-       <t:label for="numberField"/>
-       <input t:id="numberField" class="t-number"/>
-   </t:block>
+	<t:block id="number">
+			<t:label for="numberField"/>
+			<input t:id="numberField" class="t-number"/>
+	</t:block>
 
 
-   <t:block id="enum">
-       <t:label for="select"/>
-       <input t:id="select"/>
-   </t:block>
+	<t:block id="enum">
+			<t:label for="select"/>
+			<input t:id="select"/>
+	</t:block>
 
-   <t:block id="boolean">
-       <t:label for="checkboxField"/>
-       <input t:id="checkboxField"/>
-   </t:block>
+	<t:block id="boolean">
+			By <t:label class="filter" for="checkboxField"/>
+			<t:RadioGroup t:id="searchFilterOperator" encoder="searchFilterOperatorEncoder">
+				<table>
+					<tr>
+						<td><t:Radio t:id="radioAny" value="toOperator('any')" label="Any"/><t:label style="display:inline" for="radioAny"/></td>
+					</tr>
+					<tr>
+						<td>
+							<t:Radio t:id="radioEq" value="toOperator('eq')" label="Is"/><t:label style="display:inline" for="radioEq"/>
+							<input style="display:inline-block;margin-left:10px" t:id="checkboxField"/>
+						</td>
+					</tr>
+				</table>
+			</t:RadioGroup>   
+	</t:block>
 
 	<t:block id="nonVisual"/>
 

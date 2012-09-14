@@ -15,42 +15,49 @@ import org.apache.tapestry5.annotations.Component;
 import org.apache.tapestry5.annotations.Environmental;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.corelib.components.Checkbox;
+import org.apache.tapestry5.corelib.components.RadioGroup;
 import org.apache.tapestry5.corelib.components.Select;
 import org.apache.tapestry5.corelib.components.TextField;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.services.TypeCoercer;
-import org.apache.tapestry5.services.PropertyEditContext;
 import org.apache.tapestry5.util.EnumSelectModel;
 import org.apache.tapestry5.util.EnumValueEncoder;
 import org.tynamo.descriptor.TynamoPropertyDescriptor;
+import org.tynamo.search.SearchFilterOperator;
 import org.tynamo.services.DescriptorService;
+import org.tynamo.services.PropertySearchFilterContext;
 import org.tynamo.services.TynamoBeanContext;
 
 public class PropertySearchFilterBlocks
 {
 	@Environmental
 	@Property(write = false)
-	private PropertyEditContext context;
+	private PropertySearchFilterContext context;
 
-	@Component(parameters = { "value=context.propertyValue", "label=prop:context.label",
+	@Component(parameters = { "value=context.lowValue", "label=prop:context.label",
 			"translate=prop:textFieldTranslator", "validate=prop:textFieldValidator", "clientId=prop:context.propertyId",
 			"annotationProvider=context" })
 	private TextField textField;
 
-	@Component(parameters = { "value=context.propertyValue", "label=prop:context.label",
+	@Component(parameters = { "value=context.lowValue", "label=prop:context.label",
 			"translate=prop:numberFieldTranslator", "validate=prop:numberFieldValidator", "clientId=prop:context.propertyId",
 			"annotationProvider=context" })
 	private TextField numberField;
 
-	@Component(parameters = { "value=context.propertyValue", "label=prop:context.label",
+	@Component(parameters = { "value=context.lowValue", "label=prop:context.label",
 			"encoder=valueEncoderForProperty", "model=selectModelForProperty", "validate=prop:selectValidator",
 			"clientId=prop:context.propertyId" })
 	private Select select;
 
 	@SuppressWarnings("unused")
-	@Component(parameters = { "value=context.propertyValue", "label=prop:context.label",
+	@Component(parameters = { "value=context.lowValue", "label=prop:context.label",
 			"clientId=prop:context.propertyId" })
 	private Checkbox checkboxField;
+
+	@SuppressWarnings("unused")
+	@Component(parameters = { "value=context.operatorValue", "label=prop:context.label",
+			"clientId=prop:context.operatorId" })
+	private RadioGroup searchFilterOperator;
 
 	@Inject
 	private DescriptorService descriptorService;
@@ -113,6 +120,19 @@ public class PropertySearchFilterBlocks
 	@SuppressWarnings("unchecked")
 	public ValueEncoder getValueEncoderForProperty() {
 		return new EnumValueEncoder(typeCoercer, context.getPropertyType());
+	}
+
+	/**
+	 * Provide a value encoder for an enum type.
+	 */
+	@SuppressWarnings("unchecked")
+	public ValueEncoder getSearchFilterOperatorEncoder() {
+		return new EnumValueEncoder(typeCoercer, SearchFilterOperator.class);
+	}
+
+	@SuppressWarnings("unchecked")
+	public SearchFilterOperator toOperator(String value) {
+		return SearchFilterOperator.valueOf(value);
 	}
 
 	/**
