@@ -2,19 +2,10 @@ package org.tynamo.search;
 
 
 public class SearchFilterPredicate {
-	private SearchFilterOperator operator;
+	private boolean enabled;
+	private SearchFilterOperator operator = SearchFilterOperator.eq;
 	private Object lowValue;
 	private Object highValue;
-
-	public SearchFilterPredicate() {
-		this(SearchFilterOperator.any, null, null);
-	}
-
-	public SearchFilterPredicate(SearchFilterOperator operator, Object lowValue, Object highValue) {
-		this.operator = operator;
-		this.lowValue = lowValue;
-		this.highValue = highValue;
-	}
 
 	public void setOperator(SearchFilterOperator operator) {
 		this.operator = operator;
@@ -38,6 +29,14 @@ public class SearchFilterPredicate {
 
 	public Object getHighValue() {
 		return highValue;
+	}
+
+	public boolean isEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
 	}
 
 }

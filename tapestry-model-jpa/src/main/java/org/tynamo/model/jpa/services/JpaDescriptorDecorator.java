@@ -122,10 +122,6 @@ public class JpaDescriptorDecorator implements DescriptorDecorator
 					// FIXME should we mark an identifier descriptor as part of a composite key?
 					descriptorReference = createIdentifierDescriptor(type, propertyDescriptor, descriptor);
 				} else if (notAHibernateProperty(metamodel, type, propertyDescriptor)) {
-					// If this is not a jpa property (i.e. marked
-					// Transient), it's certainly not searchable
-					// Are there any other properties like this?
-					propertyDescriptor.setSearchable(false);
 					descriptorReference = propertyDescriptor;
 				} else {
 					//Attribute mappingProperty = getMapping(type).getAttribute(propertyDescriptor.getName());
@@ -334,9 +330,10 @@ public class JpaDescriptorDecorator implements DescriptorDecorator
 		return findColumnLength(mappingProperty) != 255
 			   && findColumnLength(mappingProperty) > largeColumnLength;
 	}
-	
+
 	private Annotation getAnnotation(Member member, Class annotationType) {
-		return member instanceof Field ? ((Field)member).getAnnotation(annotationType) : member instanceof Method ? ((Method)member).getAnnotation(annotationType) : null; 
+		return member instanceof Field ? ((Field) member).getAnnotation(annotationType)
+			: member instanceof Method ? ((Method) member).getAnnotation(annotationType) : null;
 	}
 
 	private int findColumnLength(SingularAttribute mappingProperty) {

@@ -9,27 +9,6 @@
  */
 package org.tynamo.hibernate.services;
 
-import org.apache.tapestry5.func.F;
-import org.apache.tapestry5.func.Predicate;
-import org.apache.tapestry5.hibernate.HibernateSessionSource;
-import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.ioc.annotations.Symbol;
-import org.hibernate.HibernateException;
-import org.hibernate.cfg.Configuration;
-import org.hibernate.mapping.*;
-import org.hibernate.metadata.ClassMetadata;
-import org.hibernate.metadata.CollectionMetadata;
-import org.hibernate.type.ComponentType;
-import org.hibernate.type.Type;
-import org.slf4j.Logger;
-import org.tynamo.descriptor.*;
-import org.tynamo.descriptor.decorators.DescriptorDecorator;
-import org.tynamo.descriptor.extension.EnumReferenceDescriptor;
-import org.tynamo.descriptor.factories.DescriptorFactory;
-import org.tynamo.exception.MetadataNotFoundException;
-import org.tynamo.exception.TynamoRuntimeException;
-import org.tynamo.hibernate.TynamoHibernateSymbols;
-
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
@@ -38,6 +17,38 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+
+import org.apache.tapestry5.func.F;
+import org.apache.tapestry5.func.Predicate;
+import org.apache.tapestry5.hibernate.HibernateSessionSource;
+import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.ioc.annotations.Symbol;
+import org.hibernate.HibernateException;
+import org.hibernate.cfg.Configuration;
+import org.hibernate.mapping.Column;
+import org.hibernate.mapping.Component;
+import org.hibernate.mapping.PersistentClass;
+import org.hibernate.mapping.Property;
+import org.hibernate.mapping.Selectable;
+import org.hibernate.mapping.SimpleValue;
+import org.hibernate.metadata.ClassMetadata;
+import org.hibernate.metadata.CollectionMetadata;
+import org.hibernate.type.ComponentType;
+import org.hibernate.type.Type;
+import org.slf4j.Logger;
+import org.tynamo.descriptor.CollectionDescriptor;
+import org.tynamo.descriptor.EmbeddedDescriptor;
+import org.tynamo.descriptor.IdentifierDescriptor;
+import org.tynamo.descriptor.IdentifierDescriptorImpl;
+import org.tynamo.descriptor.ObjectReferenceDescriptor;
+import org.tynamo.descriptor.TynamoClassDescriptor;
+import org.tynamo.descriptor.TynamoPropertyDescriptor;
+import org.tynamo.descriptor.decorators.DescriptorDecorator;
+import org.tynamo.descriptor.extension.EnumReferenceDescriptor;
+import org.tynamo.descriptor.factories.DescriptorFactory;
+import org.tynamo.exception.MetadataNotFoundException;
+import org.tynamo.exception.TynamoRuntimeException;
+import org.tynamo.hibernate.TynamoHibernateSymbols;
 
 /**
  * This decorator will add metadata information. It will replace simple
@@ -122,10 +133,6 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 					descriptorReference = createIdentifierDescriptor(beanType, propertyDescriptor);
 				} else if (notAHibernateProperty(classMetaData, propertyDescriptor))
 				{
-					// If this is not a hibernate property (i.e. marked
-					// Transient), it's certainly not searchable
-					// Are the any other properties like this?
-					propertyDescriptor.setSearchable(false);
 					descriptorReference = propertyDescriptor;
 				} else
 				{
@@ -526,7 +533,7 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.tynamo.descriptor.PropertyDescriptorService#getIdentifierProperty(java.lang.Class)
 	 */
 

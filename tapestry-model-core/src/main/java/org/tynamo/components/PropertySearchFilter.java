@@ -114,8 +114,8 @@ public class PropertySearchFilter {
 	private PropertyModel propertyModel;
 
 	private String resolveDataType(TynamoPropertyDescriptor descriptor) {
-		
-		// we are going backwards - we have the propertydescriptor but DatatypeAnalyzer interface uses property adapters 
+
+		// we are going backwards - we have the propertydescriptor but DatatypeAnalyzer interface uses property adapters
 		ClassPropertyAdapter classAdapter = propertyAccess.getAdapter(descriptor.getBeanType());
 		PropertyAdapter adapter = classAdapter.getPropertyAdapter(descriptor.getName());
 		return dataTypeAnalyzer.identifyDataType(adapter);
@@ -188,6 +188,14 @@ public class PropertySearchFilter {
 
 			public String getLabel() {
 				return propertyModel.getLabel();
+			}
+
+			public boolean isEnabled() {
+				return entry.getValue().isEnabled();
+			}
+
+			public void setEnabled(boolean value) {
+				entry.getValue().setEnabled(value);
 			}
 
 			public String getPropertyId() {

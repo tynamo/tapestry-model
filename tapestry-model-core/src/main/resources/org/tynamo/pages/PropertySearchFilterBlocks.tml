@@ -6,8 +6,25 @@
 	</t:block>
 
 	<t:block id="number">
-			<t:label for="numberField"/>
-			<input t:id="numberField" class="t-number"/>
+			<t:checkbox t:id="numberFilterActive" value="filterEnabled"/> By <t:label class="filter" for="numberSearchFilterOperator"/>
+			<t:RadioGroup t:id="numberSearchFilterOperator" encoder="searchFilterOperatorEncoder">
+				<ul>
+					<li>
+						<t:Radio t:id="numberEq" value="toOperator('eq')" label="Is"/><t:label style="display:inline" for="numberEq"/>
+						<t:textfield class="t-number" size="4em" t:id="numberFieldEq" value="context.lowValue" translate="prop:numberFieldTranslator"/>
+					</li>
+					<li>
+						<t:Radio t:id="numberNe" value="toOperator('ne')" label="Not"/><t:label style="display:inline" for="numberNe"/>
+						<t:textfield class="t-number" size="4em" t:id="numberFieldNe" value="context.lowValue" translate="prop:numberFieldTranslator"/>
+					</li>
+					<li>
+						<t:Radio t:id="numberGeLe" value="toOperator('ge_le')" label="Between"/><t:label style="display:inline" for="numberGeLe"/>
+						<t:textfield class="t-number" size="4em" t:id="numberFieldGe" value="context.lowValue" translate="prop:numberFieldTranslator"/>
+						and
+						<t:textfield class="t-number" size="4em" t:id="numberFieldLe" value="context.highValue" translate="prop:numberFieldTranslator"/>
+					</li>
+				</ul>
+			</t:RadioGroup>
 	</t:block>
 
 
@@ -17,20 +34,14 @@
 	</t:block>
 
 	<t:block id="boolean">
-			By <t:label class="filter" for="checkboxField"/>
-			<t:RadioGroup t:id="searchFilterOperator" encoder="searchFilterOperatorEncoder">
-				<table>
-					<tr>
-						<td><t:Radio t:id="radioAny" value="toOperator('any')" label="Any"/><t:label style="display:inline" for="radioAny"/></td>
-					</tr>
-					<tr>
-						<td>
-							<t:Radio t:id="radioEq" value="toOperator('eq')" label="Is"/><t:label style="display:inline" for="radioEq"/>
-							<input style="display:inline-block;margin-left:10px" t:id="checkboxField"/>
-						</td>
-					</tr>
-				</table>
-			</t:RadioGroup>   
+		<t:remove>A checkbox would be the right ui element to represent a boolean value but another checkbox right after the first
+		filter activation would look confusing to the user
+		</t:remove>
+		<t:checkbox t:id="booleanFilterActive" value="filterEnabled"/> By <t:label class="filter" for="booleanSearchFilter"/><br/>
+		<t:RadioGroup t:id="booleanSearchFilter">
+			<t:Radio style="display:inline-block;margin-left:10px" t:id="booleanSearchFilterTrue" value="true" label="Yes"/><t:label style="display:inline" for="booleanSearchFilterTrue"/>
+			<t:Radio t:id="booleanSearchFilterFalse" value="false" label="No"/><t:label style="display:inline" for="booleanSearchFilterFalse"/>
+		</t:RadioGroup>
 	</t:block>
 
 	<t:block id="nonVisual"/>

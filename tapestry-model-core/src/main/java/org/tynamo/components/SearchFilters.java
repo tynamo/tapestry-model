@@ -52,7 +52,7 @@ public class SearchFilters
 
 	@Persist
 	private Map<Class, SortedMap<TynamoPropertyDescriptor, SearchFilterPredicate>> filterStateByBeanType;
-	
+
 	@Property
 	private Entry<TynamoPropertyDescriptor, Object> entry;
 
@@ -69,8 +69,7 @@ public class SearchFilters
 		if (descriptorMap == null) return Collections.emptyMap();
 		Map<TynamoPropertyDescriptor, SearchFilterPredicate> activeDescriptorMap = new HashMap<TynamoPropertyDescriptor, SearchFilterPredicate>();
 		for (Entry<TynamoPropertyDescriptor, SearchFilterPredicate> entry : descriptorMap.entrySet())
-			if (!SearchFilterOperator.any.equals(entry.getValue().getOperator()))
-				activeDescriptorMap.put(entry.getKey(), entry.getValue());
+			if (entry.getValue().isEnabled()) activeDescriptorMap.put(entry.getKey(), entry.getValue());
 		return activeDescriptorMap;
 	}
 
@@ -97,11 +96,28 @@ public class SearchFilters
 
 			for (TynamoPropertyDescriptor descriptor : classDescriptor.getPropertyDescriptors())
 				// FIXME remove all strings for now, decide how to deal with them later
+				// TODO perhaps we should create type-specfic default for SearchFilterPredicates?
+				// create a new method createSearchFilterPredicate(descriptor)
 				if (!descriptor.isNonVisual() && !descriptor.isIdentifier() && !descriptor.isString())
-					map.put(descriptor, new SearchFilterPredicate());
+					map.put(descriptor, createSearchFilterPredicate(descriptor.getPropertyType()));
 			filterStateByBeanType.put(beanType, map);
 			displayableDescriptorMap = map;
 		}
+	}
+
+	protected SearchFilterPredicate createSearchFilterPredicate(Class propertyType) {
+		SearchFilterPredicate predicate = new SearchFilterPredicate();
+		predicate.setOperator(SearchFilterOperator.eq);
+		if (boolean.class.isAssignableFrom(propertyType)) {
+			predicate.setLowValue(Boolean.FALSE);
+		} else if (Boolean.class.isAssignableFrom(propertyType)) {
+			predicate.setLowValue(Boolean.FALSE);
+		} else if (String.class.isAssignableFrom(propertyType)) {
+			predicate.setOperator(SearchFilterOperator.contains);
+		}
+
+		return predicate;
+
 	}
 
 }

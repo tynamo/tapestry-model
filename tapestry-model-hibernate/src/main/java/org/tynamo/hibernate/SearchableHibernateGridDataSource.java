@@ -24,7 +24,7 @@ public class SearchableHibernateGridDataSource implements GridDataSource {
 	private Class entityType;
   private int startIndex;
   private List preparedResults;
-	
+
 	public SearchableHibernateGridDataSource(Session session, Class entityType,
 		Map<TynamoPropertyDescriptor, SearchFilterPredicate> propertySearchFilterMap) {
 		this(session, entityType, null, propertySearchFilterMap);
@@ -53,9 +53,11 @@ public class SearchableHibernateGridDataSource implements GridDataSource {
 		}
 
 		fullTextQuery.setCriteriaQuery(criteria);
-		return fullTextQuery.getResultSize();
+		// calling getResultSize() causes HSEARCH000105: Cannot safely compute getResultSize() when a Criteria with restriction is used
+		// return fullTextQuery.getResultSize();T
+		return fullTextQuery.list().size();
   }
-  
+
   /**
    * Prepares the results, performing a query (applying the sort results, and the provided start and end index). The
    * results can later be obtained from {@link #getRowValue(int)} }.
@@ -95,12 +97,12 @@ public class SearchableHibernateGridDataSource implements GridDataSource {
       applyAdditionalConstraints(crit);
 
       this.startIndex = startIndex;
-      
+
       if (fullTextQuery == null) {
       	preparedResults = crit.list();
       	return;
       }
-      
+
       fullTextQuery.setCriteriaQuery(crit);
       preparedResults = fullTextQuery.list();
   }
@@ -136,7 +138,7 @@ public class SearchableHibernateGridDataSource implements GridDataSource {
 				+ "' is not yet supported");
 		}
 	}
-  
+
   /**
    * Returns a row value at the given index (which must be within the range defined by the call to {@link
    * #prepare(int, int, java.util.List)} ).

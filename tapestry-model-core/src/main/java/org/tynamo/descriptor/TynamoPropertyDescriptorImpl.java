@@ -12,7 +12,7 @@ public class TynamoPropertyDescriptorImpl extends TynamoDescriptor implements Ty
 
 	private String name;
 
-	private boolean searchable = true;
+	private boolean searchable;
 
 	private boolean required;
 

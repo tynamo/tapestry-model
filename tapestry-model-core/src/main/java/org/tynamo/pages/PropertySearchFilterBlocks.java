@@ -13,8 +13,8 @@ import org.apache.tapestry5.SelectModel;
 import org.apache.tapestry5.ValueEncoder;
 import org.apache.tapestry5.annotations.Component;
 import org.apache.tapestry5.annotations.Environmental;
+import org.apache.tapestry5.annotations.InjectComponent;
 import org.apache.tapestry5.annotations.Property;
-import org.apache.tapestry5.corelib.components.Checkbox;
 import org.apache.tapestry5.corelib.components.RadioGroup;
 import org.apache.tapestry5.corelib.components.Select;
 import org.apache.tapestry5.corelib.components.TextField;
@@ -40,24 +40,29 @@ public class PropertySearchFilterBlocks
 	private TextField textField;
 
 	@Component(parameters = { "value=context.lowValue", "label=prop:context.label",
-			"translate=prop:numberFieldTranslator", "validate=prop:numberFieldValidator", "clientId=prop:context.propertyId",
-			"annotationProvider=context" })
-	private TextField numberField;
-
-	@Component(parameters = { "value=context.lowValue", "label=prop:context.label",
 			"encoder=valueEncoderForProperty", "model=selectModelForProperty", "validate=prop:selectValidator",
 			"clientId=prop:context.propertyId" })
 	private Select select;
 
-	@SuppressWarnings("unused")
-	@Component(parameters = { "value=context.lowValue", "label=prop:context.label",
-			"clientId=prop:context.propertyId" })
-	private Checkbox checkboxField;
+	@Component(parameters = { "value=context.lowValue", "label=prop:context.label", "clientId=prop:context.propertyId",
+			"encoder=booleanValueEncoder" })
+	private RadioGroup booleanSearchFilter;
 
-	@SuppressWarnings("unused")
 	@Component(parameters = { "value=context.operatorValue", "label=prop:context.label",
-			"clientId=prop:context.operatorId" })
-	private RadioGroup searchFilterOperator;
+			"clientId=prop:context.operatorId", "encoder=searchFilterOperatorEncoder" })
+	private RadioGroup numberSearchFilterOperator;
+
+	// @Component(parameters = { "value=context.operatorValue", "label=prop:context.label",
+	// "clientId=prop:context.operatorId" })
+	// private RadioGroup searchFilterOperator;
+
+	public boolean getFilterEnabled() {
+		return context.isEnabled();
+	}
+
+	public void setFilterEnabled(boolean value) {
+		context.setEnabled(value);
+	}
 
 	@Inject
 	private DescriptorService descriptorService;
@@ -102,12 +107,15 @@ public class PropertySearchFilterBlocks
 		return context.getValidator(textField);
 	}
 
+	@InjectComponent
+	TextField numberFieldEq;
+
 	public FieldTranslator getNumberFieldTranslator() {
-		return context.getTranslator(numberField);
+		return context.getTranslator(numberFieldEq);
 	}
 
 	public FieldValidator getNumberFieldValidator() {
-		return context.getValidator(numberField);
+		return context.getValidator(numberFieldEq);
 	}
 
 	public FieldValidator getSelectValidator() {
@@ -128,6 +136,17 @@ public class PropertySearchFilterBlocks
 	@SuppressWarnings("unchecked")
 	public ValueEncoder getSearchFilterOperatorEncoder() {
 		return new EnumValueEncoder(typeCoercer, SearchFilterOperator.class);
+	}
+
+	public ValueEncoder getBooleanValueEncoder() {
+		return new ValueEncoder<Boolean>() {
+			public String toClient(Boolean value) {
+				return value == null ? "" : value.toString();
+			}
+			public Boolean toValue(String clientValue) {
+				return clientValue.equals("") ? null : Boolean.valueOf(clientValue);
+			}
+		};
 	}
 
 	@SuppressWarnings("unchecked")

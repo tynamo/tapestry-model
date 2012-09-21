@@ -35,6 +35,10 @@ public interface PropertySearchFilterContext extends AnnotationProvider
 	 */
 	String getOperatorId();
 
+	boolean isEnabled();
+
+	void setEnabled(boolean value);
+
 	/**
 	 * Returns the current value of the property being edited (the context encapsulates the object containing the property).
 	 */
@@ -42,7 +46,7 @@ public interface PropertySearchFilterContext extends AnnotationProvider
 
 	/**
 	 * Updates the value of the property being edited (the context encapsulates the object containing the property).
-	 * 
+	 *
 	 * @param value
 	 *          new value for the property
 	 */
@@ -68,7 +72,7 @@ public interface PropertySearchFilterContext extends AnnotationProvider
 
 	/**
 	 * Updates the value of the property being edited (the context encapsulates the object containing the property).
-	 * 
+	 *
 	 * @param value
 	 *          new value for the property
 	 */
