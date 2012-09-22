@@ -10,15 +10,15 @@
 			<t:RadioGroup t:id="numberSearchFilterOperator" encoder="searchFilterOperatorEncoder">
 				<ul>
 					<li>
-						<t:Radio t:id="numberEq" value="toOperator('eq')" label="Is"/><t:label style="display:inline" for="numberEq"/>
+						<t:Radio class="t-model-searchfilters-leftcolumn" t:id="numberEq" value="toOperator('eq')" label="Is"/><t:label for="numberEq"/>
 						<t:textfield class="t-number" size="4em" t:id="numberFieldEq" value="context.lowValue" translate="prop:numberFieldTranslator"/>
 					</li>
 					<li>
-						<t:Radio t:id="numberNe" value="toOperator('ne')" label="Not"/><t:label style="display:inline" for="numberNe"/>
+						<t:Radio class="t-model-searchfilters-leftcolumn" t:id="numberNe" value="toOperator('ne')" label="Not"/><t:label for="numberNe"/>
 						<t:textfield class="t-number" size="4em" t:id="numberFieldNe" value="context.lowValue" translate="prop:numberFieldTranslator"/>
 					</li>
 					<li>
-						<t:Radio t:id="numberGeLe" value="toOperator('ge_le')" label="Between"/><t:label style="display:inline" for="numberGeLe"/>
+						<t:Radio class="t-model-searchfilters-leftcolumn" t:id="numberGeLe" value="toOperator('ge_le')" label="Between"/><t:label for="numberGeLe"/>
 						<t:textfield class="t-number" size="4em" t:id="numberFieldGe" value="context.lowValue" translate="prop:numberFieldTranslator"/>
 						and
 						<t:textfield class="t-number" size="4em" t:id="numberFieldLe" value="context.highValue" translate="prop:numberFieldTranslator"/>

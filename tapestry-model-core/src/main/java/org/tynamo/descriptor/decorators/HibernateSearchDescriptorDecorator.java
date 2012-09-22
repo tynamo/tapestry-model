@@ -1,4 +1,4 @@
-package org.tynamo.services;
+package org.tynamo.descriptor.decorators;
 
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
@@ -15,7 +15,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.tynamo.descriptor.TynamoClassDescriptor;
 import org.tynamo.descriptor.TynamoPropertyDescriptor;
-import org.tynamo.descriptor.decorators.DescriptorDecorator;
 
 public class HibernateSearchDescriptorDecorator implements DescriptorDecorator {
 	private static final Logger LOGGER = LoggerFactory.getLogger(HibernateSearchDescriptorDecorator.class);

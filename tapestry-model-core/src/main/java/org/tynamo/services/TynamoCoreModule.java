@@ -36,6 +36,7 @@ import org.tynamo.descriptor.annotation.handlers.DescriptorAnnotationHandler;
 import org.tynamo.descriptor.annotation.handlers.MethodDescriptorAnnotationHandler;
 import org.tynamo.descriptor.annotation.handlers.PropertyDescriptorAnnotationHandler;
 import org.tynamo.descriptor.decorators.DescriptorDecorator;
+import org.tynamo.descriptor.decorators.HibernateSearchDescriptorDecorator;
 import org.tynamo.descriptor.decorators.TapestryDecorator;
 import org.tynamo.descriptor.decorators.TynamoDecorator;
 import org.tynamo.descriptor.factories.DescriptorFactory;
