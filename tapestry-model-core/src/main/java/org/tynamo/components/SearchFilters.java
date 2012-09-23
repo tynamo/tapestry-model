@@ -73,6 +73,10 @@ public class SearchFilters
 		return activeDescriptorMap;
 	}
 
+	public void resetFilters() {
+		filterStateByBeanType.put(beanType, null);
+	}
+
 	void setupRender() {
 		formSupport.storeAndExecute(this, new Prepare());
 	}
