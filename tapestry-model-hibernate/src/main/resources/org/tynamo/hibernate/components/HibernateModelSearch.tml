@@ -1,0 +1,13 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd" xmlns:p="tapestry:parameter">
+<!--
+<t:if test="filtersAvailable">
+ -->
+	<h2>Filter</h2>
+	<t:form t:id="searchFilterForm">
+		<t:tynamo.searchFilters beanType="beanType"/>
+		<input type="submit" value="Filter results"/>
+	</t:form>
+<!--
+</t:if>
+ -->
+</t:container>

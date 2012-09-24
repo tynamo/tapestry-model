@@ -51,18 +51,18 @@ public class TynamoHibernateModule
 	}
 
 	/**
-	 * Add our components and pages to the "tynamo-hibernate" library.
+	 * Add our components and pages to the "tynamo" library.
 	 */
 	@Contribute(ComponentClassResolver.class)
 	public static void componentClassResolver(Configuration<LibraryMapping> configuration)
 	{
-		configuration.add(new LibraryMapping("tynamo-hibernate", "org.tynamo.hibernate"));
+		configuration.add(new LibraryMapping("tynamo", "org.tynamo.hibernate"));
 	}
 
 	@Contribute(ClasspathAssetAliasManager.class)
 	public static void classpathAssetAliasManager(MappedConfiguration<String, String> configuration)
 	{
-		configuration.add("tynamo-hibernate-" + version, "org/tynamo/hibernate");
+		configuration.add("tynamo-" + version, "org/tynamo/hibernate");
 	}
 
 	@Contribute(ComponentMessagesSource.class)
@@ -149,7 +149,7 @@ public class TynamoHibernateModule
 		LazyFullTextSession lazy = new LazyFullTextSession(sessionManager);
 		return propertyShadowBuilder.build(lazy, "fullTextSession", FullTextSession.class);
 	}
-	
+
 	public static class LazyFullTextSession {
 		private HibernateSessionManager sessionManager;
 
