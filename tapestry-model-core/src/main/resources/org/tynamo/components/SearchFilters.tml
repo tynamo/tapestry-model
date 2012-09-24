@@ -1,5 +1,5 @@
 <ul class="t-model-searchfilters" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_0_0.xsd" xmlns:p="tapestry:parameter">
-  <t:loop t:source="displayableDescriptorMap.entrySet()" t:formState="ITERATION" t:value="entry">
+  <t:loop t:source="descriptorMap.entrySet()" t:formState="ITERATION" t:value="entry">
 		<li style="margin-bottom:10px !important">
 		  <t:tynamo.propertySearchFilter entry="entry"/>
 		</li>
