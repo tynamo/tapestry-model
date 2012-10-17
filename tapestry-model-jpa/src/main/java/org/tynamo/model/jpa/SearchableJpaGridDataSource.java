@@ -15,7 +15,6 @@ import javax.persistence.criteria.Root;
 
 import org.apache.tapestry5.grid.GridDataSource;
 import org.apache.tapestry5.grid.SortConstraint;
-import org.tynamo.descriptor.TynamoDescriptorServiceTest.E;
 import org.tynamo.descriptor.TynamoPropertyDescriptor;
 import org.tynamo.search.SearchFilterPredicate;
 
@@ -47,7 +46,7 @@ public class SearchableJpaGridDataSource implements GridDataSource {
 
 		CriteriaQuery<Long> criteria = builder.createQuery(Long.class);
 
-		final Root<E> root = criteria.from(entityType);
+		final Root<?> root = criteria.from(entityType);
 
 		criteria = criteria.select(builder.count(root));
 
@@ -62,9 +61,9 @@ public class SearchableJpaGridDataSource implements GridDataSource {
 	public void prepare(final int startIndex, final int endIndex, final List<SortConstraint> sortConstraints) {
 		final CriteriaBuilder builder = entityManager.getCriteriaBuilder();
 
-		final CriteriaQuery<E> criteria = builder.createQuery(entityType);
+		final CriteriaQuery criteria = builder.createQuery(entityType);
 
-		final Root<E> root = criteria.from(entityType);
+		final Root root = criteria.from(entityType);
 
 		applyAdditionalConstraints(criteria.select(root), root, builder);
 
@@ -89,7 +88,7 @@ public class SearchableJpaGridDataSource implements GridDataSource {
 			}
 		}
 
-		final TypedQuery<E> query = entityManager.createQuery(criteria);
+		final TypedQuery<?> query = entityManager.createQuery(criteria);
 
 		query.setFirstResult(startIndex);
 		query.setMaxResults(endIndex - startIndex + 1);
@@ -125,7 +124,7 @@ public class SearchableJpaGridDataSource implements GridDataSource {
 	/**
 	 * {@inheritDoc}
 	 */
-	public Class<E> getRowType() {
+	public Class<?> getRowType() {
 		return entityType;
 	}
 
