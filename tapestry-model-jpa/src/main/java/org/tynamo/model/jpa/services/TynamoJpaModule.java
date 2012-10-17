@@ -41,11 +41,11 @@ public class TynamoJpaModule {
 
 	/** Add our components and pages to the "tynamo-jpa" library. */
 	public static void contributeComponentClassResolver(Configuration<LibraryMapping> configuration) {
-		configuration.add(new LibraryMapping("tynamo-jpa", "org.tynamo.model.jpa"));
+		configuration.add(new LibraryMapping("tynamo", "org.tynamo.model.jpa"));
 	}
 
 	public static void contributeClasspathAssetAliasManager(MappedConfiguration<String, String> configuration) {
-		configuration.add("tynamo-jpa-" + version, "org/tynamo/jpa");
+		configuration.add("tynamo-jpa-" + version, "org/tynamo/model/jpa");
 	}
 
 // FIXME validationMessageSources doesn't exist when running tests
@@ -82,9 +82,9 @@ public class TynamoJpaModule {
 
 	@SuppressWarnings("rawtypes")
 	@Contribute(DescriptorService.class)
-	public static void descriptorService(Configuration<Class> configuration, 
+	public static void descriptorService(Configuration<Class> configuration,
 		@Autobuild ConfigurableEntityManagerProvider entityManagerProvider) {
-		
+
 		EntityManager entityManager = entityManagerProvider.getEntityManager();
 		for (EntityType<?> mapping : entityManager.getMetamodel().getEntities()) configuration.add(mapping.getJavaType());
 //		for (EmbeddableType<?> mapping : entityManager.getMetamodel().getEmbeddables()) configuration.add(mapping.getJavaType());

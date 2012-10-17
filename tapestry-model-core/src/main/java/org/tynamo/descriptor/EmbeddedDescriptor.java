@@ -3,6 +3,8 @@ package org.tynamo.descriptor;
 public class EmbeddedDescriptor extends TynamoClassDescriptorImpl implements IdentifierDescriptor
 {
 
+	private static final long serialVersionUID = 1L;
+
 	private boolean readOnly;
 
 	private boolean identifier;
@@ -61,6 +63,13 @@ public class EmbeddedDescriptor extends TynamoClassDescriptorImpl implements Ide
 	public boolean isObjectReference()
 	{
 		return false;
+	}
+
+	public boolean isTransient() {
+		return false;
+	}
+
+	public void setTransient(boolean value) {
 	}
 
 	public boolean isOwningObjectReference()

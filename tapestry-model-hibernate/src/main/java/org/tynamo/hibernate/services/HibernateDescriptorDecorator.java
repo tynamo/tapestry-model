@@ -133,6 +133,7 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 					descriptorReference = createIdentifierDescriptor(beanType, propertyDescriptor);
 				} else if (notAHibernateProperty(classMetaData, propertyDescriptor))
 				{
+					propertyDescriptor.setTransient(true);
 					descriptorReference = propertyDescriptor;
 				} else
 				{

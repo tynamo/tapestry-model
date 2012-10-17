@@ -89,7 +89,8 @@ public abstract class GenericModelSearch {
 				// FIXME remove all strings for now, decide how to deal with them later
 				// TODO perhaps we should create type-specfic default for SearchFilterPredicates?
 				// create a new method createSearchFilterPredicate(descriptor)
-				if (!descriptor.isNonVisual() && !descriptor.isIdentifier() && !descriptor.isString())
+				if (!descriptor.isTransient() && !descriptor.isNonVisual() && !descriptor.isIdentifier()
+					&& !descriptor.isString())
 					map.put(descriptor, createSearchFilterPredicate(descriptor.getPropertyType()));
 			filterStateByBeanType.put(beanType, map);
 			displayableDescriptorMap = map;

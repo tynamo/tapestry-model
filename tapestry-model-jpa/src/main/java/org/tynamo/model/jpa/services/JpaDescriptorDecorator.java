@@ -108,6 +108,7 @@ public class JpaDescriptorDecorator implements DescriptorDecorator
 		} catch (MetadataNotFoundException e) {
 			if (ignoreNonEntityTypes) {
 				logger.warn("MetadataNotFound! Ignoring:" + descriptor.getBeanType().toString());
+				descriptor.setNonVisual(true);
 				return descriptor;
 			} else {
 				throw new TynamoRuntimeException(e);
@@ -122,6 +123,7 @@ public class JpaDescriptorDecorator implements DescriptorDecorator
 					// FIXME should we mark an identifier descriptor as part of a composite key?
 					descriptorReference = createIdentifierDescriptor(type, propertyDescriptor, descriptor);
 				} else if (notAHibernateProperty(metamodel, type, propertyDescriptor)) {
+					propertyDescriptor.setTransient(true);
 					descriptorReference = propertyDescriptor;
 				} else {
 					//Attribute mappingProperty = getMapping(type).getAttribute(propertyDescriptor.getName());

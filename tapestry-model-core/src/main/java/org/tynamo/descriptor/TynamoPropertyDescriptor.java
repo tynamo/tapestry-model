@@ -32,6 +32,16 @@ public interface TynamoPropertyDescriptor extends Descriptor
 	public boolean isObjectReference();
 
 	/**
+	 * @return is transient
+	 */
+	public boolean isTransient();
+
+	/**
+	 * @param transient The transietn to set.
+	 */
+	public void setTransient(boolean value);
+
+	/**
 	 * @return Returns the required.
 	 */
 	public boolean isRequired();

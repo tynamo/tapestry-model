@@ -112,7 +112,7 @@ public class SearchableJpaGridDataSource implements GridDataSource {
 			}
 			predicate = builder.or(predicates.toArray(new Predicate[0]));
 		}
-		applyAdditionalConstraints(builder, root, predicate);
+		criteria.where(applyAdditionalConstraints(builder, root, predicate));
 	}
 
 	/**

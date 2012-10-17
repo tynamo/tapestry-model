@@ -16,6 +16,8 @@ public class TynamoPropertyDescriptorImpl extends TynamoDescriptor implements Ty
 
 	private boolean required;
 
+	private boolean isTransient;
+
 	private boolean readOnly;
 
 	private int length = DEFAULT_LENGTH;
@@ -137,6 +139,19 @@ public class TynamoPropertyDescriptorImpl extends TynamoDescriptor implements Ty
 	public boolean isObjectReference()
 	{
 		return false;
+	}
+
+	public boolean isTransient() {
+		return isTransient;
+	}
+
+	/**
+	 * @param required
+	 *          The required to set.
+	 */
+	public void setTransient(boolean value)
+	{
+		isTransient = value;
 	}
 
 	/**
