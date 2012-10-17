@@ -101,7 +101,7 @@ public class SearchableJpaGridDataSource implements GridDataSource {
 	}
 
 	// @Override
-	protected void applyAdditionalConstraints(final CriteriaQuery<?> criteria, final Root<E> root,
+	protected void applyAdditionalConstraints(final CriteriaQuery<?> criteria, final Root<?> root,
 		final CriteriaBuilder builder) {
 		List<Predicate> predicates = new ArrayList<Predicate>(searchablePropertyDescriptors.size() * searchTerms.length);
 		Predicate predicate = builder.disjunction();
