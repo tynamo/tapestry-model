@@ -9,26 +9,32 @@
  */
 package org.tynamo.hibernate.services;
 
-import org.apache.tapestry5.PropertyConduit;
-import org.apache.tapestry5.hibernate.HibernateSessionManager;
-import org.apache.tapestry5.ioc.services.PropertyAccess;
-import org.apache.tapestry5.services.PropertyConduitSource;
-import org.hibernate.*;
-import org.hibernate.criterion.*;
-import org.slf4j.Logger;
-import org.tynamo.descriptor.CollectionDescriptor;
-import org.tynamo.descriptor.TynamoClassDescriptor;
-import org.tynamo.descriptor.TynamoPropertyDescriptor;
-import org.tynamo.internal.services.GenericPersistenceService;
-import org.tynamo.services.DescriptorService;
-
-import java.beans.IntrospectionException;
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
+import org.apache.tapestry5.hibernate.HibernateSessionManager;
+import org.apache.tapestry5.ioc.services.PropertyAccess;
+import org.apache.tapestry5.services.PropertyConduitSource;
+import org.hibernate.Criteria;
+import org.hibernate.LockMode;
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.TransientObjectException;
+import org.hibernate.criterion.CriteriaSpecification;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
+import org.slf4j.Logger;
+import org.tynamo.descriptor.CollectionDescriptor;
+import org.tynamo.descriptor.TynamoClassDescriptor;
+import org.tynamo.descriptor.TynamoPropertyDescriptor;
+import org.tynamo.internal.services.GenericPersistenceService;
+import org.tynamo.services.DescriptorService;
 
 @SuppressWarnings("unchecked")
 public class HibernatePersistenceServiceImpl extends GenericPersistenceService implements HibernatePersistenceService
@@ -301,7 +307,7 @@ public class HibernatePersistenceServiceImpl extends GenericPersistenceService i
 		}
 		searchCriteria.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 		// FIXME This won't work because the shadow proxy doesn't implement SessionImplementor
-		// that session is casted to. Maybe we should inject SessionManager instead 
+		// that session is casted to. Maybe we should inject SessionManager instead
 		// and obtain the Session from it
 		return searchCriteria.getExecutableCriteria(getSession()).list();
 	}

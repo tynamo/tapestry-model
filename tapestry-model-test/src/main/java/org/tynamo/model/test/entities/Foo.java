@@ -28,198 +28,206 @@ import javax.persistence.OrderColumn;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.tynamo.descriptor.annotation.PropertyDescriptor;
 
 @Entity
 // @AssertNoOrphans(childrenProperty = "bazzes", message = "This is a message")
 public class Foo {
 
-    private Integer id;
-    private boolean primitive;
-    private String multiWordProperty;
+	private Integer id;
+	private boolean primitive;
+	private String multiWordProperty;
 
-    private String name;
-    private Double number;
-    private String readOnly;
-    private String hidden;
+	private String name;
+	private Double number;
+	private String readOnly;
+	private String hidden;
 
-    private String fromFormula;
+	private String fromFormula;
 
-    private Date date;
-    private Bar bar;
-    private Set<Baz> bazzes = new HashSet<Baz>();
-    private List<Bing> bings = new ArrayList<Bing>();
+	private Date date;
+	private Bar bar;
+	private Set<Baz> bazzes = new HashSet<Baz>();
+	private List<Bing> bings = new ArrayList<Bing>();
 
-    @Id
-    public Integer getId() {
-        return id;
-    }
+	@Id
+	public Integer getId() {
+		return id;
+	}
 
-    /**
-     * @param id The id to set.
-     */
-    public void setId(Integer id) {
-        this.id = id;
-    }
+	/**
+	 * @param id
+	 *          The id to set.
+	 */
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
-    public String getName() {
-        return name;
-    }
+	@PropertyDescriptor(searchable = true)
+	public String getName() {
+		return name;
+	}
 
-    /**
-     * @param name The name to set.
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
+	/**
+	 * @param name
+	 *          The name to set.
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
 
+	@Temporal(TemporalType.DATE)
+	public Date getDate() {
+		return date;
+	}
 
-  	@Temporal(TemporalType.DATE)
-    public Date getDate() {
-        return date;
-    }
+	public void setDate(Date date) {
+		this.date = date;
+	}
 
-    public void setDate(Date date) {
-        this.date = date;
-    }
+	public Double getNumber() {
+		return number;
+	}
 
-    public Double getNumber() {
-        return number;
-    }
+	public void setNumber(Double number) {
+		this.number = number;
+	}
 
-    public void setNumber(Double number) {
-        this.number = number;
-    }
+	@Column(length = 101)
+	public String getMultiWordProperty() {
+		return multiWordProperty;
+	}
 
-    @Column(length = 101)
-    public String getMultiWordProperty() {
-        return multiWordProperty;
-    }
+	public void setMultiWordProperty(String value) {
+		this.multiWordProperty = value;
+	}
 
-    public void setMultiWordProperty(String value) {
-        this.multiWordProperty = value;
-    }
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "foo", orphanRemoval = true)
+	// @CollectionDescriptor(addExpression = "customAddBaz")
+	public Set<Baz> getBazzes() {
+		return bazzes;
+	}
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "foo", orphanRemoval = true)
-//    @CollectionDescriptor(addExpression = "customAddBaz")
-    public Set<Baz> getBazzes() {
-        return bazzes;
-    }
+	/**
+	 * @param bazzes
+	 *          The bazzes to set.
+	 */
+	public void setBazzes(Set<Baz> bazzes) {
+		this.bazzes = bazzes;
+	}
 
-    /**
-     * @param bazzes The bazzes to set.
-     */
-    public void setBazzes(Set<Baz> bazzes) {
-        this.bazzes = bazzes;
-    }
+	public void addBaz(Baz baz) {
+		bazzes.add(baz);
+		baz.setFoo(this);
+	}
 
-    public void addBaz(Baz baz) {
-        bazzes.add(baz);
-        baz.setFoo(this);
-    }
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "FOO_ID")
+	@OrderColumn(name = "BING_INDEX")
+	public List<Bing> getBings() {
+		return bings;
+	}
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "FOO_ID")
-    @OrderColumn(name = "BING_INDEX")
-    public List<Bing> getBings() {
-        return bings;
-    }
+	/**
+	 * @param bings
+	 *          The bings to set.
+	 */
+	public void setBings(List<Bing> bings) {
+		this.bings = bings;
+	}
 
-    /**
-     * @param bings The bings to set.
-     */
-    public void setBings(List<Bing> bings) {
-        this.bings = bings;
-    }
+	/**
+	 * @return
+	 */
+	public void doSomething() {
+		// TODO Auto-generated method stub
+		setName("something done");
+	}
 
-    /**
-     * @return
-     */
-    public void doSomething() {
-        // TODO Auto-generated method stub
-        setName("something done");
-    }
+	/**
+	 * @return Returns the primitive.
+	 */
+	public boolean isPrimitive() {
+		return primitive;
+	}
 
-    /**
-     * @return Returns the primitive.
-     */
-    public boolean isPrimitive() {
-        return primitive;
-    }
+	/**
+	 * @param primitive
+	 *          The primitive to set.
+	 */
+	public void setPrimitive(boolean primitive) {
+		this.primitive = primitive;
+	}
 
-    /**
-     * @param primitive The primitive to set.
-     */
-    public void setPrimitive(boolean primitive) {
-        this.primitive = primitive;
-    }
+	/**
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#toString()
+	 */
+	public String toString() {
 
+		return getName();
+	}
 
-    /**
-     * (non-Javadoc)
-     *
-     * @see java.lang.Object#toString()
-     */
-    public String toString() {
+	/**
+	 * @return Returns the hidden.
+	 */
+	public String getHidden() {
+		return hidden;
+	}
 
-        return getName();
-    }
+	/**
+	 * @param hidden
+	 *          The hidden to set.
+	 */
+	public void setHidden(String hidden) {
+		this.hidden = hidden;
+	}
 
-    /**
-     * @return Returns the hidden.
-     */
-    public String getHidden() {
-        return hidden;
-    }
+	/**
+	 * @return Returns the readOnly.
+	 */
+	public String getReadOnly() {
+		return readOnly;
+	}
 
-    /**
-     * @param hidden The hidden to set.
-     */
-    public void setHidden(String hidden) {
-        this.hidden = hidden;
-    }
+	public void setReadOnly(String readOnly) {
+		this.readOnly = readOnly;
+	}
 
-    /**
-     * @return Returns the readOnly.
-     */
-    public String getReadOnly() {
-        return readOnly;
-    }
+	@ManyToOne(cascade = CascadeType.ALL)
+	@PropertyDescriptor(searchable = true)
+	public Bar getBar() {
+		return bar;
+	}
 
-    public void setReadOnly(String readOnly) {
-        this.readOnly = readOnly;
-    }
+	public void setBar(Bar bar) {
+		this.bar = bar;
+	}
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    public Bar getBar() {
-        return bar;
-    }
+	public Baz createBaz() {
+		Baz baz = new Baz();
+		baz.setFoo(this);
+		return baz;
+	}
 
-    public void setBar(Bar bar) {
-        this.bar = bar;
-    }
+	// FIXME JPA 2 doesn't have support for formula, you could something similar with @PostLoad (see
+	// http://stackoverflow.com/questions/1359671/mapping-calculated-properties-with-jpa)
+	// but it's impossible to determine from that this property is read only (which is what
+	// HibernatedDescriptorDecorateTest.testFormulaDescriptor
+	// is testing while using this property
+	// @Formula("lower('ABC')")
+	@Column(insertable = false, updatable = false)
+	public String getFromFormula() {
+		return fromFormula;
+	}
 
-    public Baz createBaz() {
-        Baz baz = new Baz();
-        baz.setFoo(this);
-        return baz;
-    }
-
-    // FIXME JPA 2 doesn't have support for formula, you could something similar with @PostLoad (see http://stackoverflow.com/questions/1359671/mapping-calculated-properties-with-jpa)
-    // but it's impossible to determine from that this property is read only (which is what HibernatedDescriptorDecorateTest.testFormulaDescriptor
-    // is testing while using this property
-    //@Formula("lower('ABC')")
-    @Column(insertable=false, updatable=false)
-    public String getFromFormula() {
-        return fromFormula;
-    }
-
-    public void setFromFormula(String fromFormula) {
-        this.fromFormula = fromFormula;
-    }
+	public void setFromFormula(String fromFormula) {
+		this.fromFormula = fromFormula;
+	}
 
 	@Override
-	public boolean equals(Object o)
-	{
+	public boolean equals(Object o) {
 		if (this == o) return true;
 		if (!(o instanceof Foo)) return false;
 
@@ -230,8 +238,7 @@ public class Foo {
 	}
 
 	@Override
-	public int hashCode()
-	{
+	public int hashCode() {
 		return id != null ? id.hashCode() : 0;
 	}
 }

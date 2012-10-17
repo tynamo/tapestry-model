@@ -11,6 +11,10 @@
  */
 package org.tynamo.descriptor;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
+
 import org.apache.tapestry5.func.F;
 import org.apache.tapestry5.func.Predicate;
 import org.testng.Assert;
@@ -20,10 +24,6 @@ import org.tynamo.test.Bar;
 import org.tynamo.test.BlogEntry;
 import org.tynamo.test.Foo;
 import org.tynamo.test.Searchee;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
 
 
 public class TynamoClassDescriptorTest extends Assert
@@ -93,13 +93,16 @@ public class TynamoClassDescriptorTest extends Assert
 	@Test public void testGetSearchableProperties()
 	{
 		TynamoClassDescriptorImpl classDescriptor = new TynamoClassDescriptorImpl(Searchee.class);
-		classDescriptor.getPropertyDescriptors().add(
-				new TynamoPropertyDescriptorImpl(Foo.class, "someProperty", String.class));
-		classDescriptor.getPropertyDescriptors().add(new IdentifierDescriptorImpl(Foo.class, "id", String.class));
-		classDescriptor.getPropertyDescriptors().add(new CollectionDescriptor(Foo.class, "name", Set.class));
+		TynamoPropertyDescriptorImpl propertyDescriptor = new TynamoPropertyDescriptorImpl(Foo.class, "someProperty",
+			String.class);
+		propertyDescriptor.setSearchable(true);
+		List<TynamoPropertyDescriptor> propertyDescriptors = classDescriptor.getPropertyDescriptors();
+		propertyDescriptors.add(propertyDescriptor);
+		propertyDescriptors.add(new IdentifierDescriptorImpl(Foo.class, "id", String.class));
+		propertyDescriptors.add(new CollectionDescriptor(Foo.class, "name", Set.class));
 
-		List<TynamoPropertyDescriptor> searchableProperties = classDescriptor.getPropertyDescriptors();
-		searchableProperties = F.flow(searchableProperties).filter(new Predicate<TynamoPropertyDescriptor>()
+		List<TynamoPropertyDescriptor> searchableProperties = F.flow(propertyDescriptors)
+			.filter(new Predicate<TynamoPropertyDescriptor>()
 		{
 			public boolean accept(TynamoPropertyDescriptor element)
 			{
@@ -107,7 +110,7 @@ public class TynamoClassDescriptorTest extends Assert
 			}
 		}).toList();
 
-		assertEquals(2, searchableProperties.size(), "should only be 2 search properties");
+		assertEquals(searchableProperties.size(), 1, "should only be 1 searchable property");
 		assertEquals(searchableProperties.get(0).getName(), "someProperty");
 	}
 }

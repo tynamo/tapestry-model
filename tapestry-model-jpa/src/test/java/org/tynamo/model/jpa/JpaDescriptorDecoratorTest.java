@@ -34,6 +34,8 @@ import org.tynamo.descriptor.TynamoClassDescriptor;
 import org.tynamo.descriptor.TynamoClassDescriptorImpl;
 import org.tynamo.descriptor.TynamoPropertyDescriptor;
 import org.tynamo.descriptor.TynamoPropertyDescriptorImpl;
+import org.tynamo.descriptor.annotation.PropertyDescriptor;
+import org.tynamo.descriptor.annotation.handlers.PropertyDescriptorAnnotationHandler;
 import org.tynamo.descriptor.decorators.DescriptorDecorator;
 import org.tynamo.model.jpa.services.JpaDescriptorDecorator;
 import org.tynamo.model.test.entities.Bar;
@@ -66,7 +68,7 @@ public class JpaDescriptorDecoratorTest
 		registry = builder.build();
     ApplicationGlobals globals = registry.getObject(ApplicationGlobals.class, null);
     globals.storeContext(new PageTesterContext(""));
-		
+
 		registry.performRegistryStartup();
 
 	}
@@ -87,9 +89,9 @@ public class JpaDescriptorDecoratorTest
 
 	@BeforeMethod
 	public void setUp()
-	{   
+ {
 		jpaDescriptorDecorator = registry.getService(JpaDescriptorDecorator.class);
-		
+
 
 		TynamoClassDescriptor fooDescriptor = new TynamoClassDescriptorImpl(Foo.class);
 		fooDescriptor.getPropertyDescriptors().add(new TynamoPropertyDescriptorImpl(Foo.class, "bazzes", Set.class));
@@ -238,6 +240,12 @@ public class JpaDescriptorDecoratorTest
 		descriptor.getPropertyDescriptors().add(new TynamoPropertyDescriptorImpl(Bar.class, "transientProperty", String.class));
 		TynamoClassDescriptor decorated = jpaDescriptorDecorator.decorate(descriptor);
 		Assert.assertFalse(decorated.getPropertyDescriptor("transientProperty").isSearchable());
+
+		// not up to Hibernate descriptor to decide what's (full text) searchable
+		Assert.assertFalse(decorated.getPropertyDescriptor("name").isSearchable());
+		PropertyDescriptorAnnotationHandler decorator = new PropertyDescriptorAnnotationHandler();
+		PropertyDescriptor propertyAnno = Bar.class.getMethod("getName").getAnnotation(PropertyDescriptor.class);
+		decorator.decorateFromAnnotation(propertyAnno, decorated.getPropertyDescriptor("name"));
 		Assert.assertTrue(decorated.getPropertyDescriptor("name").isSearchable());
 	}
 }

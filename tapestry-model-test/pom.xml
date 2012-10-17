@@ -32,14 +32,14 @@
 			<version>1.0.0.GA</version>
 			<scope>provided</scope>
 		</dependency>
-            
+
 		<dependency>
 			<groupId>org.apache.geronimo.specs</groupId>
 			<artifactId>geronimo-jpa_2.0_spec</artifactId>
 			<version>1.1</version>
 			<scope>provided</scope>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
 			<artifactId>jetty-webapp</artifactId>
@@ -52,6 +52,11 @@
 			<version>5.9</version>
 			<classifier>jdk15</classifier>
 			<scope>compile</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.tynamo</groupId>
+			<artifactId>tapestry-model-annotations</artifactId>
 		</dependency>
 
 		<dependency>

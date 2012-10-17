@@ -26,6 +26,7 @@ public class Searchee
 		this.id = id;
 	}
 
+	@PropertyDescriptor(searchable = true)
 	public String getName()
 	{
 		return name;
@@ -36,7 +37,6 @@ public class Searchee
 		this.name = name;
 	}
 
-	@PropertyDescriptor(searchable = false)
 	public String getNonSearchableProperty()
 	{
 		return nonSearchableProperty;
