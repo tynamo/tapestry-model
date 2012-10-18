@@ -39,10 +39,10 @@ public class PropertySearchFilterBlocks
 			"annotationProvider=context" })
 	private TextField textField;
 
-	@Component(parameters = { "value=context.lowValue", "label=prop:context.label",
-			"encoder=valueEncoderForProperty", "model=selectModelForProperty", "validate=prop:selectValidator",
+	@Component(parameters = { "value=context.lowValue", "label=prop:context.label", "encoder=valueEncoderForProperty",
+			"model=selectModelForProperty", "validate=prop:enumSearchFilterValidator",
 			"clientId=prop:context.propertyId" })
-	private Select select;
+	private Select enumSearchFilter;
 
 	@Component(parameters = { "value=context.lowValue", "label=prop:context.label", "clientId=prop:context.propertyId",
 			"encoder=booleanValueEncoder" })
@@ -118,8 +118,8 @@ public class PropertySearchFilterBlocks
 		return context.getValidator(numberFieldEq);
 	}
 
-	public FieldValidator getSelectValidator() {
-		return context.getValidator(select);
+	public FieldValidator getEnumSearchFilterValidator() {
+		return context.getValidator(enumSearchFilter);
 	}
 
 	/**

@@ -182,8 +182,7 @@ public class PropertySearchFilter {
 
 		PropertySearchFilterContext context = new PropertySearchFilterContext() {
 			public Messages getContainerMessages() {
-				// return overrides.getOverrideMessages();
-				return null;
+				return messages;
 			}
 
 			public String getLabel() {
@@ -212,7 +211,7 @@ public class PropertySearchFilter {
 			}
 
 			public Object getHighValue() {
-				return entry.getValue().getLowValue();
+				return entry.getValue().getHighValue();
 			}
 
 
@@ -235,7 +234,7 @@ public class PropertySearchFilter {
 			}
 
 			public void setHighValue(Object value) {
-				entry.getValue().setLowValue(value);
+				entry.getValue().setHighValue(value);
 			}
 
 			public String getOperatorId() {
