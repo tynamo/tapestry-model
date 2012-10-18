@@ -33,7 +33,11 @@ public interface TynamoPropertyDescriptor extends Descriptor
 
 	/**
 	 * @return is transient
+	 * 
+	 * @since 0.4.0
 	 */
+	// Briefly introduced in 0.4.0, to be removed in 0.5.0. It's not needed in the common descriptor
+	@Deprecated
 	public boolean isTransient();
 
 	/**
