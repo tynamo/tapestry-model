@@ -9,18 +9,18 @@ import org.apache.tapestry5.ioc.OrderedConfiguration;
 import org.apache.tapestry5.ioc.ServiceBinder;
 import org.apache.tapestry5.ioc.annotations.Autobuild;
 import org.apache.tapestry5.ioc.annotations.Contribute;
-import org.apache.tapestry5.ioc.services.PropertyShadowBuilder;
+import org.apache.tapestry5.ioc.services.ServiceOverride;
 import org.apache.tapestry5.services.BeanBlockContribution;
 import org.apache.tapestry5.services.BeanBlockSource;
 import org.apache.tapestry5.services.LibraryMapping;
-import org.hibernate.search.jpa.FullTextEntityManager;
-import org.hibernate.search.jpa.Search;
 import org.tynamo.common.ModuleProperties;
 import org.tynamo.descriptor.decorators.DescriptorDecorator;
 import org.tynamo.descriptor.factories.DescriptorFactory;
 import org.tynamo.model.jpa.TynamoJpaSymbols;
 import org.tynamo.model.jpa.internal.ConfigurableEntityManagerProvider;
+import org.tynamo.model.jpa.internal.SearchableJpaGridDataSourceProvider;
 import org.tynamo.services.DescriptorService;
+import org.tynamo.services.SearchableGridDataSourceProvider;
 import org.tynamo.services.TynamoCoreModule;
 
 public class TynamoJpaModule {
@@ -96,16 +96,10 @@ public class TynamoJpaModule {
 		configuration.add(TynamoJpaSymbols.PERSISTENCEUNIT, "");
 	}
 
-	public static FullTextEntityManager buildFullTextEntityManager(final EntityManager entityManager,
-		PropertyShadowBuilder propertyShadowBuilder) {
-		// FIXME we'd need get the configured entityManager, this only works if there's a single entityManager
-		Object lazyLoader = new Object() {
-			public FullTextEntityManager getFullTextEntityManager() {
-				// / entityManager is per thread
-				return Search.getFullTextEntityManager(entityManager);
-			}
-		};
-		return propertyShadowBuilder.build(lazyLoader, "fullTextEntityManager", FullTextEntityManager.class);
+	@Contribute(ServiceOverride.class)
+	public static void setupApplicationServiceOverrides(MappedConfiguration<Class, Object> configuration,
+		@Autobuild SearchableJpaGridDataSourceProvider gridDataSourceProvider) {
+		configuration.add(SearchableGridDataSourceProvider.class, gridDataSourceProvider);
 	}
 
 	/**

@@ -4,6 +4,7 @@ import java.lang.reflect.InvocationTargetException;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 
 public class TynamoPropertyDescriptorImpl extends TynamoDescriptor implements TynamoPropertyDescriptor
 {
@@ -234,9 +235,15 @@ public class TynamoPropertyDescriptorImpl extends TynamoDescriptor implements Ty
 		}
 	}
 
+	@Override
 	public boolean equals(Object obj)
 	{
 		return EqualsBuilder.reflectionEquals(this, obj);
+	}
+
+	@Override
+	public int hashCode() {
+		return HashCodeBuilder.reflectionHashCode(this);
 	}
 
 	public int getLength()

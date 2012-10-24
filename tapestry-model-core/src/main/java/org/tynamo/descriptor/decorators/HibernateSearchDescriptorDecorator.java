@@ -10,7 +10,6 @@ import java.lang.reflect.Method;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.tapestry5.func.F;
 import org.apache.tapestry5.func.Predicate;
-import org.hibernate.search.annotations.Indexed;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.tynamo.descriptor.TynamoClassDescriptor;
@@ -23,8 +22,9 @@ public class HibernateSearchDescriptorDecorator implements DescriptorDecorator {
 	public TynamoClassDescriptor decorate(TynamoClassDescriptor descriptor) {
 		Class type = descriptor.getBeanType();
 
-		if (!type.isAnnotationPresent(Indexed.class)) return descriptor;
-		descriptor.setSearchable(true);
+		// TODO there's no Indexed annotation in solrj?
+		// if (!type.isAnnotationPresent(Indexed.class)) return descriptor;
+		// descriptor.setSearchable(true);
 
 		PropertyDescriptor[] propertyDescriptors;
 		try {
@@ -38,7 +38,7 @@ public class HibernateSearchDescriptorDecorator implements DescriptorDecorator {
 		for (TynamoPropertyDescriptor propertyDescriptor : descriptor.getPropertyDescriptors()) {
 			try {
 				Field propertyField = propertyDescriptor.getBeanType().getDeclaredField(propertyDescriptor.getName());
-				if (propertyField.isAnnotationPresent(org.hibernate.search.annotations.Field.class)) {
+				if (propertyField.isAnnotationPresent(org.apache.solr.client.solrj.beans.Field.class)) {
 					propertyDescriptor.setSearchable(true);
 					continue;
 				}
@@ -46,7 +46,7 @@ public class HibernateSearchDescriptorDecorator implements DescriptorDecorator {
 				LOGGER.warn(ExceptionUtils.getRootCauseMessage(ex));
 			}
 			try {
-				if (isAnnotationPresent(propertyDescriptors, propertyDescriptor, org.hibernate.search.annotations.Field.class)) {
+				if (isAnnotationPresent(propertyDescriptors, propertyDescriptor, org.apache.solr.client.solrj.beans.Field.class)) {
 					propertyDescriptor.setSearchable(true);
 					continue;
 				}

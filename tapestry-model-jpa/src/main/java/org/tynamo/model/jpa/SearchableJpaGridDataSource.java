@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
@@ -38,7 +39,12 @@ public class SearchableJpaGridDataSource implements GridDataSource {
 		this.searchTerms = searchTerms == null ? new String[0] : searchTerms;
 	}
 
-  /**
+	public SearchableJpaGridDataSource(EntityManager entityManager2, Class entityType2,
+		Map<TynamoPropertyDescriptor, SearchFilterPredicate> propertySearchFilterMap2, Set includedIds) {
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
 	 * {@inheritDoc}
 	 */
 	public int getAvailableRows() {

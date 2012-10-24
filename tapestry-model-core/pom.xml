@@ -64,11 +64,23 @@
 			<groupId>org.apache.tapestry</groupId>
 			<artifactId>tapestry-upload</artifactId>
 		</dependency>
-		
+
+		<!--
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-search</artifactId>
 			<version>4.2.0.Beta1</version>
+		</dependency>
+		 -->
+		<dependency>
+			<groupId>org.apache.solr</groupId>
+			<artifactId>solr-core</artifactId>
+			<version>4.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.solr</groupId>
+			<artifactId>solr-solrj</artifactId>
+			<version>4.0.0</version>
 		</dependency>
 
 		<dependency>

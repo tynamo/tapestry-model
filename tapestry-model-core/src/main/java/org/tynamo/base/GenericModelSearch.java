@@ -1,14 +1,15 @@
 package org.tynamo.base;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import org.apache.lucene.queryParser.ParseException;
 import org.apache.tapestry5.annotations.InjectComponent;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Persist;
@@ -23,6 +24,7 @@ import org.tynamo.descriptor.TynamoPropertyDescriptor;
 import org.tynamo.search.SearchFilterOperator;
 import org.tynamo.search.SearchFilterPredicate;
 import org.tynamo.services.DescriptorService;
+import org.tynamo.services.SearchableGridDataSourceProvider;
 import org.tynamo.util.DisplayNameUtils;
 
 public abstract class GenericModelSearch {
@@ -32,8 +34,14 @@ public abstract class GenericModelSearch {
 	@Inject
 	private Messages messages;
 
-	@Parameter(required = true, allowNull = false, autoconnect = true)
+	@Parameter(required = true, allowNull = false)
 	private Class beanType;
+
+	@Parameter(required = true, allowNull = false)
+	private Object persistenceProvider;
+
+	@Parameter(required = true, allowNull = false)
+	private Class<GridDataSource> gridDataSourceType;
 
 	@Persist
 	private String searchTerms;
@@ -42,7 +50,9 @@ public abstract class GenericModelSearch {
 	private Map<Class, SortedMap<TynamoPropertyDescriptor, SearchFilterPredicate>> filterStateByBeanType;
 
 	@Property(write = false)
-	private SortedMap<TynamoPropertyDescriptor, SearchFilterPredicate> displayableDescriptorMap;
+	private SortedMap<TynamoPropertyDescriptor, SearchFilterPredicate> displayableFilterDescriptorMap;
+
+	private List<TynamoPropertyDescriptor> searchablePropertyDescriptors;
 
 	@Property
 	private Object bean;
@@ -69,14 +79,14 @@ public abstract class GenericModelSearch {
 		doPrepare();
 	}
 
-	void doPrepare() {
+	protected void doPrepare() {
 		TynamoClassDescriptor classDescriptor = descriptorService.getClassDescriptor(beanType);
 
 		if (filterStateByBeanType == null) filterStateByBeanType = Collections
 			.synchronizedMap(new HashMap<Class, SortedMap<TynamoPropertyDescriptor, SearchFilterPredicate>>());
-		else displayableDescriptorMap = filterStateByBeanType.get(beanType);
+		else displayableFilterDescriptorMap = filterStateByBeanType.get(beanType);
 
-		if (displayableDescriptorMap == null) {
+		if (displayableFilterDescriptorMap == null || searchablePropertyDescriptors == null) {
 			SortedMap<TynamoPropertyDescriptor, SearchFilterPredicate> map = new TreeMap<TynamoPropertyDescriptor, SearchFilterPredicate>(
 				new Comparator<TynamoPropertyDescriptor>() {
 					public int compare(TynamoPropertyDescriptor o1, TynamoPropertyDescriptor o2) {
@@ -85,15 +95,20 @@ public abstract class GenericModelSearch {
 					}
 				});
 
-			for (TynamoPropertyDescriptor descriptor : classDescriptor.getPropertyDescriptors())
+			List<TynamoPropertyDescriptor> searchablePropertyDescriptors = new ArrayList<TynamoPropertyDescriptor>();
+
+			for (TynamoPropertyDescriptor descriptor : classDescriptor.getPropertyDescriptors()) {
 				// FIXME remove all strings for now, decide how to deal with them later
 				// TODO perhaps we should create type-specfic default for SearchFilterPredicates?
 				// create a new method createSearchFilterPredicate(descriptor)
-				if (!descriptor.isTransient() && !descriptor.isNonVisual() && !descriptor.isIdentifier()
-					&& !descriptor.isString())
-					map.put(descriptor, createSearchFilterPredicate(descriptor.getPropertyType()));
+				if (descriptor.isNonVisual() || descriptor.isIdentifier() || !descriptor.isSearchable()) continue;
+				if (isDisplayableFilter(descriptor)) map.put(descriptor,
+					createSearchFilterPredicate(descriptor.getPropertyType()));
+				else searchablePropertyDescriptors.add(descriptor);
+			}
 			filterStateByBeanType.put(beanType, map);
-			displayableDescriptorMap = map;
+			displayableFilterDescriptorMap = map;
+			this.searchablePropertyDescriptors = searchablePropertyDescriptors;
 		}
 	}
 
@@ -109,17 +124,17 @@ public abstract class GenericModelSearch {
 		}
 
 		return predicate;
-			}
+	}
 
-	public boolean isSearchable() throws ParseException {
+	public boolean isSearchable() {
 		boolean searchable = descriptorService.getClassDescriptor(beanType).isSearchable();
 		if (!searchable) return false;
 		// hide the search field if there are no results
 		return !isSearchCriteriaSet() && getGridDataSource().getAvailableRows() <= 0 ? false : true;
-			}
+	}
 
 	public boolean isFiltersAvailable() {
-		return displayableDescriptorMap != null && displayableDescriptorMap.size() > 0;
+		return displayableFilterDescriptorMap != null && displayableFilterDescriptorMap.size() > 0;
 	}
 
 	public boolean isSearchCriteriaSet() {
@@ -134,6 +149,15 @@ public abstract class GenericModelSearch {
 	@Inject
 	private Request request;
 
+	public boolean isDisplayableFilter(TynamoPropertyDescriptor propertyDescriptor) {
+		// the default implementation simply treats all non-strings as filters
+		return !propertyDescriptor.isString();
+	}
+
+	public List<TynamoPropertyDescriptor> getSearchablePropertyDescriptors() {
+		return searchablePropertyDescriptors;
+	}
+
 	public Map<TynamoPropertyDescriptor, SearchFilterPredicate> getActiveFilterMap() {
 		// may be null if session has expired
 		if (filterStateByBeanType == null) return Collections.emptyMap();
@@ -143,6 +167,13 @@ public abstract class GenericModelSearch {
 		for (Entry<TynamoPropertyDescriptor, SearchFilterPredicate> entry : descriptorMap.entrySet())
 			if (entry.getValue().isEnabled()) activeDescriptorMap.put(entry.getKey(), entry.getValue());
 		return activeDescriptorMap;
+	}
+
+	@Inject
+	SearchableGridDataSourceProvider gridDataSourceProvider;
+
+	protected SearchableGridDataSourceProvider getGridDataSourceProvider() {
+		return gridDataSourceProvider;
 	}
 
 	public abstract GridDataSource getGridDataSource();

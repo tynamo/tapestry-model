@@ -38,7 +38,7 @@
 			<artifactId>tapestry-model-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.apache.tapestry</groupId>
 			<artifactId>tapestry-hibernate</artifactId>
@@ -62,6 +62,12 @@
 					<artifactId>slf4j-api</artifactId>
 				</exclusion>
 			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-search</artifactId>
+			<version>4.2.0.Beta1</version>
 		</dependency>
 
 		<dependency>

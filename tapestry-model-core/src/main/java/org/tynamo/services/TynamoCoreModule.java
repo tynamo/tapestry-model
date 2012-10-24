@@ -1,7 +1,18 @@
 package org.tynamo.services;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.apache.solr.client.solrj.SolrServer;
+import org.apache.solr.client.solrj.embedded.EmbeddedSolrServer;
+import org.apache.solr.core.CoreContainer;
 import org.apache.tapestry5.beaneditor.DataTypeConstants;
 import org.apache.tapestry5.func.Predicate;
+import org.apache.tapestry5.grid.GridDataSource;
 import org.apache.tapestry5.ioc.Configuration;
 import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.ioc.MethodAdviceReceiver;
@@ -21,6 +32,7 @@ import org.apache.tapestry5.services.DataTypeAnalyzer;
 import org.apache.tapestry5.services.DisplayBlockContribution;
 import org.apache.tapestry5.services.EditBlockContribution;
 import org.apache.tapestry5.services.LibraryMapping;
+import org.tynamo.TynamoGridDataSource;
 import org.tynamo.bindings.ModelBindingFactory;
 import org.tynamo.blob.BlobManager;
 import org.tynamo.blob.DefaultBlobManager;
@@ -46,7 +58,9 @@ import org.tynamo.descriptor.factories.PropertyDescriptorFactory;
 import org.tynamo.descriptor.factories.PropertyDescriptorFactoryImpl;
 import org.tynamo.descriptor.factories.ReflectionDescriptorFactory;
 import org.tynamo.internal.services.BeanModelSourceAdvice;
+import org.tynamo.search.SearchFilterPredicate;
 import org.tynamo.util.Pair;
+import org.xml.sax.SAXException;
 
 public class TynamoCoreModule
 {
@@ -244,6 +258,41 @@ public class TynamoCoreModule
 	                                    @Autobuild ModelBindingFactory modelBindingFactory)
 	{
 		configuration.add("mb", modelBindingFactory);
+	}
+
+	public SolrServer buildSolrServer() throws IOException, ParserConfigurationException, SAXException {
+		// from http://wiki.apache.org/solr/Solrj#EmbeddedSolrServer
+		// Note that the following property could be set through JVM level arguments too
+		// System.setProperty("solr.solr.home", "/home/shalinsmangar/work/oss/branch-1.3/example/solr");
+		CoreContainer.Initializer initializer = new CoreContainer.Initializer();
+		CoreContainer coreContainer = initializer.initialize();
+		EmbeddedSolrServer server = new EmbeddedSolrServer(coreContainer, "");
+		return server;
+	}
+
+	public SearchableGridDataSourceProvider buildSearchableGridDataSourceProvider(
+		final PersistenceService persistenceService) {
+		// naive implementation to be overridden in persistence-specific sub modules
+		return new SearchableGridDataSourceProvider() {
+			@Override
+			public GridDataSource createGridDataSource(Class entityType) {
+				return new TynamoGridDataSource(persistenceService, entityType);
+			}
+
+			@Override
+			public GridDataSource createGridDataSource(Class entityType,
+				Map<TynamoPropertyDescriptor, SearchFilterPredicate> propertySearchFilterMap,
+				List<TynamoPropertyDescriptor> searchablePropertyDescriptors, String... searchTerms) {
+				return new TynamoGridDataSource(persistenceService, entityType);
+			}
+
+			@Override
+			public GridDataSource createGridDataSource(Class entityType,
+				Map<TynamoPropertyDescriptor, SearchFilterPredicate> propertySearchFilterMap, Set includedIds) {
+				return new TynamoGridDataSource(persistenceService, entityType);
+			}
+
+		};
 	}
 
 }
