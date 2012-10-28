@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
+import org.apache.commons.lang.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.tynamo.model.elasticsearch.mapping.MappingUtil;
@@ -125,7 +126,7 @@ public abstract class ReflectionUtil {
 			field.setAccessible(true);
 			return field.get(object);
 		} catch (Exception e) {
-			logger.warn(ExceptionUtil.getStackTrace(e));
+			logger.warn(ExceptionUtils.getStackTrace(e));
 			// throw new RuntimeException( e );
 		}
 		return null;
@@ -155,7 +156,7 @@ public abstract class ReflectionUtil {
 				clazz = clazz.getSuperclass();
 			}
 		} catch (Exception e) {
-			logger.warn(ExceptionUtil.getStackTrace(e));
+			logger.warn(ExceptionUtils.getStackTrace(e));
 			// throw new RuntimeException( e );
 		}
 		return null;
@@ -420,9 +421,9 @@ public abstract class ReflectionUtil {
 			value = MappingUtil.convertValue(value, fieldClass);
 			field.set(object, value);
 		} catch (IllegalArgumentException e) {
-			logger.error(ExceptionUtil.getStackTrace(e));
+			logger.error(ExceptionUtils.getStackTrace(e));
 		} catch (IllegalAccessException e) {
-			logger.error(ExceptionUtil.getStackTrace(e));
+			logger.error(ExceptionUtils.getStackTrace(e));
 		}
 	}
 
@@ -455,7 +456,7 @@ public abstract class ReflectionUtil {
 				clazz = clazz.getSuperclass();
 			}
 		} catch (SecurityException e) {
-			logger.error(ExceptionUtil.getStackTrace(e));
+			logger.error(ExceptionUtils.getStackTrace(e));
 		}
 		return null;
 	}

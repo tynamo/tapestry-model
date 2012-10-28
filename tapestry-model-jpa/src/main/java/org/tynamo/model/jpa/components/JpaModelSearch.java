@@ -23,7 +23,7 @@ public class JpaModelSearch extends GenericModelSearch {
 		Map<TynamoPropertyDescriptor, SearchFilterPredicate> propertySearchFilterMap = getActiveFilterMap();
 
 		java.util.List<TynamoPropertyDescriptor> searchablePropertyDescriptors = getSearchablePropertyDescriptors();
-		// NOTE does is make sense to return a different grid implementation in this case, or perhaps we should always use the same one
+		// NOTE does it make sense to return a different grid implementation in this case, or perhaps we should always use the same one
 		// regardless?
 		if (propertySearchFilterMap.size() <= 0)
 			if (searchablePropertyDescriptors.size() <= 0 || getSearchTerms() == null || getSearchTerms().length() <= 0)

@@ -18,6 +18,7 @@
  */
 package org.tynamo.model.elasticsearch.adapter;
 
+import org.apache.commons.lang.exception.ExceptionUtils;
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequest;
 import org.elasticsearch.action.admin.indices.create.CreateIndexResponse;
 import org.elasticsearch.action.admin.indices.mapping.put.PutMappingRequest;
@@ -33,7 +34,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.tynamo.model.elasticsearch.mapping.MappingUtil;
 import org.tynamo.model.elasticsearch.mapping.ModelMapper;
-import org.tynamo.model.elasticsearch.util.ExceptionUtil;
 import org.tynamo.model.elasticsearch.util.ReflectionUtil;
 
 /**
@@ -76,7 +76,7 @@ public abstract class ElasticSearchAdapter {
 			logger.debug("Index already exists: %s", indexName);
 
 		} catch (Throwable t) {
-			logger.warn(ExceptionUtil.getStackTrace(t));
+			logger.warn(ExceptionUtils.getStackTrace(t));
 		}
 	}
 
@@ -105,7 +105,7 @@ public abstract class ElasticSearchAdapter {
 			logger.debug("Index already exists: %s", indexName);
 
 		} catch (Throwable t) {
-			logger.warn(ExceptionUtil.getStackTrace(t));
+			logger.warn(ExceptionUtils.getStackTrace(t));
 		}
 	}
 
