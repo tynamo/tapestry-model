@@ -9,17 +9,26 @@ import org.apache.tapestry5.ioc.OrderedConfiguration;
 import org.apache.tapestry5.ioc.ServiceBinder;
 import org.apache.tapestry5.ioc.annotations.Autobuild;
 import org.apache.tapestry5.ioc.annotations.Contribute;
+import org.apache.tapestry5.ioc.annotations.Startup;
 import org.apache.tapestry5.ioc.services.ServiceOverride;
 import org.apache.tapestry5.services.BeanBlockContribution;
 import org.apache.tapestry5.services.BeanBlockSource;
 import org.apache.tapestry5.services.LibraryMapping;
+import org.elasticsearch.common.network.NetworkUtils;
+import org.elasticsearch.common.settings.ImmutableSettings;
+import org.elasticsearch.common.settings.Settings;
+import org.elasticsearch.node.Node;
+import org.elasticsearch.node.NodeBuilder;
 import org.tynamo.common.ModuleProperties;
 import org.tynamo.descriptor.decorators.DescriptorDecorator;
 import org.tynamo.descriptor.factories.DescriptorFactory;
+import org.tynamo.model.jpa.ElasticSearchDescriptorDecorator;
 import org.tynamo.model.jpa.TynamoJpaSymbols;
 import org.tynamo.model.jpa.internal.ConfigurableEntityManagerProvider;
+import org.tynamo.model.jpa.internal.ElasticSearchIndexListener;
 import org.tynamo.model.jpa.internal.SearchableJpaGridDataSourceProvider;
 import org.tynamo.services.DescriptorService;
+import org.tynamo.services.SearchIndexListener;
 import org.tynamo.services.SearchableGridDataSourceProvider;
 import org.tynamo.services.TynamoCoreModule;
 
@@ -34,6 +43,7 @@ public class TynamoJpaModule {
 		// invoking the constructor.
 
 		binder.bind(JpaPersistenceService.class, JpaPersistenceServiceImpl.class);
+		binder.bind(SearchIndexListener.class, ElasticSearchIndexListener.class);
 		//binder.bind(TynamoInterceptor.class);
 		//binder.bind(JPAConfigurer.class, TynamoInterceptorConfigurer.class).withId("TynamoInterceptorConfigurer");
 
@@ -100,6 +110,23 @@ public class TynamoJpaModule {
 	public static void setupApplicationServiceOverrides(MappedConfiguration<Class, Object> configuration,
 		@Autobuild SearchableJpaGridDataSourceProvider gridDataSourceProvider) {
 		configuration.add(SearchableGridDataSourceProvider.class, gridDataSourceProvider);
+	}
+
+	public Node buildNode() {
+		Settings defaultSettings = ImmutableSettings.settingsBuilder()
+			.put("cluster.name", "tynamo-model-search-" + NetworkUtils.getLocalAddress().getHostName()).build();
+		final Node node = NodeBuilder.nodeBuilder().local(true).data(true).settings(defaultSettings).build();
+		node.start();
+		return node;
+	}
+
+	@Startup
+	public static void addJpaEventListener(SearchIndexListener searchIndexListener) {
+		searchIndexListener.startListening();
+	}
+
+	public static void contributeDescriptorFactory(OrderedConfiguration<DescriptorDecorator> configuration) {
+		configuration.add("SearchDecorator", new ElasticSearchDescriptorDecorator(), "after:TynamoDecorator");
 	}
 
 	/**

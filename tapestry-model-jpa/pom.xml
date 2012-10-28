@@ -56,8 +56,9 @@
 		<dependency>
 			<groupId>org.eclipse.persistence</groupId>
 			<artifactId>eclipselink</artifactId>
-			<version>2.3.0</version>
-			<scope>test</scope>
+			<version>2.4.0</version>
+			<!-- must be in provided scope until we migrate to JPA 2.1/eclipselink 2.5.0 with injectable em listeners -->
+			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
@@ -66,8 +67,15 @@
 			<classifier>jdk15</classifier>
 			<scope>test</scope>
 		</dependency>
+
+		<dependency>
+			<groupId>org.elasticsearch</groupId>
+			<artifactId>elasticsearch</artifactId>
+			<version>0.20.0.RC1</version>
+		</dependency>
+
 	</dependencies>
-	
+
 	<profiles>
 		<profile>
 			<id>repositories</id>

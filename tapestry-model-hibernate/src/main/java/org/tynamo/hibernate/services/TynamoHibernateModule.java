@@ -27,6 +27,7 @@ import org.hibernate.search.Search;
 import org.tynamo.common.ModuleProperties;
 import org.tynamo.descriptor.decorators.DescriptorDecorator;
 import org.tynamo.descriptor.factories.DescriptorFactory;
+import org.tynamo.hibernate.HibernateSearchDescriptorDecorator;
 import org.tynamo.hibernate.TynamoHibernateSymbols;
 import org.tynamo.hibernate.TynamoInterceptor;
 import org.tynamo.hibernate.TynamoInterceptorConfigurer;
@@ -160,6 +161,10 @@ public class TynamoHibernateModule
 		public FullTextSession getFullTextSession() {
 			return Search.getFullTextSession(sessionManager.getSession());
 		}
+	}
+
+	public static void contributeDescriptorFactory(OrderedConfiguration<DescriptorDecorator> configuration) {
+		configuration.add("SearchDecorator", new HibernateSearchDescriptorDecorator(), "after:TynamoDecorator");
 	}
 
 /*

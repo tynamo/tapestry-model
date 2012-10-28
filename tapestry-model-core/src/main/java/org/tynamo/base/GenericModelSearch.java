@@ -37,12 +37,6 @@ public abstract class GenericModelSearch {
 	@Parameter(required = true, allowNull = false)
 	private Class beanType;
 
-	@Parameter(required = true, allowNull = false)
-	private Object persistenceProvider;
-
-	@Parameter(required = true, allowNull = false)
-	private Class<GridDataSource> gridDataSourceType;
-
 	@Persist
 	private String searchTerms;
 
@@ -53,6 +47,8 @@ public abstract class GenericModelSearch {
 	private SortedMap<TynamoPropertyDescriptor, SearchFilterPredicate> displayableFilterDescriptorMap;
 
 	private List<TynamoPropertyDescriptor> searchablePropertyDescriptors;
+
+	private GridDataSource gridDataSource;
 
 	@Property
 	private Object bean;
@@ -80,6 +76,8 @@ public abstract class GenericModelSearch {
 	}
 
 	protected void doPrepare() {
+		if (displayableFilterDescriptorMap != null && searchablePropertyDescriptors != null) return;
+
 		TynamoClassDescriptor classDescriptor = descriptorService.getClassDescriptor(beanType);
 
 		if (filterStateByBeanType == null) filterStateByBeanType = Collections
@@ -176,7 +174,14 @@ public abstract class GenericModelSearch {
 		return gridDataSourceProvider;
 	}
 
-	public abstract GridDataSource getGridDataSource();
+	public final GridDataSource getGridDataSource() {
+		// we *must* initialize the component before returning the dataSource. Since getGridDataSource() is public,
+		// it's possible it'll be called before setupRender.
+		doPrepare();
+		return createGridDataSource();
+	}
+
+	protected abstract GridDataSource createGridDataSource();
 
 	public String getSearchTerms() {
 		return searchTerms;

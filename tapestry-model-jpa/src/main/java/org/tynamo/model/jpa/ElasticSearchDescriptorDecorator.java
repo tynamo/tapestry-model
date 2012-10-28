@@ -1,4 +1,4 @@
-package org.tynamo.descriptor.decorators;
+package org.tynamo.model.jpa;
 
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
@@ -14,17 +14,19 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.tynamo.descriptor.TynamoClassDescriptor;
 import org.tynamo.descriptor.TynamoPropertyDescriptor;
+import org.tynamo.descriptor.decorators.DescriptorDecorator;
+import org.tynamo.model.elasticsearch.annotations.ElasticSearchField;
+import org.tynamo.model.elasticsearch.annotations.ElasticSearchable;
 
-public class HibernateSearchDescriptorDecorator implements DescriptorDecorator {
-	private static final Logger LOGGER = LoggerFactory.getLogger(HibernateSearchDescriptorDecorator.class);
+public class ElasticSearchDescriptorDecorator implements DescriptorDecorator {
+	private static final Logger LOGGER = LoggerFactory.getLogger(ElasticSearchDescriptorDecorator.class);
 
 	@Override
 	public TynamoClassDescriptor decorate(TynamoClassDescriptor descriptor) {
 		Class type = descriptor.getBeanType();
 
-		// TODO there's no Indexed annotation in solrj?
-		// if (!type.isAnnotationPresent(Indexed.class)) return descriptor;
-		// descriptor.setSearchable(true);
+		if (!type.isAnnotationPresent(ElasticSearchable.class)) return descriptor;
+		descriptor.setSearchable(true);
 
 		PropertyDescriptor[] propertyDescriptors;
 		try {
@@ -34,11 +36,11 @@ public class HibernateSearchDescriptorDecorator implements DescriptorDecorator {
 			return descriptor;
 		}
 
-		// we are using Hibernate Search annotations so we cannot use any of our own nice annotation handling machinery
+		// the annotation were taken from play/ElasticSearchModule but we could integrate them to use our own annotation handling machinery
 		for (TynamoPropertyDescriptor propertyDescriptor : descriptor.getPropertyDescriptors()) {
 			try {
 				Field propertyField = propertyDescriptor.getBeanType().getDeclaredField(propertyDescriptor.getName());
-				if (propertyField.isAnnotationPresent(org.apache.solr.client.solrj.beans.Field.class)) {
+				if (propertyField.isAnnotationPresent(ElasticSearchField.class)) {
 					propertyDescriptor.setSearchable(true);
 					continue;
 				}
@@ -46,7 +48,7 @@ public class HibernateSearchDescriptorDecorator implements DescriptorDecorator {
 				LOGGER.warn(ExceptionUtils.getRootCauseMessage(ex));
 			}
 			try {
-				if (isAnnotationPresent(propertyDescriptors, propertyDescriptor, org.apache.solr.client.solrj.beans.Field.class)) {
+				if (isAnnotationPresent(propertyDescriptors, propertyDescriptor, ElasticSearchField.class)) {
 					propertyDescriptor.setSearchable(true);
 					continue;
 				}

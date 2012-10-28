@@ -24,7 +24,7 @@ public class SolrModelSearch extends GenericModelSearch {
 	 *
 	 * @throws ParseException
 	 */
-	public GridDataSource getGridDataSource() {
+	public GridDataSource createGridDataSource() {
 		// return new TynamoGridDataSource(persistenceService, beanType);
 		// return new HibernateGridDataSource(session, beanType);
 		Map<TynamoPropertyDescriptor, SearchFilterPredicate> propertySearchFilterMap = getActiveFilterMap();

@@ -1,15 +1,9 @@
 package org.tynamo.services;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.xml.parsers.ParserConfigurationException;
-
-import org.apache.solr.client.solrj.SolrServer;
-import org.apache.solr.client.solrj.embedded.EmbeddedSolrServer;
-import org.apache.solr.core.CoreContainer;
 import org.apache.tapestry5.beaneditor.DataTypeConstants;
 import org.apache.tapestry5.func.Predicate;
 import org.apache.tapestry5.grid.GridDataSource;
@@ -48,7 +42,6 @@ import org.tynamo.descriptor.annotation.handlers.DescriptorAnnotationHandler;
 import org.tynamo.descriptor.annotation.handlers.MethodDescriptorAnnotationHandler;
 import org.tynamo.descriptor.annotation.handlers.PropertyDescriptorAnnotationHandler;
 import org.tynamo.descriptor.decorators.DescriptorDecorator;
-import org.tynamo.descriptor.decorators.HibernateSearchDescriptorDecorator;
 import org.tynamo.descriptor.decorators.TapestryDecorator;
 import org.tynamo.descriptor.decorators.TynamoDecorator;
 import org.tynamo.descriptor.factories.DescriptorFactory;
@@ -60,7 +53,6 @@ import org.tynamo.descriptor.factories.ReflectionDescriptorFactory;
 import org.tynamo.internal.services.BeanModelSourceAdvice;
 import org.tynamo.search.SearchFilterPredicate;
 import org.tynamo.util.Pair;
-import org.xml.sax.SAXException;
 
 public class TynamoCoreModule
 {
@@ -194,7 +186,6 @@ public class TynamoCoreModule
 	{
 		configuration.add("TynamoDecorator", new TynamoDecorator(locator));
 		configuration.add("TapestryDecorator", new TapestryDecorator(propertyAccess));
-		configuration.add("SearchDecorator", new HibernateSearchDescriptorDecorator(),"after:TynamoDecorator");
 	}
 
 	public static void contributeTynamoDataTypeAnalyzer(OrderedConfiguration<Pair> configuration)
@@ -258,16 +249,6 @@ public class TynamoCoreModule
 	                                    @Autobuild ModelBindingFactory modelBindingFactory)
 	{
 		configuration.add("mb", modelBindingFactory);
-	}
-
-	public SolrServer buildSolrServer() throws IOException, ParserConfigurationException, SAXException {
-		// from http://wiki.apache.org/solr/Solrj#EmbeddedSolrServer
-		// Note that the following property could be set through JVM level arguments too
-		// System.setProperty("solr.solr.home", "/home/shalinsmangar/work/oss/branch-1.3/example/solr");
-		CoreContainer.Initializer initializer = new CoreContainer.Initializer();
-		CoreContainer coreContainer = initializer.initialize();
-		EmbeddedSolrServer server = new EmbeddedSolrServer(coreContainer, "");
-		return server;
 	}
 
 	public SearchableGridDataSourceProvider buildSearchableGridDataSourceProvider(
