@@ -39,6 +39,8 @@ import org.tynamo.model.elasticsearch.util.ReflectionUtil;
 /**
  * The Class ElasticSearchAdapter.
  */
+@Deprecated
+// delete this class when you've migrated the operations elsewhere
 public abstract class ElasticSearchAdapter {
 	public static final Logger logger = LoggerFactory.getLogger(ReflectionUtil.class);
 

@@ -10,25 +10,26 @@ import org.apache.tapestry5.ioc.ServiceBinder;
 import org.apache.tapestry5.ioc.annotations.Autobuild;
 import org.apache.tapestry5.ioc.annotations.Contribute;
 import org.apache.tapestry5.ioc.annotations.Startup;
+import org.apache.tapestry5.ioc.annotations.Symbol;
 import org.apache.tapestry5.ioc.services.ServiceOverride;
 import org.apache.tapestry5.services.BeanBlockContribution;
 import org.apache.tapestry5.services.BeanBlockSource;
 import org.apache.tapestry5.services.LibraryMapping;
 import org.elasticsearch.common.network.NetworkUtils;
 import org.elasticsearch.common.settings.ImmutableSettings;
-import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.node.Node;
 import org.elasticsearch.node.NodeBuilder;
 import org.tynamo.common.ModuleProperties;
 import org.tynamo.descriptor.decorators.DescriptorDecorator;
 import org.tynamo.descriptor.factories.DescriptorFactory;
+import org.tynamo.model.elasticsearch.mapping.MapperFactory;
+import org.tynamo.model.elasticsearch.mapping.impl.DefaultMapperFactory;
 import org.tynamo.model.jpa.ElasticSearchDescriptorDecorator;
 import org.tynamo.model.jpa.TynamoJpaSymbols;
 import org.tynamo.model.jpa.internal.ConfigurableEntityManagerProvider;
-import org.tynamo.model.jpa.internal.ElasticSearchIndexListener;
+import org.tynamo.model.jpa.internal.ElasticSearchIndexMaintainer;
 import org.tynamo.model.jpa.internal.SearchableJpaGridDataSourceProvider;
 import org.tynamo.services.DescriptorService;
-import org.tynamo.services.SearchIndexListener;
 import org.tynamo.services.SearchableGridDataSourceProvider;
 import org.tynamo.services.TynamoCoreModule;
 
@@ -43,7 +44,7 @@ public class TynamoJpaModule {
 		// invoking the constructor.
 
 		binder.bind(JpaPersistenceService.class, JpaPersistenceServiceImpl.class);
-		binder.bind(SearchIndexListener.class, ElasticSearchIndexListener.class);
+		binder.bind(MapperFactory.class, DefaultMapperFactory.class);
 		//binder.bind(TynamoInterceptor.class);
 		//binder.bind(JPAConfigurer.class, TynamoInterceptorConfigurer.class).withId("TynamoInterceptorConfigurer");
 
@@ -104,6 +105,7 @@ public class TynamoJpaModule {
 		configuration.add(TynamoJpaSymbols.LARGE_COLUMN_LENGTH, "100");
 		configuration.add(TynamoJpaSymbols.IGNORE_NON_HIBERNATE_TYPES, "false");
 		configuration.add(TynamoJpaSymbols.PERSISTENCEUNIT, "");
+		configuration.add(TynamoJpaSymbols.ELASTICSEARCH_HOME, "");
 	}
 
 	@Contribute(ServiceOverride.class)
@@ -112,17 +114,20 @@ public class TynamoJpaModule {
 		configuration.add(SearchableGridDataSourceProvider.class, gridDataSourceProvider);
 	}
 
-	public Node buildNode() {
-		Settings defaultSettings = ImmutableSettings.settingsBuilder()
-			.put("cluster.name", "tynamo-model-search-" + NetworkUtils.getLocalAddress().getHostName()).build();
-		final Node node = NodeBuilder.nodeBuilder().local(true).data(true).settings(defaultSettings).build();
+	public Node buildNode(@Symbol(TynamoJpaSymbols.ELASTICSEARCH_HOME) String pathHome) {
+		ImmutableSettings.Builder settings = ImmutableSettings.settingsBuilder();
+		if (!pathHome.isEmpty()) settings.put("path.home", pathHome);
+		settings.put("number_of_shards", 1);
+		settings.put("number_of_replicas", 0);
+		settings.put("cluster.name", "tynamo-model-search-" + NetworkUtils.getLocalAddress().getHostName()).build();
+		final Node node = NodeBuilder.nodeBuilder().local(true).data(true).settings(settings).build();
 		node.start();
 		return node;
 	}
 
 	@Startup
-	public static void addJpaEventListener(SearchIndexListener searchIndexListener) {
-		searchIndexListener.startListening();
+	public static void addJpaEventListener(@Autobuild ElasticSearchIndexMaintainer indexMaintainer) {
+		indexMaintainer.start();
 	}
 
 	public static void contributeDescriptorFactory(OrderedConfiguration<DescriptorDecorator> configuration) {

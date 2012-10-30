@@ -17,6 +17,8 @@ import org.tynamo.descriptor.TynamoClassDescriptor;
 import org.tynamo.descriptor.TynamoPropertyDescriptor;
 import org.tynamo.internal.services.EmptyGridDataSource;
 import org.tynamo.model.elasticsearch.annotations.ElasticSearchField;
+import org.tynamo.model.elasticsearch.mapping.MapperFactory;
+import org.tynamo.model.elasticsearch.mapping.ModelMapper;
 import org.tynamo.model.elasticsearch.util.ReflectionUtil;
 import org.tynamo.search.SearchFilterPredicate;
 import org.tynamo.services.DescriptorService;
@@ -42,8 +44,13 @@ public class ElasticModelSearch extends GenericModelSearch {
 		TynamoClassDescriptor classDescriptor = descriptorService.getClassDescriptor(getBeanType());
 
 		Client client = node.client();
-		SearchResponse searchResponse = client.prepareSearch("adverts").setTypes("advert")
-			.setQuery(QueryBuilders.boolQuery().must(QueryBuilders.queryString("condition"))).execute().actionGet();
+
+		// We shouldn't invoke this GridDataSource unless MappingUtil.isSearchable(descriptor.getBeanType() is true
+		ModelMapper mapper = mapperFactory.getMapper(getBeanType());
+
+		// FIXME consider whether we should .setTypes("entityType")
+		SearchResponse searchResponse = client.prepareSearch(mapper.getIndexName())
+			.setQuery(QueryBuilders.boolQuery().must(QueryBuilders.queryString(getSearchTerms()))).execute().actionGet();
 
 		if (searchResponse.getHits().getTotalHits() <= 0) return new EmptyGridDataSource(getBeanType());
 
@@ -57,6 +64,9 @@ public class ElasticModelSearch extends GenericModelSearch {
 
 		return getGridDataSourceProvider().createGridDataSource(getBeanType(), propertySearchFilterMap, resultIds);
 	}
+
+	@Inject
+	private MapperFactory mapperFactory;
 
 	@Inject
 	private Node node;
