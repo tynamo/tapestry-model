@@ -38,7 +38,7 @@
 	</distributionManagement>
 
 	<properties>
-		<tapestry-release-version>5.3.4</tapestry-release-version>
+		<tapestry-release-version>5.3.6</tapestry-release-version>
 	</properties>
 
 	<!-- note that our own versions are auto-managed by the release plugin -->
@@ -112,6 +112,12 @@
 
 	<build>
 		<plugins>
+
+			<plugin>
+				<artifactId>maven-release-plugin</artifactId>
+				<version>2.3.2</version>
+			</plugin>
+
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>cobertura-maven-plugin</artifactId>
