@@ -9,7 +9,7 @@ import java.lang.annotation.*;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-@UseWith(AnnotationUseContext.BEAN)
+@UseWith({AnnotationUseContext.BEAN, AnnotationUseContext.PAGE})
 @HandledBy("BeanModelAnnotationHandler")
 public @interface BeanModels {
 

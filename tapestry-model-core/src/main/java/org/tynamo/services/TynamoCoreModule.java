@@ -46,6 +46,7 @@ import org.tynamo.descriptor.factories.PropertyDescriptorFactory;
 import org.tynamo.descriptor.factories.PropertyDescriptorFactoryImpl;
 import org.tynamo.descriptor.factories.ReflectionDescriptorFactory;
 import org.tynamo.internal.services.BeanModelSourceAdvice;
+import org.tynamo.internal.services.BeanModelSourceAdviceImpl;
 import org.tynamo.util.Pair;
 
 public class TynamoCoreModule
@@ -81,11 +82,11 @@ public class TynamoCoreModule
 		binder.bind(DescriptorAnnotationHandler.class, MethodDescriptorAnnotationHandler.class).withId("MethodDescriptorAnnotationHandler");
 		binder.bind(DescriptorAnnotationHandler.class, PropertyDescriptorAnnotationHandler.class).withId("PropertyDescriptorAnnotationHandler");
 
+		binder.bind(BeanModelSourceAdvice.class, BeanModelSourceAdviceImpl.class);
 	}
 
 	@Match("BeanModelSource")
-	public static void adviseBeanModelSource(MethodAdviceReceiver receiver,
-	                                         @Autobuild BeanModelSourceAdvice advice)
+	public static void adviseBeanModelSource(MethodAdviceReceiver receiver, BeanModelSourceAdvice advice)
 	{
 		receiver.adviseAllMethods(advice);
 	}
