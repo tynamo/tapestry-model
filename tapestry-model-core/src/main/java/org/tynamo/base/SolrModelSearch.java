@@ -54,7 +54,7 @@ public class SolrModelSearch extends GenericModelSearch {
 			ids.add(document.get("id"));
 		}
 
-		return getGridDataSourceProvider().createGridDataSource(getBeanType(), propertySearchFilterMap, ids);
+		return getGridDataSourceProvider().createGridDataSource(getBeanType(), ids, propertySearchFilterMap);
 	}
 
 	@Inject

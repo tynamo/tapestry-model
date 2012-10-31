@@ -1,8 +1,9 @@
 package org.tynamo.model.jpa.components;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.tapestry5.grid.GridDataSource;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -55,14 +56,14 @@ public class ElasticModelSearch extends GenericModelSearch {
 		if (searchResponse.getHits().getTotalHits() <= 0) return new EmptyGridDataSource(getBeanType());
 
 		@SuppressWarnings("rawtypes")
-		List resultIds = new ArrayList();
+		Set resultIds = new HashSet();
 		@SuppressWarnings("rawtypes")
 		Class idType = classDescriptor.getIdentifierDescriptor().getPropertyType();
 
 		for (SearchHit h : searchResponse.hits())
 			resultIds.add(typeCoercer.coerce(h.getId(), idType));
 
-		return getGridDataSourceProvider().createGridDataSource(getBeanType(), propertySearchFilterMap, resultIds);
+		return getGridDataSourceProvider().createGridDataSource(getBeanType(), resultIds, propertySearchFilterMap);
 	}
 
 	@Inject

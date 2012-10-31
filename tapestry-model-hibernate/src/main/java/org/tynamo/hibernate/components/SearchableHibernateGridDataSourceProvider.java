@@ -32,8 +32,8 @@ public class SearchableHibernateGridDataSourceProvider implements SearchableGrid
 	}
 
 	@Override
-	public GridDataSource createGridDataSource(Class entityType,
-		Map<TynamoPropertyDescriptor, SearchFilterPredicate> propertySearchFilterMap, Set includedIds) {
+	public GridDataSource createGridDataSource(Class entityType, Set includedIds,
+		Map<TynamoPropertyDescriptor, SearchFilterPredicate> propertySearchFilterMap) {
 		// FIXME ignoring included ids
 		return new SearchableHibernateGridDataSource(session, entityType, propertySearchFilterMap);
 	}

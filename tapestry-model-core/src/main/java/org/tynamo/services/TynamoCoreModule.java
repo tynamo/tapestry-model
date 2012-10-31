@@ -247,8 +247,8 @@ public class TynamoCoreModule
 			}
 
 			@Override
-			public GridDataSource createGridDataSource(Class entityType,
-				Map<TynamoPropertyDescriptor, SearchFilterPredicate> propertySearchFilterMap, Set includedIds) {
+			public GridDataSource createGridDataSource(Class entityType, Set includedIds,
+				Map<TynamoPropertyDescriptor, SearchFilterPredicate> propertySearchFilterMap) {
 				return new TynamoGridDataSource(persistenceService, entityType);
 			}
 

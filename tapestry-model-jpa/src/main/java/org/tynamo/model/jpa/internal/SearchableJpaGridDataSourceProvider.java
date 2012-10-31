@@ -26,9 +26,9 @@ public class SearchableJpaGridDataSourceProvider implements SearchableGridDataSo
 	}
 
 	@Override
-	public GridDataSource createGridDataSource(Class entityType,
-		Map<TynamoPropertyDescriptor, SearchFilterPredicate> propertySearchFilterMap, Set includedIds) {
-		return new SearchableJpaGridDataSource(entityManager, entityType, propertySearchFilterMap, includedIds);
+	public GridDataSource createGridDataSource(Class entityType, Set includedIds,
+		Map<TynamoPropertyDescriptor, SearchFilterPredicate> propertySearchFilterMap) {
+		return new SearchableJpaGridDataSource(entityManager, entityType, includedIds, propertySearchFilterMap);
 	}
 
 	@Override

@@ -13,6 +13,8 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.persistence.metamodel.EntityType;
+import javax.persistence.metamodel.SingularAttribute;
 
 import org.apache.tapestry5.grid.GridDataSource;
 import org.apache.tapestry5.grid.SortConstraint;
@@ -28,20 +30,27 @@ public class SearchableJpaGridDataSource implements GridDataSource {
   private List preparedResults;
 	private String[] searchTerms;
 	private List<TynamoPropertyDescriptor> searchablePropertyDescriptors;
+	private Set includedIds;
 
 	public SearchableJpaGridDataSource(EntityManager entityManager, Class entityType,
 		Map<TynamoPropertyDescriptor, SearchFilterPredicate> propertySearchFilterMap,
 		List<TynamoPropertyDescriptor> searchablePropertyDescriptors, String... searchTerms) {
-		this.entityManager = entityManager;
-		this.entityType = entityType;
-		this.propertySearchFilterMap = propertySearchFilterMap;
+		this(entityManager, entityType, propertySearchFilterMap);
 		this.searchablePropertyDescriptors = searchablePropertyDescriptors;
 		this.searchTerms = searchTerms == null ? new String[0] : searchTerms;
 	}
 
-	public SearchableJpaGridDataSource(EntityManager entityManager2, Class entityType2,
-		Map<TynamoPropertyDescriptor, SearchFilterPredicate> propertySearchFilterMap2, Set includedIds) {
-		// TODO Auto-generated constructor stub
+	public SearchableJpaGridDataSource(EntityManager entityManager, Class entityType, Set includedIds,
+		Map<TynamoPropertyDescriptor, SearchFilterPredicate> propertySearchFilterMap) {
+		this(entityManager, entityType, propertySearchFilterMap);
+		this.includedIds = includedIds;
+	}
+
+	private SearchableJpaGridDataSource(EntityManager entityManager, Class entityType,
+		Map<TynamoPropertyDescriptor, SearchFilterPredicate> propertySearchFilterMap) {
+		this.entityManager = entityManager;
+		this.entityType = entityType;
+		this.propertySearchFilterMap = propertySearchFilterMap;
 	}
 
 	/**
@@ -108,9 +117,9 @@ public class SearchableJpaGridDataSource implements GridDataSource {
 	// @Override
 	protected void applyAdditionalConstraints(final CriteriaQuery<?> criteria, final Root<?> root,
 		final CriteriaBuilder builder) {
-		List<Predicate> predicates = new ArrayList<Predicate>(searchablePropertyDescriptors.size() * searchTerms.length);
+		List<Predicate> predicates = new ArrayList<Predicate>();
 		Predicate predicate = builder.disjunction();
-		if (searchTerms.length > 0) {
+		if (searchTerms != null && searchTerms.length > 0) {
 			for (TynamoPropertyDescriptor searchableProperty : searchablePropertyDescriptors) {
 				for (String searchTerm : searchTerms)
 					predicates.add(builder.like(root.<String> get(searchableProperty.getName()), searchTerm));
@@ -139,11 +148,18 @@ public class SearchableJpaGridDataSource implements GridDataSource {
 	 * apply additional constraints before the list of results is obtained from the criteria. This implementation does nothing and may be
 	 * overridden.
 	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	protected Predicate applyAdditionalConstraints(CriteriaBuilder builder, Root<?> root, Predicate existingPredicate)
   {
-		if (propertySearchFilterMap == null || propertySearchFilterMap.size() <= 0) return existingPredicate;
+		if (includedIds == null || includedIds.size() <= 0)
+			if (propertySearchFilterMap == null || propertySearchFilterMap.size() <= 0) return existingPredicate;
 		List<Predicate> predicates = new ArrayList<Predicate>(propertySearchFilterMap.entrySet().size());
 		predicates.add(existingPredicate);
+		if (includedIds != null) {
+			EntityType entityType = root.getModel();
+			SingularAttribute idAttr = entityType.getId(entityType.getIdType().getJavaType());
+			predicates.add(builder.isTrue(root.get(idAttr).in(includedIds)));
+		}
 		for (Entry<TynamoPropertyDescriptor, SearchFilterPredicate> entry : propertySearchFilterMap.entrySet())
 			predicates.add(createPredicate(builder, root, entry.getKey().getName(), entry.getValue()));
 

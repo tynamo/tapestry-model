@@ -11,8 +11,8 @@ import org.tynamo.search.SearchFilterPredicate;
 public interface SearchableGridDataSourceProvider {
 	public GridDataSource createGridDataSource(Class entityType);
 
-	public GridDataSource createGridDataSource(Class entityType,
-		Map<TynamoPropertyDescriptor, SearchFilterPredicate> propertySearchFilterMap, Set includedIds);
+	public GridDataSource createGridDataSource(Class entityType, Set includedIds,
+		Map<TynamoPropertyDescriptor, SearchFilterPredicate> propertySearchFilterMap);
 
 	public GridDataSource createGridDataSource(Class entityType,
 		Map<TynamoPropertyDescriptor, SearchFilterPredicate> propertySearchFilterMap,
