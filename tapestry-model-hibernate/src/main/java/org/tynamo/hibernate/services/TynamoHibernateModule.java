@@ -63,7 +63,7 @@ public class TynamoHibernateModule
 	@Contribute(ClasspathAssetAliasManager.class)
 	public static void classpathAssetAliasManager(MappedConfiguration<String, String> configuration)
 	{
-		configuration.add("tynamo-" + version, "org/tynamo/hibernate");
+		configuration.add("tynamo-hibernate-" + version, "org/tynamo/hibernate");
 	}
 
 	@Contribute(ComponentMessagesSource.class)
