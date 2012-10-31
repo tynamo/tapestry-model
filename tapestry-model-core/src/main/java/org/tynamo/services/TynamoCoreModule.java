@@ -1,31 +1,16 @@
 package org.tynamo.services;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.apache.tapestry5.beaneditor.DataTypeConstants;
 import org.apache.tapestry5.func.Predicate;
 import org.apache.tapestry5.grid.GridDataSource;
-import org.apache.tapestry5.ioc.Configuration;
-import org.apache.tapestry5.ioc.MappedConfiguration;
-import org.apache.tapestry5.ioc.MethodAdviceReceiver;
-import org.apache.tapestry5.ioc.ObjectLocator;
-import org.apache.tapestry5.ioc.OrderedConfiguration;
-import org.apache.tapestry5.ioc.ServiceBinder;
+import org.apache.tapestry5.ioc.*;
 import org.apache.tapestry5.ioc.annotations.Autobuild;
 import org.apache.tapestry5.ioc.annotations.Contribute;
 import org.apache.tapestry5.ioc.annotations.InjectService;
 import org.apache.tapestry5.ioc.annotations.Match;
 import org.apache.tapestry5.ioc.services.CoercionTuple;
 import org.apache.tapestry5.ioc.services.PropertyAccess;
-import org.apache.tapestry5.services.BeanBlockContribution;
-import org.apache.tapestry5.services.BindingFactory;
-import org.apache.tapestry5.services.BindingSource;
-import org.apache.tapestry5.services.DataTypeAnalyzer;
-import org.apache.tapestry5.services.DisplayBlockContribution;
-import org.apache.tapestry5.services.EditBlockContribution;
-import org.apache.tapestry5.services.LibraryMapping;
+import org.apache.tapestry5.services.*;
 import org.tynamo.TynamoGridDataSource;
 import org.tynamo.bindings.ModelBindingFactory;
 import org.tynamo.blob.BlobManager;
@@ -34,25 +19,19 @@ import org.tynamo.builder.BuilderDirector;
 import org.tynamo.common.ModuleProperties;
 import org.tynamo.descriptor.TynamoClassDescriptor;
 import org.tynamo.descriptor.TynamoPropertyDescriptor;
-import org.tynamo.descriptor.annotation.handlers.BeanModelAnnotationHandler;
-import org.tynamo.descriptor.annotation.handlers.BlobDescriptorAnnotationHandler;
-import org.tynamo.descriptor.annotation.handlers.ClassDescriptorAnnotationHandler;
-import org.tynamo.descriptor.annotation.handlers.CollectionDescriptorAnnotationHandler;
-import org.tynamo.descriptor.annotation.handlers.DescriptorAnnotationHandler;
-import org.tynamo.descriptor.annotation.handlers.MethodDescriptorAnnotationHandler;
-import org.tynamo.descriptor.annotation.handlers.PropertyDescriptorAnnotationHandler;
+import org.tynamo.descriptor.annotation.handlers.*;
 import org.tynamo.descriptor.decorators.DescriptorDecorator;
 import org.tynamo.descriptor.decorators.TapestryDecorator;
 import org.tynamo.descriptor.decorators.TynamoDecorator;
-import org.tynamo.descriptor.factories.DescriptorFactory;
-import org.tynamo.descriptor.factories.MethodDescriptorFactory;
-import org.tynamo.descriptor.factories.MethodDescriptorFactoryImpl;
-import org.tynamo.descriptor.factories.PropertyDescriptorFactory;
-import org.tynamo.descriptor.factories.PropertyDescriptorFactoryImpl;
-import org.tynamo.descriptor.factories.ReflectionDescriptorFactory;
+import org.tynamo.descriptor.factories.*;
 import org.tynamo.internal.services.BeanModelSourceAdvice;
+import org.tynamo.internal.services.BeanModelSourceAdviceImpl;
 import org.tynamo.search.SearchFilterPredicate;
 import org.tynamo.util.Pair;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class TynamoCoreModule
 {
@@ -87,11 +66,11 @@ public class TynamoCoreModule
 		binder.bind(DescriptorAnnotationHandler.class, MethodDescriptorAnnotationHandler.class).withId("MethodDescriptorAnnotationHandler");
 		binder.bind(DescriptorAnnotationHandler.class, PropertyDescriptorAnnotationHandler.class).withId("PropertyDescriptorAnnotationHandler");
 
+		binder.bind(BeanModelSourceAdvice.class, BeanModelSourceAdviceImpl.class);
 	}
 
 	@Match("BeanModelSource")
-	public static void adviseBeanModelSource(MethodAdviceReceiver receiver,
-	                                         @Autobuild BeanModelSourceAdvice advice)
+	public static void adviseBeanModelSource(MethodAdviceReceiver receiver, BeanModelSourceAdvice advice)
 	{
 		receiver.adviseAllMethods(advice);
 	}

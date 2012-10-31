@@ -15,6 +15,11 @@ public @interface BeanModel {
 	PageType pageType() default PageType.DEFAULT;
 
 	/**
+	 * the type of bean for this model
+	 */
+	Class beanType() default void.class;
+
+	/**
 	 * A comma-seperated list of property names to be added to the BeanModel. Cells for added columns will be blank unless
 	 * a cell override is provided.
 	 */
