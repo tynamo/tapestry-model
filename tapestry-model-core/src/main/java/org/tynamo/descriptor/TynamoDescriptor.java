@@ -1,18 +1,18 @@
 package org.tynamo.descriptor;
 
-import org.apache.commons.beanutils.BeanUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.tynamo.descriptor.extension.DescriptorExtension;
-
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Hashtable;
 import java.util.Map;
 
+import org.apache.commons.beanutils.BeanUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.tynamo.descriptor.extension.DescriptorExtension;
+
 public class TynamoDescriptor implements Descriptor, Serializable
 {
-	protected static final Log LOG = LogFactory.getLog(TynamoDescriptor.class);
+	protected static final Logger logger = LoggerFactory.getLogger(TynamoDescriptor.class);
 
 	protected Class beanType;
 
@@ -30,15 +30,15 @@ public class TynamoDescriptor implements Descriptor, Serializable
 			BeanUtils.copyProperties(this, dto);
 		} catch (IllegalAccessException e)
 		{
-			LOG.error(e.getMessage());
+			logger.error(e.getMessage());
 			e.printStackTrace();
 		} catch (InvocationTargetException e)
 		{
-			LOG.error(e.getMessage());
+			logger.error(e.getMessage());
 			e.printStackTrace();
 		} catch (Exception e)
 		{
-			LOG.error(e.toString());
+			logger.error(e.toString());
 			e.printStackTrace();
 		}
 	}
@@ -51,15 +51,15 @@ public class TynamoDescriptor implements Descriptor, Serializable
 			copyExtensionsFrom(descriptor);
 		} catch (IllegalAccessException e)
 		{
-			LOG.error(e.getMessage());
+			logger.error(e.getMessage());
 			e.printStackTrace();
 		} catch (InvocationTargetException e)
 		{
-			LOG.error(e.getMessage());
+			logger.error(e.getMessage());
 			e.printStackTrace();
 		} catch (Exception e)
 		{
-			LOG.error(e.toString());
+			logger.error(e.toString());
 			e.printStackTrace();
 		}
 	}
@@ -83,15 +83,15 @@ public class TynamoDescriptor implements Descriptor, Serializable
 			copyExtensionsFrom(descriptor);
 		} catch (IllegalAccessException e)
 		{
-			LOG.error(e.getMessage());
+			logger.error(e.getMessage());
 			e.printStackTrace();
 		} catch (InvocationTargetException e)
 		{
-			LOG.error(e.getMessage());
+			logger.error(e.getMessage());
 			e.printStackTrace();
 		} catch (Exception e)
 		{
-			LOG.error(e.toString());
+			logger.error(e.toString());
 			e.printStackTrace();
 		}
 	}
@@ -102,11 +102,11 @@ public class TynamoDescriptor implements Descriptor, Serializable
 
 		for (Map.Entry<String, DescriptorExtension> entry : exts.entrySet())
 		{
-			String keye = entry.getKey();
+			String key = entry.getKey();
 			DescriptorExtension value = entry.getValue();
 			try
 			{
-				this.addExtension(keye, (DescriptorExtension) BeanUtils.cloneBean(value));
+				this.addExtension(key, (DescriptorExtension) BeanUtils.cloneBean(value));
 			} catch (Exception e)
 			{
 				//@todo fix clone methods.
@@ -163,17 +163,17 @@ public class TynamoDescriptor implements Descriptor, Serializable
 	/**
 	 * Keye is property name preceded by package name
 	 */
-	public DescriptorExtension getExtension(String keye)
+	public DescriptorExtension getExtension(String key)
 	{
-		return extensions.get(keye);
+		return extensions.get(key);
 	}
 
 	/**
-	 * Keye is property name preceded by package name
+	 * Key is property name preceded by package name
 	 */
-	public void addExtension(String keye, DescriptorExtension extension)
+	public void addExtension(String key, DescriptorExtension extension)
 	{
-		extensions.put(keye, extension);
+		extensions.put(key, extension);
 	}
 
 	public void addExtension(Class extensionType, DescriptorExtension extension)
@@ -182,11 +182,11 @@ public class TynamoDescriptor implements Descriptor, Serializable
 	}
 
 	/**
-	 * Keye is property name preceded by package name
+	 * Key is property name preceded by package name
 	 */
-	public void removeExtension(String keye)
+	public void removeExtension(String key)
 	{
-		extensions.remove(keye);
+		extensions.remove(key);
 	}
 
 	public void removeExtension(Class extensionType)

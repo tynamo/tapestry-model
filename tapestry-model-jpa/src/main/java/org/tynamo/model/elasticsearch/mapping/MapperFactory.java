@@ -17,7 +17,7 @@ public interface MapperFactory {
 	 *           in case of mapping problems
 	 * @return the model mapper
 	 */
-	ModelMapper getMapper(Class clazz) throws MappingException;
+	// ModelMapper getMapper(Class clazz) throws MappingException;
 
 	/**
 	 * Gets a {@link FieldMapper} for the specified field

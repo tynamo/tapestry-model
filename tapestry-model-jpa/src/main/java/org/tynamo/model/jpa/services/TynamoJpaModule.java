@@ -20,8 +20,10 @@ import org.elasticsearch.common.settings.ImmutableSettings;
 import org.elasticsearch.node.Node;
 import org.elasticsearch.node.NodeBuilder;
 import org.tynamo.common.ModuleProperties;
+import org.tynamo.descriptor.annotation.handlers.DescriptorAnnotationHandler;
 import org.tynamo.descriptor.decorators.DescriptorDecorator;
 import org.tynamo.descriptor.factories.DescriptorFactory;
+import org.tynamo.model.elasticsearch.annotations.handlers.ElasticSearchAnnotationHandler;
 import org.tynamo.model.elasticsearch.mapping.MapperFactory;
 import org.tynamo.model.elasticsearch.mapping.impl.DefaultMapperFactory;
 import org.tynamo.model.jpa.ElasticSearchDescriptorDecorator;
@@ -44,6 +46,9 @@ public class TynamoJpaModule {
 		// invoking the constructor.
 
 		binder.bind(JpaPersistenceService.class, JpaPersistenceServiceImpl.class);
+		binder.bind(DescriptorAnnotationHandler.class, ElasticSearchAnnotationHandler.class).withId(
+			"ElasticSearchAnnotationHandler");
+
 		binder.bind(MapperFactory.class, DefaultMapperFactory.class);
 		//binder.bind(TynamoInterceptor.class);
 		//binder.bind(JPAConfigurer.class, TynamoInterceptorConfigurer.class).withId("TynamoInterceptorConfigurer");
@@ -88,7 +93,10 @@ public class TynamoJpaModule {
 	@Contribute(DescriptorFactory.class)
 	public static void descriptorFactory(OrderedConfiguration<DescriptorDecorator> configuration,
 												   @Autobuild JpaDescriptorDecorator jpaDescriptorDecorator) {
-		configuration.add("JPA", jpaDescriptorDecorator,"after:TynamoDecorator");
+		// jpaDescriptorDecorator is responsible for creating the idDescriptor. We have locate it first so that
+		// search extensions would work properly. Are there any properties that jpaDescriptorDecorator sets but
+		// TynamoDecorator or other decorators would reset later?
+		configuration.add("JPA", jpaDescriptorDecorator, "before:TynamoDecorator");
 	}
 
 	@SuppressWarnings("rawtypes")

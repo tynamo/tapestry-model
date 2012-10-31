@@ -11,6 +11,8 @@ import org.elasticsearch.common.xcontent.XContentBuilder;
  * @param <M>
  *          the model being mapped
  */
+
+@Deprecated
 public interface ModelMapper {
 
 	/**

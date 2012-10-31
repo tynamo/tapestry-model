@@ -21,10 +21,11 @@ import org.tynamo.model.elasticsearch.util.ReflectionUtil;
 
 /**
  * ModelMapper for play.db.Model subclasses.
- * 
+ *
  * @param <M>
  *          the model type
  */
+@Deprecated
 public class PlayModelMapper implements ModelMapper {
 
 	/** The play-specific fields to ignore. */
@@ -58,7 +59,7 @@ public class PlayModelMapper implements ModelMapper {
 
 	/**
 	 * Checks if a field should be ignored based on JPA-specifics
-	 * 
+	 *
 	 * @param field
 	 *          the field to check
 	 * @return true if the field should be ignored, false otherwise
@@ -73,7 +74,7 @@ public class PlayModelMapper implements ModelMapper {
 
 	/**
 	 * Gets a list of {@link FieldMapper}s for the given model class
-	 * 
+	 *
 	 * @param <M>
 	 *          the model type
 	 * @param factory

@@ -1,14 +1,11 @@
 package org.tynamo.descriptor.annotation.handlers;
 
-import org.apache.commons.beanutils.PropertyUtils;
-
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
-/**
- * @author Chris Nelson
- */
+import org.apache.commons.beanutils.PropertyUtils;
+
 public class AnnotationHandlerUtils
 {
 

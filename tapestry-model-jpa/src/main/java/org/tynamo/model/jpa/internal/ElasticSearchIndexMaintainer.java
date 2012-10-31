@@ -1,6 +1,5 @@
 package org.tynamo.model.jpa.internal;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -22,9 +21,8 @@ import org.elasticsearch.indices.IndexAlreadyExistsException;
 import org.elasticsearch.node.Node;
 import org.slf4j.Logger;
 import org.tynamo.descriptor.TynamoClassDescriptor;
+import org.tynamo.model.elasticsearch.descriptor.ElasticSearchExtension;
 import org.tynamo.model.elasticsearch.mapping.MapperFactory;
-import org.tynamo.model.elasticsearch.mapping.MappingUtil;
-import org.tynamo.model.elasticsearch.mapping.ModelMapper;
 import org.tynamo.services.DescriptorService;
 import org.tynamo.services.PersistenceService;
 
@@ -59,10 +57,8 @@ public class ElasticSearchIndexMaintainer {
 	@PostUpdate
 	public void postPersist(Object entity) {
 		Client client = node.client();
-
-		ModelMapper mapper = mapperFactory.getMapper(entity.getClass());
 		try {
-			indexModel(client, mapper, entity);
+			indexEntity(client, entity, descriptorService.getClassDescriptor(entity.getClass()).getExtension(ElasticSearchExtension.class));
 		} catch (Exception e) {
 			logger.error(String.format("Failed to index entity %s of type %s", entity, entity.getClass().getSimpleName()), e);
 		}
@@ -105,34 +101,34 @@ public class ElasticSearchIndexMaintainer {
 		// we can't use IndicesExists for all at the same time since it returns a simple boolean, rather than an array
 		// IndicesExistsResponse response = client.admin().indices()
 		// .exists(new IndicesExistsRequest(indexNames.toArray(new String[0]))).actionGet();
-		List<Class> entitiesWithNoIndexFound = new ArrayList<Class>();
-		for (TynamoClassDescriptor descriptor : descriptorService.getAllDescriptors())
-			if (MappingUtil.isSearchable(descriptor.getBeanType())) {
-				// register to listen to events of each entity separately
-				entityManager.unwrap(Session.class).getDescriptor(descriptor.getBeanType()).getEventManager()
-					.addListener(new EclipseLinkDescriptorEventListener());
-			ModelMapper mapper = mapperFactory.getMapper(descriptor.getBeanType());
-			if (!client.admin().indices().prepareExists(mapper.getIndexName()).execute().actionGet().exists()) {
+		for (TynamoClassDescriptor descriptor : descriptorService.getAllDescriptors()) {
+			if (!descriptor.supportsExtension(ElasticSearchExtension.class)) continue;
+			// register to listen to events of each entity separately
+			entityManager.unwrap(Session.class).getDescriptor(descriptor.getBeanType()).getEventManager()
+				.addListener(new EclipseLinkDescriptorEventListener());
+			ElasticSearchExtension descriptorExtension = descriptor.getExtension(ElasticSearchExtension.class);
+			if (!client.admin().indices().prepareExists(descriptorExtension.getIndexName()).execute().actionGet().exists()) {
 				// create index and start indexing entity
-				createIndex(client, mapper);
-				entitiesWithNoIndexFound.add(descriptor.getBeanType());
-			}
-		}
-		for (Class entityType : entitiesWithNoIndexFound) {
-			ModelMapper mapper = mapperFactory.getMapper(entityType);
-			List entities = persistenceService.getInstances(entityType);
-			try {
-				for (Object entity : entities)
-					indexModel(client, mapper, entity);
-			} catch (Exception e) {
-				// FIXME should we delete index?
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				createIndex(client, descriptorExtension.getIndexName());
+				indexEntities(client, descriptor.getBeanType(), descriptorExtension);
 			}
 		}
 	}
 
-	public void indexModel(Client client, ModelMapper mapper, Object model) throws Exception {
+	public void indexEntities(Client client, Class beanType, ElasticSearchExtension descriptorExtension) {
+		List entities = persistenceService.getInstances(beanType);
+		try {
+			for (Object entity : entities)
+				indexEntity(client, entity, descriptorExtension);
+		} catch (Exception e) {
+			// FIXME should we delete index?
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
+	public void indexEntity(Client client, Object model, ElasticSearchExtension descriptor) throws Exception {
 		logger.debug("Index Model: %s", model);
 
 		// Define Content Builder
@@ -141,13 +137,13 @@ public class ElasticSearchIndexMaintainer {
 		// Index Model
 		try {
 			// Define Index Name
-			String indexName = mapper.getIndexName();
-			String typeName = mapper.getTypeName();
-			String documentId = mapper.getDocumentId(model);
+			String indexName = descriptor.getIndexName();
+			String typeName = descriptor.getTypeName();
+			String documentId = descriptor.getDocumentId(model);
 			logger.debug("Index Name: %s", indexName);
 
 			contentBuilder = XContentFactory.jsonBuilder().prettyPrint();
-			mapper.addModel(model, contentBuilder);
+			descriptor.addModel(model, contentBuilder);
 			logger.debug("Index json: %s", contentBuilder.string());
 			IndexResponse response = client.prepareIndex(indexName, typeName, documentId).setSource(contentBuilder).execute()
 				.actionGet();
@@ -161,9 +157,7 @@ public class ElasticSearchIndexMaintainer {
 	}
 	}
 
-	private void createIndex(Client client, ModelMapper mapper) {
-		String indexName = mapper.getIndexName();
-
+	private void createIndex(Client client, String indexName) {
 		try {
 			logger.debug("Starting Elastic Search Index %s", indexName);
 			CreateIndexResponse response = client.admin().indices().create(new CreateIndexRequest(indexName)).actionGet();
