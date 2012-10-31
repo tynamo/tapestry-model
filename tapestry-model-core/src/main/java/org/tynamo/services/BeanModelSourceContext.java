@@ -1,7 +1,7 @@
 package org.tynamo.services;
 
 /**
- * Holds the context key used to decorate the BeanModels in {@link org.tynamo.internal.services.BeanModelSourceAdvice}
+ * Holds the context key used to decorate the BeanModels in {@link org.tynamo.internal.services.BeanModelSourceAdviceImpl}
  */
 public class BeanModelSourceContext
 {
