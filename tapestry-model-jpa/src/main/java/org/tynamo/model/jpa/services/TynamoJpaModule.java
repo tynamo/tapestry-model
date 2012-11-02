@@ -138,8 +138,9 @@ public class TynamoJpaModule {
 		indexMaintainer.start();
 	}
 
-	public static void contributeDescriptorFactory(OrderedConfiguration<DescriptorDecorator> configuration) {
-		configuration.add("SearchDecorator", new ElasticSearchDescriptorDecorator(), "after:TynamoDecorator");
+	public static void contributeDescriptorFactory(OrderedConfiguration<DescriptorDecorator> configuration,
+		@Autobuild ElasticSearchDescriptorDecorator decorator) {
+		configuration.add("SearchDecorator", decorator, "after:TynamoDecorator");
 	}
 
 	/**
