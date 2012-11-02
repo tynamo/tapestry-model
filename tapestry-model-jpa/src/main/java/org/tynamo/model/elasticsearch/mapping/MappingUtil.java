@@ -10,7 +10,6 @@ import org.elasticsearch.common.joda.time.LocalDate;
 import org.elasticsearch.common.joda.time.LocalDateTime;
 import org.elasticsearch.common.joda.time.base.BaseLocal;
 import org.elasticsearch.common.xcontent.XContentBuilder;
-import org.elasticsearch.common.xcontent.XContentFactory;
 import org.tynamo.model.elasticsearch.annotations.ElasticSearchField;
 import org.tynamo.model.elasticsearch.annotations.ElasticSearchField.Index;
 import org.tynamo.model.elasticsearch.annotations.ElasticSearchField.Store;
@@ -46,22 +45,22 @@ public abstract class MappingUtil {
 		return false;
 	}
 
-	/**
-	 * Creates an {@link XContentBuilder} which contains a single mapping
-	 * 
-	 * @param mapper
-	 *          the mapping
-	 * @return the content builder
-	 * @throws IOException
-	 */
-	public static XContentBuilder getMapping(ModelMapper mapper) throws IOException {
-		XContentBuilder builder = XContentFactory.jsonBuilder();
-		builder.startObject();
-		mapper.addMapping(builder);
-		builder.endObject();
-
-		return builder;
-	}
+	// /**
+	// * Creates an {@link XContentBuilder} which contains a single mapping
+	// *
+	// * @param mapper
+	// * the mapping
+	// * @return the content builder
+	// * @throws IOException
+	// */
+	// public static XContentBuilder getMapping(ModelMapper mapper) throws IOException {
+	// XContentBuilder builder = XContentFactory.jsonBuilder();
+	// builder.startObject();
+	// mapper.addMapping(builder);
+	// builder.endObject();
+	//
+	// return builder;
+	// }
 
 	/**
 	 * Adds a field to the content builder

@@ -7,41 +7,11 @@ import org.tynamo.model.elasticsearch.annotations.ElasticSearchEmbedded;
 import org.tynamo.model.elasticsearch.mapping.FieldMapper;
 import org.tynamo.model.elasticsearch.mapping.MapperFactory;
 import org.tynamo.model.elasticsearch.mapping.MappingException;
-import org.tynamo.model.elasticsearch.mapping.MappingUtil;
-import org.tynamo.model.elasticsearch.mapping.ModelMapper;
 
 /**
- * Factory for {@link ModelMapper}s
+ * Factory for {@link FieldMapper}s
  */
 public class DefaultMapperFactory implements MapperFactory {
-
-	/**
-	 * Gets a {@link ModelMapper} for the specified model class
-	 *
-	 * @param <M>
-	 *          the model type
-	 * @param clazz
-	 *          the model class
-	 * @throws MappingException
-	 *           in case of mapping problems
-	 * @return the model mapper
-	 */
-	@SuppressWarnings("rawtypes")
-	public ModelMapper getMapper(Class clazz) throws MappingException {
-		// if (clazz.equals(play.db.Model.class)) {
-		// return (ModelMapper<M>) new UniversalModelMapper();
-		// }
-
-		if (!MappingUtil.isSearchable(clazz)) { throw new MappingException(String.format(
-			"Class %s must be annotated with @ElasticSearchable", clazz.getName())); }
-
-		// if (play.db.Model.class.isAssignableFrom(clazz)) {
-		return new PlayModelMapper(this, clazz);
-		// } else {
-		// throw new MappingException("No mapper available for non-play.db.Model models at this time");
-		// }
-	}
-
 	/**
 	 * Gets a {@link FieldMapper} for the specified field
 	 *

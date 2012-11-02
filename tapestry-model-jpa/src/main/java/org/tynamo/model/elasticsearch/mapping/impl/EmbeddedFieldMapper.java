@@ -17,7 +17,7 @@ import org.tynamo.model.elasticsearch.util.ReflectionUtil;
 
 /**
  * Field mapper for embedded objects
- * 
+ *
  * @param <M>
  *          the generic model type which owns this field
  */
@@ -73,15 +73,18 @@ public class EmbeddedFieldMapper<M> extends AbstractFieldMapper<M> {
 
 		// Set up fields
 		for (Field embeddedField : clazzFields) {
-			if (PlayModelMapper.shouldIgnoreField(embeddedField)) {
-				continue;
-			}
-
-			// If no fields were requested and it's marked, ignore it
-			if (fieldsToIndex.size() == 0
-					&& PlayModelMapper.userRequestedIgnoreField(embeddedField)) {
-				continue;
-			}
+			// // FIXME questionable, decide later how to deal properly
+			// // shouldIgnoreField is true when @Transient
+			// if (PlayModelMapper.shouldIgnoreField(embeddedField)) {
+			// continue;
+			// }
+			//
+			// // If no fields were requested and it's marked, ignore it
+			// // userRequestedIgnoreField is true when @ElasticSearchIgnore
+			// if (fieldsToIndex.size() == 0
+			// && PlayModelMapper.userRequestedIgnoreField(embeddedField)) {
+			// continue;
+			// }
 
 			// If specific fields are requested, and this is not one of them,
 			// ignore it

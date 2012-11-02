@@ -13,8 +13,11 @@ import org.eclipse.persistence.descriptors.DescriptorEventAdapter;
 import org.eclipse.persistence.sessions.Session;
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequest;
 import org.elasticsearch.action.admin.indices.create.CreateIndexResponse;
+import org.elasticsearch.action.admin.indices.mapping.put.PutMappingRequest;
+import org.elasticsearch.action.admin.indices.mapping.put.PutMappingResponse;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.client.Client;
+import org.elasticsearch.client.Requests;
 import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.common.xcontent.XContentFactory;
 import org.elasticsearch.indices.IndexAlreadyExistsException;
@@ -30,7 +33,6 @@ public class ElasticSearchIndexMaintainer {
 	private Node node;
 	private EntityManager entityManager;
 	private DescriptorService descriptorService;
-	private MapperFactory mapperFactory;
 	private Logger logger;
 	private PersistenceService persistenceService;
 
@@ -43,8 +45,6 @@ public class ElasticSearchIndexMaintainer {
 		this.entityManager = entityManager;
 		this.node = node;
 		this.descriptorService = descriptorService;
-		this.mapperFactory = mapperFactory;
-
 	}
 
 	/**
@@ -116,12 +116,13 @@ public class ElasticSearchIndexMaintainer {
 		for (TynamoClassDescriptor descriptor : descriptorService.getAllDescriptors()) {
 			if (!descriptor.supportsExtension(ElasticSearchExtension.class)) continue;
 			// register to listen to events of each entity separately
+			// http://eclipse.1072660.n5.nabble.com/Specific-EntityListener-Instance-td4159.html
 			entityManager.unwrap(Session.class).getDescriptor(descriptor.getBeanType()).getEventManager()
 				.addListener(new EclipseLinkDescriptorEventListener());
 			ElasticSearchExtension descriptorExtension = descriptor.getExtension(ElasticSearchExtension.class);
 			if (!client.admin().indices().prepareExists(descriptorExtension.getIndexName()).execute().actionGet().exists()) {
 				// create index and start indexing entity
-				createIndex(client, descriptorExtension.getIndexName());
+				createIndex(client, descriptorExtension);
 				indexEntities(client, descriptor.getBeanType(), descriptorExtension);
 			}
 		}
@@ -143,7 +144,6 @@ public class ElasticSearchIndexMaintainer {
 	protected void indexEntity(Client client, Object model, ElasticSearchExtension descriptor) throws Exception {
 		logger.debug("Index Model: %s", model);
 
-		// Define Content Builder
 		XContentBuilder contentBuilder = null;
 
 		// Index Model
@@ -163,10 +163,35 @@ public class ElasticSearchIndexMaintainer {
 		}
 	}
 
-	private void createIndex(Client client, String indexName) {
+	private void createIndex(Client client, ElasticSearchExtension descriptor) {
+		String indexName = descriptor.getIndexName();
 		try {
 			logger.debug("Starting Elastic Search Index %s", indexName);
 			CreateIndexResponse response = client.admin().indices().create(new CreateIndexRequest(indexName)).actionGet();
+			logger.debug("Response: %s", response);
+
+		} catch (IndexAlreadyExistsException iaee) {
+			logger.debug("Index already exists: %s", indexName);
+			return;
+		} catch (Throwable t) {
+			logger.warn(ExceptionUtils.getStackTrace(t));
+			return;
+		}
+		createType(client, descriptor);
+	}
+
+	private void createType(Client client, ElasticSearchExtension descriptor) {
+		String indexName = descriptor.getIndexName();
+		String typeName = descriptor.getTypeName();
+
+		try {
+			logger.debug("Create Elastic Search Type %s/%s", indexName, typeName);
+			PutMappingRequest request = Requests.putMappingRequest(indexName).type(typeName);
+			XContentBuilder contentBuilder = XContentFactory.jsonBuilder().prettyPrint();
+			descriptor.addMapping(contentBuilder);
+			logger.debug("Type mapping: \n %s", contentBuilder.string());
+			request.source(contentBuilder);
+			PutMappingResponse response = client.admin().indices().putMapping(request).actionGet();
 			logger.debug("Response: %s", response);
 
 		} catch (IndexAlreadyExistsException iaee) {

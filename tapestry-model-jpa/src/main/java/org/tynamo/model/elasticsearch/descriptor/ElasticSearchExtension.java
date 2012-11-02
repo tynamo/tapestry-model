@@ -71,4 +71,30 @@ public class ElasticSearchExtension implements DescriptorExtension {
 		builder.endObject();
 	}
 
+	public List<FieldMapper> getMapping() {
+		return mapping;
+	}
+
+	public void addMapping(XContentBuilder builder) throws IOException {
+		builder.startObject();
+		builder.startObject(getTypeName());
+		// TODO do we need time-to-live annotation?
+		// if (clazz.isAnnotationPresent(ElasticSearchTtl.class)) {
+		// String ttlValue = ((ElasticSearchTtl) clazz.getAnnotation(ElasticSearchTtl.class)).value();
+		// builder.startObject("_ttl");
+		// builder.field("enabled", true);
+		// builder.field("default", ttlValue);
+		// builder.endObject();
+		// }
+		builder.startObject("properties");
+
+		for (FieldMapper field : mapping) {
+			field.addToMapping(builder);
+		}
+
+		builder.endObject();
+		builder.endObject();
+		builder.endObject();
+	}
+
 }

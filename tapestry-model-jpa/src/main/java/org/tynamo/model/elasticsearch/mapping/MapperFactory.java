@@ -3,7 +3,7 @@ package org.tynamo.model.elasticsearch.mapping;
 import java.lang.reflect.Field;
 
 /**
- * Factory for retrieving {@link ModelMapper}s and {@link FieldMapper}s
+ * Factory for retrieving {@link FieldMapper}s
  */
 public interface MapperFactory {
 	/**
