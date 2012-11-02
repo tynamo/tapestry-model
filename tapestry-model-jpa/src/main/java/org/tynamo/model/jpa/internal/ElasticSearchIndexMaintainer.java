@@ -55,13 +55,17 @@ public class ElasticSearchIndexMaintainer {
 	 */
 	@PostPersist
 	@PostUpdate
-	public void postPersist(Object entity) {
+	public void postWrite(Object entity) {
 		Client client = node.client();
 		try {
-			indexEntity(client, entity, descriptorService.getClassDescriptor(entity.getClass()).getExtension(ElasticSearchExtension.class));
+			indexEntity(client, entity, getElasticSearchDescriptor(entity));
 		} catch (Exception e) {
 			logger.error(String.format("Failed to index entity %s of type %s", entity, entity.getClass().getSimpleName()), e);
 		}
+	}
+
+	ElasticSearchExtension getElasticSearchDescriptor(Object entity) {
+		return descriptorService.getClassDescriptor(entity.getClass()).getExtension(ElasticSearchExtension.class);
 	}
 
 	/**
@@ -71,17 +75,25 @@ public class ElasticSearchIndexMaintainer {
 	 *          The entity to remove from the index
 	 */
 	@PostRemove
-	public void postRemove(Object entity) {
-		// search.onSearchableRemoved(entity);
-		// solrServer.
-		// solrServer.commit();
+	public void postDelete(Object entity) {
+		removeEntityFromIndex(node.client(), entity, getElasticSearchDescriptor(entity));
 	}
 
-	public void start() {
-		// FIXME exit if org.eclipse.persistence.jpa.JpaEntityManager isn't available
+	public void removeEntityFromIndex(Client client, Object entity, ElasticSearchExtension elasticSearchExtension) {
+		logger.debug("Delete entity %s of type %s from elasticsearch index", entity, entity.getClass().getName());
+		ElasticSearchExtension descriptor = getElasticSearchDescriptor(entity);
+		client.prepareDelete(descriptor.getIndexName(), descriptor.getTypeName(), descriptor.getDocumentId(entity))
+			.execute();
+	}
 
-		// ((JpaEntityManager) entityManager.getDelegate()).getSession().getEventManager()
-		// .addListener(new EclipseLinkSessionListener());
+
+	public void start() {
+		try {
+			Class.forName("org.eclipse.persistence.sessions.Session");
+		} catch (ClassNotFoundException e) {
+			logger.warn("Elasticsearch integration is currently for EclipseLink only. Only JPA search is available ");
+			return;
+		}
 
 		Thread indexCreator = new Thread(new Runnable() {
 			public void run() {
@@ -128,7 +140,7 @@ public class ElasticSearchIndexMaintainer {
 
 	}
 
-	public void indexEntity(Client client, Object model, ElasticSearchExtension descriptor) throws Exception {
+	protected void indexEntity(Client client, Object model, ElasticSearchExtension descriptor) throws Exception {
 		logger.debug("Index Model: %s", model);
 
 		// Define Content Builder
@@ -136,25 +148,19 @@ public class ElasticSearchIndexMaintainer {
 
 		// Index Model
 		try {
-			// Define Index Name
-			String indexName = descriptor.getIndexName();
-			String typeName = descriptor.getTypeName();
-			String documentId = descriptor.getDocumentId(model);
-			logger.debug("Index Name: %s", indexName);
-
 			contentBuilder = XContentFactory.jsonBuilder().prettyPrint();
 			descriptor.addModel(model, contentBuilder);
 			logger.debug("Index json: %s", contentBuilder.string());
-			IndexResponse response = client.prepareIndex(indexName, typeName, documentId).setSource(contentBuilder).execute()
+			IndexResponse response = client
+				.prepareIndex(descriptor.getIndexName(), descriptor.getTypeName(), descriptor.getDocumentId(model))
+				.setSource(contentBuilder).execute()
 				.actionGet();
 
 			logger.debug("Index Response: %s", response);
 
 		} finally {
-			if (contentBuilder != null) {
-				contentBuilder.close();
-			}
-	}
+			if (contentBuilder != null) contentBuilder.close();
+		}
 	}
 
 	private void createIndex(Client client, String indexName) {
@@ -173,19 +179,19 @@ public class ElasticSearchIndexMaintainer {
 
 	class EclipseLinkDescriptorEventListener extends DescriptorEventAdapter {
 		@Override
-		public void postWrite(DescriptorEvent event) {
-			ElasticSearchIndexMaintainer.this.postPersist(event.getSource());
+		public void postInsert(DescriptorEvent event) {
+			ElasticSearchIndexMaintainer.this.postWrite(event.getSource());
 		}
-		// @Override
-		// public void postCommitUnitOfWork(SessionEvent event) {
-		// ElasticSearchIndexMaintainer.this.postPersist(event.getSource());
-		// }
-		//
-		// @Override
-		// public void postMergeUnitOfWorkChangeSet(SessionEvent event) {
-		// ElasticSearchIndexMaintainer.this.postPersist(event.getSource());
-		// }
 
+		@Override
+		public void postUpdate(DescriptorEvent event) {
+			ElasticSearchIndexMaintainer.this.postWrite(event.getSource());
+		}
+
+		@Override
+		public void postDelete(DescriptorEvent event) {
+			ElasticSearchIndexMaintainer.this.postDelete(event.getSource());
+		}
 	}
 
 }
