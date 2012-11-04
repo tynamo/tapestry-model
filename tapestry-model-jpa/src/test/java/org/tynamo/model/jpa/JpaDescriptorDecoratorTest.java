@@ -1,12 +1,3 @@
-/*
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and limitations under the License.
- */
 package org.tynamo.model.jpa;
 
 import java.util.Date;
@@ -34,8 +25,6 @@ import org.tynamo.descriptor.TynamoClassDescriptor;
 import org.tynamo.descriptor.TynamoClassDescriptorImpl;
 import org.tynamo.descriptor.TynamoPropertyDescriptor;
 import org.tynamo.descriptor.TynamoPropertyDescriptorImpl;
-import org.tynamo.descriptor.annotation.PropertyDescriptor;
-import org.tynamo.descriptor.annotation.handlers.PropertyDescriptorAnnotationHandler;
 import org.tynamo.descriptor.decorators.DescriptorDecorator;
 import org.tynamo.model.jpa.services.JpaDescriptorDecorator;
 import org.tynamo.model.test.entities.Bar;
@@ -240,12 +229,6 @@ public class JpaDescriptorDecoratorTest
 		descriptor.getPropertyDescriptors().add(new TynamoPropertyDescriptorImpl(Bar.class, "transientProperty", String.class));
 		TynamoClassDescriptor decorated = jpaDescriptorDecorator.decorate(descriptor);
 		Assert.assertFalse(decorated.getPropertyDescriptor("transientProperty").isSearchable());
-
-		// not up to Hibernate descriptor to decide what's (full text) searchable
-		Assert.assertFalse(decorated.getPropertyDescriptor("name").isSearchable());
-		PropertyDescriptorAnnotationHandler decorator = new PropertyDescriptorAnnotationHandler();
-		PropertyDescriptor propertyAnno = Bar.class.getMethod("getName").getAnnotation(PropertyDescriptor.class);
-		decorator.decorateFromAnnotation(propertyAnno, decorated.getPropertyDescriptor("name"));
 		Assert.assertTrue(decorated.getPropertyDescriptor("name").isSearchable());
 	}
 }

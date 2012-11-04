@@ -1,14 +1,3 @@
-/*
- * Copyright 2004 Chris Nelson
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and limitations under the License.
- */
 package org.tynamo.descriptor;
 
 import java.util.Arrays;
@@ -93,16 +82,13 @@ public class TynamoClassDescriptorTest extends Assert
 	@Test public void testGetSearchableProperties()
 	{
 		TynamoClassDescriptorImpl classDescriptor = new TynamoClassDescriptorImpl(Searchee.class);
-		TynamoPropertyDescriptorImpl propertyDescriptor = new TynamoPropertyDescriptorImpl(Foo.class, "someProperty",
-			String.class);
-		propertyDescriptor.setSearchable(true);
-		List<TynamoPropertyDescriptor> propertyDescriptors = classDescriptor.getPropertyDescriptors();
-		propertyDescriptors.add(propertyDescriptor);
-		propertyDescriptors.add(new IdentifierDescriptorImpl(Foo.class, "id", String.class));
-		propertyDescriptors.add(new CollectionDescriptor(Foo.class, "name", Set.class));
+		classDescriptor.getPropertyDescriptors().add(
+				new TynamoPropertyDescriptorImpl(Foo.class, "someProperty", String.class));
+		classDescriptor.getPropertyDescriptors().add(new IdentifierDescriptorImpl(Foo.class, "id", String.class));
+		classDescriptor.getPropertyDescriptors().add(new CollectionDescriptor(Foo.class, "name", Set.class));
 
-		List<TynamoPropertyDescriptor> searchableProperties = F.flow(propertyDescriptors)
-			.filter(new Predicate<TynamoPropertyDescriptor>()
+		List<TynamoPropertyDescriptor> searchableProperties = classDescriptor.getPropertyDescriptors();
+		searchableProperties = F.flow(searchableProperties).filter(new Predicate<TynamoPropertyDescriptor>()
 		{
 			public boolean accept(TynamoPropertyDescriptor element)
 			{
@@ -110,7 +96,7 @@ public class TynamoClassDescriptorTest extends Assert
 			}
 		}).toList();
 
-		assertEquals(searchableProperties.size(), 1, "should only be 1 searchable property");
+		assertEquals(2, searchableProperties.size(), "should only be 2 search properties");
 		assertEquals(searchableProperties.get(0).getName(), "someProperty");
 	}
 }

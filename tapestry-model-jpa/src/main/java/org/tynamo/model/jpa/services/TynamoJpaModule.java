@@ -93,7 +93,7 @@ public class TynamoJpaModule {
 	@Contribute(DescriptorFactory.class)
 	public static void descriptorFactory(OrderedConfiguration<DescriptorDecorator> configuration,
 												   @Autobuild JpaDescriptorDecorator jpaDescriptorDecorator) {
-		// jpaDescriptorDecorator is responsible for creating the idDescriptor. We have locate it first so that
+		// jpaDescriptorDecorator is responsible for creating the idDescriptor. We have to locate the id first so that
 		// search extensions would work properly. Are there any properties that jpaDescriptorDecorator sets but
 		// TynamoDecorator or other decorators would reset later?
 		configuration.add("JPA", jpaDescriptorDecorator, "before:TynamoDecorator");

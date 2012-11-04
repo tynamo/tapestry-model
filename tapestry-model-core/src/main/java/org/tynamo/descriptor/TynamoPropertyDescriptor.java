@@ -32,20 +32,6 @@ public interface TynamoPropertyDescriptor extends Descriptor
 	public boolean isObjectReference();
 
 	/**
-	 * @return is transient
-	 * 
-	 * @since 0.4.0
-	 */
-	// Briefly introduced in 0.4.0, to be removed in 0.5.0. It's not needed in the common descriptor
-	@Deprecated
-	public boolean isTransient();
-
-	/**
-	 * @param transient The transietn to set.
-	 */
-	public void setTransient(boolean value);
-
-	/**
 	 * @return Returns the required.
 	 */
 	public boolean isRequired();

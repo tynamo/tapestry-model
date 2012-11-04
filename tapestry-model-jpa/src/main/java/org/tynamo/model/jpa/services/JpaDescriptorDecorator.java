@@ -1,12 +1,3 @@
-/*
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and limitations under the License.
- */
 package org.tynamo.model.jpa.services;
 
 import java.lang.annotation.Annotation;
@@ -108,7 +99,6 @@ public class JpaDescriptorDecorator implements DescriptorDecorator
 		} catch (MetadataNotFoundException e) {
 			if (ignoreNonEntityTypes) {
 				logger.warn("MetadataNotFound! Ignoring:" + descriptor.getBeanType().toString());
-				descriptor.setNonVisual(true);
 				return descriptor;
 			} else {
 				throw new TynamoRuntimeException(e);
@@ -123,7 +113,10 @@ public class JpaDescriptorDecorator implements DescriptorDecorator
 					// FIXME should we mark an identifier descriptor as part of a composite key?
 					descriptorReference = createIdentifierDescriptor(type, propertyDescriptor, descriptor);
 				} else if (notAHibernateProperty(metamodel, type, propertyDescriptor)) {
-					propertyDescriptor.setTransient(true);
+					// If this is not a jpa property (i.e. marked
+					// Transient), it's certainly not searchable
+					// Are there any other properties like this?
+					propertyDescriptor.setSearchable(false);
 					descriptorReference = propertyDescriptor;
 				} else {
 					//Attribute mappingProperty = getMapping(type).getAttribute(propertyDescriptor.getName());

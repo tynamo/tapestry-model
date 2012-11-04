@@ -13,11 +13,9 @@ public class TynamoPropertyDescriptorImpl extends TynamoDescriptor implements Ty
 
 	private String name;
 
-	private boolean searchable;
+	private boolean searchable = true;
 
 	private boolean required;
-
-	private boolean isTransient;
 
 	private boolean readOnly;
 
@@ -140,19 +138,6 @@ public class TynamoPropertyDescriptorImpl extends TynamoDescriptor implements Ty
 	public boolean isObjectReference()
 	{
 		return false;
-	}
-
-	public boolean isTransient() {
-		return isTransient;
-	}
-
-	/**
-	 * @param required
-	 *          The required to set.
-	 */
-	public void setTransient(boolean value)
-	{
-		isTransient = value;
 	}
 
 	/**

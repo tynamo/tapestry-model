@@ -30,6 +30,6 @@ public class JpaModelSearch extends GenericModelSearch {
 				return new JpaGridDataSource(entityManager, getBeanType());
 
 		return new SearchableJpaGridDataSource(entityManager, getBeanType(), propertySearchFilterMap,
-			getSearchablePropertyDescriptors(), getSearchTerms());
+			searchablePropertyDescriptors, getSearchTerms());
 	}
 }
