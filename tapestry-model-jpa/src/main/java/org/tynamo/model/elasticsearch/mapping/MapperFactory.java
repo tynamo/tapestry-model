@@ -1,6 +1,6 @@
 package org.tynamo.model.elasticsearch.mapping;
 
-import java.lang.reflect.Field;
+import org.tynamo.descriptor.TynamoPropertyDescriptor;
 
 /**
  * Factory for retrieving {@link FieldMapper}s
@@ -30,7 +30,7 @@ public interface MapperFactory {
 	 *           in case of mapping problems
 	 * @return the field mapper
 	 */
-	<M> FieldMapper<M> getMapper(Field field) throws MappingException;
+	<M> FieldMapper<M> getMapper(TynamoPropertyDescriptor field) throws MappingException;
 
 	/**
 	 * Gets a {@link FieldMapper} for the specified field, using a prefix in the index
@@ -43,5 +43,5 @@ public interface MapperFactory {
 	 *           in case of mapping problems
 	 * @return the field mapper
 	 */
-	<M> FieldMapper<M> getMapper(Field field, String prefix) throws MappingException;
+	<M> FieldMapper<M> getMapper(TynamoPropertyDescriptor field, String prefix) throws MappingException;
 }

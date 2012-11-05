@@ -30,11 +30,12 @@ import org.tynamo.services.DescriptorService;
 import org.tynamo.services.PersistenceService;
 
 public class ElasticSearchIndexMaintainer {
-	private Node node;
-	private EntityManager entityManager;
-	private DescriptorService descriptorService;
-	private Logger logger;
-	private PersistenceService persistenceService;
+	private final Node node;
+	private final EntityManager entityManager;
+	private final DescriptorService descriptorService;
+	private final Logger logger;
+	private final PersistenceService persistenceService;
+	private final MapperFactory mapperFactory;
 
 	public ElasticSearchIndexMaintainer(Logger logger, PersistenceService persistenceService,
 		EntityManager entityManager, Node node,
@@ -45,6 +46,7 @@ public class ElasticSearchIndexMaintainer {
 		this.entityManager = entityManager;
 		this.node = node;
 		this.descriptorService = descriptorService;
+		this.mapperFactory = mapperFactory;
 	}
 
 	/**
@@ -149,7 +151,7 @@ public class ElasticSearchIndexMaintainer {
 		// Index Model
 		try {
 			contentBuilder = XContentFactory.jsonBuilder().prettyPrint();
-			descriptor.addModel(model, contentBuilder);
+			descriptor.addModel(model, contentBuilder, mapperFactory);
 			logger.debug("Index json: %s", contentBuilder.string());
 			IndexResponse response = client
 				.prepareIndex(descriptor.getIndexName(), descriptor.getTypeName(), descriptor.getDocumentId(model))
@@ -188,7 +190,7 @@ public class ElasticSearchIndexMaintainer {
 			logger.debug("Create Elastic Search Type %s/%s", indexName, typeName);
 			PutMappingRequest request = Requests.putMappingRequest(indexName).type(typeName);
 			XContentBuilder contentBuilder = XContentFactory.jsonBuilder().prettyPrint();
-			descriptor.addMapping(contentBuilder);
+			descriptor.addMapping(contentBuilder, mapperFactory);
 			logger.debug("Type mapping: \n %s", contentBuilder.string());
 			request.source(contentBuilder);
 			PutMappingResponse response = client.admin().indices().putMapping(request).actionGet();

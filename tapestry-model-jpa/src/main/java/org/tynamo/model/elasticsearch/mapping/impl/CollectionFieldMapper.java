@@ -2,23 +2,22 @@ package org.tynamo.model.elasticsearch.mapping.impl;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
-import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 import org.elasticsearch.common.xcontent.XContentBuilder;
+import org.tynamo.descriptor.CollectionDescriptor;
+import org.tynamo.descriptor.TynamoPropertyDescriptor;
 import org.tynamo.model.elasticsearch.annotations.ElasticSearchEmbedded;
 import org.tynamo.model.elasticsearch.mapping.FieldMapper;
 import org.tynamo.model.elasticsearch.mapping.MapperFactory;
 import org.tynamo.model.elasticsearch.mapping.MappingException;
 import org.tynamo.model.elasticsearch.mapping.MappingUtil;
-import org.tynamo.model.elasticsearch.util.ReflectionUtil;
 
 /**
  * Field mapper for collection type; maps to array by default
- * 
+ *
  * @param <M>
  *          the generic model type which owns this field
  */
@@ -28,14 +27,16 @@ public class CollectionFieldMapper<M> extends AbstractFieldMapper<M> {
 	private final String type;
 	private final List<FieldMapper<Object>> fields;
 
-	public CollectionFieldMapper(MapperFactory factory, Field field, String prefix) {
+	public CollectionFieldMapper(MapperFactory factory, TynamoPropertyDescriptor field, String prefix) {
 		super(field, prefix);
 
-		if (!Collection.class.isAssignableFrom(field.getType())) {
+		if (!Collection.class.isAssignableFrom(field.getPropertyType())) {
 			throw new MappingException("field must be of Collection type");
 		}
 
-		ElasticSearchEmbedded embed = field.getAnnotation(ElasticSearchEmbedded.class);
+		// FIXME not support for ElasticSearchEmbedded at the moment
+		// ElasticSearchEmbedded embed = field.getAnnotation(ElasticSearchEmbedded.class);
+		ElasticSearchEmbedded embed = null;
 		nestedMode = (embed != null);
 
 		// Detect object type in collection
@@ -48,7 +49,8 @@ public class CollectionFieldMapper<M> extends AbstractFieldMapper<M> {
 			fields = new ArrayList<FieldMapper<Object>>();
 
 			for (Field embeddedField : fieldsToIndex) {
-				fields.add(factory.getMapper(embeddedField));
+				// FIXME not support for ElasticSearchEmbedded at the moment
+				// fields.add(factory.getMapper(embeddedField));
 			}
 		} else {
 			fields = null;
@@ -56,8 +58,9 @@ public class CollectionFieldMapper<M> extends AbstractFieldMapper<M> {
 	}
 
 	private Class<?> getCollectionType() {
-		ParameterizedType type = (ParameterizedType) field.getGenericType();
-		return (Class<?>) type.getActualTypeArguments()[0];
+		return ((CollectionDescriptor) field).getElementType();
+		// ParameterizedType type = (ParameterizedType) field.getGenericType();
+		// return (Class<?>) type.getActualTypeArguments()[0];
 	}
 
 	@Override
@@ -80,9 +83,9 @@ public class CollectionFieldMapper<M> extends AbstractFieldMapper<M> {
 	}
 
 	@Override
-	public void addToDocument(M model, XContentBuilder builder) throws IOException {
+	public void addToDocument(Object o, XContentBuilder builder) throws IOException {
 		String indexFieldName = getIndexField();
-		Collection<?> value = (Collection<?>) getFieldValue(model);
+		Collection<?> value = (Collection<?>) o;
 
 		if (value != null) {
 			builder.startArray(indexFieldName);
@@ -113,48 +116,4 @@ public class CollectionFieldMapper<M> extends AbstractFieldMapper<M> {
 			builder.endArray();
 		}
 	}
-
-	@Override
-	public boolean inflate(M model, Map<String, Object> map) {
-		String indexFieldName = getIndexField();
-		final List<Object> indexValue = (List<Object>) map.get(indexFieldName);
-		final Collection<Object> modelValue = (Collection<Object>) getFieldValue(model);
-		final Class<?> type = getCollectionType();
-
-		// If we have input and output, continue
-		if (indexValue != null && modelValue != null) {
-			if (nestedMode) {
-				// Embedded mode uses mapping
-				for (Object indexItem : indexValue) {
-					// Fetch input item fields
-					Map<String, Object> indexItemMap = (Map<String, Object>) indexItem;
-
-					// Create new target instance
-					Object outputItem = ReflectionUtil.newInstance(type);
-
-					for (FieldMapper<Object> mapper : fields) {
-						mapper.inflate(outputItem, indexItemMap);
-					}
-
-					modelValue.add(outputItem);
-				}
-			} else {
-				// Flat mode uses primitive values or toString
-				for (Object indexItem : indexValue) {
-					// Try to convert
-					Object modelItem = MappingUtil.convertValue(indexItem, type);
-
-					// This should only succeed for simple types
-					if (type.isAssignableFrom(modelItem.getClass())) {
-						modelValue.add(modelItem);
-					}
-				}
-			}
-
-			return true;
-		} else {
-			return false;
-		}
-	}
-
 }

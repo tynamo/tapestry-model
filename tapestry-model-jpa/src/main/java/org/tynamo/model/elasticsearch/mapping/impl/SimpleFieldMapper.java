@@ -1,12 +1,10 @@
 package org.tynamo.model.elasticsearch.mapping.impl;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
-import java.util.Map;
 
 import org.elasticsearch.common.xcontent.XContentBuilder;
+import org.tynamo.descriptor.TynamoPropertyDescriptor;
 import org.tynamo.model.elasticsearch.mapping.MappingUtil;
-import org.tynamo.model.elasticsearch.util.ReflectionUtil;
 
 /**
  * Field mapper for simple, single-valued types
@@ -16,7 +14,7 @@ import org.tynamo.model.elasticsearch.util.ReflectionUtil;
  */
 public class SimpleFieldMapper<M> extends AbstractFieldMapper<M> {
 
-	public SimpleFieldMapper(Field field, String prefix) {
+	public SimpleFieldMapper(TynamoPropertyDescriptor field, String prefix) {
 		super(field, prefix);
 	}
 
@@ -29,29 +27,10 @@ public class SimpleFieldMapper<M> extends AbstractFieldMapper<M> {
 	}
 
 	@Override
-	public void addToDocument(M model, XContentBuilder builder) throws IOException {
+	public void addToDocument(Object value, XContentBuilder builder) throws IOException {
 		String field = getIndexField();
-		Object value = getFieldValue(model);
-
 		if (value != null) {
 			builder.field(field, value);
 		}
 	}
-
-	@Override
-	public boolean inflate(M model, Map<String, Object> map) {
-		String modelFieldName = getFieldName();
-		String indexFieldName = getIndexField();
-
-		if (map.containsKey(indexFieldName)) {
-			Object value = map.get(indexFieldName);
-			if (value != null) {
-				ReflectionUtil.setFieldValue(model, modelFieldName, value);
-				return true;
-			}
-		}
-
-		return false;
-	}
-
 }

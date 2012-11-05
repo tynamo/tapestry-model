@@ -51,6 +51,7 @@ public class ElasticModelSearch extends GenericModelSearch {
 
 		// FIXME consider whether we should .setTypes("entityType")
 		SearchResponse searchResponse = client.prepareSearch(elasticDescriptor.getIndexName())
+			.setTypes(elasticDescriptor.getTypeName())
 			.setQuery(QueryBuilders.boolQuery().must(QueryBuilders.queryString(getSearchTerms()))).execute().actionGet();
 
 		if (searchResponse.getHits().getTotalHits() <= 0) return new EmptyGridDataSource(getBeanType());

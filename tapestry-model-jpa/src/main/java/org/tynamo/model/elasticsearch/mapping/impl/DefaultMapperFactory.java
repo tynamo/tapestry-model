@@ -1,9 +1,8 @@
 package org.tynamo.model.elasticsearch.mapping.impl;
 
-import java.lang.reflect.Field;
 import java.util.Collection;
 
-import org.tynamo.model.elasticsearch.annotations.ElasticSearchEmbedded;
+import org.tynamo.descriptor.TynamoPropertyDescriptor;
 import org.tynamo.model.elasticsearch.mapping.FieldMapper;
 import org.tynamo.model.elasticsearch.mapping.MapperFactory;
 import org.tynamo.model.elasticsearch.mapping.MappingException;
@@ -23,7 +22,7 @@ public class DefaultMapperFactory implements MapperFactory {
 	 *           in case of mapping problems
 	 * @return the field mapper
 	 */
-	public FieldMapper getMapper(Field field) throws MappingException {
+	public FieldMapper getMapper(TynamoPropertyDescriptor field) throws MappingException {
 
 		return getMapper(field, null);
 
@@ -40,14 +39,15 @@ public class DefaultMapperFactory implements MapperFactory {
 	 *           in case of mapping problems
 	 * @return the field mapper
 	 */
-	public FieldMapper getMapper(Field field, String prefix) throws MappingException {
+	public FieldMapper getMapper(TynamoPropertyDescriptor field, String prefix) throws MappingException {
 
-		if (Collection.class.isAssignableFrom(field.getType())) {
+		if (Collection.class.isAssignableFrom(field.getPropertyType())) {
 			return new CollectionFieldMapper(this, field, prefix);
 
-		} else if (field.isAnnotationPresent(ElasticSearchEmbedded.class)) {
-			return new EmbeddedFieldMapper(this, field, prefix);
-
+			// FIXME no support for EmbeddedFieldMapper at the moment
+			// } else if (field.isAnnotationPresent(ElasticSearchEmbedded.class)) {
+			// return new EmbeddedFieldMapper(this, field, prefix);
+			//
 		} else {
 			return new SimpleFieldMapper(field, prefix);
 

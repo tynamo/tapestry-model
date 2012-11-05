@@ -5,9 +5,9 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 import org.elasticsearch.common.xcontent.XContentBuilder;
+import org.tynamo.descriptor.TynamoPropertyDescriptor;
 import org.tynamo.model.elasticsearch.annotations.ElasticSearchEmbedded;
 import org.tynamo.model.elasticsearch.annotations.ElasticSearchEmbedded.Mode;
 import org.tynamo.model.elasticsearch.mapping.FieldMapper;
@@ -26,10 +26,12 @@ public class EmbeddedFieldMapper<M> extends AbstractFieldMapper<M> {
 	private final ElasticSearchEmbedded embed;
 	private final List<FieldMapper<Object>> fields;
 
-	public EmbeddedFieldMapper(MapperFactory factory, Field field, String prefix) {
+	public EmbeddedFieldMapper(MapperFactory factory, TynamoPropertyDescriptor field, String prefix) {
 		super(field, prefix);
 
-		embed = field.getAnnotation(ElasticSearchEmbedded.class);
+		// FIXME no support for EmbeddedFieldMapper at the moment
+		// embed = field.getAnnotation(ElasticSearchEmbedded.class);
+		embed = null;
 
 		// Set correct prefix in case we are in embedded mode
 		String embedPrefix = null;
@@ -43,8 +45,9 @@ public class EmbeddedFieldMapper<M> extends AbstractFieldMapper<M> {
 
 		// Add fieldmappers for embedded fields
 		fields = new ArrayList<FieldMapper<Object>>();
-		for (Field embeddedField : getFieldsToIndex(field.getType(), embed)) {
-			fields.add(factory.getMapper(embeddedField, embedPrefix));
+		for (Field embeddedField : getFieldsToIndex(field.getPropertyType(), embed)) {
+			// FIXME no support for EmbeddedFieldMapper at the moment
+			// fields.add(factory.getMapper(embeddedField, embedPrefix));
 		}
 	}
 
@@ -124,9 +127,8 @@ public class EmbeddedFieldMapper<M> extends AbstractFieldMapper<M> {
 	}
 
 	@Override
-	public void addToDocument(M model, XContentBuilder builder) throws IOException {
+	public void addToDocument(Object value, XContentBuilder builder) throws IOException {
 		String name = getIndexField();
-		Object value = getFieldValue(model);
 
 		if (value != null) {
 			switch (embed.mode()) {
@@ -146,46 +148,4 @@ public class EmbeddedFieldMapper<M> extends AbstractFieldMapper<M> {
 			}
 		}
 	}
-
-	@Override
-	public boolean inflate(M model, Map<String, Object> map) {
-		String name = getFieldName();
-
-		// Create new target instance
-		Object value = ReflectionUtil.newInstance(getFieldType());
-
-		// Keep track if we found any field (indicator of non-null output)
-		boolean nonNullValue = false;
-
-		switch (embed.mode()) {
-		case embedded:
-			for (FieldMapper<Object> mapper : fields) {
-				if (mapper.inflate(value, map)) {
-					nonNullValue = true;
-				}
-			}
-			break;
-		case object:
-		case nested:
-			Object input = map.get(name);
-			if (input != null) {
-				Map<String, Object> nestedMap = (Map<String, Object>) input;
-
-				for (FieldMapper<Object> mapper : fields) {
-					mapper.inflate(value, nestedMap);
-				}
-
-				nonNullValue = true;
-			}
-			break;
-		}
-
-		if (nonNullValue) {
-			ReflectionUtil.setFieldValue(model, name, value);
-			return true;
-		} else {
-			return false;
-		}
-	}
-
 }

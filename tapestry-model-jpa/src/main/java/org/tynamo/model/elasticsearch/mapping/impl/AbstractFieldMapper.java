@@ -1,12 +1,10 @@
 package org.tynamo.model.elasticsearch.mapping.impl;
 
-import java.lang.reflect.Field;
-
 import org.apache.commons.lang.Validate;
+import org.tynamo.descriptor.TynamoPropertyDescriptor;
 import org.tynamo.model.elasticsearch.descriptor.ElasticSearchFieldDescriptor;
 import org.tynamo.model.elasticsearch.mapping.FieldMapper;
 import org.tynamo.model.elasticsearch.mapping.MappingUtil;
-import org.tynamo.model.elasticsearch.util.ReflectionUtil;
 
 /**
  * Abstract base class for {@link FieldMapper}s
@@ -16,14 +14,14 @@ import org.tynamo.model.elasticsearch.util.ReflectionUtil;
  */
 public abstract class AbstractFieldMapper<M> implements FieldMapper<M> {
 
-	protected final Field field;
+	protected final TynamoPropertyDescriptor field;
 	protected final ElasticSearchFieldDescriptor meta;
 	private final String prefix, indexField;
 
-	public AbstractFieldMapper(final Field field, String prefix) {
+	public AbstractFieldMapper(final TynamoPropertyDescriptor field, String prefix) {
 		Validate.notNull(field, "field cannot be null");
 		this.field = field;
-		this.meta = new ElasticSearchFieldDescriptor(field);
+		this.meta = field.getExtension(ElasticSearchFieldDescriptor.class);
 		this.prefix = prefix;
 
 		// Maybe this a premature optimization, but getIndexField() will be
@@ -69,7 +67,7 @@ public abstract class AbstractFieldMapper<M> implements FieldMapper<M> {
 	 * @return
 	 */
 	protected Class<?> getFieldType() {
-		return field.getType();
+		return field.getPropertyType();
 	}
 
 	/**
@@ -93,7 +91,7 @@ public abstract class AbstractFieldMapper<M> implements FieldMapper<M> {
 
 		} else {
 			// Detect type automatically
-			return MappingUtil.detectFieldType(field.getType());
+			return MappingUtil.detectFieldType(field.getPropertyType());
 		}
 	}
 
@@ -103,8 +101,8 @@ public abstract class AbstractFieldMapper<M> implements FieldMapper<M> {
 	 * @param model
 	 * @return
 	 */
-	protected Object getFieldValue(M model) {
-		return ReflectionUtil.getFieldValue(model, field);
-	}
+	// protected Object getFieldValue(M model) {
+	// return ReflectionUtil.getFieldValue(model, field);
+	// }
 
 }

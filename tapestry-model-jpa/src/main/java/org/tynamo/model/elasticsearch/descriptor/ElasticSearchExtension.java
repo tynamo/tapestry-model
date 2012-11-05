@@ -3,31 +3,33 @@ package org.tynamo.model.elasticsearch.descriptor;
 import java.io.IOException;
 import java.util.List;
 
+import org.apache.tapestry5.func.F;
+import org.apache.tapestry5.func.Flow;
+import org.apache.tapestry5.func.Predicate;
+import org.apache.tapestry5.func.Worker;
 import org.apache.tapestry5.ioc.services.PropertyAccess;
 import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.tynamo.descriptor.TynamoClassDescriptor;
+import org.tynamo.descriptor.TynamoPropertyDescriptor;
 import org.tynamo.descriptor.extension.DescriptorExtension;
 import org.tynamo.model.elasticsearch.annotations.ElasticSearchable;
-import org.tynamo.model.elasticsearch.mapping.FieldMapper;
+import org.tynamo.model.elasticsearch.mapping.MapperFactory;
 
 public class ElasticSearchExtension implements DescriptorExtension {
 	private static final long serialVersionUID = 1L;
 
+	private final TynamoClassDescriptor ownerDescriptor;
 	private String indexName;
 	private String typeName;
 	private String idPrefix = "";
-	private String idPropertyName;
 
 	private PropertyAccess propertyAccess;
-	List<FieldMapper> mapping;
 
-	public ElasticSearchExtension(TynamoClassDescriptor descriptor, PropertyAccess propertyAccess,
-		List<FieldMapper> mapping) {
+	public ElasticSearchExtension(TynamoClassDescriptor descriptor, PropertyAccess propertyAccess) {
+		ownerDescriptor = descriptor;
 		this.propertyAccess = propertyAccess;
-		this.mapping = mapping;
 		Class beanType = descriptor.getBeanType();
 		typeName = beanType.getName().toLowerCase().trim().replace('.', '_');
-		idPropertyName = descriptor.getIdentifierDescriptor().getName();
 		ElasticSearchable meta = (ElasticSearchable) beanType.getAnnotation(ElasticSearchable.class);
 		if (meta.indexName().length() > 0) indexName = meta.indexName();
 	}
@@ -58,24 +60,40 @@ public class ElasticSearchExtension implements DescriptorExtension {
 	 * @return the model's document id
 	 */
 	public String getDocumentId(Object model) {
-		return idPrefix + propertyAccess.get(model, idPropertyName).toString();
+		return idPrefix + propertyAccess.get(model, ownerDescriptor.getIdentifierDescriptor().getName()).toString();
 	}
 
-	public void addModel(Object model, XContentBuilder builder) throws IOException {
+	public void addModel(final Object model, final XContentBuilder builder, final MapperFactory mapperFactory)
+		throws IOException {
 		builder.startObject();
 
-		for (FieldMapper field : mapping) {
-			field.addToDocument(model, builder);
-		}
+		// for (FieldMapper field : mapping) {
+		// field.addToDocument(model, builder);
+		// }
+		getElasticPropertyDescriptorFlow(ownerDescriptor.getPropertyDescriptors()).each(
+			new Worker<TynamoPropertyDescriptor>() {
+				@Override
+				public void work(TynamoPropertyDescriptor descriptor) {
+					try {
+						mapperFactory.getMapper(descriptor).addToDocument(propertyAccess.get(model, descriptor.getName()), builder);
+					} catch (IOException e) {
+						throw new RuntimeException(e);
+					}
+				}
+			});
 
 		builder.endObject();
 	}
 
-	public List<FieldMapper> getMapping() {
-		return mapping;
+	Flow<TynamoPropertyDescriptor> getElasticPropertyDescriptorFlow(List<TynamoPropertyDescriptor> propertyDescriptors) {
+		return F.flow(ownerDescriptor.getPropertyDescriptors()).filter(new Predicate<TynamoPropertyDescriptor>() {
+			public boolean accept(TynamoPropertyDescriptor descriptor) {
+				return descriptor.supportsExtension(ElasticSearchFieldDescriptor.class);
+			}
+		});
 	}
 
-	public void addMapping(XContentBuilder builder) throws IOException {
+	public void addMapping(final XContentBuilder builder, final MapperFactory mapperFactory) throws IOException {
 		builder.startObject();
 		builder.startObject(getTypeName());
 		// TODO do we need time-to-live annotation?
@@ -86,11 +104,21 @@ public class ElasticSearchExtension implements DescriptorExtension {
 		// builder.field("default", ttlValue);
 		// builder.endObject();
 		// }
-		builder.startObject("properties");
 
-		for (FieldMapper field : mapping) {
-			field.addToMapping(builder);
-		}
+		builder.startObject("properties");
+		getElasticPropertyDescriptorFlow(ownerDescriptor.getPropertyDescriptors()).each(new Worker<TynamoPropertyDescriptor>() {
+			@Override
+			public void work(TynamoPropertyDescriptor descriptor) {
+				try {
+					mapperFactory.getMapper(descriptor).addToMapping(builder);
+					} catch (IOException e) {
+						throw new RuntimeException(e);
+					}
+			}});
+
+		// for (TynamoPropertyDescriptor descriptor : ownerDescriptor.getPropertyDescriptors())
+		// if (descriptor.supportsExtension(ElasticSearchFieldDescriptor.class))
+		// mapperFactory.getMapper(descriptor).addToMapping(builder);
 
 		builder.endObject();
 		builder.endObject();
