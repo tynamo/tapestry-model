@@ -100,7 +100,7 @@ public abstract class GenericModelSearch {
 				// TODO perhaps we should create type-specfic default for SearchFilterPredicates?
 				// create a new method createSearchFilterPredicate(descriptor)
 				if (descriptor.isNonVisual() || descriptor.isIdentifier() || !descriptor.isSearchable()) continue;
-				if (isDisplayableFilter(descriptor)) map.put(descriptor,
+				if (isUsedAsSearchFilter(descriptor)) map.put(descriptor,
 					createSearchFilterPredicate(descriptor.getPropertyType()));
 				else searchablePropertyDescriptors.add(descriptor);
 			}
@@ -147,7 +147,7 @@ public abstract class GenericModelSearch {
 	@Inject
 	private Request request;
 
-	public boolean isDisplayableFilter(TynamoPropertyDescriptor propertyDescriptor) {
+	public boolean isUsedAsSearchFilter(TynamoPropertyDescriptor propertyDescriptor) {
 		// the default implementation simply treats all non-strings as filters
 		return !propertyDescriptor.isString();
 	}

@@ -26,7 +26,6 @@ import org.tynamo.descriptor.factories.DescriptorFactory;
 import org.tynamo.model.elasticsearch.annotations.handlers.ElasticSearchAnnotationHandler;
 import org.tynamo.model.elasticsearch.mapping.MapperFactory;
 import org.tynamo.model.elasticsearch.mapping.impl.DefaultMapperFactory;
-import org.tynamo.model.jpa.ElasticSearchDescriptorDecorator;
 import org.tynamo.model.jpa.TynamoJpaSymbols;
 import org.tynamo.model.jpa.internal.ConfigurableEntityManagerProvider;
 import org.tynamo.model.jpa.internal.ElasticSearchIndexMaintainer;
@@ -136,11 +135,6 @@ public class TynamoJpaModule {
 	@Startup
 	public static void addJpaEventListener(@Autobuild ElasticSearchIndexMaintainer indexMaintainer) {
 		indexMaintainer.start();
-	}
-
-	public static void contributeDescriptorFactory(OrderedConfiguration<DescriptorDecorator> configuration,
-		@Autobuild ElasticSearchDescriptorDecorator decorator) {
-		configuration.add("SearchDecorator", decorator, "after:TynamoDecorator");
 	}
 
 	/**

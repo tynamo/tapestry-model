@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
  * http://www.elasticsearch.org/guide/reference/mapping/ttl-field.html
  * 
  */
-@Target(ElementType.TYPE)
+@Target({ ElementType.FIELD, ElementType.METHOD })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ElasticSearchTtl {
 

@@ -13,7 +13,7 @@ import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.tynamo.model.elasticsearch.annotations.ElasticSearchField;
 import org.tynamo.model.elasticsearch.annotations.ElasticSearchField.Index;
 import org.tynamo.model.elasticsearch.annotations.ElasticSearchField.Store;
-import org.tynamo.model.elasticsearch.annotations.ElasticSearchFieldDescriptor;
+import org.tynamo.model.elasticsearch.descriptor.ElasticSearchFieldDescriptor;
 
 
 public abstract class MappingUtil {

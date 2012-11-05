@@ -74,7 +74,7 @@ public class SolrModelSearch extends GenericModelSearch {
 	}
 
 	@Override
-	public boolean isDisplayableFilter(TynamoPropertyDescriptor propertyDescriptor) {
+	public boolean isUsedAsSearchFilter(TynamoPropertyDescriptor propertyDescriptor) {
 		return !document.getFieldNames().contains(propertyDescriptor.getName());
 	}
 }

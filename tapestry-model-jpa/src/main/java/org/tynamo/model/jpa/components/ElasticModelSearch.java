@@ -1,7 +1,6 @@
 package org.tynamo.model.jpa.components;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -17,10 +16,9 @@ import org.tynamo.base.GenericModelSearch;
 import org.tynamo.descriptor.TynamoClassDescriptor;
 import org.tynamo.descriptor.TynamoPropertyDescriptor;
 import org.tynamo.internal.services.EmptyGridDataSource;
-import org.tynamo.model.elasticsearch.annotations.ElasticSearchField;
 import org.tynamo.model.elasticsearch.descriptor.ElasticSearchExtension;
+import org.tynamo.model.elasticsearch.descriptor.ElasticSearchFieldDescriptor;
 import org.tynamo.model.elasticsearch.mapping.MapperFactory;
-import org.tynamo.model.elasticsearch.util.ReflectionUtil;
 import org.tynamo.search.SearchFilterPredicate;
 import org.tynamo.services.DescriptorService;
 
@@ -36,13 +34,15 @@ public class ElasticModelSearch extends GenericModelSearch {
 		// return new HibernateGridDataSource(session, beanType);
 		Map<TynamoPropertyDescriptor, SearchFilterPredicate> propertySearchFilterMap = getActiveFilterMap();
 
-		if (getSearchTerms() == null) return getGridDataSourceProvider().createGridDataSource(getBeanType());
-
-		// don't bother with a text query if there are no @ElasticSearchFields
-		if (getSearchablePropertyDescriptors().size() <= 0)
+		if (getSearchTerms() == null && propertySearchFilterMap.size() <= 0)
 			return getGridDataSourceProvider().createGridDataSource(getBeanType());
 
 		TynamoClassDescriptor classDescriptor = descriptorService.getClassDescriptor(getBeanType());
+
+		// just invoke a plain database search if the descriptor doesn't support ElastiSearch
+		if (!classDescriptor.supportsExtension(ElasticSearchExtension.class))
+			return getGridDataSourceProvider().createGridDataSource(getBeanType(), propertySearchFilterMap,
+				getSearchablePropertyDescriptors(), getSearchTerms());
 
 		Client client = node.client();
 
@@ -78,18 +78,8 @@ public class ElasticModelSearch extends GenericModelSearch {
 	@Inject
 	TypeCoercer typeCoercer;
 
-	private List<String> elasticSearchFieldNames;
-
 	@Override
-	protected void doPrepare() {
-		// collect the field names with @ElasticSearchField so we don't have to re-fetch them all time
-		// TODO does it accept class arguments?
-		elasticSearchFieldNames = ReflectionUtil.getFieldNamesWithAnnotation(getBeanType(), ElasticSearchField.class);
-		super.doPrepare();
-	}
-
-	@Override
-	public boolean isDisplayableFilter(TynamoPropertyDescriptor propertyDescriptor) {
-		return !elasticSearchFieldNames.contains(propertyDescriptor.getName());
+	public boolean isUsedAsSearchFilter(TynamoPropertyDescriptor propertyDescriptor) {
+		return !propertyDescriptor.supportsExtension(ElasticSearchFieldDescriptor.class);
 	}
 }

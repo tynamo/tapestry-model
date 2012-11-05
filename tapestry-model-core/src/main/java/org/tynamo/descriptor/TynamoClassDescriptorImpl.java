@@ -26,8 +26,8 @@ public class TynamoClassDescriptorImpl extends TynamoDescriptor implements Tynam
 	boolean allowRemove = true;
 
 	boolean allowSave = true;
-	
-	boolean searchable = false;
+
+	boolean searchable = true;
 
 	/**
 	 * This is a copy constructor. These need to be clonable for the security
@@ -221,7 +221,7 @@ public class TynamoClassDescriptorImpl extends TynamoDescriptor implements Tynam
 	{
 		this.allowSave = allowSave;
 	}
-	
+
 	public boolean isSearchable() {
 		return searchable;
 	}
@@ -240,7 +240,7 @@ public class TynamoClassDescriptorImpl extends TynamoDescriptor implements Tynam
 	{
 		this.hasCyclicRelationships = hasBidirectionalRelationship;
 	}
-	
+
 	/**
 	 * Added toString method to help with unit testing debugging.
 	 */

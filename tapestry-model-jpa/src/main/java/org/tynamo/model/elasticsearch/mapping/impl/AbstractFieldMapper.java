@@ -3,7 +3,7 @@ package org.tynamo.model.elasticsearch.mapping.impl;
 import java.lang.reflect.Field;
 
 import org.apache.commons.lang.Validate;
-import org.tynamo.model.elasticsearch.annotations.ElasticSearchFieldDescriptor;
+import org.tynamo.model.elasticsearch.descriptor.ElasticSearchFieldDescriptor;
 import org.tynamo.model.elasticsearch.mapping.FieldMapper;
 import org.tynamo.model.elasticsearch.mapping.MappingUtil;
 import org.tynamo.model.elasticsearch.util.ReflectionUtil;
