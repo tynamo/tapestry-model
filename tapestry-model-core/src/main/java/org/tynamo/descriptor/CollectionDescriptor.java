@@ -1,15 +1,15 @@
 package org.tynamo.descriptor;
 
-import org.apache.commons.beanutils.BeanUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import java.lang.reflect.InvocationTargetException;
+
+import org.apache.commons.beanutils.BeanUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class CollectionDescriptor extends TynamoPropertyDescriptorImpl
 {
-	protected static final Log LOG = LogFactory.getLog(CollectionDescriptor.class);
+	protected static final Logger logger = LoggerFactory.getLogger(CollectionDescriptor.class);
 
 	private Class elementType;
 
@@ -162,16 +162,16 @@ public class CollectionDescriptor extends TynamoPropertyDescriptorImpl
 
 	private void copyFrom(CollectionDescriptor collectionDescriptor)
 	{
-		LOG.debug("Cloning CollectionDescriptor");
+		logger.debug("Cloning CollectionDescriptor");
 		try
 		{
 			BeanUtils.copyProperties(this, collectionDescriptor);
 		} catch (IllegalAccessException e)
 		{
-			LOG.error(e.getMessage());
+			logger.error(e.getMessage());
 		} catch (InvocationTargetException e)
 		{
-			LOG.error(e.getMessage());
+			logger.error(e.getMessage());
 		}
 	}
 }

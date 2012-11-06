@@ -20,5 +20,8 @@ public class TynamoJpaSymbols
 	 */
 	public static final String PERSISTENCEUNIT = "tynamo.model.jpa.persistenceunit";
 
-	public static final String ELASTICSEARCH_HOME = "elasticsearch.home"; // i.e. elasticsearch path.home property
+	public static final String ELASTICSEARCH_HOME = "elasticsearch.path.home"; // i.e. elasticsearch path.home property
+
+	public static final String ELASTICSEARCH_HTTP_ENABLED = "elasticsearch.http.enabled"; // i.e. elasticsearch http.enabled property
+
 }

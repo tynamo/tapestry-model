@@ -113,6 +113,7 @@ public class TynamoJpaModule {
 		configuration.add(TynamoJpaSymbols.IGNORE_NON_HIBERNATE_TYPES, "false");
 		configuration.add(TynamoJpaSymbols.PERSISTENCEUNIT, "");
 		configuration.add(TynamoJpaSymbols.ELASTICSEARCH_HOME, "");
+		configuration.add(TynamoJpaSymbols.ELASTICSEARCH_HTTP_ENABLED, "false");
 	}
 
 	@Contribute(ServiceOverride.class)
@@ -121,9 +122,11 @@ public class TynamoJpaModule {
 		configuration.add(SearchableGridDataSourceProvider.class, gridDataSourceProvider);
 	}
 
-	public Node buildNode(@Symbol(TynamoJpaSymbols.ELASTICSEARCH_HOME) String pathHome) {
+	public Node buildNode(@Symbol(TynamoJpaSymbols.ELASTICSEARCH_HOME) String pathHome,
+		@Symbol(TynamoJpaSymbols.ELASTICSEARCH_HTTP_ENABLED) boolean httpEnabled) {
 		ImmutableSettings.Builder settings = ImmutableSettings.settingsBuilder();
 		if (!pathHome.isEmpty()) settings.put("path.home", pathHome);
+		settings.put("http.enabled", httpEnabled);
 		settings.put("number_of_shards", 1);
 		settings.put("number_of_replicas", 0);
 		settings.put("cluster.name", "tynamo-model-search-" + NetworkUtils.getLocalAddress().getHostName()).build();
