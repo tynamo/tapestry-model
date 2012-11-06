@@ -8,6 +8,7 @@ import javax.persistence.PostRemove;
 import javax.persistence.PostUpdate;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
+import org.apache.tapestry5.ioc.services.RegistryShutdownHub;
 import org.eclipse.persistence.descriptors.DescriptorEvent;
 import org.eclipse.persistence.descriptors.DescriptorEventAdapter;
 import org.eclipse.persistence.sessions.Session;
@@ -36,8 +37,9 @@ public class ElasticSearchIndexMaintainer {
 	private final Logger logger;
 	private final PersistenceService persistenceService;
 	private final MapperFactory mapperFactory;
+	private volatile boolean running = false;
 
-	public ElasticSearchIndexMaintainer(Logger logger, PersistenceService persistenceService,
+	public ElasticSearchIndexMaintainer(Logger logger, RegistryShutdownHub hub, PersistenceService persistenceService,
 		EntityManager entityManager, Node node,
 		DescriptorService descriptorService,
 		MapperFactory mapperFactory) {
@@ -47,6 +49,12 @@ public class ElasticSearchIndexMaintainer {
 		this.node = node;
 		this.descriptorService = descriptorService;
 		this.mapperFactory = mapperFactory;
+
+		hub.addRegistryShutdownListener(new Runnable() {
+			public void run() {
+				running = false;
+			}
+		});
 	}
 
 	/**
@@ -99,11 +107,10 @@ public class ElasticSearchIndexMaintainer {
 
 		Thread indexCreator = new Thread(new Runnable() {
 			public void run() {
+				running = true;
 				createIndices();
 			}
 		});
-
-		indexCreator.setDaemon(true);
 		indexCreator.start();
 	}
 
@@ -116,6 +123,12 @@ public class ElasticSearchIndexMaintainer {
 		// IndicesExistsResponse response = client.admin().indices()
 		// .exists(new IndicesExistsRequest(indexNames.toArray(new String[0]))).actionGet();
 		for (TynamoClassDescriptor descriptor : descriptorService.getAllDescriptors()) {
+			if (!running) {
+				logger.info(String.format(
+					"%s isn't in a running state anymore, indexing stopped while processing descriptor for type %s", getClass()
+						.getSimpleName(), descriptor.getBeanType().getName()));
+				break;
+			}
 			if (!descriptor.supportsExtension(ElasticSearchExtension.class)) continue;
 			// register to listen to events of each entity separately
 			// http://eclipse.1072660.n5.nabble.com/Specific-EntityListener-Instance-td4159.html
@@ -125,22 +138,38 @@ public class ElasticSearchIndexMaintainer {
 			if (!client.admin().indices().prepareExists(descriptorExtension.getIndexName()).execute().actionGet().exists()) {
 				// create index and start indexing entity
 				createIndex(client, descriptorExtension);
-				indexEntities(client, descriptor.getBeanType(), descriptorExtension);
+				if (!indexEntities(client, descriptor.getBeanType(), descriptorExtension)) {
+					if (!running) {
+						logger.info(String.format(
+							"%s isn't in a running state anymore, indexing stopped while processing descriptor for type %s",
+							getClass()
+							.getSimpleName(), descriptor.getBeanType().getName()));
+						break;
+					} else {
+						logger.info(String.format(
+							"%s failed batch indexing type %s, skipping over remaining entities of the same type", getClass()
+								.getSimpleName(), descriptor
+							.getBeanType().getName()));
+					}
+				}
 			}
 		}
 	}
 
-	public void indexEntities(Client client, Class beanType, ElasticSearchExtension descriptorExtension) {
+	protected boolean indexEntities(Client client, Class beanType, ElasticSearchExtension descriptorExtension) {
 		List entities = persistenceService.getInstances(beanType);
 		try {
-			for (Object entity : entities)
+			for (Object entity : entities) {
+				if (!running) return false;
 				indexEntity(client, entity, descriptorExtension);
+			}
 		} catch (Exception e) {
 			// FIXME should we delete index?
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return false;
 		}
-
+		return true;
 	}
 
 	protected void indexEntity(Client client, Object model, ElasticSearchExtension descriptor) throws Exception {
