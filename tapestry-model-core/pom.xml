@@ -72,7 +72,6 @@
 			<version>4.2.0.Beta1</version>
 		</dependency>
 
-		 -->
 		<dependency>
 			<groupId>org.apache.solr</groupId>
 			<artifactId>solr-core</artifactId>
@@ -85,8 +84,9 @@
 			<version>4.0.0</version>
       <scope>provided</scope>
 		</dependency>
+		 -->
 
-		<!-- for Solr integration using JPA eventlisteners-->
+		<!-- for elasticsearch integration using JPA eventlisteners-->
     <dependency>
       <groupId>org.apache.geronimo.specs</groupId>
       <artifactId>geronimo-jpa_2.0_spec</artifactId>

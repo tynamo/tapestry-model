@@ -1,13 +1,11 @@
 package org.tynamo.test;
 
-import org.apache.solr.client.solrj.beans.Field;
 
 public class Bar implements IBar
 {
 
 	private Integer id;
 
-	@Field
 	private String name;
 
 	public String getName()
