@@ -178,7 +178,8 @@ public abstract class GenericModelSearch {
 		// we *must* initialize the component before returning the dataSource. Since getGridDataSource() is public,
 		// it's possible it'll be called before setupRender.
 		doPrepare();
-		return createGridDataSource();
+		if (gridDataSource == null) gridDataSource = createGridDataSource();
+		return gridDataSource;
 	}
 
 	protected abstract GridDataSource createGridDataSource();
