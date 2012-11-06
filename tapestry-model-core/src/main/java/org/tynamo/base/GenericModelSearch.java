@@ -19,8 +19,12 @@ import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 import org.tynamo.components.SearchFilters;
+import org.tynamo.descriptor.CollectionDescriptor;
+import org.tynamo.descriptor.EmbeddedDescriptor;
+import org.tynamo.descriptor.ObjectReferenceDescriptor;
 import org.tynamo.descriptor.TynamoClassDescriptor;
 import org.tynamo.descriptor.TynamoPropertyDescriptor;
+import org.tynamo.descriptor.extension.BeanModelExtension;
 import org.tynamo.search.SearchFilterOperator;
 import org.tynamo.search.SearchFilterPredicate;
 import org.tynamo.services.DescriptorService;
@@ -100,8 +104,13 @@ public abstract class GenericModelSearch {
 				// TODO perhaps we should create type-specfic default for SearchFilterPredicates?
 				// create a new method createSearchFilterPredicate(descriptor)
 				if (descriptor.isNonVisual() || descriptor.isIdentifier() || !descriptor.isSearchable()) continue;
-				if (isUsedAsSearchFilter(descriptor)) map.put(descriptor,
-					createSearchFilterPredicate(descriptor.getPropertyType()));
+				if (isUsedAsSearchFilter(classDescriptor, descriptor)) {
+					// at least for now, don't allow creating filters for complex properties
+					if (descriptor instanceof ObjectReferenceDescriptor || descriptor instanceof CollectionDescriptor
+						|| descriptor instanceof EmbeddedDescriptor || descriptor.supportsExtension(BeanModelExtension.class))
+						continue;
+					map.put(descriptor, createSearchFilterPredicate(descriptor.getPropertyType()));
+				}
 				else searchablePropertyDescriptors.add(descriptor);
 			}
 			filterStateByBeanType.put(beanType, map);
@@ -131,7 +140,7 @@ public abstract class GenericModelSearch {
 		return !isSearchCriteriaSet() && getGridDataSource().getAvailableRows() <= 0 ? false : true;
 	}
 
-	public boolean isFiltersAvailable() {
+	public boolean isSearchFiltersAvailable() {
 		return displayableFilterDescriptorMap != null && displayableFilterDescriptorMap.size() > 0;
 	}
 
@@ -147,7 +156,7 @@ public abstract class GenericModelSearch {
 	@Inject
 	private Request request;
 
-	public boolean isUsedAsSearchFilter(TynamoPropertyDescriptor propertyDescriptor) {
+	public boolean isUsedAsSearchFilter(TynamoClassDescriptor classDescriptor, TynamoPropertyDescriptor propertyDescriptor) {
 		// the default implementation simply treats all non-strings as filters
 		return !propertyDescriptor.isString();
 	}
