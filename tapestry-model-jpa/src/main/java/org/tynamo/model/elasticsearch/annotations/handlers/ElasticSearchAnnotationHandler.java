@@ -22,6 +22,8 @@ public class ElasticSearchAnnotationHandler implements
 
 	public void decorateFromAnnotation(final ElasticSearchable annotation, TynamoClassDescriptor descriptor)
 	{
+		// TODO we should make ElasticSearchable type annotation optional - but cannot here as this handler is
+		// triggered by the said annotation. Would it be worth implementing a specific property annotation handler?
 		descriptor.addExtension(ElasticSearchExtension.class, new ElasticSearchExtension(descriptor, propertyAccess));
 
 		ClassPropertyAdapter adapter = propertyAccess.getAdapter(descriptor.getBeanType());
