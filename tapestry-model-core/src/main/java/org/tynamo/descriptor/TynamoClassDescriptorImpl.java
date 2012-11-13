@@ -58,15 +58,15 @@ public class TynamoClassDescriptorImpl extends TynamoDescriptor implements Tynam
 			BeanUtils.copyProperties(this, dto);
 		} catch (IllegalAccessException e)
 		{
-			LOG.error(e.getMessage());
+			LOGGER.error(e.getMessage());
 			e.printStackTrace();
 		} catch (InvocationTargetException e)
 		{
-			LOG.error(e.getMessage());
+			LOGGER.error(e.getMessage());
 			e.printStackTrace();
 		} catch (Exception e)
 		{
-			LOG.error(e.toString());
+			LOGGER.error(e.toString());
 			e.printStackTrace();
 		}
 	}
@@ -188,15 +188,15 @@ public class TynamoClassDescriptorImpl extends TynamoDescriptor implements Tynam
 				copyMethodDescriptorsFrom((TynamoClassDescriptorImpl) descriptor);
 			} catch (IllegalAccessException e)
 			{
-				LOG.error(e.getMessage());
+				LOGGER.error(e.getMessage());
 				e.printStackTrace();
 			} catch (InvocationTargetException e)
 			{
-				LOG.error(e.getMessage());
+				LOGGER.error(e.getMessage());
 				e.printStackTrace();
 			} catch (Exception e)
 			{
-				LOG.error(e.toString());
+				LOGGER.error(e.toString());
 				e.printStackTrace();
 			}
 		}

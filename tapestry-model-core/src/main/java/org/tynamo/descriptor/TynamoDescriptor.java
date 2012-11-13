@@ -1,8 +1,8 @@
 package org.tynamo.descriptor;
 
 import org.apache.commons.beanutils.BeanUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.tynamo.descriptor.extension.DescriptorExtension;
 
 import java.io.Serializable;
@@ -12,7 +12,7 @@ import java.util.Map;
 
 public class TynamoDescriptor implements Descriptor, Serializable
 {
-	protected static final Log LOG = LogFactory.getLog(TynamoDescriptor.class);
+	protected static final Logger LOGGER = LoggerFactory.getLogger(TynamoDescriptor.class);
 
 	protected Class beanType;
 
@@ -30,15 +30,15 @@ public class TynamoDescriptor implements Descriptor, Serializable
 			BeanUtils.copyProperties(this, dto);
 		} catch (IllegalAccessException e)
 		{
-			LOG.error(e.getMessage());
+			LOGGER.error(e.getMessage());
 			e.printStackTrace();
 		} catch (InvocationTargetException e)
 		{
-			LOG.error(e.getMessage());
+			LOGGER.error(e.getMessage());
 			e.printStackTrace();
 		} catch (Exception e)
 		{
-			LOG.error(e.toString());
+			LOGGER.error(e.toString());
 			e.printStackTrace();
 		}
 	}
@@ -51,15 +51,15 @@ public class TynamoDescriptor implements Descriptor, Serializable
 			copyExtensionsFrom(descriptor);
 		} catch (IllegalAccessException e)
 		{
-			LOG.error(e.getMessage());
+			LOGGER.error(e.getMessage());
 			e.printStackTrace();
 		} catch (InvocationTargetException e)
 		{
-			LOG.error(e.getMessage());
+			LOGGER.error(e.getMessage());
 			e.printStackTrace();
 		} catch (Exception e)
 		{
-			LOG.error(e.toString());
+			LOGGER.error(e.toString());
 			e.printStackTrace();
 		}
 	}
@@ -83,15 +83,15 @@ public class TynamoDescriptor implements Descriptor, Serializable
 			copyExtensionsFrom(descriptor);
 		} catch (IllegalAccessException e)
 		{
-			LOG.error(e.getMessage());
+			LOGGER.error(e.getMessage());
 			e.printStackTrace();
 		} catch (InvocationTargetException e)
 		{
-			LOG.error(e.getMessage());
+			LOGGER.error(e.getMessage());
 			e.printStackTrace();
 		} catch (Exception e)
 		{
-			LOG.error(e.toString());
+			LOGGER.error(e.toString());
 			e.printStackTrace();
 		}
 	}

@@ -1,14 +1,14 @@
 package org.tynamo.descriptor.extension;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.tynamo.blob.ContentDisposition;
 import org.tynamo.blob.RenderType;
 import org.tynamo.exception.TynamoRuntimeException;
 
 public class BlobDescriptorExtension implements DescriptorExtension
 {
-	protected static final Log LOG = LogFactory.getLog(BlobDescriptorExtension.class);
+	private static final Logger logger = LoggerFactory.getLogger(BlobDescriptorExtension.class);
 
 	private enum BlobType
 	{
