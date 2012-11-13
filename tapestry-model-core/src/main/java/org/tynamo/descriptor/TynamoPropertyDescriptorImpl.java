@@ -40,16 +40,13 @@ public class TynamoPropertyDescriptorImpl extends TynamoDescriptor implements Ty
 			BeanUtils.copyProperties(this, (TynamoPropertyDescriptorImpl) descriptor);
 		} catch (IllegalAccessException e)
 		{
-			LOGGER.error(e.getMessage());
-			e.printStackTrace();
+			LOGGER.error(e.getMessage(), e);
 		} catch (InvocationTargetException e)
 		{
-			LOGGER.error(e.getMessage());
-			e.printStackTrace();
+			LOGGER.error(e.getMessage(), e);
 		} catch (Exception e)
 		{
-			LOGGER.error(e.toString());
-			e.printStackTrace();
+			LOGGER.error(e.getMessage(), e);
 		}
 	}
 
@@ -77,16 +74,13 @@ public class TynamoPropertyDescriptorImpl extends TynamoDescriptor implements Ty
 			BeanUtils.copyProperties(this, dto);
 		} catch (IllegalAccessException e)
 		{
-			LOGGER.error(e.getMessage());
-			e.printStackTrace();
+			LOGGER.error(e.getMessage(), e);
 		} catch (InvocationTargetException e)
 		{
-			LOGGER.error(e.getMessage());
-			e.printStackTrace();
+			LOGGER.error(e.getMessage(), e);
 		} catch (Exception e)
 		{
-			LOGGER.error(e.toString());
-			e.printStackTrace();
+			LOGGER.error(e.getMessage(), e);
 		}
 	}
 
@@ -220,16 +214,13 @@ public class TynamoPropertyDescriptorImpl extends TynamoDescriptor implements Ty
 				BeanUtils.copyProperties(this, (TynamoPropertyDescriptorImpl) descriptor);
 			} catch (IllegalAccessException e)
 			{
-				LOGGER.error(e.getMessage());
-				e.printStackTrace();
+				LOGGER.error(e.getMessage(), e);
 			} catch (InvocationTargetException e)
 			{
-				LOGGER.error(e.getMessage());
-				e.printStackTrace();
+				LOGGER.error(e.getMessage(), e);
 			} catch (Exception e)
 			{
-				LOGGER.error(e.toString());
-				e.printStackTrace();
+				LOGGER.error(e.getMessage(), e);
 			}
 		}
 	}

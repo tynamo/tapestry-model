@@ -30,16 +30,13 @@ public class TynamoDescriptor implements Descriptor, Serializable
 			BeanUtils.copyProperties(this, dto);
 		} catch (IllegalAccessException e)
 		{
-			LOGGER.error(e.getMessage());
-			e.printStackTrace();
+			LOGGER.error(e.getMessage(), e);
 		} catch (InvocationTargetException e)
 		{
-			LOGGER.error(e.getMessage());
-			e.printStackTrace();
+			LOGGER.error(e.getMessage(), e);
 		} catch (Exception e)
 		{
-			LOGGER.error(e.toString());
-			e.printStackTrace();
+			LOGGER.error(e.toString(), e);
 		}
 	}
 
@@ -51,16 +48,13 @@ public class TynamoDescriptor implements Descriptor, Serializable
 			copyExtensionsFrom(descriptor);
 		} catch (IllegalAccessException e)
 		{
-			LOGGER.error(e.getMessage());
-			e.printStackTrace();
+			LOGGER.error(e.getMessage(), e);
 		} catch (InvocationTargetException e)
 		{
-			LOGGER.error(e.getMessage());
-			e.printStackTrace();
+			LOGGER.error(e.getMessage(), e);
 		} catch (Exception e)
 		{
-			LOGGER.error(e.toString());
-			e.printStackTrace();
+			LOGGER.error(e.toString(), e);
 		}
 	}
 
@@ -83,16 +77,13 @@ public class TynamoDescriptor implements Descriptor, Serializable
 			copyExtensionsFrom(descriptor);
 		} catch (IllegalAccessException e)
 		{
-			LOGGER.error(e.getMessage());
-			e.printStackTrace();
+			LOGGER.error(e.getMessage(), e);
 		} catch (InvocationTargetException e)
 		{
-			LOGGER.error(e.getMessage());
-			e.printStackTrace();
+			LOGGER.error(e.getMessage(), e);
 		} catch (Exception e)
 		{
-			LOGGER.error(e.toString());
-			e.printStackTrace();
+			LOGGER.error(e.toString(), e);
 		}
 	}
 
