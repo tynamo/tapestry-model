@@ -1,10 +1,12 @@
 package org.tynamo.services;
 
 import org.apache.tapestry5.ioc.internal.util.CollectionFactory;
-
 import org.apache.tapestry5.ioc.util.StrategyRegistry;
-import org.tynamo.descriptor.*;
+import org.tynamo.descriptor.CollectionDescriptor;
+import org.tynamo.descriptor.TynamoClassDescriptor;
+import org.tynamo.descriptor.TynamoPropertyDescriptor;
 import org.tynamo.descriptor.factories.DescriptorFactory;
+import org.tynamo.exception.TynamoRuntimeException;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -34,7 +36,16 @@ public class DescriptorServiceImpl implements DescriptorService
 		Map<Class, TynamoClassDescriptor> descriptorsMap = new HashMap<Class, TynamoClassDescriptor>();
 		for (Class type : types)
 		{
-			descriptorsMap.put(type, descriptorFactory.buildClassDescriptor(type));
+			try
+			{
+
+				TynamoClassDescriptor classDescriptor = descriptorFactory.buildClassDescriptor(type);
+				descriptorsMap.put(type, classDescriptor);
+
+			} catch (TynamoRuntimeException e)
+			{
+				// smile, do nothing, move on.
+			}
 		}
 
 		this.descriptors = CollectionFactory.newList(descriptorsMap.values());
@@ -76,5 +87,4 @@ public class DescriptorServiceImpl implements DescriptorService
 			}
 		}
 	}
-
 }

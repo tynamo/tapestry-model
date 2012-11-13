@@ -7,6 +7,7 @@ import org.tynamo.util.Utils;
 
 import java.beans.BeanInfo;
 import java.beans.PropertyDescriptor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -30,7 +31,7 @@ public class PropertyDescriptorFactoryImpl implements PropertyDescriptorFactory
 	 * @return
 	 * @throws Exception
 	 */
-	public ArrayList<TynamoPropertyDescriptor> buildPropertyDescriptors(Class beanType, BeanInfo beanInfo) throws Exception
+	public ArrayList<TynamoPropertyDescriptor> buildPropertyDescriptors(Class beanType, BeanInfo beanInfo) throws InvocationTargetException, IllegalAccessException
 	{
 		ArrayList<TynamoPropertyDescriptor> result = new ArrayList<TynamoPropertyDescriptor>();
 		for (PropertyDescriptor beanPropDescriptor : beanInfo.getPropertyDescriptors())

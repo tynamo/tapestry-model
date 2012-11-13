@@ -10,6 +10,7 @@ import org.tynamo.descriptor.*;
 import org.tynamo.descriptor.annotation.handlers.DescriptorAnnotationHandler;
 import org.tynamo.descriptor.annotation.handlers.HandledBy;
 
+import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.lang.annotation.Annotation;
@@ -100,11 +101,16 @@ public class TynamoDecorator implements DescriptorDecorator
 
 			Method readMethod = beanPropDescriptor.getReadMethod();
 
-			decorateFromAnnotations(tynamoPropertyDescriptor, readMethod.getAnnotations());
+			if (readMethod != null)
+			{
+				decorateFromAnnotations(tynamoPropertyDescriptor, readMethod.getAnnotations());
+			} else {
+				LOGGER.error("There is no readMethod for: " + tynamoPropertyDescriptor.getBeanType().getSimpleName() + "." + tynamoPropertyDescriptor.getName());
+			}
 		}
-		catch (Exception ex)
+		catch (IntrospectionException ex)
 		{
-			LOGGER.warn(ExceptionUtils.getRootCauseMessage(ex));
+			LOGGER.error("Could not decorate from readMethod: " + tynamoPropertyDescriptor.getBeanType().getSimpleName() + "." + tynamoPropertyDescriptor.getName());
 		}
 	}
 
@@ -115,9 +121,12 @@ public class TynamoDecorator implements DescriptorDecorator
 			Field propertyField = tynamoPropertyDescriptor.getBeanType().getDeclaredField(tynamoPropertyDescriptor.getName());
 			decorateFromAnnotations(tynamoPropertyDescriptor, propertyField.getAnnotations());
 
-		} catch (Exception ex)
+		} catch (NoSuchFieldException ex)
 		{
-			LOGGER.warn(ExceptionUtils.getRootCauseMessage(ex));
+			if (LOGGER.isDebugEnabled())
+			{
+				LOGGER.debug("NoSuchFieldException: " + tynamoPropertyDescriptor.getBeanType().getSimpleName() + "." + tynamoPropertyDescriptor.getName());
+			}
 		}
 	}
 

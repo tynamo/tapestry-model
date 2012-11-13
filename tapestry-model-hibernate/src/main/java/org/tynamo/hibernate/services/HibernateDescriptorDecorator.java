@@ -309,7 +309,6 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 	/**
 	 * @param beanType
 	 * @param descriptor
-	 * @param parentClassDescriptor
 	 * @return
 	 */
 	private IdentifierDescriptor createIdentifierDescriptor(Class beanType, TynamoPropertyDescriptor descriptor)
@@ -384,70 +383,7 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 	                                                              final TynamoPropertyDescriptor descriptor)
 	{
 		Type hibernateType = mappingProperty.getType();
-
-		ObjectReferenceDescriptor descriptorReference = new ObjectReferenceDescriptor(beanType,
-				descriptor,
-				hibernateType.getReturnedClass());
-
-		try
-		{
-			Field propertyField = beanType.getDeclaredField(descriptor.getName());
-
-			PropertyDescriptor[] propertyDescriptors = Introspector.getBeanInfo(beanType).getPropertyDescriptors();
-
-			PropertyDescriptor beanPropDescriptor = F.flow(propertyDescriptors).filter(new Predicate<PropertyDescriptor>()
-			{
-				public boolean accept(PropertyDescriptor propertyDescriptor)
-				{
-					return propertyDescriptor.getName().equals(descriptor.getName());
-				}
-			}).first();
-
-			Method readMethod = beanPropDescriptor.getReadMethod();
-
-			// Start by checking for and retrieving mappedBy attribute inside the annotation
-			String inverseProperty = "";
-			if (readMethod.isAnnotationPresent(javax.persistence.OneToOne.class))
-			{
-				inverseProperty = readMethod.getAnnotation(javax.persistence.OneToOne.class).mappedBy();
-			} else if (propertyField.isAnnotationPresent(javax.persistence.OneToOne.class))
-			{
-				inverseProperty = propertyField.getAnnotation(javax.persistence.OneToOne.class).mappedBy();
-			} else
-			{
-				// If there is none then just return the ObjectReferenceDescriptor
-				return descriptorReference;
-			}
-
-			if ("".equals(inverseProperty))
-			{
-				// http://forums.hibernate.org/viewtopic.php?t=974287&sid=12d018b08dffe07e263652190cfc4e60
-				// Caution... this does not support multiple
-				// class references across the OneToOne relationship
-				Class returnType = readMethod.getReturnType();
-				for (int i = 0; i < returnType.getDeclaredMethods().length; i++)
-				{
-					if (returnType.getDeclaredMethods()[i].getReturnType().equals(propertyField.getDeclaringClass()))
-					{
-						Method theProperty = returnType.getDeclaredMethods()[i];
-						/* strips preceding 'get' */
-						inverseProperty = theProperty.getName().substring(3).toLowerCase();
-						break;
-					}
-				}
-			}
-
-		} catch (SecurityException e)
-		{
-			logger.error("Could not decorate association.", e);
-		} catch (NoSuchFieldException e)
-		{
-			logger.error("Could not decorate association.", e);
-		} catch (IntrospectionException e)
-		{
-			logger.error("Could not decorate association.", e);
-		}
-		return descriptorReference;
+		return new ObjectReferenceDescriptor(beanType, descriptor, hibernateType.getReturnedClass());
 	}
 
 	/**
@@ -455,15 +391,15 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 	 * metadata, so I'm getting it from the OneToMany annotation.
 	 */
 	private void decorateOneToManyCollection(final Class beanType,
-	                                         final CollectionDescriptor collectionDescriptor,
-	                                         org.hibernate.mapping.Collection collectionMapping)
+	                                         final CollectionDescriptor descriptor,
+	                                         org.hibernate.mapping.Collection mapping)
 	{
-		if (collectionDescriptor.isOneToMany() && collectionMapping.isInverse())
+		if (descriptor.isOneToMany() && mapping.isInverse())
 		{
 			try
 			{
 
-				Field propertyField = beanType.getDeclaredField(collectionDescriptor.getName());
+				Field propertyField = beanType.getDeclaredField(descriptor.getName());
 
 				PropertyDescriptor[] propertyDescriptors = Introspector.getBeanInfo(beanType).getPropertyDescriptors();
 
@@ -471,7 +407,7 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 				{
 					public boolean accept(PropertyDescriptor propertyDescriptor)
 					{
-						return propertyDescriptor.getName().equals(collectionDescriptor.getName());
+						return propertyDescriptor.getName().equals(descriptor.getName());
 					}
 				}).first();
 
@@ -487,21 +423,18 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 
 				if (!"".equals(mappedBy))
 				{
-					collectionDescriptor.setInverseProperty(mappedBy);
+					descriptor.setInverseProperty(mappedBy);
 				}
 
 			} catch (SecurityException e)
 			{
-				logger.error(e.getMessage());
-				e.printStackTrace();
+				logger.warn("Couldn't decorate collection: " + beanType.getSimpleName() + "." + descriptor.getName(), e);
 			} catch (NoSuchFieldException e)
 			{
-				logger.error(e.getMessage());
-				e.printStackTrace();
+				logger.warn("Couldn't decorate collection: " + beanType.getSimpleName() + "." + descriptor.getName(), e);
 			} catch (IntrospectionException e)
 			{
-				logger.error(e.getMessage());
-				e.printStackTrace();
+				logger.warn("Couldn't decorate collection: " + beanType.getSimpleName() + "." + descriptor.getName(), e);
 			}
 		}
 	}
