@@ -2,12 +2,11 @@ package org.tynamo.descriptor.factories;
 
 import org.tynamo.descriptor.IMethodDescriptor;
 
-import java.util.ArrayList;
 import java.beans.BeanInfo;
+import java.util.ArrayList;
 
 
 public interface MethodDescriptorFactory
 {
-	ArrayList<IMethodDescriptor> buildMethodDescriptors(Class type, BeanInfo beanInfo)
-			throws Exception;
+	ArrayList<IMethodDescriptor> buildMethodDescriptors(Class type, BeanInfo beanInfo);
 }

@@ -22,7 +22,6 @@ public class MethodDescriptorFactoryImpl implements MethodDescriptorFactory
 
 
 	public ArrayList<IMethodDescriptor> buildMethodDescriptors(Class type, BeanInfo beanInfo)
-			throws Exception
 	{
 		ArrayList<IMethodDescriptor> result = new ArrayList<IMethodDescriptor>();
 		for (MethodDescriptor beanMethodDescriptor : beanInfo.getMethodDescriptors())

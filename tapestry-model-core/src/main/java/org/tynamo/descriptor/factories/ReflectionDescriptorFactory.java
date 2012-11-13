@@ -1,13 +1,15 @@
 package org.tynamo.descriptor.factories;
 
 import org.apache.commons.beanutils.BeanUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.tynamo.descriptor.TynamoClassDescriptor;
 import org.tynamo.descriptor.TynamoClassDescriptorImpl;
 import org.tynamo.descriptor.decorators.DescriptorDecorator;
+import org.tynamo.exception.TynamoRuntimeException;
 
 import java.beans.BeanInfo;
+import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
@@ -20,7 +22,7 @@ import java.util.List;
 public class ReflectionDescriptorFactory implements DescriptorFactory
 {
 
-	protected static final Log LOG = LogFactory.getLog(ReflectionDescriptorFactory.class);
+	private static final Logger logger = LoggerFactory.getLogger(ReflectionDescriptorFactory.class);
 
 	private final MethodDescriptorFactory methodDescriptorFactory;
 	private final PropertyDescriptorFactory propertyDescriptorFactory;
@@ -61,25 +63,23 @@ public class ReflectionDescriptorFactory implements DescriptorFactory
 
 		} catch (IllegalAccessException e)
 		{
-			LOG.error(e.getMessage());
-			e.printStackTrace();
+			logger.error("couldn't build class descriptor for: " + type.getSimpleName(), e);
+			throw new TynamoRuntimeException(e, type);
 		} catch (InvocationTargetException e)
 		{
-			LOG.error(e.getMessage());
-			e.printStackTrace();
-		} catch (Exception e)
+			logger.error("couldn't build class descriptor for: " + type.getSimpleName(), e);
+			throw new TynamoRuntimeException(e, type);
+		} catch (IntrospectionException e)
 		{
-			LOG.error(e.toString());
-			e.printStackTrace();
+			logger.error("couldn't build class descriptor for: " + type.getSimpleName(), e);
+			throw new TynamoRuntimeException(e, type);
 		}
-		return null;
 	}
 
 	/**
 	 * Have the decorators decorate this descriptor
 	 *
 	 * @param descriptor
-	 * @param decorators
 	 * @return The resulting descriptor after all decorators are applied
 	 */
 	private TynamoClassDescriptor applyDecorators(final TynamoClassDescriptor descriptor)

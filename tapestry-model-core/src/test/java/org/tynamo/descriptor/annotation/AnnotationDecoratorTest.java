@@ -48,13 +48,10 @@ public class AnnotationDecoratorTest extends Assert
 
 		TynamoPropertyDescriptor hiddenDescriptor = new TynamoPropertyDescriptorImpl(Annotated.class, "hidden", String.class);
 
-		TynamoPropertyDescriptor validatedStringDescriptor = new TynamoPropertyDescriptorImpl(Foo.class, "validatedString", String.class);
-
 		TynamoPropertyDescriptor booleanDescriptor = new TynamoPropertyDescriptorImpl(Annotated.class, "booleanProperty", boolean.class);
 
 		descriptor.getPropertyDescriptors().add(fieldPropDescriptor);
 		descriptor.getPropertyDescriptors().add(hiddenDescriptor);
-		descriptor.getPropertyDescriptors().add(validatedStringDescriptor);
 		descriptor.getPropertyDescriptors().add(new IdentifierDescriptorImpl(Foo.class, "id", Integer.class));
 		descriptor.getPropertyDescriptors().add(booleanDescriptor);
 
