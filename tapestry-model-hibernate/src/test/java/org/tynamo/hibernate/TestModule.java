@@ -12,7 +12,7 @@ import org.apache.tapestry5.ioc.annotations.Symbol;
 import org.apache.tapestry5.ioc.services.ApplicationDefaults;
 import org.apache.tapestry5.ioc.services.SymbolProvider;
 import org.tynamo.descriptor.factories.DescriptorFactory;
-import org.tynamo.hibernate.services.HibernateDescriptorDecorator;
+import org.tynamo.hibernate.decorators.HibernateDescriptorDecorator;
 import org.tynamo.model.test.entities.Foo;
 
 public class TestModule

@@ -36,7 +36,6 @@ import org.tynamo.descriptor.annotation.handlers.DescriptorAnnotationHandler;
 import org.tynamo.descriptor.annotation.handlers.MethodDescriptorAnnotationHandler;
 import org.tynamo.descriptor.annotation.handlers.PropertyDescriptorAnnotationHandler;
 import org.tynamo.descriptor.decorators.DescriptorDecorator;
-import org.tynamo.descriptor.decorators.HibernateSearchDescriptorDecorator;
 import org.tynamo.descriptor.decorators.TapestryDecorator;
 import org.tynamo.descriptor.decorators.TynamoDecorator;
 import org.tynamo.descriptor.factories.DescriptorFactory;
@@ -181,7 +180,6 @@ public class TynamoCoreModule
 	{
 		configuration.add("TynamoDecorator", new TynamoDecorator(locator));
 		configuration.add("TapestryDecorator", new TapestryDecorator(propertyAccess));
-		configuration.add("SearchDecorator", new HibernateSearchDescriptorDecorator(),"after:TynamoDecorator");
 	}
 
 	public static void contributeTynamoDataTypeAnalyzer(OrderedConfiguration<Pair> configuration)

@@ -1,14 +1,5 @@
 package org.tynamo.base;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.SortedMap;
-import java.util.TreeMap;
-
-import org.apache.lucene.queryParser.ParseException;
 import org.apache.tapestry5.annotations.InjectComponent;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Persist;
@@ -25,7 +16,11 @@ import org.tynamo.search.SearchFilterPredicate;
 import org.tynamo.services.DescriptorService;
 import org.tynamo.util.DisplayNameUtils;
 
+import java.util.*;
+import java.util.Map.Entry;
+
 public abstract class GenericModelSearch {
+
 	@Inject
 	private DescriptorService descriptorService;
 
@@ -111,12 +106,13 @@ public abstract class GenericModelSearch {
 		return predicate;
 			}
 
-	public boolean isSearchable() throws ParseException {
+	public boolean isSearchable()
+	{
 		boolean searchable = descriptorService.getClassDescriptor(beanType).isSearchable();
 		if (!searchable) return false;
 		// hide the search field if there are no results
-		return !isSearchCriteriaSet() && getGridDataSource().getAvailableRows() <= 0 ? false : true;
-			}
+		return isSearchCriteriaSet() || getGridDataSource().getAvailableRows() > 0;
+	}
 
 	public boolean isFiltersAvailable() {
 		return displayableDescriptorMap != null && displayableDescriptorMap.size() > 0;

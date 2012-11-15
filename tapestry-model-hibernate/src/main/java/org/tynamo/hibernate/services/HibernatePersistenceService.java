@@ -5,6 +5,7 @@ import java.util.List;
 import org.hibernate.criterion.DetachedCriteria;
 import org.tynamo.descriptor.CollectionDescriptor;
 import org.tynamo.descriptor.TynamoClassDescriptor;
+import org.tynamo.hibernate.QueryParameter;
 import org.tynamo.services.PersistenceService;
 
 public interface HibernatePersistenceService extends PersistenceService

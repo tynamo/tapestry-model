@@ -3,7 +3,7 @@ package org.tynamo.hibernate.components;
 import org.apache.tapestry5.grid.GridDataSource;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.hibernate.search.FullTextSession;
-import org.tynamo.base.GenericLuceneModelSearch;
+import org.tynamo.hibernate.base.GenericLuceneModelSearch;
 import org.tynamo.hibernate.SearchableHibernateGridDataSource;
 
 public class HibernateModelSearch extends GenericLuceneModelSearch {

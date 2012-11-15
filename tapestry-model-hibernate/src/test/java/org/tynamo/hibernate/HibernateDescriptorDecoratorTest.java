@@ -36,7 +36,7 @@ import org.tynamo.descriptor.TynamoPropertyDescriptorImpl;
 import org.tynamo.descriptor.annotation.PropertyDescriptor;
 import org.tynamo.descriptor.annotation.handlers.PropertyDescriptorAnnotationHandler;
 import org.tynamo.descriptor.decorators.DescriptorDecorator;
-import org.tynamo.hibernate.services.HibernateDescriptorDecorator;
+import org.tynamo.hibernate.decorators.HibernateDescriptorDecorator;
 import org.tynamo.model.test.entities.Bar;
 import org.tynamo.model.test.entities.Baz;
 import org.tynamo.model.test.entities.Descendant;

@@ -9,22 +9,11 @@
  */
 package org.tynamo.test;
 
-import org.hibernate.search.annotations.Boost;
-import org.hibernate.search.annotations.DocumentId;
-import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.Index;
-import org.hibernate.search.annotations.Indexed;
-import org.hibernate.search.annotations.Store;
-
-@Indexed
 public class Bar implements IBar
 {
 
-	@DocumentId
 	private Integer id;
 
-	@Field(index = Index.YES, store = Store.NO)
-	@Boost(value = 2.0f) // boosts the importance of the name when searching	
 	private String name;
 
 	public String getName()
