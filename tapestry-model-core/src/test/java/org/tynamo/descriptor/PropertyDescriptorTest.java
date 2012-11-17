@@ -12,8 +12,8 @@
 package org.tynamo.descriptor;
 
 import org.apache.commons.beanutils.BeanUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import org.tynamo.descriptor.extension.DescriptorExtension;
@@ -91,8 +91,7 @@ public class PropertyDescriptorTest extends Assert
 		String testExtension = "testExtension";
 		DescriptorExtension descriptorExtension = new DescriptorExtension()
 		{
-			protected final Log LOG = LogFactory
-				.getLog(DescriptorExtension.class);
+			private final Logger logger = LoggerFactory.getLogger(DescriptorExtension.class);
 
 			private String name;
 
@@ -121,15 +120,15 @@ public class PropertyDescriptorTest extends Assert
 						(ObjectReferenceDescriptor) descriptor);
 				} catch (IllegalAccessException e)
 				{
-					LOG.error(e.getMessage());
+					logger.error(e.getMessage());
 					e.printStackTrace();
 				} catch (InvocationTargetException e)
 				{
-					LOG.error(e.getMessage());
+					logger.error(e.getMessage());
 					e.printStackTrace();
 				} catch (Exception e)
 				{
-					LOG.error(e.toString());
+					logger.error(e.toString());
 					e.printStackTrace();
 				}
 			}

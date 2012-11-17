@@ -12,7 +12,7 @@ import org.tynamo.descriptor.extension.DescriptorExtension;
 
 public class TynamoDescriptor implements Descriptor, Serializable
 {
-	protected static final Logger logger = LoggerFactory.getLogger(TynamoDescriptor.class);
+	protected static final Logger LOGGER = LoggerFactory.getLogger(TynamoDescriptor.class);
 
 	protected Class beanType;
 
@@ -30,16 +30,13 @@ public class TynamoDescriptor implements Descriptor, Serializable
 			BeanUtils.copyProperties(this, dto);
 		} catch (IllegalAccessException e)
 		{
-			logger.error(e.getMessage());
-			e.printStackTrace();
+			LOGGER.error(e.getMessage(), e);
 		} catch (InvocationTargetException e)
 		{
-			logger.error(e.getMessage());
-			e.printStackTrace();
+			LOGGER.error(e.getMessage(), e);
 		} catch (Exception e)
 		{
-			logger.error(e.toString());
-			e.printStackTrace();
+			LOGGER.error(e.toString(), e);
 		}
 	}
 
@@ -51,16 +48,13 @@ public class TynamoDescriptor implements Descriptor, Serializable
 			copyExtensionsFrom(descriptor);
 		} catch (IllegalAccessException e)
 		{
-			logger.error(e.getMessage());
-			e.printStackTrace();
+			LOGGER.error(e.getMessage(), e);
 		} catch (InvocationTargetException e)
 		{
-			logger.error(e.getMessage());
-			e.printStackTrace();
+			LOGGER.error(e.getMessage(), e);
 		} catch (Exception e)
 		{
-			logger.error(e.toString());
-			e.printStackTrace();
+			LOGGER.error(e.toString(), e);
 		}
 	}
 
@@ -83,16 +77,13 @@ public class TynamoDescriptor implements Descriptor, Serializable
 			copyExtensionsFrom(descriptor);
 		} catch (IllegalAccessException e)
 		{
-			logger.error(e.getMessage());
-			e.printStackTrace();
+			LOGGER.error(e.getMessage(), e);
 		} catch (InvocationTargetException e)
 		{
-			logger.error(e.getMessage());
-			e.printStackTrace();
+			LOGGER.error(e.getMessage(), e);
 		} catch (Exception e)
 		{
-			logger.error(e.toString());
-			e.printStackTrace();
+			LOGGER.error(e.toString(), e);
 		}
 	}
 
