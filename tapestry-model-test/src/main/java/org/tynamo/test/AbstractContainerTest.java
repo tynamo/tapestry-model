@@ -167,7 +167,7 @@ public abstract class AbstractContainerTest
 
 	protected HtmlPage clickButton(HtmlPage page, String buttonId) throws IOException
 	{
-		return page.getElementById(buttonId).click();
+		return page.getHtmlElementById(buttonId).click();
 	}
 
 	protected HtmlPage clickButton(HtmlForm form, String buttonValue) throws IOException
