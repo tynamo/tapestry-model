@@ -23,7 +23,6 @@ import org.hibernate.mapping.PersistentClass;
 import org.tynamo.common.ModuleProperties;
 import org.tynamo.descriptor.decorators.DescriptorDecorator;
 import org.tynamo.descriptor.factories.DescriptorFactory;
-import org.tynamo.hibernate.HibernateSearchDescriptorDecorator;
 import org.tynamo.hibernate.TynamoHibernateSymbols;
 import org.tynamo.hibernate.TynamoInterceptor;
 import org.tynamo.hibernate.TynamoInterceptorConfigurer;
@@ -138,10 +137,6 @@ public class TynamoHibernateModule
 														HibernateConfigurer interceptorConfigurer)
 	{
 		config.add("TynamoInterceptorConfigurer", interceptorConfigurer);
-	}
-
-	public static void contributeDescriptorFactory(OrderedConfiguration<DescriptorDecorator> configuration) {
-		configuration.add("SearchDecorator", new HibernateSearchDescriptorDecorator(), "after:TynamoDecorator");
 	}
 
 /*
