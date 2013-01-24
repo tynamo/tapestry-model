@@ -41,6 +41,7 @@ import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
 import org.tynamo.descriptor.CollectionDescriptor;
 import org.tynamo.descriptor.TynamoClassDescriptor;
+import org.tynamo.hibernate.modules.TynamoHibernate4Module;
 import org.tynamo.hibernate.services.HibernatePersistenceService;
 import org.tynamo.hibernate.services.TynamoHibernateModule;
 import org.tynamo.model.test.entities.Bar;
@@ -73,6 +74,7 @@ public class HibernatePersistenceServiceTest
 		builder.add(HibernateModule.class);
 		builder.add(TynamoCoreModule.class);
 		builder.add(TynamoHibernateModule.class);
+		builder.add(TynamoHibernate4Module.class);
 		builder.add(TestModule.class);
 
 		registry = builder.build();
@@ -508,7 +510,7 @@ public class HibernatePersistenceServiceTest
 
 	private void fakeOpenSessionInViewResponse()
 	{
-		registry.getService(HibernateSessionManager.class).commit();
+		registry.getService("Hibernate4SessionManager", HibernateSessionManager.class).commit();
 		registry.cleanupThread();
 	}
 

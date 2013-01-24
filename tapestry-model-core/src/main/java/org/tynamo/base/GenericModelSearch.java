@@ -32,6 +32,7 @@ import org.tynamo.services.SearchableGridDataSourceProvider;
 import org.tynamo.util.DisplayNameUtils;
 
 public abstract class GenericModelSearch {
+
 	@Inject
 	private DescriptorService descriptorService;
 
@@ -53,9 +54,6 @@ public abstract class GenericModelSearch {
 	private List<TynamoPropertyDescriptor> searchablePropertyDescriptors;
 
 	private GridDataSource gridDataSource;
-
-	@Property
-	private Object bean;
 
 	@InjectComponent
 	private SearchFilters searchFilters;
@@ -113,8 +111,12 @@ public abstract class GenericModelSearch {
 				}
 				else searchablePropertyDescriptors.add(descriptor);
 			}
-			filterStateByBeanType.put(beanType, map);
-			displayableFilterDescriptorMap = map;
+
+			if (displayableFilterDescriptorMap == null) {
+				filterStateByBeanType.put(beanType, map);
+				displayableFilterDescriptorMap = map;
+			}
+
 			this.searchablePropertyDescriptors = searchablePropertyDescriptors;
 		}
 	}
@@ -137,7 +139,7 @@ public abstract class GenericModelSearch {
 		boolean searchable = descriptorService.getClassDescriptor(beanType).isSearchable();
 		if (!searchable) return false;
 		// hide the search field if there are no results
-		return !isSearchCriteriaSet() && getGridDataSource().getAvailableRows() <= 0 ? false : true;
+		return isSearchCriteriaSet() || getGridDataSource().getAvailableRows() > 0;
 	}
 
 	public boolean isSearchFiltersAvailable() {

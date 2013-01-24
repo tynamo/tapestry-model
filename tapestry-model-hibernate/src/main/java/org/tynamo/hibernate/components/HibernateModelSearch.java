@@ -1,22 +1,22 @@
 package org.tynamo.hibernate.components;
 
 import org.apache.tapestry5.grid.GridDataSource;
-import org.apache.tapestry5.ioc.annotations.Inject;
-import org.hibernate.search.FullTextSession;
 import org.tynamo.base.GenericModelSearch;
-import org.tynamo.hibernate.SearchableHibernateGridDataSource;
+import org.tynamo.descriptor.TynamoPropertyDescriptor;
+import org.tynamo.search.SearchFilterPredicate;
+
+import java.util.Map;
 
 public class HibernateModelSearch extends GenericModelSearch {
-	@Inject
-	private FullTextSession session;
 
 	protected GridDataSource createGridDataSource() {
-		return new SearchableHibernateGridDataSource(session, getBeanType(), getActiveFilterMap());
+		Map<TynamoPropertyDescriptor, SearchFilterPredicate> propertySearchFilterMap = getActiveFilterMap();
+		return getGridDataSourceProvider().createGridDataSource(getBeanType(), null, propertySearchFilterMap);
 	}
 
 	protected GridDataSource createGridDataSource(org.apache.lucene.search.Query query) {
-		return new SearchableHibernateGridDataSource(session, getBeanType(), session.createFullTextQuery(query,
-			getBeanType()), getActiveFilterMap());
+		Map<TynamoPropertyDescriptor, SearchFilterPredicate> propertySearchFilterMap = getActiveFilterMap();
+		return getGridDataSourceProvider().createGridDataSource(getBeanType(), propertySearchFilterMap, getSearchablePropertyDescriptors(), getSearchTerms());
 	}
 
 }

@@ -33,6 +33,7 @@ import org.slf4j.Logger;
 import org.tynamo.descriptor.CollectionDescriptor;
 import org.tynamo.descriptor.TynamoClassDescriptor;
 import org.tynamo.descriptor.TynamoPropertyDescriptor;
+import org.tynamo.hibernate.QueryParameter;
 import org.tynamo.internal.services.GenericPersistenceService;
 import org.tynamo.services.DescriptorService;
 

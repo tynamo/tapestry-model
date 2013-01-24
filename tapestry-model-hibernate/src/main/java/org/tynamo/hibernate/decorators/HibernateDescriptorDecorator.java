@@ -1,4 +1,4 @@
-package org.tynamo.hibernate.services;
+package org.tynamo.hibernate.decorators;
 
 import java.beans.IntrospectionException;
 import java.beans.Introspector;

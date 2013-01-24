@@ -50,8 +50,8 @@ public class SearchableHibernateGridDataSourceProvider implements SearchableGrid
 		// don't bother with a text query if there are no @Fields
 		if (fieldNames.size() <= 0) return createGridDataSource(entityType);
 
-		MultiFieldQueryParser parser = new MultiFieldQueryParser(Version.LUCENE_36, fieldNames.toArray(new String[0]),
-			new StandardAnalyzer(Version.LUCENE_36));
+		MultiFieldQueryParser parser = new MultiFieldQueryParser(Version.LUCENE_35, fieldNames.toArray(new String[fieldNames.size()]),
+			new StandardAnalyzer(Version.LUCENE_35));
 		// parser.setDefaultOperator(QueryParser.AND_OPERATOR); // overrides the default OR_OPERATOR, so that all words in the search are
 		// required
 		try {

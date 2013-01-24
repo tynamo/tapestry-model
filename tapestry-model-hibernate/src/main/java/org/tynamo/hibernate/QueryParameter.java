@@ -1,4 +1,4 @@
-package org.tynamo.hibernate.services;
+package org.tynamo.hibernate;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
