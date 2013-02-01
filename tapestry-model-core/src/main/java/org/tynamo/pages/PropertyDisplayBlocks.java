@@ -1,11 +1,5 @@
 package org.tynamo.pages;
 
-import java.text.DateFormat;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.text.SimpleDateFormat;
-import java.util.Locale;
-
 import org.apache.tapestry5.Block;
 import org.apache.tapestry5.annotations.Component;
 import org.apache.tapestry5.annotations.Environmental;
@@ -17,6 +11,12 @@ import org.tynamo.components.internal.Composition;
 import org.tynamo.descriptor.TynamoPropertyDescriptor;
 import org.tynamo.services.DescriptorService;
 import org.tynamo.services.TynamoBeanContext;
+
+import java.text.DateFormat;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 public class PropertyDisplayBlocks
 {
@@ -44,6 +44,10 @@ public class PropertyDisplayBlocks
 	@Property
 	private Block missingAdvisor;
 
+	private final DateFormat defaultDateFormat = DateFormat.getDateInstance(DateFormat.MEDIUM, locale);
+
+	private final NumberFormat defaultNumberFormat = NumberFormat.getInstance(locale);
+
 	public TynamoPropertyDescriptor getPropertyDescriptor()
 	{
 		return descriptorService.getClassDescriptor(tynamoBeanContext.getBeanType())
@@ -52,14 +56,23 @@ public class PropertyDisplayBlocks
 
 	public DateFormat getDateFormat()
 	{
+		if (!isBeanModelAdvisorMixinUsed()) return defaultDateFormat;
+
 		String format = getPropertyDescriptor().getFormat();
-		return format != null ? new SimpleDateFormat(format) : DateFormat.getDateInstance(java.text.DateFormat.MEDIUM, locale);
+		return format != null ? new SimpleDateFormat(format) : defaultDateFormat;
 	}
 
 	public NumberFormat getNumberFormat()
 	{
+		if (!isBeanModelAdvisorMixinUsed()) return defaultNumberFormat;
+
 		String format = getPropertyDescriptor().getFormat();
-		return format != null ? new DecimalFormat(format) : NumberFormat.getInstance(locale);
+		return format != null ? new DecimalFormat(format) : defaultNumberFormat;
+	}
+
+	private boolean isBeanModelAdvisorMixinUsed()
+	{
+		return tynamoBeanContext != null;
 	}
 
 }
