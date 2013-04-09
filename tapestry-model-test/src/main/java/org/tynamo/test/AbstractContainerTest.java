@@ -62,6 +62,14 @@ public abstract class AbstractContainerTest
 	{
 		if (server == null)
 		{
+			String reserveNetworkPort = System.getProperty("reserved.network.port");
+
+			if (reserveNetworkPort != null)
+			{
+				port = Integer.valueOf(reserveNetworkPort);
+				BASEURI = "http://localhost:" + port + "/";
+			}
+
 			server = new PauseableServer();
 			Connector connector = new SelectChannelConnector();
 			connector.setPort(port);
