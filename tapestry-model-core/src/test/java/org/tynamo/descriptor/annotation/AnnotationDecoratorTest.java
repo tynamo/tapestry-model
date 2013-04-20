@@ -70,16 +70,20 @@ public class AnnotationDecoratorTest extends Assert
 		TynamoDecorator decorator = new TynamoDecorator(null);
 
 		TynamoClassDescriptor embeddorDescriptor = new TynamoClassDescriptorImpl(Embeddor.class);
-		EmbeddedDescriptor embeddeeDescriptor = new EmbeddedDescriptor(Embeddor.class, "embeddee", Embeddee.class);
-		embeddeeDescriptor.getPropertyDescriptors().add(new TynamoPropertyDescriptorImpl(Embeddee.class, "title", String.class));
-		embeddeeDescriptor.getPropertyDescriptors().add(new TynamoPropertyDescriptorImpl(Embeddee.class, "description", String.class));
+
+		EmbeddedDescriptor embeddeeDescriptor = new EmbeddedDescriptor(Embeddor.class,
+				new TynamoPropertyDescriptorImpl(Embeddor.class, "embeddee", Embeddee.class),
+				new TynamoClassDescriptorImpl(Embeddee.class));
+
+		embeddeeDescriptor.getEmbeddedClassDescriptor().getPropertyDescriptors().add(new TynamoPropertyDescriptorImpl(Embeddee.class, "title", String.class));
+		embeddeeDescriptor.getEmbeddedClassDescriptor().getPropertyDescriptors().add(new TynamoPropertyDescriptorImpl(Embeddee.class, "description", String.class));
 		embeddorDescriptor.getPropertyDescriptors().add(embeddeeDescriptor);
 
 		embeddorDescriptor = decorator.decorate(embeddorDescriptor);
 
 		assertTrue(embeddorDescriptor.getPropertyDescriptors().get(0) instanceof EmbeddedDescriptor);
 		embeddeeDescriptor = (EmbeddedDescriptor) embeddorDescriptor.getPropertyDescriptors().get(0);
-		assertEquals(2, embeddeeDescriptor.getPropertyDescriptors().size(), "2 props");
-		assertEquals(embeddeeDescriptor.getPropertyDescriptor("title").getName(), "title");
+		assertEquals(2, embeddeeDescriptor.getEmbeddedClassDescriptor().getPropertyDescriptors().size(), "2 props");
+		assertEquals(embeddeeDescriptor.getEmbeddedClassDescriptor().getPropertyDescriptor("title").getName(), "title");
 	}
 }

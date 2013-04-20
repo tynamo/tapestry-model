@@ -11,7 +11,7 @@ import org.tynamo.services.DescriptorServiceImpl;
 
 import java.util.*;
 
-public class TynamoDescriptorServiceTest extends TestBase
+public class DescriptorServiceTest extends TestBase
 {
 
 	PropertyDescriptorFactory propertyDescriptorFactory;

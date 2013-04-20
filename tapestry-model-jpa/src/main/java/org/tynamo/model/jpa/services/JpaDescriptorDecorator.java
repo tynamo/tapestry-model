@@ -236,27 +236,29 @@ public class JpaDescriptorDecorator implements DescriptorDecorator
 
 	private EmbeddedDescriptor buildEmbeddedDescriptor(Class type, Metamodel metamodel,
 													   TynamoPropertyDescriptor descriptor, TynamoClassDescriptor parentClassDescriptor) {
+
 		//EmbeddableType componentMapping = (EmbeddableType) metamodel.getValue();
 		EmbeddableType componentMapping = metamodel.embeddable(descriptor.getPropertyType());
-		TynamoClassDescriptor baseDescriptor = descriptorFactory.buildClassDescriptor(descriptor.getPropertyType());
-		// build from base descriptor
-		EmbeddedDescriptor embeddedDescriptor = new EmbeddedDescriptor(type, baseDescriptor);
-		// and copy from property descriptor
-		embeddedDescriptor.copyFrom(descriptor);
+
+		TynamoClassDescriptor embeddedClassDescriptor = descriptorFactory.buildClassDescriptor(descriptor.getPropertyType());
+
 		ArrayList<TynamoPropertyDescriptor> decoratedProperties = new ArrayList<TynamoPropertyDescriptor>();
-		// go thru each property and decorate it with Hibernate info
-		for (TynamoPropertyDescriptor propertyDescriptor : embeddedDescriptor.getPropertyDescriptors()) {
+
+		// go thru each property and decorate it with JPA info
+		for (TynamoPropertyDescriptor propertyDescriptor : embeddedClassDescriptor.getPropertyDescriptors()) {
 			if (notAHibernateProperty(componentMapping, propertyDescriptor)) {
 				decoratedProperties.add(propertyDescriptor);
 			} else {
 				//Attribute property = componentMapping.getAttribute(propertyDescriptor.getName());
-				TynamoPropertyDescriptor TynamoPropertyDescriptor = decoratePropertyDescriptor(embeddedDescriptor.getBeanType(),
+				TynamoPropertyDescriptor TynamoPropertyDescriptor = decoratePropertyDescriptor(embeddedClassDescriptor.getBeanType(),
 																							   metamodel, propertyDescriptor, parentClassDescriptor);
 				decoratedProperties.add(TynamoPropertyDescriptor);
 			}
 		}
-		embeddedDescriptor.setPropertyDescriptors(decoratedProperties);
-		return embeddedDescriptor;
+
+		embeddedClassDescriptor.setPropertyDescriptors(decoratedProperties);
+
+		return new EmbeddedDescriptor(type, descriptor, embeddedClassDescriptor);
 	}
 
 	/**

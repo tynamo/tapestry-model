@@ -3,6 +3,7 @@ package org.tynamo.services;
 import org.apache.tapestry5.ioc.internal.util.CollectionFactory;
 import org.apache.tapestry5.ioc.util.StrategyRegistry;
 import org.tynamo.descriptor.CollectionDescriptor;
+import org.tynamo.descriptor.EmbeddedDescriptor;
 import org.tynamo.descriptor.TynamoClassDescriptor;
 import org.tynamo.descriptor.TynamoPropertyDescriptor;
 import org.tynamo.descriptor.factories.DescriptorFactory;
@@ -33,7 +34,8 @@ public class DescriptorServiceImpl implements DescriptorService
 	 */
 	public DescriptorServiceImpl(final Collection<Class> types, DescriptorFactory descriptorFactory)
 	{
-		Map<Class, TynamoClassDescriptor> descriptorsMap = new HashMap<Class, TynamoClassDescriptor>();
+		final Map<Class, TynamoClassDescriptor> descriptorsMap = new HashMap<Class, TynamoClassDescriptor>();
+
 		for (Class type : types)
 		{
 			try
@@ -48,14 +50,14 @@ public class DescriptorServiceImpl implements DescriptorService
 			}
 		}
 
+		// second pass to find children
+		for (Class type : types)
+		{
+			findChildren(type, descriptorsMap);
+		}
+
 		this.descriptors = CollectionFactory.newList(descriptorsMap.values());
 		this.descriptorsRegistry = StrategyRegistry.newInstance(TynamoClassDescriptor.class, descriptorsMap, true);
-
-		// second pass to find children
-		for (TynamoClassDescriptor classDescriptor : descriptorsMap.values())
-		{
-			findChildren(classDescriptor);
-		}
 
 	}
 
@@ -69,21 +71,29 @@ public class DescriptorServiceImpl implements DescriptorService
 		return descriptorsRegistry.get(type);
 	}
 
-	private void findChildren(TynamoClassDescriptor classDescriptor)
+	private static void findChildren(Class type, Map<Class, TynamoClassDescriptor> descriptorsMap)
 	{
+		TynamoClassDescriptor classDescriptor = descriptorsMap.get(type);
+
 		for (TynamoPropertyDescriptor propertyDescriptor : classDescriptor.getPropertyDescriptors())
 		{
 			if (propertyDescriptor.isCollection())
 			{
 				if (((CollectionDescriptor) propertyDescriptor).isChildRelationship())
 				{
-					TynamoClassDescriptor collectionClassDescriptor = getClassDescriptor(((CollectionDescriptor) propertyDescriptor).getElementType());
+					TynamoClassDescriptor collectionClassDescriptor = descriptorsMap.get(((CollectionDescriptor) propertyDescriptor).getElementType());
 					collectionClassDescriptor.setChild(true);
 				}
 				if (((CollectionDescriptor) propertyDescriptor).getInverseProperty() != null)
 				{
 					classDescriptor.setHasCyclicRelationships(true);
 				}
+			}
+
+			if (propertyDescriptor.isEmbedded() && !descriptorsMap.containsKey(propertyDescriptor.getPropertyType()))
+			{
+				TynamoClassDescriptor tynamoClassDescriptor = ((EmbeddedDescriptor) propertyDescriptor).getEmbeddedClassDescriptor();
+				descriptorsMap.put(tynamoClassDescriptor.getBeanType(), tynamoClassDescriptor);
 			}
 		}
 	}

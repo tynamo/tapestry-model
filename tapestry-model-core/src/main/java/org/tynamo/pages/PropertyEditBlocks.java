@@ -107,10 +107,12 @@ public class PropertyEditBlocks
 	{
 		TynamoPropertyDescriptor propertyDescriptor = getPropertyDescriptor();
 
-		Class type = propertyDescriptor.isCollection() ? ((CollectionDescriptor) propertyDescriptor).getElementType() : propertyDescriptor.getPropertyType();
+		Class type = propertyDescriptor != null && propertyDescriptor.isCollection() ?
+				((CollectionDescriptor) propertyDescriptor).getElementType() : propertyEditContext.getPropertyType();
+
 		if (type.isEnum()) return new EnumSelectModel(type, getMessages());
 
-		if (propertyDescriptor.isCollection() && ((CollectionDescriptor) propertyDescriptor).isOneToMany())
+		if (propertyDescriptor != null && propertyDescriptor.isCollection() && ((CollectionDescriptor) propertyDescriptor).isOneToMany())
 		{
 			return new GenericSelectionModel(persistenceService.getOrphanInstances((CollectionDescriptor) propertyDescriptor, tynamoBeanContext.getBeanInstance()));
 		}
@@ -126,14 +128,13 @@ public class PropertyEditBlocks
 	public ValueEncoder getValueEncoderForProperty()
 	{
 		TynamoPropertyDescriptor propertyDescriptor = getPropertyDescriptor();
-		if (propertyDescriptor.isCollection())
+		if (propertyDescriptor != null && propertyDescriptor.isCollection())
 		{
 			CollectionDescriptor collectionDescriptor = (CollectionDescriptor) propertyDescriptor;
 			return valueEncoderSource.getValueEncoder(collectionDescriptor.getElementType());
-		} else
-		{
-			return valueEncoderSource.getValueEncoder(propertyEditContext.getPropertyType());
 		}
+
+		return valueEncoderSource.getValueEncoder(propertyEditContext.getPropertyType());
 	}
 
 	public FieldTranslator getTextFieldTranslator()
@@ -163,7 +164,8 @@ public class PropertyEditBlocks
 
 	public boolean isPropertyValueInstanceOfList()
 	{
-		return propertyEditContext.getPropertyValue() instanceof List;
+		CollectionDescriptor descriptor = (CollectionDescriptor) getPropertyDescriptor();
+		return descriptor.getPropertyType().isAssignableFrom(List.class);
 	}
 
 	/**

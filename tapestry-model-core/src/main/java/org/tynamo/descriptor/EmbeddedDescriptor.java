@@ -1,190 +1,24 @@
 package org.tynamo.descriptor;
 
-public class EmbeddedDescriptor extends TynamoClassDescriptorImpl implements IdentifierDescriptor
+public class EmbeddedDescriptor extends TynamoPropertyDescriptorImpl implements IdentifierDescriptor
 {
-
 	private static final long serialVersionUID = 1L;
-
-	private boolean readOnly;
 
 	private boolean identifier;
 
 	private boolean generated;
 
-	private String name;
+	private TynamoClassDescriptor embeddedClassDescriptor;
 
-	private boolean required;
-
-	private int length;
-
-	private boolean large;
-
-	private String format;
-
-	private boolean searchable;
-
-	private boolean richText;
-
-	private Class propertyType;
-
-	public EmbeddedDescriptor(Class propertyType, TynamoClassDescriptor descriptor)
+	public EmbeddedDescriptor(Class beanType, TynamoPropertyDescriptor descriptor, TynamoClassDescriptor embeddedClassDescriptor)
 	{
-		super(descriptor);
-		this.propertyType = propertyType;
+		super(beanType, descriptor);
+		this.embeddedClassDescriptor = embeddedClassDescriptor;
 	}
 
-	public EmbeddedDescriptor(Class beanType, String name, Class propertyType)
+	private EmbeddedDescriptor(EmbeddedDescriptor dto)
 	{
-		super(beanType);
-		this.name = name;
-		this.propertyType = propertyType;
-	}
-
-	public boolean isNumeric()
-	{
-		return false;
-	}
-
-	public boolean isBoolean()
-	{
-		return false;
-	}
-
-	public boolean isDate()
-	{
-		return false;
-	}
-
-	public boolean isString()
-	{
-		return false;
-	}
-
-	public boolean isObjectReference()
-	{
-		return false;
-	}
-
-	public boolean isTransient() {
-		return false;
-	}
-
-	public void setTransient(boolean value) {
-	}
-
-	public boolean isOwningObjectReference()
-	{
-		return false;
-	}
-
-	public boolean isEmbedded()
-	{
-		return true;
-	}
-
-	public Class getPropertyType()
-	{
-		return propertyType;
-	}
-
-	public void setPropertyType(Class propertyType)
-	{
-		this.propertyType = propertyType;
-	}
-
-	public boolean isReadOnly()
-	{
-		return readOnly;
-	}
-
-	public void setReadOnly(boolean readOnly)
-	{
-		this.readOnly = readOnly;
-	}
-
-	public String getName()
-	{
-		return name;
-	}
-
-	public void setName(String name)
-	{
-		this.name = name;
-	}
-
-	public boolean isCollection()
-	{
-		return false;
-	}
-
-	public String getFormat()
-	{
-		return format;
-	}
-
-	public void setFormat(String format)
-	{
-		this.format = format;
-	}
-
-	public boolean isLarge()
-	{
-		return large;
-	}
-
-	public void setLarge(boolean large)
-	{
-		this.large = large;
-	}
-
-	public int getLength()
-	{
-		return length;
-	}
-
-	public void setLength(int length)
-	{
-		this.length = length;
-	}
-
-	public boolean isSearchable()
-	{
-		return searchable;
-	}
-
-	public void setSearchable(boolean searchable)
-	{
-		this.searchable = searchable;
-	}
-
-	public Class getBeanType()
-	{
-		return beanType;
-	}
-
-	public void setBeanType(Class beanType)
-	{
-		this.beanType = beanType;
-	}
-
-	public boolean isRichText()
-	{
-		return richText;
-	}
-
-	public void setRichText(boolean richText)
-	{
-		this.richText = richText;
-	}
-
-	public boolean isRequired()
-	{
-		return required;
-	}
-
-	public void setRequired(boolean required)
-	{
-		this.required = required;
+		super(dto);
 	}
 
 	public boolean isIdentifier()
@@ -207,17 +41,26 @@ public class EmbeddedDescriptor extends TynamoClassDescriptorImpl implements Ide
 		this.generated = generated;
 	}
 
-	@Override
-	public void copyFrom(Descriptor descriptor)
+	public TynamoClassDescriptor getEmbeddedClassDescriptor()
 	{
+		return embeddedClassDescriptor;
+	}
 
-		super.copyFrom(descriptor);
+	public void setEmbeddedClassDescriptor(TynamoClassDescriptor embeddedClassDescriptor)
+	{
+		this.embeddedClassDescriptor = embeddedClassDescriptor;
+	}
+
+	@Override
+	public boolean isEmbedded()
+	{
+		return true;
 	}
 
 	@Override
 	public Object clone()
 	{
-		return new EmbeddedDescriptor(getPropertyType(), this);
+		return new EmbeddedDescriptor(this);
 	}
 
 }

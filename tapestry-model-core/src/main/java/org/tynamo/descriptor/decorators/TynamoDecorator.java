@@ -58,8 +58,10 @@ public class TynamoDecorator implements DescriptorDecorator
 			// recursively decorate components
 			if (clonedDescriptor.isEmbedded())
 			{
-				clonedDescriptor = (EmbeddedDescriptor) decorate((EmbeddedDescriptor) clonedDescriptor);
+				EmbeddedDescriptor embeddedDescriptor = (EmbeddedDescriptor) clonedDescriptor;
+				embeddedDescriptor.setEmbeddedClassDescriptor(decorate(embeddedDescriptor.getEmbeddedClassDescriptor()));
 			}
+
 			decoratedPropertyDescriptors.add(clonedDescriptor);
 		}
 		return decoratedPropertyDescriptors;

@@ -58,7 +58,11 @@ public class TynamoClassDescriptorTest extends Assert
 	{
 		assertEquals(idProp, classDescriptor.getIdentifierDescriptor(), "right id prop");
 
-		classDescriptor.getPropertyDescriptors().add(new EmbeddedDescriptor(Foo.class, "blork", Bar.class));
+		EmbeddedDescriptor embeddeeDescriptor = new EmbeddedDescriptor(Foo.class,
+				new TynamoPropertyDescriptorImpl(Foo.class, "blork", Bar.class),
+				new TynamoClassDescriptorImpl(Bar.class));
+
+		classDescriptor.getPropertyDescriptors().add(embeddeeDescriptor);
 
 		assertEquals(idProp, classDescriptor.getIdentifierDescriptor(), "right id prop");
 

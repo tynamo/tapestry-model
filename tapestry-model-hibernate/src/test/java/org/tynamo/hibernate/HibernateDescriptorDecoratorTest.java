@@ -213,7 +213,7 @@ public class HibernateDescriptorDecoratorTest
 		EmbeddedDescriptor embeddedDescriptor = (EmbeddedDescriptor) propertyDescriptor;
 		Assert.assertEquals("embeddee", embeddedDescriptor.getName());
 		Assert.assertEquals(Embeddor.class, embeddedDescriptor.getBeanType(), "right bean type");
-		Assert.assertEquals(3, embeddedDescriptor.getPropertyDescriptors().size(), "3 prop descriptors");
+		Assert.assertEquals(3, embeddedDescriptor.getEmbeddedClassDescriptor().getPropertyDescriptors().size(), "3 prop descriptors");
 	}
 
 	@Test
