@@ -2,6 +2,7 @@ package org.tynamo.mixins;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.BindingConstants;
+import org.apache.tapestry5.annotations.CleanupRender;
 import org.apache.tapestry5.annotations.InjectContainer;
 import org.apache.tapestry5.annotations.Log;
 import org.apache.tapestry5.annotations.Parameter;
@@ -52,8 +53,9 @@ public class BeanModelAdvisor
 	@Parameter(defaultPrefix = BindingConstants.LITERAL, allowNull = false)
 	private String containerProperty;
 
+	@Log
 	@SetupRender
-	void init()
+	void setup()
 	{
 		pushBeanModelSourceContext();
 		if (isTynamoBeanContextNeeded()) pushTynamoBeanContext();
@@ -115,7 +117,7 @@ public class BeanModelAdvisor
 		}
 
 		throw new RuntimeException(
-				"The context key couldn't be guessed from the container, please provide one. eg: advisor.key=\"add\"");
+				"The context key couldn't be guessed from the container, please provide one. eg: beanModelAdvisor.key=\"add\"");
 	}
 
 	private String guessPropertyName()
@@ -124,7 +126,7 @@ public class BeanModelAdvisor
 		if (container instanceof BeanDisplay) return "object";
 
 		throw new RuntimeException(
-				"The container's object property couldn't be guessed, please provide one. eg: advisor.containerProperty=\"bean\"");
+				"The container's object property couldn't be guessed, please provide one. eg: beanModelAdvisor.containerProperty=\"bean\"");
 	}
 
 	private boolean isTynamoBeanContextNeeded()
@@ -133,7 +135,8 @@ public class BeanModelAdvisor
 	}
 
 	@Log
-	void cleanupRender()
+	@CleanupRender
+	void cleanup()
 	{
 		environment.pop(BeanModelSourceContext.class);
 		if (isTynamoBeanContextNeeded()) environment.pop(TynamoBeanContext.class);

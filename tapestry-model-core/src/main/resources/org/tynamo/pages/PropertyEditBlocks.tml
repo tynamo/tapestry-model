@@ -60,6 +60,7 @@
 	</t:block>
 
 	<t:block id="blob">
+		<label>${propertyEditContext.label}</label>
 		<div t:id="blob"/>
 	</t:block>
 

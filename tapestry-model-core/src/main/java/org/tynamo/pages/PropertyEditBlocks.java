@@ -31,8 +31,10 @@ import org.tynamo.util.GenericSelectionModel;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 /**
  * A page that exists to contain blocks used to edit different types of properties. The blocks on this page are
@@ -174,13 +176,14 @@ public class PropertyEditBlocks
 	 */
 	public List getSelected()
 	{
+		Object value = propertyEditContext.getPropertyValue();
 		if (isPropertyValueInstanceOfList())
 		{
-			return (List) propertyEditContext.getPropertyValue();
+			return value != null ? (List) value : new ArrayList();
 		} else
 		{
 			ArrayList selectedList = new ArrayList();
-			selectedList.addAll((Collection) propertyEditContext.getPropertyValue());
+			if (value != null) selectedList.addAll((Collection) value);
 			return selectedList;
 		}
 	}
@@ -188,18 +191,27 @@ public class PropertyEditBlocks
 	public void setSelected(List selected)
 	{
 		Collection collection = (Collection) propertyEditContext.getPropertyValue();
-		CollectionDescriptor descriptor = (CollectionDescriptor) getPropertyDescriptor();
+		if (collection != null) {
+			CollectionDescriptor descriptor = (CollectionDescriptor) getPropertyDescriptor();
 
-		for (Object o : CollectionUtils.subtract(selected, collection))
-		{
-			persistenceService.addToCollection(descriptor, o, tynamoBeanContext.getBeanInstance());
+			for (Object o : CollectionUtils.subtract(selected, collection))
+			{
+				persistenceService.addToCollection(descriptor, o, tynamoBeanContext.getBeanInstance());
+			}
+
+			for (Object o : CollectionUtils.subtract(collection, selected))
+			{
+				persistenceService.removeFromCollection(descriptor, o, tynamoBeanContext.getBeanInstance());
+			}
+		} else {
+			if (isPropertyValueInstanceOfList()) {
+				propertyEditContext.setPropertyValue(selected);
+			} else {
+				Set set = new HashSet();
+				set.addAll(selected);
+				propertyEditContext.setPropertyValue(set);
+			}
 		}
-
-		for (Object o : CollectionUtils.subtract(collection, selected))
-		{
-			persistenceService.removeFromCollection(descriptor, o, tynamoBeanContext.getBeanInstance());
-		}
-
 	}
 
 	public boolean isNotEditable()
