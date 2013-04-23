@@ -26,6 +26,7 @@ import static org.testng.Assert.assertTrue;
 import static org.testng.Assert.fail;
 
 import java.io.IOException;
+import java.net.Socket;
 import java.util.List;
 
 import org.eclipse.jetty.server.Connector;
@@ -49,7 +50,7 @@ public abstract class AbstractContainerTest
 {
 	protected static PauseableServer server;
 
-	protected static int port = 8180;
+	public static int port = 8180;
 
 	protected static String BASEURI = "http://localhost:" + port + "/";
 
@@ -68,7 +69,28 @@ public abstract class AbstractContainerTest
 			{
 				port = Integer.valueOf(reserveNetworkPort);
 				BASEURI = "http://localhost:" + port + "/";
+			} else {
+				// adapted from http://stackoverflow.com/questions/434718/sockets-discover-port-availability-using-java
+				// arbitrarily try next ten ports
+				int maxPort = port + 10;
+				for (port = port; port < maxPort; port++) {
+					Socket sock = null;
+					try {
+						// Check if port is open by trying to connect as a client
+						sock = new Socket("localhost", port);
+						sock.close();
+						continue;
+					} catch (Exception e) {
+						if (sock != null) sock = null;
+						if (e.getMessage().contains("refused")) {
+							break;
+						}
+						throw new RuntimeException("Couldn't find an available port to run the functional test server", e);
+					}
+				}
+
 			}
+
 
 			server = new PauseableServer();
 			Connector connector = new SelectChannelConnector();
