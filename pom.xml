@@ -69,6 +69,12 @@
 				<artifactId>tapestry-model-web</artifactId>
 				<version>0.5.1-SNAPSHOT</version>
 			</dependency>
+			<dependency>
+				<groupId>org.tynamo</groupId>
+				<artifactId>tynamo-test</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+				<scope>test</scope>
+			</dependency>
 
 			<dependency>
 				<groupId>org.apache.tapestry</groupId>
