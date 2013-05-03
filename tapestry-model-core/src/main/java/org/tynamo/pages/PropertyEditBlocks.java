@@ -56,7 +56,7 @@ public class PropertyEditBlocks
 
 	@Environmental
 	@Property(write = false)
-	private BeanValidationContext tynamoBeanContext;
+	private BeanValidationContext beanValidationContext;
 
 	@Inject
 	private PersistenceService persistenceService;
@@ -87,10 +87,10 @@ public class PropertyEditBlocks
 
 	@Component(parameters = {"collection=propertyEditContext.propertyValue", "label=prop:propertyEditContext.label",
 			"clientId=prop:propertyEditContext.propertyId", "collectionDescriptor=propertyDescriptor",
-			"owner=tynamoBeanContext.beanInstance"})
+			"owner=beanValidationContext.beanInstance"})
 	private EditComposition editComposition;
 
-	@Component(parameters = {"model=tynamoBeanContext.beanInstance", "propertyDescriptor=propertyDescriptor"})
+	@Component(parameters = {"model=beanValidationContext.beanInstance", "propertyDescriptor=propertyDescriptor"})
 	private org.tynamo.components.Blob blob;
 
 	@Component(
@@ -116,7 +116,7 @@ public class PropertyEditBlocks
 
 		if (propertyDescriptor != null && propertyDescriptor.isCollection() && ((CollectionDescriptor) propertyDescriptor).isOneToMany())
 		{
-			return new GenericSelectionModel(persistenceService.getOrphanInstances((CollectionDescriptor) propertyDescriptor, tynamoBeanContext.getBeanInstance()));
+			return new GenericSelectionModel(persistenceService.getOrphanInstances((CollectionDescriptor) propertyDescriptor, beanValidationContext.getBeanInstance()));
 		}
 
 		return new GenericSelectionModel(persistenceService.getInstances(type));
@@ -196,12 +196,12 @@ public class PropertyEditBlocks
 
 			for (Object o : CollectionUtils.subtract(selected, collection))
 			{
-				persistenceService.addToCollection(descriptor, o, tynamoBeanContext.getBeanInstance());
+				persistenceService.addToCollection(descriptor, o, beanValidationContext.getBeanInstance());
 			}
 
 			for (Object o : CollectionUtils.subtract(collection, selected))
 			{
-				persistenceService.removeFromCollection(descriptor, o, tynamoBeanContext.getBeanInstance());
+				persistenceService.removeFromCollection(descriptor, o, beanValidationContext.getBeanInstance());
 			}
 		} else {
 			if (isPropertyValueInstanceOfList()) {

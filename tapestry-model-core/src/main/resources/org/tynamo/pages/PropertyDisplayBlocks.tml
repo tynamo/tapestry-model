@@ -34,4 +34,8 @@
 		<t:outputraw value="context.propertyValue"/>
 	</t:block>
 
+	<t:block id="embedded">
+		${context.propertyValue}
+	</t:block>
+
 </t:container>

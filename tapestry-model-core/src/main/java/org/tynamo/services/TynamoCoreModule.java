@@ -111,6 +111,7 @@ public class TynamoCoreModule
 		configuration.add(new DisplayBlockContribution("formatted-date", PROPERTY_DISPLAY_BLOCKS, "date"));
 		configuration.add(new DisplayBlockContribution("formatted-number", PROPERTY_DISPLAY_BLOCKS, "number"));
 
+		configuration.add(new DisplayBlockContribution("embedded", PROPERTY_DISPLAY_BLOCKS, "embedded"));
 		configuration.add(new DisplayBlockContribution("composition", PROPERTY_DISPLAY_BLOCKS, "composition"));
 		configuration.add(new DisplayBlockContribution("blob", PROPERTY_DISPLAY_BLOCKS, "download"));
 		configuration.add(new DisplayBlockContribution("ckeditor", PROPERTY_DISPLAY_BLOCKS, "ckeditor"));
