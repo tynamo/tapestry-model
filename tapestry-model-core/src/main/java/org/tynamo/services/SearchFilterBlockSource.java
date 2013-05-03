@@ -19,7 +19,7 @@ import org.apache.tapestry5.services.BeanBlockContribution;
  * @see org.apache.tapestry5.services.DataTypeAnalyzer
  * @see org.apache.tapestry5.services.TapestryModule#provideDefaultBeanBlocks(org.apache.tapestry5.ioc.Configuration)
  */
-@UsesConfiguration(BeanBlockContribution.class)
+@UsesConfiguration(SearchFilterBlockContribution.class)
 public interface SearchFilterBlockSource
 {
     /**
