@@ -1,6 +1,7 @@
 package org.tynamo.descriptor;
 
 import org.apache.commons.beanutils.BeanUtils;
+import org.tynamo.descriptor.extension.CollectionExtension;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -69,7 +70,8 @@ public class CollectionDescriptor extends TynamoPropertyDescriptorImpl
 
 	public String getInverseProperty()
 	{
-		return inverseProperty;
+		return supportsCollectionExtension() && getCollectionExtension().getInverseProperty() != null
+				? getCollectionExtension().getInverseProperty() : inverseProperty;
 	}
 
 	public void setInverseProperty(String inverseProperty)
@@ -96,7 +98,7 @@ public class CollectionDescriptor extends TynamoPropertyDescriptorImpl
 	 */
 	public boolean isChildRelationship()
 	{
-		return childRelationship;
+		return supportsCollectionExtension() ? getCollectionExtension().isChildRelationship() : childRelationship;
 	}
 
 	/**
@@ -113,7 +115,8 @@ public class CollectionDescriptor extends TynamoPropertyDescriptorImpl
 
 	public String getAddExpression()
 	{
-		return addExpression;
+		return supportsCollectionExtension() && getCollectionExtension().getAddExpression() != null ?
+				getCollectionExtension().getAddExpression() : addExpression;
 	}
 
 	public void setAddExpression(String addExpression)
@@ -123,7 +126,8 @@ public class CollectionDescriptor extends TynamoPropertyDescriptorImpl
 
 	public String getRemoveExpression()
 	{
-		return removeExpression;
+		return supportsCollectionExtension() && getCollectionExtension().getRemoveExpression() != null
+				? getCollectionExtension().getRemoveExpression() : removeExpression;
 	}
 
 	public void setRemoveExpression(String removeExpression)
@@ -133,7 +137,8 @@ public class CollectionDescriptor extends TynamoPropertyDescriptorImpl
 
 	public String getSwapExpression()
 	{
-		return swapExpression;
+		return supportsCollectionExtension() && getCollectionExtension().getSwapExpression() != null
+				? getCollectionExtension().getSwapExpression() : swapExpression;
 	}
 
 	public void setSwapExpression(String swapExpression)
@@ -143,7 +148,17 @@ public class CollectionDescriptor extends TynamoPropertyDescriptorImpl
 
 	public boolean isAllowRemove()
 	{
-		return allowRemove;
+		return supportsCollectionExtension() ? getCollectionExtension().isAllowRemove() : allowRemove;
+	}
+
+	private CollectionExtension getCollectionExtension()
+	{
+		return getExtension(CollectionExtension.class);
+	}
+
+	private boolean supportsCollectionExtension()
+	{
+		return supportsExtension(CollectionExtension.class);
 	}
 
 	public void setAllowRemove(boolean allowRemove)

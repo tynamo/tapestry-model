@@ -1,33 +1,38 @@
 package org.tynamo.descriptor.annotation.handlers;
 
+import org.tynamo.descriptor.TynamoPropertyDescriptor;
 import org.tynamo.descriptor.annotation.CollectionDescriptor;
+import org.tynamo.descriptor.extension.CollectionExtension;
 
-public class CollectionDescriptorAnnotationHandler implements DescriptorAnnotationHandler<CollectionDescriptor, org.tynamo.descriptor.CollectionDescriptor>
+public class CollectionDescriptorAnnotationHandler implements DescriptorAnnotationHandler<CollectionDescriptor, TynamoPropertyDescriptor>
 {
 
-	public void decorateFromAnnotation(CollectionDescriptor annotation, org.tynamo.descriptor.CollectionDescriptor descriptor)
+	public void decorateFromAnnotation(CollectionDescriptor annotation, TynamoPropertyDescriptor descriptor)
 	{
-		descriptor.setChildRelationship(annotation.child());
-		descriptor.setAllowRemove(annotation.allowRemove());
+		CollectionExtension extension = new CollectionExtension();
+		descriptor.addExtension(CollectionExtension.class, extension);
+
+		extension.setChildRelationship(annotation.child());
+		extension.setAllowRemove(annotation.allowRemove());
 
 		if (!CollectionDescriptor.DEFAULT_inverse.equals(annotation.inverse()))
 		{
-			descriptor.setInverseProperty(annotation.inverse());
+			extension.setInverseProperty(annotation.inverse());
 		}
 
 		if (!CollectionDescriptor.DEFAULT_addExpression.equals(annotation.addExpression()))
 		{
-			descriptor.setAddExpression(annotation.addExpression());
+			extension.setAddExpression(annotation.addExpression());
 		}
 
 		if (!CollectionDescriptor.DEFAULT_removeExpression.equals(annotation.removeExpression()))
 		{
-			descriptor.setRemoveExpression(annotation.removeExpression());
+			extension.setRemoveExpression(annotation.removeExpression());
 		}
 
 		if (!CollectionDescriptor.DEFAULT_swapExpression.equals(annotation.swapExpression()))
 		{
-			descriptor.setSwapExpression(annotation.swapExpression());
+			extension.setSwapExpression(annotation.swapExpression());
 		}
 
 	}

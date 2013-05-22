@@ -2,6 +2,7 @@ package org.tynamo.hibernate.services;
 
 import java.util.List;
 
+import org.apache.tapestry5.hibernate.annotations.CommitAfter;
 import org.hibernate.criterion.DetachedCriteria;
 import org.tynamo.descriptor.CollectionDescriptor;
 import org.tynamo.descriptor.TynamoClassDescriptor;
@@ -10,10 +11,6 @@ import org.tynamo.services.PersistenceService;
 
 public interface HibernatePersistenceService extends PersistenceService
 {
-
-	<T> T save(T instance);
-
-	void remove(Object instance);
 
 	public <T> T getInstance(Class<T> type, DetachedCriteria criteria);
 
@@ -48,7 +45,9 @@ public interface HibernatePersistenceService extends PersistenceService
 
 	boolean isTransient(Object data, TynamoClassDescriptor classDescriptor);
 
+	@CommitAfter
 	<T> T addToCollection(CollectionDescriptor descriptor, T element, Object collectionOwner);
 
+	@CommitAfter
 	void removeFromCollection(CollectionDescriptor descriptor, Object element, Object collectionOwner);
 }
