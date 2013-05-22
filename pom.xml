@@ -21,6 +21,7 @@
 		<module>tapestry-model-hibernate</module>
 		<module>tapestry-model-jpa</module>
 		<module>tapestry-model-web</module>
+		<module>tapestry-model-example</module>
 	</modules>
 
 	<scm>
@@ -72,7 +73,7 @@
 			<dependency>
 				<groupId>org.tynamo</groupId>
 				<artifactId>tynamo-test</artifactId>
-				<version>0.0.1-SNAPSHOT</version>
+				<version>0.0.1</version>
 				<scope>test</scope>
 			</dependency>
 
