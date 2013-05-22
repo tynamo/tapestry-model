@@ -14,7 +14,11 @@ import java.util.List;
  * This class is <em>not</em> thread-safe; it maintains internal state.
  * <p/>
  * Typically, an instance of this object is created fresh as needed (that is, it is not stored between requests).
+ *
+ * @deprecated user PersistenceService#getGridDataSource() instead
+ *
  */
+@Deprecated
 public class TynamoGridDataSource implements GridDataSource
 {
 

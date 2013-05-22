@@ -16,6 +16,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.apache.tapestry5.grid.GridDataSource;
+import org.apache.tapestry5.hibernate.HibernateGridDataSource;
 import org.apache.tapestry5.hibernate.HibernateSessionManager;
 import org.apache.tapestry5.ioc.services.PropertyAccess;
 import org.apache.tapestry5.services.PropertyConduitSource;
@@ -427,5 +429,11 @@ public class HibernatePersistenceServiceImpl extends GenericPersistenceService i
 			return criteria.list();
 		}
 		return getInstances(descriptor.getElementType());
+	}
+
+	@Override
+	public <T> GridDataSource getGridDataSource(Class<T> type)
+	{
+		return new HibernateGridDataSource(getSession(), type);
 	}
 }

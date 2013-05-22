@@ -25,8 +25,10 @@ import javax.persistence.criteria.Root;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.Type;
 
+import org.apache.tapestry5.grid.GridDataSource;
 import org.apache.tapestry5.ioc.annotations.Autobuild;
 import org.apache.tapestry5.ioc.services.PropertyAccess;
+import org.apache.tapestry5.jpa.JpaGridDataSource;
 import org.slf4j.Logger;
 import org.tynamo.descriptor.CollectionDescriptor;
 import org.tynamo.descriptor.TynamoClassDescriptor;
@@ -391,6 +393,11 @@ public class JpaPersistenceServiceImpl extends GenericPersistenceService impleme
 		return instance;
 	}
 
+	@Override
+	public <T> GridDataSource getGridDataSource(Class<T> type)
+	{
+		return new JpaGridDataSource<T>(em, type);
+	}
 
 //	public <T> T saveCollectionElement(String addExpression, T member, Object parent) {
 //		T instance = save(member);

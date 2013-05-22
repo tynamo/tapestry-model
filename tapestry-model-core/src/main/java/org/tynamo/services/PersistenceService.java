@@ -13,6 +13,7 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 
+import org.apache.tapestry5.grid.GridDataSource;
 import org.tynamo.descriptor.CollectionDescriptor;
 import org.tynamo.descriptor.TynamoClassDescriptor;
 
@@ -63,4 +64,6 @@ public interface PersistenceService
 	 * Returns the identifier value of the given entity
 	 */
 	Serializable getIdentifier(Object data);
+
+	<T> GridDataSource getGridDataSource(Class<T> type);
 }
