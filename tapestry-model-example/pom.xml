@@ -1,0 +1,66 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<parent>
+		<artifactId>examples</artifactId>
+		<groupId>org.tynamo</groupId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.tynamo.examples</groupId>
+	<artifactId>simple</artifactId>
+	<packaging>war</packaging>
+	<name>Tynamo Example - Simple</name>
+
+	<build>
+		<finalName>simple</finalName>
+
+		<plugins>
+			<plugin>
+				<groupId>org.apache.tapestry</groupId>
+				<artifactId>tapestry-component-report</artifactId>
+				<version>5.2.6</version>
+				<configuration>
+					<rootPackage>org.tynamo.examples.simple</rootPackage>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<dependencies>
+
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-search</artifactId>
+			<version>4.1.1.Final</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.tynamo</groupId>
+			<artifactId>tapestry-model-hibernate</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.tynamo</groupId>
+			<artifactId>tapestry-model-web</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.tynamo</groupId>
+			<artifactId>tynamo-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.tynamo</groupId>
+			<artifactId>tapestry-routing</artifactId>
+		</dependency>
+
+	</dependencies>
+</project>
