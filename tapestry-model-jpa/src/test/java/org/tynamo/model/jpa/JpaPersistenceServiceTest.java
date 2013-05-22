@@ -413,7 +413,7 @@ public class JpaPersistenceServiceTest
 		persistenceService.addToCollection(bazzesDescriptor, baz, foo);
 		Assert.assertEquals(foo.getBazzes().size(), 1, "1 baz before flushing the session");
 
-		fakeOpenSessionInViewResponse();
+		getEntityManager().clear();
 
 		CriteriaBuilder qb = getEntityManager().getCriteriaBuilder();
 		CriteriaQuery<Foo> q = qb.createQuery(Foo.class);
@@ -443,7 +443,7 @@ public class JpaPersistenceServiceTest
 
 		Assert.assertEquals(foo.getBazzes().size(), 1, "1 baz before flushing the session");
 
-		fakeOpenSessionInViewResponse();
+		getEntityManager().clear();
 
 		CriteriaBuilder qb = getEntityManager().getCriteriaBuilder();
 		CriteriaQuery<Foo> q = qb.createQuery(Foo.class);
@@ -498,7 +498,7 @@ public class JpaPersistenceServiceTest
 
 		Assert.assertEquals(foo.getBings().size(), 1, "1 bing before flushing the session");
 
-		fakeOpenSessionInViewResponse();
+		getEntityManager().clear();
 
 		CriteriaBuilder qb = getEntityManager().getCriteriaBuilder();
 		CriteriaQuery<Foo> q = qb.createQuery(Foo.class);
