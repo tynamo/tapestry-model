@@ -1,22 +1,13 @@
 package org.tynamo.examples.simple.functional;
 
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
-import org.tynamo.test.AbstractContainerTest;
-
 import com.gargoylesoftware.htmlunit.html.HtmlForm;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
+import org.testng.annotations.Test;
+import org.tynamo.examples.simple.integration.BaseIntegrationTest;
 
-public class SearchTest extends AbstractContainerTest
+public class SearchTest extends BaseIntegrationTest
 {
-	private HtmlPage startPage;
 
-	@BeforeMethod
-	public void setStartPage() throws Exception {
-		startPage = webClient.getPage(BASEURI);
-	}
-
-	
 	@Test
 	public void testSearch() throws Exception
 	{

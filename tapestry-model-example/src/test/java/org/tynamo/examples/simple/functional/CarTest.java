@@ -5,21 +5,14 @@ import com.gargoylesoftware.htmlunit.javascript.host.html.HTMLSpanElement;
 
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import org.tynamo.test.AbstractContainerTest;
+import org.tynamo.examples.simple.integration.BaseIntegrationTest;
 
-public class CarTest extends AbstractContainerTest
+public class CarTest extends BaseIntegrationTest
 {
-	private HtmlPage startPage;
-
-	@BeforeMethod
-	public void setStartPage() throws Exception {
-		startPage = webClient.getPage(BASEURI);
-	}
 
 	@Test
 	public void testObjectTableOnEditPage() throws Exception
 	{
-		HtmlPage startPage = webClient.getPage(BASEURI);
 		HtmlPage listMakesPage = clickLink(startPage, "List Makes");
 		HtmlPage newMakePage = clickLink(listMakesPage, "New Make");
 		HtmlForm form = newMakePage.getHtmlElementById("form");

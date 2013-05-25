@@ -13,26 +13,26 @@
  */
 package org.tynamo.examples.simple.functional;
 
-import com.gargoylesoftware.htmlunit.html.*;
 import com.gargoylesoftware.htmlunit.ElementNotFoundException;
-
-import org.testng.annotations.BeforeMethod;
+import com.gargoylesoftware.htmlunit.html.HtmlAnchor;
+import com.gargoylesoftware.htmlunit.html.HtmlForm;
+import com.gargoylesoftware.htmlunit.html.HtmlInput;
+import com.gargoylesoftware.htmlunit.html.HtmlPage;
+import com.gargoylesoftware.htmlunit.html.HtmlSubmitInput;
+import com.gargoylesoftware.htmlunit.html.HtmlTextArea;
+import com.gargoylesoftware.htmlunit.html.HtmlTextInput;
 import org.testng.annotations.Test;
-import org.tynamo.test.AbstractContainerTest;
+import org.tynamo.examples.simple.integration.BaseIntegrationTest;
 
 import java.io.IOException;
-import static com.gargoylesoftware.htmlunit.WebAssert.*;
-import static org.testng.Assert.*;
 
-public class EditCategoryTest extends AbstractContainerTest
+import static com.gargoylesoftware.htmlunit.WebAssert.assertElementPresent;
+import static com.gargoylesoftware.htmlunit.WebAssert.assertTextPresent;
+import static org.testng.Assert.assertNotNull;
+
+public class EditCategoryTest extends BaseIntegrationTest
 {
-	private HtmlPage startPage;
 
-	@BeforeMethod
-	public void setStartPage() throws Exception {
-		startPage = webClient.getPage(BASEURI);
-	}
-	
 //	@Test I don't understand what this test is trying to test
 	public void testRequiredValidation() throws Exception
 	{

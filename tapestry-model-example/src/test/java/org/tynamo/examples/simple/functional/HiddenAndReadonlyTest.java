@@ -15,11 +15,11 @@ package org.tynamo.examples.simple.functional;
 
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import org.tynamo.test.AbstractContainerTest;
+import org.tynamo.examples.simple.integration.BaseIntegrationTest;
 
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 
-public class HiddenAndReadonlyTest extends AbstractContainerTest
+public class HiddenAndReadonlyTest extends BaseIntegrationTest
 {
 	@Test
 	public void testThing2() throws Exception

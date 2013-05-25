@@ -1,13 +1,13 @@
 package org.tynamo.examples.simple.functional;
 
 import org.testng.annotations.Test;
-import org.tynamo.test.AbstractContainerTest;
+import org.tynamo.examples.simple.integration.BaseIntegrationTest;
 
 import com.gargoylesoftware.htmlunit.html.HtmlForm;
 import com.gargoylesoftware.htmlunit.html.HtmlInput;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 
-public class AssociationTest extends AbstractContainerTest
+public class AssociationTest extends BaseIntegrationTest
 {
 
 	@Test

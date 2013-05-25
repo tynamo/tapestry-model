@@ -4,11 +4,11 @@ import com.gargoylesoftware.htmlunit.html.HtmlForm;
 import com.gargoylesoftware.htmlunit.html.HtmlInput;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import org.testng.annotations.Test;
-import org.tynamo.test.AbstractContainerTest;
+import org.tynamo.examples.simple.integration.BaseIntegrationTest;
 
 import static com.gargoylesoftware.htmlunit.WebAssert.assertTextPresent;
 
-public class IntegerFieldTest extends AbstractContainerTest {
+public class IntegerFieldTest extends BaseIntegrationTest {
 
 	@Test
 	public void testIntegerFields() throws Exception {

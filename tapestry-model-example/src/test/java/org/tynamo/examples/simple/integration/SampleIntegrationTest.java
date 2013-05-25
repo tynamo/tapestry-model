@@ -3,9 +3,8 @@ package org.tynamo.examples.simple.integration;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import org.tynamo.test.AbstractContainerTest;
 
-public class SampleIntegrationTest extends AbstractContainerTest
+public class SampleIntegrationTest extends BaseIntegrationTest
 {
 	@Test
 	public void assertCorrectTitle() throws Exception

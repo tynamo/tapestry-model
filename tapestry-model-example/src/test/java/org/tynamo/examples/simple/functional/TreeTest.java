@@ -1,26 +1,13 @@
 package org.tynamo.examples.simple.functional;
 
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
-import org.tynamo.test.AbstractContainerTest;
-
 import com.gargoylesoftware.htmlunit.html.HtmlForm;
 import com.gargoylesoftware.htmlunit.html.HtmlInput;
-import com.gargoylesoftware.htmlunit.html.HtmlOption;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
-import com.gargoylesoftware.htmlunit.html.HtmlSelect;
-import com.gargoylesoftware.htmlunit.html.HtmlTextInput;
+import org.testng.annotations.Test;
+import org.tynamo.examples.simple.integration.BaseIntegrationTest;
 
-import static org.testng.Assert.*;
-
-public class TreeTest extends AbstractContainerTest
+public class TreeTest extends BaseIntegrationTest
 {
-	private HtmlPage startPage;
-
-	@BeforeMethod
-	public void setStartPage() throws Exception {
-		startPage = webClient.getPage(BASEURI);
-	}
 
 	@Test
 	public void testTree() throws Exception

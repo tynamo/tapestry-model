@@ -3,10 +3,10 @@ package org.tynamo.examples.simple.functional;
 import com.gargoylesoftware.htmlunit.html.HtmlForm;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import org.testng.annotations.Test;
-import org.tynamo.test.AbstractContainerTest;
+import org.tynamo.examples.simple.integration.BaseIntegrationTest;
 
 
-public class EmbeddedTest extends AbstractContainerTest
+public class EmbeddedTest extends BaseIntegrationTest
 {
 	@Test
 	public void addPerson() throws Exception

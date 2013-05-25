@@ -1,22 +1,11 @@
 package org.tynamo.examples.simple.functional;
 
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
-import org.tynamo.test.AbstractContainerTest;
-
 import com.gargoylesoftware.htmlunit.html.HtmlAnchor;
-import com.gargoylesoftware.htmlunit.html.HtmlPage;
-import static com.gargoylesoftware.htmlunit.WebAssert.*;
+import org.testng.annotations.Test;
+import org.tynamo.examples.simple.integration.BaseIntegrationTest;
 
-public class LocalizationTest extends AbstractContainerTest
+public class LocalizationTest extends BaseIntegrationTest
 {
-	private HtmlPage startPage;
-
-	@BeforeMethod
-	public void setStartPage() throws Exception {
-		startPage = webClient.getPage(BASEURI);
-	}
-
 	@Test
 	public void testLocale() throws Exception
 	{

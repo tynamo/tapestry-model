@@ -13,16 +13,15 @@
  */
 package org.tynamo.examples.simple.functional;
 
-import org.testng.annotations.Test;
-import org.tynamo.test.AbstractContainerTest;
-
-import static com.gargoylesoftware.htmlunit.WebAssert.*;
-
 import com.gargoylesoftware.htmlunit.html.HtmlForm;
 import com.gargoylesoftware.htmlunit.html.HtmlInput;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
+import org.testng.annotations.Test;
+import org.tynamo.examples.simple.integration.BaseIntegrationTest;
 
-public class AssignedIdentifierTest extends AbstractContainerTest
+import static com.gargoylesoftware.htmlunit.WebAssert.assertTextPresent;
+
+public class AssignedIdentifierTest extends BaseIntegrationTest
 {
 	@Test
 	public void assigningStringId() throws Exception
