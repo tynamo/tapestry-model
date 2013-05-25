@@ -11,25 +11,25 @@
  */
 package org.tynamo.examples.simple.entities;
 
-import java.util.Date;
+import org.tynamo.descriptor.annotation.PropertyDescriptor;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.tynamo.descriptor.annotation.PropertyDescriptor;
-import org.tynamo.descriptor.annotation.PropertyDescriptor;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import java.util.Date;
 
 
 @Entity
 public class Product
 {
+
+	private Integer id;
 	private String name;
 	private String description;
 	private Date bornOnDate;
-	private Integer id;
 	private Double cost;
 
 	public String getDescription()
@@ -58,6 +58,7 @@ public class Product
 		this.name = name;
 	}
 
+	@Temporal(TemporalType.DATE)
 	@PropertyDescriptor(format = "MM/dd/yyyy")
 	public Date getBornOnDate()
 	{

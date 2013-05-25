@@ -52,7 +52,7 @@ public class CarModel implements Serializable
 		this.make = make;
 	}
 
-	@OneToMany(mappedBy = "id.carModel")
+	@OneToMany// (mappedBy = "id.carModel")
 	@PropertyDescriptor(readOnly = true)
 	public Set<Car> getCars()
 	{
