@@ -1,8 +1,7 @@
 package org.tynamo.examples.simple.services;
 
 import org.apache.tapestry5.SymbolConstants;
-import org.apache.tapestry5.hibernate.HibernateEntityPackageManager;
-import org.apache.tapestry5.hibernate.HibernateModule;
+import org.apache.tapestry5.beanvalidator.BeanValidatorModule;
 import org.apache.tapestry5.ioc.Configuration;
 import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.ioc.ServiceBinder;
@@ -11,15 +10,17 @@ import org.apache.tapestry5.ioc.annotations.SubModule;
 import org.apache.tapestry5.ioc.services.ApplicationDefaults;
 import org.apache.tapestry5.ioc.services.FactoryDefaults;
 import org.apache.tapestry5.ioc.services.SymbolProvider;
+import org.apache.tapestry5.ioc.services.TapestryIOCModule;
 import org.apache.tapestry5.services.BeanBlockContribution;
 import org.apache.tapestry5.services.BeanBlockSource;
 import org.apache.tapestry5.services.DisplayBlockContribution;
+import org.apache.tapestry5.services.TapestryModule;
+import org.apache.tapestry5.upload.services.UploadModule;
 import org.apache.tapestry5.upload.services.UploadSymbols;
 import org.tynamo.builder.Builder;
 import org.tynamo.builder.BuilderDirector;
-import org.tynamo.hibernate.TynamoHibernateSymbols;
-import org.tynamo.hibernate.modules.TynamoHibernate4SearchModule;
-import org.tynamo.hibernate.services.TynamoHibernateModule;
+import org.tynamo.ckeditor.CKEditorModule;
+import org.tynamo.routing.services.RoutingModule;
 import org.tynamo.services.TynamoCoreModule;
 
 /**
@@ -27,10 +28,13 @@ import org.tynamo.services.TynamoCoreModule;
  * configure and extend Tapestry, or to place your own service definitions.
  */
 @SubModule(value = {
+		TapestryModule.class,
+		TapestryIOCModule.class,
+		BeanValidatorModule.class,
 		TynamoCoreModule.class,
-		TynamoHibernateModule.class,
-		TynamoHibernate4SearchModule.class,
-		HibernateModule.class
+		RoutingModule.class,
+		CKEditorModule.class,
+		UploadModule.class
 })
 public class AppModule
 {
@@ -58,8 +62,6 @@ public class AppModule
 		// Set filesize limit to 2 MB
 		configuration.add(UploadSymbols.REQUESTSIZE_MAX, "2048000");
 		configuration.add(UploadSymbols.FILESIZE_MAX, "2048000");
-
-		configuration.add(TynamoHibernateSymbols.IGNORE_NON_HIBERNATE_TYPES, "true");
 	}
 
 	@Contribute(SymbolProvider.class)
@@ -85,21 +87,6 @@ public class AppModule
 		configuration.add(new DisplayBlockContribution("boolean", "blocks/DisplayBlocks", "check"));
 		configuration.add(new DisplayBlockContribution("single-valued-association", "blocks/DisplayBlocks", "showPageLink"));
 		configuration.add(new DisplayBlockContribution("many-valued-association", "blocks/DisplayBlocks", "showPageLinks"));
-	}
-
-	/**
-	 * By default tapestry-hibernate will scan
-	 * InternalConstants.TAPESTRY_APP_PACKAGE_PARAM + ".entities" (witch is equal to "org.tynamo.examples.simple.simple.entities")
-	 * for annotated entity classes.
-	 *
-	 * Contributes the package "org.tynamo.examples.simple.simple.model" to the configuration, so that it will be
-	 * scanned for annotated entity classes.
-	 */
-	@Contribute(HibernateEntityPackageManager.class)
-	public static void addPackagesToScan(Configuration<String> configuration)
-	{
-//		If you want to scan other packages add them here:
-//		configuration.add("org.tynamo.examples.simple.simple.model");
 	}
 
 	/**

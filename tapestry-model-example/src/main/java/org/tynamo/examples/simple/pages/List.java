@@ -2,6 +2,7 @@ package org.tynamo.examples.simple.pages;
 
 import org.apache.tapestry5.Block;
 import org.apache.tapestry5.EventConstants;
+import org.apache.tapestry5.annotations.Component;
 import org.apache.tapestry5.annotations.InjectComponent;
 import org.apache.tapestry5.annotations.OnEvent;
 import org.apache.tapestry5.annotations.Property;
@@ -10,6 +11,9 @@ import org.apache.tapestry5.corelib.components.Grid;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
+import org.tynamo.descriptor.annotation.beaneditor.BeanModel;
+import org.tynamo.descriptor.annotation.beaneditor.BeanModels;
+import org.tynamo.examples.simple.entities.Person;
 import org.tynamo.hibernate.components.HibernateModelSearch;
 import org.tynamo.routing.annotations.At;
 import org.tynamo.services.PersistenceService;
@@ -24,6 +28,9 @@ import org.tynamo.util.Utils;
  *
  */
 @At("/{0}")
+@BeanModels({
+		@BeanModel(beanType = Person.class, include = "id, firstName, lastName")
+})
 public class List
 {
 
@@ -46,9 +53,9 @@ public class List
 	@InjectComponent
 	private Grid grid;
 
-	@InjectComponent
+	@Component(parameters = "beanType=beanType")
 	@Property(write = false)
-	HibernateModelSearch modelSearch;
+	private HibernateModelSearch modelSearch;
 
 	@OnEvent(EventConstants.ACTIVATE)
 	Object onActivate(Class clazz)

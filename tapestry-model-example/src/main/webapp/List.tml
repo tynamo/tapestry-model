@@ -5,7 +5,7 @@
 				<t:pagelink class="newlink" page="Add" context="beanType">${newlinkMessage}</t:pagelink>
 			</li>
 		</ul>
-		<t:tynamo.hibernateModelSearch t:id="modelSearch" beanType="beanType"/>
+		<div t:id="modelSearch"/>
 	</p:subMenuBlock>
 
 	<h1>${title}</h1>

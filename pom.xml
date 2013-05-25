@@ -11,7 +11,7 @@
 	<parent>
 		<groupId>org.tynamo</groupId>
 		<artifactId>tynamo-parent</artifactId>
-		<version>0.0.11</version>
+		<version>0.0.12</version>
 	</parent>
 
 	<modules>
@@ -58,6 +58,11 @@
 			<dependency>
 				<groupId>org.tynamo</groupId>
 				<artifactId>tapestry-model-hibernate</artifactId>
+				<version>0.5.1-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>org.tynamo</groupId>
+				<artifactId>tapestry-model-jpa</artifactId>
 				<version>0.5.1-SNAPSHOT</version>
 			</dependency>
 			<dependency>

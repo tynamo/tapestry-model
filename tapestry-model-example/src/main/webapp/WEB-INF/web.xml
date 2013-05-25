@@ -29,6 +29,21 @@
 			org.tynamo.examples.simple.services.QaModule
 		</param-value>
 	</context-param>
+
+	<context-param>
+		<param-name>tapestry.hibernate-modules</param-name>
+		<param-value>
+			org.tynamo.examples.simple.services.DevelopmentModule,org.tynamo.examples.simple.services.HibernateModule
+		</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>tapestry.jpa-modules</param-name>
+		<param-value>
+			org.tynamo.examples.simple.services.DevelopmentModule,org.tynamo.examples.simple.services.JpaModule
+		</param-value>
+	</context-param>
+
 	<filter>
 		<filter-name>app</filter-name>
 		<filter-class>org.apache.tapestry5.TapestryFilter</filter-class>
