@@ -1,12 +1,14 @@
 package org.tynamo.examples.simple.services;
 
-import org.apache.tapestry5.internal.jpa.CommitAfterWorker;
+import org.apache.tapestry5.internal.jpa.CommitAfterMethodAdvice;
 import org.apache.tapestry5.ioc.Configuration;
 import org.apache.tapestry5.ioc.OrderedConfiguration;
 import org.apache.tapestry5.ioc.annotations.Contribute;
 import org.apache.tapestry5.ioc.annotations.Primary;
 import org.apache.tapestry5.ioc.annotations.SubModule;
+import org.apache.tapestry5.jpa.EntityManagerManager;
 import org.apache.tapestry5.jpa.JpaEntityPackageManager;
+import org.apache.tapestry5.plastic.MethodAdvice;
 import org.apache.tapestry5.services.transform.ComponentClassTransformWorker2;
 import org.tynamo.model.jpa.services.TynamoJpaModule;
 
@@ -34,8 +36,13 @@ public class JpaModule
 
 	@Contribute(ComponentClassTransformWorker2.class)
 	@Primary
-	public static void provideClassTransformWorkers(OrderedConfiguration<ComponentClassTransformWorker2> configuration)
+	public static void provideClassTransformWorkers(OrderedConfiguration<ComponentClassTransformWorker2> configuration,
+	                                                EntityManagerManager manager)
 	{
-		configuration.addInstance("JPACommitAfter", CommitAfterWorker.class, "after:Log");
+		/**
+		 * WARN: This JPACommitAfter worker doesn't support @PersistenceContext
+		 */
+		MethodAdvice advice = new CommitAfterMethodAdvice(manager, null);
+		configuration.add("TynamoExampleJPACommitAfter", new CommitAfterWorker(advice), "after:Log");
 	}
 }

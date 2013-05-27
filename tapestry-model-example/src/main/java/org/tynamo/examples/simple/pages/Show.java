@@ -6,7 +6,7 @@ import org.apache.tapestry5.Link;
 import org.apache.tapestry5.annotations.CleanupRender;
 import org.apache.tapestry5.annotations.OnEvent;
 import org.apache.tapestry5.annotations.Property;
-import org.apache.tapestry5.hibernate.annotations.CommitAfter;
+import org.tynamo.examples.simple.CustomCommitAfter;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.ContextValueEncoder;
@@ -94,7 +94,7 @@ public class Show
 		return TynamoMessages.show(messages, bean.toString());
 	}
 
-	@CommitAfter
+	@CustomCommitAfter
 	@OnEvent("delete")
 	Link delete()
 	{

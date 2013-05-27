@@ -8,11 +8,11 @@ import org.apache.tapestry5.annotations.CleanupRender;
 import org.apache.tapestry5.annotations.Log;
 import org.apache.tapestry5.annotations.OnEvent;
 import org.apache.tapestry5.annotations.Property;
-import org.apache.tapestry5.hibernate.annotations.CommitAfter;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.PageRenderLinkSource;
 import org.tynamo.builder.BuilderDirector;
+import org.tynamo.examples.simple.CustomCommitAfter;
 import org.tynamo.routing.annotations.At;
 import org.tynamo.services.PersistenceService;
 import org.tynamo.util.TynamoMessages;
@@ -88,7 +88,7 @@ public class Add
 	}
 
 	@Log
-	@CommitAfter
+	@CustomCommitAfter
 	@OnEvent(EventConstants.SUCCESS)
 	Link success()
 	{
