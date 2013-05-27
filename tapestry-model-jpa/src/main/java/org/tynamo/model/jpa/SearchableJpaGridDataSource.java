@@ -26,8 +26,8 @@ public class SearchableJpaGridDataSource implements GridDataSource {
 	private Map<TynamoPropertyDescriptor, SearchFilterPredicate> propertySearchFilterMap;
 	private EntityManager entityManager;
 	private Class entityType;
-  private int startIndex;
-  private List preparedResults;
+	private int startIndex;
+	private List preparedResults;
 	private String[] searchTerms;
 	private List<TynamoPropertyDescriptor> searchablePropertyDescriptors;
 	private Set includedIds;
@@ -114,19 +114,20 @@ public class SearchableJpaGridDataSource implements GridDataSource {
 
 	}
 
-	// @Override
 	protected void applyAdditionalConstraints(final CriteriaQuery<?> criteria, final Root<?> root,
-		final CriteriaBuilder builder) {
+	                                          final CriteriaBuilder builder) {
 		List<Predicate> predicates = new ArrayList<Predicate>();
-		Predicate predicate = builder.disjunction();
 		if (searchTerms != null && searchTerms.length > 0) {
 			for (TynamoPropertyDescriptor searchableProperty : searchablePropertyDescriptors) {
 				for (String searchTerm : searchTerms)
-					predicates.add(builder.like(root.<String> get(searchableProperty.getName()), searchTerm));
+					predicates.add(builder.like(root.<String>get(searchableProperty.getName()), searchTerm));
 			}
-			predicate = builder.or(predicates.toArray(new Predicate[0]));
+			Predicate predicate = builder.or(predicates.toArray(new Predicate[0]));
+			criteria.where(applyAdditionalConstraints(builder, root, predicate));
+		} else {
+			Predicate predicate = applyAdditionalConstraints(builder, root, null);
+			if (predicate != null) criteria.where(predicate);
 		}
-		criteria.where(applyAdditionalConstraints(builder, root, predicate));
 	}
 
 	/**
@@ -151,10 +152,11 @@ public class SearchableJpaGridDataSource implements GridDataSource {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	protected Predicate applyAdditionalConstraints(CriteriaBuilder builder, Root<?> root, Predicate existingPredicate)
   {
-		if (includedIds == null || includedIds.size() <= 0)
-			if (propertySearchFilterMap == null || propertySearchFilterMap.size() <= 0) return existingPredicate;
+		if ((includedIds == null || includedIds.size() <= 0)
+				&& (propertySearchFilterMap == null || propertySearchFilterMap.size() <= 0)) return existingPredicate;
+
 		List<Predicate> predicates = new ArrayList<Predicate>(propertySearchFilterMap.entrySet().size());
-		predicates.add(existingPredicate);
+		if (existingPredicate != null) predicates.add(existingPredicate);
 		if (includedIds != null) {
 			EntityType entityType = root.getModel();
 			SingularAttribute idAttr = entityType.getId(entityType.getIdType().getJavaType());

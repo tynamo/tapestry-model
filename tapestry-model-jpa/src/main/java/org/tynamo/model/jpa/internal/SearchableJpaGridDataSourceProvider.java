@@ -1,11 +1,5 @@
 package org.tynamo.model.jpa.internal;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.persistence.EntityManager;
-
 import org.apache.tapestry5.grid.GridDataSource;
 import org.apache.tapestry5.jpa.JpaGridDataSource;
 import org.tynamo.descriptor.TynamoPropertyDescriptor;
@@ -13,7 +7,13 @@ import org.tynamo.model.jpa.SearchableJpaGridDataSource;
 import org.tynamo.search.SearchFilterPredicate;
 import org.tynamo.services.SearchableGridDataSourceProvider;
 
+import javax.persistence.EntityManager;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 public class SearchableJpaGridDataSourceProvider implements SearchableGridDataSourceProvider {
+
 	private EntityManager entityManager;
 
 	public SearchableJpaGridDataSourceProvider(EntityManager entityManager) {
@@ -26,17 +26,33 @@ public class SearchableJpaGridDataSourceProvider implements SearchableGridDataSo
 	}
 
 	@Override
-	public GridDataSource createGridDataSource(Class entityType, Set includedIds,
-		Map<TynamoPropertyDescriptor, SearchFilterPredicate> propertySearchFilterMap) {
+	public GridDataSource createGridDataSource(Class entityType,
+	                                           Set includedIds,
+	                                           Map<TynamoPropertyDescriptor, SearchFilterPredicate> propertySearchFilterMap) {
 		return new SearchableJpaGridDataSource(entityManager, entityType, includedIds, propertySearchFilterMap);
 	}
 
 	@Override
 	public GridDataSource createGridDataSource(Class entityType,
-		Map<TynamoPropertyDescriptor, SearchFilterPredicate> propertySearchFilterMap,
-		List<TynamoPropertyDescriptor> searchablePropertyDescriptors, String... searchTerms) {
-		return new SearchableJpaGridDataSource(entityManager, entityType, propertySearchFilterMap,
-			searchablePropertyDescriptors, searchTerms);
+	                                           Map<TynamoPropertyDescriptor, SearchFilterPredicate> propertySearchFilterMap,
+	                                           List<TynamoPropertyDescriptor> searchablePropertyDescriptors,
+	                                           String... searchTerms) {
+		return new SearchableJpaGridDataSource(entityManager, entityType, propertySearchFilterMap, searchablePropertyDescriptors, searchTerms);
 	}
+
+/*
+	// copied from the old JpaModelSearch
+	public GridDataSource createGridDataSource(Class entityType,
+	                                           Map<TynamoPropertyDescriptor,SearchFilterPredicate> propertySearchFilterMap,
+	                                           String... searchTerms) {
+		java.util.List<TynamoPropertyDescriptor> searchablePropertyDescriptors = getSearchablePropertyDescriptors();
+		// NOTE does it make sense to return a different grid implementation in this case, or perhaps we should always use the same one regardless?
+		if (propertySearchFilterMap.size() <= 0)
+			if (searchablePropertyDescriptors.size() <= 0 || searchTerms == null || searchTerms.length <= 0)
+				return new JpaGridDataSource(entityManager, entityType);
+
+		return new SearchableJpaGridDataSource(entityManager, entityType, propertySearchFilterMap, searchablePropertyDescriptors, searchTerms);
+	}
+*/
 
 }

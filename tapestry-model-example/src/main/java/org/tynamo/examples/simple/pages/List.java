@@ -11,10 +11,10 @@ import org.apache.tapestry5.corelib.components.Grid;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
+import org.tynamo.components.ModelSearch;
 import org.tynamo.descriptor.annotation.beaneditor.BeanModel;
 import org.tynamo.descriptor.annotation.beaneditor.BeanModels;
 import org.tynamo.examples.simple.entities.Person;
-import org.tynamo.hibernate.components.HibernateModelSearch;
 import org.tynamo.routing.annotations.At;
 import org.tynamo.services.PersistenceService;
 import org.tynamo.util.TynamoMessages;
@@ -55,7 +55,7 @@ public class List
 
 	@Component(parameters = "beanType=beanType")
 	@Property(write = false)
-	private HibernateModelSearch modelSearch;
+	private ModelSearch modelSearch;
 
 	@OnEvent(EventConstants.ACTIVATE)
 	Object onActivate(Class clazz)

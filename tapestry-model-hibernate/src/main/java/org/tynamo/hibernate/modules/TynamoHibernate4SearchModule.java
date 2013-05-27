@@ -13,7 +13,7 @@ import org.hibernate.search.FullTextSession;
 import org.hibernate.search.Search;
 import org.tynamo.descriptor.decorators.DescriptorDecorator;
 import org.tynamo.descriptor.factories.DescriptorFactory;
-import org.tynamo.hibernate.components.SearchableHibernateGridDataSourceProvider;
+import org.tynamo.hibernate.services.internal.SearchableHibernateGridDataSourceProvider;
 import org.tynamo.hibernate.decorators.HibernateSearchDescriptorDecorator;
 import org.tynamo.services.SearchableGridDataSourceProvider;
 

@@ -1,4 +1,4 @@
-package org.tynamo.hibernate.components;
+package org.tynamo.hibernate.services.internal;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +11,6 @@ import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.util.Version;
 import org.apache.tapestry5.grid.GridDataSource;
 import org.apache.tapestry5.hibernate.HibernateGridDataSource;
-import org.apache.tapestry5.ioc.annotations.Inject;
 import org.hibernate.search.FullTextSession;
 import org.tynamo.descriptor.TynamoPropertyDescriptor;
 import org.tynamo.hibernate.SearchableHibernateGridDataSource;
@@ -19,7 +18,7 @@ import org.tynamo.search.SearchFilterPredicate;
 import org.tynamo.services.SearchableGridDataSourceProvider;
 
 public class SearchableHibernateGridDataSourceProvider implements SearchableGridDataSourceProvider {
-	@Inject
+
 	private FullTextSession session;
 
 	public SearchableHibernateGridDataSourceProvider(FullTextSession session) {

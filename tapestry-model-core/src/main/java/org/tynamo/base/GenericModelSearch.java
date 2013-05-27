@@ -193,7 +193,13 @@ public abstract class GenericModelSearch {
 		return gridDataSource;
 	}
 
-	protected abstract GridDataSource createGridDataSource();
+	public GridDataSource createGridDataSource() {
+		if (searchTerms != null) {
+			return gridDataSourceProvider.createGridDataSource(beanType, getActiveFilterMap(), searchablePropertyDescriptors, searchTerms);
+		} else {
+			return gridDataSourceProvider.createGridDataSource(beanType, null, getActiveFilterMap());
+		}
+	}
 
 	public String getSearchTerms() {
 		return searchTerms;
