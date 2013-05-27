@@ -6,13 +6,19 @@ import org.apache.tapestry5.ioc.Configuration;
 import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.ioc.ServiceBinder;
 import org.apache.tapestry5.ioc.annotations.Contribute;
+import org.apache.tapestry5.ioc.annotations.InjectService;
 import org.apache.tapestry5.ioc.annotations.SubModule;
 import org.apache.tapestry5.ioc.services.ApplicationDefaults;
+import org.apache.tapestry5.ioc.services.Coercion;
+import org.apache.tapestry5.ioc.services.CoercionTuple;
 import org.apache.tapestry5.ioc.services.FactoryDefaults;
 import org.apache.tapestry5.ioc.services.SymbolProvider;
 import org.apache.tapestry5.ioc.services.TapestryIOCModule;
+import org.apache.tapestry5.ioc.services.TypeCoercer;
 import org.apache.tapestry5.services.BeanBlockContribution;
 import org.apache.tapestry5.services.BeanBlockSource;
+import org.apache.tapestry5.services.ClientDataEncoder;
+import org.apache.tapestry5.services.ClientDataSink;
 import org.apache.tapestry5.services.DisplayBlockContribution;
 import org.apache.tapestry5.services.TapestryModule;
 import org.apache.tapestry5.upload.services.UploadModule;
@@ -20,8 +26,13 @@ import org.apache.tapestry5.upload.services.UploadSymbols;
 import org.tynamo.builder.Builder;
 import org.tynamo.builder.BuilderDirector;
 import org.tynamo.ckeditor.CKEditorModule;
+import org.tynamo.examples.simple.entities.CarPk;
 import org.tynamo.routing.services.RoutingModule;
 import org.tynamo.services.TynamoCoreModule;
+
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 /**
  * This module is automatically included as part of the Tapestry IoC Registry, it's a good place to
@@ -97,6 +108,52 @@ public class AppModule
 	public static void addBuilders(MappedConfiguration<Class, Builder> configuration)
 	{
 //		configuration.add(org.tynamo.examples.recipe.model.Recipe.class, new RecipeBuilder());
+	}
+
+
+	@Contribute(TypeCoercer.class)
+	public static void addTypeCoercers(final Configuration<CoercionTuple> configuration,
+	                                   @InjectService("ClientDataEncoder") final ClientDataEncoder encoder)
+	{
+		configuration.add(CoercionTuple.create(CarPk.class, String.class, new Coercion<CarPk, String>()
+		{
+			@Override
+			public String coerce(CarPk carPk)
+			{
+				try
+				{
+					ClientDataSink sink = encoder.createSink();
+					ObjectOutputStream stream = sink.getObjectOutputStream();
+					stream.writeObject(carPk);
+					return sink.getEncodedClientData();
+				} catch (IOException e)
+				{
+					e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+				}
+				return "[ERROR]";
+			}
+		}));
+
+		configuration.add(CoercionTuple.create(String.class, CarPk.class, new Coercion<String, CarPk>()
+		{
+			@Override
+			public CarPk coerce(String s)
+			{
+				try
+				{
+					ObjectInputStream ois = encoder.decodeEncodedClientData(s);
+					return (CarPk) ois.readObject();
+				} catch (IOException e)
+				{
+					e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+				} catch (ClassNotFoundException e)
+				{
+					e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+				}
+
+				return null;
+			}
+		}));
 	}
 
 }
