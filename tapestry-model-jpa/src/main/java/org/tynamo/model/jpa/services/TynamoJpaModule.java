@@ -13,6 +13,7 @@ import org.apache.tapestry5.ioc.annotations.Contribute;
 import org.apache.tapestry5.ioc.annotations.Match;
 import org.apache.tapestry5.ioc.annotations.Startup;
 import org.apache.tapestry5.ioc.annotations.Symbol;
+import org.apache.tapestry5.ioc.services.RegistryShutdownHub;
 import org.apache.tapestry5.ioc.services.ServiceOverride;
 import org.apache.tapestry5.jpa.JpaTransactionAdvisor;
 import org.apache.tapestry5.services.BeanBlockContribution;
@@ -126,7 +127,8 @@ public class TynamoJpaModule {
 	}
 
 	public Node buildNode(@Symbol(TynamoJpaSymbols.ELASTICSEARCH_HOME) String pathHome,
-		@Symbol(TynamoJpaSymbols.ELASTICSEARCH_HTTP_ENABLED) boolean httpEnabled) {
+	                      @Symbol(TynamoJpaSymbols.ELASTICSEARCH_HTTP_ENABLED) boolean httpEnabled,
+	                      RegistryShutdownHub registryShutdownHub) {
 		ImmutableSettings.Builder settings = ImmutableSettings.settingsBuilder();
 		if (!pathHome.isEmpty()) settings.put("path.home", pathHome);
 		settings.put("http.enabled", httpEnabled);
@@ -135,6 +137,14 @@ public class TynamoJpaModule {
 		settings.put("cluster.name", "tynamo-model-search-" + NetworkUtils.getLocalAddress().getHostName()).build();
 		final Node node = NodeBuilder.nodeBuilder().local(true).data(true).settings(settings).build();
 		node.start();
+
+		registryShutdownHub.addRegistryShutdownListener(new Runnable() {
+			@Override
+			public void run() {
+				node.close(); // TYNAMO-223
+			}
+		});
+
 		return node;
 	}
 
