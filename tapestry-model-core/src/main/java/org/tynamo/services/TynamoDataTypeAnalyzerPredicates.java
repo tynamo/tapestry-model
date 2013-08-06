@@ -61,7 +61,7 @@ public class TynamoDataTypeAnalyzerPredicates
 	{
 		public boolean accept(TynamoPropertyDescriptor descriptor)
 		{
-			return descriptor.isString() & descriptor.isLarge() && !descriptor.isIdentifier();
+			return descriptor.isString() & descriptor.isLarge();
 		}
 	};
 

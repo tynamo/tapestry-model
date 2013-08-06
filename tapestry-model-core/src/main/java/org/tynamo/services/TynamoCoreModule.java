@@ -172,13 +172,13 @@ public class TynamoCoreModule
 	{
 		configuration.add("nonVisual", newPair(TynamoDataTypeAnalyzerPredicates.nonVisual, "nonVisual"));
 		configuration.add("readOnly", newPair(TynamoDataTypeAnalyzerPredicates.readOnly, "readOnly"));
+		configuration.add("generatedId", newPair(TynamoDataTypeAnalyzerPredicates.generatedId, "readOnly"));
+		configuration.add("assignedId", newPair(TynamoDataTypeAnalyzerPredicates.assignedId, "identifierEditor"));
 		configuration.add("richText", newPair(TynamoDataTypeAnalyzerPredicates.richText, "ckeditor"));
 		configuration.add("password", newPair(TynamoDataTypeAnalyzerPredicates.password, "password"));
 		configuration.add("date", newPair(TynamoDataTypeAnalyzerPredicates.date, "formatted-date"));
 		configuration.add("number", newPair(TynamoDataTypeAnalyzerPredicates.number, "formatted-number"));
 		configuration.add("longtext", newPair(TynamoDataTypeAnalyzerPredicates.longtext, "longtext"));
-		configuration.add("generatedId", newPair(TynamoDataTypeAnalyzerPredicates.generatedId, "readOnly"));
-		configuration.add("assignedId", newPair(TynamoDataTypeAnalyzerPredicates.assignedId, "identifierEditor"));
 //		configuration.add("", newPair("identifier && objectReference", "objectReferenceIdentifierEditor");
 		configuration.add("enum", newPair(TynamoDataTypeAnalyzerPredicates.enumi, "enum")); // overrides Tapestry's enum
 		configuration.add("blob", newPair(TynamoDataTypeAnalyzerPredicates.blob, "blob"));
