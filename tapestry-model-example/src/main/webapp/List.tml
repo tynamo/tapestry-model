@@ -10,23 +10,19 @@
 
 	<h1>${title}</h1>
 
-	<t:block t:id="resultcountBlock">
-		<t:if test="modelSearch.searchCriteriaSet">
-			${modelSearch.gridDataSource.availableRows} results (<t:actionlink t:id="resetSearchCriteria">${beanCount} total</t:actionlink> )
-		</t:if>
-	</t:block>
+	<t:alerts/>
 
 	<t:if test="modelSearch.searchable">
 		<t:form t:id="fulltextSearch">
 			<t:zone t:id="termsZone">
 				<t:textfield t:id="searchTerms" value="modelSearch.searchTerms" t:mixins="tynamo/zoneUpdater" t:clientEvent="change" t:event="searchTermsChanged" t:zone="termsZone"/>
 				<button type="button" onclick="$(searchFilterForm).submit()">Search</button>
-				<t:delegate to="resultcountBlock"/>
+				<t:if test="modelSearch.searchCriteriaSet">
+					${modelSearch.gridDataSource.availableRows} results (<t:actionlink t:id="resetSearchCriteria">${beanCount} total</t:actionlink> )
+				</t:if>
 			</t:zone>
 		</t:form>
-		<p:else >
-			<t:delegate to="resultcountBlock"/>
-		</p:else>
+		<br/>
 	</t:if>
 
 	<t:grid t:id="grid" source="modelSearch.gridDataSource" row="bean" inPlace="true" add="__id__" reorder="__id__" t:mixins="tynamo/BeanModelAdvisor">

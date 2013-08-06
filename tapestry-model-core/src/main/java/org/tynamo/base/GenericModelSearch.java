@@ -17,7 +17,6 @@ import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.grid.GridDataSource;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.services.Request;
 import org.tynamo.components.SearchFilters;
 import org.tynamo.descriptor.CollectionDescriptor;
 import org.tynamo.descriptor.EmbeddedDescriptor;
@@ -37,7 +36,13 @@ public abstract class GenericModelSearch {
 	private DescriptorService descriptorService;
 
 	@Inject
+	SearchableGridDataSourceProvider gridDataSourceProvider;
+
+	@Inject
 	private Messages messages;
+
+	@InjectComponent
+	private SearchFilters searchFilters;
 
 	@Parameter(required = true, allowNull = false)
 	private Class beanType;
@@ -55,15 +60,12 @@ public abstract class GenericModelSearch {
 
 	private GridDataSource gridDataSource;
 
-	@InjectComponent
-	private SearchFilters searchFilters;
-
 	public Class getBeanType() {
 		return beanType;
 	}
 
-	protected DescriptorService getDescriptorService() {
-		return descriptorService;
+	public SearchableGridDataSourceProvider getGridDataSourceProvider() {
+		return gridDataSourceProvider;
 	}
 
 	void setupRender() {
@@ -87,13 +89,8 @@ public abstract class GenericModelSearch {
 		else displayableFilterDescriptorMap = filterStateByBeanType.get(beanType);
 
 		if (displayableFilterDescriptorMap == null || searchablePropertyDescriptors == null) {
-			SortedMap<TynamoPropertyDescriptor, SearchFilterPredicate> map = new TreeMap<TynamoPropertyDescriptor, SearchFilterPredicate>(
-				new Comparator<TynamoPropertyDescriptor>() {
-					public int compare(TynamoPropertyDescriptor o1, TynamoPropertyDescriptor o2) {
-						return DisplayNameUtils.getDisplayName(o1, messages).compareTo(
-							DisplayNameUtils.getDisplayName(o2, messages));
-					}
-				});
+			SortedMap<TynamoPropertyDescriptor, SearchFilterPredicate> map =
+					new TreeMap<TynamoPropertyDescriptor, SearchFilterPredicate>(new TynamoPropertyDescriptorComparator());
 
 			List<TynamoPropertyDescriptor> searchablePropertyDescriptors = new ArrayList<TynamoPropertyDescriptor>();
 
@@ -155,16 +152,9 @@ public abstract class GenericModelSearch {
 		filterStateByBeanType.put(beanType, null);
 	}
 
-	@Inject
-	private Request request;
-
 	public boolean isUsedAsSearchFilter(TynamoClassDescriptor classDescriptor, TynamoPropertyDescriptor propertyDescriptor) {
 		// the default implementation simply treats all non-strings as filters
 		return !propertyDescriptor.isString();
-	}
-
-	public List<TynamoPropertyDescriptor> getSearchablePropertyDescriptors() {
-		return searchablePropertyDescriptors;
 	}
 
 	public Map<TynamoPropertyDescriptor, SearchFilterPredicate> getActiveFilterMap() {
@@ -178,13 +168,6 @@ public abstract class GenericModelSearch {
 		return activeDescriptorMap;
 	}
 
-	@Inject
-	SearchableGridDataSourceProvider gridDataSourceProvider;
-
-	protected SearchableGridDataSourceProvider getGridDataSourceProvider() {
-		return gridDataSourceProvider;
-	}
-
 	public final GridDataSource getGridDataSource() {
 		// we *must* initialize the component before returning the dataSource. Since getGridDataSource() is public,
 		// it's possible it'll be called before setupRender.
@@ -193,7 +176,7 @@ public abstract class GenericModelSearch {
 		return gridDataSource;
 	}
 
-	public GridDataSource createGridDataSource() {
+	protected GridDataSource createGridDataSource() {
 		if (searchTerms != null) {
 			return gridDataSourceProvider.createGridDataSource(beanType, getActiveFilterMap(), searchablePropertyDescriptors, searchTerms);
 		} else {
@@ -207,5 +190,13 @@ public abstract class GenericModelSearch {
 
 	public void setSearchTerms(String searchTerms) {
 		this.searchTerms = searchTerms;
+	}
+
+	private class TynamoPropertyDescriptorComparator implements Comparator<TynamoPropertyDescriptor>
+	{
+		public int compare(TynamoPropertyDescriptor o1, TynamoPropertyDescriptor o2) {
+			return DisplayNameUtils.getDisplayName(o1, messages).compareTo(
+					DisplayNameUtils.getDisplayName(o2, messages));
+		}
 	}
 }
