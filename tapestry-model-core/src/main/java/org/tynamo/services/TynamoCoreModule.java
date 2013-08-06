@@ -237,20 +237,20 @@ public class TynamoCoreModule
 		return new SearchableGridDataSourceProvider() {
 			@Override
 			public GridDataSource createGridDataSource(Class entityType) {
-				return new TynamoGridDataSource(persistenceService, entityType);
+				return persistenceService.getGridDataSource(entityType);
 			}
 
 			@Override
 			public GridDataSource createGridDataSource(Class entityType,
 				Map<TynamoPropertyDescriptor, SearchFilterPredicate> propertySearchFilterMap,
 				List<TynamoPropertyDescriptor> searchablePropertyDescriptors, String... searchTerms) {
-				return new TynamoGridDataSource(persistenceService, entityType);
+				return persistenceService.getGridDataSource(entityType);
 			}
 
 			@Override
 			public GridDataSource createGridDataSource(Class entityType, Set includedIds,
 				Map<TynamoPropertyDescriptor, SearchFilterPredicate> propertySearchFilterMap) {
-				return new TynamoGridDataSource(persistenceService, entityType);
+				return persistenceService.getGridDataSource(entityType);
 			}
 
 		};
