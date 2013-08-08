@@ -16,6 +16,14 @@
 		<finalName>simple</finalName>
 
 		<plugins>
+			<plugin> <!-- exclude tapestry-model-example from the deploy -->
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<configuration>
+					<skip>true</skip>
+				</configuration>
+			</plugin>
+
 			<!-- Run the application using "mvn jetty:run" -->
 			<plugin>
 				<groupId>org.mortbay.jetty</groupId>
