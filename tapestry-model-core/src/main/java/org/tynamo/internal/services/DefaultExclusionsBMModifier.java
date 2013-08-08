@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * Removes the Tynamo "recommended" list of properties to exclude from the bean model.
  * <p/>
- * It excludes all nonVisual properties from the BeanModel for ALL the contexts, and for the "list" context it also
+ * It excludes all nonVisual properties from the BeanModel for ALL the contexts, and for the "list" context key it also
  * removes identifier properties, collection properties and blob properties.
  */
 public class DefaultExclusionsBMModifier implements BeanModelModifier

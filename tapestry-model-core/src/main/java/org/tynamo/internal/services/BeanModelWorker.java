@@ -24,11 +24,12 @@ public class BeanModelWorker implements ComponentClassTransformWorker2
 	{
 		if (plasticClass.hasAnnotation(BeanModels.class))
 		{
+			String pageName = componentClassResolver.resolvePageClassNameToPageName(plasticClass.getClassName());
+			String canonicalized = componentClassResolver.canonicalizePageName(pageName);
+
 			BeanModels bms = plasticClass.getAnnotation(BeanModels.class);
 			for (BeanModel bm : bms.value())
 			{
-				String pageName = componentClassResolver.resolvePageClassNameToPageName(plasticClass.getClassName());
-				String canonicalized = componentClassResolver.canonicalizePageName(pageName);
 				modifier.put(canonicalized, bm);
 			}
 		}

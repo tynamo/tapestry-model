@@ -8,8 +8,11 @@ import org.apache.tapestry5.services.ComponentClasses;
 import org.apache.tapestry5.services.InvalidationEventHub;
 import org.apache.tapestry5.services.InvalidationListener;
 import org.apache.tapestry5.services.RequestGlobals;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.tynamo.PageType;
 import org.tynamo.descriptor.annotation.beaneditor.BeanModel;
+import org.tynamo.mixins.BeanModelAdvisor;
 import org.tynamo.services.BeanModelModifier;
 
 import java.util.HashMap;
@@ -18,10 +21,10 @@ import java.util.Map;
 public class BeanModelsAnnotationBMModifier implements BeanModelModifier, InvalidationListener
 {
 	private final static String defaultKey = PageType.DEFAULT.getContextKey();
+	private final static Logger logger = LoggerFactory.getLogger(BeanModelAdvisor.class);
 
-	private final Map<String, Map<Class, Map<String, BeanModel>>> beanModels = CollectionFactory.newConcurrentMap();
 	private final RequestGlobals globals;
-
+	private final Map<String, Map<Class, Map<String, BeanModel>>> beanModels = CollectionFactory.newConcurrentMap();
 
 	public BeanModelsAnnotationBMModifier(RequestGlobals globals)
 	{
@@ -78,6 +81,11 @@ public class BeanModelsAnnotationBMModifier implements BeanModelModifier, Invali
 			beanModels.put(page, map);
 		}
 
+		if (bm.pageType() != PageType.DEFAULT)
+			logger.warn("{}@BeanModel.pageType value is ignored when the @BeanModel annotation is used on pages", page);
+		if (bm.beanType() == void.class)
+			throw new NullPointerException("@BeanModel.beanType is required when the @BeanModel annotation is used on pages");
+
 		put(map, bm);
 	}
 
@@ -95,7 +103,7 @@ public class BeanModelsAnnotationBMModifier implements BeanModelModifier, Invali
 			beanModelsInPage.put(bm.beanType(), map);
 		}
 
-		map.put(getKey(bm.context()), bm);
+		map.put(getKey(bm.key()), bm);
 	}
 
 	private String getKey(String context)

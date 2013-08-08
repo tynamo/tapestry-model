@@ -6,11 +6,14 @@ import org.apache.tapestry5.Link;
 import org.apache.tapestry5.annotations.CleanupRender;
 import org.apache.tapestry5.annotations.OnEvent;
 import org.apache.tapestry5.annotations.Property;
+import org.tynamo.descriptor.annotation.beaneditor.BeanModel;
+import org.tynamo.descriptor.annotation.beaneditor.BeanModels;
 import org.tynamo.examples.simple.CustomCommitAfter;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.ContextValueEncoder;
 import org.apache.tapestry5.services.PageRenderLinkSource;
+import org.tynamo.examples.simple.entities.Product;
 import org.tynamo.util.TynamoMessages;
 import org.tynamo.routing.annotations.At;
 import org.tynamo.services.DescriptorService;
@@ -24,6 +27,9 @@ import org.tynamo.util.Utils;
  * When extending this page for customization purposes, it's better to copy & paste code than trying to use inheritance.
  *
  */
+@BeanModels({
+		@BeanModel(beanType = Product.class, exclude = "id")
+})
 @At("/{0}/{1}")
 public class Show
 {
