@@ -4,14 +4,15 @@ import org.apache.tapestry5.beaneditor.BeanModel;
 import org.apache.tapestry5.test.TapestryTestCase;
 import org.testng.annotations.Test;
 import org.tynamo.PageType;
+import org.tynamo.internal.services.DefaultExclusionsBMModifier;
+import org.tynamo.services.DescriptorService;
 import org.tynamo.test.Baz;
 import org.tynamo.test.Foo;
-import org.tynamo.util.BeanModelUtils;
 
 import java.util.Collections;
 import java.util.Set;
 
-public class BeanModelUtilsTest extends TapestryTestCase
+public class DefaultExclusionsBMModifierTest extends TapestryTestCase
 {
 
 	@Test
@@ -19,9 +20,7 @@ public class BeanModelUtilsTest extends TapestryTestCase
 	{
 
 		BeanModel model = mockBeanModel();
-		expect(model.exclude("id", "bazzes")).andReturn(model);
-
-		replay();
+		DescriptorService descriptorService = newMock(DescriptorService.class);
 
 		TynamoClassDescriptorImpl classDescriptor = new TynamoClassDescriptorImpl(Foo.class);
 		IdentifierDescriptor idProp = new IdentifierDescriptorImpl(Foo.class, "id", String.class);
@@ -33,7 +32,14 @@ public class BeanModelUtilsTest extends TapestryTestCase
 
 		Collections.addAll(classDescriptor.getPropertyDescriptors(), idProp, multiWordProp, bazzesDescriptor);
 
-		BeanModelUtils.applyDefaultExclusions(model, classDescriptor, PageType.LIST.getContextKey());
+		expect(model.exclude("id", "bazzes")).andReturn(model);
+		expect(model.getBeanType()).andReturn(Foo.class);
+		expect(descriptorService.getClassDescriptor(Foo.class)).andReturn(classDescriptor);
+
+		replay();
+
+		DefaultExclusionsBMModifier modifier = new DefaultExclusionsBMModifier(descriptorService);
+		modifier.modify(model, PageType.LIST.getContextKey());
 
 		verify();
 

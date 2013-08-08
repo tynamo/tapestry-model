@@ -7,11 +7,15 @@ import org.apache.tapestry5.ioc.*;
 import org.apache.tapestry5.ioc.annotations.Autobuild;
 import org.apache.tapestry5.ioc.annotations.Contribute;
 import org.apache.tapestry5.ioc.annotations.InjectService;
+import org.apache.tapestry5.ioc.annotations.Marker;
 import org.apache.tapestry5.ioc.annotations.Match;
+import org.apache.tapestry5.ioc.annotations.Primary;
+import org.apache.tapestry5.ioc.services.ChainBuilder;
 import org.apache.tapestry5.ioc.services.CoercionTuple;
 import org.apache.tapestry5.ioc.services.PropertyAccess;
 import org.apache.tapestry5.services.*;
-import org.tynamo.TynamoGridDataSource;
+import org.apache.tapestry5.services.linktransform.PageRenderLinkTransformer;
+import org.apache.tapestry5.services.transform.ComponentClassTransformWorker2;
 import org.tynamo.bindings.ModelBindingFactory;
 import org.tynamo.blob.BlobManager;
 import org.tynamo.blob.DefaultBlobManager;
@@ -24,8 +28,12 @@ import org.tynamo.descriptor.decorators.DescriptorDecorator;
 import org.tynamo.descriptor.decorators.TapestryDecorator;
 import org.tynamo.descriptor.decorators.TynamoDecorator;
 import org.tynamo.descriptor.factories.*;
+import org.tynamo.internal.services.BeanModelExtensionBMModifier;
+import org.tynamo.internal.services.BeanModelsAnnotationBMModifier;
 import org.tynamo.internal.services.BeanModelSourceAdvice;
 import org.tynamo.internal.services.BeanModelSourceAdviceImpl;
+import org.tynamo.internal.services.BeanModelWorker;
+import org.tynamo.internal.services.DefaultExclusionsBMModifier;
 import org.tynamo.search.SearchFilterPredicate;
 import org.tynamo.util.Pair;
 
@@ -67,6 +75,9 @@ public class TynamoCoreModule
 		binder.bind(DescriptorAnnotationHandler.class, PropertyDescriptorAnnotationHandler.class).withId("PropertyDescriptorAnnotationHandler");
 
 		binder.bind(BeanModelSourceAdvice.class, BeanModelSourceAdviceImpl.class);
+		binder.bind(BeanModelsAnnotationBMModifier.class);
+		binder.bind(BeanModelWorker.class);
+
 	}
 
 	@Match("BeanModelSource")
@@ -254,6 +265,34 @@ public class TynamoCoreModule
 			}
 
 		};
+	}
+
+	@Primary
+	@Contribute(ComponentClassTransformWorker2.class)
+	public static void provideTransformWorkers(OrderedConfiguration<ComponentClassTransformWorker2> configuration, BeanModelWorker beanModelWorker)
+	{
+		configuration.add("BeanModelWorker", beanModelWorker);
+	}
+
+	/**
+	 * Builds the {@link BeanModelModifier} service as a chain of command.
+	 */
+	@Marker(Primary.class)
+	public BeanModelModifier buildBeanModelModifier(List<BeanModelModifier> configuration, ChainBuilder chainBuilder)
+	{
+		return chainBuilder.build(BeanModelModifier.class, configuration);
+	}
+
+	@Primary
+	@Contribute(BeanModelModifier.class)
+	public static void addBeanModelModifiers(OrderedConfiguration<BeanModelModifier> configuration,
+	                                         BeanModelsAnnotationBMModifier pageAnnotationsModifier,
+	                                         @Autobuild DefaultExclusionsBMModifier defaultModifier,
+	                                         @Autobuild BeanModelExtensionBMModifier extensionModifier)
+	{
+		configuration.add("pages", pageAnnotationsModifier);
+		configuration.add("entities", extensionModifier);
+		configuration.add("defaults", defaultModifier, "after:*");
 	}
 
 }

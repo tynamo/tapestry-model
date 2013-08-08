@@ -4,20 +4,17 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.beaneditor.BeanModel;
 import org.apache.tapestry5.plastic.MethodInvocation;
 import org.apache.tapestry5.services.Environment;
-import org.tynamo.descriptor.TynamoClassDescriptor;
 import org.tynamo.services.BeanModelSourceContext;
-import org.tynamo.services.DescriptorService;
-import org.tynamo.util.BeanModelUtils;
 
 public class BeanModelSourceAdviceImpl implements BeanModelSourceAdvice
 {
 
-	DescriptorService descriptorService;
-	Environment environment;
+	private final BeanModelsAnnotationBMModifier beanModelProvider;
+	private final Environment environment;
 
-	public BeanModelSourceAdviceImpl(DescriptorService descriptorService, Environment environment)
+	public BeanModelSourceAdviceImpl(BeanModelsAnnotationBMModifier beanModelProvider, Environment environment)
 	{
-		this.descriptorService = descriptorService;
+		this.beanModelProvider = beanModelProvider;
 		this.environment = environment;
 	}
 
@@ -27,16 +24,12 @@ public class BeanModelSourceAdviceImpl implements BeanModelSourceAdvice
 
 		if (BeanModel.class.isAssignableFrom(invocation.getMethod().getReturnType()))
 		{
-
 			BeanModel<?> dataModel = (BeanModel) invocation.getReturnValue();
-			Class<?> beanClass = (Class<?>) invocation.getParameter(0);
-
-			TynamoClassDescriptor classDescriptor = descriptorService.getClassDescriptor(beanClass);
 			BeanModelSourceContext context = environment.peek(BeanModelSourceContext.class);
 
-			if (classDescriptor != null && context != null && StringUtils.isNotEmpty(context.getKey()))
+			if (context != null && StringUtils.isNotEmpty(context.getKey()))
 			{
-				BeanModelUtils.modify(dataModel, classDescriptor, context.getKey());
+				beanModelProvider.modify(dataModel, context.getKey());
 				invocation.setReturnValue(dataModel);
 			}
 		}

@@ -14,7 +14,6 @@ public class BeanModelAnnotationHandler implements DescriptorAnnotationHandler<B
 	{
 
 		BeanModelExtension beanModelExtension = BeanModelExtension.obtainBeanModelExtension(descriptor);
-		beanModelExtension.setApplyDefaultExclusions(annotation.applyDefaultExclusions());
 
 		for (BeanModel beanModel : annotation.value())
 		{
