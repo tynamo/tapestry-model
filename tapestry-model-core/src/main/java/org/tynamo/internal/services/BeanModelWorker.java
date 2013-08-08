@@ -2,6 +2,7 @@ package org.tynamo.internal.services;
 
 import org.apache.tapestry5.model.MutableComponentModel;
 import org.apache.tapestry5.plastic.PlasticClass;
+import org.apache.tapestry5.services.ComponentClassResolver;
 import org.apache.tapestry5.services.transform.ComponentClassTransformWorker2;
 import org.apache.tapestry5.services.transform.TransformationSupport;
 import org.tynamo.descriptor.annotation.beaneditor.BeanModel;
@@ -9,11 +10,13 @@ import org.tynamo.descriptor.annotation.beaneditor.BeanModels;
 
 public class BeanModelWorker implements ComponentClassTransformWorker2
 {
-	private BeanModelsAnnotationBMModifier beanModelProvider;
+	private final BeanModelsAnnotationBMModifier modifier;
+	private final ComponentClassResolver componentClassResolver;
 
-	public BeanModelWorker(BeanModelsAnnotationBMModifier beanModelProvider)
+	public BeanModelWorker(BeanModelsAnnotationBMModifier modifier, ComponentClassResolver componentClassResolver)
 	{
-		this.beanModelProvider = beanModelProvider;
+		this.modifier = modifier;
+		this.componentClassResolver = componentClassResolver;
 	}
 
 	@Override
@@ -24,7 +27,9 @@ public class BeanModelWorker implements ComponentClassTransformWorker2
 			BeanModels bms = plasticClass.getAnnotation(BeanModels.class);
 			for (BeanModel bm : bms.value())
 			{
-				beanModelProvider.put(bm);
+				String pageName = componentClassResolver.resolvePageClassNameToPageName(plasticClass.getClassName());
+				String canonicalized = componentClassResolver.canonicalizePageName(pageName);
+				modifier.put(canonicalized, bm);
 			}
 		}
 	}
