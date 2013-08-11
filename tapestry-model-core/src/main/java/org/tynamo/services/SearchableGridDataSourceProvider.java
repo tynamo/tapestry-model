@@ -9,6 +9,7 @@ import org.tynamo.descriptor.TynamoPropertyDescriptor;
 import org.tynamo.search.SearchFilterPredicate;
 
 public interface SearchableGridDataSourceProvider {
+
 	public GridDataSource createGridDataSource(Class entityType);
 
 	public GridDataSource createGridDataSource(Class entityType, Set includedIds,
@@ -16,6 +17,6 @@ public interface SearchableGridDataSourceProvider {
 
 	public GridDataSource createGridDataSource(Class entityType,
 		Map<TynamoPropertyDescriptor, SearchFilterPredicate> propertySearchFilterMap,
-		List<TynamoPropertyDescriptor> searchablePropertyDescriptors, String... searchTerms);
+		List<TynamoPropertyDescriptor> searchablePropertyDescriptors, String searchString);
 
 }

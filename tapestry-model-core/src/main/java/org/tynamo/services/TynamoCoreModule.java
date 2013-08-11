@@ -1,5 +1,6 @@
 package org.tynamo.services;
 
+import org.apache.tapestry5.alerts.AlertManager;
 import org.apache.tapestry5.beaneditor.DataTypeConstants;
 import org.apache.tapestry5.func.Predicate;
 import org.apache.tapestry5.grid.GridDataSource;
@@ -14,8 +15,8 @@ import org.apache.tapestry5.ioc.services.ChainBuilder;
 import org.apache.tapestry5.ioc.services.CoercionTuple;
 import org.apache.tapestry5.ioc.services.PropertyAccess;
 import org.apache.tapestry5.services.*;
-import org.apache.tapestry5.services.linktransform.PageRenderLinkTransformer;
 import org.apache.tapestry5.services.transform.ComponentClassTransformWorker2;
+import org.slf4j.Logger;
 import org.tynamo.bindings.ModelBindingFactory;
 import org.tynamo.blob.BlobManager;
 import org.tynamo.blob.DefaultBlobManager;
@@ -243,25 +244,33 @@ public class TynamoCoreModule
 	}
 
 	public SearchableGridDataSourceProvider buildSearchableGridDataSourceProvider(
-		final PersistenceService persistenceService) {
+			final Logger logger,
+			final AlertManager alertManager,
+			final PersistenceService persistenceService) {
 		// naive implementation to be overridden in persistence-specific sub modules
 		return new SearchableGridDataSourceProvider() {
 			@Override
 			public GridDataSource createGridDataSource(Class entityType) {
+				String message = "There is no search support configured, you are using a SearchableGridDataSourceProvider" +
+						" naive implementation meant to be overridden in persistence-specific sub modules";
+
+				alertManager.error(message);
+				logger.error(message);
+
 				return persistenceService.getGridDataSource(entityType);
 			}
 
 			@Override
 			public GridDataSource createGridDataSource(Class entityType,
 				Map<TynamoPropertyDescriptor, SearchFilterPredicate> propertySearchFilterMap,
-				List<TynamoPropertyDescriptor> searchablePropertyDescriptors, String... searchTerms) {
-				return persistenceService.getGridDataSource(entityType);
+				List<TynamoPropertyDescriptor> searchablePropertyDescriptors, String searchTerm) {
+				return createGridDataSource(entityType);
 			}
 
 			@Override
 			public GridDataSource createGridDataSource(Class entityType, Set includedIds,
 				Map<TynamoPropertyDescriptor, SearchFilterPredicate> propertySearchFilterMap) {
-				return persistenceService.getGridDataSource(entityType);
+				return createGridDataSource(entityType);
 			}
 
 		};

@@ -40,7 +40,7 @@ public class SearchableHibernateGridDataSourceProvider implements SearchableGrid
 	@Override
 	public GridDataSource createGridDataSource(Class entityType,
 		Map<TynamoPropertyDescriptor, SearchFilterPredicate> propertySearchFilterMap,
-		List<TynamoPropertyDescriptor> searchablePropertyDescriptors, String... searchTerms) {
+		List<TynamoPropertyDescriptor> searchablePropertyDescriptors, String searchString) {
 
 		java.util.List<String> fieldNames = new ArrayList<String>();
 		for (TynamoPropertyDescriptor propertyDescriptor : searchablePropertyDescriptors) {
@@ -55,7 +55,7 @@ public class SearchableHibernateGridDataSourceProvider implements SearchableGrid
 		// required
 		try {
 			return new SearchableHibernateGridDataSource(session, entityType, session.createFullTextQuery(
-				parser.parse(searchTerms.toString()), entityType), propertySearchFilterMap);
+				parser.parse(searchString), entityType), propertySearchFilterMap);
 		} catch (ParseException e) {
 			throw new RuntimeException(e);
 		}

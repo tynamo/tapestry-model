@@ -36,23 +36,8 @@ public class SearchableJpaGridDataSourceProvider implements SearchableGridDataSo
 	public GridDataSource createGridDataSource(Class entityType,
 	                                           Map<TynamoPropertyDescriptor, SearchFilterPredicate> propertySearchFilterMap,
 	                                           List<TynamoPropertyDescriptor> searchablePropertyDescriptors,
-	                                           String... searchTerms) {
-		return new SearchableJpaGridDataSource(entityManager, entityType, propertySearchFilterMap, searchablePropertyDescriptors, searchTerms);
+	                                           String searchString) {
+		return new SearchableJpaGridDataSource(entityManager, entityType, propertySearchFilterMap, searchablePropertyDescriptors, searchString);
 	}
-
-/*
-	// copied from the old JpaModelSearch
-	public GridDataSource createGridDataSource(Class entityType,
-	                                           Map<TynamoPropertyDescriptor,SearchFilterPredicate> propertySearchFilterMap,
-	                                           String... searchTerms) {
-		java.util.List<TynamoPropertyDescriptor> searchablePropertyDescriptors = getSearchablePropertyDescriptors();
-		// NOTE does it make sense to return a different grid implementation in this case, or perhaps we should always use the same one regardless?
-		if (propertySearchFilterMap.size() <= 0)
-			if (searchablePropertyDescriptors.size() <= 0 || searchTerms == null || searchTerms.length <= 0)
-				return new JpaGridDataSource(entityManager, entityType);
-
-		return new SearchableJpaGridDataSource(entityManager, entityType, propertySearchFilterMap, searchablePropertyDescriptors, searchTerms);
-	}
-*/
 
 }
