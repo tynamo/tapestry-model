@@ -45,13 +45,6 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-core</artifactId>
-			<version>4.1.2.Final</version>
-			<optional>true</optional>
-		</dependency>
-
-		<dependency>
 			<groupId>hsqldb</groupId>
 			<artifactId>hsqldb</artifactId>
 			<version>1.8.0.7</version>
@@ -74,7 +67,7 @@
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-search</artifactId>
-			<version>4.1.1.Final</version>
+			<version>4.3.0.Final</version>
 			<optional>true</optional>
 		</dependency>
 
