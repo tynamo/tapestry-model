@@ -27,7 +27,7 @@ public class TynamoClassDescriptorImpl extends TynamoDescriptor implements Tynam
 
 	boolean allowSave = true;
 
-	boolean searchable = true;
+	boolean searchable = false;
 
 	/**
 	 * This is a copy constructor. These need to be clonable for the security

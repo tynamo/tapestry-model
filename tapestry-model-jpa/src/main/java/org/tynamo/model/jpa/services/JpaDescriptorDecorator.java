@@ -112,9 +112,8 @@ public class JpaDescriptorDecorator implements DescriptorDecorator
 				if (idProperties != null && idProperties.contains(propertyDescriptor.getName())) {
 					// FIXME should we mark an identifier descriptor as part of a composite key?
 					descriptorReference = createIdentifierDescriptor(type, propertyDescriptor, descriptor);
-				} else if (notAHibernateProperty(metamodel, type, propertyDescriptor)) {
-					// If this is not a jpa property (i.e. marked
-					// Transient), it's certainly not searchable
+				} else if (notJpaProperty(metamodel, type, propertyDescriptor)) {
+					// If this is not a jpa property (i.e. marked Transient), it's certainly not searchable
 					// Are there any other properties like this?
 					propertyDescriptor.setSearchable(false);
 					descriptorReference = propertyDescriptor;
@@ -130,7 +129,10 @@ public class JpaDescriptorDecorator implements DescriptorDecorator
 				throw new TynamoRuntimeException(e);
 			}
 		}
+
 		descriptor.setPropertyDescriptors(decoratedPropertyDescriptors);
+		descriptor.setSearchable(true);
+
 		return descriptor;
 	}
 
@@ -344,7 +346,7 @@ public class JpaDescriptorDecorator implements DescriptorDecorator
 	}
 
 
-	protected boolean notAHibernateProperty(Metamodel metamodel, Class classType, TynamoPropertyDescriptor descriptor) {
+	protected boolean notJpaProperty(Metamodel metamodel, Class classType, TynamoPropertyDescriptor descriptor) {
 		ManagedType type = metamodel.managedType(classType);
 		Set<Attribute> attrs = type.getAttributes();
 		boolean ret = true;

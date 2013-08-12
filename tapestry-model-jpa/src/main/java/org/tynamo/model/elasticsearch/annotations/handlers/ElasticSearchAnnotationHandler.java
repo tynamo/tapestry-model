@@ -25,6 +25,7 @@ public class ElasticSearchAnnotationHandler implements
 		// TODO we should make ElasticSearchable type annotation optional - but cannot here as this handler is
 		// triggered by the said annotation. Would it be worth implementing a specific property annotation handler?
 		descriptor.addExtension(ElasticSearchExtension.class, new ElasticSearchExtension(descriptor, propertyAccess));
+		descriptor.setSearchable(true);
 
 		ClassPropertyAdapter adapter = propertyAccess.getAdapter(descriptor.getBeanType());
 

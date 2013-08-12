@@ -122,7 +122,7 @@ public class SearchableJpaGridDataSource implements GridDataSource {
 				for (String searchTerm : searchTerms)
 					predicates.add(builder.like(root.<String>get(searchableProperty.getName()), searchTerm));
 			}
-			Predicate predicate = builder.or(predicates.toArray(new Predicate[0]));
+			Predicate predicate = builder.or(predicates.toArray(new Predicate[predicates.size()]));
 			criteria.where(applyAdditionalConstraints(builder, root, predicate));
 		} else {
 			Predicate predicate = applyAdditionalConstraints(builder, root, null);
@@ -165,7 +165,7 @@ public class SearchableJpaGridDataSource implements GridDataSource {
 		for (Entry<TynamoPropertyDescriptor, SearchFilterPredicate> entry : propertySearchFilterMap.entrySet())
 			predicates.add(createPredicate(builder, root, entry.getKey().getName(), entry.getValue()));
 
-		return builder.and(predicates.toArray(new Predicate[0]));
+		return builder.and(predicates.toArray(new Predicate[predicates.size()]));
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
