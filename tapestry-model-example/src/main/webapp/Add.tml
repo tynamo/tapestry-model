@@ -23,8 +23,9 @@
 			<t:beaneditor object="mb:bean" t:mixins="tynamo/BeanModelAdvisor" beanmodeladvisor.key="add"/>
 			<br/>
 			<div class="t-beaneditor-row">
-				<t:submit t:id="saveAndStay" event="stay" class="button" value="${message:org.tynamo.i18n.apply}"/>
-				<t:submit t:id="saveAndReturn" event="return" class="button" value="${message:org.tynamo.i18n.applyAndReturn}"/>
+				<t:submit t:id="saveAndStay" event="stay" class="button" value="${message:org.tynamo.i18n.saveAndStay}"/>
+				&nbsp;
+				<t:submit t:id="saveAndReturn" event="return" class="button" value="${message:org.tynamo.i18n.saveAndReturn}"/>
 				&nbsp; or &nbsp;
 				<t:eventlink class="button" style="color:red; font-weight:bold;" t:id="cancel">
 					${message:org.tynamo.i18n.cancel}

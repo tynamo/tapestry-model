@@ -45,6 +45,8 @@ public class Edit
 	@Property
 	private Object bean;
 
+	private boolean continueEditing;
+
 	@OnEvent(EventConstants.ACTIVATE)
 	Object activate(Class clazz, String id)
 	{
@@ -75,13 +77,23 @@ public class Edit
 		return new Object[]{beanType, bean};
 	}
 
+	@OnEvent(value = "return")
+	void onSaveAndReturn() {
+		this.continueEditing = false;
+	}
+
+	@OnEvent(value = "stay")
+	void onSaveAndContinue() {
+		this.continueEditing = true;
+	}
+
 	@Log
 	@CustomCommitAfter
 	@OnEvent(EventConstants.SUCCESS)
 	Link success()
 	{
 		persistenceService.save(bean);
-		return back();
+		return !continueEditing ? back() : null;
 	}
 
 	@OnEvent("cancel")
