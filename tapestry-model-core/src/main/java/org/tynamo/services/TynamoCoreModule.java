@@ -19,7 +19,7 @@ import org.apache.tapestry5.services.transform.ComponentClassTransformWorker2;
 import org.slf4j.Logger;
 import org.tynamo.bindings.ModelBindingFactory;
 import org.tynamo.blob.BlobManager;
-import org.tynamo.blob.DefaultBlobManager;
+import org.tynamo.blob.IconResolver;
 import org.tynamo.builder.BuilderDirector;
 import org.tynamo.common.ModuleProperties;
 import org.tynamo.descriptor.TynamoClassDescriptor;
@@ -66,7 +66,7 @@ public class TynamoCoreModule
 		binder.bind(SearchFilterBlockSource.class);
 		binder.bind(SearchFilterBlockOverrideSource.class);
 
-		binder.bind(BlobManager.class, DefaultBlobManager.class).withId("DefaultBlobManager");
+		binder.bind(BlobManager.class).withId("DefaultBlobManager");
 
 		binder.bind(DescriptorAnnotationHandler.class, BeanModelAnnotationHandler.class).withId("BeanModelAnnotationHandler");
 		binder.bind(DescriptorAnnotationHandler.class, BlobDescriptorAnnotationHandler.class).withId("BlobDescriptorAnnotationHandler");
@@ -78,6 +78,8 @@ public class TynamoCoreModule
 		binder.bind(BeanModelSourceAdvice.class, BeanModelSourceAdviceImpl.class);
 		binder.bind(BeanModelsAnnotationBMModifier.class);
 		binder.bind(BeanModelWorker.class);
+
+		binder.bind(IconResolver.class);
 
 	}
 
@@ -302,6 +304,29 @@ public class TynamoCoreModule
 		configuration.add("pages", pageAnnotationsModifier);
 		configuration.add("entities", extensionModifier);
 		configuration.add("defaults", defaultModifier, "after:*");
+	}
+
+	@Contribute(IconResolver.class)
+	public static void addIcons(MappedConfiguration<String, String> configuration){
+
+		configuration.add("application/octet-stream", "org/tynamo/components/blob/image/asset/icgen.gif");
+
+		configuration.add("application/x-zip-compressed", "org/tynamo/components/blob/image/asset/winzip.gif");
+		configuration.add("application/pdf", "org/tynamo/components/blob/image/asset/icadobe.gif");
+		configuration.add("application/msword", "org/tynamo/components/blob/image/asset/icdoc.gif");
+		configuration.add("application/vnd.visio", "org/tynamo/components/blob/image/asset/icdoc.gif");
+		configuration.add("application/vnd.ms-powerpoint", "org/tynamo/components/blob/image/asset/icppt.gif");
+		configuration.add("application/vnd.ms-excel", "org/tynamo/components/blob/image/asset/icxls.gif");
+		configuration.add("text/html", "org/tynamo/components/blob/image/asset/ichtm.gif");
+		configuration.add("text/plain", "org/tynamo/components/blob/image/asset/ictxt.gif");
+		configuration.add("text/css", "org/tynamo/components/blob/image/asset/ictxt.gif");
+		configuration.add("text/xml", "org/tynamo/components/blob/image/asset/icxml.gif");
+		configuration.add("image/tiff", "org/tynamo/components/blob/image/asset/icgen.gif");
+		configuration.add("video/avi", "org/tynamo/components/blob/image/asset/icwmp.gif");
+		configuration.add("video/mpeg", "org/tynamo/components/blob/image/asset/icwmp.gif");
+		configuration.add("video/mp4", "org/tynamo/components/blob/image/asset/icwmp.gif");
+		configuration.add("video/quicktime", "org/tynamo/components/blob/image/asset/icwmp.gif");
+		configuration.add("video/x-ms-wmv", "org/tynamo/components/blob/image/asset/icwmp.gif");
 	}
 
 }

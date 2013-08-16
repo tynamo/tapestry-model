@@ -2,7 +2,7 @@ package org.tynamo.blob;
 
 public enum RenderType
 {
-	IMAGE, LINK; //, IFRAME, ICON; not yet supported in Tynamo
+	IMAGE, LINK, ICON; //, IFRAME not yet supported in Tynamo
 
 	public boolean isImage()
 	{
@@ -21,6 +21,6 @@ public enum RenderType
 
 	public boolean isIcon()
 	{
-		return false; // this == ICON;
+		return this == ICON;
 	}
 }

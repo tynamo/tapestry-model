@@ -13,7 +13,7 @@
 	<t:if test="renderType.icon">
 		<t:if test="notNull">
 			<a href="${blobLink}">
-				<img src="${noIcon}"/>
+				<img src="${icon}"></img>
 			</a>
 			<p:else>
 				<img src="${noIcon}"/>

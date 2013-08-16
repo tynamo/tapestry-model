@@ -1,18 +1,17 @@
 package org.tynamo.components;
 
 import org.apache.tapestry5.Asset;
-import org.apache.tapestry5.ComponentResources;
 import org.apache.tapestry5.Link;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.services.PropertyAccess;
 import org.tynamo.blob.BlobManager;
+import org.tynamo.blob.IconResolver;
 import org.tynamo.blob.RenderType;
 import org.tynamo.descriptor.TynamoPropertyDescriptor;
 import org.tynamo.descriptor.extension.BlobDescriptorExtension;
 import org.tynamo.services.DescriptorService;
-import org.tynamo.services.PersistenceService;
 
 public class Download
 {
@@ -34,16 +33,8 @@ public class Download
 	@Inject
 	private PropertyAccess propertyAccess;
 
-/*
 	@Inject
 	private IconResolver iconResolver;
-
-	@Inject
-	private AssetFactory contextAssetFactory;
-*/
-
-	@Inject
-	private ComponentResources resources;
 
 	@Parameter(required = true)
 	private Object model;
@@ -61,12 +52,11 @@ public class Download
 		return filePersister.createBlobLink(propertyDescriptor, model);
 	}
 
-/*
 	public Asset getIcon()
 	{
-		return getContentType() != null ? iconResolver.getAsset(getContentType()) : getNoIcon();
+		Asset icon = iconResolver.getAsset(getContentType());
+		return icon != null ? icon : iconResolver.getAsset("application/octet-stream");
 	}
-*/
 
 	private String getContentType()
 	{

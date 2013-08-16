@@ -19,7 +19,7 @@ import java.io.InputStream;
 /**
  * The Tynamo {@link BlobManager} default implementation.
  */
-public class DefaultBlobManager implements BlobManager
+public class BlobManagerImpl implements BlobManager
 {
 
 	private PersistenceService persistenceService;
@@ -27,8 +27,8 @@ public class DefaultBlobManager implements BlobManager
 	private PageRenderLinkSource pageRenderLinkSource;
 	private BuilderDirector builderDirector;
 
-	public DefaultBlobManager(PersistenceService persistenceService, PropertyAccess propertyAccess,
-	                          PageRenderLinkSource pageRenderLinkSource, BuilderDirector builderDirector)
+	public BlobManagerImpl(PersistenceService persistenceService, PropertyAccess propertyAccess,
+	                       PageRenderLinkSource pageRenderLinkSource, BuilderDirector builderDirector)
 	{
 		this.persistenceService = persistenceService;
 		this.propertyAccess = propertyAccess;
