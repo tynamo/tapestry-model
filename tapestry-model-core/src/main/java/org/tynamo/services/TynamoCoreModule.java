@@ -4,6 +4,8 @@ import org.apache.tapestry5.alerts.AlertManager;
 import org.apache.tapestry5.beaneditor.DataTypeConstants;
 import org.apache.tapestry5.func.Predicate;
 import org.apache.tapestry5.grid.GridDataSource;
+import org.apache.tapestry5.internal.services.PageResponseRenderer;
+import org.apache.tapestry5.internal.structure.Page;
 import org.apache.tapestry5.ioc.*;
 import org.apache.tapestry5.ioc.annotations.Autobuild;
 import org.apache.tapestry5.ioc.annotations.Contribute;
@@ -14,6 +16,7 @@ import org.apache.tapestry5.ioc.annotations.Primary;
 import org.apache.tapestry5.ioc.services.ChainBuilder;
 import org.apache.tapestry5.ioc.services.CoercionTuple;
 import org.apache.tapestry5.ioc.services.PropertyAccess;
+import org.apache.tapestry5.plastic.*;
 import org.apache.tapestry5.services.*;
 import org.apache.tapestry5.services.transform.ComponentClassTransformWorker2;
 import org.slf4j.Logger;
@@ -38,6 +41,7 @@ import org.tynamo.internal.services.DefaultExclusionsBMModifier;
 import org.tynamo.search.SearchFilterPredicate;
 import org.tynamo.util.Pair;
 
+import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -328,5 +332,35 @@ public class TynamoCoreModule
 		configuration.add("video/quicktime", "org/tynamo/components/blob/image/asset/icwmp.gif");
 		configuration.add("video/x-ms-wmv", "org/tynamo/components/blob/image/asset/icwmp.gif");
 	}
+
+
+	/**
+	 * TYNAMO-224
+	 *
+	 * Discards all page persistent field changes if there is any exception in renderPageResponse
+	 */
+	@Match("PageResponseRenderer")
+	public static void advisePageResponseRenderer(MethodAdviceReceiver receiver, final Logger logger) throws NoSuchMethodException
+	{
+		Method method = PageResponseRenderer.class.getMethod("renderPageResponse", Page.class);
+		receiver.adviseMethod(method, new org.apache.tapestry5.plastic.MethodAdvice()
+		{
+			@Override
+			public void advise(MethodInvocation methodInvocation)
+			{
+				try
+				{
+					methodInvocation.proceed();
+				} catch (RuntimeException e)
+				{
+					Page page = (Page) methodInvocation.getParameter(0);
+					page.discardPersistentFieldChanges();
+					logger.info(String.format("discarding all %s page persistent field changes due to a %s", page.getName(), e.getClass().getSimpleName()));
+					throw e;
+				}
+			}
+		});
+	}
+
 
 }
