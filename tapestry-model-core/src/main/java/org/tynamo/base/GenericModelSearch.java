@@ -92,7 +92,7 @@ public abstract class GenericModelSearch {
 			SortedMap<TynamoPropertyDescriptor, SearchFilterPredicate> map =
 					new TreeMap<TynamoPropertyDescriptor, SearchFilterPredicate>(new TynamoPropertyDescriptorComparator());
 
-			List<TynamoPropertyDescriptor> searchablePropertyDescriptors = new ArrayList<TynamoPropertyDescriptor>();
+			List<TynamoPropertyDescriptor> descriptors = new ArrayList<TynamoPropertyDescriptor>();
 
 			for (TynamoPropertyDescriptor descriptor : classDescriptor.getPropertyDescriptors()) {
 				// FIXME remove all strings for now, decide how to deal with them later
@@ -106,7 +106,7 @@ public abstract class GenericModelSearch {
 						continue;
 					map.put(descriptor, createSearchFilterPredicate(descriptor.getPropertyType()));
 				}
-				else searchablePropertyDescriptors.add(descriptor);
+				else descriptors.add(descriptor);
 			}
 
 			if (displayableFilterDescriptorMap == null) {
@@ -114,7 +114,7 @@ public abstract class GenericModelSearch {
 				displayableFilterDescriptorMap = map;
 			}
 
-			this.searchablePropertyDescriptors = searchablePropertyDescriptors;
+				searchablePropertyDescriptors = descriptors;
 		}
 	}
 

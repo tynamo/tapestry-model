@@ -65,6 +65,9 @@ public class ElasticModelSearch extends GenericModelSearch {
 
 	@Override
 	public boolean isUsedAsSearchFilter(TynamoClassDescriptor classDescriptor, TynamoPropertyDescriptor propertyDescriptor) {
-		return !classDescriptor.supportsExtension(ElasticSearchExtension.class) && super.isUsedAsSearchFilter(classDescriptor, propertyDescriptor);
+		if (classDescriptor.supportsExtension(ElasticSearchExtension.class) && propertyDescriptor.supportsExtension(ElasticSearchFieldDescriptor.class))
+			return false;
+		else
+			return super.isUsedAsSearchFilter(classDescriptor, propertyDescriptor);
 	}
 }
