@@ -135,7 +135,7 @@ public class ElasticSearchIndexMaintainer {
 			entityManager.unwrap(Session.class).getDescriptor(descriptor.getBeanType()).getEventManager()
 				.addListener(new EclipseLinkDescriptorEventListener());
 			ElasticSearchExtension descriptorExtension = descriptor.getExtension(ElasticSearchExtension.class);
-			if (!client.admin().indices().prepareExists(descriptorExtension.getIndexName()).execute().actionGet().exists()) {
+			if (!client.admin().indices().prepareExists(descriptorExtension.getIndexName()).execute().actionGet().isExists()) {
 				// create index and start indexing entity
 				createIndex(client, descriptorExtension);
 				if (!indexEntities(client, descriptor.getBeanType(), descriptorExtension)) {
