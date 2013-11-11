@@ -125,15 +125,15 @@ public class ElasticSearchIndexMaintainer {
 		for (TynamoClassDescriptor descriptor : descriptorService.getAllDescriptors()) {
 			if (!running) {
 				logger.info(String.format(
-					"%s isn't in a running state anymore, indexing stopped while processing descriptor for type %s", getClass()
-						.getSimpleName(), descriptor.getBeanType().getName()));
+						"%s isn't in a running state anymore, indexing stopped while processing descriptor for type %s",
+						getClass().getSimpleName(), descriptor.getBeanType().getName()));
 				break;
 			}
 			if (!descriptor.supportsExtension(ElasticSearchExtension.class)) continue;
 			// register to listen to events of each entity separately
 			// http://eclipse.1072660.n5.nabble.com/Specific-EntityListener-Instance-td4159.html
-			entityManager.unwrap(Session.class).getDescriptor(descriptor.getBeanType()).getEventManager()
-				.addListener(new EclipseLinkDescriptorEventListener());
+			entityManager.unwrap(Session.class).getDescriptor(descriptor.getBeanType())
+					.getEventManager().addListener(new EclipseLinkDescriptorEventListener());
 			ElasticSearchExtension descriptorExtension = descriptor.getExtension(ElasticSearchExtension.class);
 			if (!client.admin().indices().prepareExists(descriptorExtension.getIndexName()).execute().actionGet().isExists()) {
 				// create index and start indexing entity
@@ -141,15 +141,13 @@ public class ElasticSearchIndexMaintainer {
 				if (!indexEntities(client, descriptor.getBeanType(), descriptorExtension)) {
 					if (!running) {
 						logger.info(String.format(
-							"%s isn't in a running state anymore, indexing stopped while processing descriptor for type %s",
-							getClass()
-							.getSimpleName(), descriptor.getBeanType().getName()));
+								"%s isn't in a running state anymore, indexing stopped while processing descriptor for type %s",
+								getClass().getSimpleName(), descriptor.getBeanType().getName()));
 						break;
 					} else {
 						logger.info(String.format(
-							"%s failed batch indexing type %s, skipping over remaining entities of the same type", getClass()
-								.getSimpleName(), descriptor
-							.getBeanType().getName()));
+								"%s failed batch indexing type %s, skipping over remaining entities of the same type",
+								getClass().getSimpleName(), descriptor.getBeanType().getName()));
 					}
 				}
 			}
