@@ -160,7 +160,7 @@ public class SearchableJpaGridDataSource implements GridDataSource {
 		if (includedIds != null) {
 			EntityType entityType = root.getModel();
 			SingularAttribute idAttr = entityType.getId(entityType.getIdType().getJavaType());
-			predicates.add(builder.isTrue(root.get(idAttr).in(includedIds)));
+			predicates.add(root.get(idAttr).in(includedIds));
 		}
 		for (Entry<TynamoPropertyDescriptor, SearchFilterPredicate> entry : propertySearchFilterMap.entrySet())
 			predicates.add(createPredicate(builder, root, entry.getKey().getName(), entry.getValue()));
