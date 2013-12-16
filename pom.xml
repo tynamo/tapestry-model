@@ -6,7 +6,7 @@
 	<packaging>pom</packaging>
 	<name>Tynamo Model-Driven CRUD web framework</name>
 	<url>http://tynamo.org/</url>
-	<version>0.5.2-SNAPSHOT</version>
+	<version>0.5.2</version>
 
 	<parent>
 		<groupId>org.tynamo</groupId>
@@ -25,9 +25,9 @@
 	</modules>
 
 	<scm>
-		<connection>scm:svn:http://svn.codehaus.org/tynamo/branches/tapestry-model-0.5.x</connection>
-		<developerConnection>scm:svn:https://svn.codehaus.org/tynamo/branches/tapestry-model-0.5.x</developerConnection>
-		<url>http://svn.tynamo.codehaus.org/tynamo/branches/tapestry-model-0.5.x</url>
+		<connection>scm:svn:http://svn.codehaus.org/tynamo/tags/tapestry-model-0.5.2</connection>
+		<developerConnection>scm:svn:https://svn.codehaus.org/tynamo/tags/tapestry-model-0.5.2</developerConnection>
+		<url>http://svn.tynamo.codehaus.org/tynamo/tags/tapestry-model-0.5.2</url>
 	</scm>
 
 	<distributionManagement>
@@ -48,32 +48,32 @@
 			<dependency>
 				<groupId>org.tynamo</groupId>
 				<artifactId>tapestry-model-annotations</artifactId>
-				<version>0.5.2-SNAPSHOT</version>
+				<version>0.5.2</version>
 			</dependency>
 			<dependency>
 				<groupId>org.tynamo</groupId>
 				<artifactId>tapestry-model-core</artifactId>
-				<version>0.5.2-SNAPSHOT</version>
+				<version>0.5.2</version>
 			</dependency>
 			<dependency>
 				<groupId>org.tynamo</groupId>
 				<artifactId>tapestry-model-hibernate</artifactId>
-				<version>0.5.2-SNAPSHOT</version>
+				<version>0.5.2</version>
 			</dependency>
 			<dependency>
 				<groupId>org.tynamo</groupId>
 				<artifactId>tapestry-model-jpa</artifactId>
-				<version>0.5.2-SNAPSHOT</version>
+				<version>0.5.2</version>
 			</dependency>
 			<dependency>
 				<groupId>org.tynamo</groupId>
 				<artifactId>tapestry-model-test</artifactId>
-				<version>0.5.2-SNAPSHOT</version>
+				<version>0.5.2</version>
 			</dependency>
 			<dependency>
 				<groupId>org.tynamo</groupId>
 				<artifactId>tapestry-model-web</artifactId>
-				<version>0.5.2-SNAPSHOT</version>
+				<version>0.5.2</version>
 			</dependency>
 			<dependency>
 				<groupId>org.tynamo</groupId>

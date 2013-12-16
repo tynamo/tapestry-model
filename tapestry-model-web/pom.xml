@@ -8,7 +8,7 @@
 	<parent>
 		<artifactId>tapestry-model</artifactId>
 		<groupId>org.tynamo</groupId>
-		<version>0.5.2-SNAPSHOT</version>
+		<version>0.5.2</version>
 	</parent>
 
 
