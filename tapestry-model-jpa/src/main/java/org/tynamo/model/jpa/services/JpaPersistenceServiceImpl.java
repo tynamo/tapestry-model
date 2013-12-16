@@ -12,6 +12,7 @@ package org.tynamo.model.jpa.services;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -249,7 +250,7 @@ public class JpaPersistenceServiceImpl extends GenericPersistenceService impleme
 
 	public List getOrphanInstances(CollectionDescriptor descriptor, Object owner) {
 		//FIXME Not implemented yet
-		return null;
+		return Collections.EMPTY_LIST; // TYNAMO-228
 	}
 
 	public int count(Class type) {

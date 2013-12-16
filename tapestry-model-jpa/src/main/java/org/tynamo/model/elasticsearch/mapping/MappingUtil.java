@@ -1,10 +1,7 @@
 package org.tynamo.model.elasticsearch.mapping;
 
-import java.io.IOException;
-import java.lang.annotation.Annotation;
-import java.math.BigDecimal;
-import java.util.Date;
-
+import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
 import org.elasticsearch.common.joda.time.LocalDate;
 import org.elasticsearch.common.joda.time.LocalDateTime;
@@ -14,6 +11,11 @@ import org.tynamo.model.elasticsearch.annotations.ElasticSearchField;
 import org.tynamo.model.elasticsearch.annotations.ElasticSearchField.Index;
 import org.tynamo.model.elasticsearch.annotations.ElasticSearchField.Store;
 import org.tynamo.model.elasticsearch.descriptor.ElasticSearchFieldDescriptor;
+
+import java.io.IOException;
+import java.lang.annotation.Annotation;
+import java.math.BigDecimal;
+import java.util.Date;
 
 
 public abstract class MappingUtil {
@@ -83,18 +85,20 @@ public abstract class MappingUtil {
 			builder.field("type", "multi_field");
 			builder.startObject("fields");
 			for (ElasticSearchField fieldMeta : meta.getFields()) {
-				if (fieldMeta.index() == Index.not_analyzed) {
-					builder.startObject("untouched");
-				} else {
-					builder.startObject(name);
-				}
-				builder.field("type", type);
-				if (fieldMeta != null) {
+				builder.startObject(StringUtils.isNotEmpty(fieldMeta.name()) ? fieldMeta.name() : name);
+				if (ArrayUtils.isEmpty(fieldMeta.mapping())) {
+					builder.field("type", StringUtils.isNotEmpty(fieldMeta.type()) ? fieldMeta.type() : type);
 					addIndexAndStoreInformation(builder, fieldMeta);
+				} else {
+					int i = 0;
+					String[] options = fieldMeta.mapping();
+					while (i < options.length) {
+						builder.field(options[i++], options[i++]);
+					}
 				}
-				builder.endObject();
+				builder.endObject(); // name
 			}
-			builder.endObject();
+			builder.endObject(); // fields
 		} else {
 			builder.field("type", type);
 			if (meta.hasField()) {
@@ -102,7 +106,7 @@ public abstract class MappingUtil {
 				addIndexAndStoreInformation(builder, fieldMeta);
 			}
 		}
-		builder.endObject();
+		builder.endObject(); // name
 
 	}
 

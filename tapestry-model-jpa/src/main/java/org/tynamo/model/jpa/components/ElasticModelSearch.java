@@ -55,7 +55,7 @@ public class ElasticModelSearch extends GenericModelSearch {
 			@SuppressWarnings("rawtypes")
 			Class idType = classDescriptor.getIdentifierDescriptor().getPropertyType();
 
-			for (SearchHit h : searchResponse.hits())
+			for (SearchHit h : searchResponse.getHits())
 				resultIds.add(typeCoercer.coerce(h.getId(), idType));
 
 			return getGridDataSourceProvider().createGridDataSource(getBeanType(), resultIds, getActiveFilterMap());
