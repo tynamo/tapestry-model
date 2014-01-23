@@ -1,8 +1,8 @@
 package org.tynamo.examples.simple.services;
 
-import org.apache.tapestry5.hibernate.HibernateCoreModule;
 import org.apache.tapestry5.hibernate.HibernateEntityPackageManager;
 import org.apache.tapestry5.hibernate.HibernateSessionManager;
+import org.apache.tapestry5.hibernate.modules.HibernateCoreModule;
 import org.apache.tapestry5.ioc.Configuration;
 import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.ioc.OrderedConfiguration;
@@ -21,7 +21,7 @@ import org.tynamo.hibernate.services.TynamoHibernateModule;
 @SubModule(value = {
 		TynamoHibernateModule.class,
 		TynamoHibernate4SearchModule.class,
-		org.apache.tapestry5.hibernate.HibernateModule.class,
+		org.apache.tapestry5.hibernate.modules.HibernateModule.class,
 		HibernateCoreModule.class
 })
 public class HibernateModule

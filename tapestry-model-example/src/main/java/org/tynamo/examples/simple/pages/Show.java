@@ -30,7 +30,7 @@ import org.tynamo.util.Utils;
 @BeanModels({
 		@BeanModel(beanType = Product.class, exclude = "id")
 })
-@At("/{0}/{1}")
+@At(value = "/{0}/{1}", order = "after:Add")
 public class Show
 {
 

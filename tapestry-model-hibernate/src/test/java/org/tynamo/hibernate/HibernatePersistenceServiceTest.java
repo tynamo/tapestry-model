@@ -25,12 +25,12 @@ package org.tynamo.hibernate;
 import java.util.List;
 
 import org.apache.tapestry5.hibernate.HibernateCore;
-import org.apache.tapestry5.hibernate.HibernateCoreModule;
-import org.apache.tapestry5.hibernate.HibernateModule;
 import org.apache.tapestry5.hibernate.HibernateSessionManager;
+import org.apache.tapestry5.hibernate.modules.HibernateCoreModule;
+import org.apache.tapestry5.hibernate.modules.HibernateModule;
 import org.apache.tapestry5.ioc.Registry;
 import org.apache.tapestry5.ioc.RegistryBuilder;
-import org.apache.tapestry5.services.TapestryModule;
+import org.apache.tapestry5.modules.TapestryModule;
 import org.hibernate.Session;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
@@ -41,7 +41,6 @@ import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
 import org.tynamo.descriptor.CollectionDescriptor;
 import org.tynamo.descriptor.TynamoClassDescriptor;
-import org.tynamo.hibernate.modules.TynamoHibernate4Module;
 import org.tynamo.hibernate.services.HibernatePersistenceService;
 import org.tynamo.hibernate.services.TynamoHibernateModule;
 import org.tynamo.model.test.entities.Bar;
@@ -74,7 +73,7 @@ public class HibernatePersistenceServiceTest
 		builder.add(HibernateModule.class);
 		builder.add(TynamoCoreModule.class);
 		builder.add(TynamoHibernateModule.class);
-		builder.add(TynamoHibernate4Module.class);
+//		builder.add(TynamoHibernate4Module.class);
 		builder.add(TestModule.class);
 
 		registry = builder.build();
@@ -510,7 +509,7 @@ public class HibernatePersistenceServiceTest
 
 	private void fakeOpenSessionInViewResponse()
 	{
-		registry.getService("Hibernate4SessionManager", HibernateSessionManager.class).commit();
+		registry.getService(HibernateSessionManager.class).commit();
 		registry.cleanupThread();
 	}
 

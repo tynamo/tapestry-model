@@ -1,10 +1,10 @@
 package org.tynamo.hibernate;
 
-import org.apache.tapestry5.hibernate.HibernateCoreModule;
-import org.apache.tapestry5.hibernate.HibernateModule;
+import org.apache.tapestry5.hibernate.modules.HibernateCoreModule;
+import org.apache.tapestry5.hibernate.modules.HibernateModule;
 import org.apache.tapestry5.ioc.Registry;
 import org.apache.tapestry5.ioc.RegistryBuilder;
-import org.apache.tapestry5.services.TapestryModule;
+import org.apache.tapestry5.modules.TapestryModule;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.AfterSuite;
@@ -13,7 +13,6 @@ import org.testng.annotations.Test;
 import org.tynamo.descriptor.EmbeddedDescriptor;
 import org.tynamo.descriptor.TynamoClassDescriptor;
 import org.tynamo.descriptor.TynamoPropertyDescriptor;
-import org.tynamo.hibernate.modules.TynamoHibernate4Module;
 import org.tynamo.hibernate.services.TynamoHibernateModule;
 import org.tynamo.model.test.entities.Embeddee;
 import org.tynamo.model.test.entities.Embeddor;
@@ -43,7 +42,7 @@ public class DescriptorServiceAndEmbeddalesTest
 		builder.add(HibernateModule.class);
 		builder.add(TynamoCoreModule.class);
 		builder.add(TynamoHibernateModule.class);
-		builder.add(TynamoHibernate4Module.class);
+//		builder.add(TynamoHibernate4Module.class);
 		builder.add(TestModule.class);
 
 		registry = builder.build();

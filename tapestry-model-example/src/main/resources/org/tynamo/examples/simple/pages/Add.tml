@@ -10,13 +10,13 @@
 		<a style="font-weight:bolder;margin-left:10px" t:type="PageLink" page="List" context="beanType">${listAllLinkMessage}</a>
 	</p:navBlock>
 
-	<h1>${title}</h1>
+	<h1>${title} A</h1>
 
 	 <t:alerts/>
 
 	<br/>
 
-	<t:form clientValidation="false" validate="bean">
+	<t:form validate="bean">
 		<t:errors/>
 
 		<div class="t-beaneditor">

@@ -1,21 +1,21 @@
 package org.tynamo.examples.simple.services;
 
 import org.apache.tapestry5.SymbolConstants;
-import org.apache.tapestry5.beanvalidator.BeanValidatorModule;
+import org.apache.tapestry5.beanvalidator.modules.BeanValidatorModule;
 import org.apache.tapestry5.ioc.Configuration;
 import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.ioc.ServiceBinder;
 import org.apache.tapestry5.ioc.annotations.Contribute;
 import org.apache.tapestry5.ioc.annotations.SubModule;
+import org.apache.tapestry5.ioc.modules.TapestryIOCModule;
 import org.apache.tapestry5.ioc.services.ApplicationDefaults;
 import org.apache.tapestry5.ioc.services.FactoryDefaults;
 import org.apache.tapestry5.ioc.services.SymbolProvider;
-import org.apache.tapestry5.ioc.services.TapestryIOCModule;
+import org.apache.tapestry5.modules.TapestryModule;
 import org.apache.tapestry5.services.BeanBlockContribution;
 import org.apache.tapestry5.services.BeanBlockSource;
 import org.apache.tapestry5.services.DisplayBlockContribution;
-import org.apache.tapestry5.services.TapestryModule;
-import org.apache.tapestry5.upload.services.UploadModule;
+import org.apache.tapestry5.upload.modules.UploadModule;
 import org.apache.tapestry5.upload.services.UploadSymbols;
 import org.tynamo.builder.Builder;
 import org.tynamo.builder.BuilderDirector;

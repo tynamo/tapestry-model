@@ -17,7 +17,6 @@ import org.tynamo.hibernate.services.internal.SearchableHibernateGridDataSourceP
 import org.tynamo.hibernate.decorators.HibernateSearchDescriptorDecorator;
 import org.tynamo.services.SearchableGridDataSourceProvider;
 
-@SubModule(TynamoHibernate4Module.class)
 public final class TynamoHibernate4SearchModule
 {
 

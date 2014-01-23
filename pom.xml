@@ -39,7 +39,7 @@
 	</distributionManagement>
 
 	<properties>
-		<tapestry-release-version>5.3.7</tapestry-release-version>
+		<tapestry-release-version>5.4-beta-2</tapestry-release-version>
 	</properties>
 
 	<!-- note that our own versions are auto-managed by the release plugin -->

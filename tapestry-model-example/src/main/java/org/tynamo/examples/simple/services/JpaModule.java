@@ -14,7 +14,7 @@ import org.tynamo.model.jpa.services.TynamoJpaModule;
 
 @SubModule(value = {
 		TynamoJpaModule.class,
-		org.apache.tapestry5.jpa.JpaModule.class
+		org.apache.tapestry5.jpa.modules.JpaModule.class
 })
 public class JpaModule
 {

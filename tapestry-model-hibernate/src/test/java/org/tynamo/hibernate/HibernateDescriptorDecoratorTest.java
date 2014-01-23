@@ -6,11 +6,11 @@ import java.util.Set;
 
 import org.apache.tapestry5.func.F;
 import org.apache.tapestry5.func.Predicate;
-import org.apache.tapestry5.hibernate.HibernateCoreModule;
-import org.apache.tapestry5.hibernate.HibernateModule;
+import org.apache.tapestry5.hibernate.modules.HibernateCoreModule;
+import org.apache.tapestry5.hibernate.modules.HibernateModule;
 import org.apache.tapestry5.ioc.Registry;
 import org.apache.tapestry5.ioc.RegistryBuilder;
-import org.apache.tapestry5.services.TapestryModule;
+import org.apache.tapestry5.modules.TapestryModule;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.AfterSuite;

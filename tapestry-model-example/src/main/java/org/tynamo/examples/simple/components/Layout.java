@@ -9,8 +9,6 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Context;
 import org.apache.tapestry5.services.Environment;
 
-
-@Import(stylesheet = "classpath:org/tynamo/themes/tapestryskin/theme.css")
 public class Layout
 {
 
