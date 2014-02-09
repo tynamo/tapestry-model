@@ -29,9 +29,9 @@ public class HibernateModule
 
 	@Contribute(SymbolProvider.class)
 	@ApplicationDefaults
-	public static void provideSymbols(MappedConfiguration<String, String> configuration)
+	public static void provideSymbols(MappedConfiguration<String, Object> configuration)
 	{
-		configuration.add(TynamoHibernateSymbols.IGNORE_NON_HIBERNATE_TYPES, "true");
+		configuration.add(TynamoHibernateSymbols.IGNORE_NON_HIBERNATE_TYPES, true);
 	}
 
 	/**

@@ -50,7 +50,7 @@ public class AppModule
 
 	@Contribute(SymbolProvider.class)
 	@ApplicationDefaults
-	public static void provideSymbols(MappedConfiguration<String, String> configuration)
+	public static void provideSymbols(MappedConfiguration<String, Object> configuration)
 	{
 		// Contributions to ApplicationDefaults will override any contributions to
 		// FactoryDefaults (with the same key). Here we're restricting the supported
@@ -59,10 +59,26 @@ public class AppModule
 		// the first locale name is the default when there's no reasonable match).
 		configuration.add(SymbolConstants.SUPPORTED_LOCALES, "en, es");
 
+		configuration.add(SymbolConstants.JAVASCRIPT_INFRASTRUCTURE_PROVIDER, "jquery");
+//		configuration.add(SymbolConstants.BOOTSTRAP_ROOT, "context:mybootstrap");
+		configuration.add(SymbolConstants.MINIFICATION_ENABLED, true);
+
 		// Set filesize limit to 2 MB
 		configuration.add(UploadSymbols.REQUESTSIZE_MAX, "2048000");
 		configuration.add(UploadSymbols.FILESIZE_MAX, "2048000");
 	}
+
+/*
+	// This will override the bundled bootstrap version and will compile it at runtime
+	@Contribute(JavaScriptStack.class)
+	@Core
+	public static void overrideBootstrapCSS(OrderedConfiguration<StackExtension> configuration)
+	{
+		configuration.override("bootstrap.css",
+				new StackExtension(StackExtensionType.STYLESHEET, "context:mybootstrap/css/bootstrap.css"), "before:tapestry.css");
+	}
+*/
+
 
 	@Contribute(SymbolProvider.class)
 	@FactoryDefaults

@@ -1,7 +1,14 @@
 <t:if test="searchfiltersAvailable" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd" xmlns:p="tapestry:parameter">
-	<h2>Filter</h2>
+<div id="filters">
+	<style>
+		#filters li:empty {
+			display: none;
+		}
+	</style>
+	<h3>Filter</h3>
 	<t:form t:id="searchFilterForm">
 		<t:tynamo.searchFilters descriptorMap="displayableFilterDescriptorMap"/>
-		<input type="submit" value="Filter results"/>
+		<input type="submit" class="btn btn-default" value="Filter results"/>
 	</t:form>
+</div>
 </t:if>

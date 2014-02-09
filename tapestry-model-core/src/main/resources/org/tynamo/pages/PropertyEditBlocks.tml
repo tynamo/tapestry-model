@@ -3,45 +3,37 @@
 	<t:block id="nonVisual"/>
 
 	<t:block id="select">
-		<t:label for="select"/>
-		<input t:id="select"/>
-		<t:if test="helpMessage">
-			<em>
-				${helpMessage}
-			</em>
-		</t:if>
+		<input t:id="select" t:mixins="formgroup"/>
 	</t:block>
 
 	<t:block id="identifierEditor">
 		<t:if test="notEditable">
+			<div class="form-group">
 			<label>${propertyEditContext.label}</label>
 			<p>${propertyEditContext.propertyValue}</p>
+			</div>
 			<p:else>
-				<t:label for="textField"/>
-				<input t:id="textField"/>
+				<input t:id="textField" t:mixins="formgroup"/>
 			</p:else>
 		</t:if>
 	</t:block>
 
 	<t:block id="readOnly">
-		<label>${propertyEditContext.label}</label>
-		<p t:type="any" t:mixins="NotEmpty">${propertyEditContext.propertyValue}</p>
+		<div class="form-group">
+			<label>${propertyEditContext.label}</label>
+			<p t:type="any" t:mixins="NotEmpty">${propertyEditContext.propertyValue}</p>
+		</div>
 	</t:block>
 
 	<t:block id="palette">
 		<t:if test="propertyValueInstanceOfList">
-			<t:label for="palette_list"/>
-			<t:palette t:id="palette_list" model="selectModelForProperty" selected="selected"
+			<t:palette t:id="palette_list" model="selectModelForProperty" selected="selected" t:mixins="formgroup"
 					   label="prop:propertyEditContext.label" encoder="valueEncoderForProperty" reorder="true"/>
 			<p:else>
-				<t:label for="palette_set"/>
-				<t:palette t:id="palette_set" model="selectModelForProperty" selected="selected"
+				<t:palette t:id="palette_set" model="selectModelForProperty" selected="selected" t:mixins="formgroup"
 						   label="prop:propertyEditContext.label" encoder="valueEncoderForProperty"/>
 			</p:else>
 		</t:if>
-		<em>
-			${helpMessage}
-		</em>
 	</t:block>
 
 	<t:block id="version">
@@ -53,19 +45,23 @@
 	</t:block>
 
 	<t:block id="embedded">
-		<fieldset class="group">
-			<legend>${propertyEditContext.label}</legend>
-			<t:beaneditor t:id="editor" object="propertyEditContext.propertyValue" model="embeddedModel" />
-		</fieldset>
+		<div class="form-group">
+			<fieldset class="group">
+				<legend>${propertyEditContext.label}</legend>
+				<t:beaneditor t:id="editor" object="propertyEditContext.propertyValue" model="embeddedModel" />
+			</fieldset>
+		</div>
 	</t:block>
 
 	<t:block id="blob">
-		<label>${propertyEditContext.label}</label>
-		<div t:id="blob"/>
+		<div class="form-group">
+			<label>${propertyEditContext.label}</label>
+			<div t:id="blob"/>
+		</div>
 	</t:block>
 
 	<t:block id="ckeditor">
-		<input t:id="textarea" t:mixins="tynamo/ckeditor" parameters="{'toolbar': 'Basic'}"/>
+		<input t:id="textarea" t:mixins="tynamo/ckeditor,formgroup" parameters="{'toolbar': 'Basic'}"/>
 	</t:block>
 
 </html>
