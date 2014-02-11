@@ -142,11 +142,6 @@
 
 		<dependency>
 			<groupId>org.tynamo</groupId>
-			<artifactId>tapestry-model-web</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>org.tynamo</groupId>
 			<artifactId>tynamo-test</artifactId>
 			<scope>test</scope>
 		</dependency>

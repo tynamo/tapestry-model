@@ -1,4 +1,0 @@
-
-dl dt {
-	float:none !important; /* overrides  dl.t-beandisplay dt {float:left;} (default.css (line 176)) */
-}
