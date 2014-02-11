@@ -34,15 +34,21 @@
 		<fieldset class="group">
 			<legend>${legendMessage}</legend>
 			<t:beaneditor object="formBean" model="beanModel"/>
-			<br/>
 
-			<div class="t-beaneditor-row">
-				<button t:type="any" class="button" type="submit" id="saveAndReturnButton">
-					${message:org.tynamo.i18n.ok}
-				</button>
-				&nbsp; &nbsp;
-				<a onclick="Element.toggle('${form.clientId}'); this.blur(); return false;" href="#">${message:org.tynamo.i18n.cancel}</a>
+			<div class="btn-toolbar">
+				<div class="btn-group">
+					<t:submit t:id="saveAndReturn" event="return" class="btn btn-primary" value="${legendMessage}"/>
+				</div>
+				<div class="btn-group">
+				</div>
+				<div class="btn-group">
+					<button type="reset" onclick="$('#${form.clientId}').toggle(); return true;" href="#" class="btn btn-default" style="color:red; font-weight:bold;">
+						${message:org.tynamo.i18n.cancel}
+					</button>
+				</div>
 			</div>
+
+
 		</fieldset>
 	</t:form>
 

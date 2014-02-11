@@ -17,6 +17,9 @@ import org.apache.tapestry5.services.BeanModelSource;
 import org.apache.tapestry5.services.Heartbeat;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.ValueEncoderSource;
+import org.apache.tapestry5.services.ajax.AjaxResponseRenderer;
+import org.apache.tapestry5.services.ajax.JavaScriptCallback;
+import org.apache.tapestry5.services.javascript.JavaScriptSupport;
 import org.tynamo.builder.BuilderDirector;
 import org.tynamo.descriptor.CollectionDescriptor;
 import org.tynamo.services.DescriptorService;
@@ -56,6 +59,12 @@ public class Composition
 
 	@Inject
 	private Request request;
+
+	@Inject
+	private AjaxResponseRenderer ajaxResponseRenderer;
+
+	@Inject
+	private JavaScriptSupport javaScriptSupport;
 
 	@Environmental
 	private Heartbeat heartbeat;
@@ -178,7 +187,9 @@ public class Composition
 	{
 
 		writer.element("div", "class", "t-add-child");
-		addLink = writer.element("a", "id", "add-" + collectionDescriptor.getName() + "-link", "href", "#", "class", "t-add-child-link");
+		addLink = writer.element("a", "id", "add-" + collectionDescriptor.getName() + "-link", "href", "#");
+		writer.element("i", "class", "fa fa-plus-square-o"); writer.end();
+		writer.write("\n");
 		writer.write(messages.get("org.tynamo.i18n.add-child"));
 
 		Runnable command = new Runnable()
@@ -186,7 +197,9 @@ public class Composition
 			public void run()
 			{
 				String fieldId = form.getClientId();
-				addLink.forceAttributes("onclick", "Element.toggle('" + form.getClientId() + "'); this.blur(); return false;");
+				addLink.forceAttributes("onclick", "$('#" + form.getClientId() + "').toggle(); return false;");
+				javaScriptSupport.require("composition").invoke("init").with(form.getClientId());
+
 			}
 		};
 		heartbeat.defer(command);
@@ -201,7 +214,15 @@ public class Composition
 	{
 		persitenceService.addToCollection(collectionDescriptor, formBean, owner);
 
-		if (request.isXHR()) return compositionZone.getBody();
+		if (request.isXHR()) {
+			ajaxResponseRenderer.addCallback(new JavaScriptCallback() {
+				@Override
+				public void run(JavaScriptSupport javaScriptSupport) {
+					javaScriptSupport.require("composition").invoke("reset");
+				}
+			});
+			return compositionZone.getBody();
+		}
 		else return null;
 	}
 

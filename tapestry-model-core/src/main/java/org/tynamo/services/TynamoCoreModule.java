@@ -1,6 +1,7 @@
 package org.tynamo.services;
 
 import org.apache.tapestry5.alerts.AlertManager;
+import org.apache.tapestry5.annotations.Path;
 import org.apache.tapestry5.beaneditor.DataTypeConstants;
 import org.apache.tapestry5.func.Predicate;
 import org.apache.tapestry5.grid.GridDataSource;
@@ -18,6 +19,8 @@ import org.apache.tapestry5.ioc.services.CoercionTuple;
 import org.apache.tapestry5.ioc.services.PropertyAccess;
 import org.apache.tapestry5.plastic.*;
 import org.apache.tapestry5.services.*;
+import org.apache.tapestry5.services.javascript.JavaScriptModuleConfiguration;
+import org.apache.tapestry5.services.javascript.ModuleManager;
 import org.apache.tapestry5.services.transform.ComponentClassTransformWorker2;
 import org.slf4j.Logger;
 import org.tynamo.bindings.ModelBindingFactory;
@@ -362,5 +365,10 @@ public class TynamoCoreModule
 		});
 	}
 
-
+	@Contribute(ModuleManager.class)
+	public static void setupJsModules(MappedConfiguration<String, Object> configuration,
+	                                  @Path("classpath:META-INF/assets/tynamo/model/composition.js")
+	                                  Resource composition) {
+		configuration.add("composition", new JavaScriptModuleConfiguration(composition).dependsOn("jquery"));
+	}
 }

@@ -19,7 +19,7 @@ import org.tynamo.services.PersistenceService;
 import org.tynamo.util.TynamoMessages;
 import org.tynamo.util.Utils;
 
-@At(value = "/catalog/{0}", order = "before:Show")
+@At(value = "/catalog/{0}", order = {"before:Show", "after:Add"})
 public class CatalogShow
 {
 

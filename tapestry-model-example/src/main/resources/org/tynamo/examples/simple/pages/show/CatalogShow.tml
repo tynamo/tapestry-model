@@ -1,36 +1,52 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 		"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <t:layout title="title" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd" xmlns:p="tapestry:parameter">
-		<p:subMenuBlock>
-		<ul>
-			<ul id="local">
-				<li>
-					<t:pagelink class="editlink" t:page="Edit" context="editPageContext">${editlinkMessage}</t:pagelink>
-				</li>
-				<li>
-					
-				</li>
-				<t:if test="deleteAllowed">
-					<li>
-						<t:eventlink class="deletelink" t:id="delete">${message:org.tynamo.i18n.remove}</t:eventlink>
-					</li>
-				</t:if>
-			</ul>
-		</ul>
-	</p:subMenuBlock>
-	<p:navBlock>
-		<a style="font-weight:bolder;margin-left:10px" t:type="PageLink" page="List" context="beanType">${listAllLinkMessage}</a>
-	</p:navBlock>
 
 	<h1>My Custom ${title}</h1>
 
-	<t:alerts/>
-
-	<br/>
+	<nav class="navbar navbar-default" role="navigation">
+		<div class="container-fluid" style="margin-right:20px">
+			<ul class="nav navbar-nav navbar-right">
+				<li>
+					<t:pageLink page="List" context="beanType">
+						<i class="fa fa-table"></i>
+						${listAllLinkMessage}</t:pageLink>
+				</li>
+				<li>
+					<t:pagelink t:page="Edit" context="editPageContext">
+						<i class="fa fa-edit"></i>
+						${editlinkMessage}</t:pagelink>
+				</li>
+				<li>
+				</li>
+				<t:if test="deleteAllowed">
+					<style>
+						.delete a:hover {
+							color:red !important;
+						}
+					</style>
+					<li class="delete">
+						<t:eventlink t:id="delete" onclick="return confirm('Are you sure ?');">
+							<i class="fa fa-trash-o"></i>
+							${message:org.tynamo.i18n.remove}</t:eventlink>
+					</li>
+				</t:if>
+			</ul>
+		</div>
+	</nav>
 
 	<t:beandisplay object="bean" lean="true" t:mixins="tynamo/BeanModelAdvisor">
 		<p:categories>
-			<t:pagelink page="collections/AddC" context="[beanType,bean,'categories']">Add Category</t:pagelink>
+			<div style="display:block">
+			<t:pagelink page="collections/ListC" context="[beanType,bean,'categories']">
+				Categories <i class="fa fa-external-link"/></t:pagelink>
+			</div>
+			<div style="display:block">
+			<t:pagelink page="collections/AddC" context="[beanType,bean,'categories']">
+				Add Category <i class="fa fa-external-link"/> </t:pagelink>
+			</div>
+			<t:tynamo.composition owner="bean" collection="bean.categories" collectionDescriptor="categoriesDescriptor"/>
+			<hr/>
 			<t:tynamo.composition owner="bean" collection="bean.categories" collectionDescriptor="categoriesDescriptor"/>
 		</p:categories>
 	</t:beandisplay>
