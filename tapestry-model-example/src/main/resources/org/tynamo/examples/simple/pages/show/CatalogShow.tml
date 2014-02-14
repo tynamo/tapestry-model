@@ -46,8 +46,6 @@
 				Add Category <i class="fa fa-external-link"/> </t:pagelink>
 			</div>
 			<t:tynamo.composition owner="bean" collection="bean.categories" collectionDescriptor="categoriesDescriptor"/>
-			<hr/>
-			<t:tynamo.composition owner="bean" collection="bean.categories" collectionDescriptor="categoriesDescriptor"/>
 		</p:categories>
 	</t:beandisplay>
 

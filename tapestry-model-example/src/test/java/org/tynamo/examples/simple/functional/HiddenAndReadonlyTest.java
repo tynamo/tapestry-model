@@ -26,7 +26,7 @@ public class HiddenAndReadonlyTest extends BaseIntegrationTest
 	{
 		//assertNull("no hidden column", new HtmlUnitXPath("//td/a[contains(text(), 'Hidden')]").selectSingleNode(listThing2sPage));
 		HtmlPage newThing2Page = webClient.getPage(BASEURI + "add/thing2");
-		assertXPathPresent(newThing2Page, "//div[@class='t-beaneditor-row']//label[contains(text(), 'Read Only')]/following-sibling::p[contains(text(), 'foo')]");
+		assertXPathPresent(newThing2Page, "//div[@class='form-group']//label[contains(text(), 'Read Only')]/following-sibling::p[contains(text(), 'foo')]");
 
 	}
 }

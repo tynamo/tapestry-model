@@ -89,10 +89,10 @@ public class CarTest extends BaseIntegrationTest
 		HtmlPage editMakePage = webClient.getPage(BASEURI +"edit/make/" + hondaId);
 
 		assertXPathPresent(editMakePage, "//input[@value='Honda']");
-		assertXPathPresent(editMakePage, "//select[@id='palette_set-avail']");
-		assertXPathNotPresent(editMakePage, "//select[@id='palette_set-avail'][not(node())]");
-		assertXPathPresent(editMakePage, "//select[@id='palette_set-avail']/option[text()='Prius']");
-		assertXPathPresent(editMakePage, "//select[@id='palette_set-avail']/option[text()='Sedan']");
+		assertXPathPresent(editMakePage, "//div[@class='palette-available']/select");
+		assertXPathNotPresent(editMakePage, "//div[@class='palette-available']/select[not(node())]");
+		assertXPathPresent(editMakePage, "//div[@class='palette-available']/select/option[text()='Prius']");
+		assertXPathPresent(editMakePage, "//div[@class='palette-available']/select/option[text()='Sedan']");
 
 		HtmlPage editModelPage = webClient.getPage(BASEURI + "edit/carmodel/" + priusId);
 		form = editModelPage.getHtmlElementById("form");
@@ -100,16 +100,15 @@ public class CarTest extends BaseIntegrationTest
 		clickButton(editModelPage, "saveAndReturn");
 
 		editMakePage = webClient.getPage(BASEURI +"edit/make/" + toyotaId);
-		assertXPathNotPresent(editMakePage, "//select[@id='palette_set-avail'][not(node())]");
-		assertXPathNotPresent(editMakePage, "//select[@id='palette_set'][not(node())]");
+		assertXPathNotPresent(editMakePage, "//div[@class='palette-available']/select[not(node())]");
 
 		editMakePage = webClient.getPage(BASEURI +"edit/make/" + hondaId);
 
-		assertXPathPresent(editMakePage, "//select[@id='palette_set-avail']");
-		assertXPathNotPresent(editMakePage, "//select[@id='palette_set-avail'][not(node())]");
+		assertXPathPresent(editMakePage, "//div[@class='palette-available']/select");
+		assertXPathNotPresent(editMakePage, "//div[@class='palette-available']/select[not(node())]");
 		assertXPathPresent(editMakePage, "//select[@id='palette_set'][not(node())]");
-		assertXPathNotPresent(editMakePage, "//select[@id='palette_set-avail']/option[text()='Prius']");
-		assertXPathPresent(editMakePage, "//select[@id='palette_set-avail']/option[text()='Sedan']");
+		assertXPathNotPresent(editMakePage, "//div[@class='palette-available']/select/option[text()='Prius']");
+		assertXPathPresent(editMakePage, "//div[@class='palette-available']/select/option[text()='Sedan']");
 
 	}
 }
