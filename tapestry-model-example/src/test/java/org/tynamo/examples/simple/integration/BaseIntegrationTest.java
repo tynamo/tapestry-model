@@ -3,9 +3,9 @@ package org.tynamo.examples.simple.integration;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import org.apache.tapestry5.SymbolConstants;
 import org.apache.tapestry5.internal.InternalConstants;
+import org.eclipse.jetty.webapp.WebAppContext;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.BeforeSuite;
 import org.tynamo.test.AbstractContainerTest;
 
 public abstract class BaseIntegrationTest extends AbstractContainerTest
@@ -18,6 +18,11 @@ public abstract class BaseIntegrationTest extends AbstractContainerTest
 		System.setProperty(InternalConstants.DISABLE_DEFAULT_MODULES_PARAM, "true");
 		System.setProperty(SymbolConstants.EXECUTION_MODE, "hibernate");
 		super.startContainer();
+	}
+
+	@Override
+	public WebAppContext buildContext() {
+		return new WebAppContext("src/main/webapp", "/");
 	}
 
 	@BeforeMethod
