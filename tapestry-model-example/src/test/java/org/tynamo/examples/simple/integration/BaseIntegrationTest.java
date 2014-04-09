@@ -33,15 +33,4 @@ public abstract class BaseIntegrationTest extends AbstractContainerTest
 	}
 
 
-	/**
-	 * The AbstractContainerTest is still using htmlunit 2.11 we need to override this in order to use it with htmlunit 2.14
-	 */
-	@BeforeTest
-	@Override
-	public void configureWebClient()
-	{
-		webClient.getOptions().setThrowExceptionOnFailingStatusCode(true);
-	}
-
-
 }
