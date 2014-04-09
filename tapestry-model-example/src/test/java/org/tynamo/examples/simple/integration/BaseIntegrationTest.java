@@ -6,6 +6,7 @@ import org.apache.tapestry5.internal.InternalConstants;
 import org.eclipse.jetty.webapp.WebAppContext;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.BeforeTest;
 import org.tynamo.test.AbstractContainerTest;
 
 public abstract class BaseIntegrationTest extends AbstractContainerTest
@@ -17,6 +18,7 @@ public abstract class BaseIntegrationTest extends AbstractContainerTest
 	public void startContainer() throws Exception {
 		System.setProperty(InternalConstants.DISABLE_DEFAULT_MODULES_PARAM, "true");
 		System.setProperty(SymbolConstants.EXECUTION_MODE, "hibernate");
+		System.setProperty(SymbolConstants.PRODUCTION_MODE, "true");
 		super.startContainer();
 	}
 
@@ -29,5 +31,17 @@ public abstract class BaseIntegrationTest extends AbstractContainerTest
 	public void setStartPage() throws Exception {
 		startPage = webClient.getPage(BASEURI + "home");
 	}
+
+
+	/**
+	 * The AbstractContainerTest is still using htmlunit 2.11 we need to override this in order to use it with htmlunit 2.14
+	 */
+	@BeforeTest
+	@Override
+	public void configureWebClient()
+	{
+		webClient.getOptions().setThrowExceptionOnFailingStatusCode(true);
+	}
+
 
 }

@@ -42,7 +42,7 @@ public class JpaModule
 		/**
 		 * WARN: This JPACommitAfter worker doesn't support @PersistenceContext
 		 */
-		MethodAdvice advice = new CommitAfterMethodAdvice(manager, null);
+		MethodAdvice advice = new CommitAfterMethodAdvice(manager);
 		configuration.add("TynamoExampleJPACommitAfter", new CommitAfterWorker(advice), "after:Log");
 	}
 }

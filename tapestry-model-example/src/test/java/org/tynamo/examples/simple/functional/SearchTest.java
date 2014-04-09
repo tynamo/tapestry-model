@@ -15,7 +15,7 @@ public class SearchTest extends BaseIntegrationTest
 		// Caused by: net.sourceforge.htmlunit.corejs.javascript.WrappedException: Wrapped com.gargoylesoftware.htmlunit.ScriptException:
 		// Exception invoking jsxSet_innerHTML (http://localhost:8180/assets/0.0.1-SNAPSHOT/stack/en/core.js#7672)
 		// Caused by: com.gargoylesoftware.htmlunit.ScriptException: missing ; before statement (JavaScript URL#1)
-		webClient.setJavaScriptEnabled(false);
+		webClient.getOptions().setJavaScriptEnabled(false);
 		HtmlPage listApplesPage = clickLink(startPage, "List Apples");
 		HtmlPage newApplePage = clickLink(listApplesPage, "New Apple");
 		HtmlForm form = newApplePage.getHtmlElementById("form");
@@ -24,7 +24,7 @@ public class SearchTest extends BaseIntegrationTest
 
 		listApplesPage = clickButton(newApplePage, "saveAndReturn");
 
-		webClient.setJavaScriptEnabled(true);
+		webClient.getOptions().setJavaScriptEnabled(true);
 
 		// FIXME Search page not implemented yet
 //		HtmlPage searchApplesPage = clickLink(listApplesPage, "Search Apples");

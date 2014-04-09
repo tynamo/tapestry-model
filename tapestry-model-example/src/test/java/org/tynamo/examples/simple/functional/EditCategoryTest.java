@@ -118,7 +118,7 @@ public class EditCategoryTest extends BaseIntegrationTest
 //	@Test @ascandroli: this would be super nice, but right now is too much ot handle
 	public void testAddProductToCategory() throws Exception
 	{
-		webClient.setJavaScriptEnabled(false);
+		webClient.getOptions().setJavaScriptEnabled(false);
 		HtmlForm newCategoryForm = goToNewCategoryForm();
         HtmlTextArea textArea = newCategoryForm.getTextAreaByName("Description");
 		textArea.setText("howdya doo");
