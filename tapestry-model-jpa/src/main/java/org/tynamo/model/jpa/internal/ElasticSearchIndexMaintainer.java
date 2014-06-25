@@ -24,6 +24,7 @@ import org.elasticsearch.common.xcontent.XContentFactory;
 import org.elasticsearch.indices.IndexAlreadyExistsException;
 import org.elasticsearch.node.Node;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.tynamo.descriptor.TynamoClassDescriptor;
 import org.tynamo.model.elasticsearch.descriptor.ElasticSearchExtension;
 import org.tynamo.model.elasticsearch.mapping.MapperFactory;
@@ -31,19 +32,19 @@ import org.tynamo.services.DescriptorService;
 import org.tynamo.services.PersistenceService;
 
 public class ElasticSearchIndexMaintainer {
+
 	private final Node node;
 	private final EntityManager entityManager;
 	private final DescriptorService descriptorService;
-	private final Logger logger;
+	private final Logger logger = LoggerFactory.getLogger(ElasticSearchIndexMaintainer.class);
 	private final PersistenceService persistenceService;
 	private final MapperFactory mapperFactory;
 	private volatile boolean running = false;
 
-	public ElasticSearchIndexMaintainer(Logger logger, RegistryShutdownHub hub, PersistenceService persistenceService,
+	public ElasticSearchIndexMaintainer(RegistryShutdownHub hub, PersistenceService persistenceService,
 		EntityManager entityManager, Node node,
 		DescriptorService descriptorService,
 		MapperFactory mapperFactory) {
-		this.logger = logger;
 		this.persistenceService = persistenceService;
 		this.entityManager = entityManager;
 		this.node = node;

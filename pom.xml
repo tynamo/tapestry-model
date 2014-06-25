@@ -38,7 +38,7 @@
 	</distributionManagement>
 
 	<properties>
-		<tapestry-release-version>5.4-beta-3</tapestry-release-version>
+		<tapestry-release-version>5.4-beta-6</tapestry-release-version>
 	</properties>
 
 	<!-- note that our own versions are auto-managed by the release plugin -->
@@ -77,7 +77,7 @@
 			<dependency>
 				<groupId>org.tynamo</groupId>
 				<artifactId>tynamo-test</artifactId>
-				<version>0.1.0</version>
+				<version>0.1.1-SNAPSHOT</version>
 				<scope>test</scope>
 			</dependency>
 
