@@ -53,9 +53,6 @@ public class TynamoJpaModule {
 			"ElasticSearchAnnotationHandler");
 
 		binder.bind(MapperFactory.class, DefaultMapperFactory.class);
-		//binder.bind(TynamoInterceptor.class);
-		//binder.bind(JPAConfigurer.class, TynamoInterceptorConfigurer.class).withId("TynamoInterceptorConfigurer");
-
 	}
 
 	/** Add our components and pages to the "tynamo-jpa" library. */
@@ -112,12 +109,12 @@ public class TynamoJpaModule {
 //		for (EmbeddableType<?> mapping : entityManager.getMetamodel().getEmbeddables()) configuration.add(mapping.getJavaType());
 	}
 
-	public static void contributeFactoryDefaults(MappedConfiguration<String, String> configuration) {
-		configuration.add(TynamoJpaSymbols.LARGE_COLUMN_LENGTH, "100");
-		configuration.add(TynamoJpaSymbols.IGNORE_NON_HIBERNATE_TYPES, "false");
+	public static void contributeFactoryDefaults(MappedConfiguration<String, Object> configuration) {
+		configuration.add(TynamoJpaSymbols.LARGE_COLUMN_LENGTH, 100);
+		configuration.add(TynamoJpaSymbols.IGNORE_NON_JPA_TYPES, false);
 		configuration.add(TynamoJpaSymbols.PERSISTENCEUNIT, "");
 		configuration.add(TynamoJpaSymbols.ELASTICSEARCH_HOME, "");
-		configuration.add(TynamoJpaSymbols.ELASTICSEARCH_HTTP_ENABLED, "false");
+		configuration.add(TynamoJpaSymbols.ELASTICSEARCH_HTTP_ENABLED, false);
 	}
 
 	@Contribute(ServiceOverride.class)
@@ -158,43 +155,4 @@ public class TynamoJpaModule {
 	{
 		advisor.addTransactionCommitAdvice(receiver);
 	}
-
-	/**
-	 * TODO: needed?
-	 * Adds the following configurers:
-	 * <dl>
-	 * <dt>TynamoInterceptorConfigurer
-	 * <dd>add the TynamoInterceptor to the jpa configuration
-
-	 public static void contributeHibernateSessionSource(OrderedConfiguration<JPAConfigurer> config,
-	 @InjectService("TynamoInterceptorConfigurer")
-	 JPAConfigurer trailsInterceptorConfigurer)
-	 {
-	 //config.add("TynamoInterceptorConfigurer", trailsInterceptorConfigurer);
-	 }
-	 */
-
-/**
- * We don't need this just yet, and it gives an error under Tapestry 5.1.0.2
- *
- * [INFO] [talledLocalContainer] java.lang.IllegalArgumentException:
- * Contribution org.tynamo.model.jpa.services.TynamoJPAModule.contributeTynamoEntityPackageManager(Configuration, HibernateEntityPackageManager)
- * (at TynamoJPAModule.java:145) is for service 'TynamoEntityPackageManager', which does not exist.
- *
- public static void contributeTynamoEntityPackageManager(Configuration<String> configuration, HibernateEntityPackageManager packageManager)
- {
- for (String packageName : packageManager.getPackageNames())
- {
- configuration.add(packageName);
- }
- }
- */
-
-
-/*
-	public static void contributeFieldValidatorSource(MappedConfiguration<String, Validator> configuration) {
-			configuration.add("int", new ValidateInt());
-	}
-*/
-
 }

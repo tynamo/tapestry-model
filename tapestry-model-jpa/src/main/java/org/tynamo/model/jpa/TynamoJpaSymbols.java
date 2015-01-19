@@ -13,7 +13,10 @@ public class TynamoJpaSymbols
 	 * When working with objects from multiple sources jpa decorator complains about "metadata not found",
 	 * this symbol configured to true tells JPADescriptorDecorator to ignore these errors.
 	 */
-	public static final String IGNORE_NON_HIBERNATE_TYPES = "tynamo.model.jpa.ignore-non-jpa-types";
+	public static final String IGNORE_NON_JPA_TYPES = "tynamo.model.jpa.ignore-non-jpa-types";
+
+	@Deprecated
+	public static final String IGNORE_NON_HIBERNATE_TYPES = IGNORE_NON_JPA_TYPES;
 
 	/**
 	 * type string, default "" (if unit name is empty us the configured persistence unit if there's only a single one)

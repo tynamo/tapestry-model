@@ -21,14 +21,14 @@ public class TestModule
 
 	@Contribute(SymbolProvider.class)
 	@ApplicationDefaults
-	public static void defaultsSymbols(MappedConfiguration<String, String> configuration)
+	public static void defaultsSymbols(MappedConfiguration<String, Object> configuration)
 	{
 		configuration.add(InternalConstants.TAPESTRY_APP_PACKAGE_PARAM, "org.tynamo.model.jpa");
 		configuration.add(InternalSymbols.APP_PACKAGE_PATH, "org/tynamo/model/jpa");
 
-		// JpaDescriptorDecoratorTest doesn't include TynamoJpaModule at all, but JpaDescriptorDecorator expects persistenceunit to be configured 
+		// JpaDescriptorDecoratorTest doesn't include TynamoJpaModule at all, but JpaDescriptorDecorator expects persistenceunit to be configured
 		configuration.add(TynamoJpaSymbols.LARGE_COLUMN_LENGTH, "100");
-		configuration.add(TynamoJpaSymbols.IGNORE_NON_HIBERNATE_TYPES, "true");
+		configuration.add(TynamoJpaSymbols.IGNORE_NON_JPA_TYPES, true);
 
 		configuration.add(TynamoJpaSymbols.PERSISTENCEUNIT, "");
 	}
@@ -43,7 +43,7 @@ public class TestModule
 	                                                               DescriptorFactory descriptorFactory,
 	                                                               @Symbol(TynamoJpaSymbols.LARGE_COLUMN_LENGTH)
 	                                                               int largeColumnLength,
-	                                                               @Symbol(TynamoJpaSymbols.IGNORE_NON_HIBERNATE_TYPES)
+	                                                               @Symbol(TynamoJpaSymbols.IGNORE_NON_JPA_TYPES)
 	                                                               boolean ignoreNonHibernateTypes,
 	                                                               LoggerSource loggerSource)
 	{
