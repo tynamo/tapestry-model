@@ -150,9 +150,10 @@ public class JpaDescriptorDecorator implements DescriptorDecorator
 		TynamoPropertyDescriptor descriptorReference = propertyDescriptor;
 
 		if (attribute.isCollection()) {
-			assert (attribute instanceof PluralAttribute);
-			PluralAttribute pluralAttribute = (PluralAttribute) attribute;
-			descriptorReference = decorateCollectionDescriptor(pluralAttribute, propertyDescriptor, parentClassDescriptor);
+			if (attribute instanceof PluralAttribute) {
+				PluralAttribute pluralAttribute = (PluralAttribute) attribute;
+				descriptorReference = decorateCollectionDescriptor(pluralAttribute, propertyDescriptor, parentClassDescriptor);
+			}
 		} else if (!attribute.isCollection()) {
 			switch (attribute.getPersistentAttributeType()) {
 				case EMBEDDED:
