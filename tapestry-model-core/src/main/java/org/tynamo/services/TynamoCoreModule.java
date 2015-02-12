@@ -159,9 +159,10 @@ public class TynamoCoreModule
 			DataTypeConstants.DATE));
 	}
 
-	public static void contributeDataTypeAnalyzer(OrderedConfiguration<DataTypeAnalyzer> configuration,
-	                                              @InjectService("TynamoDataTypeAnalyzer")
-	                                              DataTypeAnalyzer tynamoDataTypeAnalyzer)
+	@Primary
+	@Contribute(DataTypeAnalyzer.class)
+	public static void addTynamoDataTypeAnalyzer(OrderedConfiguration<DataTypeAnalyzer> configuration,
+	                                             TynamoDataTypeAnalyzer tynamoDataTypeAnalyzer)
 	{
 		configuration.add("Tynamo", tynamoDataTypeAnalyzer, "before:Default");
 	}
@@ -189,7 +190,8 @@ public class TynamoCoreModule
 		configuration.add("TapestryDecorator", new TapestryDecorator(propertyAccess));
 	}
 
-	public static void contributeTynamoDataTypeAnalyzer(OrderedConfiguration<Pair> configuration)
+	@Contribute(TynamoDataTypeAnalyzer.class)
+	public static void addTynamoDataTypeAnalyzerPredicates(OrderedConfiguration<Pair> configuration)
 	{
 		configuration.add("nonVisual", newPair(TynamoDataTypeAnalyzerPredicates.nonVisual, "nonVisual"));
 		configuration.add("readOnly", newPair(TynamoDataTypeAnalyzerPredicates.readOnly, "readOnly"));
