@@ -3,11 +3,7 @@ package org.tynamo.model.jpa.services;
 import javax.persistence.EntityManager;
 import javax.persistence.metamodel.EntityType;
 
-import org.apache.tapestry5.ioc.Configuration;
-import org.apache.tapestry5.ioc.MappedConfiguration;
-import org.apache.tapestry5.ioc.MethodAdviceReceiver;
-import org.apache.tapestry5.ioc.OrderedConfiguration;
-import org.apache.tapestry5.ioc.ServiceBinder;
+import org.apache.tapestry5.ioc.*;
 import org.apache.tapestry5.ioc.annotations.Autobuild;
 import org.apache.tapestry5.ioc.annotations.Contribute;
 import org.apache.tapestry5.ioc.annotations.Match;
@@ -53,6 +49,7 @@ public class TynamoJpaModule {
 			"ElasticSearchAnnotationHandler");
 
 		binder.bind(MapperFactory.class, DefaultMapperFactory.class);
+		binder.bind(ConfigurableEntityManagerProvider.class);
 	}
 
 	/** Add our components and pages to the "tynamo-jpa" library. */
@@ -102,7 +99,7 @@ public class TynamoJpaModule {
 	@SuppressWarnings("rawtypes")
 	@Contribute(DescriptorService.class)
 	public static void descriptorService(Configuration<Class> configuration,
-		@Autobuild ConfigurableEntityManagerProvider entityManagerProvider) {
+	                                     ConfigurableEntityManagerProvider entityManagerProvider) {
 
 		EntityManager entityManager = entityManagerProvider.getEntityManager();
 		for (EntityType<?> mapping : entityManager.getMetamodel().getEntities()) configuration.add(mapping.getJavaType());
@@ -118,9 +115,9 @@ public class TynamoJpaModule {
 	}
 
 	@Contribute(ServiceOverride.class)
-	public static void setupApplicationServiceOverrides(MappedConfiguration<Class, Object> configuration,
-		@Autobuild SearchableJpaGridDataSourceProvider gridDataSourceProvider) {
-		configuration.add(SearchableGridDataSourceProvider.class, gridDataSourceProvider);
+	public static void setupApplicationServiceOverrides(MappedConfiguration<Class, Object> configuration, ObjectLocator locator) {
+		configuration.add(SearchableGridDataSourceProvider.class,
+				new SearchableJpaGridDataSourceProvider(locator.getService(ConfigurableEntityManagerProvider.class)));
 	}
 
 	public Node buildNode(@Symbol(TynamoJpaSymbols.ELASTICSEARCH_HOME) String pathHome,

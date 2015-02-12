@@ -16,8 +16,8 @@ public class SearchableJpaGridDataSourceProvider implements SearchableGridDataSo
 
 	private EntityManager entityManager;
 
-	public SearchableJpaGridDataSourceProvider(EntityManager entityManager) {
-		this.entityManager = entityManager;
+	public SearchableJpaGridDataSourceProvider(ConfigurableEntityManagerProvider provider) {
+		this.entityManager = provider.getEntityManager();
 	}
 
 	@Override

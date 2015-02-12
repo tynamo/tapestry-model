@@ -75,7 +75,7 @@ public class JpaDescriptorDecorator implements DescriptorDecorator
 	private EntityManager entityManager;
 
 	public JpaDescriptorDecorator(
-	                              DescriptorFactory descriptorFactory, @Autobuild ConfigurableEntityManagerProvider entityManagerProvider,
+	                              DescriptorFactory descriptorFactory, ConfigurableEntityManagerProvider entityManagerProvider,
 	                              @Symbol(TynamoJpaSymbols.LARGE_COLUMN_LENGTH)
 	                              int largeColumnLength,
 	                              @Symbol(TynamoJpaSymbols.IGNORE_NON_JPA_TYPES)

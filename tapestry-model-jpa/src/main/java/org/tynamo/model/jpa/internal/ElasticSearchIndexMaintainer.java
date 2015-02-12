@@ -42,11 +42,11 @@ public class ElasticSearchIndexMaintainer {
 	private volatile boolean running = false;
 
 	public ElasticSearchIndexMaintainer(RegistryShutdownHub hub, PersistenceService persistenceService,
-		EntityManager entityManager, Node node,
+		ConfigurableEntityManagerProvider configurableEntityManagerProvider, Node node,
 		DescriptorService descriptorService,
 		MapperFactory mapperFactory) {
 		this.persistenceService = persistenceService;
-		this.entityManager = entityManager;
+		this.entityManager = configurableEntityManagerProvider.getEntityManager();
 		this.node = node;
 		this.descriptorService = descriptorService;
 		this.mapperFactory = mapperFactory;

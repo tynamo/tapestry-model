@@ -45,7 +45,7 @@ public class JpaPersistenceServiceImpl extends GenericPersistenceService impleme
 	private DescriptorService descriptorService;
 	private EntityManager em;
 
-	public JpaPersistenceServiceImpl(Logger logger, DescriptorService descriptorService, @Autobuild ConfigurableEntityManagerProvider entityManagerProvider, PropertyAccess propertyAccess) {
+	public JpaPersistenceServiceImpl(Logger logger, DescriptorService descriptorService, ConfigurableEntityManagerProvider entityManagerProvider, PropertyAccess propertyAccess) {
 		super(propertyAccess);
 		this.logger = logger;
 		this.descriptorService = descriptorService;
