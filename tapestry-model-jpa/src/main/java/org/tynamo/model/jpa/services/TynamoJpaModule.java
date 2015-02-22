@@ -1,40 +1,27 @@
 package org.tynamo.model.jpa.services;
 
-import javax.persistence.EntityManager;
-import javax.persistence.metamodel.EntityType;
-
 import org.apache.tapestry5.ioc.*;
-import org.apache.tapestry5.ioc.annotations.Autobuild;
-import org.apache.tapestry5.ioc.annotations.Contribute;
-import org.apache.tapestry5.ioc.annotations.Match;
-import org.apache.tapestry5.ioc.annotations.Startup;
-import org.apache.tapestry5.ioc.annotations.Symbol;
-import org.apache.tapestry5.ioc.services.RegistryShutdownHub;
+import org.apache.tapestry5.ioc.annotations.*;
 import org.apache.tapestry5.ioc.services.ServiceOverride;
 import org.apache.tapestry5.jpa.JpaTransactionAdvisor;
 import org.apache.tapestry5.services.BeanBlockContribution;
 import org.apache.tapestry5.services.BeanBlockSource;
 import org.apache.tapestry5.services.LibraryMapping;
-import org.elasticsearch.common.network.NetworkUtils;
-import org.elasticsearch.common.settings.ImmutableSettings;
-import org.elasticsearch.node.Node;
-import org.elasticsearch.node.NodeBuilder;
 import org.tynamo.common.ModuleProperties;
-import org.tynamo.descriptor.annotation.handlers.DescriptorAnnotationHandler;
 import org.tynamo.descriptor.decorators.DescriptorDecorator;
 import org.tynamo.descriptor.factories.DescriptorFactory;
-import org.tynamo.model.elasticsearch.annotations.handlers.ElasticSearchAnnotationHandler;
-import org.tynamo.model.elasticsearch.mapping.MapperFactory;
-import org.tynamo.model.elasticsearch.mapping.impl.DefaultMapperFactory;
 import org.tynamo.model.jpa.TynamoJpaSymbols;
 import org.tynamo.model.jpa.internal.ConfigurableEntityManagerProvider;
-import org.tynamo.model.jpa.internal.ElasticSearchIndexMaintainer;
 import org.tynamo.model.jpa.internal.SearchableJpaGridDataSourceProvider;
 import org.tynamo.services.DescriptorService;
 import org.tynamo.services.SearchableGridDataSourceProvider;
 import org.tynamo.services.TynamoCoreModule;
 
+import javax.persistence.EntityManager;
+import javax.persistence.metamodel.EntityType;
+
 public class TynamoJpaModule {
+
 	private static final String version = ModuleProperties.getVersion(TynamoCoreModule.class);
 
 	public static void bind(ServiceBinder binder) {
@@ -45,10 +32,6 @@ public class TynamoJpaModule {
 		// invoking the constructor.
 
 		binder.bind(JpaPersistenceService.class, JpaPersistenceServiceImpl.class);
-		binder.bind(DescriptorAnnotationHandler.class, ElasticSearchAnnotationHandler.class).withId(
-			"ElasticSearchAnnotationHandler");
-
-		binder.bind(MapperFactory.class, DefaultMapperFactory.class);
 		binder.bind(ConfigurableEntityManagerProvider.class);
 	}
 
@@ -110,41 +93,12 @@ public class TynamoJpaModule {
 		configuration.add(TynamoJpaSymbols.LARGE_COLUMN_LENGTH, 100);
 		configuration.add(TynamoJpaSymbols.IGNORE_NON_JPA_TYPES, false);
 		configuration.add(TynamoJpaSymbols.PERSISTENCEUNIT, "");
-		configuration.add(TynamoJpaSymbols.ELASTICSEARCH_HOME, "");
-		configuration.add(TynamoJpaSymbols.ELASTICSEARCH_HTTP_ENABLED, false);
 	}
 
 	@Contribute(ServiceOverride.class)
 	public static void setupApplicationServiceOverrides(MappedConfiguration<Class, Object> configuration, ObjectLocator locator) {
 		configuration.add(SearchableGridDataSourceProvider.class,
 				new SearchableJpaGridDataSourceProvider(locator.getService(ConfigurableEntityManagerProvider.class)));
-	}
-
-	public Node buildNode(@Symbol(TynamoJpaSymbols.ELASTICSEARCH_HOME) String pathHome,
-	                      @Symbol(TynamoJpaSymbols.ELASTICSEARCH_HTTP_ENABLED) boolean httpEnabled,
-	                      RegistryShutdownHub registryShutdownHub) {
-		ImmutableSettings.Builder settings = ImmutableSettings.settingsBuilder();
-		if (!pathHome.isEmpty()) settings.put("path.home", pathHome);
-		settings.put("http.enabled", httpEnabled);
-		settings.put("number_of_shards", 1);
-		settings.put("number_of_replicas", 0);
-		settings.put("cluster.name", "tynamo-model-search-" + NetworkUtils.getLocalAddress().getHostName()).build();
-		final Node node = NodeBuilder.nodeBuilder().local(true).data(true).settings(settings).build();
-		node.start();
-
-		registryShutdownHub.addRegistryShutdownListener(new Runnable() {
-			@Override
-			public void run() {
-				node.close(); // TYNAMO-223
-			}
-		});
-
-		return node;
-	}
-
-	@Startup
-	public static void addJpaEventListener(@Autobuild ElasticSearchIndexMaintainer indexMaintainer) {
-		indexMaintainer.start();
 	}
 
 	@Match("JpaPersistenceService")
