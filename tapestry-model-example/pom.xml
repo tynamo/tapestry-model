@@ -25,8 +25,9 @@
 
 			<!-- Run the application using "mvn jetty:run" -->
 			<plugin>
-				<groupId>org.mortbay.jetty</groupId>
+				<groupId>org.eclipse.jetty</groupId>
 				<artifactId>maven-jetty-plugin</artifactId>
+				<version>9.2.11.v20150529</version>
 				<configuration>
 					<contextPath>/</contextPath>
 					<systemProperties>

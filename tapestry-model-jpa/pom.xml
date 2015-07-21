@@ -64,7 +64,6 @@
 		<dependency>
 			<groupId>org.testng</groupId>
 			<artifactId>testng</artifactId>
-			<classifier>jdk15</classifier>
 			<scope>test</scope>
 		</dependency>
 
@@ -83,17 +82,4 @@
 
 	</dependencies>
 
-	<profiles>
-		<profile>
-			<id>repositories</id>
-			<repositories>
-				<repository>
-					<id>EclipseLink Repo</id>
-					<url>
-						http://download.eclipse.org/rt/eclipselink/maven.repo
-					</url>
-				</repository>
-			</repositories>
-		</profile>
-	</profiles>
 </project>
