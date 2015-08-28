@@ -1,9 +1,10 @@
 package org.tynamo.examples.simple.functional;
 
-import com.gargoylesoftware.htmlunit.html.HtmlForm;
-import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import org.testng.annotations.Test;
 import org.tynamo.examples.simple.integration.BaseIntegrationTest;
+
+import com.gargoylesoftware.htmlunit.html.HtmlForm;
+import com.gargoylesoftware.htmlunit.html.HtmlPage;
 
 public class SearchTest extends BaseIntegrationTest
 {
@@ -19,8 +20,8 @@ public class SearchTest extends BaseIntegrationTest
 		HtmlPage listApplesPage = clickLink(startPage, "List Apples");
 		HtmlPage newApplePage = clickLink(listApplesPage, "New Apple");
 		HtmlForm form = newApplePage.getHtmlElementById("form");
-		form.getInputByName("color").setValueAttribute("Blue");
-		form.getSelectByName("origin").setSelectedAttribute("AMERICA", true);
+		form.getInputByName("textField").setValueAttribute("Blue");
+		form.getSelectByName("select_0").setSelectedAttribute("AMERICA", true);
 
 		listApplesPage = clickButton(newApplePage, "saveAndReturn");
 
@@ -37,26 +38,26 @@ public class SearchTest extends BaseIntegrationTest
 //		assertXPathPresent(listApplesPage, "//td[text() = 'Blue']");
 	}
 
-	// @Test 
+	// @Test
 	// FIXME Search not implemented yet
 	public void testSearchByEnum() throws Exception
 	{
 		HtmlPage listApplesPage = clickLink(startPage, "List Apples");
 		HtmlPage newApplePage = clickLink(listApplesPage, "New Apple");
 		HtmlForm form = newApplePage.getHtmlElementById("form");
-		form.getInputByName("color").setValueAttribute("Red");
-		form.getSelectByName("origin").setSelectedAttribute("OCEANIA", true);
+		form.getInputByName("textField").setValueAttribute("Red");
+		form.getSelectByName("select_0").setSelectedAttribute("OCEANIA", true);
 		listApplesPage = clickButton(newApplePage, "Ok");
 
 		HtmlPage searchApplesPage = clickLink(listApplesPage, "Search Apples");
-		searchApplesPage.<HtmlForm>getHtmlElementById("searchform").getSelectByName("origin").setSelectedAttribute("OCEANIA", true);
+		searchApplesPage.<HtmlForm>getHtmlElementById("searchform").getSelectByName("select_0").setSelectedAttribute("OCEANIA", true);
 
 		listApplesPage = clickButton(searchApplesPage, "Search");
 		assertXPathPresent(listApplesPage, "//td[text() = 'Red']");
 		assertXPathNotPresent(listApplesPage, "//td[text() = 'Blue']");
 
 		searchApplesPage = clickLink(listApplesPage, "Search Apples");
-		searchApplesPage.<HtmlForm>getHtmlElementById("searchform").getSelectByName("origin").setSelectedAttribute("EUROPE", true);
+		searchApplesPage.<HtmlForm>getHtmlElementById("searchform").getSelectByName("select_0").setSelectedAttribute("EUROPE", true);
 
 		listApplesPage = clickButton(searchApplesPage, "Search");
 		assertXPathNotPresent(listApplesPage, "//td[text() = 'Blue']");

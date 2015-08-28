@@ -2,16 +2,25 @@
  * Created on Dec 9, 2004
  *
  * Copyright 2004 Chris Nelson
- * 
- * Licensed under the Apache License, Version 2.0 (the "License"); 
- * you may not use this file except in compliance with the License. 
- * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0 
- * Unless required by applicable law or agreed to in writing, 
- * software distributed under the License is distributed on an "AS IS" BASIS, 
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and limitations under the License.
  */
 package org.tynamo.examples.simple.functional;
+
+import static com.gargoylesoftware.htmlunit.WebAssert.assertElementPresent;
+import static com.gargoylesoftware.htmlunit.WebAssert.assertTextPresent;
+import static org.testng.Assert.assertNotNull;
+
+import java.io.IOException;
+
+import org.testng.annotations.Test;
+import org.tynamo.examples.simple.integration.BaseIntegrationTest;
 
 import com.gargoylesoftware.htmlunit.ElementNotFoundException;
 import com.gargoylesoftware.htmlunit.html.HtmlAnchor;
@@ -21,14 +30,6 @@ import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.gargoylesoftware.htmlunit.html.HtmlSubmitInput;
 import com.gargoylesoftware.htmlunit.html.HtmlTextArea;
 import com.gargoylesoftware.htmlunit.html.HtmlTextInput;
-import org.testng.annotations.Test;
-import org.tynamo.examples.simple.integration.BaseIntegrationTest;
-
-import java.io.IOException;
-
-import static com.gargoylesoftware.htmlunit.WebAssert.assertElementPresent;
-import static com.gargoylesoftware.htmlunit.WebAssert.assertTextPresent;
-import static org.testng.Assert.assertNotNull;
 
 public class EditCategoryTest extends BaseIntegrationTest
 {
@@ -42,7 +43,7 @@ public class EditCategoryTest extends BaseIntegrationTest
 		newCategoryPage = (HtmlPage) saveButton.click();
 		assertErrorTextPresent(newCategoryPage);
 		newCategoryForm = newCategoryPage.getHtmlElementById("form");
-		HtmlTextArea textArea = newCategoryForm.getTextAreaByName("Description");
+		HtmlTextArea textArea = newCategoryForm.getTextAreaByName("textarea");
 		textArea.setText("a description");
 		newCategoryPage = clickButton(newCategoryForm, "saveAndStay");
 		assertErrorTextNotPresent(newCategoryPage);
@@ -56,7 +57,7 @@ public class EditCategoryTest extends BaseIntegrationTest
 		HtmlPage newCatalogPage = (HtmlPage) catalogListPage.getAnchorByText("New Catalog").click();
 
 		HtmlForm form = newCatalogPage.getHtmlElementById("form");
-		HtmlInput nameInput = form.<HtmlInput>getInputByName("name");
+		HtmlInput nameInput = form.<HtmlInput>getInputByName("textField");
 		nameInput.setValueAttribute("new catalog");
 
 		newCatalogPage = clickButton(newCatalogPage, "saveAndStay");
@@ -64,7 +65,7 @@ public class EditCategoryTest extends BaseIntegrationTest
 		assertTextPresent(newCatalogPage, "NameLabel must match \"[a-z]*\"");
 
 		form = newCatalogPage.getHtmlElementById("form");
-		nameInput = form.<HtmlInput>getInputByName("name");
+		nameInput = form.<HtmlInput>getInputByName("textField");
 		nameInput.setValueAttribute("newspacecatalog");
 
 		newCatalogPage = clickButton(newCatalogPage, "saveAndStay");
@@ -82,7 +83,7 @@ public class EditCategoryTest extends BaseIntegrationTest
 		HtmlPage catalogListPage = (HtmlPage) startPage.getAnchorByText("List Catalogs").click();
 		HtmlPage newCatalogPage = (HtmlPage) catalogListPage.getAnchorByText("New Catalog").click();
 		HtmlForm form = newCatalogPage.getHtmlElementById("form");
-		form.<HtmlInput>getInputByName("name").setValueAttribute("newcatalog");
+		form.<HtmlInput>getInputByName("textField").setValueAttribute("newcatalog");
 		newCatalogPage = clickButton(newCatalogPage, "saveAndReturn");
 
 		return clickLink(newCatalogPage,"Add Category");
@@ -120,7 +121,7 @@ public class EditCategoryTest extends BaseIntegrationTest
 	{
 		webClient.getOptions().setJavaScriptEnabled(false);
 		HtmlForm newCategoryForm = goToNewCategoryForm();
-        HtmlTextArea textArea = newCategoryForm.getTextAreaByName("Description");
+        HtmlTextArea textArea = newCategoryForm.getTextAreaByName("textarea");
 		textArea.setText("howdya doo");
 		HtmlPage categoryPage = clickButton(newCategoryForm, "Apply");
 		HtmlPage newProductPage = clickLink(categoryPage, "Add New...");
