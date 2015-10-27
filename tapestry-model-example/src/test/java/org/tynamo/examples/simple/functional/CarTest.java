@@ -1,11 +1,11 @@
 package org.tynamo.examples.simple.functional;
 
+import com.gargoylesoftware.htmlunit.html.*;
+import com.gargoylesoftware.htmlunit.javascript.host.html.HTMLSpanElement;
+
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.tynamo.examples.simple.integration.BaseIntegrationTest;
-
-import com.gargoylesoftware.htmlunit.html.HtmlDefinitionDescription;
-import com.gargoylesoftware.htmlunit.html.HtmlForm;
-import com.gargoylesoftware.htmlunit.html.HtmlPage;
 
 public class CarTest extends BaseIntegrationTest
 {
@@ -16,8 +16,8 @@ public class CarTest extends BaseIntegrationTest
 		HtmlPage listMakesPage = clickLink(startPage, "List Makes");
 		HtmlPage newMakePage = clickLink(listMakesPage, "New Make");
 		HtmlForm form = newMakePage.getHtmlElementById("form");
-		form.getInputByName("textField").setValueAttribute("Honda");
-
+		form.getInputByName("name").setValueAttribute("Honda");
+		
 		listMakesPage = clickButton(newMakePage, "saveAndReturn");
 
 		startPage = clickLink(listMakesPage, "Home");
@@ -25,7 +25,7 @@ public class CarTest extends BaseIntegrationTest
 		HtmlPage listModelsPage = clickLink(startPage, "List Car Models");
 		HtmlPage newModelPage = clickLink(listModelsPage, "New Car Model");
 		form = newModelPage.getHtmlElementById("form");
-		form.getInputByName("textField").setValueAttribute("Civic");
+		form.getInputByName("name").setValueAttribute("Civic");
 		listModelsPage = clickButton(newModelPage, "saveAndReturn");
 
 		startPage = clickLink(listModelsPage, "Home");
@@ -33,7 +33,7 @@ public class CarTest extends BaseIntegrationTest
 		HtmlPage listCarsPage = clickLink(startPage, "List Cars");
 		HtmlPage newCarPage = clickLink(listCarsPage, "New Car");
 		form = newModelPage.getHtmlElementById("form");
-		form.getInputByName("textField").setValueAttribute("Accord");
+		form.getInputByName("name").setValueAttribute("Accord");
 		// kaosko -2009-11-02: not implemented yet
 //		HtmlSelect makeSelect = form.getSelectByName("Make");
 //		makeSelect.setSelectedAttribute("1", true);
@@ -62,28 +62,28 @@ public class CarTest extends BaseIntegrationTest
 
 		HtmlPage newMakePage = webClient.getPage(BASEURI +"add/make");
 		HtmlForm form = newMakePage.getHtmlElementById("form");
-		form.getInputByName("textField").setValueAttribute("Honda");
+		form.getInputByName("name").setValueAttribute("Honda");
 		newMakePage = clickButton(newMakePage, "saveAndReturn");
 		HtmlDefinitionDescription ddElement = (HtmlDefinitionDescription)newMakePage.getByXPath("//dt[contains(text(),'Id')]/following-sibling::dd").get(0);
 		int hondaId = Integer.parseInt(ddElement.getTextContent());
 
 		newMakePage = webClient.getPage(BASEURI +"add/make");
 		form = newMakePage.getHtmlElementById("form");
-		form.getInputByName("textField").setValueAttribute("Toyota");
+		form.getInputByName("name").setValueAttribute("Toyota");
 		newMakePage = clickButton(newMakePage, "saveAndReturn");
 		ddElement = (HtmlDefinitionDescription)newMakePage.getByXPath("//dt[contains(text(),'Id')]/following-sibling::dd").get(0);
 		int toyotaId = Integer.parseInt(ddElement.getTextContent());
 
 		HtmlPage newModelPage = webClient.getPage(BASEURI +"add/carmodel");
 		HtmlForm newModelForm = newModelPage.getHtmlElementById("form");
-		newModelForm.getInputByName("textField").setValueAttribute("Prius");
+		newModelForm.getInputByName("name").setValueAttribute("Prius");
 		newModelPage = clickButton(newModelPage, "saveAndReturn");
 		ddElement = (HtmlDefinitionDescription)newModelPage.getByXPath("//dt[contains(text(),'Id')]/following-sibling::dd").get(0);
 		int priusId = Integer.parseInt(ddElement.getTextContent());
 
 		newModelPage = webClient.getPage(BASEURI +"add/carmodel");
 		newModelForm = newModelPage.getHtmlElementById("form");
-		newModelForm.getInputByName("textField").setValueAttribute("Sedan");
+		newModelForm.getInputByName("name").setValueAttribute("Sedan");
 		clickButton(newModelPage, "saveAndReturn");
 
 		HtmlPage editMakePage = webClient.getPage(BASEURI +"edit/make/" + hondaId);
@@ -96,7 +96,7 @@ public class CarTest extends BaseIntegrationTest
 
 		HtmlPage editModelPage = webClient.getPage(BASEURI + "edit/carmodel/" + priusId);
 		form = editModelPage.getHtmlElementById("form");
-		form.getSelectByName("select_0").getOptionByText("Toyota").setSelected(true);
+		form.getSelectByName("make").getOptionByText("Toyota").setSelected(true);
 		clickButton(editModelPage, "saveAndReturn");
 
 		editMakePage = webClient.getPage(BASEURI +"edit/make/" + toyotaId);

@@ -15,18 +15,18 @@ public class AssociationTest extends BaseIntegrationTest
 	{
 		HtmlPage newMakePage = webClient.getPage(BASEURI +"add/make");
 		HtmlForm form = newMakePage.getHtmlElementById("form");
-		form.<HtmlInput>getInputByName("textField").setValueAttribute("Honda");
+		form.<HtmlInput>getInputByName("name").setValueAttribute("Honda");
 		HtmlPage listMakesPage = clickButton(newMakePage, "saveAndReturn");
 
 		HtmlPage newModelPage = webClient.getPage(BASEURI +"add/carmodel");
 		HtmlForm newModelForm = newModelPage.getHtmlElementById("form");
-		newModelForm.<HtmlInput>getInputByName("textField").setValueAttribute("Civic");
+		newModelForm.<HtmlInput>getInputByName("name").setValueAttribute("Civic");
 
 		HtmlPage listCarsPage = webClient.getPage(BASEURI +"list/car");
-
-		// Currently results in
+		
+		// Currently results in 
 //		java.lang.NullPointerException
-//		        * org.tynamo.examples.simple.entities.CarPk.toString(CarPk.java:63)
+//		        * org.tynamo.examples.simple.entities.CarPk.toString(CarPk.java:63) 		
 //		HtmlPage newCarPage = clickLink(listCarsPage, "New Car");
 //		assertXPathPresent(newCarPage,
 //			"//select/preceding-sibling::label[contains(text(), 'Make')]/following-sibling::select/option[text() = 'Honda']");

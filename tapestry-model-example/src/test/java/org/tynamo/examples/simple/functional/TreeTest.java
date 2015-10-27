@@ -1,11 +1,10 @@
 package org.tynamo.examples.simple.functional;
 
-import org.testng.annotations.Test;
-import org.tynamo.examples.simple.integration.BaseIntegrationTest;
-
 import com.gargoylesoftware.htmlunit.html.HtmlForm;
 import com.gargoylesoftware.htmlunit.html.HtmlInput;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
+import org.testng.annotations.Test;
+import org.tynamo.examples.simple.integration.BaseIntegrationTest;
 
 public class TreeTest extends BaseIntegrationTest
 {
@@ -13,19 +12,19 @@ public class TreeTest extends BaseIntegrationTest
 	@Test
 	public void testTree() throws Exception
 	{
-		HtmlPage newTreeNodePage = webClient.getPage(BASEURI + "add/treenode");
+		HtmlPage newTreeNodePage = webClient.getPage(BASEURI + "add/treenode"); 
 		HtmlForm form = newTreeNodePage.getHtmlElementById("form");
-		form.<HtmlInput>getInputByName("textField").setValueAttribute("one");
+		form.<HtmlInput>getInputByName("name").setValueAttribute("one");
 		// FIXME apply button doesn't work
 //		newTreeNodePage = clickButton(newTreeNodePage, "save");
 //		assertNotNull(newTreeNodePage.getElementById("Identifier") );
 		newTreeNodePage = webClient.getPage(BASEURI + "add/treenode");
 		form = newTreeNodePage.getHtmlElementById("form");
-		form.<HtmlInput>getInputByName("textField").setValueAttribute("two");
+		form.<HtmlInput>getInputByName("name").setValueAttribute("two");
 		clickButton(newTreeNodePage, "saveAndReturn");
-		HtmlPage editTreeNodePage = webClient.getPage(BASEURI + "edit/treenode/1");
+		HtmlPage editTreeNodePage = webClient.getPage(BASEURI + "edit/treenode/1"); 
 		form = editTreeNodePage.getHtmlElementById("form");
-		form.getSelectByName("select_0").setSelectedAttribute("1", true);
+		form.getSelectByName("parent").setSelectedAttribute("1", true);
 		// FIXME Save button doesn't work yet
 //		editTreeNodePage = clickButton(editTreeNodePage, "save");
 //		HtmlOption option = newTreeNodePage.getHtmlElementById("form").getSelectByName("Parent").getOptionByValue("2");
