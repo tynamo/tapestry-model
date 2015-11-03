@@ -6,7 +6,11 @@
 	</t:block>
 
 	<t:block id="number">
-			<t:checkbox t:id="numberFilterActive" value="filterEnabled"/> By <t:label class="filter" for="numberSearchFilterOperator"/>
+			<t:remove>
+				We should really be using numberSearchFilterOperator as the label's for but https://issues.apache.org/jira/browse/TAP5-2509
+				made radiogroups and other virtual fields incompatible with the label component
+			</t:remove>
+			<t:checkbox t:id="numberFilterActive" value="filterEnabled"/> By <t:label class="filter" for="numberFieldEq"/>
 			<t:RadioGroup t:id="numberSearchFilterOperator" encoder="searchFilterOperatorEncoder">
 				<ul>
 					<li>
@@ -32,9 +36,9 @@
 
 	<t:block id="boolean">
 		<t:remove>A checkbox would be the right ui element to represent a boolean value but another checkbox right after the first
-		filter activation would look confusing to the user
+		filter activation would look confusing to the user. Also see the comment above about label's for
 		</t:remove>
-		<t:checkbox t:id="booleanFilterActive" value="filterEnabled"/> By <t:label class="filter" for="booleanSearchFilter"/><br/>
+		<t:checkbox t:id="booleanFilterActive" value="filterEnabled"/> By <t:label class="filter" for="booleanSearchFilterFalse"/><br/>
 		<t:RadioGroup t:id="booleanSearchFilter">
 			<t:Radio style="display:inline-block;margin-left:10px" t:id="booleanSearchFilterTrue" value="true" label="Yes"/><t:label style="display:inline" for="booleanSearchFilterTrue"/>
 			<t:Radio t:id="booleanSearchFilterFalse" value="false" label="No"/><t:label style="display:inline" for="booleanSearchFilterFalse"/>

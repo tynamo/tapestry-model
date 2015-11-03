@@ -30,7 +30,7 @@
 	</scm>
 
 	<properties>
-		<tapestry-release-version>5.4-beta-35</tapestry-release-version>
+		<tapestry-release-version>5.4-rc-1</tapestry-release-version>
 	</properties>
 
 	<!-- note that our own versions are auto-managed by the release plugin -->
