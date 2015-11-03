@@ -263,47 +263,5 @@
 			</reporting>
 		</profile>
 
-		<profile>
-			<id>repositories</id>
-			<repositories>
-				<repository>
-					<id>repository.jboss.org</id>
-					<url>https://repository.jboss.org/nexus/content/repositories/releases</url>
-					<releases>
-						<enabled>true</enabled>
-					</releases>
-					<snapshots>
-						<enabled>false</enabled>
-					</snapshots>
-				</repository>
-			</repositories>
-		</profile>
-
 	</profiles>
-
-	<repositories>
-		<repository>
-			<id>snapshots@repository.apache.org</id>
-			<url>http://repository.apache.org/snapshots</url>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</repository>
-
-		<repository>
-			<id>staging@repository.apache.org</id>
-			<url>https://repository.apache.org/content/repositories/staging</url>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</repository>
-
-	</repositories>
-
 </project>
