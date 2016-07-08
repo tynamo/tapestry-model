@@ -1,5 +1,10 @@
 package org.tynamo.model.elasticsearch.mapping;
 
+import java.io.IOException;
+import java.lang.annotation.Annotation;
+import java.math.BigDecimal;
+import java.util.Date;
+
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
@@ -11,11 +16,6 @@ import org.tynamo.model.elasticsearch.annotations.ElasticSearchField;
 import org.tynamo.model.elasticsearch.annotations.ElasticSearchField.Index;
 import org.tynamo.model.elasticsearch.annotations.ElasticSearchField.Store;
 import org.tynamo.model.elasticsearch.descriptor.ElasticSearchFieldDescriptor;
-
-import java.io.IOException;
-import java.lang.annotation.Annotation;
-import java.math.BigDecimal;
-import java.util.Date;
 
 
 public abstract class MappingUtil {

@@ -56,8 +56,8 @@
 		<dependency>
 			<groupId>org.eclipse.persistence</groupId>
 			<artifactId>eclipselink</artifactId>
-			<version>2.5.1</version>
-			<!-- must be in provided scope until we migrate to JPA 2.1/eclipselink 2.5.0 with injectable em listeners -->
+			<version>2.6.3</version>
+			<!-- must be in provided scope until we migrate to T5.5 with injectable JPA em listeners -->
 			<scope>provided</scope>
 		</dependency>
 
@@ -70,8 +70,16 @@
 		<dependency>
 			<groupId>org.elasticsearch</groupId>
 			<artifactId>elasticsearch</artifactId>
-			<version>0.20.0.RC1</version>
+			<version>1.7.5</version>
 		</dependency>
+		<!-- elasticsearch 2.3.4 brings in version 5.5.0 of lucene-queryparser but downgrade because we need to be somewhat in sync with hibernate-search and 
+		we cannot upgrade hibernate because tapestry-hibernate is still using a 4.x version. Give up and find a version of elasticsearch that works with hibernate 4.x
+		<dependency>
+			<groupId>org.apache.lucene</groupId>
+			<artifactId>lucene-queryparser</artifactId>
+			<version>4.10.2</version>
+		</dependency>
+		-->
 
 		<dependency>
 			<groupId>org.slf4j</groupId>

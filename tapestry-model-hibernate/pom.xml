@@ -47,7 +47,7 @@
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
-			<version>4.2.2.Final</version>
+			<version>4.3.6.Final</version>
 			<optional>true</optional>
 		</dependency>
 
@@ -61,7 +61,7 @@
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-validator</artifactId>
-			<version>4.3.0.Final</version>
+			<version>4.3.2.Final</version>
 			<exclusions>
 				<!-- Make sure we use the version defined by tapestry-ioc. -->
 				<exclusion>
@@ -71,11 +71,20 @@
 			</exclusions>
 		</dependency>
 
+		<!--  We need to find a combination of hibernate versions that work together with the constraints - hibernate-search has a dependency to Lucene,
+		and tapestry-hibernate-core to hibernate-core. Hibernate 5.2.x requires Java 8 so we have to wait for Tapestry 5.5 to be released first -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-search</artifactId>
-			<version>4.3.0.Final</version>
+			<artifactId>hibernate-search-orm</artifactId>
+			<version>5.0.0.Final</version>
 			<optional>true</optional>
+		</dependency>
+		
+		<!-- queryparser is an optional dependency of hibernate-search, we need it for parsing string queries. Keep the version in sync of hibernate-search's lucene dependencies  -->
+		<dependency>
+			<groupId>org.apache.lucene</groupId>
+			<artifactId>lucene-queryparser</artifactId>
+			<version>4.10.2</version>
 		</dependency>
 
 		<dependency>

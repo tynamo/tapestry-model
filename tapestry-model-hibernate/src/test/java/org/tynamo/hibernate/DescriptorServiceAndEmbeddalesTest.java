@@ -32,7 +32,6 @@ public class DescriptorServiceAndEmbeddalesTest
 
 	private static Registry registry;
 
-	@SuppressWarnings("unchecked")
 	@BeforeSuite
 	public final void setup_registry()
 	{

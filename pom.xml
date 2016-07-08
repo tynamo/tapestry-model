@@ -11,7 +11,7 @@
 	<parent>
 		<groupId>org.tynamo</groupId>
 		<artifactId>tynamo-parent</artifactId>
-		<version>0.2.2</version>
+		<version>0.2.3</version>
 	</parent>
 
 	<modules>
@@ -31,7 +31,7 @@
   </scm>
 
 	<properties>
-		<tapestry-release-version>5.4-rc-1</tapestry-release-version>
+		<tapestry-release-version>5.4.1</tapestry-release-version>
 	</properties>
 
 	<!-- note that our own versions are auto-managed by the release plugin -->
@@ -61,11 +61,6 @@
 				<groupId>org.tynamo</groupId>
 				<artifactId>tapestry-model-test</artifactId>
 				<version>0.6.1-SNAPSHOT</version>
-			</dependency>
-			<dependency>
-				<groupId>org.tynamo</groupId>
-				<artifactId>tapestry-model-web</artifactId>
-				<version>0.6.0-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>org.tynamo</groupId>

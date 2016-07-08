@@ -1,5 +1,8 @@
 package org.tynamo.model.jpa.components;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.apache.tapestry5.grid.GridDataSource;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.services.TypeCoercer;
@@ -15,9 +18,6 @@ import org.tynamo.internal.services.EmptyGridDataSource;
 import org.tynamo.model.elasticsearch.descriptor.ElasticSearchExtension;
 import org.tynamo.model.elasticsearch.descriptor.ElasticSearchFieldDescriptor;
 import org.tynamo.services.DescriptorService;
-
-import java.util.HashSet;
-import java.util.Set;
 
 public class ElasticModelSearch extends GenericModelSearch {
 
@@ -46,7 +46,8 @@ public class ElasticModelSearch extends GenericModelSearch {
 			// FIXME consider whether we should .setTypes("entityType")
 			SearchResponse searchResponse = client.prepareSearch(elasticDescriptor.getIndexName())
 					.setTypes(elasticDescriptor.getTypeName())
-					.setQuery(QueryBuilders.boolQuery().must(QueryBuilders.queryString(getSearchTerms()))).execute().actionGet();
+				.setQuery(QueryBuilders.boolQuery().must(QueryBuilders.queryStringQuery(getSearchTerms()))).execute()
+				.actionGet();
 
 			if (searchResponse.getHits().getTotalHits() <= 0) return new EmptyGridDataSource(getBeanType());
 

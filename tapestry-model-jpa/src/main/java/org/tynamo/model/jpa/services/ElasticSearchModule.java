@@ -1,12 +1,14 @@
 package org.tynamo.model.jpa.services;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
 import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.ioc.ServiceBinder;
 import org.apache.tapestry5.ioc.annotations.Autobuild;
 import org.apache.tapestry5.ioc.annotations.Startup;
 import org.apache.tapestry5.ioc.annotations.Symbol;
 import org.apache.tapestry5.ioc.services.RegistryShutdownHub;
-import org.elasticsearch.common.network.NetworkUtils;
 import org.elasticsearch.common.settings.ImmutableSettings;
 import org.elasticsearch.node.Node;
 import org.elasticsearch.node.NodeBuilder;
@@ -33,13 +35,14 @@ public class ElasticSearchModule {
 
 	public Node buildNode(@Symbol(TynamoJpaSymbols.ELASTICSEARCH_HOME) String pathHome,
 	                      @Symbol(TynamoJpaSymbols.ELASTICSEARCH_HTTP_ENABLED) boolean httpEnabled,
-	                      RegistryShutdownHub registryShutdownHub) {
+		RegistryShutdownHub registryShutdownHub) throws UnknownHostException {
+		// Settings.Builder settings = Settings.settingsBuilder();
 		ImmutableSettings.Builder settings = ImmutableSettings.settingsBuilder();
 		if (!pathHome.isEmpty()) settings.put("path.home", pathHome);
 		settings.put("http.enabled", httpEnabled);
 		settings.put("number_of_shards", 1);
 		settings.put("number_of_replicas", 0);
-		settings.put("cluster.name", "tynamo-model-search-" + NetworkUtils.getLocalAddress().getHostName()).build();
+		settings.put("cluster.name", "tynamo-model-search-" + InetAddress.getLocalHost().getHostName()).build();
 		final Node node = NodeBuilder.nodeBuilder().local(true).data(true).settings(settings).build();
 		node.start();
 
