@@ -1,8 +1,8 @@
 package org.tynamo.util;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.tapestry5.commons.Messages;
 import org.apache.tapestry5.internal.TapestryInternalUtils;
-import org.apache.tapestry5.ioc.Messages;
 import org.tynamo.descriptor.TynamoClassDescriptor;
 import org.tynamo.descriptor.TynamoPropertyDescriptor;
 

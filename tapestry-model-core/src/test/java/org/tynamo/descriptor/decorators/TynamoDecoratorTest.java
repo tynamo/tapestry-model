@@ -1,16 +1,16 @@
 package org.tynamo.descriptor.decorators;
 
 
-import org.apache.tapestry5.ioc.ObjectLocator;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
+import org.apache.tapestry5.commons.ObjectLocator;
 import org.apache.tapestry5.test.TapestryTestCase;
 import org.easymock.EasyMock;
 import org.testng.annotations.Test;
 import org.tynamo.descriptor.TynamoClassDescriptorImpl;
 import org.tynamo.descriptor.annotation.handlers.DescriptorAnnotationHandler;
 import org.tynamo.descriptor.annotation.handlers.HandledBy;
-
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
 
 public class TynamoDecoratorTest extends TapestryTestCase
 {

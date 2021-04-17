@@ -3,11 +3,11 @@ package org.tynamo.model.elasticsearch.descriptor;
 import java.io.IOException;
 import java.util.List;
 
+import org.apache.tapestry5.commons.services.PropertyAccess;
 import org.apache.tapestry5.func.F;
 import org.apache.tapestry5.func.Flow;
 import org.apache.tapestry5.func.Predicate;
 import org.apache.tapestry5.func.Worker;
-import org.apache.tapestry5.ioc.services.PropertyAccess;
 import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.tynamo.descriptor.TynamoClassDescriptor;
 import org.tynamo.descriptor.TynamoPropertyDescriptor;

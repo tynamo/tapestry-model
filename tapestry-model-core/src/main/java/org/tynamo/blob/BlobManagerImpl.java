@@ -1,9 +1,12 @@
 package org.tynamo.blob;
 
+import java.io.IOException;
+import java.io.InputStream;
+
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.tapestry5.Link;
-import org.apache.tapestry5.ioc.services.PropertyAccess;
+import org.apache.tapestry5.commons.services.PropertyAccess;
+import org.apache.tapestry5.http.Link;
 import org.apache.tapestry5.services.PageRenderLinkSource;
 import org.apache.tapestry5.upload.services.UploadedFile;
 import org.tynamo.builder.BuilderDirector;
@@ -11,9 +14,6 @@ import org.tynamo.descriptor.TynamoPropertyDescriptor;
 import org.tynamo.descriptor.extension.BlobDescriptorExtension;
 import org.tynamo.descriptor.extension.TynamoBlob;
 import org.tynamo.services.PersistenceService;
-
-import java.io.IOException;
-import java.io.InputStream;
 
 
 /**

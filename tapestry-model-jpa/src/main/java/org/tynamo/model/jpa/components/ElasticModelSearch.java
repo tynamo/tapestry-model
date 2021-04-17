@@ -3,9 +3,9 @@ package org.tynamo.model.jpa.components;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.tapestry5.commons.services.TypeCoercer;
 import org.apache.tapestry5.grid.GridDataSource;
 import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.ioc.services.TypeCoercer;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.index.query.QueryBuilders;

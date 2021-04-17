@@ -1,16 +1,16 @@
 package org.tynamo.hibernate;
 
+import org.apache.tapestry5.commons.Configuration;
+import org.apache.tapestry5.commons.MappedConfiguration;
 import org.apache.tapestry5.hibernate.HibernateEntityPackageManager;
 import org.apache.tapestry5.hibernate.HibernateSessionSource;
 import org.apache.tapestry5.internal.InternalConstants;
-import org.apache.tapestry5.internal.InternalSymbols;
-import org.apache.tapestry5.ioc.Configuration;
 import org.apache.tapestry5.ioc.LoggerSource;
-import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.ioc.annotations.Contribute;
 import org.apache.tapestry5.ioc.annotations.Symbol;
 import org.apache.tapestry5.ioc.services.ApplicationDefaults;
 import org.apache.tapestry5.ioc.services.SymbolProvider;
+import org.hibernate.boot.Metadata;
 import org.tynamo.descriptor.factories.DescriptorFactory;
 import org.tynamo.hibernate.decorators.HibernateDescriptorDecorator;
 import org.tynamo.model.test.entities.Foo;
@@ -23,7 +23,7 @@ public class TestModule
 	public static void defaultsSymbols(MappedConfiguration<String, String> configuration)
 	{
 		configuration.add(InternalConstants.TAPESTRY_APP_PACKAGE_PARAM, "org.tynamo.hibernate");
-		configuration.add(InternalSymbols.APP_PACKAGE_PATH, "org/tynamo/hibernate");
+		// configuration.add(InternalSymbols.APP_PACKAGE_PATH, "org/tynamo/hibernate");
 
 		configuration.add(TynamoHibernateSymbols.LARGE_COLUMN_LENGTH, "100");
 		configuration.add(TynamoHibernateSymbols.IGNORE_NON_HIBERNATE_TYPES, "true");
@@ -36,6 +36,7 @@ public class TestModule
 	}
 
 	public static HibernateDescriptorDecorator buildHibernateDescriptorDecorator(HibernateSessionSource hibernateSessionSource,
+		Metadata metadata,
 	                                                               DescriptorFactory descriptorFactory,
 	                                                               @Symbol(TynamoHibernateSymbols.LARGE_COLUMN_LENGTH)
 	                                                               int largeColumnLength,
@@ -45,6 +46,7 @@ public class TestModule
 	{
 		return new HibernateDescriptorDecorator(
 				hibernateSessionSource,
+			metadata,
 				descriptorFactory,
 				largeColumnLength,
 				ignoreNonHibernateTypes,

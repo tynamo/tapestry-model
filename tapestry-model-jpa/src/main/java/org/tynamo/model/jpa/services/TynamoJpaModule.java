@@ -1,7 +1,17 @@
 package org.tynamo.model.jpa.services;
 
-import org.apache.tapestry5.ioc.*;
-import org.apache.tapestry5.ioc.annotations.*;
+import javax.persistence.EntityManager;
+import javax.persistence.metamodel.EntityType;
+
+import org.apache.tapestry5.commons.Configuration;
+import org.apache.tapestry5.commons.MappedConfiguration;
+import org.apache.tapestry5.commons.ObjectLocator;
+import org.apache.tapestry5.commons.OrderedConfiguration;
+import org.apache.tapestry5.ioc.MethodAdviceReceiver;
+import org.apache.tapestry5.ioc.ServiceBinder;
+import org.apache.tapestry5.ioc.annotations.Autobuild;
+import org.apache.tapestry5.ioc.annotations.Contribute;
+import org.apache.tapestry5.ioc.annotations.Match;
 import org.apache.tapestry5.ioc.services.ServiceOverride;
 import org.apache.tapestry5.jpa.JpaTransactionAdvisor;
 import org.apache.tapestry5.services.BeanBlockContribution;
@@ -16,9 +26,6 @@ import org.tynamo.model.jpa.internal.SearchableJpaGridDataSourceProvider;
 import org.tynamo.services.DescriptorService;
 import org.tynamo.services.SearchableGridDataSourceProvider;
 import org.tynamo.services.TynamoCoreModule;
-
-import javax.persistence.EntityManager;
-import javax.persistence.metamodel.EntityType;
 
 public class TynamoJpaModule {
 

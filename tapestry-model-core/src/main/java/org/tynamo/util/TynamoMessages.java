@@ -1,6 +1,6 @@
 package org.tynamo.util;
 
-import org.apache.tapestry5.ioc.Messages;
+import org.apache.tapestry5.commons.Messages;
 
 public class TynamoMessages
 {

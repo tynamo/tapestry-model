@@ -1,7 +1,7 @@
 package org.tynamo.hibernate;
 
 import org.apache.tapestry5.hibernate.modules.HibernateCoreModule;
-import org.apache.tapestry5.hibernate.modules.HibernateModule;
+import org.apache.tapestry5.hibernate.web.modules.HibernateModule;
 import org.apache.tapestry5.ioc.Registry;
 import org.apache.tapestry5.ioc.RegistryBuilder;
 import org.apache.tapestry5.modules.TapestryModule;

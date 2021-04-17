@@ -1,15 +1,5 @@
 package org.tynamo.descriptor.decorators;
 
-import org.apache.commons.lang.exception.ExceptionUtils;
-import org.apache.tapestry5.func.F;
-import org.apache.tapestry5.func.Predicate;
-import org.apache.tapestry5.ioc.ObjectLocator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.tynamo.descriptor.*;
-import org.tynamo.descriptor.annotation.handlers.DescriptorAnnotationHandler;
-import org.tynamo.descriptor.annotation.handlers.HandledBy;
-
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
@@ -18,6 +8,20 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.commons.lang.exception.ExceptionUtils;
+import org.apache.tapestry5.commons.ObjectLocator;
+import org.apache.tapestry5.func.F;
+import org.apache.tapestry5.func.Predicate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.tynamo.descriptor.Descriptor;
+import org.tynamo.descriptor.EmbeddedDescriptor;
+import org.tynamo.descriptor.IMethodDescriptor;
+import org.tynamo.descriptor.TynamoClassDescriptor;
+import org.tynamo.descriptor.TynamoPropertyDescriptor;
+import org.tynamo.descriptor.annotation.handlers.DescriptorAnnotationHandler;
+import org.tynamo.descriptor.annotation.handlers.HandledBy;
 
 /**
  * This class uses the Tynamo's annotations on a given class or property to modify its

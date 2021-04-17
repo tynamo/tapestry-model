@@ -1,18 +1,18 @@
 package org.tynamo.components;
 
+import java.util.Comparator;
+import java.util.List;
+
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
+import org.apache.tapestry5.commons.Messages;
 import org.apache.tapestry5.func.F;
 import org.apache.tapestry5.func.Predicate;
-import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.tynamo.descriptor.TynamoClassDescriptor;
 import org.tynamo.services.DescriptorService;
 import org.tynamo.util.DisplayNameUtils;
 import org.tynamo.util.Utils;
-
-import java.util.Comparator;
-import java.util.List;
 
 public class ListPageLinkList
 {

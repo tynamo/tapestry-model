@@ -1,11 +1,11 @@
 package org.tynamo.components;
 
 import org.apache.tapestry5.Asset;
-import org.apache.tapestry5.Link;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
+import org.apache.tapestry5.commons.services.PropertyAccess;
+import org.apache.tapestry5.http.Link;
 import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.ioc.services.PropertyAccess;
 import org.tynamo.blob.BlobManager;
 import org.tynamo.blob.IconResolver;
 import org.tynamo.blob.RenderType;

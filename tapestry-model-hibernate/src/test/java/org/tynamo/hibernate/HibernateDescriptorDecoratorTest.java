@@ -7,7 +7,7 @@ import java.util.Set;
 import org.apache.tapestry5.func.F;
 import org.apache.tapestry5.func.Predicate;
 import org.apache.tapestry5.hibernate.modules.HibernateCoreModule;
-import org.apache.tapestry5.hibernate.modules.HibernateModule;
+import org.apache.tapestry5.hibernate.web.modules.HibernateModule;
 import org.apache.tapestry5.ioc.Registry;
 import org.apache.tapestry5.ioc.RegistryBuilder;
 import org.apache.tapestry5.modules.TapestryModule;
@@ -26,6 +26,7 @@ import org.tynamo.descriptor.TynamoPropertyDescriptor;
 import org.tynamo.descriptor.TynamoPropertyDescriptorImpl;
 import org.tynamo.descriptor.decorators.DescriptorDecorator;
 import org.tynamo.hibernate.decorators.HibernateDescriptorDecorator;
+import org.tynamo.hibernate.services.TynamoHibernateModule;
 import org.tynamo.model.test.entities.Bar;
 import org.tynamo.model.test.entities.Baz;
 import org.tynamo.model.test.entities.Descendant;
@@ -52,6 +53,7 @@ public class HibernateDescriptorDecoratorTest
 		builder.add(HibernateCoreModule.class);
 		builder.add(HibernateModule.class);
 		builder.add(TynamoCoreModule.class);
+		builder.add(TynamoHibernateModule.class);
 		builder.add(TestModule.class);
 
 		registry = builder.build();

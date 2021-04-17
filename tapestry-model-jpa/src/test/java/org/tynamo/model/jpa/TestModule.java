@@ -1,10 +1,9 @@
 package org.tynamo.model.jpa;
 
+import org.apache.tapestry5.commons.Configuration;
+import org.apache.tapestry5.commons.MappedConfiguration;
 import org.apache.tapestry5.internal.InternalConstants;
-import org.apache.tapestry5.internal.InternalSymbols;
-import org.apache.tapestry5.ioc.Configuration;
 import org.apache.tapestry5.ioc.LoggerSource;
-import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.ioc.annotations.Autobuild;
 import org.apache.tapestry5.ioc.annotations.Contribute;
 import org.apache.tapestry5.ioc.annotations.Symbol;
@@ -24,7 +23,7 @@ public class TestModule
 	public static void defaultsSymbols(MappedConfiguration<String, Object> configuration)
 	{
 		configuration.add(InternalConstants.TAPESTRY_APP_PACKAGE_PARAM, "org.tynamo.model.jpa");
-		configuration.add(InternalSymbols.APP_PACKAGE_PATH, "org/tynamo/model/jpa");
+		// configuration.add(InternalSymbols.APP_PACKAGE_PATH, "org/tynamo/model/jpa");
 
 		// JpaDescriptorDecoratorTest doesn't include TynamoJpaModule at all, but JpaDescriptorDecorator expects persistenceunit to be configured
 		configuration.add(TynamoJpaSymbols.LARGE_COLUMN_LENGTH, "100");

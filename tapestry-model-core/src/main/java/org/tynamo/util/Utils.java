@@ -1,6 +1,4 @@
 /*
- * Copyright 2004 Chris Nelson
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -11,10 +9,10 @@
  */
 package org.tynamo.util;
 
-import org.apache.tapestry5.ioc.Messages;
-import org.apache.tapestry5.services.HttpError;
-
 import java.util.Collection;
+
+import org.apache.tapestry5.commons.Messages;
+import org.apache.tapestry5.services.HttpError;
 
 
 public class Utils

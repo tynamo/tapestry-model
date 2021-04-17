@@ -1,10 +1,10 @@
 package org.tynamo.services;
 
+import java.util.Map;
+
 import org.apache.commons.collections.BidiMap;
 import org.apache.commons.collections.bidimap.DualHashBidiMap;
-import org.apache.tapestry5.ioc.services.Coercion;
-
-import java.util.Map;
+import org.apache.tapestry5.commons.services.Coercion;
 
 public class EntityCoercerServiceImpl implements EntityCoercerService
 {

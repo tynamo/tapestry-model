@@ -1,0 +1,171 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>tapestry-model-example</artifactId>
+	<name>Tynamo Model Example</name>
+	<packaging>war</packaging>
+
+	<parent>
+		<artifactId>tapestry-model</artifactId>
+		<groupId>org.tynamo</groupId>
+		<version>0.6.1-SNAPSHOT</version>
+	</parent>
+
+	<build>
+		<finalName>simple</finalName>
+
+		<plugins>
+			<plugin> <!-- exclude tapestry-model-example from the deploy -->
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<configuration>
+					<skip>true</skip>
+				</configuration>
+			</plugin>
+
+			<!-- Run the application using "mvn jetty:run" -->
+			<plugin>
+				<groupId>org.eclipse.jetty</groupId>
+				<artifactId>maven-jetty-plugin</artifactId>
+				<version>9.2.11.v20150529</version>
+				<configuration>
+					<contextPath>/</contextPath>
+					<systemProperties>
+						<systemProperty>
+							<name>tapestry.disable-default-modules</name>
+							<value>true</value>
+						</systemProperty>
+						<systemProperty>
+							<name>tapestry.execution-mode</name>
+							<value>hibernate</value>
+						</systemProperty>
+					</systemProperties>
+				</configuration>
+			</plugin>
+
+			<!-- This changes the WAR file packaging so that what would normally go into WEB-INF/classes
+				 is instead packaged as WEB-INF/lib/XXXX.jar.  This is necessary for Tapestry
+				 to be able to search for page and component classes at startup. Only
+				 certain application servers require this configuration, please see the documentation
+				 at the Tapestry 5 project page (http://tapestry.apache.org/tapestry5/).
+			 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<configuration>
+					<archiveClasses>true</archiveClasses>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-report-plugin</artifactId>
+				<version>2.17</version>
+			</plugin>
+
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<version>1.8</version>
+				<executions>
+					<execution>
+						<id>reserve-network-port</id>
+						<goals>
+							<goal>reserve-network-port</goal>
+						</goals>
+						<phase>process-resources</phase>
+						<configuration>
+							<portNames>
+								<portName>reserved.network.port</portName>
+							</portNames>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<systemProperties>
+						<property>
+							<name>reserved.network.port</name>
+							<value>${reserved.network.port}</value>
+						</property>
+					</systemProperties>
+				</configuration>
+			</plugin>
+
+		</plugins>
+	</build>
+
+	<dependencies>
+
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-search-orm</artifactId>
+			<version>5.0.0.Final</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.tynamo</groupId>
+			<artifactId>tapestry-model-hibernate</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.tynamo</groupId>
+			<artifactId>tapestry-model-jpa</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.eclipse.persistence</groupId>
+			<artifactId>eclipselink</artifactId>
+			<version>2.6.3</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>4.3.2.Final</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.tynamo</groupId>
+			<artifactId>tynamo-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.tynamo</groupId>
+			<artifactId>tapestry-routing</artifactId>
+			<version>0.1.1</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.apache.tapestry</groupId>
+					<artifactId>tapestry-core</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>1.7.2</version>
+		</dependency>
+
+		<!-- hibernate bring a version of xml-apis too old for htmlunit -->
+		<dependency>
+			<groupId>xml-apis</groupId>
+			<artifactId>xml-apis</artifactId>
+			<version>1.4.01</version>
+			<scope>test</scope>
+		</dependency>
+
+
+	</dependencies>
+
+</project>

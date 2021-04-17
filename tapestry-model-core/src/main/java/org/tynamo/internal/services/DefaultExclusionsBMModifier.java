@@ -1,6 +1,8 @@
 package org.tynamo.internal.services;
 
-import org.apache.tapestry5.beaneditor.BeanModel;
+import java.util.List;
+
+import org.apache.tapestry5.beanmodel.BeanModel;
 import org.apache.tapestry5.func.F;
 import org.apache.tapestry5.func.Mapper;
 import org.apache.tapestry5.func.Predicate;
@@ -10,8 +12,6 @@ import org.tynamo.descriptor.TynamoPropertyDescriptor;
 import org.tynamo.descriptor.extension.BlobDescriptorExtension;
 import org.tynamo.services.BeanModelModifier;
 import org.tynamo.services.DescriptorService;
-
-import java.util.List;
 
 /**
  * Removes the Tynamo "recommended" list of properties to exclude from the bean model.

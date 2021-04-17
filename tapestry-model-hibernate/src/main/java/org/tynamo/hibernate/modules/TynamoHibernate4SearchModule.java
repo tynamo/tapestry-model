@@ -1,20 +1,19 @@
 package org.tynamo.hibernate.modules;
 
+import org.apache.tapestry5.commons.MappedConfiguration;
+import org.apache.tapestry5.commons.OrderedConfiguration;
 import org.apache.tapestry5.hibernate.HibernateSessionManager;
-import org.apache.tapestry5.ioc.MappedConfiguration;
-import org.apache.tapestry5.ioc.OrderedConfiguration;
 import org.apache.tapestry5.ioc.ServiceBinder;
 import org.apache.tapestry5.ioc.annotations.Contribute;
 import org.apache.tapestry5.ioc.annotations.Local;
-import org.apache.tapestry5.ioc.annotations.SubModule;
 import org.apache.tapestry5.ioc.services.PropertyShadowBuilder;
 import org.apache.tapestry5.ioc.services.ServiceOverride;
 import org.hibernate.search.FullTextSession;
 import org.hibernate.search.Search;
 import org.tynamo.descriptor.decorators.DescriptorDecorator;
 import org.tynamo.descriptor.factories.DescriptorFactory;
-import org.tynamo.hibernate.services.internal.SearchableHibernateGridDataSourceProvider;
 import org.tynamo.hibernate.decorators.HibernateSearchDescriptorDecorator;
+import org.tynamo.hibernate.services.internal.SearchableHibernateGridDataSourceProvider;
 import org.tynamo.services.SearchableGridDataSourceProvider;
 
 public final class TynamoHibernate4SearchModule

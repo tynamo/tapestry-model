@@ -1,15 +1,22 @@
 package org.tynamo.descriptor;
 
-import org.apache.tapestry5.ioc.test.TestBase;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+import org.apache.tapestry5.test.ioc.TestBase;
 import org.easymock.EasyMock;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.tynamo.descriptor.decorators.DescriptorDecorator;
-import org.tynamo.descriptor.factories.*;
+import org.tynamo.descriptor.factories.MethodDescriptorFactory;
+import org.tynamo.descriptor.factories.MethodDescriptorFactoryImpl;
+import org.tynamo.descriptor.factories.PropertyDescriptorFactory;
+import org.tynamo.descriptor.factories.PropertyDescriptorFactoryImpl;
+import org.tynamo.descriptor.factories.ReflectionDescriptorFactory;
 import org.tynamo.services.DescriptorService;
 import org.tynamo.services.DescriptorServiceImpl;
-
-import java.util.*;
 
 public class DescriptorServiceTest extends TestBase
 {

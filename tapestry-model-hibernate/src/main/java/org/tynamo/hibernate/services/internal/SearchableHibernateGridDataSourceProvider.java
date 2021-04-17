@@ -8,9 +8,8 @@ import java.util.Set;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.queryparser.classic.MultiFieldQueryParser;
 import org.apache.lucene.queryparser.classic.ParseException;
-import org.apache.lucene.util.Version;
 import org.apache.tapestry5.grid.GridDataSource;
-import org.apache.tapestry5.hibernate.HibernateGridDataSource;
+import org.apache.tapestry5.hibernate.web.HibernateGridDataSource;
 import org.hibernate.search.FullTextSession;
 import org.tynamo.descriptor.TynamoPropertyDescriptor;
 import org.tynamo.hibernate.SearchableHibernateGridDataSource;
@@ -50,7 +49,7 @@ public class SearchableHibernateGridDataSourceProvider implements SearchableGrid
 		if (fieldNames.size() <= 0) return createGridDataSource(entityType);
 
 		MultiFieldQueryParser parser = new MultiFieldQueryParser(fieldNames.toArray(new String[fieldNames.size()]),
-			new StandardAnalyzer(Version.LUCENE_4_10_2));
+			new StandardAnalyzer());
 		// parser.setDefaultOperator(QueryParser.AND_OPERATOR); // overrides the default OR_OPERATOR, so that all words in the search are
 		// required
 		try {

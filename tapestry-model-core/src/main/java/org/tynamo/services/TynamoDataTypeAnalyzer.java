@@ -1,14 +1,14 @@
 package org.tynamo.services;
 
+import java.util.List;
+
 import org.apache.tapestry5.beaneditor.DataType;
+import org.apache.tapestry5.commons.services.DataTypeAnalyzer;
+import org.apache.tapestry5.commons.services.PropertyAdapter;
 import org.apache.tapestry5.func.Predicate;
-import org.apache.tapestry5.ioc.services.PropertyAdapter;
-import org.apache.tapestry5.services.DataTypeAnalyzer;
 import org.tynamo.descriptor.TynamoClassDescriptor;
 import org.tynamo.descriptor.TynamoPropertyDescriptor;
 import org.tynamo.util.Pair;
-
-import java.util.List;
 
 public class TynamoDataTypeAnalyzer implements DataTypeAnalyzer
 {

@@ -1,17 +1,17 @@
 package org.tynamo.pages;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
 import org.apache.tapestry5.StreamResponse;
+import org.apache.tapestry5.http.services.Response;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.ContextValueEncoder;
-import org.apache.tapestry5.services.Response;
 import org.tynamo.blob.BlobManager;
 import org.tynamo.descriptor.TynamoPropertyDescriptor;
 import org.tynamo.descriptor.extension.BlobDescriptorExtension;
 import org.tynamo.services.DescriptorService;
-
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 
 public class Blob
 {

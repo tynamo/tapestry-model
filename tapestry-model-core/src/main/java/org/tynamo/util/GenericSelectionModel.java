@@ -1,15 +1,15 @@
 package org.tynamo.util;
 
-import org.apache.tapestry5.OptionGroupModel;
-import org.apache.tapestry5.OptionModel;
-import org.apache.tapestry5.internal.OptionModelImpl;
-import org.apache.tapestry5.ioc.services.PropertyAccess;
-import org.apache.tapestry5.util.AbstractSelectModel;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+
+import org.apache.tapestry5.OptionGroupModel;
+import org.apache.tapestry5.OptionModel;
+import org.apache.tapestry5.commons.services.PropertyAccess;
+import org.apache.tapestry5.internal.OptionModelImpl;
+import org.apache.tapestry5.util.AbstractSelectModel;
 
 public class GenericSelectionModel<T> extends AbstractSelectModel
 {

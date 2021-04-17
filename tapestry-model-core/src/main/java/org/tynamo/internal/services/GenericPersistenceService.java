@@ -5,7 +5,7 @@ import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.List;
 
-import org.apache.tapestry5.ioc.services.PropertyAccess;
+import org.apache.tapestry5.commons.services.PropertyAccess;
 import org.tynamo.descriptor.CollectionDescriptor;
 import org.tynamo.services.PersistenceService;
 

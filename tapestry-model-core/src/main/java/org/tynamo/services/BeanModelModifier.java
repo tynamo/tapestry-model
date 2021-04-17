@@ -1,6 +1,6 @@
 package org.tynamo.services;
 
-import org.apache.tapestry5.beaneditor.BeanModel;
+import org.apache.tapestry5.beanmodel.BeanModel;
 
 public interface BeanModelModifier
 {

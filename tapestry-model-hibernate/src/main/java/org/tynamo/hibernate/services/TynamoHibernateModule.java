@@ -1,14 +1,14 @@
 package org.tynamo.hibernate.services;
 
-import java.util.Iterator;
+import java.util.Collection;
 
+import org.apache.tapestry5.commons.Configuration;
+import org.apache.tapestry5.commons.MappedConfiguration;
+import org.apache.tapestry5.commons.OrderedConfiguration;
 import org.apache.tapestry5.hibernate.HibernateConfigurer;
 import org.apache.tapestry5.hibernate.HibernateSessionSource;
 import org.apache.tapestry5.hibernate.HibernateTransactionAdvisor;
-import org.apache.tapestry5.ioc.Configuration;
-import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.ioc.MethodAdviceReceiver;
-import org.apache.tapestry5.ioc.OrderedConfiguration;
 import org.apache.tapestry5.ioc.ServiceBinder;
 import org.apache.tapestry5.ioc.annotations.Autobuild;
 import org.apache.tapestry5.ioc.annotations.Contribute;
@@ -22,7 +22,12 @@ import org.apache.tapestry5.services.ClasspathAssetAliasManager;
 import org.apache.tapestry5.services.ComponentClassResolver;
 import org.apache.tapestry5.services.LibraryMapping;
 import org.apache.tapestry5.services.messages.ComponentMessagesSource;
+import org.hibernate.boot.Metadata;
+import org.hibernate.boot.MetadataSources;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.mapping.PersistentClass;
+import org.hibernate.metadata.ClassMetadata;
+import org.hibernate.service.ServiceRegistry;
 import org.tynamo.common.ModuleProperties;
 import org.tynamo.descriptor.decorators.DescriptorDecorator;
 import org.tynamo.descriptor.factories.DescriptorFactory;
@@ -107,22 +112,30 @@ public class TynamoHibernateModule
 		configuration.add("HibernateDescriptorDecorator", hibernateDescriptorDecorator, "after:TynamoDecorator");
 	}
 
+	public static Metadata buildMetadata(HibernateSessionSource sessionSource) {
+		org.hibernate.cfg.Configuration cfg = sessionSource.getConfiguration();
+		ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(cfg.getProperties()).build();
+
+		MetadataSources metadataSources = new MetadataSources(serviceRegistry);
+
+		// We kind of do this backwards, because we rebuild the metadata here but Tynamo's implementation uses
+		// PersistentClass so we need access to Metadata
+		for (ClassMetadata classMetadata : sessionSource.getSessionFactory().getAllClassMetadata().values()) {
+			metadataSources.addAnnotatedClass(classMetadata.getMappedClass());
+		}
+		return metadataSources.getMetadataBuilder().build();
+	}
+
 	@Contribute(DescriptorService.class)
 	public static void descriptorService(Configuration<Class> configuration,
-												   HibernateSessionSource hibernateSessionSource)
+		HibernateSessionSource hibernateSessionSource, Metadata metadata)
 	{
-
-		org.hibernate.cfg.Configuration config = hibernateSessionSource.getConfiguration();
-		Iterator<PersistentClass> mappings = config.getClassMappings();
-		while (mappings.hasNext())
-		{
-			final PersistentClass persistentClass = mappings.next();
+		// org.hibernate.cfg.Configuration config = hibernateSessionSource.getConfiguration();
+		// Iterator<PersistentClass> mappings = config.getClassMappings();
+		Collection<PersistentClass> mappings = metadata.getEntityBindings();
+		for (PersistentClass persistentClass : mappings) {
 			final Class entityClass = persistentClass.getMappedClass();
-
-			if (entityClass != null)
-			{
-				configuration.add(entityClass);
-			}
+			if (entityClass != null) configuration.add(entityClass);
 		}
 	}
 

@@ -3,7 +3,7 @@ package org.tynamo.model.jpa.services;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
-import org.apache.tapestry5.ioc.MappedConfiguration;
+import org.apache.tapestry5.commons.MappedConfiguration;
 import org.apache.tapestry5.ioc.ServiceBinder;
 import org.apache.tapestry5.ioc.annotations.Autobuild;
 import org.apache.tapestry5.ioc.annotations.Startup;

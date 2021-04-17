@@ -1,22 +1,22 @@
 package org.tynamo.internal.services;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.commons.lang.StringUtils;
-import org.apache.tapestry5.internal.beaneditor.BeanModelUtils;
+import org.apache.tapestry5.beanmodel.BeanModelUtils;
+import org.apache.tapestry5.commons.services.InvalidationEventHub;
+import org.apache.tapestry5.commons.services.InvalidationListener;
+import org.apache.tapestry5.commons.util.CollectionFactory;
+import org.apache.tapestry5.http.services.RequestGlobals;
+import org.apache.tapestry5.ioc.annotations.ComponentClasses;
 import org.apache.tapestry5.ioc.annotations.PostInjection;
-import org.apache.tapestry5.ioc.internal.util.CollectionFactory;
-import org.apache.tapestry5.services.ComponentClasses;
-import org.apache.tapestry5.services.InvalidationEventHub;
-import org.apache.tapestry5.services.InvalidationListener;
-import org.apache.tapestry5.services.RequestGlobals;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.tynamo.PageType;
 import org.tynamo.descriptor.annotation.beaneditor.BeanModel;
 import org.tynamo.mixins.BeanModelAdvisor;
 import org.tynamo.services.BeanModelModifier;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class BeanModelsAnnotationBMModifier implements BeanModelModifier, InvalidationListener
 {
@@ -32,7 +32,7 @@ public class BeanModelsAnnotationBMModifier implements BeanModelModifier, Invali
 	}
 
 	@Override
-	public boolean modify(org.apache.tapestry5.beaneditor.BeanModel<?> dataModel, String key) {
+	public boolean modify(org.apache.tapestry5.beanmodel.BeanModel<?> dataModel, String key) {
 
 		String pageName = globals.getActivePageName();
 

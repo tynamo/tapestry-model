@@ -1,18 +1,18 @@
 package org.tynamo.services;
 
-import org.apache.tapestry5.ioc.internal.util.CollectionFactory;
-import org.apache.tapestry5.ioc.util.StrategyRegistry;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.tapestry5.commons.util.CollectionFactory;
+import org.apache.tapestry5.commons.util.StrategyRegistry;
 import org.tynamo.descriptor.CollectionDescriptor;
 import org.tynamo.descriptor.EmbeddedDescriptor;
 import org.tynamo.descriptor.TynamoClassDescriptor;
 import org.tynamo.descriptor.TynamoPropertyDescriptor;
 import org.tynamo.descriptor.factories.DescriptorFactory;
 import org.tynamo.exception.TynamoRuntimeException;
-
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * This class builds and caches TynamoClassDescriptors.

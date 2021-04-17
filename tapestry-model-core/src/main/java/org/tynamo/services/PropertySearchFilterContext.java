@@ -17,8 +17,8 @@ package org.tynamo.services;
 import org.apache.tapestry5.Field;
 import org.apache.tapestry5.FieldTranslator;
 import org.apache.tapestry5.FieldValidator;
-import org.apache.tapestry5.ioc.AnnotationProvider;
-import org.apache.tapestry5.ioc.Messages;
+import org.apache.tapestry5.commons.AnnotationProvider;
+import org.apache.tapestry5.commons.Messages;
 import org.tynamo.search.SearchFilterOperator;
 
 /**

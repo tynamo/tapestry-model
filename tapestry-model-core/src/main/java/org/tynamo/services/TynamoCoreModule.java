@@ -1,13 +1,27 @@
 package org.tynamo.services;
 
+import java.lang.reflect.Method;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import org.apache.tapestry5.alerts.AlertManager;
 import org.apache.tapestry5.annotations.Path;
 import org.apache.tapestry5.beaneditor.DataTypeConstants;
+import org.apache.tapestry5.commons.Configuration;
+import org.apache.tapestry5.commons.MappedConfiguration;
+import org.apache.tapestry5.commons.ObjectLocator;
+import org.apache.tapestry5.commons.OrderedConfiguration;
+import org.apache.tapestry5.commons.Resource;
+import org.apache.tapestry5.commons.services.CoercionTuple;
+import org.apache.tapestry5.commons.services.DataTypeAnalyzer;
+import org.apache.tapestry5.commons.services.PropertyAccess;
 import org.apache.tapestry5.func.Predicate;
 import org.apache.tapestry5.grid.GridDataSource;
 import org.apache.tapestry5.internal.services.PageResponseRenderer;
 import org.apache.tapestry5.internal.structure.Page;
-import org.apache.tapestry5.ioc.*;
+import org.apache.tapestry5.ioc.MethodAdviceReceiver;
+import org.apache.tapestry5.ioc.ServiceBinder;
 import org.apache.tapestry5.ioc.annotations.Autobuild;
 import org.apache.tapestry5.ioc.annotations.Contribute;
 import org.apache.tapestry5.ioc.annotations.InjectService;
@@ -15,10 +29,13 @@ import org.apache.tapestry5.ioc.annotations.Marker;
 import org.apache.tapestry5.ioc.annotations.Match;
 import org.apache.tapestry5.ioc.annotations.Primary;
 import org.apache.tapestry5.ioc.services.ChainBuilder;
-import org.apache.tapestry5.ioc.services.CoercionTuple;
-import org.apache.tapestry5.ioc.services.PropertyAccess;
-import org.apache.tapestry5.plastic.*;
-import org.apache.tapestry5.services.*;
+import org.apache.tapestry5.plastic.MethodInvocation;
+import org.apache.tapestry5.services.BeanBlockContribution;
+import org.apache.tapestry5.services.BindingFactory;
+import org.apache.tapestry5.services.BindingSource;
+import org.apache.tapestry5.services.DisplayBlockContribution;
+import org.apache.tapestry5.services.EditBlockContribution;
+import org.apache.tapestry5.services.LibraryMapping;
 import org.apache.tapestry5.services.javascript.JavaScriptModuleConfiguration;
 import org.apache.tapestry5.services.javascript.ModuleManager;
 import org.apache.tapestry5.services.transform.ComponentClassTransformWorker2;
@@ -30,24 +47,30 @@ import org.tynamo.builder.BuilderDirector;
 import org.tynamo.common.ModuleProperties;
 import org.tynamo.descriptor.TynamoClassDescriptor;
 import org.tynamo.descriptor.TynamoPropertyDescriptor;
-import org.tynamo.descriptor.annotation.handlers.*;
+import org.tynamo.descriptor.annotation.handlers.BeanModelAnnotationHandler;
+import org.tynamo.descriptor.annotation.handlers.BlobDescriptorAnnotationHandler;
+import org.tynamo.descriptor.annotation.handlers.ClassDescriptorAnnotationHandler;
+import org.tynamo.descriptor.annotation.handlers.CollectionDescriptorAnnotationHandler;
+import org.tynamo.descriptor.annotation.handlers.DescriptorAnnotationHandler;
+import org.tynamo.descriptor.annotation.handlers.MethodDescriptorAnnotationHandler;
+import org.tynamo.descriptor.annotation.handlers.PropertyDescriptorAnnotationHandler;
 import org.tynamo.descriptor.decorators.DescriptorDecorator;
 import org.tynamo.descriptor.decorators.TapestryDecorator;
 import org.tynamo.descriptor.decorators.TynamoDecorator;
-import org.tynamo.descriptor.factories.*;
+import org.tynamo.descriptor.factories.DescriptorFactory;
+import org.tynamo.descriptor.factories.MethodDescriptorFactory;
+import org.tynamo.descriptor.factories.MethodDescriptorFactoryImpl;
+import org.tynamo.descriptor.factories.PropertyDescriptorFactory;
+import org.tynamo.descriptor.factories.PropertyDescriptorFactoryImpl;
+import org.tynamo.descriptor.factories.ReflectionDescriptorFactory;
 import org.tynamo.internal.services.BeanModelExtensionBMModifier;
-import org.tynamo.internal.services.BeanModelsAnnotationBMModifier;
 import org.tynamo.internal.services.BeanModelSourceAdvice;
 import org.tynamo.internal.services.BeanModelSourceAdviceImpl;
 import org.tynamo.internal.services.BeanModelWorker;
+import org.tynamo.internal.services.BeanModelsAnnotationBMModifier;
 import org.tynamo.internal.services.DefaultExclusionsBMModifier;
 import org.tynamo.search.SearchFilterPredicate;
 import org.tynamo.util.Pair;
-
-import java.lang.reflect.Method;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 public class TynamoCoreModule
 {
@@ -175,12 +198,14 @@ public class TynamoCoreModule
 	 * </ul>
 	 */
 	@SuppressWarnings("unchecked")
-	public static void contributeTypeCoercer(final Configuration<CoercionTuple> configuration,
+	public static void contributeTypeCoercer(
+		final MappedConfiguration<CoercionTuple.Key, CoercionTuple> configuration,
 	                                         @InjectService("EntityCoercerService")
 	                                         EntityCoercerService entityCoercerService)
 	{
-		configuration.add(CoercionTuple.create(Class.class, String.class, new ClassToStringCoercion(entityCoercerService)));
-		configuration.add(CoercionTuple.create(String.class, Class.class, new StringToClassCoercion(entityCoercerService)));
+		configuration.add(CoercionTuple.create(Class.class, String.class, new ClassToStringCoercion(entityCoercerService))
+			.getKey(),
+			CoercionTuple.create(String.class, Class.class, new StringToClassCoercion(entityCoercerService)));
 	}
 
 	public static void contributeDescriptorFactory(OrderedConfiguration<DescriptorDecorator> configuration,

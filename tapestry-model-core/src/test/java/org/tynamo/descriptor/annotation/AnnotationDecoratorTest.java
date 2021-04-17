@@ -1,12 +1,18 @@
 package org.tynamo.descriptor.annotation;
 
-import org.apache.tapestry5.ioc.ObjectLocator;
-import org.apache.tapestry5.ioc.test.MockTester;
+import org.apache.tapestry5.commons.ObjectLocator;
+import org.apache.tapestry5.test.ioc.MockTester;
 import org.easymock.EasyMock;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
-import org.tynamo.descriptor.*;
+import org.tynamo.descriptor.EmbeddedDescriptor;
+import org.tynamo.descriptor.IdentifierDescriptor;
+import org.tynamo.descriptor.IdentifierDescriptorImpl;
+import org.tynamo.descriptor.TynamoClassDescriptor;
+import org.tynamo.descriptor.TynamoClassDescriptorImpl;
+import org.tynamo.descriptor.TynamoPropertyDescriptor;
+import org.tynamo.descriptor.TynamoPropertyDescriptorImpl;
 import org.tynamo.descriptor.annotation.handlers.ClassDescriptorAnnotationHandler;
 import org.tynamo.descriptor.annotation.handlers.DescriptorAnnotationHandler;
 import org.tynamo.descriptor.annotation.handlers.PropertyDescriptorAnnotationHandler;

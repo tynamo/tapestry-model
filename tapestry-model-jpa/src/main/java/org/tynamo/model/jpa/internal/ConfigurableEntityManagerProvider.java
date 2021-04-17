@@ -4,12 +4,12 @@ import java.util.Map;
 
 import javax.persistence.EntityManager;
 
-import org.apache.tapestry5.ioc.ObjectCreator;
-import org.apache.tapestry5.ioc.ObjectLocator;
+import org.apache.tapestry5.commons.ObjectCreator;
+import org.apache.tapestry5.commons.ObjectLocator;
+import org.apache.tapestry5.commons.services.PlasticProxyFactory;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.annotations.Symbol;
 import org.apache.tapestry5.ioc.internal.util.InternalUtils;
-import org.apache.tapestry5.ioc.services.PlasticProxyFactory;
 import org.apache.tapestry5.jpa.EntityManagerManager;
 import org.tynamo.model.jpa.TynamoJpaSymbols;
 

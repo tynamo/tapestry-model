@@ -1,22 +1,22 @@
 package org.tynamo.components;
 
+import java.util.Collection;
+import java.util.List;
+
 import org.apache.tapestry5.Asset;
 import org.apache.tapestry5.BindingConstants;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
-import org.apache.tapestry5.beaneditor.BeanModel;
-import org.apache.tapestry5.ioc.Messages;
+import org.apache.tapestry5.beanmodel.BeanModel;
+import org.apache.tapestry5.beanmodel.services.BeanModelSource;
+import org.apache.tapestry5.commons.Messages;
+import org.apache.tapestry5.commons.services.PropertyAccess;
 import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.ioc.services.PropertyAccess;
-import org.apache.tapestry5.services.BeanModelSource;
 import org.slf4j.Logger;
 import org.tynamo.descriptor.CollectionDescriptor;
 import org.tynamo.descriptor.TynamoClassDescriptor;
 import org.tynamo.services.DescriptorService;
 import org.tynamo.services.PersistenceService;
-
-import java.util.Collection;
-import java.util.List;
 
 
 /**

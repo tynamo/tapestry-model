@@ -6,7 +6,6 @@ import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Iterator;
 
 import org.apache.tapestry5.func.F;
@@ -15,7 +14,7 @@ import org.apache.tapestry5.hibernate.HibernateSessionSource;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.annotations.Symbol;
 import org.hibernate.HibernateException;
-import org.hibernate.cfg.Configuration;
+import org.hibernate.boot.Metadata;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.PersistentClass;
@@ -66,6 +65,7 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 	private Logger logger;
 
 	private HibernateSessionSource hibernateSessionSource;
+	private Metadata metadata;
 
 	private DescriptorFactory descriptorFactory;
 
@@ -77,6 +77,7 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 	private final boolean ignoreNonHibernateTypes;
 
 	public HibernateDescriptorDecorator(HibernateSessionSource hibernateSessionSource,
+		Metadata metadata,
 	                                    DescriptorFactory descriptorFactory,
 	                                    @Inject @Symbol(TynamoHibernateSymbols.LARGE_COLUMN_LENGTH)
 	                                    int largeColumnLength,
@@ -89,6 +90,7 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 		this.largeColumnLength = largeColumnLength;
 		this.ignoreNonHibernateTypes = ignoreNonHibernateTypes;
 		this.logger = logger;
+		this.metadata = metadata;
 	}
 
 	public TynamoClassDescriptor decorate(TynamoClassDescriptor descriptor)
@@ -343,9 +345,8 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 	 */
 	protected PersistentClass getMapping(Class type)
 	{
-		Configuration cfg = hibernateSessionSource.getConfiguration();
-
-		return cfg.getClassMapping(type.getName());
+		// return cfg.getClassMapping(type.getName());
+		return metadata.getEntityBinding(type.getName());
 	}
 
 	/**
@@ -442,8 +443,9 @@ public class HibernateDescriptorDecorator implements DescriptorDecorator
 	protected org.hibernate.mapping.Collection findCollectionMapping(Class type, String name)
 	{
 		String roleName = type.getName() + "." + name;
-		org.hibernate.mapping.Collection collectionMapping = hibernateSessionSource.getConfiguration()
-				.getCollectionMapping(roleName);
+		// org.hibernate.mapping.Collection collectionMapping = hibernateSessionSource.getConfiguration()
+		// .getCollectionMapping(roleName);
+		org.hibernate.mapping.Collection collectionMapping = metadata.getCollectionBinding(roleName);
 		if (collectionMapping != null)
 		{
 			return collectionMapping;

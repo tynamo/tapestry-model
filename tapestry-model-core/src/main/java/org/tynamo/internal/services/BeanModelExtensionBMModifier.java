@@ -1,7 +1,7 @@
 package org.tynamo.internal.services;
 
-import org.apache.tapestry5.beaneditor.BeanModel;
-import org.apache.tapestry5.internal.beaneditor.BeanModelUtils;
+import org.apache.tapestry5.beanmodel.BeanModel;
+import org.apache.tapestry5.beanmodel.BeanModelUtils;
 import org.tynamo.descriptor.TynamoClassDescriptor;
 import org.tynamo.descriptor.extension.BeanModelExtension;
 import org.tynamo.services.BeanModelModifier;

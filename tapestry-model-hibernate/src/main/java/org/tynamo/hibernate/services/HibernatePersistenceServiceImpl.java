@@ -16,11 +16,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.apache.tapestry5.beanmodel.services.PropertyConduitSource;
+import org.apache.tapestry5.commons.services.PropertyAccess;
 import org.apache.tapestry5.grid.GridDataSource;
-import org.apache.tapestry5.hibernate.HibernateGridDataSource;
 import org.apache.tapestry5.hibernate.HibernateSessionManager;
-import org.apache.tapestry5.ioc.services.PropertyAccess;
-import org.apache.tapestry5.services.PropertyConduitSource;
+import org.apache.tapestry5.hibernate.web.HibernateGridDataSource;
 import org.hibernate.Criteria;
 import org.hibernate.LockMode;
 import org.hibernate.Query;

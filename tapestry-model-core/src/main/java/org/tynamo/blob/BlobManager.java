@@ -1,6 +1,6 @@
 package org.tynamo.blob;
 
-import org.apache.tapestry5.Link;
+import org.apache.tapestry5.http.Link;
 import org.apache.tapestry5.upload.services.UploadedFile;
 import org.tynamo.descriptor.TynamoPropertyDescriptor;
 

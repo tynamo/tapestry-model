@@ -1,7 +1,7 @@
 package org.tynamo.internal.services;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.tapestry5.beaneditor.BeanModel;
+import org.apache.tapestry5.beanmodel.BeanModel;
 import org.apache.tapestry5.plastic.MethodInvocation;
 import org.apache.tapestry5.services.Environment;
 import org.tynamo.services.BeanModelSourceContext;

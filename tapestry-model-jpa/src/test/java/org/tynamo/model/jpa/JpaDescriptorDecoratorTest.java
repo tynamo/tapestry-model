@@ -6,12 +6,12 @@ import java.util.Set;
 
 import org.apache.tapestry5.func.F;
 import org.apache.tapestry5.func.Predicate;
+import org.apache.tapestry5.http.services.ApplicationGlobals;
 import org.apache.tapestry5.internal.test.PageTesterContext;
 import org.apache.tapestry5.ioc.Registry;
 import org.apache.tapestry5.ioc.RegistryBuilder;
 import org.apache.tapestry5.jpa.modules.JpaModule;
 import org.apache.tapestry5.modules.TapestryModule;
-import org.apache.tapestry5.services.ApplicationGlobals;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.AfterSuite;

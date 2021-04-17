@@ -1,5 +1,3 @@
-// Copyright 2008 The Apache Software Foundation
-//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -18,9 +16,9 @@ import java.util.Collection;
 import java.util.Map;
 
 import org.apache.tapestry5.Block;
+import org.apache.tapestry5.commons.util.CollectionFactory;
 import org.apache.tapestry5.internal.services.RequestPageCache;
 import org.apache.tapestry5.internal.structure.Page;
-import org.apache.tapestry5.ioc.internal.util.CollectionFactory;
 
 public class SearchFilterBlockOverrideSourceImpl implements SearchFilterBlockOverrideSource
 {

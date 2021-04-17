@@ -1,6 +1,9 @@
 package org.tynamo.descriptor;
 
-import org.apache.tapestry5.beaneditor.BeanModel;
+import java.util.Collections;
+import java.util.Set;
+
+import org.apache.tapestry5.beanmodel.BeanModel;
 import org.apache.tapestry5.test.TapestryTestCase;
 import org.testng.annotations.Test;
 import org.tynamo.PageType;
@@ -8,9 +11,6 @@ import org.tynamo.internal.services.DefaultExclusionsBMModifier;
 import org.tynamo.services.DescriptorService;
 import org.tynamo.test.Baz;
 import org.tynamo.test.Foo;
-
-import java.util.Collections;
-import java.util.Set;
 
 public class DefaultExclusionsBMModifierTest extends TapestryTestCase
 {
