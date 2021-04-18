@@ -2,22 +2,22 @@ package org.tynamo.examples.simple.pages;
 
 
 import org.apache.tapestry5.EventConstants;
-import org.apache.tapestry5.Link;
 import org.apache.tapestry5.annotations.CleanupRender;
 import org.apache.tapestry5.annotations.OnEvent;
 import org.apache.tapestry5.annotations.Property;
-import org.tynamo.descriptor.annotation.beaneditor.BeanModel;
-import org.tynamo.descriptor.annotation.beaneditor.BeanModels;
-import org.tynamo.examples.simple.CustomCommitAfter;
-import org.apache.tapestry5.ioc.Messages;
+import org.apache.tapestry5.commons.Messages;
+import org.apache.tapestry5.http.Link;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.ContextValueEncoder;
 import org.apache.tapestry5.services.PageRenderLinkSource;
+import org.tynamo.descriptor.annotation.beaneditor.BeanModel;
+import org.tynamo.descriptor.annotation.beaneditor.BeanModels;
+import org.tynamo.examples.simple.CustomCommitAfter;
 import org.tynamo.examples.simple.entities.Product;
-import org.tynamo.util.TynamoMessages;
 import org.tynamo.routing.annotations.At;
 import org.tynamo.services.DescriptorService;
 import org.tynamo.services.PersistenceService;
+import org.tynamo.util.TynamoMessages;
 import org.tynamo.util.Utils;
 
 /**
