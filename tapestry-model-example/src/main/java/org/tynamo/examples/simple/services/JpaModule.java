@@ -2,11 +2,11 @@ package org.tynamo.examples.simple.services;
 
 import org.apache.tapestry5.commons.Configuration;
 import org.apache.tapestry5.ioc.annotations.Contribute;
-import org.apache.tapestry5.ioc.annotations.SubModule;
+import org.apache.tapestry5.ioc.annotations.ImportModule;
 import org.apache.tapestry5.jpa.JpaEntityPackageManager;
 import org.tynamo.model.jpa.services.TynamoJpaModule;
 
-@SubModule(value = {
+@ImportModule(value = {
 		TynamoJpaModule.class,
 		org.apache.tapestry5.jpa.modules.JpaModule.class
 })

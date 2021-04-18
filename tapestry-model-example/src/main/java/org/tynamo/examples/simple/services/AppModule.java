@@ -6,7 +6,7 @@ import org.apache.tapestry5.commons.Configuration;
 import org.apache.tapestry5.commons.MappedConfiguration;
 import org.apache.tapestry5.ioc.ServiceBinder;
 import org.apache.tapestry5.ioc.annotations.Contribute;
-import org.apache.tapestry5.ioc.annotations.SubModule;
+import org.apache.tapestry5.ioc.annotations.ImportModule;
 import org.apache.tapestry5.ioc.modules.TapestryIOCModule;
 import org.apache.tapestry5.ioc.services.ApplicationDefaults;
 import org.apache.tapestry5.ioc.services.FactoryDefaults;
@@ -19,7 +19,6 @@ import org.apache.tapestry5.upload.modules.UploadModule;
 import org.apache.tapestry5.upload.services.UploadSymbols;
 import org.tynamo.builder.Builder;
 import org.tynamo.builder.BuilderDirector;
-import org.tynamo.ckeditor.CKEditorModule;
 import org.tynamo.routing.services.RoutingModule;
 import org.tynamo.services.TynamoCoreModule;
 
@@ -27,13 +26,13 @@ import org.tynamo.services.TynamoCoreModule;
  * This module is automatically included as part of the Tapestry IoC Registry, it's a good place to
  * configure and extend Tapestry, or to place your own service definitions.
  */
-@SubModule(value = {
+@ImportModule(value = {
 		TapestryModule.class,
 		TapestryIOCModule.class,
 		BeanValidatorModule.class,
 		TynamoCoreModule.class,
 		RoutingModule.class,
-		CKEditorModule.class,
+		// CKEditorModule.class,
 		UploadModule.class
 })
 public class AppModule

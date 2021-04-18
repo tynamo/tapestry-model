@@ -70,16 +70,8 @@
 		<dependency>
 			<groupId>org.elasticsearch</groupId>
 			<artifactId>elasticsearch</artifactId>
-			<version>1.7.5</version>
+			<version>2.4.6</version>
 		</dependency>
-		<!-- elasticsearch 2.3.4 brings in version 5.5.0 of lucene-queryparser but downgrade because we need to be somewhat in sync with hibernate-search and 
-		we cannot upgrade hibernate because tapestry-hibernate is still using a 4.x version. Give up and find a version of elasticsearch that works with hibernate 4.x
-		<dependency>
-			<groupId>org.apache.lucene</groupId>
-			<artifactId>lucene-queryparser</artifactId>
-			<version>4.10.2</version>
-		</dependency>
-		-->
 
 		<dependency>
 			<groupId>org.slf4j</groupId>

@@ -47,7 +47,7 @@
 	<!-- Filter configuration -->
 	<filter>
 		<filter-name>app</filter-name>
-		<filter-class>org.apache.tapestry5.TapestryFilter</filter-class>
+		<filter-class>org.apache.tapestry5.http.TapestryFilter</filter-class>
 	</filter>
 
 	<filter-mapping>

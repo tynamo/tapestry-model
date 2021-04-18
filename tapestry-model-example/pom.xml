@@ -12,7 +12,7 @@
 	</parent>
 
 	<properties>
-		<tapestry-release-version>5.5.0</tapestry-release-version>
+		<tapestry-release-version>5.7.2</tapestry-release-version>
 	</properties>
 
 	<build>
@@ -131,10 +131,17 @@
 			<version>2.6.3</version>
 		</dependency>
 
+		<!-- queryparser is an optional dependency of hibernate-search, we need it for parsing string queries. Keep the version in sync of hibernate-search's lucene dependencies  -->
+		<dependency>
+			<groupId>org.apache.lucene</groupId>
+			<artifactId>lucene-queryparser</artifactId>
+			<version>5.5.5</version>
+		</dependency>
+
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-validator</artifactId>
-			<version>5.1.1.Final</version>
+			<version>5.3.6.Final</version>
 		</dependency>
 
 		<dependency>
@@ -146,13 +153,13 @@
 		<dependency>
 			<groupId>org.tynamo</groupId>
 			<artifactId>tapestry-routing</artifactId>
-			<version>0.1.1</version>
-			<exclusions>
-				<exclusion>
-					<groupId>org.apache.tapestry</groupId>
-					<artifactId>tapestry-core</artifactId>
-				</exclusion>
-			</exclusions>
+			<version>0.2.0</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.apache.tapestry</groupId>
+			<artifactId>commons</artifactId>
+			<version>${tapestry-release-version}</version>
 		</dependency>
 
 		<dependency>

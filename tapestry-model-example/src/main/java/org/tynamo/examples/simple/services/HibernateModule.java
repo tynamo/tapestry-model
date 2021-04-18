@@ -7,8 +7,8 @@ import org.apache.tapestry5.hibernate.HibernateEntityPackageManager;
 import org.apache.tapestry5.hibernate.HibernateSessionManager;
 import org.apache.tapestry5.hibernate.modules.HibernateCoreModule;
 import org.apache.tapestry5.ioc.annotations.Contribute;
+import org.apache.tapestry5.ioc.annotations.ImportModule;
 import org.apache.tapestry5.ioc.annotations.Primary;
-import org.apache.tapestry5.ioc.annotations.SubModule;
 import org.apache.tapestry5.ioc.services.ApplicationDefaults;
 import org.apache.tapestry5.ioc.services.SymbolProvider;
 import org.apache.tapestry5.plastic.MethodAdvice;
@@ -18,7 +18,7 @@ import org.tynamo.hibernate.TynamoHibernateSymbols;
 import org.tynamo.hibernate.modules.TynamoHibernate4SearchModule;
 import org.tynamo.hibernate.services.TynamoHibernateModule;
 
-@SubModule(value = {
+@ImportModule(value = {
 		TynamoHibernateModule.class,
 		TynamoHibernate4SearchModule.class,
 		org.apache.tapestry5.hibernate.web.modules.HibernateModule.class,
